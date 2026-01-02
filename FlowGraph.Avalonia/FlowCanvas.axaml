@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FlowGraph.Avalonia.FlowCanvas"
+             Name="FlowCanvasRoot">
+
+  <UserControl.Styles>
+    <!-- Light theme colors -->
+    <Style Selector="UserControl">
+      <Setter Property="Background">
+        <Setter.Value>
+          <SolidColorBrush Color="#F5F5F5"/>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Styles>
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="FlowCanvasBackground" Color="#F5F5F5"/>
+          <SolidColorBrush x:Key="FlowCanvasGridColor" Color="#DDDDDD"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeBackground" Color="#FFFFFF"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeBorder" Color="#4682B4"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeText" Color="#333333"/>
+          <SolidColorBrush x:Key="FlowCanvasEdgeStroke" Color="#808080"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="FlowCanvasBackground" Color="#1E1E1E"/>
+          <SolidColorBrush x:Key="FlowCanvasGridColor" Color="#333333"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeBackground" Color="#2D2D30"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeBorder" Color="#4682B4"/>
+          <SolidColorBrush x:Key="FlowCanvasNodeText" Color="#FFFFFF"/>
+          <SolidColorBrush x:Key="FlowCanvasEdgeStroke" Color="#808080"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Panel Background="{DynamicResource FlowCanvasBackground}">
+    <Canvas Name="GridCanvas" ClipToBounds="True"/>
+    <Canvas Name="MainCanvas" ClipToBounds="True"/>
+  </Panel>
+
+</UserControl>
