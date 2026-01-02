@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FlowGraph.Avalonia.FlowCanvas"
-             Name="FlowCanvasRoot">
+             Name="FlowCanvasRoot"
+             Focusable="True"
+             ClipToBounds="True">
 
   <UserControl.Styles>
     <!-- Light theme colors -->
@@ -48,9 +50,9 @@
     </ResourceDictionary>
   </UserControl.Resources>
 
-  <Panel Background="{DynamicResource FlowCanvasBackground}">
-    <Canvas Name="GridCanvas" ClipToBounds="True"/>
-    <Canvas Name="MainCanvas" ClipToBounds="True"/>
+  <Panel Name="RootPanel" Background="{DynamicResource FlowCanvasBackground}">
+    <Canvas Name="GridCanvas" ClipToBounds="False"/>
+    <Canvas Name="MainCanvas" ClipToBounds="False"/>
   </Panel>
 
 </UserControl>

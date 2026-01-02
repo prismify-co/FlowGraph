@@ -24,12 +24,30 @@ public partial class FlowCanvas : UserControl
 
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
+    private Panel? _rootPanel;
+    private ScaleTransform _canvasScaleTransform = new();
+    private TranslateTransform _canvasTranslateTransform = new();
+    private ScaleTransform _gridScaleTransform = new();
+    private TranslateTransform _gridTranslateTransform = new();
+
     private const double GridSpacing = 20;
     private const double GridDotSize = 2;
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
     private const double PortSize = 12;
     private const double PortSpacing = 20;
+
+    // Zoom settings
+    private const double MinZoom = 0.1;
+    private const double MaxZoom = 3.0;
+    private const double ZoomStep = 0.1;
+    private double _currentZoom = 1.0;
+
+    // Pan state
+    private bool _isPanning;
+    private global::Avalonia.Point _panStartPoint;
+    private double _panStartOffsetX;
+    private double _panStartOffsetY;
 
     // Dragging state
     private Node? _draggingNode;
@@ -64,15 +82,198 @@ public partial class FlowCanvas : UserControl
         base.OnAttachedToVisualTree(e);
         _mainCanvas = this.FindControl<Canvas>("MainCanvas");
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
+        _rootPanel = this.FindControl<Panel>("RootPanel");
 
+        // Set up transforms programmatically
         if (_mainCanvas != null)
         {
-            _mainCanvas.PointerMoved += OnCanvasPointerMoved;
-            _mainCanvas.PointerReleased += OnCanvasPointerReleased;
+            var transformGroup = new TransformGroup();
+            transformGroup.Children.Add(_canvasScaleTransform);
+            transformGroup.Children.Add(_canvasTranslateTransform);
+            _mainCanvas.RenderTransform = transformGroup;
+        }
+
+        if (_gridCanvas != null)
+        {
+            var transformGroup = new TransformGroup();
+            transformGroup.Children.Add(_gridScaleTransform);
+            transformGroup.Children.Add(_gridTranslateTransform);
+            _gridCanvas.RenderTransform = transformGroup;
+        }
+
+        if (_rootPanel != null)
+        {
+            _rootPanel.PointerPressed += OnRootPanelPointerPressed;
+            _rootPanel.PointerMoved += OnRootPanelPointerMoved;
+            _rootPanel.PointerReleased += OnRootPanelPointerReleased;
+            _rootPanel.PointerWheelChanged += OnPointerWheelChanged;
         }
 
         RenderGrid();
         RenderGraph();
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+
+        if (e.Key == Key.Delete || e.Key == Key.Back)
+        {
+            DeleteSelectedNodes();
+            e.Handled = true;
+        }
+        else if (e.Key == Key.A && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            SelectAllNodes();
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape)
+        {
+            DeselectAllNodes();
+            e.Handled = true;
+        }
+    }
+
+    private void DeleteSelectedNodes()
+    {
+        if (Graph == null) return;
+
+        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+        foreach (var node in selectedNodes)
+        {
+            Graph.RemoveNode(node.Id);
+        }
+    }
+
+    private void SelectAllNodes()
+    {
+        if (Graph == null) return;
+
+        foreach (var node in Graph.Nodes)
+        {
+            node.IsSelected = true;
+        }
+    }
+
+    private void DeselectAllNodes()
+    {
+        if (Graph == null) return;
+
+        foreach (var node in Graph.Nodes)
+        {
+            node.IsSelected = false;
+        }
+    }
+
+    private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        var position = e.GetPosition(_rootPanel);
+        var delta = e.Delta.Y > 0 ? ZoomStep : -ZoomStep;
+        var newZoom = Math.Clamp(_currentZoom + delta, MinZoom, MaxZoom);
+
+        if (Math.Abs(newZoom - _currentZoom) > 0.001)
+        {
+            // Calculate zoom center point
+            var oldZoom = _currentZoom;
+            _currentZoom = newZoom;
+
+            // Adjust pan to zoom towards mouse position
+            var zoomFactor = newZoom / oldZoom;
+            var offsetX = position.X - (position.X - _canvasTranslateTransform.X) * zoomFactor;
+            var offsetY = position.Y - (position.Y - _canvasTranslateTransform.Y) * zoomFactor;
+
+            _canvasScaleTransform.ScaleX = newZoom;
+            _canvasScaleTransform.ScaleY = newZoom;
+            _canvasTranslateTransform.X = offsetX;
+            _canvasTranslateTransform.Y = offsetY;
+
+            _gridScaleTransform.ScaleX = newZoom;
+            _gridScaleTransform.ScaleY = newZoom;
+            _gridTranslateTransform.X = offsetX;
+            _gridTranslateTransform.Y = offsetY;
+
+            RenderGrid();
+        }
+
+        e.Handled = true;
+    }
+
+    private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var point = e.GetCurrentPoint(_rootPanel);
+
+        // Middle mouse button or Shift + Left click for panning
+        if (point.Properties.IsMiddleButtonPressed ||
+            (point.Properties.IsLeftButtonPressed && e.KeyModifiers.HasFlag(KeyModifiers.Shift)))
+        {
+            _isPanning = true;
+            _panStartPoint = e.GetPosition(_rootPanel);
+            _panStartOffsetX = _canvasTranslateTransform.X;
+            _panStartOffsetY = _canvasTranslateTransform.Y;
+            e.Pointer.Capture((IInputElement?)_rootPanel);
+            e.Handled = true;
+        }
+        else if (point.Properties.IsLeftButtonPressed)
+        {
+            // Click on empty canvas - deselect all
+            var hitElement = _mainCanvas?.InputHitTest(TransformPointToCanvas(e.GetPosition(_rootPanel)));
+            if (hitElement == null || hitElement == _mainCanvas)
+            {
+                DeselectAllNodes();
+            }
+
+            // Take focus for keyboard input
+            Focus();
+        }
+    }
+
+    private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (_isPanning)
+        {
+            var currentPoint = e.GetPosition(_rootPanel);
+            var deltaX = currentPoint.X - _panStartPoint.X;
+            var deltaY = currentPoint.Y - _panStartPoint.Y;
+
+            _canvasTranslateTransform.X = _panStartOffsetX + deltaX;
+            _canvasTranslateTransform.Y = _panStartOffsetY + deltaY;
+            _gridTranslateTransform.X = _panStartOffsetX + deltaX;
+            _gridTranslateTransform.Y = _panStartOffsetY + deltaY;
+
+            RenderGrid();
+            e.Handled = true;
+        }
+        else if (_isCreatingConnection && _mainCanvas != null)
+        {
+            _connectionEndPoint = TransformPointToCanvas(e.GetPosition(_rootPanel));
+            UpdateTempConnectionLine();
+        }
+    }
+
+    private void OnRootPanelPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (_isPanning)
+        {
+            _isPanning = false;
+            e.Pointer.Capture(null);
+            e.Handled = true;
+        }
+
+        if (_isCreatingConnection)
+        {
+            CompleteConnection(e);
+        }
+    }
+
+    private global::Avalonia.Point TransformPointToCanvas(global::Avalonia.Point point)
+    {
+        // Transform screen point to canvas coordinates (accounting for pan and zoom)
+        var offsetX = _canvasTranslateTransform.X;
+        var offsetY = _canvasTranslateTransform.Y;
+        return new global::Avalonia.Point(
+            (point.X - offsetX) / _currentZoom,
+            (point.Y - offsetY) / _currentZoom
+        );
     }
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -240,19 +441,37 @@ public partial class FlowCanvas : UserControl
         var gridBrush = GetThemeResource<IBrush>("FlowCanvasGridColor")
             ?? new SolidColorBrush(Color.Parse("#333333"));
 
+        // Calculate visible area in canvas coordinates
+        var offsetX = _gridTranslateTransform.X;
+        var offsetY = _gridTranslateTransform.Y;
+        var zoom = _currentZoom;
+
+        // Expand grid to cover visible area with some padding
+        var startX = -offsetX / zoom - GridSpacing;
+        var startY = -offsetY / zoom - GridSpacing;
+        var endX = (width - offsetX) / zoom + GridSpacing;
+        var endY = (height - offsetY) / zoom + GridSpacing;
+
+        // Snap to grid
+        startX = Math.Floor(startX / GridSpacing) * GridSpacing;
+        startY = Math.Floor(startY / GridSpacing) * GridSpacing;
+
+        // Adjust dot size based on zoom
+        var dotSize = Math.Max(GridDotSize / zoom, 1);
+
         // Draw grid dots
-        for (double x = GridSpacing; x < width; x += GridSpacing)
+        for (double x = startX; x < endX; x += GridSpacing)
         {
-            for (double y = GridSpacing; y < height; y += GridSpacing)
+            for (double y = startY; y < endY; y += GridSpacing)
             {
                 var dot = new Ellipse
                 {
-                    Width = GridDotSize,
-                    Height = GridDotSize,
+                    Width = dotSize,
+                    Height = dotSize,
                     Fill = gridBrush
                 };
-                Canvas.SetLeft(dot, x - GridDotSize / 2);
-                Canvas.SetTop(dot, y - GridDotSize / 2);
+                Canvas.SetLeft(dot, x - dotSize / 2);
+                Canvas.SetTop(dot, y - dotSize / 2);
                 _gridCanvas.Children.Add(dot);
             }
         }
@@ -406,7 +625,7 @@ public partial class FlowCanvas : UserControl
                 _connectionSourceNode = node;
                 _connectionSourcePort = port;
                 _connectionFromOutput = isOutput;
-                _connectionEndPoint = e.GetPosition(_mainCanvas);
+                _connectionEndPoint = TransformPointToCanvas(e.GetPosition(_rootPanel));
 
                 // Create temporary connection line
                 _tempConnectionLine = new AvaloniaPath
@@ -445,63 +664,52 @@ public partial class FlowCanvas : UserControl
         }
     }
 
-    private void OnCanvasPointerMoved(object? sender, PointerEventArgs e)
+    private void CompleteConnection(PointerReleasedEventArgs e)
     {
-        if (_isCreatingConnection && _mainCanvas != null)
+        // Check if released over a valid port
+        var canvasPoint = TransformPointToCanvas(e.GetPosition(_rootPanel));
+        var hitElement = _mainCanvas?.InputHitTest(canvasPoint);
+        if (hitElement is Ellipse portVisual && portVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
         {
-            _connectionEndPoint = e.GetPosition(_mainCanvas);
-            UpdateTempConnectionLine();
-        }
-    }
-
-    private void OnCanvasPointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        if (_isCreatingConnection)
-        {
-            // Check if released over a valid port
-            var hitElement = _mainCanvas?.InputHitTest(e.GetPosition(_mainCanvas));
-            if (hitElement is Ellipse portVisual && portVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
+            // Can only connect output to input (or input to output)
+            if (_connectionFromOutput != isOutput && _connectionSourceNode != null && _connectionSourcePort != null)
             {
-                // Can only connect output to input (or input to output)
-                if (_connectionFromOutput != isOutput && _connectionSourceNode != null && _connectionSourcePort != null)
+                // Determine source and target based on direction
+                var sourceNode = _connectionFromOutput ? _connectionSourceNode : targetNode;
+                var sourcePort = _connectionFromOutput ? _connectionSourcePort : targetPort;
+                var destNode = _connectionFromOutput ? targetNode : _connectionSourceNode;
+                var destPort = _connectionFromOutput ? targetPort : _connectionSourcePort;
+
+                // Check if connection already exists
+                var existingEdge = Graph?.Edges.FirstOrDefault(edge =>
+                    edge.Source == sourceNode.Id && edge.Target == destNode.Id &&
+                    edge.SourcePort == sourcePort.Id && edge.TargetPort == destPort.Id);
+
+                if (existingEdge == null)
                 {
-                    // Determine source and target based on direction
-                    var sourceNode = _connectionFromOutput ? _connectionSourceNode : targetNode;
-                    var sourcePort = _connectionFromOutput ? _connectionSourcePort : targetPort;
-                    var destNode = _connectionFromOutput ? targetNode : _connectionSourceNode;
-                    var destPort = _connectionFromOutput ? targetPort : _connectionSourcePort;
-
-                    // Check if connection already exists
-                    var existingEdge = Graph?.Edges.FirstOrDefault(edge =>
-                        edge.Source == sourceNode.Id && edge.Target == destNode.Id &&
-                        edge.SourcePort == sourcePort.Id && edge.TargetPort == destPort.Id);
-
-                    if (existingEdge == null)
+                    Graph?.AddEdge(new Edge
                     {
-                        Graph?.AddEdge(new Edge
-                        {
-                            Source = sourceNode.Id,
-                            Target = destNode.Id,
-                            SourcePort = sourcePort.Id,
-                            TargetPort = destPort.Id
-                        });
-                    }
+                        Source = sourceNode.Id,
+                        Target = destNode.Id,
+                        SourcePort = sourcePort.Id,
+                        TargetPort = destPort.Id
+                    });
                 }
             }
-
-            // Clean up
-            if (_tempConnectionLine != null)
-            {
-                _mainCanvas?.Children.Remove(_tempConnectionLine);
-                _tempConnectionLine = null;
-            }
-
-            _isCreatingConnection = false;
-            _connectionSourceNode = null;
-            _connectionSourcePort = null;
-
-            e.Pointer.Capture(null);
         }
+
+        // Clean up
+        if (_tempConnectionLine != null)
+        {
+            _mainCanvas?.Children.Remove(_tempConnectionLine);
+            _tempConnectionLine = null;
+        }
+
+        _isCreatingConnection = false;
+        _connectionSourceNode = null;
+        _connectionSourcePort = null;
+
+        e.Pointer.Capture(null);
     }
 
     private void UpdateTempConnectionLine()
@@ -573,11 +781,14 @@ public partial class FlowCanvas : UserControl
                 // Start dragging
                 _draggingNode = node;
                 _draggingNode.IsDragging = true;
-                _dragStartPoint = e.GetPosition(_mainCanvas);
+                _dragStartPoint = TransformPointToCanvas(e.GetPosition(_rootPanel));
                 _nodeStartPosition = node.Position;
 
                 e.Pointer.Capture(border);
                 e.Handled = true;
+
+                // Take focus for keyboard input
+                Focus();
             }
         }
     }
@@ -586,7 +797,7 @@ public partial class FlowCanvas : UserControl
     {
         if (_draggingNode != null && sender is Border border)
         {
-            var currentPoint = e.GetPosition(_mainCanvas);
+            var currentPoint = TransformPointToCanvas(e.GetPosition(_rootPanel));
             var deltaX = currentPoint.X - _dragStartPoint.X;
             var deltaY = currentPoint.Y - _dragStartPoint.Y;
 
@@ -676,5 +887,68 @@ public partial class FlowCanvas : UserControl
             return typedResource;
         }
         return null;
+    }
+
+    // Public methods for external control
+    public void ZoomIn() => SetZoom(_currentZoom + ZoomStep);
+    public void ZoomOut() => SetZoom(_currentZoom - ZoomStep);
+    public void ResetZoom() => SetZoom(1.0);
+
+    public void SetZoom(double zoom)
+    {
+        _currentZoom = Math.Clamp(zoom, MinZoom, MaxZoom);
+
+        _canvasScaleTransform.ScaleX = _currentZoom;
+        _canvasScaleTransform.ScaleY = _currentZoom;
+        _gridScaleTransform.ScaleX = _currentZoom;
+        _gridScaleTransform.ScaleY = _currentZoom;
+
+        RenderGrid();
+    }
+
+    public void FitToView()
+    {
+        if (Graph == null || Graph.Nodes.Count == 0) return;
+
+        // Calculate bounding box of all nodes
+        var minX = Graph.Nodes.Min(n => n.Position.X);
+        var minY = Graph.Nodes.Min(n => n.Position.Y);
+        var maxX = Graph.Nodes.Max(n => n.Position.X + NodeWidth);
+        var maxY = Graph.Nodes.Max(n => n.Position.Y + NodeHeight);
+
+        var graphWidth = maxX - minX;
+        var graphHeight = maxY - minY;
+
+        var viewWidth = Bounds.Width;
+        var viewHeight = Bounds.Height;
+
+        if (graphWidth <= 0 || graphHeight <= 0) return;
+
+        // Calculate zoom to fit with padding
+        var padding = 50;
+        var zoomX = (viewWidth - padding * 2) / graphWidth;
+        var zoomY = (viewHeight - padding * 2) / graphHeight;
+        var newZoom = Math.Clamp(Math.Min(zoomX, zoomY), MinZoom, MaxZoom);
+
+        _currentZoom = newZoom;
+
+        // Center the graph
+        var centerX = (minX + maxX) / 2;
+        var centerY = (minY + maxY) / 2;
+
+        var offsetX = viewWidth / 2 - centerX * newZoom;
+        var offsetY = viewHeight / 2 - centerY * newZoom;
+
+        _canvasScaleTransform.ScaleX = newZoom;
+        _canvasScaleTransform.ScaleY = newZoom;
+        _canvasTranslateTransform.X = offsetX;
+        _canvasTranslateTransform.Y = offsetY;
+
+        _gridScaleTransform.ScaleX = newZoom;
+        _gridScaleTransform.ScaleY = newZoom;
+        _gridTranslateTransform.X = offsetX;
+        _gridTranslateTransform.Y = offsetY;
+
+        RenderGrid();
     }
 }
