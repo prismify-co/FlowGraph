@@ -28,14 +28,25 @@ public partial class FlowCanvas : UserControl
     private const double GridDotSize = 2;
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
+    private const double PortSize = 12;
+    private const double PortSpacing = 20;
 
     // Dragging state
     private Node? _draggingNode;
     private global::Avalonia.Point _dragStartPoint;
     private Core.Point _nodeStartPosition;
 
+    // Connection dragging state
+    private bool _isCreatingConnection;
+    private Node? _connectionSourceNode;
+    private Port? _connectionSourcePort;
+    private bool _connectionFromOutput;
+    private global::Avalonia.Point _connectionEndPoint;
+    private AvaloniaPath? _tempConnectionLine;
+
     // Node to visual mapping
     private readonly Dictionary<string, Border> _nodeVisuals = new();
+    private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
 
     public FlowCanvas()
     {
@@ -53,6 +64,13 @@ public partial class FlowCanvas : UserControl
         base.OnAttachedToVisualTree(e);
         _mainCanvas = this.FindControl<Canvas>("MainCanvas");
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
+
+        if (_mainCanvas != null)
+        {
+            _mainCanvas.PointerMoved += OnCanvasPointerMoved;
+            _mainCanvas.PointerReleased += OnCanvasPointerReleased;
+        }
+
         RenderGrid();
         RenderGraph();
     }
@@ -109,6 +127,7 @@ public partial class FlowCanvas : UserControl
             if (e.PropertyName == nameof(Node.Position))
             {
                 UpdateNodePosition(node);
+                UpdatePortPositions(node);
                 RenderEdges();
             }
             else if (e.PropertyName == nameof(Node.IsSelected))
@@ -125,6 +144,44 @@ public partial class FlowCanvas : UserControl
             Canvas.SetLeft(border, node.Position.X);
             Canvas.SetTop(border, node.Position.Y);
         }
+    }
+
+    private void UpdatePortPositions(Node node)
+    {
+        // Update input port positions
+        for (int i = 0; i < node.Inputs.Count; i++)
+        {
+            var port = node.Inputs[i];
+            if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
+            {
+                var portY = GetPortY(node, i, node.Inputs.Count);
+                Canvas.SetLeft(portVisual, node.Position.X - PortSize / 2);
+                Canvas.SetTop(portVisual, portY - PortSize / 2);
+            }
+        }
+
+        // Update output port positions
+        for (int i = 0; i < node.Outputs.Count; i++)
+        {
+            var port = node.Outputs[i];
+            if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
+            {
+                var portY = GetPortY(node, i, node.Outputs.Count);
+                Canvas.SetLeft(portVisual, node.Position.X + NodeWidth - PortSize / 2);
+                Canvas.SetTop(portVisual, portY - PortSize / 2);
+            }
+        }
+    }
+
+    private double GetPortY(Node node, int portIndex, int totalPorts)
+    {
+        if (totalPorts == 1)
+        {
+            return node.Position.Y + NodeHeight / 2;
+        }
+
+        var spacing = NodeHeight / (totalPorts + 1);
+        return node.Position.Y + spacing * (portIndex + 1);
     }
 
     private void UpdateNodeSelection(Node node)
@@ -208,6 +265,7 @@ public partial class FlowCanvas : UserControl
 
         _mainCanvas.Children.Clear();
         _nodeVisuals.Clear();
+        _portVisuals.Clear();
 
         RenderEdges();
 
@@ -222,8 +280,8 @@ public partial class FlowCanvas : UserControl
         if (_mainCanvas == null || Graph == null)
             return;
 
-        // Remove existing edges (keep nodes)
-        var edgesToRemove = _mainCanvas.Children.OfType<AvaloniaPath>().ToList();
+        // Remove existing edges (keep nodes and ports)
+        var edgesToRemove = _mainCanvas.Children.OfType<AvaloniaPath>().Where(p => p != _tempConnectionLine).ToList();
         foreach (var edge in edgesToRemove)
         {
             _mainCanvas.Children.Remove(edge);
@@ -287,6 +345,206 @@ public partial class FlowCanvas : UserControl
 
         _mainCanvas.Children.Add(border);
         _nodeVisuals[node.Id] = border;
+
+        // Render input ports
+        for (int i = 0; i < node.Inputs.Count; i++)
+        {
+            RenderPort(node, node.Inputs[i], i, node.Inputs.Count, isOutput: false);
+        }
+
+        // Render output ports
+        for (int i = 0; i < node.Outputs.Count; i++)
+        {
+            RenderPort(node, node.Outputs[i], i, node.Outputs.Count, isOutput: true);
+        }
+    }
+
+    private void RenderPort(Node node, Port port, int index, int totalPorts, bool isOutput)
+    {
+        if (_mainCanvas == null)
+            return;
+
+        var portBackground = GetThemeResource<IBrush>("FlowCanvasPortBackground")
+            ?? new SolidColorBrush(Color.Parse("#4682B4"));
+        var portBorder = GetThemeResource<IBrush>("FlowCanvasPortBorder")
+            ?? new SolidColorBrush(Color.Parse("#FFFFFF"));
+
+        var portY = GetPortY(node, index, totalPorts);
+        var portX = isOutput ? node.Position.X + NodeWidth : node.Position.X;
+
+        var portVisual = new Ellipse
+        {
+            Width = PortSize,
+            Height = PortSize,
+            Fill = portBackground,
+            Stroke = portBorder,
+            StrokeThickness = 2,
+            Cursor = new Cursor(StandardCursorType.Cross),
+            Tag = (node, port, isOutput)
+        };
+
+        portVisual.PointerPressed += OnPortPointerPressed;
+        portVisual.PointerEntered += OnPortPointerEntered;
+        portVisual.PointerExited += OnPortPointerExited;
+
+        Canvas.SetLeft(portVisual, portX - PortSize / 2);
+        Canvas.SetTop(portVisual, portY - PortSize / 2);
+
+        _mainCanvas.Children.Add(portVisual);
+        _portVisuals[(node.Id, port.Id)] = portVisual;
+    }
+
+    private void OnPortPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is Ellipse portVisual && portVisual.Tag is (Node node, Port port, bool isOutput))
+        {
+            var point = e.GetCurrentPoint(portVisual);
+
+            if (point.Properties.IsLeftButtonPressed)
+            {
+                _isCreatingConnection = true;
+                _connectionSourceNode = node;
+                _connectionSourcePort = port;
+                _connectionFromOutput = isOutput;
+                _connectionEndPoint = e.GetPosition(_mainCanvas);
+
+                // Create temporary connection line
+                _tempConnectionLine = new AvaloniaPath
+                {
+                    Stroke = GetThemeResource<IBrush>("FlowCanvasEdgeStroke") ?? new SolidColorBrush(Color.Parse("#808080")),
+                    StrokeThickness = 2,
+                    StrokeDashArray = [5, 3],
+                    Opacity = 0.7
+                };
+                _mainCanvas?.Children.Add(_tempConnectionLine);
+                UpdateTempConnectionLine();
+
+                e.Pointer.Capture(portVisual);
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void OnPortPointerEntered(object? sender, PointerEventArgs e)
+    {
+        if (sender is Ellipse portVisual)
+        {
+            var hoverBrush = GetThemeResource<IBrush>("FlowCanvasPortHover")
+                ?? new SolidColorBrush(Color.Parse("#FF6B00"));
+            portVisual.Fill = hoverBrush;
+        }
+    }
+
+    private void OnPortPointerExited(object? sender, PointerEventArgs e)
+    {
+        if (sender is Ellipse portVisual)
+        {
+            var normalBrush = GetThemeResource<IBrush>("FlowCanvasPortBackground")
+                ?? new SolidColorBrush(Color.Parse("#4682B4"));
+            portVisual.Fill = normalBrush;
+        }
+    }
+
+    private void OnCanvasPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (_isCreatingConnection && _mainCanvas != null)
+        {
+            _connectionEndPoint = e.GetPosition(_mainCanvas);
+            UpdateTempConnectionLine();
+        }
+    }
+
+    private void OnCanvasPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (_isCreatingConnection)
+        {
+            // Check if released over a valid port
+            var hitElement = _mainCanvas?.InputHitTest(e.GetPosition(_mainCanvas));
+            if (hitElement is Ellipse portVisual && portVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
+            {
+                // Can only connect output to input (or input to output)
+                if (_connectionFromOutput != isOutput && _connectionSourceNode != null && _connectionSourcePort != null)
+                {
+                    // Determine source and target based on direction
+                    var sourceNode = _connectionFromOutput ? _connectionSourceNode : targetNode;
+                    var sourcePort = _connectionFromOutput ? _connectionSourcePort : targetPort;
+                    var destNode = _connectionFromOutput ? targetNode : _connectionSourceNode;
+                    var destPort = _connectionFromOutput ? targetPort : _connectionSourcePort;
+
+                    // Check if connection already exists
+                    var existingEdge = Graph?.Edges.FirstOrDefault(edge =>
+                        edge.Source == sourceNode.Id && edge.Target == destNode.Id &&
+                        edge.SourcePort == sourcePort.Id && edge.TargetPort == destPort.Id);
+
+                    if (existingEdge == null)
+                    {
+                        Graph?.AddEdge(new Edge
+                        {
+                            Source = sourceNode.Id,
+                            Target = destNode.Id,
+                            SourcePort = sourcePort.Id,
+                            TargetPort = destPort.Id
+                        });
+                    }
+                }
+            }
+
+            // Clean up
+            if (_tempConnectionLine != null)
+            {
+                _mainCanvas?.Children.Remove(_tempConnectionLine);
+                _tempConnectionLine = null;
+            }
+
+            _isCreatingConnection = false;
+            _connectionSourceNode = null;
+            _connectionSourcePort = null;
+
+            e.Pointer.Capture(null);
+        }
+    }
+
+    private void UpdateTempConnectionLine()
+    {
+        if (_tempConnectionLine == null || _connectionSourceNode == null || _connectionSourcePort == null)
+            return;
+
+        var sourcePortIndex = _connectionFromOutput
+            ? _connectionSourceNode.Outputs.IndexOf(_connectionSourcePort)
+            : _connectionSourceNode.Inputs.IndexOf(_connectionSourcePort);
+        var totalPorts = _connectionFromOutput
+            ? _connectionSourceNode.Outputs.Count
+            : _connectionSourceNode.Inputs.Count;
+
+        var sourceY = GetPortY(_connectionSourceNode, sourcePortIndex, totalPorts);
+        var sourceX = _connectionFromOutput
+            ? _connectionSourceNode.Position.X + NodeWidth
+            : _connectionSourceNode.Position.X;
+
+        var pathFigure = new PathFigure
+        {
+            StartPoint = new global::Avalonia.Point(sourceX, sourceY),
+            IsClosed = false
+        };
+
+        var controlPointOffset = Math.Abs(_connectionEndPoint.X - sourceX) / 2;
+        var bezierSegment = new BezierSegment
+        {
+            Point1 = new global::Avalonia.Point(
+                _connectionFromOutput ? sourceX + controlPointOffset : sourceX - controlPointOffset,
+                sourceY),
+            Point2 = new global::Avalonia.Point(
+                _connectionFromOutput ? _connectionEndPoint.X - controlPointOffset : _connectionEndPoint.X + controlPointOffset,
+                _connectionEndPoint.Y),
+            Point3 = _connectionEndPoint
+        };
+
+        pathFigure.Segments!.Add(bezierSegment);
+
+        var pathGeometry = new PathGeometry();
+        pathGeometry.Figures.Add(pathFigure);
+
+        _tempConnectionLine.Data = pathGeometry;
     }
 
     private void OnNodePointerPressed(object? sender, PointerPressedEventArgs e)
@@ -367,11 +625,18 @@ public partial class FlowCanvas : UserControl
         var edgeStroke = GetThemeResource<IBrush>("FlowCanvasEdgeStroke")
             ?? new SolidColorBrush(Color.Parse("#808080"));
 
-        // Calculate connection points (right side of source, left side of target)
-        var sourceX = sourceNode.Position.X + NodeWidth;  // Right edge of source node
-        var sourceY = sourceNode.Position.Y + NodeHeight / 2;  // Middle of source node
-        var targetX = targetNode.Position.X;       // Left edge of target node
-        var targetY = targetNode.Position.Y + NodeHeight / 2;  // Middle of target node
+        // Find port indices
+        var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
+        var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
+
+        if (sourcePortIndex < 0) sourcePortIndex = 0;
+        if (targetPortIndex < 0) targetPortIndex = 0;
+
+        var sourceY = GetPortY(sourceNode, sourcePortIndex, Math.Max(1, sourceNode.Outputs.Count));
+        var targetY = GetPortY(targetNode, targetPortIndex, Math.Max(1, targetNode.Inputs.Count));
+
+        var sourceX = sourceNode.Position.X + NodeWidth;
+        var targetX = targetNode.Position.X;
 
         // Create a bezier curve for a smoother connection
         var pathFigure = new PathFigure

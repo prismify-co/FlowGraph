@@ -13,19 +13,23 @@ public partial class MainWindowViewModel : ViewModelBase
         var node1 = new Node
         {
             Type = "Input",
-            Position = new Core.Point(100, 100)
+            Position = new Core.Point(100, 100),
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
         };
 
         var node2 = new Node
         {
             Type = "Process",
-            Position = new Core.Point(400, 150)
+            Position = new Core.Point(400, 150),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }],
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
         };
 
         var node3 = new Node
         {
             Type = "Output",
-            Position = new Core.Point(700, 100)
+            Position = new Core.Point(700, 100),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }]
         };
 
         MyGraph.AddNode(node1);
