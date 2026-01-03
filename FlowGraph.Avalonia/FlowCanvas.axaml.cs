@@ -297,15 +297,20 @@ public partial class FlowCanvas : UserControl
 
     private void OnEdgeClicked(object? sender, EdgeClickedEventArgs e)
     {
-        // Update visual state
-        _graphRenderer.UpdateEdgeSelection(e.Edge, _theme);
+        if (Graph == null) return;
         
-        // Also deselect nodes if Ctrl was not held
-        if (!e.WasCtrlHeld && Graph != null)
+        // Update visual state for ALL edges (some may have been deselected)
+        foreach (var edge in Graph.Edges)
+        {
+            _graphRenderer.UpdateEdgeSelection(edge, _theme);
+        }
+        
+        // Also update node visuals if Ctrl was not held (nodes were deselected)
+        if (!e.WasCtrlHeld)
         {
             foreach (var node in Graph.Nodes)
             {
-                node.IsSelected = false;
+                _graphRenderer.UpdateNodeSelection(node, _theme);
             }
         }
     }
