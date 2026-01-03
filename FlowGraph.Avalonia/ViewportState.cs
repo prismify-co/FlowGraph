@@ -66,6 +66,7 @@ public class ViewportState
 
     /// <summary>
     /// Sets the zoom level, optionally zooming towards a specific point.
+    /// If no zoom center is provided, zooms towards the center of the view.
     /// </summary>
     public void SetZoom(double newZoom, Point? zoomCenter = null)
     {
@@ -74,19 +75,20 @@ public class ViewportState
         if (Math.Abs(newZoom - Zoom) < 0.001)
             return;
 
-        if (zoomCenter.HasValue)
-        {
-            var zoomFactor = newZoom / Zoom;
-            OffsetX = zoomCenter.Value.X - (zoomCenter.Value.X - OffsetX) * zoomFactor;
-            OffsetY = zoomCenter.Value.Y - (zoomCenter.Value.Y - OffsetY) * zoomFactor;
-        }
+        // If no zoom center provided, use the center of the view
+        var center = zoomCenter ?? new Point(ViewSize.Width / 2, ViewSize.Height / 2);
+
+        // Adjust offset to keep the zoom center point stationary on screen
+        var zoomFactor = newZoom / Zoom;
+        OffsetX = center.X - (center.X - OffsetX) * zoomFactor;
+        OffsetY = center.Y - (center.Y - OffsetY) * zoomFactor;
 
         Zoom = newZoom;
         OnViewportChanged();
     }
 
     /// <summary>
-    /// Zooms in by one step.
+    /// Zooms in by one step, centered on the view.
     /// </summary>
     public void ZoomIn(Point? zoomCenter = null)
     {
@@ -94,7 +96,7 @@ public class ViewportState
     }
 
     /// <summary>
-    /// Zooms out by one step.
+    /// Zooms out by one step, centered on the view.
     /// </summary>
     public void ZoomOut(Point? zoomCenter = null)
     {
@@ -102,11 +104,12 @@ public class ViewportState
     }
 
     /// <summary>
-    /// Resets zoom to 100%.
+    /// Resets zoom to 100%, keeping the current view center.
     /// </summary>
     public void ResetZoom()
     {
-        SetZoom(1.0);
+        // Zoom towards center of view
+        SetZoom(1.0, new Point(ViewSize.Width / 2, ViewSize.Height / 2));
     }
 
     /// <summary>

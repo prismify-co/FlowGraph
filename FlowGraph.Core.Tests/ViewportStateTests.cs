@@ -44,17 +44,20 @@ public class ViewportStateTests
     {
         var viewport = new ViewportState();
         viewport.SetViewSize(new AvaloniaSize(1000, 600));
-        viewport.SetZoom(2.0); // Zoomed in 2x
+        viewport.SetZoom(2.0); // Zoomed in 2x towards view center
 
         var rect = viewport.GetVisibleRect();
 
-        // At zoom=2 and offset=(0,0):
-        // topLeft = (0-0)/2, (0-0)/2 = (0, 0)
-        // bottomRight = (1000-0)/2, (600-0)/2 = (500, 300)
-        Assert.Equal(0, rect.X);
-        Assert.Equal(0, rect.Y);
-        Assert.Equal(500, rect.Width);
-        Assert.Equal(300, rect.Height);
+        // At zoom=2, zooming towards center (500, 300):
+        // The center of the view should stay at the same canvas position
+        // Before: center shows canvas point (500, 300)
+        // After: center still shows canvas point (500, 300)
+        // Visible area is half the size: 500x300
+        // So visible rect should be (250, 150) to (750, 450)
+        Assert.Equal(250, rect.X, 0.1);
+        Assert.Equal(150, rect.Y, 0.1);
+        Assert.Equal(500, rect.Width, 0.1);
+        Assert.Equal(300, rect.Height, 0.1);
     }
 
     [Fact]
@@ -62,19 +65,21 @@ public class ViewportStateTests
     {
         var viewport = new ViewportState();
         viewport.SetViewSize(new AvaloniaSize(1000, 600));
-        viewport.SetZoom(2.0); // Zoomed in 2x
-        viewport.SetOffset(200, 100); // Then panned
+        viewport.SetOffset(200, 100); // First pan
+        viewport.SetZoom(2.0); // Then zoom towards center
 
         var rect = viewport.GetVisibleRect();
 
-        // At zoom=2 and offset=(200,100):
-        // topLeft = (0-200)/2, (0-100)/2 = (-100, -50)
-        // bottomRight = (1000-200)/2, (600-100)/2 = (400, 250)
-        // Width = 1000/2 = 500, Height = 600/2 = 300
-        Assert.Equal(-100, rect.X);
-        Assert.Equal(-50, rect.Y);
-        Assert.Equal(500, rect.Width);
-        Assert.Equal(300, rect.Height);
+        // After panning with offset (200, 100) at zoom=1:
+        // Center of view shows canvas point ((500-200)/1, (300-100)/1) = (300, 200)
+        // After zooming to 2x towards view center:
+        // Center still shows canvas point (300, 200)
+        // Visible area is 500x300
+        // So visible rect should be (50, 50) to (550, 350)
+        Assert.Equal(50, rect.X, 0.1);
+        Assert.Equal(50, rect.Y, 0.1);
+        Assert.Equal(500, rect.Width, 0.1);
+        Assert.Equal(300, rect.Height, 0.1);
     }
 
     [Fact]
