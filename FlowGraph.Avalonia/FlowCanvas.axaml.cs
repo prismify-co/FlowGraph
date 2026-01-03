@@ -472,21 +472,35 @@ public partial class FlowCanvas : UserControl
             }
         }
         
-        // Attach edge event handlers
-        foreach (var edge in Graph.Edges)
-        {
-            var edgeVisual = _graphRenderer.GetEdgeVisual(edge.Id);
-            if (edgeVisual != null)
-            {
-                edgeVisual.PointerPressed += OnEdgePointerPressed;
-            }
-        }
+        // Note: Edge event handlers are attached in RenderEdges()
     }
 
     private void RenderEdges()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+        
+        // Re-attach edge event handlers after rendering
+        AttachEdgeEventHandlers();
+    }
+
+    /// <summary>
+    /// Attaches event handlers to all edge visuals.
+    /// </summary>
+    private void AttachEdgeEventHandlers()
+    {
+        if (Graph == null) return;
+        
+        foreach (var edge in Graph.Edges)
+        {
+            var edgeVisual = _graphRenderer.GetEdgeVisual(edge.Id);
+            if (edgeVisual != null)
+            {
+                // Remove any existing handler to prevent duplicates
+                edgeVisual.PointerPressed -= OnEdgePointerPressed;
+                edgeVisual.PointerPressed += OnEdgePointerPressed;
+            }
+        }
     }
 
     #endregion
