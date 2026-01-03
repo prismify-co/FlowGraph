@@ -218,4 +218,48 @@ public class ViewportStateTests
         // Viewport should be half the size when zoomed in 2x
         Assert.Equal(viewportWidth1x / 2, viewportWidth2x, 0.1);
     }
+
+    [Fact]
+    public void RepeatedZoomIn_ShouldKeepViewCenterStationary()
+    {
+        var viewport = new ViewportState();
+        viewport.SetViewSize(new AvaloniaSize(1000, 600));
+        
+        // Start with offset (0,0), zoom 1.0
+        // View center shows canvas point (500, 300)
+        var initialCenterCanvas = viewport.ScreenToCanvas(new AvaloniaPoint(500, 300));
+        Assert.Equal(500, initialCenterCanvas.X, 0.1);
+        Assert.Equal(300, initialCenterCanvas.Y, 0.1);
+
+        // Zoom in 7 times
+        for (int i = 0; i < 7; i++)
+        {
+            viewport.ZoomIn();
+        }
+
+        // After zooming, the view center should still show the same canvas point
+        var finalCenterCanvas = viewport.ScreenToCanvas(new AvaloniaPoint(500, 300));
+        Assert.Equal(500, finalCenterCanvas.X, 0.1);
+        Assert.Equal(300, finalCenterCanvas.Y, 0.1);
+    }
+
+    [Fact]
+    public void ZoomIn_ThenZoomOut_ShouldReturnToOriginalState()
+    {
+        var viewport = new ViewportState();
+        viewport.SetViewSize(new AvaloniaSize(1000, 600));
+        viewport.SetOffset(100, 50);
+        
+        var originalOffsetX = viewport.OffsetX;
+        var originalOffsetY = viewport.OffsetY;
+        var originalZoom = viewport.Zoom;
+
+        // Zoom in then out
+        viewport.ZoomIn();
+        viewport.ZoomOut();
+
+        Assert.Equal(originalZoom, viewport.Zoom, 0.001);
+        Assert.Equal(originalOffsetX, viewport.OffsetX, 0.1);
+        Assert.Equal(originalOffsetY, viewport.OffsetY, 0.1);
+    }
 }

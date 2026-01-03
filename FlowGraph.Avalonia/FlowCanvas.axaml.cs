@@ -110,6 +110,9 @@ public partial class FlowCanvas : UserControl
         }
         
         RenderAll();
+        
+        // Center on graph after initial render
+        CenterOnGraph();
     }
 
     private void SetupTransforms()
@@ -117,6 +120,17 @@ public partial class FlowCanvas : UserControl
         // Only main canvas uses transforms - grid renders directly to screen coordinates
         if (_mainCanvas != null)
         {
+            // Order matters! We want: screenPos = canvasPos * zoom + offset
+            // This requires: Translate first (to move origin), then Scale
+            // But with RenderTransform, transforms are applied in order from first to last
+            // on the coordinate system, so we need Scale first, then Translate
+            // However, our math uses offset in screen coordinates, so we need to
+            // apply them differently.
+            
+            // Actually, the correct approach for pan/zoom where:
+            // screenPos = canvasPos * zoom + offset
+            // is to use a MatrixTransform or apply scale then translate
+            // where translate.X/Y are in screen coordinates (post-scale)
             var transformGroup = new TransformGroup();
             transformGroup.Children.Add(_canvasScaleTransform);
             transformGroup.Children.Add(_canvasTranslateTransform);
