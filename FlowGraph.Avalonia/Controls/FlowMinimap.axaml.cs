@@ -109,8 +109,9 @@ public partial class FlowMinimap : UserControl
 
     private void OnViewportChanged(object? sender, EventArgs e)
     {
-        // Just update the viewport rectangle position, not the entire minimap
-        // The scale/translate should remain stable based on node positions
+        // When viewport changes, we need to update the viewport rectangle
+        // For zoom changes, we may need to re-render if the visible area 
+        // extends significantly beyond the current minimap bounds
         UpdateViewportRect();
     }
 
@@ -345,13 +346,20 @@ public partial class FlowMinimap : UserControl
 
     private void UpdateViewportRect()
     {
-        if (_viewportRect == null || TargetCanvas == null || _scale <= 0)
+        if (_viewportRect == null || TargetCanvas == null)
             return;
 
         var viewport = TargetCanvas.Viewport;
         var visibleRect = viewport.GetVisibleRect();
 
-        if (visibleRect.Width <= 0)
+        // Debug: Check if viewport has valid size
+        if (visibleRect.Width <= 0 || visibleRect.Height <= 0)
+        {
+            _viewportRect.IsVisible = false;
+            return;
+        }
+
+        if (_scale <= 0)
         {
             _viewportRect.IsVisible = false;
             return;
@@ -360,10 +368,12 @@ public partial class FlowMinimap : UserControl
         _viewportRect.IsVisible = true;
 
         // Transform viewport rect corners to minimap coordinates
+        // visibleRect is in canvas coordinates, we transform to minimap coordinates
         var topLeft = CanvasToMinimap(visibleRect.X, visibleRect.Y);
         var width = visibleRect.Width * _scale;
         var height = visibleRect.Height * _scale;
 
+        // Clamp to reasonable values to prevent issues with extreme zoom levels
         Canvas.SetLeft(_viewportRect, topLeft.X);
         Canvas.SetTop(_viewportRect, topLeft.Y);
         _viewportRect.Width = Math.Max(width, 10);

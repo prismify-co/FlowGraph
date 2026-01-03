@@ -102,6 +102,13 @@ public partial class FlowCanvas : UserControl
 
         SetupTransforms();
         SetupEventHandlers();
+        
+        // Set initial view size if bounds are available
+        if (Bounds.Width > 0 && Bounds.Height > 0)
+        {
+            _viewport.SetViewSize(Bounds.Size);
+        }
+        
         RenderAll();
     }
 

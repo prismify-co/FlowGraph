@@ -58,6 +58,26 @@ public class ViewportStateTests
     }
 
     [Fact]
+    public void GetVisibleRect_WithZoomAndPan_ReturnsCorrectBounds()
+    {
+        var viewport = new ViewportState();
+        viewport.SetViewSize(new AvaloniaSize(1000, 600));
+        viewport.SetZoom(2.0); // Zoomed in 2x
+        viewport.SetOffset(200, 100); // Then panned
+
+        var rect = viewport.GetVisibleRect();
+
+        // At zoom=2 and offset=(200,100):
+        // topLeft = (0-200)/2, (0-100)/2 = (-100, -50)
+        // bottomRight = (1000-200)/2, (600-100)/2 = (400, 250)
+        // Width = 1000/2 = 500, Height = 600/2 = 300
+        Assert.Equal(-100, rect.X);
+        Assert.Equal(-50, rect.Y);
+        Assert.Equal(500, rect.Width);
+        Assert.Equal(300, rect.Height);
+    }
+
+    [Fact]
     public void CenterOn_PositionsViewportCorrectly()
     {
         var viewport = new ViewportState();
@@ -160,5 +180,37 @@ public class ViewportStateTests
             $"Viewport right {viewportBottomRightMinimap.X} should be >= Process node right {processNodeMinimap.X + NodeWidth * scale}");
         Assert.True(viewportBottomRightMinimap.Y >= processNodeMinimap.Y + NodeHeight * scale,
             $"Viewport bottom {viewportBottomRightMinimap.Y} should be >= Process node bottom {processNodeMinimap.Y + NodeHeight * scale}");
+    }
+
+    [Fact]
+    public void MinimapViewport_ShouldShrinkWhenZoomedIn()
+    {
+        // This test verifies that when zoomed in, the viewport rect in minimap gets smaller
+        const double NodeWidth = 150;
+        const double MinimapPadding = 50;
+
+        // Graph bounds (same as other test)
+        double graphMinX = 100 - MinimapPadding;
+        double graphMaxX = 700 + NodeWidth + MinimapPadding;
+        double graphWidth = graphMaxX - graphMinX;
+
+        double minimapWidth = 200;
+        double scale = minimapWidth / graphWidth; // Simplified - assume width-limited
+
+        var viewport = new ViewportState();
+        viewport.SetViewSize(new AvaloniaSize(1000, 600));
+
+        // At 100% zoom
+        viewport.SetZoom(1.0);
+        var rect1x = viewport.GetVisibleRect();
+        double viewportWidth1x = rect1x.Width * scale;
+
+        // At 200% zoom
+        viewport.SetZoom(2.0);
+        var rect2x = viewport.GetVisibleRect();
+        double viewportWidth2x = rect2x.Width * scale;
+
+        // Viewport should be half the size when zoomed in 2x
+        Assert.Equal(viewportWidth1x / 2, viewportWidth2x, 0.1);
     }
 }
