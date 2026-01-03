@@ -461,6 +461,25 @@ public partial class FlowCanvas : UserControl
     }
 
     /// <summary>
+    /// Centers the viewport on the center of all nodes without changing zoom.
+    /// </summary>
+    public void CenterOnGraph()
+    {
+        if (Graph == null || Graph.Nodes.Count == 0) return;
+
+        var minX = Graph.Nodes.Min(n => n.Position.X);
+        var minY = Graph.Nodes.Min(n => n.Position.Y);
+        var maxX = Graph.Nodes.Max(n => n.Position.X + Settings.NodeWidth);
+        var maxY = Graph.Nodes.Max(n => n.Position.Y + Settings.NodeHeight);
+
+        var centerX = (minX + maxX) / 2;
+        var centerY = (minY + maxY) / 2;
+
+        _viewport.CenterOn(new global::Avalonia.Point(centerX, centerY));
+        RenderGrid();
+    }
+
+    /// <summary>
     /// Centers the viewport on a specific point in canvas coordinates.
     /// </summary>
     public void CenterOn(double x, double y)
