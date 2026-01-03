@@ -79,6 +79,12 @@ public class FlowCanvasSettings
     public bool DebugCoordinateTransforms { get; set; } = false;
 
     /// <summary>
+    /// Width of the invisible hit area for edge click detection (in pixels).
+    /// Higher values make edges easier to click but may overlap with other elements.
+    /// </summary>
+    public double EdgeHitAreaWidth { get; set; } = 15;
+
+    /// <summary>
     /// Default settings instance.
     /// </summary>
     public static FlowCanvasSettings Default { get; } = new();

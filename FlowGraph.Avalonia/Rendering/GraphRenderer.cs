@@ -18,7 +18,8 @@ public class GraphRenderer
     private readonly FlowCanvasSettings _settings;
     private readonly Dictionary<string, Border> _nodeVisuals = new();
     private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
-    private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();
+    private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
+    private readonly Dictionary<string, AvaloniaPath> _edgeVisiblePaths = new();  // Visible paths
     
     // Current viewport state for transforming positions
     private ViewportState? _viewport;
@@ -97,6 +98,7 @@ public class GraphRenderer
         _nodeVisuals.Clear();
         _portVisuals.Clear();
         _edgeVisuals.Clear();
+        _edgeVisiblePaths.Clear();
     }
 
     /// <summary>
@@ -237,14 +239,16 @@ public class GraphRenderer
     /// </summary>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
-        // Clear edge visuals dictionary
+        // Clear edge visuals dictionaries
         _edgeVisuals.Clear();
+        _edgeVisiblePaths.Clear();
         
-        // Remove existing edges, markers, and labels
+        // Remove existing edges, markers, labels, and hit areas
         var elementsToRemove = canvas.Children
             .Where(c => 
                 (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
                 (c is AvaloniaPath p2 && p2 != excludePath && p2.Tag is Edge) ||
+                (c is AvaloniaPath p3 && p3 != excludePath && !p3.IsHitTestVisible && p3.Tag == null) ||  // Visible paths with no hit test
                 (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel"))
             .ToList();
         
@@ -255,7 +259,7 @@ public class GraphRenderer
         
         // Also remove old edges without tags (backward compatibility)
         var oldEdges = canvas.Children.OfType<AvaloniaPath>()
-            .Where(p => p != excludePath && p.Tag == null)
+            .Where(p => p != excludePath && p.Tag == null && p.IsHitTestVisible)
             .ToList();
         foreach (var edge in oldEdges)
         {
@@ -303,20 +307,32 @@ public class GraphRenderer
 
         var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
         
-        var path = new AvaloniaPath
+        // Create invisible hit area path (wider, transparent stroke for easier clicking)
+        var hitAreaPath = new AvaloniaPath
+        {
+            Data = pathGeometry,
+            Stroke = Brushes.Transparent,
+            StrokeThickness = _settings.EdgeHitAreaWidth * scale,
+            Tag = edge,  // Store the Edge object for click detection
+            Cursor = new Cursor(StandardCursorType.Hand)
+        };
+        
+        // Create visible edge path
+        var visiblePath = new AvaloniaPath
         {
             Data = pathGeometry,
             Stroke = strokeBrush,
             StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
-            Tag = edge,  // Store the Edge object for click detection
-            Cursor = new Cursor(StandardCursorType.Hand)
+            IsHitTestVisible = false  // Hit testing is handled by the hit area path
         };
 
-        // Insert at beginning so nodes render on top
-        canvas.Children.Insert(0, path);
+        // Insert visible path first (at bottom), then hit area on top
+        canvas.Children.Insert(0, visiblePath);
+        canvas.Children.Insert(1, hitAreaPath);
         
-        // Track the edge visual
-        _edgeVisuals[edge.Id] = path;
+        // Track both paths - we use the hit area path for events, but need to update the visible path
+        _edgeVisuals[edge.Id] = hitAreaPath;
+        _edgeVisiblePaths[edge.Id] = visiblePath;
 
         // Render end marker (arrow)
         if (edge.MarkerEnd != EdgeMarker.None)
@@ -336,7 +352,7 @@ public class GraphRenderer
             RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale);
         }
 
-        return path;
+        return hitAreaPath;
     }
 
     /// <summary>
@@ -451,11 +467,12 @@ public class GraphRenderer
     /// </summary>
     public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
     {
-        if (_edgeVisuals.TryGetValue(edge.Id, out var path))
+        // Update the visible path (the one that shows the stroke)
+        if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
         {
             var scale = GetScale();
-            path.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
-            path.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
+            visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
+            visiblePath.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
         }
     }
 
