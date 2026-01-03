@@ -26,6 +26,7 @@ public partial class FlowMinimap : UserControl
     private Rectangle? _viewportRect;
     private bool _isDragging;
     private Graph? _subscribedGraph;
+    private FlowCanvas? _subscribedCanvas;
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
 
@@ -53,20 +54,52 @@ public partial class FlowMinimap : UserControl
 
         if (change.Property == TargetCanvasProperty)
         {
-            // Unsubscribe from old graph
+            // Unsubscribe from old canvas
+            if (_subscribedCanvas != null)
+            {
+                _subscribedCanvas.PropertyChanged -= OnTargetCanvasPropertyChanged;
+                _subscribedCanvas = null;
+            }
+
             UnsubscribeFromGraph();
 
-            if (change.NewValue is FlowCanvas newCanvas && newCanvas.Graph != null)
+            if (change.NewValue is FlowCanvas newCanvas)
             {
-                SubscribeToGraph(newCanvas.Graph);
+                _subscribedCanvas = newCanvas;
+                newCanvas.PropertyChanged += OnTargetCanvasPropertyChanged;
+
+                // Subscribe to graph if it's already set
+                if (newCanvas.Graph != null)
+                {
+                    SubscribeToGraph(newCanvas.Graph);
+                }
             }
             
             RenderMinimap();
         }
     }
 
+    private void OnTargetCanvasPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == FlowCanvas.GraphProperty)
+        {
+            UnsubscribeFromGraph();
+
+            if (e.NewValue is Graph newGraph)
+            {
+                SubscribeToGraph(newGraph);
+            }
+
+            RenderMinimap();
+        }
+    }
+
     private void SubscribeToGraph(Graph graph)
     {
+        if (_subscribedGraph == graph) return;
+
+        UnsubscribeFromGraph();
+
         _subscribedGraph = graph;
         graph.Nodes.CollectionChanged += OnGraphChanged;
         graph.Edges.CollectionChanged += OnGraphChanged;
@@ -95,6 +128,13 @@ public partial class FlowMinimap : UserControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        
+        if (_subscribedCanvas != null)
+        {
+            _subscribedCanvas.PropertyChanged -= OnTargetCanvasPropertyChanged;
+            _subscribedCanvas = null;
+        }
+        
         UnsubscribeFromGraph();
     }
 
