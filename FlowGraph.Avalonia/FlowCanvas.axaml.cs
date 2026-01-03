@@ -295,6 +295,12 @@ public partial class FlowCanvas : UserControl
                 newGraph.Edges.CollectionChanged += OnEdgesChanged;
                 SubscribeToNodeChanges(newGraph);
                 RenderGraph();
+                
+                // Center on graph when graph is first loaded
+                CenterOnGraph();
+                
+                // Force apply transform after centering
+                ApplyViewportTransforms();
             }
         }
     }

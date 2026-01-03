@@ -196,12 +196,22 @@ public class ViewportState
     /// </summary>
     public void ApplyToTransforms(MatrixTransform transform)
     {
-        // Matrix for: screenPos = canvasPos * zoom + offset
-        // This is a scale followed by translate:
-        // | zoom  0     offsetX |
-        // | 0     zoom  offsetY |
-        // | 0     0     1       |
-        transform.Matrix = new Matrix(Zoom, 0, 0, Zoom, OffsetX, OffsetY);
+        // In Avalonia, Matrix constructor is: (m11, m12, m21, m22, m31, m32)
+        // For scale + translate: m11=scaleX, m22=scaleY, m31=translateX, m32=translateY
+        // m12=0, m21=0 (no skew)
+        // 
+        // This creates a matrix that transforms points as:
+        // x' = x * m11 + y * m21 + m31 = x * zoom + offsetX
+        // y' = x * m12 + y * m22 + m32 = y * zoom + offsetY
+        var matrix = new Matrix(
+            Zoom,    // m11 - scale X
+            0,       // m12 
+            0,       // m21
+            Zoom,    // m22 - scale Y  
+            OffsetX, // m31 - translate X (offsetX)
+            OffsetY  // m32 - translate Y (offsetY)
+        );
+        transform.Matrix = matrix;
     }
 
     private void OnViewportChanged()
