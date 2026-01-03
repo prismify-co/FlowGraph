@@ -25,6 +25,7 @@ public partial class FlowMinimap : UserControl
     private Canvas? _minimapCanvas;
     private Rectangle? _viewportRect;
     private bool _isDragging;
+    private Graph? _subscribedGraph;
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
 
@@ -52,30 +53,49 @@ public partial class FlowMinimap : UserControl
 
         if (change.Property == TargetCanvasProperty)
         {
-            if (change.OldValue is FlowCanvas oldCanvas)
-            {
-                if (oldCanvas.Graph != null)
-                {
-                    oldCanvas.Graph.Nodes.CollectionChanged -= OnGraphChanged;
-                    oldCanvas.Graph.Edges.CollectionChanged -= OnGraphChanged;
-                }
-            }
+            // Unsubscribe from old graph
+            UnsubscribeFromGraph();
 
-            if (change.NewValue is FlowCanvas newCanvas)
+            if (change.NewValue is FlowCanvas newCanvas && newCanvas.Graph != null)
             {
-                if (newCanvas.Graph != null)
-                {
-                    newCanvas.Graph.Nodes.CollectionChanged += OnGraphChanged;
-                    newCanvas.Graph.Edges.CollectionChanged += OnGraphChanged;
-                    
-                    foreach (var node in newCanvas.Graph.Nodes)
-                    {
-                        node.PropertyChanged += OnNodeChanged;
-                    }
-                }
-                RenderMinimap();
+                SubscribeToGraph(newCanvas.Graph);
             }
+            
+            RenderMinimap();
         }
+    }
+
+    private void SubscribeToGraph(Graph graph)
+    {
+        _subscribedGraph = graph;
+        graph.Nodes.CollectionChanged += OnGraphChanged;
+        graph.Edges.CollectionChanged += OnGraphChanged;
+
+        foreach (var node in graph.Nodes)
+        {
+            node.PropertyChanged += OnNodeChanged;
+        }
+    }
+
+    private void UnsubscribeFromGraph()
+    {
+        if (_subscribedGraph == null) return;
+
+        _subscribedGraph.Nodes.CollectionChanged -= OnGraphChanged;
+        _subscribedGraph.Edges.CollectionChanged -= OnGraphChanged;
+
+        foreach (var node in _subscribedGraph.Nodes)
+        {
+            node.PropertyChanged -= OnNodeChanged;
+        }
+
+        _subscribedGraph = null;
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        UnsubscribeFromGraph();
     }
 
     private void OnGraphChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -107,7 +127,7 @@ public partial class FlowMinimap : UserControl
 
     private void OnNodeChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Node.Position))
+        if (e.PropertyName == nameof(Node.Position) || e.PropertyName == nameof(Node.IsSelected))
         {
             RenderMinimap();
         }
@@ -205,9 +225,6 @@ public partial class FlowMinimap : UserControl
             StrokeThickness = 1,
             Fill = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255))
         };
-
-        // TODO: Update viewport rect based on actual canvas viewport
-        // For now, show a default viewport indicator
     }
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -274,7 +291,6 @@ public partial class FlowMinimap : UserControl
         var graphX = (minimapPoint.X - offsetX) / scale;
         var graphY = (minimapPoint.Y - offsetY) / scale;
 
-        // Center the canvas on this point
-        // TODO: Implement proper navigation when we have viewport state exposed
+        // TODO: Center the canvas on this point when viewport state is exposed
     }
 }
