@@ -46,7 +46,51 @@ public class FlowCanvasSettings
     public double ZoomStep { get; set; } = 0.1;
 
     /// <summary>
+    /// Whether to snap nodes to the grid when dragging.
+    /// </summary>
+    public bool SnapToGrid { get; set; } = true;
+
+    /// <summary>
+    /// Grid size for snapping (can differ from visual grid).
+    /// If null, uses GridSpacing.
+    /// </summary>
+    public double? SnapGridSize { get; set; } = null;
+
+    /// <summary>
+    /// Gets the effective snap grid size.
+    /// </summary>
+    public double EffectiveSnapGridSize => SnapGridSize ?? GridSpacing;
+
+    /// <summary>
+    /// Selection mode for box selection.
+    /// </summary>
+    public SelectionMode SelectionMode { get; set; } = SelectionMode.Partial;
+
+    /// <summary>
+    /// Whether left-click drag on empty canvas pans (true) or starts box selection (false).
+    /// When true, use Shift+drag for box selection.
+    /// When false, use Shift+drag or middle-click for panning.
+    /// </summary>
+    public bool PanOnDrag { get; set; } = true;
+
+    /// <summary>
     /// Default settings instance.
     /// </summary>
     public static FlowCanvasSettings Default { get; } = new();
+}
+
+/// <summary>
+/// Mode for box selection behavior.
+/// </summary>
+public enum SelectionMode
+{
+    /// <summary>
+    /// Node is selected if any part intersects the selection box.
+    /// </summary>
+    Partial,
+
+    /// <summary>
+    /// Node is selected only if fully contained in the selection box.
+    /// </summary>
+    Full
 }

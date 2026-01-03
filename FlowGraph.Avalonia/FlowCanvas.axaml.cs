@@ -156,13 +156,13 @@ public partial class FlowCanvas : UserControl
 
     private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        _inputHandler.HandleRootPanelPointerPressed(e, _rootPanel, _mainCanvas);
+        _inputHandler.HandleRootPanelPointerPressed(e, _rootPanel, _mainCanvas, Graph);
         Focus();
     }
 
     private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
     {
-        _inputHandler.HandleRootPanelPointerMoved(e, _rootPanel);
+        _inputHandler.HandleRootPanelPointerMoved(e, _rootPanel, Graph);
     }
 
     private void OnRootPanelPointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -181,12 +181,12 @@ public partial class FlowCanvas : UserControl
 
     private void OnNodePointerMoved(object? sender, PointerEventArgs e)
     {
-        _inputHandler.HandleNodePointerMoved(e, _rootPanel);
+        _inputHandler.HandleNodePointerMoved(e, _rootPanel, Graph);
     }
 
     private void OnNodePointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        _inputHandler.HandleNodePointerReleased(e);
+        _inputHandler.HandleNodePointerReleased(e, Graph);
     }
 
     private void OnPortPointerPressed(object? sender, PointerPressedEventArgs e)

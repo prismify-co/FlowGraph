@@ -54,7 +54,8 @@ public static class BezierHelper
             Point3 = end
         };
 
-        pathFigure.Segments!.Add(bezierSegment);
+        pathFigure.Segments ??= new PathSegments();
+        pathFigure.Segments.Add(bezierSegment);
 
         var pathGeometry = new PathGeometry();
         pathGeometry.Figures.Add(pathFigure);

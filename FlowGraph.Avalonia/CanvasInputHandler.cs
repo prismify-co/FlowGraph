@@ -12,7 +12,7 @@ namespace FlowGraph.Avalonia;
 
 /// <summary>
 /// Handles all input interactions for the FlowCanvas including 
-/// pan, zoom, node dragging, and connection creation.
+/// pan, zoom, node dragging, box selection, and connection creation.
 /// </summary>
 public class CanvasInputHandler
 {
@@ -27,9 +27,16 @@ public class CanvasInputHandler
     private double _panStartOffsetY;
 
     // Node drag state
-    private Node? _draggingNode;
+    private bool _isDraggingNodes;
     private AvaloniaPoint _dragStartPoint;
-    private Core.Point _nodeStartPosition;
+    private Dictionary<string, Core.Point> _dragStartPositions = new();
+
+    // Box selection state
+    private bool _isBoxSelecting;
+    private AvaloniaPoint _boxSelectStart;
+    private AvaloniaPoint _boxSelectEnd;
+    private Rectangle? _selectionBox;
+    private Canvas? _selectionCanvas;
 
     // Connection creation state
     private bool _isCreatingConnection;
@@ -65,6 +72,11 @@ public class CanvasInputHandler
     /// </summary>
     public event EventHandler? GridRenderRequested;
 
+    /// <summary>
+    /// Event raised when box selection changes.
+    /// </summary>
+    public event EventHandler<BoxSelectionEventArgs>? BoxSelectionChanged;
+
     public CanvasInputHandler(
         FlowCanvasSettings settings,
         ViewportState viewport,
@@ -93,6 +105,7 @@ public class CanvasInputHandler
         else if (e.Key == Key.Escape)
         {
             CancelConnection();
+            CancelBoxSelection();
             DeselectAllRequested?.Invoke(this, EventArgs.Empty);
             return true;
         }
@@ -119,27 +132,49 @@ public class CanvasInputHandler
     /// <summary>
     /// Handles pointer pressed on the root panel.
     /// </summary>
-    public void HandleRootPanelPointerPressed(PointerPressedEventArgs e, Panel? rootPanel, Canvas? mainCanvas)
+    public void HandleRootPanelPointerPressed(PointerPressedEventArgs e, Panel? rootPanel, Canvas? mainCanvas, Graph? graph)
     {
         var point = e.GetCurrentPoint(rootPanel);
+        var position = e.GetPosition(rootPanel);
 
-        // Middle mouse button or Shift + Left click for panning
-        if (point.Properties.IsMiddleButtonPressed ||
-            (point.Properties.IsLeftButtonPressed && e.KeyModifiers.HasFlag(KeyModifiers.Shift)))
+        // Middle mouse button always pans
+        if (point.Properties.IsMiddleButtonPressed)
         {
-            StartPanning(e.GetPosition(rootPanel));
+            StartPanning(position);
             e.Pointer.Capture((IInputElement?)rootPanel);
             e.Handled = true;
+            return;
         }
-        else if (point.Properties.IsLeftButtonPressed)
+
+        if (point.Properties.IsLeftButtonPressed)
         {
-            // Check if clicking on empty canvas
-            var canvasPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
+            var canvasPoint = _viewport.ScreenToCanvas(position);
             var hitElement = mainCanvas?.InputHitTest(canvasPoint);
-            
-            if (hitElement == null || hitElement == mainCanvas)
+            var isEmptyCanvas = hitElement == null || hitElement == mainCanvas;
+
+            if (isEmptyCanvas)
             {
-                DeselectAllRequested?.Invoke(this, EventArgs.Empty);
+                bool shiftHeld = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+
+                // Determine action based on settings and modifier keys
+                bool shouldPan = _settings.PanOnDrag ? !shiftHeld : shiftHeld;
+
+                if (shouldPan)
+                {
+                    StartPanning(position);
+                    e.Pointer.Capture((IInputElement?)rootPanel);
+                }
+                else
+                {
+                    // Start box selection
+                    if (!e.KeyModifiers.HasFlag(KeyModifiers.Control))
+                    {
+                        DeselectAllRequested?.Invoke(this, EventArgs.Empty);
+                    }
+                    StartBoxSelection(canvasPoint, mainCanvas);
+                    e.Pointer.Capture((IInputElement?)rootPanel);
+                }
+                e.Handled = true;
             }
         }
     }
@@ -147,7 +182,7 @@ public class CanvasInputHandler
     /// <summary>
     /// Handles pointer moved on the root panel.
     /// </summary>
-    public void HandleRootPanelPointerMoved(PointerEventArgs e, Panel? rootPanel)
+    public void HandleRootPanelPointerMoved(PointerEventArgs e, Panel? rootPanel, Graph? graph)
     {
         if (_isPanning)
         {
@@ -157,6 +192,13 @@ public class CanvasInputHandler
 
             _viewport.SetOffset(_panStartOffsetX + deltaX, _panStartOffsetY + deltaY);
             GridRenderRequested?.Invoke(this, EventArgs.Empty);
+            e.Handled = true;
+        }
+        else if (_isBoxSelecting && graph != null)
+        {
+            _boxSelectEnd = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
+            UpdateSelectionBox();
+            UpdateBoxSelection(graph, e.KeyModifiers.HasFlag(KeyModifiers.Control));
             e.Handled = true;
         }
         else if (_isCreatingConnection)
@@ -178,6 +220,13 @@ public class CanvasInputHandler
             e.Handled = true;
         }
 
+        if (_isBoxSelecting)
+        {
+            CancelBoxSelection();
+            e.Pointer.Capture(null);
+            e.Handled = true;
+        }
+
         if (_isCreatingConnection)
         {
             CompleteConnection(e, rootPanel, mainCanvas, graph);
@@ -191,28 +240,29 @@ public class CanvasInputHandler
     {
         var point = e.GetCurrentPoint(border);
 
-        if (point.Properties.IsLeftButtonPressed)
+        if (point.Properties.IsLeftButtonPressed && graph != null)
         {
+            bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+
             // Handle selection
-            if (!e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            if (!ctrlHeld && !node.IsSelected)
             {
-                // Deselect all other nodes if Ctrl is not pressed
-                if (graph != null)
+                // Clicking unselected node without Ctrl: select only this node
+                foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
                 {
-                    foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
-                    {
-                        n.IsSelected = false;
-                    }
+                    n.IsSelected = false;
                 }
+                node.IsSelected = true;
             }
+            else if (ctrlHeld)
+            {
+                // Ctrl+click: toggle selection
+                node.IsSelected = !node.IsSelected;
+            }
+            // else: clicking already selected node - keep current selection for multi-drag
 
-            node.IsSelected = !node.IsSelected || !e.KeyModifiers.HasFlag(KeyModifiers.Control);
-
-            // Start dragging
-            _draggingNode = node;
-            _draggingNode.IsDragging = true;
-            _dragStartPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
-            _nodeStartPosition = node.Position;
+            // Start dragging all selected nodes
+            StartDraggingNodes(graph, e.GetPosition(rootPanel));
 
             e.Pointer.Capture(border);
             e.Handled = true;
@@ -222,18 +272,33 @@ public class CanvasInputHandler
     /// <summary>
     /// Handles node pointer moved.
     /// </summary>
-    public void HandleNodePointerMoved(PointerEventArgs e, Panel? rootPanel)
+    public void HandleNodePointerMoved(PointerEventArgs e, Panel? rootPanel, Graph? graph)
     {
-        if (_draggingNode != null)
+        if (_isDraggingNodes && graph != null)
         {
             var currentPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
             var deltaX = currentPoint.X - _dragStartPoint.X;
             var deltaY = currentPoint.Y - _dragStartPoint.Y;
 
-            _draggingNode.Position = new Core.Point(
-                _nodeStartPosition.X + deltaX,
-                _nodeStartPosition.Y + deltaY
-            );
+            // Move all selected nodes
+            foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+            {
+                if (_dragStartPositions.TryGetValue(node.Id, out var startPos))
+                {
+                    var newX = startPos.X + deltaX;
+                    var newY = startPos.Y + deltaY;
+
+                    // Apply snap to grid on the final position
+                    if (_settings.SnapToGrid)
+                    {
+                        var snapSize = _settings.EffectiveSnapGridSize;
+                        newX = Math.Round(newX / snapSize) * snapSize;
+                        newY = Math.Round(newY / snapSize) * snapSize;
+                    }
+
+                    node.Position = new Core.Point(newX, newY);
+                }
+            }
 
             e.Handled = true;
         }
@@ -242,12 +307,18 @@ public class CanvasInputHandler
     /// <summary>
     /// Handles node pointer released.
     /// </summary>
-    public void HandleNodePointerReleased(PointerReleasedEventArgs e)
+    public void HandleNodePointerReleased(PointerReleasedEventArgs e, Graph? graph)
     {
-        if (_draggingNode != null)
+        if (_isDraggingNodes && graph != null)
         {
-            _draggingNode.IsDragging = false;
-            _draggingNode = null;
+            // Mark all dragging nodes as not dragging
+            foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+            {
+                node.IsDragging = false;
+            }
+
+            _isDraggingNodes = false;
+            _dragStartPositions.Clear();
 
             e.Pointer.Capture(null);
             e.Handled = true;
@@ -310,6 +381,8 @@ public class CanvasInputHandler
         portVisual.Fill = theme.PortBackground;
     }
 
+    #region Private Methods - Panning
+
     private void StartPanning(AvaloniaPoint position)
     {
         _isPanning = true;
@@ -317,6 +390,115 @@ public class CanvasInputHandler
         _panStartOffsetX = _viewport.OffsetX;
         _panStartOffsetY = _viewport.OffsetY;
     }
+
+    #endregion
+
+    #region Private Methods - Node Dragging
+
+    private void StartDraggingNodes(Graph graph, AvaloniaPoint screenPosition)
+    {
+        _isDraggingNodes = true;
+        _dragStartPoint = _viewport.ScreenToCanvas(screenPosition);
+        _dragStartPositions.Clear();
+
+        // Store start positions of all selected nodes
+        foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+        {
+            node.IsDragging = true;
+            _dragStartPositions[node.Id] = node.Position;
+        }
+    }
+
+    #endregion
+
+    #region Private Methods - Box Selection
+
+    private void StartBoxSelection(AvaloniaPoint canvasPoint, Canvas? canvas)
+    {
+        _isBoxSelecting = true;
+        _boxSelectStart = canvasPoint;
+        _boxSelectEnd = canvasPoint;
+        _selectionCanvas = canvas;
+
+        // Create selection rectangle visual
+        _selectionBox = new Rectangle
+        {
+            Stroke = new SolidColorBrush(Color.Parse("#0078D4")),
+            StrokeThickness = 1,
+            Fill = new SolidColorBrush(Color.FromArgb(40, 0, 120, 212)),
+            IsHitTestVisible = false
+        };
+        canvas?.Children.Add(_selectionBox);
+        UpdateSelectionBox();
+    }
+
+    private void UpdateSelectionBox()
+    {
+        if (_selectionBox == null) return;
+
+        var left = Math.Min(_boxSelectStart.X, _boxSelectEnd.X);
+        var top = Math.Min(_boxSelectStart.Y, _boxSelectEnd.Y);
+        var width = Math.Abs(_boxSelectEnd.X - _boxSelectStart.X);
+        var height = Math.Abs(_boxSelectEnd.Y - _boxSelectStart.Y);
+
+        Canvas.SetLeft(_selectionBox, left);
+        Canvas.SetTop(_selectionBox, top);
+        _selectionBox.Width = width;
+        _selectionBox.Height = height;
+    }
+
+    private void UpdateBoxSelection(Graph graph, bool addToSelection)
+    {
+        var selectionRect = new Rect(
+            Math.Min(_boxSelectStart.X, _boxSelectEnd.X),
+            Math.Min(_boxSelectStart.Y, _boxSelectEnd.Y),
+            Math.Abs(_boxSelectEnd.X - _boxSelectStart.X),
+            Math.Abs(_boxSelectEnd.Y - _boxSelectStart.Y)
+        );
+
+        foreach (var node in graph.Nodes)
+        {
+            var nodeRect = new Rect(
+                node.Position.X,
+                node.Position.Y,
+                _settings.NodeWidth,
+                _settings.NodeHeight
+            );
+
+            bool shouldSelect = _settings.SelectionMode == SelectionMode.Full
+                ? selectionRect.Contains(nodeRect)
+                : selectionRect.Intersects(nodeRect);
+
+            if (addToSelection)
+            {
+                // In add mode, only add to selection, don't remove
+                if (shouldSelect)
+                {
+                    node.IsSelected = true;
+                }
+            }
+            else
+            {
+                node.IsSelected = shouldSelect;
+            }
+        }
+
+        BoxSelectionChanged?.Invoke(this, new BoxSelectionEventArgs(selectionRect));
+    }
+
+    private void CancelBoxSelection()
+    {
+        if (_selectionBox != null && _selectionCanvas != null)
+        {
+            _selectionCanvas.Children.Remove(_selectionBox);
+            _selectionBox = null;
+        }
+        _isBoxSelecting = false;
+    }
+
+    #endregion
+
+    #region Private Methods - Connection
 
     private void CancelConnection()
     {
@@ -371,6 +553,8 @@ public class CanvasInputHandler
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, _connectionEndPoint, !_connectionFromOutput);
         _tempConnectionLine.Data = pathGeometry;
     }
+
+    #endregion
 }
 
 /// <summary>
@@ -389,5 +573,18 @@ public class ConnectionCompletedEventArgs : EventArgs
         SourcePort = sourcePort;
         TargetNode = targetNode;
         TargetPort = targetPort;
+    }
+}
+
+/// <summary>
+/// Event args for box selection changes.
+/// </summary>
+public class BoxSelectionEventArgs : EventArgs
+{
+    public Rect SelectionRect { get; }
+
+    public BoxSelectionEventArgs(Rect selectionRect)
+    {
+        SelectionRect = selectionRect;
     }
 }
