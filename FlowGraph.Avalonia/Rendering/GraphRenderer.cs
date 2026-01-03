@@ -227,9 +227,11 @@ public class GraphRenderer
     /// </summary>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
-        // Remove existing edges and markers
+        // Remove existing edges, markers, and labels
         var elementsToRemove = canvas.Children
-            .Where(c => c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker"))
+            .Where(c => 
+                (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
+                (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel"))
             .ToList();
         
         foreach (var element in elementsToRemove)
@@ -355,11 +357,11 @@ public class GraphRenderer
             FontSize = 12 * scale,
             Foreground = theme.NodeText,
             Background = theme.NodeBackground,
-            Padding = new Thickness(4 * scale, 2 * scale, 4 * scale, 2 * scale)
+            Padding = new Thickness(4 * scale, 2 * scale, 4 * scale, 2 * scale),
+            Tag = "edgeLabel"  // Tag for cleanup
         };
 
-        // We need to measure the text to center it properly
-        // For now, just position at midpoint (will be slightly off-center)
+        // Position at midpoint (slightly offset up)
         Canvas.SetLeft(textBlock, midPoint.X);
         Canvas.SetTop(textBlock, midPoint.Y - 10 * scale);
 
