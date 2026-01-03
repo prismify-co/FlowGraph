@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="200"
+             x:Class="FlowGraph.Avalonia.Controls.FlowDiagnostics">
+
+  <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+          BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+          BorderThickness="1"
+          CornerRadius="4"
+          Padding="8"
+          Opacity="0.95"
+          MinWidth="220">
+    <StackPanel Spacing="4">
+      <TextBlock Text="Viewport Diagnostics" FontWeight="Bold" FontSize="12"/>
+      <Separator Margin="0,4"/>
+      
+      <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Zoom:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Name="ZoomText" FontFamily="Consolas" FontSize="11"/>
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Offset X:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Name="OffsetXText" FontFamily="Consolas" FontSize="11"/>
+        
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Offset Y:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Name="OffsetYText" FontFamily="Consolas" FontSize="11"/>
+        
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="View Size:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Name="ViewSizeText" FontFamily="Consolas" FontSize="11"/>
+        
+        <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="0,4"/>
+        
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Visible X:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" Name="VisibleXText" FontFamily="Consolas" FontSize="11"/>
+        
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Visible Y:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="6" Grid.Column="1" Name="VisibleYText" FontFamily="Consolas" FontSize="11"/>
+        
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Visible Size:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="7" Grid.Column="1" Name="VisibleSizeText" FontFamily="Consolas" FontSize="11"/>
+      </Grid>
+    </StackPanel>
+  </Border>
+
+</UserControl>
