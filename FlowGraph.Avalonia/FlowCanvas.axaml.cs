@@ -16,6 +16,8 @@ namespace FlowGraph.Avalonia;
 /// </summary>
 public partial class FlowCanvas : UserControl
 {
+    #region Styled Properties
+
     public static readonly StyledProperty<Graph?> GraphProperty =
         AvaloniaProperty.Register<FlowCanvas, Graph?>(nameof(Graph));
 
@@ -40,6 +42,10 @@ public partial class FlowCanvas : UserControl
         set => SetValue(SettingsProperty, value);
     }
 
+    #endregion
+
+    #region Public Properties
+
     /// <summary>
     /// Gets the viewport state for external components (e.g., minimap).
     /// </summary>
@@ -55,20 +61,36 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public CommandHistory CommandHistory { get; } = new();
 
+    /// <summary>
+    /// Gets the current zoom level.
+    /// </summary>
+    public double CurrentZoom => _viewport.Zoom;
+
+    /// <summary>
+    /// Gets the selection manager for managing node and edge selection.
+    /// </summary>
+    public SelectionManager Selection => _selectionManager;
+
+    #endregion
+
+    #region Private Fields
+
     // UI Elements
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
     private Panel? _rootPanel;
-    
-    // Transform for main canvas - using MatrixTransform for precise control
-    private readonly MatrixTransform _canvasTransform = new();
 
     // Components
     private ViewportState _viewport = null!;
     private GridRenderer _gridRenderer = null!;
     private GraphRenderer _graphRenderer = null!;
     private CanvasInputHandler _inputHandler = null!;
+    private SelectionManager _selectionManager = null!;
     private ThemeResources _theme = null!;
+
+    #endregion
+
+    #region Constructor & Initialization
 
     public FlowCanvas()
     {
@@ -88,24 +110,38 @@ public partial class FlowCanvas : UserControl
         _viewport = new ViewportState(Settings);
         _gridRenderer = new GridRenderer(Settings);
         _graphRenderer = new GraphRenderer(Settings);
-        _graphRenderer.SetViewport(_viewport); // Pass viewport to renderer
+        _graphRenderer.SetViewport(_viewport);
         _inputHandler = new CanvasInputHandler(Settings, _viewport, _graphRenderer);
+        _selectionManager = new SelectionManager(
+            () => Graph,
+            () => _graphRenderer,
+            () => _theme,
+            CommandHistory);
 
-        // Subscribe to input handler events
+        SubscribeToInputHandlerEvents();
+        SubscribeToSelectionManagerEvents();
+        
+        _viewport.ViewportChanged += (_, _) => ApplyViewportTransforms();
+    }
+
+    private void SubscribeToInputHandlerEvents()
+    {
         _inputHandler.ConnectionCompleted += OnConnectionCompleted;
         _inputHandler.EdgeClicked += OnEdgeClicked;
-        _inputHandler.DeselectAllRequested += (_, _) => DeselectAll();
-        _inputHandler.SelectAllRequested += (_, _) => SelectAllNodes();
-        _inputHandler.DeleteSelectedRequested += (_, _) => DeleteSelected();
+        _inputHandler.DeselectAllRequested += (_, _) => _selectionManager.DeselectAll();
+        _inputHandler.SelectAllRequested += (_, _) => _selectionManager.SelectAll();
+        _inputHandler.DeleteSelectedRequested += (_, _) => _selectionManager.DeleteSelected();
         _inputHandler.UndoRequested += (_, _) => Undo();
         _inputHandler.RedoRequested += (_, _) => Redo();
         _inputHandler.NodesDragged += OnNodesDragged;
         _inputHandler.NodeResizing += OnNodeResizing;
         _inputHandler.NodeResized += OnNodeResized;
         _inputHandler.GridRenderRequested += (_, _) => RenderGrid();
+    }
 
-        // Subscribe to viewport changes
-        _viewport.ViewportChanged += (_, _) => ApplyViewportTransforms();
+    private void SubscribeToSelectionManagerEvents()
+    {
+        _selectionManager.EdgesNeedRerender += (_, _) => RenderEdges();
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -117,24 +153,15 @@ public partial class FlowCanvas : UserControl
         _rootPanel = this.FindControl<Panel>("RootPanel");
         _theme = new ThemeResources(this);
 
-        SetupTransforms();
         SetupEventHandlers();
         
-        // Set initial view size if bounds are available
         if (Bounds.Width > 0 && Bounds.Height > 0)
         {
             _viewport.SetViewSize(Bounds.Size);
         }
         
         RenderAll();
-        
-        // Center on graph after initial render
         CenterOnGraph();
-    }
-
-    private void SetupTransforms()
-    {
-        // No longer using RenderTransform - positions are transformed directly in GraphRenderer
     }
 
     private void SetupEventHandlers()
@@ -150,12 +177,11 @@ public partial class FlowCanvas : UserControl
 
     private void ApplyViewportTransforms()
     {
-        // Update the graph renderer with the current viewport
         _graphRenderer.SetViewport(_viewport);
-        
-        // Re-render everything with new transforms
         RenderAll();
     }
+
+    #endregion
 
     #region Input Event Handlers
 
@@ -241,11 +267,32 @@ public partial class FlowCanvas : UserControl
         }
     }
 
+    private void OnResizeHandlePointerPressed(object? sender, PointerPressedEventArgs e, Node node, ResizeHandlePosition position)
+    {
+        if (sender is Rectangle handle)
+        {
+            _inputHandler.HandleResizeHandlePointerPressed(handle, node, position, e, _rootPanel, Settings);
+        }
+    }
+
+    private void OnResizeHandlePointerMoved(object? sender, PointerEventArgs e)
+    {
+        _inputHandler.HandleResizeHandlePointerMoved(e, _rootPanel, Settings);
+    }
+
+    private void OnResizeHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        _inputHandler.HandleResizeHandlePointerReleased(e);
+    }
+
+    #endregion
+
+    #region Event Handlers for Commands
+
     private void OnConnectionCompleted(object? sender, ConnectionCompletedEventArgs e)
     {
         if (Graph == null) return;
 
-        // Check if connection already exists
         var existingEdge = Graph.Edges.FirstOrDefault(edge =>
             edge.Source == e.SourceNode.Id && edge.Target == e.TargetNode.Id &&
             edge.SourcePort == e.SourcePort.Id && edge.TargetPort == e.TargetPort.Id);
@@ -264,112 +311,24 @@ public partial class FlowCanvas : UserControl
         }
     }
 
-    #endregion
-
-    #region Selection Management
-
-    private void DeleteSelected()
-    {
-        if (Graph == null) return;
-
-        var selectedEdges = Graph.Edges.Where(e => e.IsSelected).ToList();
-        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
-
-        if (selectedEdges.Count == 0 && selectedNodes.Count == 0)
-            return;
-
-        // Create commands for deletion
-        var commands = new List<IGraphCommand>();
-
-        if (selectedEdges.Count > 0)
-        {
-            commands.Add(new RemoveEdgesCommand(Graph, selectedEdges));
-        }
-
-        if (selectedNodes.Count > 0)
-        {
-            commands.Add(new RemoveNodesCommand(Graph, selectedNodes));
-        }
-
-        // Execute as a single composite command
-        var description = (selectedNodes.Count, selectedEdges.Count) switch
-        {
-            (> 0, > 0) => $"Delete {selectedNodes.Count} nodes and {selectedEdges.Count} connections",
-            (> 0, 0) => selectedNodes.Count == 1 ? "Delete node" : $"Delete {selectedNodes.Count} nodes",
-            (0, > 0) => selectedEdges.Count == 1 ? "Delete connection" : $"Delete {selectedEdges.Count} connections",
-            _ => "Delete"
-        };
-
-        CommandHistory.Execute(new CompositeCommand(description, commands));
-    }
-
-    private void SelectAllNodes()
-    {
-        if (Graph == null) return;
-
-        foreach (var node in Graph.Nodes)
-        {
-            node.IsSelected = true;
-        }
-    }
-
-    private void DeselectAll()
-    {
-        if (Graph == null) return;
-
-        foreach (var node in Graph.Nodes)
-        {
-            node.IsSelected = false;
-        }
-        
-        foreach (var edge in Graph.Edges)
-        {
-            edge.IsSelected = false;
-        }
-        
-        // Re-render edges to update visual state
-        RenderEdges();
-    }
-
     private void OnEdgeClicked(object? sender, EdgeClickedEventArgs e)
     {
-        if (Graph == null) return;
-        
-        // Update visual state for ALL edges (some may have been deselected)
-        foreach (var edge in Graph.Edges)
-        {
-            _graphRenderer.UpdateEdgeSelection(edge, _theme);
-        }
-        
-        // Also update node visuals if Ctrl was not held (nodes were deselected)
-        if (!e.WasCtrlHeld)
-        {
-            foreach (var node in Graph.Nodes)
-            {
-                _graphRenderer.UpdateNodeSelection(node, _theme);
-            }
-        }
+        _selectionManager.HandleEdgeClicked(e.Edge, e.WasCtrlHeld);
     }
 
     private void OnNodesDragged(object? sender, NodesDraggedEventArgs e)
     {
         if (Graph == null) return;
-
-        // Create a move command for undo/redo (don't execute, positions already changed)
         var command = new MoveNodesCommand(Graph, e.OldPositions, e.NewPositions);
-        
-        // Add to history without executing (nodes are already in new positions)
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
     }
 
     private void OnNodeResizing(object? sender, NodeResizingEventArgs e)
     {
-        // Update the node dimensions during resize
         e.Node.Width = e.NewWidth;
         e.Node.Height = e.NewHeight;
         e.Node.Position = e.NewPosition;
         
-        // Update visuals
         _graphRenderer.UpdateNodeSize(e.Node, _theme);
         _graphRenderer.UpdateNodePosition(e.Node);
         _graphRenderer.UpdateResizeHandlePositions(e.Node);
@@ -379,19 +338,10 @@ public partial class FlowCanvas : UserControl
     private void OnNodeResized(object? sender, NodeResizedEventArgs e)
     {
         if (Graph == null) return;
-
-        // Create a resize command for undo/redo
         var command = new ResizeNodeCommand(
-            Graph,
-            e.Node.Id,
-            e.OldWidth,
-            e.OldHeight,
-            e.NewWidth,
-            e.NewHeight,
-            e.OldPosition,
-            e.NewPosition);
-        
-        // Add to history without executing (node is already resized)
+            Graph, e.Node.Id,
+            e.OldWidth, e.OldHeight, e.NewWidth, e.NewHeight,
+            e.OldPosition, e.NewPosition);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
     }
 
@@ -402,18 +352,12 @@ public partial class FlowCanvas : UserControl
     /// <summary>
     /// Undoes the last command.
     /// </summary>
-    public void Undo()
-    {
-        CommandHistory.Undo();
-    }
+    public void Undo() => CommandHistory.Undo();
 
     /// <summary>
     /// Redoes the last undone command.
     /// </summary>
-    public void Redo()
-    {
-        CommandHistory.Redo();
-    }
+    public void Redo() => CommandHistory.Redo();
 
     #endregion
 
@@ -425,26 +369,27 @@ public partial class FlowCanvas : UserControl
 
         if (change.Property == GraphProperty)
         {
-            if (change.OldValue is Graph oldGraph)
-            {
-                oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
-                oldGraph.Edges.CollectionChanged -= OnEdgesChanged;
-                UnsubscribeFromNodeChanges(oldGraph);
-            }
+            HandleGraphChanged(change.OldValue as Graph, change.NewValue as Graph);
+        }
+    }
 
-            if (change.NewValue is Graph newGraph)
-            {
-                newGraph.Nodes.CollectionChanged += OnNodesChanged;
-                newGraph.Edges.CollectionChanged += OnEdgesChanged;
-                SubscribeToNodeChanges(newGraph);
-                
-                // First center on the graph (this updates the viewport offsets)
-                CenterOnGraph();
-                
-                // Then render with the updated viewport
-                // ApplyViewportTransforms will call RenderAll()
-                ApplyViewportTransforms();
-            }
+    private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
+    {
+        if (oldGraph != null)
+        {
+            oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
+            oldGraph.Edges.CollectionChanged -= OnEdgesChanged;
+            UnsubscribeFromNodeChanges(oldGraph);
+        }
+
+        if (newGraph != null)
+        {
+            newGraph.Nodes.CollectionChanged += OnNodesChanged;
+            newGraph.Edges.CollectionChanged += OnEdgesChanged;
+            SubscribeToNodeChanges(newGraph);
+            
+            CenterOnGraph();
+            ApplyViewportTransforms();
         }
     }
 
@@ -455,7 +400,6 @@ public partial class FlowCanvas : UserControl
         var wasZeroSize = _viewport.ViewSize.Width <= 0 || _viewport.ViewSize.Height <= 0;
         _viewport.SetViewSize(e.NewSize);
         
-        // If this is the first time we have a valid size, center on the graph
         if (wasZeroSize && e.NewSize.Width > 0 && e.NewSize.Height > 0 && Graph != null)
         {
             CenterOnGraph();
@@ -485,26 +429,26 @@ public partial class FlowCanvas : UserControl
 
     private void OnNodePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender is Node node)
+        if (sender is not Node node) return;
+
+        switch (e.PropertyName)
         {
-            if (e.PropertyName == nameof(Node.Position))
-            {
+            case nameof(Node.Position):
                 _graphRenderer.UpdateNodePosition(node);
                 _graphRenderer.UpdateResizeHandlePositions(node);
                 RenderEdges();
-            }
-            else if (e.PropertyName == nameof(Node.IsSelected))
-            {
+                break;
+            case nameof(Node.IsSelected):
                 _graphRenderer.UpdateNodeSelection(node, _theme);
                 UpdateResizeHandlesForNode(node);
-            }
-            else if (e.PropertyName == nameof(Node.Width) || e.PropertyName == nameof(Node.Height))
-            {
+                break;
+            case nameof(Node.Width):
+            case nameof(Node.Height):
                 _graphRenderer.UpdateNodeSize(node, _theme);
                 _graphRenderer.UpdateNodePosition(node);
                 _graphRenderer.UpdateResizeHandlePositions(node);
                 RenderEdges();
-            }
+                break;
         }
     }
 
@@ -514,37 +458,17 @@ public partial class FlowCanvas : UserControl
 
         if (node.IsSelected && node.IsResizable)
         {
-            _graphRenderer.RenderResizeHandles(_mainCanvas, node, _theme, OnResizeHandleCreated);
+            _graphRenderer.RenderResizeHandles(_mainCanvas, node, _theme, (handle, n, pos) =>
+            {
+                handle.PointerPressed += (s, e) => OnResizeHandlePointerPressed(s, e, n, pos);
+                handle.PointerMoved += OnResizeHandlePointerMoved;
+                handle.PointerReleased += OnResizeHandlePointerReleased;
+            });
         }
         else
         {
             _graphRenderer.RemoveResizeHandles(_mainCanvas, node.Id);
         }
-    }
-
-    private void OnResizeHandleCreated(Rectangle handle, Node node, Rendering.ResizeHandlePosition position)
-    {
-        handle.PointerPressed += (s, e) => OnResizeHandlePointerPressed(s, e, node, position);
-        handle.PointerMoved += OnResizeHandlePointerMoved;
-        handle.PointerReleased += OnResizeHandlePointerReleased;
-    }
-
-    private void OnResizeHandlePointerPressed(object? sender, PointerPressedEventArgs e, Node node, Rendering.ResizeHandlePosition position)
-    {
-        if (sender is Rectangle handle)
-        {
-            _inputHandler.HandleResizeHandlePointerPressed(handle, node, position, e, _rootPanel, Settings);
-        }
-    }
-
-    private void OnResizeHandlePointerMoved(object? sender, PointerEventArgs e)
-    {
-        _inputHandler.HandleResizeHandlePointerMoved(e, _rootPanel, Settings);
-    }
-
-    private void OnResizeHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        _inputHandler.HandleResizeHandlePointerReleased(e);
     }
 
     private void OnNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -598,14 +522,27 @@ public partial class FlowCanvas : UserControl
 
         RenderEdges();
         
-        _graphRenderer.RenderNodes(_mainCanvas, Graph, _theme, (border, node) =>
+        _graphRenderer.RenderNodes(_mainCanvas, Graph, _theme, (control, node) =>
         {
-            border.PointerPressed += OnNodePointerPressed;
-            border.PointerMoved += OnNodePointerMoved;
-            border.PointerReleased += OnNodePointerReleased;
+            control.PointerPressed += OnNodePointerPressed;
+            control.PointerMoved += OnNodePointerMoved;
+            control.PointerReleased += OnNodePointerReleased;
         });
 
-        // Attach port event handlers
+        AttachPortEventHandlers();
+    }
+
+    private void RenderEdges()
+    {
+        if (_mainCanvas == null || Graph == null || _theme == null) return;
+        _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+        AttachEdgeEventHandlers();
+    }
+
+    private void AttachPortEventHandlers()
+    {
+        if (Graph == null) return;
+        
         foreach (var node in Graph.Nodes)
         {
             foreach (var port in node.Inputs.Concat(node.Outputs))
@@ -619,22 +556,8 @@ public partial class FlowCanvas : UserControl
                 }
             }
         }
-        
-        // Note: Edge event handlers are attached in RenderEdges()
     }
 
-    private void RenderEdges()
-    {
-        if (_mainCanvas == null || Graph == null || _theme == null) return;
-        _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
-        
-        // Re-attach edge event handlers after rendering
-        AttachEdgeEventHandlers();
-    }
-
-    /// <summary>
-    /// Attaches event handlers to all edge visuals.
-    /// </summary>
     private void AttachEdgeEventHandlers()
     {
         if (Graph == null) return;
@@ -644,7 +567,6 @@ public partial class FlowCanvas : UserControl
             var edgeVisual = _graphRenderer.GetEdgeVisual(edge.Id);
             if (edgeVisual != null)
             {
-                // Remove any existing handler to prevent duplicates
                 edgeVisual.PointerPressed -= OnEdgePointerPressed;
                 edgeVisual.PointerPressed += OnEdgePointerPressed;
             }
@@ -653,15 +575,14 @@ public partial class FlowCanvas : UserControl
 
     #endregion
 
-    #region Public API
+    #region Public API - Viewport
 
     /// <summary>
     /// Zooms in by one step, keeping the graph centered.
     /// </summary>
     public void ZoomIn()
     {
-        var zoomCenter = GetGraphCenterInScreenCoords();
-        _viewport.ZoomIn(zoomCenter);
+        _viewport.ZoomIn(GetGraphCenterInScreenCoords());
     }
 
     /// <summary>
@@ -669,8 +590,7 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public void ZoomOut()
     {
-        var zoomCenter = GetGraphCenterInScreenCoords();
-        _viewport.ZoomOut(zoomCenter);
+        _viewport.ZoomOut(GetGraphCenterInScreenCoords());
     }
 
     /// <summary>
@@ -678,26 +598,7 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public void ResetZoom()
     {
-        var zoomCenter = GetGraphCenterInScreenCoords();
-        _viewport.SetZoom(1.0, zoomCenter);
-    }
-
-    /// <summary>
-    /// Gets the center of the graph in screen coordinates.
-    /// Falls back to view center if no nodes exist.
-    /// </summary>
-    private global::Avalonia.Point? GetGraphCenterInScreenCoords()
-    {
-        if (Graph == null || Graph.Nodes.Count == 0)
-            return null; // Will use view center as fallback
-
-        var minX = Graph.Nodes.Min(n => n.Position.X);
-        var minY = Graph.Nodes.Min(n => n.Position.Y);
-        var maxX = Graph.Nodes.Max(n => n.Position.X + Settings.NodeWidth);
-        var maxY = Graph.Nodes.Max(n => n.Position.Y + Settings.NodeHeight);
-
-        var graphCenterCanvas = new global::Avalonia.Point((minX + maxX) / 2, (minY + maxY) / 2);
-        return _viewport.CanvasToScreen(graphCenterCanvas);
+        _viewport.SetZoom(1.0, GetGraphCenterInScreenCoords());
     }
 
     /// <summary>
@@ -712,12 +613,7 @@ public partial class FlowCanvas : UserControl
     {
         if (Graph == null || Graph.Nodes.Count == 0) return;
 
-        var minX = Graph.Nodes.Min(n => n.Position.X);
-        var minY = Graph.Nodes.Min(n => n.Position.Y);
-        var maxX = Graph.Nodes.Max(n => n.Position.X + Settings.NodeWidth);
-        var maxY = Graph.Nodes.Max(n => n.Position.Y + Settings.NodeHeight);
-
-        var bounds = new Rect(minX, minY, maxX - minX, maxY - minY);
+        var bounds = CalculateGraphBounds();
         _viewport.FitToBounds(bounds, Bounds.Size);
         RenderGrid();
     }
@@ -729,15 +625,12 @@ public partial class FlowCanvas : UserControl
     {
         if (Graph == null || Graph.Nodes.Count == 0) return;
 
-        var minX = Graph.Nodes.Min(n => n.Position.X);
-        var minY = Graph.Nodes.Min(n => n.Position.Y);
-        var maxX = Graph.Nodes.Max(n => n.Position.X + Settings.NodeWidth);
-        var maxY = Graph.Nodes.Max(n => n.Position.Y + Settings.NodeHeight);
-
-        var centerX = (minX + maxX) / 2;
-        var centerY = (minY + maxY) / 2;
-
-        _viewport.CenterOn(new global::Avalonia.Point(centerX, centerY));
+        var bounds = CalculateGraphBounds();
+        var center = new global::Avalonia.Point(
+            bounds.X + bounds.Width / 2,
+            bounds.Y + bounds.Height / 2);
+        
+        _viewport.CenterOn(center);
         RenderGrid();
     }
 
@@ -750,10 +643,31 @@ public partial class FlowCanvas : UserControl
         RenderGrid();
     }
 
-    /// <summary>
-    /// Gets the current zoom level.
-    /// </summary>
-    public double CurrentZoom => _viewport.Zoom;
+    private global::Avalonia.Point? GetGraphCenterInScreenCoords()
+    {
+        if (Graph == null || Graph.Nodes.Count == 0)
+            return null;
+
+        var bounds = CalculateGraphBounds();
+        var center = new global::Avalonia.Point(
+            bounds.X + bounds.Width / 2,
+            bounds.Y + bounds.Height / 2);
+        
+        return _viewport.CanvasToScreen(center);
+    }
+
+    private Rect CalculateGraphBounds()
+    {
+        if (Graph == null || Graph.Nodes.Count == 0)
+            return default;
+
+        var minX = Graph.Nodes.Min(n => n.Position.X);
+        var minY = Graph.Nodes.Min(n => n.Position.Y);
+        var maxX = Graph.Nodes.Max(n => n.Position.X + (n.Width ?? Settings.NodeWidth));
+        var maxY = Graph.Nodes.Max(n => n.Position.Y + (n.Height ?? Settings.NodeHeight));
+
+        return new Rect(minX, minY, maxX - minX, maxY - minY);
+    }
 
     #endregion
 }
