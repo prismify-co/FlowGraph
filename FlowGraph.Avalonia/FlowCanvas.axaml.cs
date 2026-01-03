@@ -49,9 +49,8 @@ public partial class FlowCanvas : UserControl
     private Canvas? _gridCanvas;
     private Panel? _rootPanel;
     
-    // Transforms (only for main canvas now - grid handles its own)
-    private readonly ScaleTransform _canvasScaleTransform = new();
-    private readonly TranslateTransform _canvasTranslateTransform = new();
+    // Transform for main canvas - using MatrixTransform for precise control
+    private readonly MatrixTransform _canvasTransform = new();
 
     // Components
     private ViewportState _viewport = null!;
@@ -120,21 +119,7 @@ public partial class FlowCanvas : UserControl
         // Only main canvas uses transforms - grid renders directly to screen coordinates
         if (_mainCanvas != null)
         {
-            // Order matters! We want: screenPos = canvasPos * zoom + offset
-            // This requires: Translate first (to move origin), then Scale
-            // But with RenderTransform, transforms are applied in order from first to last
-            // on the coordinate system, so we need Scale first, then Translate
-            // However, our math uses offset in screen coordinates, so we need to
-            // apply them differently.
-            
-            // Actually, the correct approach for pan/zoom where:
-            // screenPos = canvasPos * zoom + offset
-            // is to use a MatrixTransform or apply scale then translate
-            // where translate.X/Y are in screen coordinates (post-scale)
-            var transformGroup = new TransformGroup();
-            transformGroup.Children.Add(_canvasScaleTransform);
-            transformGroup.Children.Add(_canvasTranslateTransform);
-            _mainCanvas.RenderTransform = transformGroup;
+            _mainCanvas.RenderTransform = _canvasTransform;
         }
     }
 
@@ -152,7 +137,7 @@ public partial class FlowCanvas : UserControl
     private void ApplyViewportTransforms()
     {
         // Apply transforms to main canvas
-        _viewport.ApplyToTransforms(_canvasScaleTransform, _canvasTranslateTransform);
+        _viewport.ApplyToTransforms(_canvasTransform);
         
         // Grid renderer handles its own coordinate transformation
         RenderGrid();

@@ -191,14 +191,17 @@ public class ViewportState
     }
 
     /// <summary>
-    /// Applies the viewport transforms to scale and translate transforms.
+    /// Applies the viewport transforms to a MatrixTransform.
+    /// The matrix represents: screenPos = canvasPos * zoom + offset
     /// </summary>
-    public void ApplyToTransforms(ScaleTransform scale, TranslateTransform translate)
+    public void ApplyToTransforms(MatrixTransform transform)
     {
-        scale.ScaleX = Zoom;
-        scale.ScaleY = Zoom;
-        translate.X = OffsetX;
-        translate.Y = OffsetY;
+        // Matrix for: screenPos = canvasPos * zoom + offset
+        // This is a scale followed by translate:
+        // | zoom  0     offsetX |
+        // | 0     zoom  offsetY |
+        // | 0     0     1       |
+        transform.Matrix = new Matrix(Zoom, 0, 0, Zoom, OffsetX, OffsetY);
     }
 
     private void OnViewportChanged()
