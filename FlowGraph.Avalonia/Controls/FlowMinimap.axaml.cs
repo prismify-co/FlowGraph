@@ -109,8 +109,9 @@ public partial class FlowMinimap : UserControl
 
     private void OnViewportChanged(object? sender, EventArgs e)
     {
-        // Only update the viewport rectangle, not the entire minimap
-        UpdateViewportRect();
+        // Re-render the entire minimap when viewport changes
+        // This ensures the bounding box includes the viewport area
+        RenderMinimap();
     }
 
     private void OnTargetCanvasPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -241,36 +242,57 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
-        // Calculate bounding box of all nodes (in canvas coordinates)
-        var minX = graph.Nodes.Min(n => n.Position.X) - MinimapPadding;
-        var minY = graph.Nodes.Min(n => n.Position.Y) - MinimapPadding;
-        var maxX = graph.Nodes.Max(n => n.Position.X + NodeWidth) + MinimapPadding;
-        var maxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight) + MinimapPadding;
+        // Get the current viewport visible area
+        var viewport = TargetCanvas.Viewport;
+        var visibleRect = viewport.GetVisibleRect();
 
-        var graphWidth = maxX - minX;
-        var graphHeight = maxY - minY;
+        // Calculate bounding box of all nodes (in canvas coordinates)
+        var graphMinX = graph.Nodes.Min(n => n.Position.X);
+        var graphMinY = graph.Nodes.Min(n => n.Position.Y);
+        var graphMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth);
+        var graphMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight);
+
+        // Expand bounds to include the visible viewport area
+        // This ensures the viewport rectangle is always visible in the minimap
+        double minX, minY, maxX, maxY;
+        
+        if (visibleRect.Width > 0)
+        {
+            minX = Math.Min(graphMinX, visibleRect.X) - MinimapPadding;
+            minY = Math.Min(graphMinY, visibleRect.Y) - MinimapPadding;
+            maxX = Math.Max(graphMaxX, visibleRect.Right) + MinimapPadding;
+            maxY = Math.Max(graphMaxY, visibleRect.Bottom) + MinimapPadding;
+        }
+        else
+        {
+            minX = graphMinX - MinimapPadding;
+            minY = graphMinY - MinimapPadding;
+            maxX = graphMaxX + MinimapPadding;
+            maxY = graphMaxY + MinimapPadding;
+        }
+
+        var totalWidth = maxX - minX;
+        var totalHeight = maxY - minY;
 
         var minimapWidth = Bounds.Width - 8; // Account for border padding
         var minimapHeight = Bounds.Height - 8;
 
-        if (minimapWidth <= 0 || minimapHeight <= 0 || graphWidth <= 0 || graphHeight <= 0)
+        if (minimapWidth <= 0 || minimapHeight <= 0 || totalWidth <= 0 || totalHeight <= 0)
             return;
 
-        // Calculate scale to fit graph in minimap
-        var scaleX = minimapWidth / graphWidth;
-        var scaleY = minimapHeight / graphHeight;
+        // Calculate scale to fit everything in minimap
+        var scaleX = minimapWidth / totalWidth;
+        var scaleY = minimapHeight / totalHeight;
         _scale = Math.Min(scaleX, scaleY);
 
-        // Calculate translation to center the graph in the minimap
-        // Formula: minimapPos = canvasPos * scale + translate
-        // We want the center of the graph to map to the center of the minimap
-        var graphCenterX = (minX + maxX) / 2;
-        var graphCenterY = (minY + maxY) / 2;
+        // Calculate translation to center everything in the minimap
+        var contentCenterX = (minX + maxX) / 2;
+        var contentCenterY = (minY + maxY) / 2;
         var minimapCenterX = minimapWidth / 2;
         var minimapCenterY = minimapHeight / 2;
 
-        _translateX = minimapCenterX - graphCenterX * _scale;
-        _translateY = minimapCenterY - graphCenterY * _scale;
+        _translateX = minimapCenterX - contentCenterX * _scale;
+        _translateY = minimapCenterY - contentCenterY * _scale;
 
         // Draw edges
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
@@ -321,16 +343,19 @@ public partial class FlowMinimap : UserControl
             _minimapCanvas.Children.Add(rect);
         }
 
-        // Create and add viewport rectangle (ReactFlow style - cyan/blue accent color)
-        _viewportRect = new Rectangle
+        // Create and add viewport rectangle
+        if (visibleRect.Width > 0)
         {
-            Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")), // Sky blue - visible on both light/dark
-            StrokeThickness = 2,
-            Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)), // Very subtle fill
-            IsHitTestVisible = false
-        };
-        _minimapCanvas.Children.Add(_viewportRect);
-        UpdateViewportRect();
+            _viewportRect = new Rectangle
+            {
+                Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
+                StrokeThickness = 2,
+                Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
+                IsHitTestVisible = false
+            };
+            _minimapCanvas.Children.Add(_viewportRect);
+            UpdateViewportRect();
+        }
     }
 
     private void UpdateViewportRect()
@@ -341,7 +366,6 @@ public partial class FlowMinimap : UserControl
         var viewport = TargetCanvas.Viewport;
         var visibleRect = viewport.GetVisibleRect();
 
-        // Check if rect is valid (Width > 0 means view size is set)
         if (visibleRect.Width <= 0)
             return;
 
