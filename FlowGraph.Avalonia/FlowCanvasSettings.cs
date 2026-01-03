@@ -74,6 +74,11 @@ public class FlowCanvasSettings
     public bool PanOnDrag { get; set; } = true;
 
     /// <summary>
+    /// Whether to output debug information for coordinate transformations.
+    /// </summary>
+    public bool DebugCoordinateTransforms { get; set; } = false;
+
+    /// <summary>
     /// Default settings instance.
     /// </summary>
     public static FlowCanvasSettings Default { get; } = new();

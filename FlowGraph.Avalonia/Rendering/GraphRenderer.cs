@@ -41,9 +41,22 @@ public class GraphRenderer
     private AvaloniaPoint TransformToScreen(double canvasX, double canvasY)
     {
         if (_viewport == null)
+        {
+            if (_settings.DebugCoordinateTransforms)
+            {
+                System.Diagnostics.Debug.WriteLine($"TransformToScreen: NO VIEWPORT! Returning ({canvasX}, {canvasY})");
+            }
             return new AvaloniaPoint(canvasX, canvasY);
+        }
         
-        return _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
+        var result = _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
+        
+        if (_settings.DebugCoordinateTransforms)
+        {
+            System.Diagnostics.Debug.WriteLine($"TransformToScreen: ({canvasX}, {canvasY}) -> ({result.X}, {result.Y}) [zoom={_viewport.Zoom}, offset=({_viewport.OffsetX}, {_viewport.OffsetY})]");
+        }
+        
+        return result;
     }
 
     /// <summary>
