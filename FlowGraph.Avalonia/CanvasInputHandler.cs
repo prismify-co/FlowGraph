@@ -47,7 +47,8 @@ public class CanvasInputHandler
     private AvaloniaPath? _tempConnectionLine;
     private Canvas? _canvas;
     private Panel? _rootPanel;
-    private Cursor? _previousCursor;
+    private Ellipse? _capturedPortVisual;  // The port visual that captured the pointer
+    private Cursor? _previousPortCursor;   // The port's original cursor
 
     /// <summary>
     /// Event raised when a connection is completed.
@@ -370,12 +371,10 @@ public class CanvasInputHandler
             canvas?.Children.Add(_tempConnectionLine);
             UpdateTempConnectionLine();
 
-            // Change cursor to hand during connection drag
-            if (rootPanel != null)
-            {
-                _previousCursor = rootPanel.Cursor;
-                rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
-            }
+            // Change the port visual's cursor to hand during drag
+            _capturedPortVisual = portVisual;
+            _previousPortCursor = portVisual.Cursor;
+            portVisual.Cursor = new Cursor(StandardCursorType.Hand);
 
             e.Pointer.Capture(portVisual);
             e.Handled = true;
@@ -557,11 +556,12 @@ public class CanvasInputHandler
             _tempConnectionLine = null;
         }
 
-        // Restore the previous cursor
-        if (_rootPanel != null && _previousCursor != null)
+        // Restore the port visual's original cursor
+        if (_capturedPortVisual != null && _previousPortCursor != null)
         {
-            _rootPanel.Cursor = _previousCursor;
-            _previousCursor = null;
+            _capturedPortVisual.Cursor = _previousPortCursor;
+            _previousPortCursor = null;
+            _capturedPortVisual = null;
         }
 
         _isCreatingConnection = false;
