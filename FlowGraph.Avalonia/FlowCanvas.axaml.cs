@@ -77,6 +77,7 @@ public partial class FlowCanvas : UserControl
         _viewport = new ViewportState(Settings);
         _gridRenderer = new GridRenderer(Settings);
         _graphRenderer = new GraphRenderer(Settings);
+        _graphRenderer.SetViewport(_viewport); // Pass viewport to renderer
         _inputHandler = new CanvasInputHandler(Settings, _viewport, _graphRenderer);
 
         // Subscribe to input handler events
@@ -116,11 +117,7 @@ public partial class FlowCanvas : UserControl
 
     private void SetupTransforms()
     {
-        // Only main canvas uses transforms - grid renders directly to screen coordinates
-        if (_mainCanvas != null)
-        {
-            _mainCanvas.RenderTransform = _canvasTransform;
-        }
+        // No longer using RenderTransform - positions are transformed directly in GraphRenderer
     }
 
     private void SetupEventHandlers()
@@ -136,11 +133,11 @@ public partial class FlowCanvas : UserControl
 
     private void ApplyViewportTransforms()
     {
-        // Apply transforms to main canvas
-        _viewport.ApplyToTransforms(_canvasTransform);
+        // Update the graph renderer with the current viewport
+        _graphRenderer.SetViewport(_viewport);
         
-        // Grid renderer handles its own coordinate transformation
-        RenderGrid();
+        // Re-render everything with new transforms
+        RenderAll();
     }
 
     #region Input Event Handlers
