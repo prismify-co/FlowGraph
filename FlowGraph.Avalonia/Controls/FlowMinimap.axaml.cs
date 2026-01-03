@@ -287,12 +287,12 @@ public partial class FlowMinimap : UserControl
             _minimapCanvas.Children.Add(rect);
         }
 
-        // Create and add viewport rectangle
+        // Create and add viewport rectangle (ReactFlow style - cyan/blue accent color)
         _viewportRect = new Rectangle
         {
-            Stroke = new SolidColorBrush(Color.Parse("#FFFFFF")),
-            StrokeThickness = 1.5,
-            Fill = new SolidColorBrush(Color.FromArgb(30, 255, 255, 255)),
+            Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")), // Sky blue - visible on both light/dark
+            StrokeThickness = 2,
+            Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)), // Very subtle fill
             IsHitTestVisible = false
         };
         _minimapCanvas.Children.Add(_viewportRect);
