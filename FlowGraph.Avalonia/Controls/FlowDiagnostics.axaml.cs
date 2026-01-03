@@ -140,7 +140,25 @@ public partial class FlowDiagnostics : UserControl
             }
             else
             {
-                _transformText.Text = "No transform!";
+                // Check first node position to see if transform is working
+                if (canvas != null && canvas.Children.Count > 0)
+                {
+                    var firstChild = canvas.Children.OfType<global::Avalonia.Controls.Border>().FirstOrDefault();
+                    if (firstChild != null)
+                    {
+                        var left = Canvas.GetLeft(firstChild);
+                        var top = Canvas.GetTop(firstChild);
+                        _transformText.Text = $"Node at ({left:F0}, {top:F0})";
+                    }
+                    else
+                    {
+                        _transformText.Text = "No nodes in canvas";
+                    }
+                }
+                else
+                {
+                    _transformText.Text = "No transform (direct)";
+                }
             }
         }
 
