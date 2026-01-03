@@ -20,7 +20,8 @@ public static class BezierHelper
         var pathFigure = new PathFigure
         {
             StartPoint = start,
-            IsClosed = false
+            IsClosed = false,
+            Segments = new PathSegments()
         };
 
         var controlPointOffset = Math.Abs(end.X - start.X) / 2;
@@ -54,7 +55,6 @@ public static class BezierHelper
             Point3 = end
         };
 
-        pathFigure.Segments ??= new PathSegments();
         pathFigure.Segments.Add(bezierSegment);
 
         var pathGeometry = new PathGeometry();

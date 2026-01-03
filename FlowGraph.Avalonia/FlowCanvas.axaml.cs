@@ -39,6 +39,11 @@ public partial class FlowCanvas : UserControl
         set => SetValue(SettingsProperty, value);
     }
 
+    /// <summary>
+    /// Gets the viewport state for external components (e.g., minimap).
+    /// </summary>
+    public ViewportState Viewport => _viewport;
+
     // UI Elements
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
@@ -297,6 +302,7 @@ public partial class FlowCanvas : UserControl
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
         base.OnSizeChanged(e);
+        _viewport.SetViewSize(e.NewSize);
         RenderGrid();
     }
 
@@ -450,6 +456,15 @@ public partial class FlowCanvas : UserControl
 
         var bounds = new Rect(minX, minY, maxX - minX, maxY - minY);
         _viewport.FitToBounds(bounds, Bounds.Size);
+        RenderGrid();
+    }
+
+    /// <summary>
+    /// Centers the viewport on a specific point in canvas coordinates.
+    /// </summary>
+    public void CenterOn(double x, double y)
+    {
+        _viewport.CenterOn(new global::Avalonia.Point(x, y));
         RenderGrid();
     }
 

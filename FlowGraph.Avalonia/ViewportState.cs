@@ -31,9 +31,38 @@ public class ViewportState
     public double OffsetY { get; private set; }
 
     /// <summary>
+    /// The current view size (set by the canvas).
+    /// </summary>
+    public Size ViewSize { get; private set; }
+
+    /// <summary>
     /// Event raised when the viewport changes.
     /// </summary>
     public event EventHandler? ViewportChanged;
+
+    /// <summary>
+    /// Sets the view size (called when canvas size changes).
+    /// </summary>
+    public void SetViewSize(Size size)
+    {
+        ViewSize = size;
+        OnViewportChanged();
+    }
+
+    /// <summary>
+    /// Gets the visible area in canvas coordinates.
+    /// Returns a Rect with Width=0 if view size is not set.
+    /// </summary>
+    public Rect GetVisibleRect()
+    {
+        if (ViewSize.Width <= 0 || ViewSize.Height <= 0)
+            return new Rect(0, 0, 0, 0);
+
+        var topLeft = ScreenToCanvas(new Point(0, 0));
+        var bottomRight = ScreenToCanvas(new Point(ViewSize.Width, ViewSize.Height));
+
+        return new Rect(topLeft, bottomRight);
+    }
 
     /// <summary>
     /// Sets the zoom level, optionally zooming towards a specific point.
@@ -101,6 +130,16 @@ public class ViewportState
     }
 
     /// <summary>
+    /// Centers the viewport on a specific canvas point.
+    /// </summary>
+    public void CenterOn(Point canvasPoint)
+    {
+        OffsetX = ViewSize.Width / 2 - canvasPoint.X * Zoom;
+        OffsetY = ViewSize.Height / 2 - canvasPoint.Y * Zoom;
+        OnViewportChanged();
+    }
+
+    /// <summary>
     /// Transforms a screen point to canvas coordinates.
     /// </summary>
     public Point ScreenToCanvas(Point screenPoint)
@@ -129,6 +168,8 @@ public class ViewportState
     {
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
+
+        ViewSize = viewSize;
 
         var zoomX = (viewSize.Width - padding * 2) / bounds.Width;
         var zoomY = (viewSize.Height - padding * 2) / bounds.Height;
