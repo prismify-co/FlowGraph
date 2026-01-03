@@ -305,8 +305,20 @@ public partial class FlowCanvas : UserControl
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
         base.OnSizeChanged(e);
+        
+        var wasZeroSize = _viewport.ViewSize.Width <= 0 || _viewport.ViewSize.Height <= 0;
         _viewport.SetViewSize(e.NewSize);
-        RenderGrid();
+        
+        // If this is the first time we have a valid size, center on the graph
+        if (wasZeroSize && e.NewSize.Width > 0 && e.NewSize.Height > 0 && Graph != null)
+        {
+            CenterOnGraph();
+            ApplyViewportTransforms();
+        }
+        else
+        {
+            RenderGrid();
+        }
     }
 
     private void SubscribeToNodeChanges(Graph graph)

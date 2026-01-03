@@ -134,9 +134,14 @@ public class ViewportState
 
     /// <summary>
     /// Centers the viewport on a specific canvas point.
+    /// Does nothing if ViewSize is not set.
     /// </summary>
     public void CenterOn(Point canvasPoint)
     {
+        // Don't center if view size is not set yet
+        if (ViewSize.Width <= 0 || ViewSize.Height <= 0)
+            return;
+            
         OffsetX = ViewSize.Width / 2 - canvasPoint.X * Zoom;
         OffsetY = ViewSize.Height / 2 - canvasPoint.Y * Zoom;
         OnViewportChanged();
