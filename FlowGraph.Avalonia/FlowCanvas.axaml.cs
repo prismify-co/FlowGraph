@@ -100,6 +100,8 @@ public partial class FlowCanvas : UserControl
         _inputHandler.UndoRequested += (_, _) => Undo();
         _inputHandler.RedoRequested += (_, _) => Redo();
         _inputHandler.NodesDragged += OnNodesDragged;
+        _inputHandler.NodeResizing += OnNodeResizing;
+        _inputHandler.NodeResized += OnNodeResized;
         _inputHandler.GridRenderRequested += (_, _) => RenderGrid();
 
         // Subscribe to viewport changes
@@ -360,6 +362,39 @@ public partial class FlowCanvas : UserControl
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
     }
 
+    private void OnNodeResizing(object? sender, NodeResizingEventArgs e)
+    {
+        // Update the node dimensions during resize
+        e.Node.Width = e.NewWidth;
+        e.Node.Height = e.NewHeight;
+        e.Node.Position = e.NewPosition;
+        
+        // Update visuals
+        _graphRenderer.UpdateNodeSize(e.Node, _theme);
+        _graphRenderer.UpdateNodePosition(e.Node);
+        _graphRenderer.UpdateResizeHandlePositions(e.Node);
+        RenderEdges();
+    }
+
+    private void OnNodeResized(object? sender, NodeResizedEventArgs e)
+    {
+        if (Graph == null) return;
+
+        // Create a resize command for undo/redo
+        var command = new ResizeNodeCommand(
+            Graph,
+            e.Node.Id,
+            e.OldWidth,
+            e.OldHeight,
+            e.NewWidth,
+            e.NewHeight,
+            e.OldPosition,
+            e.NewPosition);
+        
+        // Add to history without executing (node is already resized)
+        CommandHistory.Execute(new AlreadyExecutedCommand(command));
+    }
+
     #endregion
 
     #region Undo/Redo
@@ -455,13 +490,61 @@ public partial class FlowCanvas : UserControl
             if (e.PropertyName == nameof(Node.Position))
             {
                 _graphRenderer.UpdateNodePosition(node);
+                _graphRenderer.UpdateResizeHandlePositions(node);
                 RenderEdges();
             }
             else if (e.PropertyName == nameof(Node.IsSelected))
             {
                 _graphRenderer.UpdateNodeSelection(node, _theme);
+                UpdateResizeHandlesForNode(node);
+            }
+            else if (e.PropertyName == nameof(Node.Width) || e.PropertyName == nameof(Node.Height))
+            {
+                _graphRenderer.UpdateNodeSize(node, _theme);
+                _graphRenderer.UpdateNodePosition(node);
+                _graphRenderer.UpdateResizeHandlePositions(node);
+                RenderEdges();
             }
         }
+    }
+
+    private void UpdateResizeHandlesForNode(Node node)
+    {
+        if (_mainCanvas == null || _theme == null) return;
+
+        if (node.IsSelected && node.IsResizable)
+        {
+            _graphRenderer.RenderResizeHandles(_mainCanvas, node, _theme, OnResizeHandleCreated);
+        }
+        else
+        {
+            _graphRenderer.RemoveResizeHandles(_mainCanvas, node.Id);
+        }
+    }
+
+    private void OnResizeHandleCreated(Rectangle handle, Node node, Rendering.ResizeHandlePosition position)
+    {
+        handle.PointerPressed += (s, e) => OnResizeHandlePointerPressed(s, e, node, position);
+        handle.PointerMoved += OnResizeHandlePointerMoved;
+        handle.PointerReleased += OnResizeHandlePointerReleased;
+    }
+
+    private void OnResizeHandlePointerPressed(object? sender, PointerPressedEventArgs e, Node node, Rendering.ResizeHandlePosition position)
+    {
+        if (sender is Rectangle handle)
+        {
+            _inputHandler.HandleResizeHandlePointerPressed(handle, node, position, e, _rootPanel, Settings);
+        }
+    }
+
+    private void OnResizeHandlePointerMoved(object? sender, PointerEventArgs e)
+    {
+        _inputHandler.HandleResizeHandlePointerMoved(e, _rootPanel, Settings);
+    }
+
+    private void OnResizeHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        _inputHandler.HandleResizeHandlePointerReleased(e);
     }
 
     private void OnNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)

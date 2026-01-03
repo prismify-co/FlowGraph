@@ -167,7 +167,13 @@ public class NodeRendererRegistryTests
         {
         }
 
+        public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+        {
+        }
+
         public double? GetWidth(Node node, FlowCanvasSettings settings) => null;
         public double? GetHeight(Node node, FlowCanvasSettings settings) => null;
+        public double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
+        public double? GetMinHeight(Node node, FlowCanvasSettings settings) => 40;
     }
 }

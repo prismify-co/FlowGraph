@@ -38,6 +38,15 @@ public class CanvasInputHandler
     private Rectangle? _selectionBox;
     private Canvas? _selectionCanvas;
 
+    // Resize state
+    private bool _isResizing;
+    private Node? _resizingNode;
+    private ResizeHandlePosition _resizeHandlePosition;
+    private AvaloniaPoint _resizeStartPoint;
+    private double _resizeStartWidth;
+    private double _resizeStartHeight;
+    private Core.Point _resizeStartPosition;
+
     // Connection creation state
     private bool _isCreatingConnection;
     private Node? _connectionSourceNode;
@@ -99,6 +108,16 @@ public class CanvasInputHandler
     /// Event raised when node drag completes with position changes.
     /// </summary>
     public event EventHandler<NodesDraggedEventArgs>? NodesDragged;
+
+    /// <summary>
+    /// Event raised when node resize completes.
+    /// </summary>
+    public event EventHandler<NodeResizedEventArgs>? NodeResized;
+
+    /// <summary>
+    /// Event raised when resize is in progress and visuals need updating.
+    /// </summary>
+    public event EventHandler<NodeResizingEventArgs>? NodeResizing;
 
     public CanvasInputHandler(
         FlowCanvasSettings settings,
@@ -488,6 +507,167 @@ public class CanvasInputHandler
         portVisual.Fill = theme.PortBackground;
     }
 
+    /// <summary>
+    /// Handles resize handle pointer pressed.
+    /// </summary>
+    public void HandleResizeHandlePointerPressed(
+        Rectangle handle,
+        Node node,
+        ResizeHandlePosition position,
+        PointerPressedEventArgs e,
+        Panel? rootPanel,
+        FlowCanvasSettings settings)
+    {
+        var point = e.GetCurrentPoint(handle);
+
+        if (point.Properties.IsLeftButtonPressed)
+        {
+            _isResizing = true;
+            _resizingNode = node;
+            _resizeHandlePosition = position;
+            _resizeStartPoint = e.GetPosition(rootPanel);
+            
+            // Get current dimensions
+            var currentWidth = node.Width ?? settings.NodeWidth;
+            var currentHeight = node.Height ?? settings.NodeHeight;
+            _resizeStartWidth = currentWidth;
+            _resizeStartHeight = currentHeight;
+            _resizeStartPosition = node.Position;
+
+            e.Pointer.Capture(handle);
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
+    /// Handles resize handle pointer moved.
+    /// </summary>
+    public void HandleResizeHandlePointerMoved(
+        PointerEventArgs e,
+        Panel? rootPanel,
+        FlowCanvasSettings settings)
+    {
+        if (!_isResizing || _resizingNode == null)
+            return;
+
+        var currentPoint = e.GetPosition(rootPanel);
+        var deltaX = (currentPoint.X - _resizeStartPoint.X) / _viewport.Zoom;
+        var deltaY = (currentPoint.Y - _resizeStartPoint.Y) / _viewport.Zoom;
+
+        // Get minimum sizes from renderer
+        var renderer = _graphRenderer.NodeRenderers.GetRenderer(_resizingNode.Type);
+        var minWidth = renderer.GetMinWidth(_resizingNode, settings) ?? 60;
+        var minHeight = renderer.GetMinHeight(_resizingNode, settings) ?? 40;
+
+        var newWidth = _resizeStartWidth;
+        var newHeight = _resizeStartHeight;
+        var newX = _resizeStartPosition.X;
+        var newY = _resizeStartPosition.Y;
+
+        // Calculate new dimensions based on which handle is being dragged
+        switch (_resizeHandlePosition)
+        {
+            case ResizeHandlePosition.Right:
+                newWidth = Math.Max(minWidth, _resizeStartWidth + deltaX);
+                break;
+            case ResizeHandlePosition.Left:
+                var leftDelta = Math.Min(deltaX, _resizeStartWidth - minWidth);
+                newWidth = _resizeStartWidth - leftDelta;
+                newX = _resizeStartPosition.X + leftDelta;
+                break;
+            case ResizeHandlePosition.Bottom:
+                newHeight = Math.Max(minHeight, _resizeStartHeight + deltaY);
+                break;
+            case ResizeHandlePosition.Top:
+                var topDelta = Math.Min(deltaY, _resizeStartHeight - minHeight);
+                newHeight = _resizeStartHeight - topDelta;
+                newY = _resizeStartPosition.Y + topDelta;
+                break;
+            case ResizeHandlePosition.BottomRight:
+                newWidth = Math.Max(minWidth, _resizeStartWidth + deltaX);
+                newHeight = Math.Max(minHeight, _resizeStartHeight + deltaY);
+                break;
+            case ResizeHandlePosition.BottomLeft:
+                var blLeftDelta = Math.Min(deltaX, _resizeStartWidth - minWidth);
+                newWidth = _resizeStartWidth - blLeftDelta;
+                newX = _resizeStartPosition.X + blLeftDelta;
+                newHeight = Math.Max(minHeight, _resizeStartHeight + deltaY);
+                break;
+            case ResizeHandlePosition.TopRight:
+                newWidth = Math.Max(minWidth, _resizeStartWidth + deltaX);
+                var trTopDelta = Math.Min(deltaY, _resizeStartHeight - minHeight);
+                newHeight = _resizeStartHeight - trTopDelta;
+                newY = _resizeStartPosition.Y + trTopDelta;
+                break;
+            case ResizeHandlePosition.TopLeft:
+                var tlLeftDelta = Math.Min(deltaX, _resizeStartWidth - minWidth);
+                newWidth = _resizeStartWidth - tlLeftDelta;
+                newX = _resizeStartPosition.X + tlLeftDelta;
+                var tlTopDelta = Math.Min(deltaY, _resizeStartHeight - minHeight);
+                newHeight = _resizeStartHeight - tlTopDelta;
+                newY = _resizeStartPosition.Y + tlTopDelta;
+                break;
+        }
+
+        // Apply snap to grid if enabled
+        if (_settings.SnapToGrid)
+        {
+            var snapSize = _settings.EffectiveSnapGridSize;
+            newWidth = Math.Round(newWidth / snapSize) * snapSize;
+            newHeight = Math.Round(newHeight / snapSize) * snapSize;
+            newX = Math.Round(newX / snapSize) * snapSize;
+            newY = Math.Round(newY / snapSize) * snapSize;
+            
+            // Ensure minimum sizes after snapping
+            newWidth = Math.Max(minWidth, newWidth);
+            newHeight = Math.Max(minHeight, newHeight);
+        }
+
+        // Notify that resize is in progress
+        NodeResizing?.Invoke(this, new NodeResizingEventArgs(
+            _resizingNode,
+            newWidth,
+            newHeight,
+            new Core.Point(newX, newY)));
+
+        e.Handled = true;
+    }
+
+    /// <summary>
+    /// Handles resize handle pointer released.
+    /// </summary>
+    public void HandleResizeHandlePointerReleased(PointerReleasedEventArgs e)
+    {
+        if (!_isResizing || _resizingNode == null)
+            return;
+
+        // Get final dimensions from the node (which was updated during resizing)
+        var finalWidth = _resizingNode.Width ?? _resizeStartWidth;
+        var finalHeight = _resizingNode.Height ?? _resizeStartHeight;
+        var finalPosition = _resizingNode.Position;
+
+        // Only notify if size actually changed
+        if (Math.Abs(finalWidth - _resizeStartWidth) > 0.1 ||
+            Math.Abs(finalHeight - _resizeStartHeight) > 0.1 ||
+            Math.Abs(finalPosition.X - _resizeStartPosition.X) > 0.1 ||
+            Math.Abs(finalPosition.Y - _resizeStartPosition.Y) > 0.1)
+        {
+            NodeResized?.Invoke(this, new NodeResizedEventArgs(
+                _resizingNode,
+                _resizeStartWidth,
+                _resizeStartHeight,
+                finalWidth,
+                finalHeight,
+                _resizeStartPosition,
+                finalPosition));
+        }
+
+        _isResizing = false;
+        _resizingNode = null;
+        e.Pointer.Capture(null);
+        e.Handled = true;
+    }
+
     #region Private Methods - Panning
 
     private void StartPanning(AvaloniaPoint position)
@@ -735,5 +915,56 @@ public class NodesDraggedEventArgs : EventArgs
     {
         OldPositions = oldPositions;
         NewPositions = newPositions;
+    }
+}
+
+/// <summary>
+/// Event args for node resize in progress.
+/// </summary>
+public class NodeResizingEventArgs : EventArgs
+{
+    public Node Node { get; }
+    public double NewWidth { get; }
+    public double NewHeight { get; }
+    public Core.Point NewPosition { get; }
+
+    public NodeResizingEventArgs(Node node, double newWidth, double newHeight, Core.Point newPosition)
+    {
+        Node = node;
+        NewWidth = newWidth;
+        NewHeight = newHeight;
+        NewPosition = newPosition;
+    }
+}
+
+/// <summary>
+/// Event args for node resize completion.
+/// </summary>
+public class NodeResizedEventArgs : EventArgs
+{
+    public Node Node { get; }
+    public double OldWidth { get; }
+    public double OldHeight { get; }
+    public double NewWidth { get; }
+    public double NewHeight { get; }
+    public Core.Point OldPosition { get; }
+    public Core.Point NewPosition { get; }
+
+    public NodeResizedEventArgs(
+        Node node,
+        double oldWidth,
+        double oldHeight,
+        double newWidth,
+        double newHeight,
+        Core.Point oldPosition,
+        Core.Point newPosition)
+    {
+        Node = node;
+        OldWidth = oldWidth;
+        OldHeight = oldHeight;
+        NewWidth = newWidth;
+        NewHeight = newHeight;
+        OldPosition = oldPosition;
+        NewPosition = newPosition;
     }
 }

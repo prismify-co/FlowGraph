@@ -21,6 +21,7 @@ public class GraphRenderer
     private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
     private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
     private readonly Dictionary<string, AvaloniaPath> _edgeVisiblePaths = new();  // Visible paths
+    private readonly Dictionary<string, List<Rectangle>> _resizeHandles = new();  // Resize handles per node
     
     // Current viewport state for transforming positions
     private ViewportState? _viewport;
@@ -114,6 +115,7 @@ public class GraphRenderer
         _portVisuals.Clear();
         _edgeVisuals.Clear();
         _edgeVisiblePaths.Clear();
+        _resizeHandles.Clear();
     }
 
     /// <summary>
@@ -227,13 +229,20 @@ public class GraphRenderer
     }
 
     /// <summary>
-    /// Gets the dimensions for a node, considering custom renderer sizes.
+    /// Gets the dimensions for a node, considering custom renderer sizes and node-specific overrides.
     /// </summary>
-    private (double width, double height) GetNodeDimensions(Node node)
+    public (double width, double height) GetNodeDimensions(Node node)
     {
+        // First check if the node has explicit dimensions
+        if (node.Width.HasValue && node.Height.HasValue)
+        {
+            return (node.Width.Value, node.Height.Value);
+        }
+
+        // Fall back to renderer-specified or default dimensions
         var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
-        var width = renderer.GetWidth(node, _settings) ?? _settings.NodeWidth;
-        var height = renderer.GetHeight(node, _settings) ?? _settings.NodeHeight;
+        var width = node.Width ?? renderer.GetWidth(node, _settings) ?? _settings.NodeWidth;
+        var height = node.Height ?? renderer.GetHeight(node, _settings) ?? _settings.NodeHeight;
         return (width, height);
     }
 
@@ -479,6 +488,180 @@ public class GraphRenderer
     }
 
     /// <summary>
+    /// Updates the size of a node visual.
+    /// </summary>
+    public void UpdateNodeSize(Node node, ThemeResources theme)
+    {
+        if (_nodeVisuals.TryGetValue(node.Id, out var control))
+        {
+            var scale = GetScale();
+            var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
+            var context = new NodeRenderContext
+            {
+                Theme = theme,
+                Settings = _settings,
+                Scale = scale
+            };
+            
+            var (width, height) = GetNodeDimensions(node);
+            renderer.UpdateSize(control, node, context, width, height);
+        }
+    }
+
+    /// <summary>
+    /// Renders resize handles for a selected node.
+    /// </summary>
+    public void RenderResizeHandles(
+        Canvas canvas, 
+        Node node, 
+        ThemeResources theme,
+        Action<Rectangle, Node, ResizeHandlePosition>? onHandleCreated = null)
+    {
+        // Remove existing handles for this node
+        RemoveResizeHandles(canvas, node.Id);
+
+        if (!node.IsSelected || !node.IsResizable)
+            return;
+
+        var scale = GetScale();
+        var handleSize = 8 * scale;
+        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
+        var screenPos = TransformToScreen(node.Position.X, node.Position.Y);
+        var scaledWidth = nodeWidth * scale;
+        var scaledHeight = nodeHeight * scale;
+
+        var handles = new List<Rectangle>();
+        var positions = new[]
+        {
+            ResizeHandlePosition.TopLeft,
+            ResizeHandlePosition.TopRight,
+            ResizeHandlePosition.BottomLeft,
+            ResizeHandlePosition.BottomRight,
+            ResizeHandlePosition.Top,
+            ResizeHandlePosition.Bottom,
+            ResizeHandlePosition.Left,
+            ResizeHandlePosition.Right
+        };
+
+        foreach (var position in positions)
+        {
+            var handle = CreateResizeHandle(handleSize, theme, node, position);
+            PositionResizeHandle(handle, screenPos, scaledWidth, scaledHeight, handleSize, position);
+            
+            canvas.Children.Add(handle);
+            handles.Add(handle);
+            
+            onHandleCreated?.Invoke(handle, node, position);
+        }
+
+        _resizeHandles[node.Id] = handles;
+    }
+
+    /// <summary>
+    /// Removes resize handles for a node.
+    /// </summary>
+    public void RemoveResizeHandles(Canvas canvas, string nodeId)
+    {
+        if (_resizeHandles.TryGetValue(nodeId, out var handles))
+        {
+            foreach (var handle in handles)
+            {
+                canvas.Children.Remove(handle);
+            }
+            _resizeHandles.Remove(nodeId);
+        }
+    }
+
+    /// <summary>
+    /// Removes all resize handles from the canvas.
+    /// </summary>
+    public void RemoveAllResizeHandles(Canvas canvas)
+    {
+        foreach (var (nodeId, handles) in _resizeHandles)
+        {
+            foreach (var handle in handles)
+            {
+                canvas.Children.Remove(handle);
+            }
+        }
+        _resizeHandles.Clear();
+    }
+
+    /// <summary>
+    /// Updates the position of resize handles for a node.
+    /// </summary>
+    public void UpdateResizeHandlePositions(Node node)
+    {
+        if (!_resizeHandles.TryGetValue(node.Id, out var handles))
+            return;
+
+        var scale = GetScale();
+        var handleSize = 8 * scale;
+        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
+        var screenPos = TransformToScreen(node.Position.X, node.Position.Y);
+        var scaledWidth = nodeWidth * scale;
+        var scaledHeight = nodeHeight * scale;
+
+        foreach (var handle in handles)
+        {
+            if (handle.Tag is (Node _, ResizeHandlePosition position))
+            {
+                PositionResizeHandle(handle, screenPos, scaledWidth, scaledHeight, handleSize, position);
+            }
+        }
+    }
+
+    private Rectangle CreateResizeHandle(double size, ThemeResources theme, Node node, ResizeHandlePosition position)
+    {
+        var cursor = position switch
+        {
+            ResizeHandlePosition.TopLeft or ResizeHandlePosition.BottomRight => StandardCursorType.TopLeftCorner,
+            ResizeHandlePosition.TopRight or ResizeHandlePosition.BottomLeft => StandardCursorType.TopRightCorner,
+            ResizeHandlePosition.Top or ResizeHandlePosition.Bottom => StandardCursorType.SizeNorthSouth,
+            ResizeHandlePosition.Left or ResizeHandlePosition.Right => StandardCursorType.SizeWestEast,
+            _ => StandardCursorType.Arrow
+        };
+
+        return new Rectangle
+        {
+            Width = size,
+            Height = size,
+            Fill = theme.NodeSelectedBorder,
+            Stroke = Brushes.White,
+            StrokeThickness = 1,
+            Cursor = new Cursor(cursor),
+            Tag = (node, position)
+        };
+    }
+
+    private void PositionResizeHandle(
+        Rectangle handle, 
+        AvaloniaPoint nodeScreenPos, 
+        double scaledWidth, 
+        double scaledHeight, 
+        double handleSize,
+        ResizeHandlePosition position)
+    {
+        var halfHandle = handleSize / 2;
+        
+        var (left, top) = position switch
+        {
+            ResizeHandlePosition.TopLeft => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y - halfHandle),
+            ResizeHandlePosition.TopRight => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y - halfHandle),
+            ResizeHandlePosition.BottomLeft => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
+            ResizeHandlePosition.BottomRight => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
+            ResizeHandlePosition.Top => (nodeScreenPos.X + scaledWidth / 2 - halfHandle, nodeScreenPos.Y - halfHandle),
+            ResizeHandlePosition.Bottom => (nodeScreenPos.X + scaledWidth / 2 - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
+            ResizeHandlePosition.Left => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y + scaledHeight / 2 - halfHandle),
+            ResizeHandlePosition.Right => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y + scaledHeight / 2 - halfHandle),
+            _ => (0.0, 0.0)
+        };
+
+        Canvas.SetLeft(handle, left);
+        Canvas.SetTop(handle, top);
+    }
+
+    /// <summary>
     /// Updates the selection visual of an edge.
     /// </summary>
     public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
@@ -489,41 +672,6 @@ public class GraphRenderer
             var scale = GetScale();
             visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
             visiblePath.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
-        }
-    }
-
-    /// <summary>
-    /// Renders the selection indicator for a collection of nodes.
-    /// </summary>
-    public void RenderSelection(Canvas canvas, IEnumerable<Node> selectedNodes, ThemeResources theme)
-    {
-        // Remove old selection indicators
-        var oldIndicators = canvas.Children.OfType<Rectangle>().Where(r => r.Tag is string tag && tag == "selectionIndicator").ToList();
-        foreach (var indicator in oldIndicators)
-        {
-            canvas.Children.Remove(indicator);
-        }
-
-        // Render new indicators
-        foreach (var node in selectedNodes)
-        {
-            if (_nodeVisuals.TryGetValue(node.Id, out var nodeBorder))
-            {
-                var indicator = new Rectangle
-                {
-                    Stroke = theme.NodeSelectedBorder,
-                    StrokeThickness = 2,
-                    Tag = "selectionIndicator"
-                };
-
-                // Position and size the indicator
-                Canvas.SetLeft(indicator, Canvas.GetLeft(nodeBorder) - 2);
-                Canvas.SetTop(indicator, Canvas.GetTop(nodeBorder) - 2);
-                indicator.Width = nodeBorder.Width + 4;
-                indicator.Height = nodeBorder.Height + 4;
-
-                canvas.Children.Add(indicator);
-            }
         }
     }
 

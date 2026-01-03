@@ -18,8 +18,8 @@ public class DefaultNodeRenderer : INodeRenderer
         var scale = context.Scale;
         var settings = context.Settings;
 
-        var width = GetWidth(node, settings) ?? settings.NodeWidth;
-        var height = GetHeight(node, settings) ?? settings.NodeHeight;
+        var width = node.Width ?? GetWidth(node, settings) ?? settings.NodeWidth;
+        var height = node.Height ?? GetHeight(node, settings) ?? settings.NodeHeight;
 
         var scaledWidth = width * scale;
         var scaledHeight = height * scale;
@@ -88,7 +88,20 @@ public class DefaultNodeRenderer : INodeRenderer
         }
     }
 
+    public virtual void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+    {
+        if (visual is Border border)
+        {
+            border.Width = width * context.Scale;
+            border.Height = height * context.Scale;
+        }
+    }
+
     public virtual double? GetWidth(Node node, FlowCanvasSettings settings) => null;
     
     public virtual double? GetHeight(Node node, FlowCanvasSettings settings) => null;
+
+    public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
+
+    public virtual double? GetMinHeight(Node node, FlowCanvasSettings settings) => 40;
 }
