@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="50" d:DesignHeight="220"
+             mc:Ignorable="d" d:DesignWidth="50" d:DesignHeight="260"
              x:Class="FlowGraph.Avalonia.Controls.FlowControls">
 
   <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
@@ -85,6 +85,41 @@
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center">
         <TextBlock Text="1:1" FontSize="11" FontWeight="Bold"/>
+      </Button>
+      
+      <Separator Margin="0,4"/>
+      
+      <Button Name="DebugToggleButton"
+              Width="32" Height="32"
+              ToolTip.Tip="Toggle Debug Panel"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center">
+        <Viewbox Width="16" Height="16">
+          <Canvas Width="24" Height="24">
+            <!-- Bug icon -->
+            <Ellipse Width="12" Height="16" Canvas.Left="6" Canvas.Top="6"
+                     Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                     StrokeThickness="2"/>
+            <Line StartPoint="3,10" EndPoint="8,10"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+            <Line StartPoint="16,10" EndPoint="21,10"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+            <Line StartPoint="4,16" EndPoint="8,14"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+            <Line StartPoint="20,16" EndPoint="16,14"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+            <Line StartPoint="6,4" EndPoint="9,7"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+            <Line StartPoint="18,4" EndPoint="15,7"
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                  StrokeThickness="2"/>
+          </Canvas>
+        </Viewbox>
       </Button>
     </StackPanel>
   </Border>

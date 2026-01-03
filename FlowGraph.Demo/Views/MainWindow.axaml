@@ -22,16 +22,19 @@
         <!-- Controls Panel -->
         <controls:FlowControls 
             TargetCanvas="{Binding #FlowCanvas}"
+            DiagnosticsPanel="{Binding #DiagnosticsPanel}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="16"/>
         
-        <!-- Diagnostics Panel -->
+        <!-- Diagnostics Panel (hidden by default) -->
         <controls:FlowDiagnostics
+            x:Name="DiagnosticsPanel"
             TargetCanvas="{Binding #FlowCanvas}"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Margin="16"/>
+            Margin="16"
+            IsVisible="False"/>
         
         <!-- Minimap -->
         <controls:FlowMinimap
