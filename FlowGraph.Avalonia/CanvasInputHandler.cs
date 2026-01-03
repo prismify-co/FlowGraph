@@ -53,6 +53,11 @@ public class CanvasInputHandler
     public event EventHandler<ConnectionCompletedEventArgs>? ConnectionCompleted;
 
     /// <summary>
+    /// Event raised when an edge is clicked.
+    /// </summary>
+    public event EventHandler<EdgeClickedEventArgs>? EdgeClicked;
+
+    /// <summary>
     /// Event raised when nodes should be deselected.
     /// </summary>
     public event EventHandler? DeselectAllRequested;
@@ -366,6 +371,38 @@ public class CanvasInputHandler
     }
 
     /// <summary>
+    /// Handles edge pointer pressed (click on edge).
+    /// </summary>
+    public void HandleEdgePointerPressed(AvaloniaPath edgePath, Edge edge, PointerPressedEventArgs e, Graph? graph)
+    {
+        var point = e.GetCurrentPoint(edgePath);
+
+        if (point.Properties.IsLeftButtonPressed && graph != null)
+        {
+            bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+
+            // If Ctrl is not held, deselect all other edges and nodes
+            if (!ctrlHeld)
+            {
+                foreach (var n in graph.Nodes)
+                {
+                    n.IsSelected = false;
+                }
+                foreach (var ed in graph.Edges.Where(ed => ed.Id != edge.Id))
+                {
+                    ed.IsSelected = false;
+                }
+            }
+
+            // Toggle or select the edge
+            edge.IsSelected = ctrlHeld ? !edge.IsSelected : true;
+            
+            EdgeClicked?.Invoke(this, new EdgeClickedEventArgs(edge, ctrlHeld));
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
     /// Handles port pointer entered (hover).
     /// </summary>
     public void HandlePortPointerEntered(Ellipse portVisual, ThemeResources theme)
@@ -573,6 +610,21 @@ public class ConnectionCompletedEventArgs : EventArgs
         SourcePort = sourcePort;
         TargetNode = targetNode;
         TargetPort = targetPort;
+    }
+}
+
+/// <summary>
+/// Event args for edge clicked event.
+/// </summary>
+public class EdgeClickedEventArgs : EventArgs
+{
+    public Edge Edge { get; }
+    public bool WasCtrlHeld { get; }
+
+    public EdgeClickedEventArgs(Edge edge, bool wasCtrlHeld)
+    {
+        Edge = edge;
+        WasCtrlHeld = wasCtrlHeld;
     }
 }
 

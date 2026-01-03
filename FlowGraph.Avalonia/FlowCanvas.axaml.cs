@@ -82,9 +82,10 @@ public partial class FlowCanvas : UserControl
 
         // Subscribe to input handler events
         _inputHandler.ConnectionCompleted += OnConnectionCompleted;
-        _inputHandler.DeselectAllRequested += (_, _) => DeselectAllNodes();
+        _inputHandler.EdgeClicked += OnEdgeClicked;
+        _inputHandler.DeselectAllRequested += (_, _) => DeselectAll();
         _inputHandler.SelectAllRequested += (_, _) => SelectAllNodes();
-        _inputHandler.DeleteSelectedRequested += (_, _) => DeleteSelectedNodes();
+        _inputHandler.DeleteSelectedRequested += (_, _) => DeleteSelected();
         _inputHandler.GridRenderRequested += (_, _) => RenderGrid();
 
         // Subscribe to viewport changes
@@ -215,6 +216,15 @@ public partial class FlowCanvas : UserControl
         }
     }
 
+    private void OnEdgePointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is global::Avalonia.Controls.Shapes.Path edgePath && edgePath.Tag is Edge edge)
+        {
+            _inputHandler.HandleEdgePointerPressed(edgePath, edge, e, Graph);
+            Focus();
+        }
+    }
+
     private void OnConnectionCompleted(object? sender, ConnectionCompletedEventArgs e)
     {
         // Check if connection already exists
@@ -238,10 +248,18 @@ public partial class FlowCanvas : UserControl
 
     #region Selection Management
 
-    private void DeleteSelectedNodes()
+    private void DeleteSelected()
     {
         if (Graph == null) return;
 
+        // Delete selected edges first
+        var selectedEdges = Graph.Edges.Where(e => e.IsSelected).ToList();
+        foreach (var edge in selectedEdges)
+        {
+            Graph.RemoveEdge(edge.Id);
+        }
+
+        // Then delete selected nodes (which also removes their edges)
         var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
         foreach (var node in selectedNodes)
         {
@@ -259,13 +277,36 @@ public partial class FlowCanvas : UserControl
         }
     }
 
-    private void DeselectAllNodes()
+    private void DeselectAll()
     {
         if (Graph == null) return;
 
         foreach (var node in Graph.Nodes)
         {
             node.IsSelected = false;
+        }
+        
+        foreach (var edge in Graph.Edges)
+        {
+            edge.IsSelected = false;
+        }
+        
+        // Re-render edges to update visual state
+        RenderEdges();
+    }
+
+    private void OnEdgeClicked(object? sender, EdgeClickedEventArgs e)
+    {
+        // Update visual state
+        _graphRenderer.UpdateEdgeSelection(e.Edge, _theme);
+        
+        // Also deselect nodes if Ctrl was not held
+        if (!e.WasCtrlHeld && Graph != null)
+        {
+            foreach (var node in Graph.Nodes)
+            {
+                node.IsSelected = false;
+            }
         }
     }
 
@@ -423,6 +464,16 @@ public partial class FlowCanvas : UserControl
                     portVisual.PointerEntered += OnPortPointerEntered;
                     portVisual.PointerExited += OnPortPointerExited;
                 }
+            }
+        }
+        
+        // Attach edge event handlers
+        foreach (var edge in Graph.Edges)
+        {
+            var edgeVisual = _graphRenderer.GetEdgeVisual(edge.Id);
+            if (edgeVisual != null)
+            {
+                edgeVisual.PointerPressed += OnEdgePointerPressed;
             }
         }
     }

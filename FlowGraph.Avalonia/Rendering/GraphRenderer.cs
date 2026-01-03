@@ -18,6 +18,7 @@ public class GraphRenderer
     private readonly FlowCanvasSettings _settings;
     private readonly Dictionary<string, Border> _nodeVisuals = new();
     private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
+    private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();
     
     // Current viewport state for transforming positions
     private ViewportState? _viewport;
@@ -81,12 +82,21 @@ public class GraphRenderer
     }
 
     /// <summary>
+    /// Gets the visual element for an edge.
+    /// </summary>
+    public AvaloniaPath? GetEdgeVisual(string edgeId)
+    {
+        return _edgeVisuals.TryGetValue(edgeId, out var path) ? path : null;
+    }
+
+    /// <summary>
     /// Clears all rendered visuals.
     /// </summary>
     public void Clear()
     {
         _nodeVisuals.Clear();
         _portVisuals.Clear();
+        _edgeVisuals.Clear();
     }
 
     /// <summary>
@@ -227,10 +237,14 @@ public class GraphRenderer
     /// </summary>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
+        // Clear edge visuals dictionary
+        _edgeVisuals.Clear();
+        
         // Remove existing edges, markers, and labels
         var elementsToRemove = canvas.Children
             .Where(c => 
                 (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
+                (c is AvaloniaPath p2 && p2 != excludePath && p2.Tag is Edge) ||
                 (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel"))
             .ToList();
         
@@ -294,11 +308,15 @@ public class GraphRenderer
             Data = pathGeometry,
             Stroke = strokeBrush,
             StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
-            Tag = "edge"
+            Tag = edge,  // Store the Edge object for click detection
+            Cursor = new Cursor(StandardCursorType.Hand)
         };
 
         // Insert at beginning so nodes render on top
         canvas.Children.Insert(0, path);
+        
+        // Track the edge visual
+        _edgeVisuals[edge.Id] = path;
 
         // Render end marker (arrow)
         if (edge.MarkerEnd != EdgeMarker.None)
@@ -425,6 +443,54 @@ public class GraphRenderer
         {
             border.BorderBrush = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
             border.BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2);
+        }
+    }
+
+    /// <summary>
+    /// Updates the selection visual of an edge.
+    /// </summary>
+    public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
+    {
+        if (_edgeVisuals.TryGetValue(edge.Id, out var path))
+        {
+            var scale = GetScale();
+            path.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
+            path.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
+        }
+    }
+
+    /// <summary>
+    /// Renders the selection indicator for a collection of nodes.
+    /// </summary>
+    public void RenderSelection(Canvas canvas, IEnumerable<Node> selectedNodes, ThemeResources theme)
+    {
+        // Remove old selection indicators
+        var oldIndicators = canvas.Children.OfType<Rectangle>().Where(r => r.Tag is string tag && tag == "selectionIndicator").ToList();
+        foreach (var indicator in oldIndicators)
+        {
+            canvas.Children.Remove(indicator);
+        }
+
+        // Render new indicators
+        foreach (var node in selectedNodes)
+        {
+            if (_nodeVisuals.TryGetValue(node.Id, out var nodeBorder))
+            {
+                var indicator = new Rectangle
+                {
+                    Stroke = theme.NodeSelectedBorder,
+                    StrokeThickness = 2,
+                    Tag = "selectionIndicator"
+                };
+
+                // Position and size the indicator
+                Canvas.SetLeft(indicator, Canvas.GetLeft(nodeBorder) - 2);
+                Canvas.SetTop(indicator, Canvas.GetTop(nodeBorder) - 2);
+                indicator.Width = nodeBorder.Width + 4;
+                indicator.Height = nodeBorder.Height + 4;
+
+                canvas.Children.Add(indicator);
+            }
         }
     }
 
