@@ -30,14 +30,14 @@ public partial class FlowMinimap : UserControl
     private ViewportState? _subscribedViewport;
     
     // Cached transform values for coordinate conversion
+    // These transform from canvas coordinates to minimap coordinates
     private double _scale;
-    private double _offsetX;
-    private double _offsetY;
-    private double _graphMinX;
-    private double _graphMinY;
+    private double _translateX;
+    private double _translateY;
 
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
+    private const double MinimapPadding = 50;
 
     public FlowMinimap()
     {
@@ -207,6 +207,28 @@ public partial class FlowMinimap : UserControl
         RenderMinimap();
     }
 
+    /// <summary>
+    /// Transforms a canvas coordinate to minimap coordinate.
+    /// </summary>
+    private AvaloniaPoint CanvasToMinimap(double canvasX, double canvasY)
+    {
+        return new AvaloniaPoint(
+            canvasX * _scale + _translateX,
+            canvasY * _scale + _translateY
+        );
+    }
+
+    /// <summary>
+    /// Transforms a minimap coordinate to canvas coordinate.
+    /// </summary>
+    private AvaloniaPoint MinimapToCanvas(double minimapX, double minimapY)
+    {
+        return new AvaloniaPoint(
+            (minimapX - _translateX) / _scale,
+            (minimapY - _translateY) / _scale
+        );
+    }
+
     private void RenderMinimap()
     {
         if (_minimapCanvas == null || TargetCanvas?.Graph == null)
@@ -219,29 +241,36 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
-        // Calculate bounding box
-        _graphMinX = graph.Nodes.Min(n => n.Position.X);
-        _graphMinY = graph.Nodes.Min(n => n.Position.Y);
-        var maxX = graph.Nodes.Max(n => n.Position.X + NodeWidth);
-        var maxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight);
+        // Calculate bounding box of all nodes (in canvas coordinates)
+        var minX = graph.Nodes.Min(n => n.Position.X) - MinimapPadding;
+        var minY = graph.Nodes.Min(n => n.Position.Y) - MinimapPadding;
+        var maxX = graph.Nodes.Max(n => n.Position.X + NodeWidth) + MinimapPadding;
+        var maxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight) + MinimapPadding;
 
-        var graphWidth = maxX - _graphMinX + 100; // Add padding
-        var graphHeight = maxY - _graphMinY + 100;
+        var graphWidth = maxX - minX;
+        var graphHeight = maxY - minY;
 
         var minimapWidth = Bounds.Width - 8; // Account for border padding
         var minimapHeight = Bounds.Height - 8;
 
-        if (minimapWidth <= 0 || minimapHeight <= 0)
+        if (minimapWidth <= 0 || minimapHeight <= 0 || graphWidth <= 0 || graphHeight <= 0)
             return;
 
-        // Calculate and cache scale
+        // Calculate scale to fit graph in minimap
         var scaleX = minimapWidth / graphWidth;
         var scaleY = minimapHeight / graphHeight;
         _scale = Math.Min(scaleX, scaleY);
 
-        // Calculate and cache offset to center
-        _offsetX = (minimapWidth - graphWidth * _scale) / 2 - (_graphMinX - 50) * _scale;
-        _offsetY = (minimapHeight - graphHeight * _scale) / 2 - (_graphMinY - 50) * _scale;
+        // Calculate translation to center the graph in the minimap
+        // Formula: minimapPos = canvasPos * scale + translate
+        // We want the center of the graph to map to the center of the minimap
+        var graphCenterX = (minX + maxX) / 2;
+        var graphCenterY = (minY + maxY) / 2;
+        var minimapCenterX = minimapWidth / 2;
+        var minimapCenterY = minimapHeight / 2;
+
+        _translateX = minimapCenterX - graphCenterX * _scale;
+        _translateY = minimapCenterY - graphCenterY * _scale;
 
         // Draw edges
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
@@ -253,14 +282,17 @@ public partial class FlowMinimap : UserControl
             if (sourceNode == null || targetNode == null)
                 continue;
 
+            var startPos = CanvasToMinimap(
+                sourceNode.Position.X + NodeWidth / 2,
+                sourceNode.Position.Y + NodeHeight / 2);
+            var endPos = CanvasToMinimap(
+                targetNode.Position.X + NodeWidth / 2,
+                targetNode.Position.Y + NodeHeight / 2);
+
             var line = new Line
             {
-                StartPoint = new AvaloniaPoint(
-                    sourceNode.Position.X * _scale + _offsetX + (NodeWidth * _scale / 2),
-                    sourceNode.Position.Y * _scale + _offsetY + (NodeHeight * _scale / 2)),
-                EndPoint = new AvaloniaPoint(
-                    targetNode.Position.X * _scale + _offsetX + (NodeWidth * _scale / 2),
-                    targetNode.Position.Y * _scale + _offsetY + (NodeHeight * _scale / 2)),
+                StartPoint = startPos,
+                EndPoint = endPos,
                 Stroke = edgeBrush,
                 StrokeThickness = 1
             };
@@ -272,6 +304,8 @@ public partial class FlowMinimap : UserControl
         var selectedBrush = new SolidColorBrush(Color.Parse("#FF6B00"));
         foreach (var node in graph.Nodes)
         {
+            var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
+
             var rect = new Rectangle
             {
                 Width = Math.Max(NodeWidth * _scale, 4),
@@ -281,8 +315,8 @@ public partial class FlowMinimap : UserControl
                 RadiusY = 2
             };
 
-            Canvas.SetLeft(rect, node.Position.X * _scale + _offsetX);
-            Canvas.SetTop(rect, node.Position.Y * _scale + _offsetY);
+            Canvas.SetLeft(rect, pos.X);
+            Canvas.SetTop(rect, pos.Y);
 
             _minimapCanvas.Children.Add(rect);
         }
@@ -311,16 +345,14 @@ public partial class FlowMinimap : UserControl
         if (visibleRect.Width <= 0)
             return;
 
-        // Transform viewport rect to minimap coordinates
-        var left = visibleRect.X * _scale + _offsetX;
-        var top = visibleRect.Y * _scale + _offsetY;
-        var width = visibleRect.Width * _scale;
-        var height = visibleRect.Height * _scale;
+        // Transform viewport rect corners to minimap coordinates
+        var topLeft = CanvasToMinimap(visibleRect.X, visibleRect.Y);
+        var size = new Size(visibleRect.Width * _scale, visibleRect.Height * _scale);
 
-        Canvas.SetLeft(_viewportRect, left);
-        Canvas.SetTop(_viewportRect, top);
-        _viewportRect.Width = Math.Max(width, 10);
-        _viewportRect.Height = Math.Max(height, 10);
+        Canvas.SetLeft(_viewportRect, topLeft.X);
+        Canvas.SetTop(_viewportRect, topLeft.Y);
+        _viewportRect.Width = Math.Max(size.Width, 10);
+        _viewportRect.Height = Math.Max(size.Height, 10);
     }
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -362,11 +394,10 @@ public partial class FlowMinimap : UserControl
         if (TargetCanvas == null || _scale <= 0)
             return;
 
-        // Convert minimap point to graph coordinates
-        var graphX = (minimapPoint.X - _offsetX) / _scale;
-        var graphY = (minimapPoint.Y - _offsetY) / _scale;
+        // Convert minimap point to canvas coordinates
+        var canvasPoint = MinimapToCanvas(minimapPoint.X, minimapPoint.Y);
 
         // Center the canvas on this point
-        TargetCanvas.CenterOn(graphX, graphY);
+        TargetCanvas.CenterOn(canvasPoint.X, canvasPoint.Y);
     }
 }
