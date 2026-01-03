@@ -208,7 +208,8 @@ public class CanvasInputHandler
         }
         else if (_isCreatingConnection)
         {
-            _connectionEndPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
+            // Store the screen position directly (not converted to canvas)
+            _connectionEndPoint = e.GetPosition(rootPanel);
             UpdateTempConnectionLine();
         }
     }
@@ -352,7 +353,8 @@ public class CanvasInputHandler
             _connectionSourceNode = node;
             _connectionSourcePort = port;
             _connectionFromOutput = isOutput;
-            _connectionEndPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
+            // Store screen coordinates (not canvas coordinates)
+            _connectionEndPoint = e.GetPosition(rootPanel);
 
             // Create temporary connection line
             _tempConnectionLine = new AvaloniaPath
@@ -360,7 +362,8 @@ public class CanvasInputHandler
                 Stroke = theme.EdgeStroke,
                 StrokeThickness = 2,
                 StrokeDashArray = [5, 3],
-                Opacity = 0.7
+                Opacity = 0.7,
+                Cursor = new Cursor(StandardCursorType.Hand)  // Hand cursor during drag
             };
             canvas?.Children.Add(_tempConnectionLine);
             UpdateTempConnectionLine();
@@ -552,8 +555,9 @@ public class CanvasInputHandler
 
     private void CompleteConnection(PointerReleasedEventArgs e, Panel? rootPanel, Canvas? mainCanvas, Graph? graph)
     {
-        var canvasPoint = _viewport.ScreenToCanvas(e.GetPosition(rootPanel));
-        var hitElement = mainCanvas?.InputHitTest(canvasPoint);
+        // Use screen position for hit testing since visuals are in screen coords
+        var screenPoint = e.GetPosition(rootPanel);
+        var hitElement = mainCanvas?.InputHitTest(screenPoint);
 
         if (hitElement is Ellipse portVisual && 
             portVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
