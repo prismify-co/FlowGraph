@@ -227,12 +227,21 @@ public class GraphRenderer
     /// </summary>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
-        // Remove existing edges
-        var edgesToRemove = canvas.Children.OfType<AvaloniaPath>()
-            .Where(p => p != excludePath)
+        // Remove existing edges and markers
+        var elementsToRemove = canvas.Children
+            .Where(c => c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker"))
             .ToList();
         
-        foreach (var edge in edgesToRemove)
+        foreach (var element in elementsToRemove)
+        {
+            canvas.Children.Remove(element);
+        }
+        
+        // Also remove old edges without tags (backward compatibility)
+        var oldEdges = canvas.Children.OfType<AvaloniaPath>()
+            .Where(p => p != excludePath && p.Tag == null)
+            .ToList();
+        foreach (var edge in oldEdges)
         {
             canvas.Children.Remove(edge);
         }
@@ -245,7 +254,7 @@ public class GraphRenderer
     }
 
     /// <summary>
-    /// Renders a single edge.
+    /// Renders a single edge with its markers and optional label.
     /// </summary>
     public AvaloniaPath? RenderEdge(Canvas canvas, Edge edge, Graph graph, ThemeResources theme)
     {
@@ -271,20 +280,90 @@ public class GraphRenderer
         var startPoint = TransformToScreen(sourceX, sourceY);
         var endPoint = TransformToScreen(targetX, targetY);
 
-        var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint);
-
         var scale = GetScale();
+        
+        // Create path based on edge type
+        var pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type);
+
+        var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
+        
         var path = new AvaloniaPath
         {
             Data = pathGeometry,
-            Stroke = theme.EdgeStroke,
-            StrokeThickness = 2 * scale
+            Stroke = strokeBrush,
+            StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
+            Tag = "edge"
         };
 
         // Insert at beginning so nodes render on top
         canvas.Children.Insert(0, path);
 
+        // Render end marker (arrow)
+        if (edge.MarkerEnd != EdgeMarker.None)
+        {
+            RenderEdgeMarker(canvas, endPoint, startPoint, edge.MarkerEnd, strokeBrush, scale);
+        }
+
+        // Render start marker
+        if (edge.MarkerStart != EdgeMarker.None)
+        {
+            RenderEdgeMarker(canvas, startPoint, endPoint, edge.MarkerStart, strokeBrush, scale);
+        }
+
+        // Render label if present
+        if (!string.IsNullOrEmpty(edge.Label))
+        {
+            RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale);
+        }
+
         return path;
+    }
+
+    /// <summary>
+    /// Renders a marker (arrow) at an edge endpoint.
+    /// </summary>
+    private void RenderEdgeMarker(Canvas canvas, AvaloniaPoint point, AvaloniaPoint fromPoint, EdgeMarker marker, IBrush stroke, double scale)
+    {
+        var angle = EdgePathHelper.CalculateAngle(fromPoint, point);
+        var markerSize = 10 * scale;
+        var isClosed = marker == EdgeMarker.ArrowClosed;
+        
+        var markerGeometry = EdgePathHelper.CreateArrowMarker(point, angle, markerSize, isClosed);
+        
+        var markerPath = new AvaloniaPath
+        {
+            Data = markerGeometry,
+            Stroke = stroke,
+            StrokeThickness = 2 * scale,
+            Fill = isClosed ? stroke : null,
+            Tag = "marker"
+        };
+
+        canvas.Children.Insert(0, markerPath);
+    }
+
+    /// <summary>
+    /// Renders a label on an edge.
+    /// </summary>
+    private void RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale)
+    {
+        var midPoint = new AvaloniaPoint((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+        
+        var textBlock = new TextBlock
+        {
+            Text = label,
+            FontSize = 12 * scale,
+            Foreground = theme.NodeText,
+            Background = theme.NodeBackground,
+            Padding = new Thickness(4 * scale, 2 * scale, 4 * scale, 2 * scale)
+        };
+
+        // We need to measure the text to center it properly
+        // For now, just position at midpoint (will be slightly off-center)
+        Canvas.SetLeft(textBlock, midPoint.X);
+        Canvas.SetTop(textBlock, midPoint.Y - 10 * scale);
+
+        canvas.Children.Add(textBlock);
     }
 
     /// <summary>

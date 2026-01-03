@@ -10,14 +10,15 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         MyGraph = new Graph();
 
-        var node1 = new Node
+        // Row 1: Bezier (default)
+        var inputNode = new Node
         {
             Type = "Input",
             Position = new Core.Point(100, 100),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
         };
 
-        var node2 = new Node
+        var processNode = new Node
         {
             Type = "Process",
             Position = new Core.Point(400, 150),
@@ -25,31 +26,122 @@ public partial class MainWindowViewModel : ViewModelBase
             Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
         };
 
-        var node3 = new Node
+        var outputNode = new Node
         {
             Type = "Output",
             Position = new Core.Point(700, 100),
             Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }]
         };
 
-        MyGraph.AddNode(node1);
-        MyGraph.AddNode(node2);
-        MyGraph.AddNode(node3);
+        // Row 2: Different edge types
+        var straightStart = new Node
+        {
+            Type = "Straight",
+            Position = new Core.Point(100, 300),
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
+        };
 
+        var straightEnd = new Node
+        {
+            Type = "Straight End",
+            Position = new Core.Point(400, 350),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
+        };
+
+        var stepStart = new Node
+        {
+            Type = "Step",
+            Position = new Core.Point(100, 500),
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
+        };
+
+        var stepEnd = new Node
+        {
+            Type = "Step End",
+            Position = new Core.Point(400, 550),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
+        };
+
+        var smoothStepStart = new Node
+        {
+            Type = "SmoothStep",
+            Position = new Core.Point(500, 500),
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
+        };
+
+        var smoothStepEnd = new Node
+        {
+            Type = "Smooth End",
+            Position = new Core.Point(800, 550),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
+        };
+
+        MyGraph.AddNode(inputNode);
+        MyGraph.AddNode(processNode);
+        MyGraph.AddNode(outputNode);
+        MyGraph.AddNode(straightStart);
+        MyGraph.AddNode(straightEnd);
+        MyGraph.AddNode(stepStart);
+        MyGraph.AddNode(stepEnd);
+        MyGraph.AddNode(smoothStepStart);
+        MyGraph.AddNode(smoothStepEnd);
+
+        // Bezier edges (default) with arrow
         MyGraph.AddEdge(new Edge
         {
-            Source = node1.Id,
-            Target = node2.Id,
+            Source = inputNode.Id,
+            Target = processNode.Id,
             SourcePort = "out",
-            TargetPort = "in"
+            TargetPort = "in",
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "Bezier"
         });
 
         MyGraph.AddEdge(new Edge
         {
-            Source = node2.Id,
-            Target = node3.Id,
+            Source = processNode.Id,
+            Target = outputNode.Id,
             SourcePort = "out",
-            TargetPort = "in"
+            TargetPort = "in",
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.ArrowClosed
+        });
+
+        // Straight edge
+        MyGraph.AddEdge(new Edge
+        {
+            Source = straightStart.Id,
+            Target = straightEnd.Id,
+            SourcePort = "out",
+            TargetPort = "in",
+            Type = EdgeType.Straight,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "Straight"
+        });
+
+        // Step edge
+        MyGraph.AddEdge(new Edge
+        {
+            Source = stepStart.Id,
+            Target = stepEnd.Id,
+            SourcePort = "out",
+            TargetPort = "in",
+            Type = EdgeType.Step,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "Step"
+        });
+
+        // Smooth step edge
+        MyGraph.AddEdge(new Edge
+        {
+            Source = smoothStepStart.Id,
+            Target = smoothStepEnd.Id,
+            SourcePort = "out",
+            TargetPort = "in",
+            Type = EdgeType.SmoothStep,
+            MarkerEnd = EdgeMarker.ArrowClosed,
+            Label = "SmoothStep"
         });
     }
 }
