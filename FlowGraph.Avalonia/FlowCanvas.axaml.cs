@@ -438,19 +438,49 @@ public partial class FlowCanvas : UserControl
     #region Public API
 
     /// <summary>
-    /// Zooms in by one step.
+    /// Zooms in by one step, keeping the graph centered.
     /// </summary>
-    public void ZoomIn() => _viewport.ZoomIn();
+    public void ZoomIn()
+    {
+        var zoomCenter = GetGraphCenterInScreenCoords();
+        _viewport.ZoomIn(zoomCenter);
+    }
 
     /// <summary>
-    /// Zooms out by one step.
+    /// Zooms out by one step, keeping the graph centered.
     /// </summary>
-    public void ZoomOut() => _viewport.ZoomOut();
+    public void ZoomOut()
+    {
+        var zoomCenter = GetGraphCenterInScreenCoords();
+        _viewport.ZoomOut(zoomCenter);
+    }
 
     /// <summary>
-    /// Resets zoom to 100%.
+    /// Resets zoom to 100%, keeping the graph centered.
     /// </summary>
-    public void ResetZoom() => _viewport.ResetZoom();
+    public void ResetZoom()
+    {
+        var zoomCenter = GetGraphCenterInScreenCoords();
+        _viewport.SetZoom(1.0, zoomCenter);
+    }
+
+    /// <summary>
+    /// Gets the center of the graph in screen coordinates.
+    /// Falls back to view center if no nodes exist.
+    /// </summary>
+    private global::Avalonia.Point? GetGraphCenterInScreenCoords()
+    {
+        if (Graph == null || Graph.Nodes.Count == 0)
+            return null; // Will use view center as fallback
+
+        var minX = Graph.Nodes.Min(n => n.Position.X);
+        var minY = Graph.Nodes.Min(n => n.Position.Y);
+        var maxX = Graph.Nodes.Max(n => n.Position.X + Settings.NodeWidth);
+        var maxY = Graph.Nodes.Max(n => n.Position.Y + Settings.NodeHeight);
+
+        var graphCenterCanvas = new global::Avalonia.Point((minX + maxX) / 2, (minY + maxY) / 2);
+        return _viewport.CanvasToScreen(graphCenterCanvas);
+    }
 
     /// <summary>
     /// Sets the zoom level.
