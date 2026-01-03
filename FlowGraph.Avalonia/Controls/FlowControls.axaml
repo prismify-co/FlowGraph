@@ -24,14 +24,32 @@
               ToolTip.Tip="Zoom Out"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center">
-        <TextBlock Text="?" FontSize="18" FontWeight="Bold"/>
+        <TextBlock Text="-" FontSize="18" FontWeight="Bold"/>
       </Button>
       <Button Name="FitViewButton"
               Width="32" Height="32"
               ToolTip.Tip="Fit to View"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center">
-        <TextBlock Text="?" FontSize="16" FontWeight="Bold"/>
+        <Viewbox Width="16" Height="16">
+          <Canvas Width="24" Height="24">
+            <Rectangle Width="20" Height="14" Canvas.Left="2" Canvas.Top="5" 
+                       Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}" 
+                       StrokeThickness="2"/>
+            <Line StartPoint="0,12" EndPoint="6,12" 
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}" 
+                  StrokeThickness="2"/>
+            <Line StartPoint="18,12" EndPoint="24,12" 
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}" 
+                  StrokeThickness="2"/>
+            <Line StartPoint="12,0" EndPoint="12,5" 
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}" 
+                  StrokeThickness="2"/>
+            <Line StartPoint="12,19" EndPoint="12,24" 
+                  Stroke="{DynamicResource SystemControlForegroundBaseHighBrush}" 
+                  StrokeThickness="2"/>
+          </Canvas>
+        </Viewbox>
       </Button>
       <Button Name="ResetZoomButton"
               Width="32" Height="32"
