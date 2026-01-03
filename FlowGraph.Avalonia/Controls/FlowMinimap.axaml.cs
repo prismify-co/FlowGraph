@@ -242,8 +242,21 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
+        // Get the actual canvas bounds (this is the area we can draw in)
+        var minimapWidth = _minimapCanvas.Bounds.Width;
+        var minimapHeight = _minimapCanvas.Bounds.Height;
+
+        // If canvas hasn't been laid out yet, use the control bounds minus border
+        if (minimapWidth <= 0 || minimapHeight <= 0)
+        {
+            minimapWidth = Bounds.Width - 2; // Account for border
+            minimapHeight = Bounds.Height - 2;
+        }
+
+        if (minimapWidth <= 0 || minimapHeight <= 0)
+            return;
+
         // Calculate bounding box of all nodes only (in canvas coordinates)
-        // Don't include viewport - let it extend beyond minimap if needed
         var graphMinX = graph.Nodes.Min(n => n.Position.X) - MinimapPadding;
         var graphMinY = graph.Nodes.Min(n => n.Position.Y) - MinimapPadding;
         var graphMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth) + MinimapPadding;
@@ -252,10 +265,7 @@ public partial class FlowMinimap : UserControl
         var graphWidth = graphMaxX - graphMinX;
         var graphHeight = graphMaxY - graphMinY;
 
-        var minimapWidth = Bounds.Width - 8; // Account for border padding
-        var minimapHeight = Bounds.Height - 8;
-
-        if (minimapWidth <= 0 || minimapHeight <= 0 || graphWidth <= 0 || graphHeight <= 0)
+        if (graphWidth <= 0 || graphHeight <= 0)
             return;
 
         // Calculate scale to fit graph in minimap
@@ -264,7 +274,6 @@ public partial class FlowMinimap : UserControl
         _scale = Math.Min(scaleX, scaleY);
 
         // Calculate translation to center the graph in the minimap
-        // Formula: minimapPos = canvasPos * scale + translate
         var graphCenterX = (graphMinX + graphMaxX) / 2;
         var graphCenterY = (graphMinY + graphMaxY) / 2;
         var minimapCenterX = minimapWidth / 2;
