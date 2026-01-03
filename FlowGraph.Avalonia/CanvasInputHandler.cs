@@ -156,29 +156,36 @@ public class CanvasInputHandler
 
         if (point.Properties.IsLeftButtonPressed)
         {
-            var canvasPoint = _viewport.ScreenToCanvas(position);
-            var hitElement = mainCanvas?.InputHitTest(canvasPoint);
+            // Use screen position for hit testing since visuals are in screen coords
+            var hitElement = mainCanvas?.InputHitTest(position);
             var isEmptyCanvas = hitElement == null || hitElement == mainCanvas;
 
             if (isEmptyCanvas)
             {
                 bool shiftHeld = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+                bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
                 // Determine action based on settings and modifier keys
                 bool shouldPan = _settings.PanOnDrag ? !shiftHeld : shiftHeld;
 
                 if (shouldPan)
                 {
+                    // Deselect all when clicking on empty canvas (unless Ctrl is held)
+                    if (!ctrlHeld)
+                    {
+                        DeselectAllRequested?.Invoke(this, EventArgs.Empty);
+                    }
                     StartPanning(position);
                     e.Pointer.Capture((IInputElement?)rootPanel);
                 }
                 else
                 {
-                    // Start box selection
-                    if (!e.KeyModifiers.HasFlag(KeyModifiers.Control))
+                    // Start box selection - deselect unless Ctrl is held
+                    if (!ctrlHeld)
                     {
                         DeselectAllRequested?.Invoke(this, EventArgs.Empty);
                     }
+                    var canvasPoint = _viewport.ScreenToCanvas(position);
                     StartBoxSelection(canvasPoint, mainCanvas);
                     e.Pointer.Capture((IInputElement?)rootPanel);
                 }
