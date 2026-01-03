@@ -245,9 +245,9 @@ public class CanvasInputHandler
     /// <summary>
     /// Handles node pointer pressed.
     /// </summary>
-    public void HandleNodePointerPressed(Border border, Node node, PointerPressedEventArgs e, Panel? rootPanel, Graph? graph)
+    public void HandleNodePointerPressed(Control control, Node node, PointerPressedEventArgs e, Panel? rootPanel, Graph? graph)
     {
-        var point = e.GetCurrentPoint(border);
+        var point = e.GetCurrentPoint(control);
 
         if (point.Properties.IsLeftButtonPressed && graph != null)
         {
@@ -273,7 +273,7 @@ public class CanvasInputHandler
             // Start dragging all selected nodes
             StartDraggingNodes(graph, e.GetPosition(rootPanel));
 
-            e.Pointer.Capture(border);
+            e.Pointer.Capture(control);
             e.Handled = true;
         }
     }

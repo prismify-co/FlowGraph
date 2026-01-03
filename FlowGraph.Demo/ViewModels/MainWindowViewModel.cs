@@ -10,17 +10,18 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         MyGraph = new Graph();
 
-        // Row 1: Bezier (default)
+        // Row 1: Custom node types with Bezier edges
         var inputNode = new Node
         {
-            Type = "Input",
+            Type = "input",  // Uses InputNodeRenderer (green)
+            Data = "Data Source",
             Position = new Core.Point(100, 100),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
         };
 
         var processNode = new Node
         {
-            Type = "Process",
+            Type = "Process",  // Uses DefaultNodeRenderer
             Position = new Core.Point(400, 150),
             Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }],
             Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
@@ -28,7 +29,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var outputNode = new Node
         {
-            Type = "Output",
+            Type = "output",  // Uses OutputNodeRenderer (orange)
+            Data = "Result",
             Position = new Core.Point(700, 100),
             Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }]
         };
@@ -36,14 +38,16 @@ public partial class MainWindowViewModel : ViewModelBase
         // Row 2: Different edge types
         var straightStart = new Node
         {
-            Type = "Straight",
+            Type = "input",
+            Data = "Start",
             Position = new Core.Point(100, 300),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
         };
 
         var straightEnd = new Node
         {
-            Type = "Straight End",
+            Type = "output",
+            Data = "End",
             Position = new Core.Point(400, 350),
             Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
         };
@@ -71,7 +75,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var smoothStepEnd = new Node
         {
-            Type = "Smooth End",
+            Type = "output",
+            Data = "Final",
             Position = new Core.Point(800, 550),
             Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
         };

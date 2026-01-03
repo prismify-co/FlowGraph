@@ -44,6 +44,11 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public ViewportState Viewport => _viewport;
 
+    /// <summary>
+    /// Gets the node renderer registry for registering custom node types.
+    /// </summary>
+    public Rendering.NodeRenderers.NodeRendererRegistry NodeRenderers => _graphRenderer.NodeRenderers;
+
     // UI Elements
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
@@ -175,9 +180,9 @@ public partial class FlowCanvas : UserControl
 
     private void OnNodePointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Border border && border.Tag is Node node)
+        if (sender is Control control && control.Tag is Node node)
         {
-            _inputHandler.HandleNodePointerPressed(border, node, e, _rootPanel, Graph);
+            _inputHandler.HandleNodePointerPressed(control, node, e, _rootPanel, Graph);
             Focus();
         }
     }

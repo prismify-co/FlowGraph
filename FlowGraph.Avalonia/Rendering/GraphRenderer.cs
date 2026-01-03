@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaPoint = Avalonia.Point;
@@ -16,18 +17,32 @@ namespace FlowGraph.Avalonia.Rendering;
 public class GraphRenderer
 {
     private readonly FlowCanvasSettings _settings;
-    private readonly Dictionary<string, Border> _nodeVisuals = new();
+    private readonly Dictionary<string, Control> _nodeVisuals = new();
     private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
     private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
     private readonly Dictionary<string, AvaloniaPath> _edgeVisiblePaths = new();  // Visible paths
     
     // Current viewport state for transforming positions
     private ViewportState? _viewport;
+    
+    // Node renderer registry for custom node types
+    private readonly NodeRendererRegistry _nodeRendererRegistry;
 
     public GraphRenderer(FlowCanvasSettings? settings = null)
+        : this(settings, null)
+    {
+    }
+
+    public GraphRenderer(FlowCanvasSettings? settings, NodeRendererRegistry? nodeRendererRegistry)
     {
         _settings = settings ?? FlowCanvasSettings.Default;
+        _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
     }
+
+    /// <summary>
+    /// Gets the node renderer registry for registering custom node types.
+    /// </summary>
+    public NodeRendererRegistry NodeRenderers => _nodeRendererRegistry;
 
     /// <summary>
     /// Sets the viewport state to use for coordinate transformations.
@@ -69,9 +84,9 @@ public class GraphRenderer
     /// <summary>
     /// Gets the visual element for a node.
     /// </summary>
-    public Border? GetNodeVisual(string nodeId)
+    public Control? GetNodeVisual(string nodeId)
     {
-        return _nodeVisuals.TryGetValue(nodeId, out var border) ? border : null;
+        return _nodeVisuals.TryGetValue(nodeId, out var control) ? control : null;
     }
 
     /// <summary>
@@ -108,7 +123,7 @@ public class GraphRenderer
         Canvas canvas, 
         Graph graph, 
         ThemeResources theme,
-        Action<Border, Node> onNodeCreated)
+        Action<Control, Node> onNodeCreated)
     {
         foreach (var node in graph.Nodes)
         {
@@ -117,61 +132,37 @@ public class GraphRenderer
     }
 
     /// <summary>
-    /// Renders a single node.
+    /// Renders a single node using the appropriate renderer for its type.
     /// </summary>
-    public Border RenderNode(
+    public Control RenderNode(
         Canvas canvas, 
         Node node, 
         ThemeResources theme,
-        Action<Border, Node>? onNodeCreated = null)
+        Action<Control, Node>? onNodeCreated = null)
     {
-        var nodeBackground = theme.NodeBackground;
-        var nodeBorder = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
-        var nodeText = theme.NodeText;
-        
         var scale = GetScale();
-        var scaledWidth = _settings.NodeWidth * scale;
-        var scaledHeight = _settings.NodeHeight * scale;
-
-        var border = new Border
+        var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
+        
+        var context = new NodeRenderContext
         {
-            Width = scaledWidth,
-            Height = scaledHeight,
-            Background = nodeBackground,
-            BorderBrush = nodeBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(8 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale,
-                OffsetY = 2 * scale,
-                Blur = 8 * scale,
-                Color = Color.FromArgb(60, 0, 0, 0)
-            }),
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node,
-            Child = new TextBlock
-            {
-                Text = $"{node.Type}\n{node.Id[..8]}",
-                Foreground = nodeText,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                TextAlignment = TextAlignment.Center,
-                FontWeight = FontWeight.Medium,
-                FontSize = 14 * scale,
-                IsHitTestVisible = false
-            }
+            Theme = theme,
+            Settings = _settings,
+            Scale = scale
         };
+
+        // Create the node visual using the renderer
+        var control = renderer.CreateNodeVisual(node, context);
+        control.Tag = node;
 
         // Transform position to screen coordinates
         var screenPos = TransformToScreen(node.Position.X, node.Position.Y);
-        Canvas.SetLeft(border, screenPos.X);
-        Canvas.SetTop(border, screenPos.Y);
+        Canvas.SetLeft(control, screenPos.X);
+        Canvas.SetTop(control, screenPos.Y);
 
-        canvas.Children.Add(border);
-        _nodeVisuals[node.Id] = border;
+        canvas.Children.Add(control);
+        _nodeVisuals[node.Id] = control;
 
-        onNodeCreated?.Invoke(border, node);
+        onNodeCreated?.Invoke(control, node);
 
         // Render ports
         for (int i = 0; i < node.Inputs.Count; i++)
@@ -184,7 +175,7 @@ public class GraphRenderer
             RenderPort(canvas, node, node.Outputs[i], i, node.Outputs.Count, true, theme);
         }
 
-        return border;
+        return control;
     }
 
     /// <summary>
@@ -201,13 +192,14 @@ public class GraphRenderer
         Action<Ellipse, Node, Port, bool>? onPortCreated = null)
     {
         var scale = GetScale();
-        var scaledNodeWidth = _settings.NodeWidth * scale;
-        var scaledNodeHeight = _settings.NodeHeight * scale;
         var scaledPortSize = _settings.PortSize * scale;
         
+        // Get the node dimensions (may be custom per node type)
+        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
+        
         // Calculate port position in canvas coordinates
-        var portY = GetPortYCanvas(node.Position.Y, index, totalPorts);
-        var portX = isOutput ? node.Position.X + _settings.NodeWidth : node.Position.X;
+        var portY = GetPortYCanvas(node.Position.Y, index, totalPorts, nodeHeight);
+        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
         
         // Transform to screen coordinates
         var screenPos = TransformToScreen(portX, portY);
@@ -232,6 +224,17 @@ public class GraphRenderer
         onPortCreated?.Invoke(portVisual, node, port, isOutput);
 
         return portVisual;
+    }
+
+    /// <summary>
+    /// Gets the dimensions for a node, considering custom renderer sizes.
+    /// </summary>
+    private (double width, double height) GetNodeDimensions(Node node)
+    {
+        var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
+        var width = renderer.GetWidth(node, _settings) ?? _settings.NodeWidth;
+        var height = renderer.GetHeight(node, _settings) ?? _settings.NodeHeight;
+        return (width, height);
     }
 
     /// <summary>
@@ -290,10 +293,14 @@ public class GraphRenderer
         if (sourcePortIndex < 0) sourcePortIndex = 0;
         if (targetPortIndex < 0) targetPortIndex = 0;
 
+        // Get node dimensions for proper port positioning
+        var (sourceWidth, sourceHeight) = GetNodeDimensions(sourceNode);
+        var (_, targetHeight) = GetNodeDimensions(targetNode);
+
         // Get canvas coordinates
-        var sourceY = GetPortYCanvas(sourceNode.Position.Y, sourcePortIndex, Math.Max(1, sourceNode.Outputs.Count));
-        var targetY = GetPortYCanvas(targetNode.Position.Y, targetPortIndex, Math.Max(1, targetNode.Inputs.Count));
-        var sourceX = sourceNode.Position.X + _settings.NodeWidth;
+        var sourceY = GetPortYCanvas(sourceNode.Position.Y, sourcePortIndex, Math.Max(1, sourceNode.Outputs.Count), sourceHeight);
+        var targetY = GetPortYCanvas(targetNode.Position.Y, targetPortIndex, Math.Max(1, targetNode.Inputs.Count), targetHeight);
+        var sourceX = sourceNode.Position.X + sourceWidth;
         var targetX = targetNode.Position.X;
 
         // Transform to screen coordinates
@@ -424,13 +431,14 @@ public class GraphRenderer
     {
         var scale = GetScale();
         var scaledPortSize = _settings.PortSize * scale;
+        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
         
         for (int i = 0; i < node.Inputs.Count; i++)
         {
             var port = node.Inputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var portY = GetPortYCanvas(node.Position.Y, i, node.Inputs.Count);
+                var portY = GetPortYCanvas(node.Position.Y, i, node.Inputs.Count, nodeHeight);
                 var screenPos = TransformToScreen(node.Position.X, portY);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
@@ -442,8 +450,8 @@ public class GraphRenderer
             var port = node.Outputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var portY = GetPortYCanvas(node.Position.Y, i, node.Outputs.Count);
-                var screenPos = TransformToScreen(node.Position.X + _settings.NodeWidth, portY);
+                var portY = GetPortYCanvas(node.Position.Y, i, node.Outputs.Count, nodeHeight);
+                var screenPos = TransformToScreen(node.Position.X + nodeWidth, portY);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
             }
@@ -455,10 +463,18 @@ public class GraphRenderer
     /// </summary>
     public void UpdateNodeSelection(Node node, ThemeResources theme)
     {
-        if (_nodeVisuals.TryGetValue(node.Id, out var border))
+        if (_nodeVisuals.TryGetValue(node.Id, out var control))
         {
-            border.BorderBrush = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
-            border.BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2);
+            var scale = GetScale();
+            var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
+            var context = new NodeRenderContext
+            {
+                Theme = theme,
+                Settings = _settings,
+                Scale = scale
+            };
+            
+            renderer.UpdateSelection(control, node, context);
         }
     }
 
@@ -514,14 +530,16 @@ public class GraphRenderer
     /// <summary>
     /// Calculates the Y position for a port in canvas coordinates.
     /// </summary>
-    public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts)
+    public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts, double? nodeHeight = null)
     {
+        var height = nodeHeight ?? _settings.NodeHeight;
+        
         if (totalPorts == 1)
         {
-            return nodeY + _settings.NodeHeight / 2;
+            return nodeY + height / 2;
         }
 
-        var spacing = _settings.NodeHeight / (totalPorts + 1);
+        var spacing = height / (totalPorts + 1);
         return nodeY + spacing * (portIndex + 1);
     }
 
@@ -543,8 +561,9 @@ public class GraphRenderer
             : node.Inputs.IndexOf(port);
         var totalPorts = isOutput ? node.Outputs.Count : node.Inputs.Count;
 
-        var portY = GetPortYCanvas(node.Position.Y, portIndex, totalPorts);
-        var portX = isOutput ? node.Position.X + _settings.NodeWidth : node.Position.X;
+        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
+        var portY = GetPortYCanvas(node.Position.Y, portIndex, totalPorts, nodeHeight);
+        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
 
         // Return screen coordinates
         return TransformToScreen(portX, portY);
