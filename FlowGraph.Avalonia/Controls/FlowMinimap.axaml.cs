@@ -109,9 +109,9 @@ public partial class FlowMinimap : UserControl
 
     private void OnViewportChanged(object? sender, EventArgs e)
     {
-        // Re-render the entire minimap when viewport changes
-        // This ensures the bounding box includes the viewport area
-        RenderMinimap();
+        // Just update the viewport rectangle position, not the entire minimap
+        // The scale/translate should remain stable based on node positions
+        UpdateViewportRect();
     }
 
     private void OnTargetCanvasPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -242,57 +242,36 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
-        // Get the current viewport visible area
-        var viewport = TargetCanvas.Viewport;
-        var visibleRect = viewport.GetVisibleRect();
+        // Calculate bounding box of all nodes only (in canvas coordinates)
+        // Don't include viewport - let it extend beyond minimap if needed
+        var graphMinX = graph.Nodes.Min(n => n.Position.X) - MinimapPadding;
+        var graphMinY = graph.Nodes.Min(n => n.Position.Y) - MinimapPadding;
+        var graphMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth) + MinimapPadding;
+        var graphMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight) + MinimapPadding;
 
-        // Calculate bounding box of all nodes (in canvas coordinates)
-        var graphMinX = graph.Nodes.Min(n => n.Position.X);
-        var graphMinY = graph.Nodes.Min(n => n.Position.Y);
-        var graphMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth);
-        var graphMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight);
-
-        // Expand bounds to include the visible viewport area
-        // This ensures the viewport rectangle is always visible in the minimap
-        double minX, minY, maxX, maxY;
-        
-        if (visibleRect.Width > 0)
-        {
-            minX = Math.Min(graphMinX, visibleRect.X) - MinimapPadding;
-            minY = Math.Min(graphMinY, visibleRect.Y) - MinimapPadding;
-            maxX = Math.Max(graphMaxX, visibleRect.Right) + MinimapPadding;
-            maxY = Math.Max(graphMaxY, visibleRect.Bottom) + MinimapPadding;
-        }
-        else
-        {
-            minX = graphMinX - MinimapPadding;
-            minY = graphMinY - MinimapPadding;
-            maxX = graphMaxX + MinimapPadding;
-            maxY = graphMaxY + MinimapPadding;
-        }
-
-        var totalWidth = maxX - minX;
-        var totalHeight = maxY - minY;
+        var graphWidth = graphMaxX - graphMinX;
+        var graphHeight = graphMaxY - graphMinY;
 
         var minimapWidth = Bounds.Width - 8; // Account for border padding
         var minimapHeight = Bounds.Height - 8;
 
-        if (minimapWidth <= 0 || minimapHeight <= 0 || totalWidth <= 0 || totalHeight <= 0)
+        if (minimapWidth <= 0 || minimapHeight <= 0 || graphWidth <= 0 || graphHeight <= 0)
             return;
 
-        // Calculate scale to fit everything in minimap
-        var scaleX = minimapWidth / totalWidth;
-        var scaleY = minimapHeight / totalHeight;
+        // Calculate scale to fit graph in minimap
+        var scaleX = minimapWidth / graphWidth;
+        var scaleY = minimapHeight / graphHeight;
         _scale = Math.Min(scaleX, scaleY);
 
-        // Calculate translation to center everything in the minimap
-        var contentCenterX = (minX + maxX) / 2;
-        var contentCenterY = (minY + maxY) / 2;
+        // Calculate translation to center the graph in the minimap
+        // Formula: minimapPos = canvasPos * scale + translate
+        var graphCenterX = (graphMinX + graphMaxX) / 2;
+        var graphCenterY = (graphMinY + graphMaxY) / 2;
         var minimapCenterX = minimapWidth / 2;
         var minimapCenterY = minimapHeight / 2;
 
-        _translateX = minimapCenterX - contentCenterX * _scale;
-        _translateY = minimapCenterY - contentCenterY * _scale;
+        _translateX = minimapCenterX - graphCenterX * _scale;
+        _translateY = minimapCenterY - graphCenterY * _scale;
 
         // Draw edges
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
@@ -343,19 +322,16 @@ public partial class FlowMinimap : UserControl
             _minimapCanvas.Children.Add(rect);
         }
 
-        // Create and add viewport rectangle
-        if (visibleRect.Width > 0)
+        // Create viewport rectangle
+        _viewportRect = new Rectangle
         {
-            _viewportRect = new Rectangle
-            {
-                Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
-                StrokeThickness = 2,
-                Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
-                IsHitTestVisible = false
-            };
-            _minimapCanvas.Children.Add(_viewportRect);
-            UpdateViewportRect();
-        }
+            Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
+            StrokeThickness = 2,
+            Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
+            IsHitTestVisible = false
+        };
+        _minimapCanvas.Children.Add(_viewportRect);
+        UpdateViewportRect();
     }
 
     private void UpdateViewportRect()
@@ -367,16 +343,22 @@ public partial class FlowMinimap : UserControl
         var visibleRect = viewport.GetVisibleRect();
 
         if (visibleRect.Width <= 0)
+        {
+            _viewportRect.IsVisible = false;
             return;
+        }
+
+        _viewportRect.IsVisible = true;
 
         // Transform viewport rect corners to minimap coordinates
         var topLeft = CanvasToMinimap(visibleRect.X, visibleRect.Y);
-        var size = new Size(visibleRect.Width * _scale, visibleRect.Height * _scale);
+        var width = visibleRect.Width * _scale;
+        var height = visibleRect.Height * _scale;
 
         Canvas.SetLeft(_viewportRect, topLeft.X);
         Canvas.SetTop(_viewportRect, topLeft.Y);
-        _viewportRect.Width = Math.Max(size.Width, 10);
-        _viewportRect.Height = Math.Max(size.Height, 10);
+        _viewportRect.Width = Math.Max(width, 10);
+        _viewportRect.Height = Math.Max(height, 10);
     }
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)
