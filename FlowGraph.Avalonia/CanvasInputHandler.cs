@@ -46,6 +46,8 @@ public class CanvasInputHandler
     private AvaloniaPoint _connectionEndPoint;
     private AvaloniaPath? _tempConnectionLine;
     private Canvas? _canvas;
+    private Panel? _rootPanel;
+    private Cursor? _previousCursor;
 
     /// <summary>
     /// Event raised when a connection is completed.
@@ -349,6 +351,7 @@ public class CanvasInputHandler
         if (point.Properties.IsLeftButtonPressed)
         {
             _canvas = canvas;
+            _rootPanel = rootPanel;
             _isCreatingConnection = true;
             _connectionSourceNode = node;
             _connectionSourcePort = port;
@@ -362,11 +365,17 @@ public class CanvasInputHandler
                 Stroke = theme.EdgeStroke,
                 StrokeThickness = 2,
                 StrokeDashArray = [5, 3],
-                Opacity = 0.7,
-                Cursor = new Cursor(StandardCursorType.Hand)  // Hand cursor during drag
+                Opacity = 0.7
             };
             canvas?.Children.Add(_tempConnectionLine);
             UpdateTempConnectionLine();
+
+            // Change cursor to hand during connection drag
+            if (rootPanel != null)
+            {
+                _previousCursor = rootPanel.Cursor;
+                rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
+            }
 
             e.Pointer.Capture(portVisual);
             e.Handled = true;
@@ -548,9 +557,17 @@ public class CanvasInputHandler
             _tempConnectionLine = null;
         }
 
+        // Restore the previous cursor
+        if (_rootPanel != null && _previousCursor != null)
+        {
+            _rootPanel.Cursor = _previousCursor;
+            _previousCursor = null;
+        }
+
         _isCreatingConnection = false;
         _connectionSourceNode = null;
         _connectionSourcePort = null;
+        _rootPanel = null;
     }
 
     private void CompleteConnection(PointerReleasedEventArgs e, Panel? rootPanel, Canvas? mainCanvas, Graph? graph)
