@@ -29,15 +29,15 @@ public partial class FlowMinimap : UserControl
     private FlowCanvas? _subscribedCanvas;
     private ViewportState? _subscribedViewport;
     
-    // Cached transform values for coordinate conversion
-    // These transform from canvas coordinates to minimap coordinates
+    // Transform from canvas coordinates to minimap coordinates
+    // Formula: minimapPos = (canvasPos - boundingRect.TopLeft) * scale
     private double _scale;
-    private double _translateX;
-    private double _translateY;
+    private double _boundingRectX;
+    private double _boundingRectY;
 
     private const double NodeWidth = 150;
     private const double NodeHeight = 80;
-    private const double MinimapPadding = 50;
+    private const double OffsetScale = 5; // Padding factor like ReactFlow
 
     public FlowMinimap()
     {
@@ -63,7 +63,6 @@ public partial class FlowMinimap : UserControl
 
         if (change.Property == TargetCanvasProperty)
         {
-            // Unsubscribe from old canvas and viewport
             UnsubscribeFromCanvas();
             UnsubscribeFromGraph();
 
@@ -71,7 +70,6 @@ public partial class FlowMinimap : UserControl
             {
                 SubscribeToCanvas(newCanvas);
 
-                // Subscribe to graph if it's already set
                 if (newCanvas.Graph != null)
                 {
                     SubscribeToGraph(newCanvas.Graph);
@@ -87,7 +85,6 @@ public partial class FlowMinimap : UserControl
         _subscribedCanvas = canvas;
         canvas.PropertyChanged += OnTargetCanvasPropertyChanged;
         
-        // Subscribe to viewport changes
         _subscribedViewport = canvas.Viewport;
         _subscribedViewport.ViewportChanged += OnViewportChanged;
     }
@@ -109,10 +106,9 @@ public partial class FlowMinimap : UserControl
 
     private void OnViewportChanged(object? sender, EventArgs e)
     {
-        // When viewport changes, we need to update the viewport rectangle
-        // For zoom changes, we may need to re-render if the visible area 
-        // extends significantly beyond the current minimap bounds
-        UpdateViewportRect();
+        // ReactFlow recalculates the bounding rect on every viewport change
+        // because the bounding rect is the union of nodes AND viewport
+        RenderMinimap();
     }
 
     private void OnTargetCanvasPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -175,9 +171,7 @@ public partial class FlowMinimap : UserControl
             foreach (var item in e.NewItems)
             {
                 if (item is Node node)
-                {
                     node.PropertyChanged += OnNodeChanged;
-                }
             }
         }
 
@@ -186,9 +180,7 @@ public partial class FlowMinimap : UserControl
             foreach (var item in e.OldItems)
             {
                 if (item is Node node)
-                {
                     node.PropertyChanged -= OnNodeChanged;
-                }
             }
         }
 
@@ -210,24 +202,24 @@ public partial class FlowMinimap : UserControl
     }
 
     /// <summary>
-    /// Transforms a canvas coordinate to minimap coordinate.
+    /// Transforms canvas coordinates to minimap coordinates.
     /// </summary>
     private AvaloniaPoint CanvasToMinimap(double canvasX, double canvasY)
     {
         return new AvaloniaPoint(
-            canvasX * _scale + _translateX,
-            canvasY * _scale + _translateY
+            (canvasX - _boundingRectX) * _scale,
+            (canvasY - _boundingRectY) * _scale
         );
     }
 
     /// <summary>
-    /// Transforms a minimap coordinate to canvas coordinate.
+    /// Transforms minimap coordinates to canvas coordinates.
     /// </summary>
     private AvaloniaPoint MinimapToCanvas(double minimapX, double minimapY)
     {
         return new AvaloniaPoint(
-            (minimapX - _translateX) / _scale,
-            (minimapY - _translateY) / _scale
+            minimapX / _scale + _boundingRectX,
+            minimapY / _scale + _boundingRectY
         );
     }
 
@@ -243,45 +235,83 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
-        // Get the actual canvas bounds (this is the area we can draw in)
+        // Get minimap display size
         var minimapWidth = _minimapCanvas.Bounds.Width;
         var minimapHeight = _minimapCanvas.Bounds.Height;
 
-        // If canvas hasn't been laid out yet, use the control bounds minus border
         if (minimapWidth <= 0 || minimapHeight <= 0)
         {
-            minimapWidth = Bounds.Width - 2; // Account for border
+            minimapWidth = Bounds.Width - 2;
             minimapHeight = Bounds.Height - 2;
         }
 
         if (minimapWidth <= 0 || minimapHeight <= 0)
             return;
 
-        // Calculate bounding box of all nodes only (in canvas coordinates)
-        var graphMinX = graph.Nodes.Min(n => n.Position.X) - MinimapPadding;
-        var graphMinY = graph.Nodes.Min(n => n.Position.Y) - MinimapPadding;
-        var graphMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth) + MinimapPadding;
-        var graphMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight) + MinimapPadding;
+        // Step 1: Calculate viewBB (visible viewport in canvas coordinates)
+        // This is exactly how ReactFlow does it: viewBB = { x: -offsetX/zoom, y: -offsetY/zoom, width: viewWidth/zoom, height: viewHeight/zoom }
+        var viewport = TargetCanvas.Viewport;
+        var viewBB = viewport.GetVisibleRect();
 
-        var graphWidth = graphMaxX - graphMinX;
-        var graphHeight = graphMaxY - graphMinY;
+        // Step 2: Calculate node bounds in canvas coordinates
+        var nodeMinX = graph.Nodes.Min(n => n.Position.X);
+        var nodeMinY = graph.Nodes.Min(n => n.Position.Y);
+        var nodeMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth);
+        var nodeMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight);
 
-        if (graphWidth <= 0 || graphHeight <= 0)
+        // Step 3: Calculate boundingRect as union of nodeBounds AND viewBB (ReactFlow's approach)
+        double boundingMinX, boundingMinY, boundingMaxX, boundingMaxY;
+        
+        if (viewBB.Width > 0 && viewBB.Height > 0)
+        {
+            // Union of node bounds and viewport bounds
+            boundingMinX = Math.Min(nodeMinX, viewBB.X);
+            boundingMinY = Math.Min(nodeMinY, viewBB.Y);
+            boundingMaxX = Math.Max(nodeMaxX, viewBB.Right);
+            boundingMaxY = Math.Max(nodeMaxY, viewBB.Bottom);
+        }
+        else
+        {
+            boundingMinX = nodeMinX;
+            boundingMinY = nodeMinY;
+            boundingMaxX = nodeMaxX;
+            boundingMaxY = nodeMaxY;
+        }
+
+        var boundingWidth = boundingMaxX - boundingMinX;
+        var boundingHeight = boundingMaxY - boundingMinY;
+
+        if (boundingWidth <= 0 || boundingHeight <= 0)
             return;
 
-        // Calculate scale to fit graph in minimap
-        var scaleX = minimapWidth / graphWidth;
-        var scaleY = minimapHeight / graphHeight;
+        // Step 4: Calculate scale to fit boundingRect in minimap (like ReactFlow's viewScale)
+        var scaleX = minimapWidth / boundingWidth;
+        var scaleY = minimapHeight / boundingHeight;
+        var viewScale = Math.Min(scaleX, scaleY);
+
+        // Add offset/padding
+        var offset = OffsetScale * viewScale;
+        
+        // Adjust bounding rect with padding
+        _boundingRectX = boundingMinX - offset / viewScale;
+        _boundingRectY = boundingMinY - offset / viewScale;
+        var totalWidth = boundingWidth + 2 * offset / viewScale;
+        var totalHeight = boundingHeight + 2 * offset / viewScale;
+
+        // Recalculate scale with padding
+        scaleX = minimapWidth / totalWidth;
+        scaleY = minimapHeight / totalHeight;
         _scale = Math.Min(scaleX, scaleY);
 
-        // Calculate translation to center the graph in the minimap
-        var graphCenterX = (graphMinX + graphMaxX) / 2;
-        var graphCenterY = (graphMinY + graphMaxY) / 2;
-        var minimapCenterX = minimapWidth / 2;
-        var minimapCenterY = minimapHeight / 2;
+        // Center the content in the minimap
+        var scaledWidth = totalWidth * _scale;
+        var scaledHeight = totalHeight * _scale;
+        var offsetX = (minimapWidth - scaledWidth) / 2;
+        var offsetY = (minimapHeight - scaledHeight) / 2;
 
-        _translateX = minimapCenterX - graphCenterX * _scale;
-        _translateY = minimapCenterY - graphCenterY * _scale;
+        // Adjust bounding rect origin to account for centering
+        _boundingRectX -= offsetX / _scale;
+        _boundingRectY -= offsetY / _scale;
 
         // Draw edges
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
@@ -332,52 +362,28 @@ public partial class FlowMinimap : UserControl
             _minimapCanvas.Children.Add(rect);
         }
 
-        // Create viewport rectangle
-        _viewportRect = new Rectangle
+        // Draw viewport rectangle using the same coordinate transform
+        if (viewBB.Width > 0 && viewBB.Height > 0)
         {
-            Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
-            StrokeThickness = 2,
-            Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
-            IsHitTestVisible = false
-        };
-        _minimapCanvas.Children.Add(_viewportRect);
-        UpdateViewportRect();
-    }
+            var viewportTopLeft = CanvasToMinimap(viewBB.X, viewBB.Y);
+            var viewportWidth = viewBB.Width * _scale;
+            var viewportHeight = viewBB.Height * _scale;
 
-    private void UpdateViewportRect()
-    {
-        if (_viewportRect == null || TargetCanvas == null)
-            return;
+            _viewportRect = new Rectangle
+            {
+                Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
+                StrokeThickness = 2,
+                Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
+                IsHitTestVisible = false,
+                Width = Math.Max(viewportWidth, 10),
+                Height = Math.Max(viewportHeight, 10)
+            };
 
-        var viewport = TargetCanvas.Viewport;
-        var visibleRect = viewport.GetVisibleRect();
+            Canvas.SetLeft(_viewportRect, viewportTopLeft.X);
+            Canvas.SetTop(_viewportRect, viewportTopLeft.Y);
 
-        // Debug: Check if viewport has valid size
-        if (visibleRect.Width <= 0 || visibleRect.Height <= 0)
-        {
-            _viewportRect.IsVisible = false;
-            return;
+            _minimapCanvas.Children.Add(_viewportRect);
         }
-
-        if (_scale <= 0)
-        {
-            _viewportRect.IsVisible = false;
-            return;
-        }
-
-        _viewportRect.IsVisible = true;
-
-        // Transform viewport rect corners to minimap coordinates
-        // visibleRect is in canvas coordinates, we transform to minimap coordinates
-        var topLeft = CanvasToMinimap(visibleRect.X, visibleRect.Y);
-        var width = visibleRect.Width * _scale;
-        var height = visibleRect.Height * _scale;
-
-        // Clamp to reasonable values to prevent issues with extreme zoom levels
-        Canvas.SetLeft(_viewportRect, topLeft.X);
-        Canvas.SetTop(_viewportRect, topLeft.Y);
-        _viewportRect.Width = Math.Max(width, 10);
-        _viewportRect.Height = Math.Max(height, 10);
     }
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -419,10 +425,7 @@ public partial class FlowMinimap : UserControl
         if (TargetCanvas == null || _scale <= 0)
             return;
 
-        // Convert minimap point to canvas coordinates
         var canvasPoint = MinimapToCanvas(minimapPoint.X, minimapPoint.Y);
-
-        // Center the canvas on this point
         TargetCanvas.CenterOn(canvasPoint.X, canvasPoint.Y);
     }
 }
