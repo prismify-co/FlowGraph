@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
+using FlowGraph.Core.Commands;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -49,6 +50,11 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public Rendering.NodeRenderers.NodeRendererRegistry NodeRenderers => _graphRenderer.NodeRenderers;
 
+    /// <summary>
+    /// Gets the command history for undo/redo operations.
+    /// </summary>
+    public CommandHistory CommandHistory { get; } = new();
+
     // UI Elements
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
@@ -91,6 +97,9 @@ public partial class FlowCanvas : UserControl
         _inputHandler.DeselectAllRequested += (_, _) => DeselectAll();
         _inputHandler.SelectAllRequested += (_, _) => SelectAllNodes();
         _inputHandler.DeleteSelectedRequested += (_, _) => DeleteSelected();
+        _inputHandler.UndoRequested += (_, _) => Undo();
+        _inputHandler.RedoRequested += (_, _) => Redo();
+        _inputHandler.NodesDragged += OnNodesDragged;
         _inputHandler.GridRenderRequested += (_, _) => RenderGrid();
 
         // Subscribe to viewport changes
@@ -232,20 +241,24 @@ public partial class FlowCanvas : UserControl
 
     private void OnConnectionCompleted(object? sender, ConnectionCompletedEventArgs e)
     {
+        if (Graph == null) return;
+
         // Check if connection already exists
-        var existingEdge = Graph?.Edges.FirstOrDefault(edge =>
+        var existingEdge = Graph.Edges.FirstOrDefault(edge =>
             edge.Source == e.SourceNode.Id && edge.Target == e.TargetNode.Id &&
             edge.SourcePort == e.SourcePort.Id && edge.TargetPort == e.TargetPort.Id);
 
         if (existingEdge == null)
         {
-            Graph?.AddEdge(new Edge
+            var newEdge = new Edge
             {
                 Source = e.SourceNode.Id,
                 Target = e.TargetNode.Id,
                 SourcePort = e.SourcePort.Id,
                 TargetPort = e.TargetPort.Id
-            });
+            };
+
+            CommandHistory.Execute(new AddEdgeCommand(Graph, newEdge));
         }
     }
 
@@ -257,19 +270,35 @@ public partial class FlowCanvas : UserControl
     {
         if (Graph == null) return;
 
-        // Delete selected edges first
         var selectedEdges = Graph.Edges.Where(e => e.IsSelected).ToList();
-        foreach (var edge in selectedEdges)
+        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+
+        if (selectedEdges.Count == 0 && selectedNodes.Count == 0)
+            return;
+
+        // Create commands for deletion
+        var commands = new List<IGraphCommand>();
+
+        if (selectedEdges.Count > 0)
         {
-            Graph.RemoveEdge(edge.Id);
+            commands.Add(new RemoveEdgesCommand(Graph, selectedEdges));
         }
 
-        // Then delete selected nodes (which also removes their edges)
-        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
-        foreach (var node in selectedNodes)
+        if (selectedNodes.Count > 0)
         {
-            Graph.RemoveNode(node.Id);
+            commands.Add(new RemoveNodesCommand(Graph, selectedNodes));
         }
+
+        // Execute as a single composite command
+        var description = (selectedNodes.Count, selectedEdges.Count) switch
+        {
+            (> 0, > 0) => $"Delete {selectedNodes.Count} nodes and {selectedEdges.Count} connections",
+            (> 0, 0) => selectedNodes.Count == 1 ? "Delete node" : $"Delete {selectedNodes.Count} nodes",
+            (0, > 0) => selectedEdges.Count == 1 ? "Delete connection" : $"Delete {selectedEdges.Count} connections",
+            _ => "Delete"
+        };
+
+        CommandHistory.Execute(new CompositeCommand(description, commands));
     }
 
     private void SelectAllNodes()
@@ -318,6 +347,37 @@ public partial class FlowCanvas : UserControl
                 _graphRenderer.UpdateNodeSelection(node, _theme);
             }
         }
+    }
+
+    private void OnNodesDragged(object? sender, NodesDraggedEventArgs e)
+    {
+        if (Graph == null) return;
+
+        // Create a move command for undo/redo (don't execute, positions already changed)
+        var command = new MoveNodesCommand(Graph, e.OldPositions, e.NewPositions);
+        
+        // Add to history without executing (nodes are already in new positions)
+        CommandHistory.Execute(new AlreadyExecutedCommand(command));
+    }
+
+    #endregion
+
+    #region Undo/Redo
+
+    /// <summary>
+    /// Undoes the last command.
+    /// </summary>
+    public void Undo()
+    {
+        CommandHistory.Undo();
+    }
+
+    /// <summary>
+    /// Redoes the last undone command.
+    /// </summary>
+    public void Redo()
+    {
+        CommandHistory.Redo();
     }
 
     #endregion

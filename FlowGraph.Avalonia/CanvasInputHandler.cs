@@ -76,6 +76,16 @@ public class CanvasInputHandler
     public event EventHandler? DeleteSelectedRequested;
 
     /// <summary>
+    /// Event raised when undo is requested.
+    /// </summary>
+    public event EventHandler? UndoRequested;
+
+    /// <summary>
+    /// Event raised when redo is requested.
+    /// </summary>
+    public event EventHandler? RedoRequested;
+
+    /// <summary>
     /// Event raised when the grid needs to be re-rendered.
     /// </summary>
     public event EventHandler? GridRenderRequested;
@@ -84,6 +94,11 @@ public class CanvasInputHandler
     /// Event raised when box selection changes.
     /// </summary>
     public event EventHandler<BoxSelectionEventArgs>? BoxSelectionChanged;
+
+    /// <summary>
+    /// Event raised when node drag completes with position changes.
+    /// </summary>
+    public event EventHandler<NodesDraggedEventArgs>? NodesDragged;
 
     public CanvasInputHandler(
         FlowCanvasSettings settings,
@@ -108,6 +123,26 @@ public class CanvasInputHandler
         else if (e.Key == Key.A && e.KeyModifiers.HasFlag(KeyModifiers.Control))
         {
             SelectAllRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.Z && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                // Ctrl+Shift+Z = Redo
+                RedoRequested?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                // Ctrl+Z = Undo
+                UndoRequested?.Invoke(this, EventArgs.Empty);
+            }
+            return true;
+        }
+        else if (e.Key == Key.Y && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            // Ctrl+Y = Redo
+            RedoRequested?.Invoke(this, EventArgs.Empty);
             return true;
         }
         else if (e.Key == Key.Escape)
@@ -327,10 +362,27 @@ public class CanvasInputHandler
     {
         if (_isDraggingNodes && graph != null)
         {
-            // Mark all dragging nodes as not dragging
+            // Collect final positions
+            var newPositions = new Dictionary<string, Core.Point>();
             foreach (var node in graph.Nodes.Where(n => n.IsSelected))
             {
                 node.IsDragging = false;
+                newPositions[node.Id] = node.Position;
+            }
+
+            // Only raise event if positions actually changed
+            if (_dragStartPositions.Count > 0 && newPositions.Count > 0)
+            {
+                bool positionsChanged = _dragStartPositions.Any(kvp =>
+                    newPositions.TryGetValue(kvp.Key, out var newPos) &&
+                    (Math.Abs(kvp.Value.X - newPos.X) > 0.1 || Math.Abs(kvp.Value.Y - newPos.Y) > 0.1));
+
+                if (positionsChanged)
+                {
+                    NodesDragged?.Invoke(this, new NodesDraggedEventArgs(
+                        new Dictionary<string, Core.Point>(_dragStartPositions),
+                        newPositions));
+                }
             }
 
             _isDraggingNodes = false;
@@ -666,5 +718,22 @@ public class BoxSelectionEventArgs : EventArgs
     public BoxSelectionEventArgs(Rect selectionRect)
     {
         SelectionRect = selectionRect;
+    }
+}
+
+/// <summary>
+/// Event args for node drag completion.
+/// </summary>
+public class NodesDraggedEventArgs : EventArgs
+{
+    public Dictionary<string, Core.Point> OldPositions { get; }
+    public Dictionary<string, Core.Point> NewPositions { get; }
+
+    public NodesDraggedEventArgs(
+        Dictionary<string, Core.Point> oldPositions,
+        Dictionary<string, Core.Point> newPositions)
+    {
+        OldPositions = oldPositions;
+        NewPositions = newPositions;
     }
 }
