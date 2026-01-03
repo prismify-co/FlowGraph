@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="200"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="280"
              x:Class="FlowGraph.Avalonia.Controls.FlowDiagnostics">
 
   <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
@@ -11,12 +11,12 @@
           CornerRadius="4"
           Padding="8"
           Opacity="0.95"
-          MinWidth="220">
+          MinWidth="250">
     <StackPanel Spacing="4">
       <TextBlock Text="Viewport Diagnostics" FontWeight="Bold" FontSize="12"/>
       <Separator Margin="0,4"/>
       
-      <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+      <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Zoom:" Margin="0,0,8,2"/>
         <TextBlock Grid.Row="0" Grid.Column="1" Name="ZoomText" FontFamily="Consolas" FontSize="11"/>
         
@@ -39,6 +39,14 @@
         
         <TextBlock Grid.Row="7" Grid.Column="0" Text="Visible Size:" Margin="0,0,8,2"/>
         <TextBlock Grid.Row="7" Grid.Column="1" Name="VisibleSizeText" FontFamily="Consolas" FontSize="11"/>
+        
+        <Separator Grid.Row="8" Grid.ColumnSpan="2" Margin="0,4"/>
+        
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Transform:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="9" Grid.Column="1" Name="TransformText" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
+        
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="Graph Center:" Margin="0,0,8,2"/>
+        <TextBlock Grid.Row="10" Grid.Column="1" Name="GraphCenterText" FontFamily="Consolas" FontSize="11"/>
       </Grid>
     </StackPanel>
   </Border>

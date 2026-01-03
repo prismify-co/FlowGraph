@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Threading;
 
 namespace FlowGraph.Avalonia.Controls;
@@ -23,6 +24,8 @@ public partial class FlowDiagnostics : UserControl
     private TextBlock? _visibleXText;
     private TextBlock? _visibleYText;
     private TextBlock? _visibleSizeText;
+    private TextBlock? _transformText;
+    private TextBlock? _graphCenterText;
     
     private ViewportState? _subscribedViewport;
 
@@ -42,6 +45,8 @@ public partial class FlowDiagnostics : UserControl
         _visibleXText = this.FindControl<TextBlock>("VisibleXText");
         _visibleYText = this.FindControl<TextBlock>("VisibleYText");
         _visibleSizeText = this.FindControl<TextBlock>("VisibleSizeText");
+        _transformText = this.FindControl<TextBlock>("TransformText");
+        _graphCenterText = this.FindControl<TextBlock>("GraphCenterText");
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -119,6 +124,45 @@ public partial class FlowDiagnostics : UserControl
         
         if (_visibleSizeText != null)
             _visibleSizeText.Text = $"{visibleRect.Width:F0} x {visibleRect.Height:F0}";
+
+        // Show actual canvas transform
+        if (_transformText != null)
+        {
+            var canvas = TargetCanvas.FindControl<Canvas>("MainCanvas");
+            if (canvas?.RenderTransform is MatrixTransform mt)
+            {
+                var m = mt.Matrix;
+                _transformText.Text = $"M11={m.M11:F2} M22={m.M22:F2} M31={m.M31:F1} M32={m.M32:F1}";
+            }
+            else if (canvas?.RenderTransform != null)
+            {
+                _transformText.Text = $"Type: {canvas.RenderTransform.GetType().Name}";
+            }
+            else
+            {
+                _transformText.Text = "No transform!";
+            }
+        }
+
+        // Show graph center
+        if (_graphCenterText != null)
+        {
+            var graph = TargetCanvas.Graph;
+            if (graph != null && graph.Nodes.Count > 0)
+            {
+                var minX = graph.Nodes.Min(n => n.Position.X);
+                var minY = graph.Nodes.Min(n => n.Position.Y);
+                var maxX = graph.Nodes.Max(n => n.Position.X + 150); // NodeWidth
+                var maxY = graph.Nodes.Max(n => n.Position.Y + 80);  // NodeHeight
+                var centerX = (minX + maxX) / 2;
+                var centerY = (minY + maxY) / 2;
+                _graphCenterText.Text = $"({centerX:F0}, {centerY:F0})";
+            }
+            else
+            {
+                _graphCenterText.Text = "No nodes";
+            }
+        }
     }
 
     private void ClearDisplay()
@@ -130,5 +174,7 @@ public partial class FlowDiagnostics : UserControl
         if (_visibleXText != null) _visibleXText.Text = "-";
         if (_visibleYText != null) _visibleYText.Text = "-";
         if (_visibleSizeText != null) _visibleSizeText.Text = "-";
+        if (_transformText != null) _transformText.Text = "-";
+        if (_graphCenterText != null) _graphCenterText.Text = "-";
     }
 }
