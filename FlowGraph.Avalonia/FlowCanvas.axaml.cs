@@ -49,11 +49,9 @@ public partial class FlowCanvas : UserControl
     private Canvas? _gridCanvas;
     private Panel? _rootPanel;
     
-    // Transforms
+    // Transforms (only for main canvas now - grid handles its own)
     private readonly ScaleTransform _canvasScaleTransform = new();
     private readonly TranslateTransform _canvasTranslateTransform = new();
-    private readonly ScaleTransform _gridScaleTransform = new();
-    private readonly TranslateTransform _gridTranslateTransform = new();
 
     // Components
     private ViewportState _viewport = null!;
@@ -109,20 +107,13 @@ public partial class FlowCanvas : UserControl
 
     private void SetupTransforms()
     {
+        // Only main canvas uses transforms - grid renders directly to screen coordinates
         if (_mainCanvas != null)
         {
             var transformGroup = new TransformGroup();
             transformGroup.Children.Add(_canvasScaleTransform);
             transformGroup.Children.Add(_canvasTranslateTransform);
             _mainCanvas.RenderTransform = transformGroup;
-        }
-
-        if (_gridCanvas != null)
-        {
-            var transformGroup = new TransformGroup();
-            transformGroup.Children.Add(_gridScaleTransform);
-            transformGroup.Children.Add(_gridTranslateTransform);
-            _gridCanvas.RenderTransform = transformGroup;
         }
     }
 
@@ -139,8 +130,11 @@ public partial class FlowCanvas : UserControl
 
     private void ApplyViewportTransforms()
     {
+        // Apply transforms to main canvas
         _viewport.ApplyToTransforms(_canvasScaleTransform, _canvasTranslateTransform);
-        _viewport.ApplyToTransforms(_gridScaleTransform, _gridTranslateTransform);
+        
+        // Grid renderer handles its own coordinate transformation
+        RenderGrid();
     }
 
     #region Input Event Handlers
