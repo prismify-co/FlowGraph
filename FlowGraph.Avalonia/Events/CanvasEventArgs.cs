@@ -1,4 +1,5 @@
 using Avalonia;
+using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 
 namespace FlowGraph.Avalonia;
@@ -19,6 +20,28 @@ public class ConnectionCompletedEventArgs : EventArgs
         SourcePort = sourcePort;
         TargetNode = targetNode;
         TargetPort = targetPort;
+    }
+}
+
+/// <summary>
+/// Event args for connection rejected event.
+/// </summary>
+public class ConnectionRejectedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The connection context that was rejected.
+    /// </summary>
+    public ConnectionContext Context { get; }
+
+    /// <summary>
+    /// The reason the connection was rejected.
+    /// </summary>
+    public string? Reason { get; }
+
+    public ConnectionRejectedEventArgs(ConnectionContext context, string? reason)
+    {
+        Context = context;
+        Reason = reason;
     }
 }
 

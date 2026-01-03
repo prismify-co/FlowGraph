@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Rendering;
+using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
 using System.Collections.Specialized;
@@ -70,6 +71,17 @@ public partial class FlowCanvas : UserControl
     /// Gets the selection manager for managing node and edge selection.
     /// </summary>
     public SelectionManager Selection => _selectionManager;
+
+    /// <summary>
+    /// Gets or sets the connection validator for validating new connections.
+    /// Set to null to allow all connections.
+    /// </summary>
+    public IConnectionValidator? ConnectionValidator { get; set; }
+
+    /// <summary>
+    /// Event raised when a connection is rejected by the validator.
+    /// </summary>
+    public event EventHandler<ConnectionRejectedEventArgs>? ConnectionRejected;
 
     #endregion
 
@@ -293,6 +305,29 @@ public partial class FlowCanvas : UserControl
     {
         if (Graph == null) return;
 
+        // Create connection context for validation
+        var context = new ConnectionContext
+        {
+            SourceNode = e.SourceNode,
+            SourcePort = e.SourcePort,
+            TargetNode = e.TargetNode,
+            TargetPort = e.TargetPort,
+            Graph = Graph
+        };
+
+        // Validate connection if validator is set
+        if (ConnectionValidator != null)
+        {
+            var result = ConnectionValidator.Validate(context);
+            if (!result.IsValid)
+            {
+                // Connection rejected - could raise an event here for UI feedback
+                ConnectionRejected?.Invoke(this, new ConnectionRejectedEventArgs(context, result.Message));
+                return;
+            }
+        }
+
+        // Check if connection already exists (fallback check)
         var existingEdge = Graph.Edges.FirstOrDefault(edge =>
             edge.Source == e.SourceNode.Id && edge.Target == e.TargetNode.Id &&
             edge.SourcePort == e.SourcePort.Id && edge.TargetPort == e.TargetPort.Id);
