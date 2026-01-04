@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Controls;
+using FlowGraph.Avalonia.Input;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
@@ -79,6 +80,11 @@ public partial class FlowCanvas : UserControl
     public GroupManager Groups => _groupManager;
 
     /// <summary>
+    /// Gets the current input state name (for debugging).
+    /// </summary>
+    public string CurrentInputState => _inputStateMachine.CurrentStateName;
+
+    /// <summary>
     /// Gets or sets the connection validator for validating new connections.
     /// Set to null to allow all connections.
     /// </summary>
@@ -94,6 +100,11 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public event EventHandler<GroupCollapsedEventArgs>? GroupCollapsedChanged;
 
+    /// <summary>
+    /// Event raised when the input state changes.
+    /// </summary>
+    public event EventHandler<StateChangedEventArgs>? InputStateChanged;
+
     #endregion
 
     #region Private Fields
@@ -107,7 +118,8 @@ public partial class FlowCanvas : UserControl
     private ViewportState _viewport = null!;
     private GridRenderer _gridRenderer = null!;
     private GraphRenderer _graphRenderer = null!;
-    private CanvasInputHandler _inputHandler = null!;
+    private InputStateMachine _inputStateMachine = null!;
+    private InputStateContext _inputContext = null!;
     private SelectionManager _selectionManager = null!;
     private ClipboardManager _clipboardManager = null!;
     private GroupManager _groupManager = null!;
@@ -127,6 +139,7 @@ public partial class FlowCanvas : UserControl
         this.ActualThemeVariantChanged += (_, _) =>
         {
             _theme = new ThemeResources(this);
+            UpdateInputContextTheme();
             RenderAll();
         };
     }
@@ -137,7 +150,11 @@ public partial class FlowCanvas : UserControl
         _gridRenderer = new GridRenderer(Settings);
         _graphRenderer = new GraphRenderer(Settings);
         _graphRenderer.SetViewport(_viewport);
-        _inputHandler = new CanvasInputHandler(Settings, _viewport, _graphRenderer);
+        
+        // Initialize input state machine
+        _inputContext = new InputStateContext(Settings, _viewport, _graphRenderer);
+        _inputStateMachine = new InputStateMachine(_inputContext);
+        
         _clipboardManager = new ClipboardManager();
         _selectionManager = new SelectionManager(
             () => Graph,
@@ -150,33 +167,34 @@ public partial class FlowCanvas : UserControl
             Settings);
         _contextMenu = new FlowCanvasContextMenu(this);
 
-        SubscribeToInputHandlerEvents();
+        SubscribeToInputContextEvents();
         SubscribeToSelectionManagerEvents();
         SubscribeToGroupManagerEvents();
         
         _viewport.ViewportChanged += (_, _) => ApplyViewportTransforms();
     }
 
-    private void SubscribeToInputHandlerEvents()
+    private void SubscribeToInputContextEvents()
     {
-        _inputHandler.ConnectionCompleted += OnConnectionCompleted;
-        _inputHandler.EdgeClicked += OnEdgeClicked;
-        _inputHandler.DeselectAllRequested += (_, _) => _selectionManager.DeselectAll();
-        _inputHandler.SelectAllRequested += (_, _) => _selectionManager.SelectAll();
-        _inputHandler.DeleteSelectedRequested += (_, _) => _selectionManager.DeleteSelected();
-        _inputHandler.UndoRequested += (_, _) => Undo();
-        _inputHandler.RedoRequested += (_, _) => Redo();
-        _inputHandler.CopyRequested += (_, _) => Copy();
-        _inputHandler.CutRequested += (_, _) => Cut();
-        _inputHandler.PasteRequested += (_, _) => Paste();
-        _inputHandler.DuplicateRequested += (_, _) => Duplicate();
-        _inputHandler.GroupRequested += (_, _) => GroupSelected();
-        _inputHandler.UngroupRequested += (_, _) => UngroupSelected();
-        _inputHandler.GroupCollapseToggleRequested += (_, e) => ToggleGroupCollapse(e.GroupId);
-        _inputHandler.NodesDragged += OnNodesDragged;
-        _inputHandler.NodeResizing += OnNodeResizing;
-        _inputHandler.NodeResized += OnNodeResized;
-        _inputHandler.GridRenderRequested += (_, _) => RenderGrid();
+        _inputContext.ConnectionCompleted += OnConnectionCompleted;
+        _inputContext.EdgeClicked += OnEdgeClicked;
+        _inputContext.DeselectAllRequested += (_, _) => _selectionManager.DeselectAll();
+        _inputContext.SelectAllRequested += (_, _) => _selectionManager.SelectAll();
+        _inputContext.DeleteSelectedRequested += (_, _) => _selectionManager.DeleteSelected();
+        _inputContext.UndoRequested += (_, _) => Undo();
+        _inputContext.RedoRequested += (_, _) => Redo();
+        _inputContext.CopyRequested += (_, _) => Copy();
+        _inputContext.CutRequested += (_, _) => Cut();
+        _inputContext.PasteRequested += (_, _) => Paste();
+        _inputContext.DuplicateRequested += (_, _) => Duplicate();
+        _inputContext.GroupRequested += (_, _) => GroupSelected();
+        _inputContext.UngroupRequested += (_, _) => UngroupSelected();
+        _inputContext.GroupCollapseToggleRequested += (_, e) => ToggleGroupCollapse(e.GroupId);
+        _inputContext.NodesDragged += OnNodesDragged;
+        _inputContext.NodeResizing += OnNodeResizing;
+        _inputContext.NodeResized += OnNodeResized;
+        _inputContext.GridRenderRequested += (_, _) => RenderGrid();
+        _inputContext.StateChanged += (_, e) => InputStateChanged?.Invoke(this, e);
     }
 
     private void SubscribeToSelectionManagerEvents()
@@ -188,7 +206,7 @@ public partial class FlowCanvas : UserControl
     {
         _groupManager.GroupCollapsedChanged += (s, e) =>
         {
-            RenderGraph(); // Re-render to show/hide collapsed children
+            RenderGraph();
             GroupCollapsedChanged?.Invoke(this, e);
         };
         _groupManager.GroupNeedsRerender += (s, groupId) => RenderGraph();
@@ -203,6 +221,11 @@ public partial class FlowCanvas : UserControl
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
         _theme = new ThemeResources(this);
+
+        // Update input context with UI elements
+        _inputContext.RootPanel = _rootPanel;
+        _inputContext.MainCanvas = _mainCanvas;
+        _inputContext.Theme = _theme;
 
         SetupEventHandlers();
         
@@ -232,6 +255,14 @@ public partial class FlowCanvas : UserControl
         RenderAll();
     }
 
+    private void UpdateInputContextTheme()
+    {
+        if (_inputContext != null)
+        {
+            _inputContext.Theme = _theme;
+        }
+    }
+
     #endregion
 
     #region Input Event Handlers
@@ -239,7 +270,7 @@ public partial class FlowCanvas : UserControl
     protected override void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
-        if (_inputHandler.HandleKeyDown(e, Graph))
+        if (_inputStateMachine.HandleKeyDown(e))
         {
             e.Handled = true;
         }
@@ -247,32 +278,41 @@ public partial class FlowCanvas : UserControl
 
     private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        _inputHandler.HandlePointerWheelChanged(e, _rootPanel);
+        _inputStateMachine.HandlePointerWheel(e);
     }
 
     private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var point = e.GetCurrentPoint(_rootPanel);
         
-        // Handle right-click for context menu on empty canvas
+        // Handle right-click for context menu
         if (point.Properties.IsRightButtonPressed)
         {
             HandleContextMenuRequest(e, null, null);
             return;
         }
+
+        // Update context with current graph
+        _inputContext.Graph = Graph;
         
-        _inputHandler.HandleRootPanelPointerPressed(e, _rootPanel, _mainCanvas, Graph);
+        // Determine the source control for state handling
+        var screenPos = e.GetPosition(_rootPanel);
+        var hitElement = _mainCanvas?.InputHitTest(screenPos);
+        
+        _inputStateMachine.HandlePointerPressed(e, hitElement as Control);
         Focus();
     }
 
     private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
     {
-        _inputHandler.HandleRootPanelPointerMoved(e, _rootPanel, Graph);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerMoved(e);
     }
 
     private void OnRootPanelPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        _inputHandler.HandleRootPanelPointerReleased(e, _rootPanel, _mainCanvas, Graph);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerReleased(e);
     }
 
     private void OnNodePointerPressed(object? sender, PointerPressedEventArgs e)
@@ -281,49 +321,52 @@ public partial class FlowCanvas : UserControl
         {
             var point = e.GetCurrentPoint(control);
             
-            // Handle right-click for context menu
             if (point.Properties.IsRightButtonPressed)
             {
                 HandleContextMenuRequest(e, control, node);
                 return;
             }
             
-            _inputHandler.HandleNodePointerPressed(control, node, e, _rootPanel, Graph);
+            _inputContext.Graph = Graph;
+            _inputStateMachine.HandlePointerPressed(e, control);
             Focus();
         }
     }
 
     private void OnNodePointerMoved(object? sender, PointerEventArgs e)
     {
-        _inputHandler.HandleNodePointerMoved(e, _rootPanel, Graph);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerMoved(e);
     }
 
     private void OnNodePointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        _inputHandler.HandleNodePointerReleased(e, Graph);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerReleased(e);
     }
 
     private void OnPortPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Ellipse portVisual && portVisual.Tag is (Node node, Port port, bool isOutput))
+        if (sender is Ellipse portVisual)
         {
-            _inputHandler.HandlePortPointerPressed(portVisual, node, port, isOutput, e, _rootPanel, _mainCanvas, _theme);
+            _inputContext.Graph = Graph;
+            _inputStateMachine.HandlePointerPressed(e, portVisual);
         }
     }
 
     private void OnPortPointerEntered(object? sender, PointerEventArgs e)
     {
-        if (sender is Ellipse portVisual)
+        if (sender is Ellipse portVisual && _theme != null)
         {
-            _inputHandler.HandlePortPointerEntered(portVisual, _theme);
+            portVisual.Fill = _theme.PortHover;
         }
     }
 
     private void OnPortPointerExited(object? sender, PointerEventArgs e)
     {
-        if (sender is Ellipse portVisual)
+        if (sender is Ellipse portVisual && _theme != null)
         {
-            _inputHandler.HandlePortPointerExited(portVisual, _theme);
+            portVisual.Fill = _theme.PortBackground;
         }
     }
 
@@ -333,14 +376,14 @@ public partial class FlowCanvas : UserControl
         {
             var point = e.GetCurrentPoint(edgePath);
             
-            // Handle right-click for context menu
             if (point.Properties.IsRightButtonPressed)
             {
                 HandleContextMenuRequest(e, edgePath, edge);
                 return;
             }
             
-            _inputHandler.HandleEdgePointerPressed(edgePath, edge, e, Graph);
+            _inputContext.Graph = Graph;
+            _inputStateMachine.HandlePointerPressed(e, edgePath);
             Focus();
         }
     }
@@ -349,18 +392,21 @@ public partial class FlowCanvas : UserControl
     {
         if (sender is Rectangle handle)
         {
-            _inputHandler.HandleResizeHandlePointerPressed(handle, node, position, e, _rootPanel, Settings);
+            _inputContext.Graph = Graph;
+            _inputStateMachine.HandlePointerPressed(e, handle);
         }
     }
 
     private void OnResizeHandlePointerMoved(object? sender, PointerEventArgs e)
     {
-        _inputHandler.HandleResizeHandlePointerMoved(e, _rootPanel, Settings);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerMoved(e);
     }
 
     private void OnResizeHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        _inputHandler.HandleResizeHandlePointerReleased(e);
+        _inputContext.Graph = Graph;
+        _inputStateMachine.HandlePointerReleased(e);
     }
 
     /// <summary>
