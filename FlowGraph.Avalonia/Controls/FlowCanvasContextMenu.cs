@@ -238,8 +238,8 @@ public class FlowCanvasContextMenu
             edge.Type = type;
         }
         
-        // Force re-render
-        // The graph renderer should pick up the change
+        // Force re-render edges
+        _canvas.RefreshEdges();
     }
 
     private void SetEdgeMarker(EdgeMarker marker)
@@ -251,6 +251,9 @@ public class FlowCanvasContextMenu
         {
             edge.MarkerEnd = marker;
         }
+        
+        // Force re-render edges
+        _canvas.RefreshEdges();
     }
 
     #endregion

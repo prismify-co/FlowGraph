@@ -1043,6 +1043,22 @@ public partial class FlowCanvas : UserControl
     #region Public API - Viewport
 
     /// <summary>
+    /// Forces a re-render of all edges. Useful after modifying edge properties.
+    /// </summary>
+    public void RefreshEdges()
+    {
+        RenderEdges();
+    }
+
+    /// <summary>
+    /// Forces a complete re-render of the graph.
+    /// </summary>
+    public void Refresh()
+    {
+        RenderAll();
+    }
+
+    /// <summary>
     /// Zooms in by one step, keeping the graph centered.
     /// </summary>
     public void ZoomIn()
