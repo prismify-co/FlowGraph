@@ -34,8 +34,8 @@ public partial class FlowMinimap : UserControl
     private double _extentX;
     private double _extentY;
 
-    private const double NodeWidth = 150;
-    private const double NodeHeight = 80;
+    private const double DefaultNodeWidth = 150;
+    private const double DefaultNodeHeight = 80;
 
     public FlowMinimap()
     {
@@ -164,14 +164,40 @@ public partial class FlowMinimap : UserControl
 
     private void OnNodeChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Node.Position) || e.PropertyName == nameof(Node.IsSelected))
+        // Re-render on position, selection, or collapse state changes
+        if (e.PropertyName == nameof(Node.Position) || 
+            e.PropertyName == nameof(Node.IsSelected) ||
+            e.PropertyName == nameof(Node.IsCollapsed) ||
+            e.PropertyName == nameof(Node.Width) ||
+            e.PropertyName == nameof(Node.Height))
+        {
             RenderMinimap();
+        }
     }
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
         base.OnSizeChanged(e);
         RenderMinimap();
+    }
+
+    /// <summary>
+    /// Checks if a node is visible (not hidden by a collapsed ancestor group).
+    /// </summary>
+    private bool IsNodeVisible(Graph graph, Node node)
+    {
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
+        {
+            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            if (parent == null) break;
+            
+            if (parent.IsCollapsed)
+                return false;
+                
+            currentParentId = parent.ParentGroupId;
+        }
+        return true;
     }
 
     /// <summary>
@@ -209,6 +235,11 @@ public partial class FlowMinimap : UserControl
         if (graph.Nodes.Count == 0)
             return;
 
+        // Get only visible nodes (not hidden by collapsed groups)
+        var visibleNodes = graph.Nodes.Where(n => IsNodeVisible(graph, n)).ToList();
+        if (visibleNodes.Count == 0)
+            return;
+
         // Get minimap display area
         var minimapWidth = _minimapCanvas.Bounds.Width;
         var minimapHeight = _minimapCanvas.Bounds.Height;
@@ -220,16 +251,14 @@ public partial class FlowMinimap : UserControl
         if (minimapWidth <= 0 || minimapHeight <= 0)
             return;
 
-        // Step 1: Calculate ItemsExtent (bounding box of all nodes)
-        var itemsMinX = graph.Nodes.Min(n => n.Position.X);
-        var itemsMinY = graph.Nodes.Min(n => n.Position.Y);
-        var itemsMaxX = graph.Nodes.Max(n => n.Position.X + NodeWidth);
-        var itemsMaxY = graph.Nodes.Max(n => n.Position.Y + NodeHeight);
+        // Step 1: Calculate ItemsExtent (bounding box of all visible nodes)
+        var itemsMinX = visibleNodes.Min(n => n.Position.X);
+        var itemsMinY = visibleNodes.Min(n => n.Position.Y);
+        var itemsMaxX = visibleNodes.Max(n => n.Position.X + GetNodeWidth(n));
+        var itemsMaxY = visibleNodes.Max(n => n.Position.Y + GetNodeHeight(n));
         var itemsExtent = new Rect(itemsMinX, itemsMinY, itemsMaxX - itemsMinX, itemsMaxY - itemsMinY);
 
         // Step 2: Get ViewportLocation and ViewportSize (like Nodify)
-        // ViewportLocation = top-left of visible area in canvas coords
-        // ViewportSize = size of visible area in canvas coords
         var viewport = TargetCanvas.Viewport;
         var viewportRect = viewport.GetVisibleRect();
         
@@ -243,13 +272,11 @@ public partial class FlowMinimap : UserControl
         }
         else
         {
-            // Fallback if viewport not ready
             viewportLocation = new AvaloniaPoint(0, 0);
             viewportSize = new Size(0, 0);
         }
 
         // Step 3: Calculate Extent = union of ItemsExtent and Viewport
-        // This is exactly what Nodify does with ResizeToViewport=true
         var extent = itemsExtent;
         if (viewportSize.Width > 0 && viewportSize.Height > 0)
         {
@@ -283,20 +310,26 @@ public partial class FlowMinimap : UserControl
         _extentX -= offsetX / _scale;
         _extentY -= offsetY / _scale;
 
-        // Draw edges
+        // Draw edges (only between visible nodes)
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
+        var visibleNodeIds = new HashSet<string>(visibleNodes.Select(n => n.Id));
+        
         foreach (var edge in graph.Edges)
         {
+            // Only draw edge if both endpoints are visible
+            if (!visibleNodeIds.Contains(edge.Source) || !visibleNodeIds.Contains(edge.Target))
+                continue;
+                
             var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
             var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
             if (sourceNode == null || targetNode == null) continue;
 
             var startPos = CanvasToMinimap(
-                sourceNode.Position.X + NodeWidth / 2,
-                sourceNode.Position.Y + NodeHeight / 2);
+                sourceNode.Position.X + GetNodeWidth(sourceNode) / 2,
+                sourceNode.Position.Y + GetNodeHeight(sourceNode) / 2);
             var endPos = CanvasToMinimap(
-                targetNode.Position.X + NodeWidth / 2,
-                targetNode.Position.Y + NodeHeight / 2);
+                targetNode.Position.X + GetNodeWidth(targetNode) / 2,
+                targetNode.Position.Y + GetNodeHeight(targetNode) / 2);
 
             _minimapCanvas.Children.Add(new Line
             {
@@ -307,16 +340,46 @@ public partial class FlowMinimap : UserControl
             });
         }
 
-        // Draw nodes
-        var nodeBrush = new SolidColorBrush(Color.Parse("#4682B4"));
-        var selectedBrush = new SolidColorBrush(Color.Parse("#FF6B00"));
-        foreach (var node in graph.Nodes)
+        // Draw groups first (behind regular nodes)
+        var groupBrush = new SolidColorBrush(Color.FromArgb(40, 132, 94, 194)); // Translucent purple
+        var groupBorderBrush = new SolidColorBrush(Color.Parse("#845EC2"));
+        var collapsedGroupBrush = new SolidColorBrush(Color.FromArgb(80, 132, 94, 194)); // More opaque when collapsed
+        
+        foreach (var node in visibleNodes.Where(n => n.IsGroup).OrderBy(n => GetGroupDepth(graph, n)))
         {
             var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
+            var width = GetNodeWidth(node) * _scale;
+            var height = GetNodeHeight(node) * _scale;
+            
             var rect = new Rectangle
             {
-                Width = Math.Max(NodeWidth * _scale, 4),
-                Height = Math.Max(NodeHeight * _scale, 3),
+                Width = Math.Max(width, 8),
+                Height = Math.Max(height, 6),
+                Fill = node.IsCollapsed ? collapsedGroupBrush : groupBrush,
+                Stroke = groupBorderBrush,
+                StrokeThickness = 1,
+                RadiusX = 3,
+                RadiusY = 3
+            };
+            Canvas.SetLeft(rect, pos.X);
+            Canvas.SetTop(rect, pos.Y);
+            _minimapCanvas.Children.Add(rect);
+        }
+
+        // Draw regular nodes (on top of groups)
+        var nodeBrush = new SolidColorBrush(Color.Parse("#4682B4"));
+        var selectedBrush = new SolidColorBrush(Color.Parse("#FF6B00"));
+        
+        foreach (var node in visibleNodes.Where(n => !n.IsGroup))
+        {
+            var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
+            var width = GetNodeWidth(node) * _scale;
+            var height = GetNodeHeight(node) * _scale;
+            
+            var rect = new Rectangle
+            {
+                Width = Math.Max(width, 4),
+                Height = Math.Max(height, 3),
                 Fill = node.IsSelected ? selectedBrush : nodeBrush,
                 RadiusX = 2,
                 RadiusY = 2
@@ -346,6 +409,42 @@ public partial class FlowMinimap : UserControl
             Canvas.SetTop(_viewportRect, vpTopLeft.Y);
             _minimapCanvas.Children.Add(_viewportRect);
         }
+    }
+
+    /// <summary>
+    /// Gets the display width for a node.
+    /// </summary>
+    private double GetNodeWidth(Node node)
+    {
+        return node.Width ?? DefaultNodeWidth;
+    }
+
+    /// <summary>
+    /// Gets the display height for a node.
+    /// For collapsed groups, returns the header height only.
+    /// </summary>
+    private double GetNodeHeight(Node node)
+    {
+        if (node.IsGroup && node.IsCollapsed)
+            return 28; // Header height only
+        return node.Height ?? DefaultNodeHeight;
+    }
+
+    /// <summary>
+    /// Gets the nesting depth of a group for z-ordering.
+    /// </summary>
+    private int GetGroupDepth(Graph graph, Node node)
+    {
+        int depth = 0;
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
+        {
+            depth++;
+            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            if (parent == null) break;
+            currentParentId = parent.ParentGroupId;
+        }
+        return depth;
     }
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)

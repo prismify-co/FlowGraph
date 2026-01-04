@@ -86,7 +86,7 @@ public static class GraphGroupExtensions
         double padding = 20,
         double headerHeight = 30,
         double defaultNodeWidth = 150,
-        double defaultNodeHeight = 60)
+        double defaultNodeHeight = 80)  // Fixed: was 60, should be 80 to match FlowCanvasSettings
     {
         var children = graph.GetGroupChildren(groupId).ToList();
         
@@ -95,10 +95,21 @@ public static class GraphGroupExtensions
             return (new Point(0, 0), 200, 100);
         }
 
-        var minX = children.Min(n => n.Position.X);
-        var minY = children.Min(n => n.Position.Y);
-        var maxX = children.Max(n => n.Position.X + (n.Width ?? defaultNodeWidth));
-        var maxY = children.Max(n => n.Position.Y + (n.Height ?? defaultNodeHeight));
+        var minX = double.MaxValue;
+        var minY = double.MaxValue;
+        var maxX = double.MinValue;
+        var maxY = double.MinValue;
+
+        foreach (var child in children)
+        {
+            var nodeWidth = child.Width ?? defaultNodeWidth;
+            var nodeHeight = child.Height ?? defaultNodeHeight;
+
+            minX = Math.Min(minX, child.Position.X);
+            minY = Math.Min(minY, child.Position.Y);
+            maxX = Math.Max(maxX, child.Position.X + nodeWidth);
+            maxY = Math.Max(maxY, child.Position.Y + nodeHeight);
+        }
 
         return (
             new Point(minX - padding, minY - padding - headerHeight),
