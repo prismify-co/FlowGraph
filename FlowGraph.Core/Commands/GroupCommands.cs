@@ -15,6 +15,12 @@ public class GroupNodesCommand : IGraphCommand
     private double _groupWidth;
     private double _groupHeight;
 
+    // Default node dimensions - should match FlowCanvasSettings defaults
+    private const double DefaultNodeWidth = 150;
+    private const double DefaultNodeHeight = 80;
+    private const double GroupPadding = 20;
+    private const double GroupHeaderHeight = 30;
+
     public string Description => _nodeIds.Count == 1 
         ? "Group node" 
         : $"Group {_nodeIds.Count} nodes";
@@ -52,17 +58,26 @@ public class GroupNodesCommand : IGraphCommand
         if (nodes.Count == 0)
             return;
 
-        const double padding = 20;
-        const double headerHeight = 30;
+        // Calculate bounds using actual node dimensions
+        var minX = double.MaxValue;
+        var minY = double.MaxValue;
+        var maxX = double.MinValue;
+        var maxY = double.MinValue;
 
-        var minX = nodes.Min(n => n.Position.X);
-        var minY = nodes.Min(n => n.Position.Y);
-        var maxX = nodes.Max(n => n.Position.X + (n.Width ?? 150));
-        var maxY = nodes.Max(n => n.Position.Y + (n.Height ?? 60));
+        foreach (var node in nodes)
+        {
+            var nodeWidth = node.Width ?? DefaultNodeWidth;
+            var nodeHeight = node.Height ?? DefaultNodeHeight;
 
-        _groupPosition = new Point(minX - padding, minY - padding - headerHeight);
-        _groupWidth = maxX - minX + padding * 2;
-        _groupHeight = maxY - minY + padding * 2 + headerHeight;
+            minX = Math.Min(minX, node.Position.X);
+            minY = Math.Min(minY, node.Position.Y);
+            maxX = Math.Max(maxX, node.Position.X + nodeWidth);
+            maxY = Math.Max(maxY, node.Position.Y + nodeHeight);
+        }
+
+        _groupPosition = new Point(minX - GroupPadding, minY - GroupPadding - GroupHeaderHeight);
+        _groupWidth = maxX - minX + GroupPadding * 2;
+        _groupHeight = maxY - minY + GroupPadding * 2 + GroupHeaderHeight;
 
         // Create the group node
         _createdGroup = new Node
