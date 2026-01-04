@@ -120,6 +120,7 @@ public class GraphRenderer
 
     /// <summary>
     /// Renders all nodes in the graph.
+    /// Groups are rendered first (behind), then regular nodes.
     /// </summary>
     public void RenderNodes(
         Canvas canvas, 
@@ -127,10 +128,39 @@ public class GraphRenderer
         ThemeResources theme,
         Action<Control, Node> onNodeCreated)
     {
-        foreach (var node in graph.Nodes)
+        // Render groups first (they should be behind their children)
+        // Order by hierarchy depth - outermost groups first
+        var groups = graph.Nodes
+            .Where(n => n.IsGroup)
+            .OrderBy(n => GetGroupDepth(graph, n))
+            .ToList();
+
+        foreach (var group in groups)
+        {
+            RenderNode(canvas, group, theme, onNodeCreated);
+        }
+
+        // Then render non-group nodes
+        foreach (var node in graph.Nodes.Where(n => !n.IsGroup))
         {
             RenderNode(canvas, node, theme, onNodeCreated);
         }
+    }
+
+    /// <summary>
+    /// Gets the nesting depth of a group (0 = top level).
+    /// </summary>
+    private int GetGroupDepth(Graph graph, Node node)
+    {
+        int depth = 0;
+        var current = node;
+        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        {
+            depth++;
+            current = graph.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
+            if (current == null) break;
+        }
+        return depth;
     }
 
     /// <summary>

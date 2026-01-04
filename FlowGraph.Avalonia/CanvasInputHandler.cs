@@ -409,10 +409,11 @@ public class CanvasInputHandler
             var deltaX = currentPoint.X - _dragStartPoint.X;
             var deltaY = currentPoint.Y - _dragStartPoint.Y;
 
-            // Move all selected nodes
-            foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+            // Move all nodes that were marked for dragging (including group children)
+            foreach (var (nodeId, startPos) in _dragStartPositions)
             {
-                if (_dragStartPositions.TryGetValue(node.Id, out var startPos))
+                var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                if (node != null)
                 {
                     var newX = startPos.X + deltaX;
                     var newY = startPos.Y + deltaY;
@@ -440,12 +441,16 @@ public class CanvasInputHandler
     {
         if (_isDraggingNodes && graph != null)
         {
-            // Collect final positions
+            // Collect final positions for all dragged nodes
             var newPositions = new Dictionary<string, Core.Point>();
-            foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+            foreach (var (nodeId, _) in _dragStartPositions)
             {
-                node.IsDragging = false;
-                newPositions[node.Id] = node.Position;
+                var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                if (node != null)
+                {
+                    node.IsDragging = false;
+                    newPositions[node.Id] = node.Position;
+                }
             }
 
             // Only raise event if positions actually changed
@@ -747,11 +752,32 @@ public class CanvasInputHandler
         _dragStartPoint = _viewport.ScreenToCanvas(screenPosition);
         _dragStartPositions.Clear();
 
-        // Store start positions of all selected nodes
+        // Collect all nodes to drag: selected nodes + children of selected groups
+        var nodesToDrag = new HashSet<string>();
+        
         foreach (var node in graph.Nodes.Where(n => n.IsSelected))
         {
-            node.IsDragging = true;
-            _dragStartPositions[node.Id] = node.Position;
+            nodesToDrag.Add(node.Id);
+            
+            // If this is a group, also include all its children (recursively)
+            if (node.IsGroup)
+            {
+                foreach (var child in graph.GetGroupChildrenRecursive(node.Id))
+                {
+                    nodesToDrag.Add(child.Id);
+                }
+            }
+        }
+
+        // Store start positions of all nodes to drag
+        foreach (var nodeId in nodesToDrag)
+        {
+            var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            if (node != null)
+            {
+                node.IsDragging = true;
+                _dragStartPositions[node.Id] = node.Position;
+            }
         }
     }
 
