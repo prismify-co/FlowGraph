@@ -121,6 +121,7 @@ public class GraphRenderer
     /// <summary>
     /// Renders all nodes in the graph.
     /// Groups are rendered first (behind), then regular nodes.
+    /// Nodes hidden by collapsed groups are not rendered.
     /// </summary>
     public void RenderNodes(
         Canvas canvas, 
@@ -131,7 +132,7 @@ public class GraphRenderer
         // Render groups first (they should be behind their children)
         // Order by hierarchy depth - outermost groups first
         var groups = graph.Nodes
-            .Where(n => n.IsGroup)
+            .Where(n => n.IsGroup && IsNodeVisible(graph, n))
             .OrderBy(n => GetGroupDepth(graph, n))
             .ToList();
 
@@ -140,11 +141,31 @@ public class GraphRenderer
             RenderNode(canvas, group, theme, onNodeCreated);
         }
 
-        // Then render non-group nodes
-        foreach (var node in graph.Nodes.Where(n => !n.IsGroup))
+        // Then render non-group nodes that are visible
+        foreach (var node in graph.Nodes.Where(n => !n.IsGroup && IsNodeVisible(graph, n)))
         {
             RenderNode(canvas, node, theme, onNodeCreated);
         }
+    }
+
+    /// <summary>
+    /// Checks if a node is visible (not hidden by a collapsed ancestor group).
+    /// </summary>
+    public bool IsNodeVisible(Graph graph, Node node)
+    {
+        // Check all ancestor groups - if any is collapsed, this node is hidden
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
+        {
+            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            if (parent == null) break;
+            
+            if (parent.IsCollapsed)
+                return false;
+                
+            currentParentId = parent.ParentGroupId;
+        }
+        return true;
     }
 
     /// <summary>
@@ -278,6 +299,7 @@ public class GraphRenderer
 
     /// <summary>
     /// Renders all edges in the graph.
+    /// Edges with hidden endpoints (due to collapsed groups) are not rendered.
     /// </summary>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
@@ -308,9 +330,19 @@ public class GraphRenderer
             canvas.Children.Remove(edge);
         }
 
-        // Render new edges
+        // Render new edges - only if both endpoints are visible
         foreach (var edge in graph.Edges)
         {
+            var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            
+            // Skip edges where either endpoint is hidden by a collapsed group
+            if (sourceNode == null || targetNode == null ||
+                !IsNodeVisible(graph, sourceNode) || !IsNodeVisible(graph, targetNode))
+            {
+                continue;
+            }
+            
             RenderEdge(canvas, edge, graph, theme);
         }
     }

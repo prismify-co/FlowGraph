@@ -125,6 +125,11 @@ public class CanvasInputHandler
     public event EventHandler? UngroupRequested;
 
     /// <summary>
+    /// Event raised when a group's collapse button or header is double-clicked.
+    /// </summary>
+    public event EventHandler<GroupToggleCollapseEventArgs>? GroupCollapseToggleRequested;
+
+    /// <summary>
     /// Event raised when the grid needs to be re-rendered.
     /// </summary>
     public event EventHandler? GridRenderRequested;
@@ -371,6 +376,14 @@ public class CanvasInputHandler
 
         if (point.Properties.IsLeftButtonPressed && graph != null)
         {
+            // Check for double-click on group to toggle collapse
+            if (e.ClickCount == 2 && node.IsGroup)
+            {
+                GroupCollapseToggleRequested?.Invoke(this, new GroupToggleCollapseEventArgs(node.Id));
+                e.Handled = true;
+                return;
+            }
+
             bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
             // Handle selection

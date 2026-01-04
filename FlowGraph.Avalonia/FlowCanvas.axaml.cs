@@ -73,6 +73,11 @@ public partial class FlowCanvas : UserControl
     public SelectionManager Selection => _selectionManager;
 
     /// <summary>
+    /// Gets the group manager for advanced group operations.
+    /// </summary>
+    public GroupManager Groups => _groupManager;
+
+    /// <summary>
     /// Gets or sets the connection validator for validating new connections.
     /// Set to null to allow all connections.
     /// </summary>
@@ -82,6 +87,11 @@ public partial class FlowCanvas : UserControl
     /// Event raised when a connection is rejected by the validator.
     /// </summary>
     public event EventHandler<ConnectionRejectedEventArgs>? ConnectionRejected;
+
+    /// <summary>
+    /// Event raised when a group's collapsed state changes.
+    /// </summary>
+    public event EventHandler<GroupCollapsedEventArgs>? GroupCollapsedChanged;
 
     #endregion
 
@@ -99,6 +109,7 @@ public partial class FlowCanvas : UserControl
     private CanvasInputHandler _inputHandler = null!;
     private SelectionManager _selectionManager = null!;
     private ClipboardManager _clipboardManager = null!;
+    private GroupManager _groupManager = null!;
     private ThemeResources _theme = null!;
 
     #endregion
@@ -131,9 +142,14 @@ public partial class FlowCanvas : UserControl
             () => _graphRenderer,
             () => _theme,
             CommandHistory);
+        _groupManager = new GroupManager(
+            () => Graph,
+            CommandHistory,
+            Settings);
 
         SubscribeToInputHandlerEvents();
         SubscribeToSelectionManagerEvents();
+        SubscribeToGroupManagerEvents();
         
         _viewport.ViewportChanged += (_, _) => ApplyViewportTransforms();
     }
@@ -153,6 +169,7 @@ public partial class FlowCanvas : UserControl
         _inputHandler.DuplicateRequested += (_, _) => Duplicate();
         _inputHandler.GroupRequested += (_, _) => GroupSelected();
         _inputHandler.UngroupRequested += (_, _) => UngroupSelected();
+        _inputHandler.GroupCollapseToggleRequested += (_, e) => ToggleGroupCollapse(e.GroupId);
         _inputHandler.NodesDragged += OnNodesDragged;
         _inputHandler.NodeResizing += OnNodeResizing;
         _inputHandler.NodeResized += OnNodeResized;
@@ -162,6 +179,17 @@ public partial class FlowCanvas : UserControl
     private void SubscribeToSelectionManagerEvents()
     {
         _selectionManager.EdgesNeedRerender += (_, _) => RenderEdges();
+    }
+
+    private void SubscribeToGroupManagerEvents()
+    {
+        _groupManager.GroupCollapsedChanged += (s, e) =>
+        {
+            RenderGraph(); // Re-render to show/hide collapsed children
+            GroupCollapsedChanged?.Invoke(this, e);
+        };
+        _groupManager.GroupNeedsRerender += (s, groupId) => RenderGraph();
+        _groupManager.NodesAddedToGroup += (s, e) => RenderGraph();
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -494,19 +522,24 @@ public partial class FlowCanvas : UserControl
     /// Groups the selected nodes into a new group.
     /// </summary>
     /// <param name="groupLabel">Optional label for the group.</param>
-    public void GroupSelected(string? groupLabel = null)
+    /// <returns>The created group node, or null if grouping failed.</returns>
+    public Node? GroupSelected(string? groupLabel = null)
     {
-        if (Graph == null) return;
+        if (Graph == null) return null;
 
         var selectedNodes = Graph.Nodes
             .Where(n => n.IsSelected && !n.IsGroup)
             .ToList();
 
-        if (selectedNodes.Count < 2) return;
+        if (selectedNodes.Count < 2) return null;
 
         var nodeIds = selectedNodes.Select(n => n.Id).ToList();
         var command = new GroupNodesCommand(Graph, nodeIds, groupLabel);
         CommandHistory.Execute(command);
+
+        // Return the created group
+        return Graph.Nodes.FirstOrDefault(n => n.IsGroup &&
+            nodeIds.All(id => Graph.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
     }
 
     /// <summary>
@@ -544,10 +577,33 @@ public partial class FlowCanvas : UserControl
     /// <param name="groupId">The ID of the group to toggle.</param>
     public void ToggleGroupCollapse(string groupId)
     {
-        if (Graph == null) return;
+        _groupManager.ToggleCollapse(groupId);
+    }
 
-        var command = new ToggleGroupCollapseCommand(Graph, groupId);
-        CommandHistory.Execute(command);
+    /// <summary>
+    /// Sets the collapsed state of a group.
+    /// </summary>
+    /// <param name="groupId">The ID of the group.</param>
+    /// <param name="collapsed">True to collapse, false to expand.</param>
+    public void SetGroupCollapsed(string groupId, bool collapsed)
+    {
+        _groupManager.SetCollapsed(groupId, collapsed);
+    }
+
+    /// <summary>
+    /// Collapses all groups in the graph.
+    /// </summary>
+    public void CollapseAllGroups()
+    {
+        _groupManager.CollapseAll();
+    }
+
+    /// <summary>
+    /// Expands all groups in the graph.
+    /// </summary>
+    public void ExpandAllGroups()
+    {
+        _groupManager.ExpandAll();
     }
 
     /// <summary>
@@ -557,10 +613,26 @@ public partial class FlowCanvas : UserControl
     /// <param name="nodeIds">The IDs of the nodes to add.</param>
     public void AddNodesToGroup(string groupId, IEnumerable<string> nodeIds)
     {
+        _groupManager.AddNodesToGroup(groupId, nodeIds);
+    }
+
+    /// <summary>
+    /// Adds selected nodes to the specified group.
+    /// </summary>
+    /// <param name="groupId">The ID of the target group.</param>
+    public void AddSelectedToGroup(string groupId)
+    {
         if (Graph == null) return;
 
-        var command = new AddNodesToGroupCommand(Graph, groupId, nodeIds);
-        CommandHistory.Execute(command);
+        var selectedNodes = Graph.Nodes
+            .Where(n => n.IsSelected && !n.IsGroup && n.Id != groupId)
+            .Select(n => n.Id)
+            .ToList();
+
+        if (selectedNodes.Count > 0)
+        {
+            AddNodesToGroup(groupId, selectedNodes);
+        }
     }
 
     /// <summary>
@@ -569,10 +641,91 @@ public partial class FlowCanvas : UserControl
     /// <param name="nodeIds">The IDs of the nodes to remove from their groups.</param>
     public void RemoveNodesFromGroup(IEnumerable<string> nodeIds)
     {
+        _groupManager.RemoveNodesFromGroup(nodeIds);
+    }
+
+    /// <summary>
+    /// Removes selected nodes from their parent groups.
+    /// </summary>
+    public void RemoveSelectedFromGroups()
+    {
         if (Graph == null) return;
 
-        var command = new RemoveNodesFromGroupCommand(Graph, nodeIds);
-        CommandHistory.Execute(command);
+        var selectedNodes = Graph.Nodes
+            .Where(n => n.IsSelected && !string.IsNullOrEmpty(n.ParentGroupId))
+            .Select(n => n.Id)
+            .ToList();
+
+        if (selectedNodes.Count > 0)
+        {
+            RemoveNodesFromGroup(selectedNodes);
+        }
+    }
+
+    /// <summary>
+    /// Auto-resizes a group to fit its children.
+    /// </summary>
+    /// <param name="groupId">The ID of the group to resize.</param>
+    public void AutoResizeGroup(string groupId)
+    {
+        _groupManager.AutoResizeGroup(groupId);
+    }
+
+    /// <summary>
+    /// Auto-resizes all groups to fit their children.
+    /// </summary>
+    public void AutoResizeAllGroups()
+    {
+        if (Graph == null) return;
+
+        foreach (var group in Graph.Nodes.Where(n => n.IsGroup))
+        {
+            _groupManager.AutoResizeGroup(group.Id);
+        }
+    }
+
+    /// <summary>
+    /// Gets all groups in the graph.
+    /// </summary>
+    public IEnumerable<Node> GetAllGroups()
+    {
+        return _groupManager.GetAllGroups();
+    }
+
+    /// <summary>
+    /// Gets the children of a specific group.
+    /// </summary>
+    /// <param name="groupId">The ID of the group.</param>
+    public IEnumerable<Node> GetGroupChildren(string groupId)
+    {
+        return _groupManager.GetGroupChildren(groupId);
+    }
+
+    /// <summary>
+    /// Checks if a node is visible (not hidden by a collapsed parent group).
+    /// </summary>
+    /// <param name="nodeId">The ID of the node to check.</param>
+    public bool IsNodeVisible(string nodeId)
+    {
+        return _groupManager.IsNodeVisible(nodeId);
+    }
+
+    /// <summary>
+    /// Gets all visible nodes (excluding those hidden by collapsed groups).
+    /// </summary>
+    public IEnumerable<Node> GetVisibleNodes()
+    {
+        return _groupManager.GetVisibleNodes();
+    }
+
+    /// <summary>
+    /// Gets the group at a specific canvas point.
+    /// </summary>
+    /// <param name="canvasPoint">The point in canvas coordinates.</param>
+    /// <returns>The group ID, or null if no group at that point.</returns>
+    public string? GetGroupAtPoint(Core.Point canvasPoint)
+    {
+        return _groupManager.GetGroupAtPoint(canvasPoint);
     }
 
     #endregion

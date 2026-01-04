@@ -140,3 +140,19 @@ public class NodeResizedEventArgs : EventArgs
         NewPosition = newPosition;
     }
 }
+
+/// <summary>
+/// Event args for group collapse toggle request.
+/// </summary>
+public class GroupToggleCollapseEventArgs : EventArgs
+{
+    /// <summary>
+    /// The ID of the group to toggle.
+    /// </summary>
+    public string GroupId { get; }
+
+    public GroupToggleCollapseEventArgs(string groupId)
+    {
+        GroupId = groupId;
+    }
+}
