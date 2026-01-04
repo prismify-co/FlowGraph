@@ -1,10 +1,16 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace FlowGraph.Core;
 
 /// <summary>
 /// Represents a connection between two nodes.
 /// </summary>
-public class Edge
+public class Edge : INotifyPropertyChanged
 {
+    private bool _isSelected;
+    private List<Point>? _waypoints;
+
     /// <summary>
     /// Unique identifier for the edge.
     /// </summary>
@@ -53,7 +59,42 @@ public class Edge
     /// <summary>
     /// Whether this edge is currently selected.
     /// </summary>
-    public bool IsSelected { get; set; }
+    public bool IsSelected 
+    { 
+        get => _isSelected;
+        set => SetField(ref _isSelected, value);
+    }
+
+    /// <summary>
+    /// Optional waypoints for custom edge routing.
+    /// When set, the edge will pass through these intermediate points.
+    /// Does not include the start and end points (port positions).
+    /// </summary>
+    public List<Point>? Waypoints
+    {
+        get => _waypoints;
+        set => SetField(ref _waypoints, value);
+    }
+
+    /// <summary>
+    /// Whether this edge should use automatic routing to avoid obstacles.
+    /// </summary>
+    public bool AutoRoute { get; set; } = false;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }
 
 /// <summary>

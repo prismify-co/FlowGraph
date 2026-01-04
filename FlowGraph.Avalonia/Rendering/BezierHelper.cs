@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Media;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
+using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
 
@@ -30,12 +31,261 @@ public static class EdgePathHelper
     }
 
     /// <summary>
+    /// Creates a path geometry through waypoints based on the edge type.
+    /// </summary>
+    public static PathGeometry CreatePathWithWaypoints(
+        AvaloniaPoint start, 
+        AvaloniaPoint end, 
+        IReadOnlyList<CorePoint>? waypoints, 
+        EdgeType edgeType)
+    {
+        if (waypoints == null || waypoints.Count == 0)
+        {
+            return CreatePath(start, end, edgeType);
+        }
+
+        // Convert waypoints to Avalonia points
+        var allPoints = new List<AvaloniaPoint> { start };
+        allPoints.AddRange(waypoints.Select(p => new AvaloniaPoint(p.X, p.Y)));
+        allPoints.Add(end);
+
+        return edgeType switch
+        {
+            EdgeType.Straight => CreateMultiSegmentStraightPath(allPoints),
+            EdgeType.Step => CreateMultiSegmentStepPath(allPoints),
+            EdgeType.SmoothStep => CreateMultiSegmentSmoothPath(allPoints),
+            _ => CreateMultiSegmentBezierPath(allPoints)
+        };
+    }
+
+    /// <summary>
+    /// Creates a multi-segment straight line path through waypoints.
+    /// </summary>
+    public static PathGeometry CreateMultiSegmentStraightPath(IReadOnlyList<AvaloniaPoint> points)
+    {
+        if (points.Count < 2)
+            return new PathGeometry();
+
+        var pathFigure = new PathFigure
+        {
+            StartPoint = points[0],
+            IsClosed = false,
+            Segments = new PathSegments()
+        };
+
+        for (int i = 1; i < points.Count; i++)
+        {
+            pathFigure.Segments.Add(new LineSegment { Point = points[i] });
+        }
+
+        var pathGeometry = new PathGeometry();
+        pathGeometry.Figures.Add(pathFigure);
+        return pathGeometry;
+    }
+
+    /// <summary>
+    /// Creates a multi-segment bezier path through waypoints.
+    /// Uses smooth curves between consecutive waypoints.
+    /// </summary>
+    public static PathGeometry CreateMultiSegmentBezierPath(IReadOnlyList<AvaloniaPoint> points)
+    {
+        if (points.Count < 2)
+            return new PathGeometry();
+
+        if (points.Count == 2)
+            return CreateBezierPath(points[0], points[1]);
+
+        var pathFigure = new PathFigure
+        {
+            StartPoint = points[0],
+            IsClosed = false,
+            Segments = new PathSegments()
+        };
+
+        // Create smooth bezier segments through all points
+        for (int i = 0; i < points.Count - 1; i++)
+        {
+            var p0 = points[i];
+            var p3 = points[i + 1];
+
+            // Calculate control points for smooth curve
+            var controlOffset = Math.Abs(p3.X - p0.X) / 3;
+            controlOffset = Math.Max(controlOffset, 20);
+
+            AvaloniaPoint p1, p2;
+
+            // First segment: exit horizontally from port
+            if (i == 0)
+            {
+                p1 = new AvaloniaPoint(p0.X + controlOffset, p0.Y);
+                p2 = new AvaloniaPoint(p3.X - controlOffset / 2, p3.Y);
+            }
+            // Last segment: enter horizontally to port
+            else if (i == points.Count - 2)
+            {
+                p1 = new AvaloniaPoint(p0.X + controlOffset / 2, p0.Y);
+                p2 = new AvaloniaPoint(p3.X - controlOffset, p3.Y);
+            }
+            // Middle segments: smooth transitions
+            else
+            {
+                var dx = p3.X - p0.X;
+                var dy = p3.Y - p0.Y;
+                p1 = new AvaloniaPoint(p0.X + dx / 3, p0.Y + dy / 3);
+                p2 = new AvaloniaPoint(p0.X + dx * 2 / 3, p0.Y + dy * 2 / 3);
+            }
+
+            pathFigure.Segments.Add(new BezierSegment
+            {
+                Point1 = p1,
+                Point2 = p2,
+                Point3 = p3
+            });
+        }
+
+        var pathGeometry = new PathGeometry();
+        pathGeometry.Figures.Add(pathFigure);
+        return pathGeometry;
+    }
+
+    /// <summary>
+    /// Creates a multi-segment step path through waypoints.
+    /// </summary>
+    public static PathGeometry CreateMultiSegmentStepPath(IReadOnlyList<AvaloniaPoint> points)
+    {
+        if (points.Count < 2)
+            return new PathGeometry();
+
+        var pathFigure = new PathFigure
+        {
+            StartPoint = points[0],
+            IsClosed = false,
+            Segments = new PathSegments()
+        };
+
+        for (int i = 0; i < points.Count - 1; i++)
+        {
+            var start = points[i];
+            var end = points[i + 1];
+            var midX = (start.X + end.X) / 2;
+
+            // First point - exit horizontally
+            if (i == 0)
+            {
+                pathFigure.Segments.Add(new LineSegment { Point = new AvaloniaPoint(midX, start.Y) });
+            }
+            
+            pathFigure.Segments.Add(new LineSegment { Point = new AvaloniaPoint(midX, end.Y) });
+            pathFigure.Segments.Add(new LineSegment { Point = end });
+        }
+
+        var pathGeometry = new PathGeometry();
+        pathGeometry.Figures.Add(pathFigure);
+        return pathGeometry;
+    }
+
+    /// <summary>
+    /// Creates a multi-segment smooth step path with rounded corners through waypoints.
+    /// </summary>
+    public static PathGeometry CreateMultiSegmentSmoothPath(IReadOnlyList<AvaloniaPoint> points, double cornerRadius = DefaultCornerRadius)
+    {
+        if (points.Count < 2)
+            return new PathGeometry();
+
+        // For simple paths, use the original implementation
+        if (points.Count == 2)
+            return CreateSmoothStepPath(points[0], points[1], cornerRadius);
+
+        var pathFigure = new PathFigure
+        {
+            StartPoint = points[0],
+            IsClosed = false,
+            Segments = new PathSegments()
+        };
+
+        // Build path with rounded corners at each waypoint
+        var current = points[0];
+        
+        for (int i = 1; i < points.Count; i++)
+        {
+            var next = points[i];
+            var isLast = i == points.Count - 1;
+
+            if (isLast)
+            {
+                // Simple line to final point
+                pathFigure.Segments.Add(new LineSegment { Point = next });
+            }
+            else
+            {
+                var afterNext = points[i + 1];
+                
+                // Calculate corner based on direction change
+                var radius = Math.Min(cornerRadius, 
+                    Math.Min(Distance(current, next) / 2, Distance(next, afterNext) / 2));
+
+                if (radius > 1)
+                {
+                    // Line to just before the corner
+                    var beforeCorner = MoveTowards(next, current, radius);
+                    pathFigure.Segments.Add(new LineSegment { Point = beforeCorner });
+
+                    // Arc around the corner
+                    var afterCorner = MoveTowards(next, afterNext, radius);
+                    var sweepDir = GetSweepDirection(current, next, afterNext);
+                    
+                    pathFigure.Segments.Add(new ArcSegment
+                    {
+                        Point = afterCorner,
+                        Size = new Size(radius, radius),
+                        SweepDirection = sweepDir,
+                        IsLargeArc = false
+                    });
+
+                    current = afterCorner;
+                }
+                else
+                {
+                    pathFigure.Segments.Add(new LineSegment { Point = next });
+                    current = next;
+                }
+            }
+        }
+
+        var pathGeometry = new PathGeometry();
+        pathGeometry.Figures.Add(pathFigure);
+        return pathGeometry;
+    }
+
+    private static double Distance(AvaloniaPoint a, AvaloniaPoint b)
+    {
+        var dx = b.X - a.X;
+        var dy = b.Y - a.Y;
+        return Math.Sqrt(dx * dx + dy * dy);
+    }
+
+    private static AvaloniaPoint MoveTowards(AvaloniaPoint from, AvaloniaPoint to, double distance)
+    {
+        var totalDist = Distance(from, to);
+        if (totalDist < 0.0001) return from;
+        
+        var ratio = distance / totalDist;
+        return new AvaloniaPoint(
+            from.X + (to.X - from.X) * ratio,
+            from.Y + (to.Y - from.Y) * ratio);
+    }
+
+    private static SweepDirection GetSweepDirection(AvaloniaPoint prev, AvaloniaPoint current, AvaloniaPoint next)
+    {
+        // Cross product to determine turn direction
+        var cross = (current.X - prev.X) * (next.Y - current.Y) - 
+                   (current.Y - prev.Y) * (next.X - current.X);
+        return cross > 0 ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
+    }
+
+    /// <summary>
     /// Creates a bezier path geometry between two points.
     /// </summary>
-    /// <param name="start">Start point of the curve.</param>
-    /// <param name="end">End point of the curve.</param>
-    /// <param name="horizontalBias">If true, curves horizontally first; if false, curves based on direction.</param>
-    /// <returns>A PathGeometry representing the bezier curve.</returns>
     public static PathGeometry CreateBezierPath(AvaloniaPoint start, AvaloniaPoint end, bool horizontalBias = true)
     {
         var pathFigure = new PathFigure
@@ -46,8 +296,6 @@ public static class EdgePathHelper
         };
 
         var controlPointOffset = Math.Abs(end.X - start.X) / 2;
-        
-        // Ensure minimum offset for visual appeal
         controlPointOffset = Math.Max(controlPointOffset, 50);
 
         AvaloniaPoint control1, control2;
@@ -59,7 +307,6 @@ public static class EdgePathHelper
         }
         else
         {
-            // Adjust control points based on relative position
             var goingRight = end.X > start.X;
             control1 = new AvaloniaPoint(
                 goingRight ? start.X + controlPointOffset : start.X - controlPointOffset,
@@ -118,7 +365,6 @@ public static class EdgePathHelper
             Segments = new PathSegments()
         };
 
-        // Calculate midpoint X
         var midX = (start.X + end.X) / 2;
 
         // Create step path: start -> mid horizontal -> vertical -> end
