@@ -252,6 +252,48 @@ public partial class FlowCanvas : UserControl
 
     private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        var point = e.GetCurrentPoint(_rootPanel);
+        
+        // Handle right-click for context menu
+        if (point.Properties.IsRightButtonPressed)
+        {
+            var screenPos = e.GetPosition(_rootPanel);
+            var canvasPos = _viewport.ScreenToCanvas(screenPos);
+            
+            // Check what was clicked
+            var hitElement = _mainCanvas?.InputHitTest(screenPos);
+            
+            if (hitElement is Control control && control.Tag is Node node)
+            {
+                // Select node if not already selected
+                if (!node.IsSelected)
+                {
+                    foreach (var n in Graph?.Nodes ?? [])
+                        n.IsSelected = false;
+                    node.IsSelected = true;
+                }
+                _contextMenu.Show(control, e, new Core.Point(canvasPos.X, canvasPos.Y));
+            }
+            else if (hitElement is Control edgeControl && edgeControl.Tag is Edge edge)
+            {
+                if (!edge.IsSelected)
+                {
+                    foreach (var ed in Graph?.Edges ?? [])
+                        ed.IsSelected = false;
+                    edge.IsSelected = true;
+                }
+                _contextMenu.Show(edgeControl, e, new Core.Point(canvasPos.X, canvasPos.Y));
+            }
+            else
+            {
+                // Empty canvas
+                _contextMenu.ShowCanvasMenu(this, new Core.Point(canvasPos.X, canvasPos.Y));
+            }
+            
+            e.Handled = true;
+            return;
+        }
+        
         _inputHandler.HandleRootPanelPointerPressed(e, _rootPanel, _mainCanvas, Graph);
         Focus();
     }
@@ -270,6 +312,26 @@ public partial class FlowCanvas : UserControl
     {
         if (sender is Control control && control.Tag is Node node)
         {
+            var point = e.GetCurrentPoint(control);
+            
+            // Handle right-click for context menu
+            if (point.Properties.IsRightButtonPressed)
+            {
+                // Select node if not already selected
+                if (!node.IsSelected && Graph != null)
+                {
+                    foreach (var n in Graph.Nodes)
+                        n.IsSelected = false;
+                    node.IsSelected = true;
+                }
+                
+                var screenPos = e.GetPosition(_rootPanel);
+                var canvasPos = _viewport.ScreenToCanvas(screenPos);
+                _contextMenu.Show(control, e, new Core.Point(canvasPos.X, canvasPos.Y));
+                e.Handled = true;
+                return;
+            }
+            
             _inputHandler.HandleNodePointerPressed(control, node, e, _rootPanel, Graph);
             Focus();
         }
@@ -313,6 +375,28 @@ public partial class FlowCanvas : UserControl
     {
         if (sender is global::Avalonia.Controls.Shapes.Path edgePath && edgePath.Tag is Edge edge)
         {
+            var point = e.GetCurrentPoint(edgePath);
+            
+            // Handle right-click for context menu
+            if (point.Properties.IsRightButtonPressed)
+            {
+                // Select edge if not already selected
+                if (!edge.IsSelected && Graph != null)
+                {
+                    foreach (var n in Graph.Nodes)
+                        n.IsSelected = false;
+                    foreach (var ed in Graph.Edges)
+                        ed.IsSelected = false;
+                    edge.IsSelected = true;
+                }
+                
+                var screenPos = e.GetPosition(_rootPanel);
+                var canvasPos = _viewport.ScreenToCanvas(screenPos);
+                _contextMenu.Show(edgePath, e, new Core.Point(canvasPos.X, canvasPos.Y));
+                e.Handled = true;
+                return;
+            }
+            
             _inputHandler.HandleEdgePointerPressed(edgePath, edge, e, Graph);
             Focus();
         }
