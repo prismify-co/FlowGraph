@@ -376,12 +376,31 @@ public class CanvasInputHandler
 
         if (point.Properties.IsLeftButtonPressed && graph != null)
         {
-            // Check for double-click on group to toggle collapse
-            if (e.ClickCount == 2 && node.IsGroup)
+            // Check if clicked on collapse button area (for groups)
+            if (node.IsGroup)
             {
-                GroupCollapseToggleRequested?.Invoke(this, new GroupToggleCollapseEventArgs(node.Id));
-                e.Handled = true;
-                return;
+                var clickPosition = e.GetPosition(control);
+                var scale = _viewport?.Zoom ?? 1.0;
+                
+                // The collapse button is in the top-left area (roughly 35x28 pixels scaled)
+                var buttonWidth = 35 * scale;
+                var buttonHeight = 28 * scale;
+                
+                if (clickPosition.X < buttonWidth && clickPosition.Y < buttonHeight)
+                {
+                    // Single click on collapse button - toggle collapse
+                    GroupCollapseToggleRequested?.Invoke(this, new GroupToggleCollapseEventArgs(node.Id));
+                    e.Handled = true;
+                    return;
+                }
+                
+                // Also support double-click anywhere on group to toggle
+                if (e.ClickCount == 2)
+                {
+                    GroupCollapseToggleRequested?.Invoke(this, new GroupToggleCollapseEventArgs(node.Id));
+                    e.Handled = true;
+                    return;
+                }
             }
 
             bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);

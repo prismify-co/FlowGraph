@@ -818,6 +818,10 @@ public partial class FlowCanvas : UserControl
                 _graphRenderer.UpdateResizeHandlePositions(node);
                 RenderEdges();
                 break;
+            case nameof(Node.IsCollapsed):
+                // Update resize handles when collapse state changes
+                UpdateResizeHandlesForNode(node);
+                break;
         }
     }
 
@@ -825,7 +829,12 @@ public partial class FlowCanvas : UserControl
     {
         if (_mainCanvas == null || _theme == null) return;
 
-        if (node.IsSelected && node.IsResizable)
+        // Don't show resize handles for collapsed groups
+        bool shouldShowHandles = node.IsSelected && 
+                                 node.IsResizable && 
+                                 !(node.IsGroup && node.IsCollapsed);
+
+        if (shouldShowHandles)
         {
             _graphRenderer.RenderResizeHandles(_mainCanvas, node, _theme, (handle, n, pos) =>
             {

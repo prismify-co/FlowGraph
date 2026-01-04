@@ -22,74 +22,64 @@ public class GroupNodeRenderer : INodeRenderer
     private const double BorderRadius = 8;
     private const double DashedStrokeThickness = 2;
 
+    // Use simple ASCII characters that render in all fonts
+    private const string ExpandedIcon = "-";   // Minus sign (expanded, can collapse)
+    private const string CollapsedIcon = "+";  // Plus sign (collapsed, can expand)
+
     public Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
         var scale = context.Scale;
         var (width, height) = GetScaledDimensions(node, context);
 
-        // Main container with translucent background
-        var mainBorder = new Border
+        // Create container grid
+        var container = new Grid
+        {
+            Width = width,
+            Height = height
+        };
+
+        // Background fill with rounded corners
+        var backgroundRect = new Rectangle
         {
             Width = width,
             Height = height,
-            Background = context.Theme.GroupBackground,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : context.Theme.GroupBorder,
-            BorderThickness = new Thickness(DashedStrokeThickness * scale),
-            CornerRadius = new CornerRadius(BorderRadius * scale),
-            // Use dashed border via a custom style or overlay
-            Child = CreateContent(node, context, width, height)
+            Fill = context.Theme.GroupBackground,
+            RadiusX = BorderRadius * scale,
+            RadiusY = BorderRadius * scale
         };
 
-        // Create dashed border overlay for non-selected state
+        // Border - dashed when not selected, solid when selected
+        var border = new Rectangle
+        {
+            Width = width,
+            Height = height,
+            Fill = Brushes.Transparent,
+            Stroke = node.IsSelected ? context.Theme.NodeSelectedBorder : context.Theme.GroupBorder,
+            StrokeThickness = DashedStrokeThickness * scale,
+            RadiusX = BorderRadius * scale,
+            RadiusY = BorderRadius * scale
+        };
+
+        // Apply dashed stroke only when not selected
         if (!node.IsSelected)
         {
-            var container = new Grid
-            {
-                Width = width,
-                Height = height
-            };
-
-            // Background fill
-            var backgroundRect = new Rectangle
-            {
-                Width = width,
-                Height = height,
-                Fill = context.Theme.GroupBackground,
-                RadiusX = BorderRadius * scale,
-                RadiusY = BorderRadius * scale
-            };
-
-            // Dashed border
-            var dashedBorder = new Rectangle
-            {
-                Width = width,
-                Height = height,
-                Fill = Brushes.Transparent,
-                Stroke = context.Theme.GroupBorder,
-                StrokeThickness = DashedStrokeThickness * scale,
-                StrokeDashArray = new AvaloniaList<double> { 4, 2 },
-                RadiusX = BorderRadius * scale,
-                RadiusY = BorderRadius * scale
-            };
-
-            // Content overlay
-            var content = CreateContent(node, context, width, height);
-
-            container.Children.Add(backgroundRect);
-            container.Children.Add(dashedBorder);
-            container.Children.Add(content);
-
-            return container;
+            border.StrokeDashArray = new AvaloniaList<double> { 4, 2 };
         }
 
-        return mainBorder;
+        // Header content
+        var headerPanel = CreateHeaderPanel(node, context);
+
+        container.Children.Add(backgroundRect);
+        container.Children.Add(border);
+        container.Children.Add(headerPanel);
+
+        return container;
     }
 
-    private Control CreateContent(Node node, NodeRenderContext context, double width, double height)
+    private StackPanel CreateHeaderPanel(Node node, NodeRenderContext context)
     {
         var scale = context.Scale;
 
-        // Header with collapse button and label
         var headerPanel = new StackPanel
         {
             Orientation = Orientation.Horizontal,
@@ -123,23 +113,25 @@ public class GroupNodeRenderer : INodeRenderer
         var selectedBrush = context.Theme.NodeSelectedBorder;
         var normalBrush = context.Theme.GroupBorder;
 
-        if (visual is Border mainBorder)
+        if (visual is Grid grid)
         {
-            mainBorder.BorderBrush = node.IsSelected ? selectedBrush : normalBrush;
-            // Switch to solid border when selected
-            if (node.IsSelected)
+            // Find the border rectangle (the one with Stroke set)
+            var border = grid.Children.OfType<Rectangle>()
+                .FirstOrDefault(r => r.Stroke != null);
+            
+            if (border != null)
             {
-                mainBorder.BorderThickness = new Thickness(DashedStrokeThickness * scale);
-            }
-        }
-        else if (visual is Grid grid)
-        {
-            // Update dashed border color
-            var dashedBorder = grid.Children.OfType<Rectangle>()
-                .FirstOrDefault(r => r.StrokeDashArray?.Count > 0);
-            if (dashedBorder != null)
-            {
-                dashedBorder.Stroke = node.IsSelected ? selectedBrush : normalBrush;
+                border.Stroke = node.IsSelected ? selectedBrush : normalBrush;
+                
+                // Toggle dashed style based on selection
+                if (node.IsSelected)
+                {
+                    border.StrokeDashArray = null;
+                }
+                else
+                {
+                    border.StrokeDashArray = new AvaloniaList<double> { 4, 2 };
+                }
             }
         }
     }
@@ -150,12 +142,7 @@ public class GroupNodeRenderer : INodeRenderer
         var scaledWidth = width * scale;
         var scaledHeight = node.IsCollapsed ? HeaderHeight * scale : height * scale;
 
-        if (visual is Border mainBorder)
-        {
-            mainBorder.Width = scaledWidth;
-            mainBorder.Height = scaledHeight;
-        }
-        else if (visual is Grid grid)
+        if (visual is Grid grid)
         {
             grid.Width = scaledWidth;
             grid.Height = scaledHeight;
@@ -171,30 +158,19 @@ public class GroupNodeRenderer : INodeRenderer
     public void UpdateCollapsedState(Control visual, Node node, NodeRenderContext context)
     {
         var scale = context.Scale;
-        var (width, _) = GetScaledDimensions(node, context);
-        var height = node.IsCollapsed
-            ? HeaderHeight * scale
-            : (node.Height ?? MinGroupHeight) * scale;
-
         UpdateSize(visual, node, context, node.Width ?? MinGroupWidth, node.Height ?? MinGroupHeight);
 
         // Update collapse button icon
-        StackPanel? headerPanel = null;
-        if (visual is Border border && border.Child is StackPanel sp)
+        if (visual is Grid grid)
         {
-            headerPanel = sp;
-        }
-        else if (visual is Grid grid)
-        {
-            headerPanel = grid.Children.OfType<StackPanel>().FirstOrDefault();
-        }
-
-        if (headerPanel != null)
-        {
-            var collapseButton = headerPanel.Children.OfType<Border>().FirstOrDefault();
-            if (collapseButton?.Child is TextBlock icon)
+            var headerPanel = grid.Children.OfType<StackPanel>().FirstOrDefault();
+            if (headerPanel != null)
             {
-                icon.Text = node.IsCollapsed ? "?" : "?";
+                var collapseButton = headerPanel.Children.OfType<Border>().FirstOrDefault();
+                if (collapseButton?.Child is TextBlock icon)
+                {
+                    icon.Text = node.IsCollapsed ? CollapsedIcon : ExpandedIcon;
+                }
             }
         }
     }
@@ -233,31 +209,35 @@ public class GroupNodeRenderer : INodeRenderer
 
         var icon = new TextBlock
         {
-            Text = node.IsCollapsed ? "?" : "?",
-            FontSize = 9 * scale,
+            Text = node.IsCollapsed ? CollapsedIcon : ExpandedIcon,
+            FontSize = 12 * scale,
+            FontWeight = FontWeight.Bold,
             Foreground = context.Theme.GroupLabelText,
             HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Opacity = 0.7
+            VerticalAlignment = VerticalAlignment.Center
         };
 
         var button = new Border
         {
             Width = buttonSize,
             Height = buttonSize,
-            Background = Brushes.Transparent,
+            Background = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128)),
             CornerRadius = new CornerRadius(3 * scale),
             Cursor = new Cursor(StandardCursorType.Hand),
             Child = icon,
-            VerticalAlignment = VerticalAlignment.Center
+            VerticalAlignment = VerticalAlignment.Center,
+            Tag = (node, "collapse") // Tag to identify this as a collapse button
         };
 
-        // Hover effect - slightly visible background
+        // Hover effect
         button.PointerEntered += (s, e) =>
         {
-            button.Background = new SolidColorBrush(Color.FromArgb(30, 255, 255, 255));
+            button.Background = new SolidColorBrush(Color.FromArgb(60, 128, 128, 128));
         };
-        button.PointerExited += (s, e) => button.Background = Brushes.Transparent;
+        button.PointerExited += (s, e) =>
+        {
+            button.Background = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128));
+        };
 
         return button;
     }
