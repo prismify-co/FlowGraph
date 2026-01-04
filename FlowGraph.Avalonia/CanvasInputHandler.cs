@@ -14,6 +14,11 @@ namespace FlowGraph.Avalonia;
 /// Handles all input interactions for the FlowCanvas including 
 /// pan, zoom, node dragging, box selection, and connection creation.
 /// </summary>
+/// <remarks>
+/// This class is obsolete. Use <see cref="Input.InputStateMachine"/> with 
+/// <see cref="Input.InputStateContext"/> instead for cleaner state management.
+/// </remarks>
+[Obsolete("Use InputStateMachine with InputStateContext instead. This class will be removed in a future version.")]
 public class CanvasInputHandler
 {
     private readonly FlowCanvasSettings _settings;
