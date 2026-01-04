@@ -84,6 +84,36 @@ public class FlowCanvasSettings
     /// </summary>
     public double EdgeHitAreaWidth { get; set; } = 15;
 
+    #region Group Settings
+
+    /// <summary>
+    /// Padding around children when auto-sizing groups.
+    /// </summary>
+    public double GroupPadding { get; set; } = 20;
+
+    /// <summary>
+    /// Height of the group header area.
+    /// </summary>
+    public double GroupHeaderHeight { get; set; } = 28;
+
+    /// <summary>
+    /// Border radius for group corners.
+    /// </summary>
+    public double GroupBorderRadius { get; set; } = 8;
+
+    /// <summary>
+    /// Whether to use dashed borders for groups (React Flow style).
+    /// </summary>
+    public bool GroupUseDashedBorder { get; set; } = true;
+
+    /// <summary>
+    /// Opacity of the group background (0.0 to 1.0).
+    /// Lower values create more translucent groups.
+    /// </summary>
+    public double GroupBackgroundOpacity { get; set; } = 0.1;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>
