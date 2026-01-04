@@ -151,6 +151,8 @@ public partial class FlowCanvas : UserControl
         _inputHandler.CutRequested += (_, _) => Cut();
         _inputHandler.PasteRequested += (_, _) => Paste();
         _inputHandler.DuplicateRequested += (_, _) => Duplicate();
+        _inputHandler.GroupRequested += (_, _) => GroupSelected();
+        _inputHandler.UngroupRequested += (_, _) => UngroupSelected();
         _inputHandler.NodesDragged += OnNodesDragged;
         _inputHandler.NodeResizing += OnNodeResizing;
         _inputHandler.NodeResized += OnNodeResized;
@@ -482,6 +484,95 @@ public partial class FlowCanvas : UserControl
             var command = new DuplicateCommand(Graph, duplicatedNodes, duplicatedEdges);
             CommandHistory.Execute(new AlreadyExecutedCommand(command));
         }
+    }
+
+    #endregion
+
+    #region Group Operations
+
+    /// <summary>
+    /// Groups the selected nodes into a new group.
+    /// </summary>
+    /// <param name="groupLabel">Optional label for the group.</param>
+    public void GroupSelected(string? groupLabel = null)
+    {
+        if (Graph == null) return;
+
+        var selectedNodes = Graph.Nodes
+            .Where(n => n.IsSelected && !n.IsGroup)
+            .ToList();
+
+        if (selectedNodes.Count < 2) return;
+
+        var nodeIds = selectedNodes.Select(n => n.Id).ToList();
+        var command = new GroupNodesCommand(Graph, nodeIds, groupLabel);
+        CommandHistory.Execute(command);
+    }
+
+    /// <summary>
+    /// Ungroups the selected group(s).
+    /// </summary>
+    public void UngroupSelected()
+    {
+        if (Graph == null) return;
+
+        var selectedGroups = Graph.Nodes
+            .Where(n => n.IsSelected && n.IsGroup)
+            .ToList();
+
+        if (selectedGroups.Count == 0) return;
+
+        // Ungroup all selected groups
+        var commands = selectedGroups
+            .Select(g => new UngroupNodesCommand(Graph, g.Id))
+            .Cast<IGraphCommand>()
+            .ToList();
+
+        if (commands.Count == 1)
+        {
+            CommandHistory.Execute(commands[0]);
+        }
+        else
+        {
+            CommandHistory.Execute(new CompositeCommand("Ungroup multiple groups", commands));
+        }
+    }
+
+    /// <summary>
+    /// Toggles the collapsed state of a group.
+    /// </summary>
+    /// <param name="groupId">The ID of the group to toggle.</param>
+    public void ToggleGroupCollapse(string groupId)
+    {
+        if (Graph == null) return;
+
+        var command = new ToggleGroupCollapseCommand(Graph, groupId);
+        CommandHistory.Execute(command);
+    }
+
+    /// <summary>
+    /// Adds nodes to an existing group.
+    /// </summary>
+    /// <param name="groupId">The ID of the target group.</param>
+    /// <param name="nodeIds">The IDs of the nodes to add.</param>
+    public void AddNodesToGroup(string groupId, IEnumerable<string> nodeIds)
+    {
+        if (Graph == null) return;
+
+        var command = new AddNodesToGroupCommand(Graph, groupId, nodeIds);
+        CommandHistory.Execute(command);
+    }
+
+    /// <summary>
+    /// Removes nodes from their parent group.
+    /// </summary>
+    /// <param name="nodeIds">The IDs of the nodes to remove from their groups.</param>
+    public void RemoveNodesFromGroup(IEnumerable<string> nodeIds)
+    {
+        if (Graph == null) return;
+
+        var command = new RemoveNodesFromGroupCommand(Graph, nodeIds);
+        CommandHistory.Execute(command);
     }
 
     #endregion

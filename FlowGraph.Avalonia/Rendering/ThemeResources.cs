@@ -47,4 +47,11 @@ public class ThemeResources
     public IBrush PortBackground => GetBrush("FlowCanvasPortBackground", "#4682B4");
     public IBrush PortBorder => GetBrush("FlowCanvasPortBorder", "#FFFFFF");
     public IBrush PortHover => GetBrush("FlowCanvasPortHover", "#FF6B00");
+
+    // Group-specific colors
+    public IBrush GroupHeaderBackground => GetBrush("FlowCanvasGroupHeaderBackground", "#3C3C3C");
+    public IBrush GroupHeaderText => GetBrush("FlowCanvasGroupHeaderText", "#FFFFFF");
+    public IBrush GroupHeaderHover => GetBrush("FlowCanvasGroupHeaderHover", "#505050");
+    public IBrush GroupBodyBackground => GetBrush("FlowCanvasGroupBodyBackground", "#252526");
+    public IBrush GroupBorder => GetBrush("FlowCanvasGroupBorder", "#5A5A5A");
 }

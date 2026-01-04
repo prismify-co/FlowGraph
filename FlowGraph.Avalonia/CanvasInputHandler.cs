@@ -115,6 +115,16 @@ public class CanvasInputHandler
     public event EventHandler? DuplicateRequested;
 
     /// <summary>
+    /// Event raised when group is requested (Ctrl+G).
+    /// </summary>
+    public event EventHandler? GroupRequested;
+
+    /// <summary>
+    /// Event raised when ungroup is requested (Ctrl+Shift+G).
+    /// </summary>
+    public event EventHandler? UngroupRequested;
+
+    /// <summary>
     /// Event raised when the grid needs to be re-rendered.
     /// </summary>
     public event EventHandler? GridRenderRequested;
@@ -199,6 +209,18 @@ public class CanvasInputHandler
         else if (e.Key == Key.D && e.KeyModifiers.HasFlag(KeyModifiers.Control))
         {
             DuplicateRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.G && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                UngroupRequested?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                GroupRequested?.Invoke(this, EventArgs.Empty);
+            }
             return true;
         }
         else if (e.Key == Key.Escape)

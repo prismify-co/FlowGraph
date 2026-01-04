@@ -34,6 +34,7 @@ public class NodeRendererRegistry
         // Register built-in node types
         Register("input", new InputNodeRenderer());
         Register("output", new OutputNodeRenderer());
+        Register("group", new GroupNodeRenderer());
     }
 
     /// <summary>
