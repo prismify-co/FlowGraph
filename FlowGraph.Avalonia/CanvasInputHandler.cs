@@ -782,10 +782,15 @@ public class CanvasInputHandler
     {
         if (_selectionBox == null) return;
 
-        var left = Math.Min(_boxSelectStart.X, _boxSelectEnd.X);
-        var top = Math.Min(_boxSelectStart.Y, _boxSelectEnd.Y);
-        var width = Math.Abs(_boxSelectEnd.X - _boxSelectStart.X);
-        var height = Math.Abs(_boxSelectEnd.Y - _boxSelectStart.Y);
+        // _boxSelectStart and _boxSelectEnd are in canvas coordinates
+        // We need to transform them to screen coordinates for visual positioning
+        var startScreen = _viewport.CanvasToScreen(_boxSelectStart);
+        var endScreen = _viewport.CanvasToScreen(_boxSelectEnd);
+
+        var left = Math.Min(startScreen.X, endScreen.X);
+        var top = Math.Min(startScreen.Y, endScreen.Y);
+        var width = Math.Abs(endScreen.X - startScreen.X);
+        var height = Math.Abs(endScreen.Y - startScreen.Y);
 
         Canvas.SetLeft(_selectionBox, left);
         Canvas.SetTop(_selectionBox, top);
@@ -795,6 +800,7 @@ public class CanvasInputHandler
 
     private void UpdateBoxSelection(Graph graph, bool addToSelection)
     {
+        // Selection logic uses canvas coordinates for node comparison
         var selectionRect = new Rect(
             Math.Min(_boxSelectStart.X, _boxSelectEnd.X),
             Math.Min(_boxSelectStart.Y, _boxSelectEnd.Y),
@@ -804,11 +810,13 @@ public class CanvasInputHandler
 
         foreach (var node in graph.Nodes)
         {
+            var nodeWidth = node.Width ?? _settings.NodeWidth;
+            var nodeHeight = node.Height ?? _settings.NodeHeight;
             var nodeRect = new Rect(
                 node.Position.X,
                 node.Position.Y,
-                _settings.NodeWidth,
-                _settings.NodeHeight
+                nodeWidth,
+                nodeHeight
             );
 
             bool shouldSelect = _settings.SelectionMode == SelectionMode.Full
