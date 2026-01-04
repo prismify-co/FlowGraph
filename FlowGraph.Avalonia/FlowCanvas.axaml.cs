@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
@@ -110,6 +111,7 @@ public partial class FlowCanvas : UserControl
     private SelectionManager _selectionManager = null!;
     private ClipboardManager _clipboardManager = null!;
     private GroupManager _groupManager = null!;
+    private FlowCanvasContextMenu _contextMenu = null!;
     private ThemeResources _theme = null!;
 
     #endregion
@@ -146,6 +148,7 @@ public partial class FlowCanvas : UserControl
             () => Graph,
             CommandHistory,
             Settings);
+        _contextMenu = new FlowCanvasContextMenu(this);
 
         SubscribeToInputHandlerEvents();
         SubscribeToSelectionManagerEvents();

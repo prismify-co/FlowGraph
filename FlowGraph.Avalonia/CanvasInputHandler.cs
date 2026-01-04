@@ -130,6 +130,11 @@ public class CanvasInputHandler
     public event EventHandler<GroupToggleCollapseEventArgs>? GroupCollapseToggleRequested;
 
     /// <summary>
+    /// Event raised when right-click context menu is requested.
+    /// </summary>
+    public event EventHandler<ContextMenuRequestedEventArgs>? ContextMenuRequested;
+
+    /// <summary>
     /// Event raised when the grid needs to be re-rendered.
     /// </summary>
     public event EventHandler? GridRenderRequested;

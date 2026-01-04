@@ -1,6 +1,9 @@
 using Avalonia;
+using Avalonia.Controls;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
+using AvaloniaPoint = Avalonia.Point;
+using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Avalonia;
 
@@ -78,12 +81,12 @@ public class BoxSelectionEventArgs : EventArgs
 /// </summary>
 public class NodesDraggedEventArgs : EventArgs
 {
-    public Dictionary<string, Core.Point> OldPositions { get; }
-    public Dictionary<string, Core.Point> NewPositions { get; }
+    public Dictionary<string, CorePoint> OldPositions { get; }
+    public Dictionary<string, CorePoint> NewPositions { get; }
 
     public NodesDraggedEventArgs(
-        Dictionary<string, Core.Point> oldPositions,
-        Dictionary<string, Core.Point> newPositions)
+        Dictionary<string, CorePoint> oldPositions,
+        Dictionary<string, CorePoint> newPositions)
     {
         OldPositions = oldPositions;
         NewPositions = newPositions;
@@ -98,9 +101,9 @@ public class NodeResizingEventArgs : EventArgs
     public Node Node { get; }
     public double NewWidth { get; }
     public double NewHeight { get; }
-    public Core.Point NewPosition { get; }
+    public CorePoint NewPosition { get; }
 
-    public NodeResizingEventArgs(Node node, double newWidth, double newHeight, Core.Point newPosition)
+    public NodeResizingEventArgs(Node node, double newWidth, double newHeight, CorePoint newPosition)
     {
         Node = node;
         NewWidth = newWidth;
@@ -119,8 +122,8 @@ public class NodeResizedEventArgs : EventArgs
     public double OldHeight { get; }
     public double NewWidth { get; }
     public double NewHeight { get; }
-    public Core.Point OldPosition { get; }
-    public Core.Point NewPosition { get; }
+    public CorePoint OldPosition { get; }
+    public CorePoint NewPosition { get; }
 
     public NodeResizedEventArgs(
         Node node,
@@ -128,8 +131,8 @@ public class NodeResizedEventArgs : EventArgs
         double oldHeight,
         double newWidth,
         double newHeight,
-        Core.Point oldPosition,
-        Core.Point newPosition)
+        CorePoint oldPosition,
+        CorePoint newPosition)
     {
         Node = node;
         OldWidth = oldWidth;
@@ -154,5 +157,50 @@ public class GroupToggleCollapseEventArgs : EventArgs
     public GroupToggleCollapseEventArgs(string groupId)
     {
         GroupId = groupId;
+    }
+}
+
+/// <summary>
+/// Event args for context menu request.
+/// </summary>
+public class ContextMenuRequestedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The target control that was right-clicked.
+    /// </summary>
+    public Control? Target { get; }
+
+    /// <summary>
+    /// The screen position where the context menu was requested.
+    /// </summary>
+    public AvaloniaPoint ScreenPosition { get; }
+
+    /// <summary>
+    /// The canvas position where the context menu was requested.
+    /// </summary>
+    public CorePoint CanvasPosition { get; }
+
+    /// <summary>
+    /// The node that was right-clicked, if any.
+    /// </summary>
+    public Node? Node { get; }
+
+    /// <summary>
+    /// The edge that was right-clicked, if any.
+    /// </summary>
+    public Edge? Edge { get; }
+
+    public ContextMenuRequestedEventArgs(
+        Control? target,
+        AvaloniaPoint screenPosition,
+        CorePoint canvasPosition,
+        Node? node = null,
+        Edge? edge = null)
+    {
+        Target = target;
+        ScreenPosition = screenPosition;
+        CanvasPosition = canvasPosition;
+        Node = node;
+        Edge = edge;
     }
 }
