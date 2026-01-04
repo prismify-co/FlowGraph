@@ -16,6 +16,7 @@ public class FlowCanvasContextMenu
     private ContextMenu? _canvasContextMenu;
     private ContextMenu? _groupContextMenu;
     private CorePoint _contextMenuPosition;
+    private MenuItem? _addToGroupMenuItem;
 
     /// <summary>
     /// Event raised when context menu is about to be shown.
@@ -31,6 +32,12 @@ public class FlowCanvasContextMenu
 
     private void InitializeMenus()
     {
+        // Create the "Add to Group" submenu item
+        _addToGroupMenuItem = new MenuItem
+        {
+            Header = "Add to Group"
+        };
+
         // Node context menu
         _nodeContextMenu = new ContextMenu
         {
@@ -43,9 +50,12 @@ public class FlowCanvasContextMenu
                 CreateMenuItem("Delete", "Delete", OnDelete),
                 new Separator(),
                 CreateMenuItem("Group Selected", "Ctrl+G", OnGroupSelected, isEnabled: () => CanGroup()),
-                CreateMenuItem("Add to Group...", null, OnAddToGroup, isEnabled: () => CanAddToGroup())
+                _addToGroupMenuItem
             }
         };
+
+        // Update "Add to Group" submenu when node context menu opens
+        _nodeContextMenu.Opening += (s, e) => UpdateAddToGroupSubmenu();
 
         // Group context menu
         _groupContextMenu = new ContextMenu
@@ -103,6 +113,53 @@ public class FlowCanvasContextMenu
                 CreateMenuItem("Expand All Groups", null, OnExpandAllGroups)
             }
         };
+    }
+
+    private void UpdateAddToGroupSubmenu()
+    {
+        if (_addToGroupMenuItem == null) return;
+
+        var graph = _canvas.Graph;
+        if (graph == null)
+        {
+            _addToGroupMenuItem.IsEnabled = false;
+            _addToGroupMenuItem.ItemsSource = null;
+            return;
+        }
+
+        // Get all groups that we can add to (excluding groups that are selected)
+        var selectedNodeIds = graph.Nodes.Where(n => n.IsSelected).Select(n => n.Id).ToHashSet();
+        var availableGroups = graph.Nodes
+            .Where(n => n.IsGroup && !n.IsSelected)
+            .ToList();
+
+        // Check if there are selected non-group nodes
+        var hasSelectedNonGroupNodes = graph.Nodes.Any(n => n.IsSelected && !n.IsGroup);
+
+        if (!hasSelectedNonGroupNodes || availableGroups.Count == 0)
+        {
+            _addToGroupMenuItem.IsEnabled = false;
+            _addToGroupMenuItem.ItemsSource = null;
+            return;
+        }
+
+        _addToGroupMenuItem.IsEnabled = true;
+        
+        // Create submenu items for each available group
+        var groupMenuItems = availableGroups.Select(group =>
+        {
+            var groupLabel = !string.IsNullOrEmpty(group.Label) ? group.Label : $"Group ({group.Id[..Math.Min(8, group.Id.Length)]})";
+            var item = new MenuItem { Header = groupLabel };
+            item.Click += (s, e) => AddSelectedNodesToGroup(group.Id);
+            return item;
+        }).ToList();
+
+        _addToGroupMenuItem.ItemsSource = groupMenuItems;
+    }
+
+    private void AddSelectedNodesToGroup(string groupId)
+    {
+        _canvas.AddSelectedToGroup(groupId);
     }
 
     private MenuItem CreateMenuItem(string header, string? gesture, Action action, Func<bool>? isEnabled = null)
@@ -217,12 +274,6 @@ public class FlowCanvasContextMenu
     private void OnCollapseAllGroups() => _canvas.CollapseAllGroups();
     private void OnExpandAllGroups() => _canvas.ExpandAllGroups();
 
-    private void OnAddToGroup()
-    {
-        // This would ideally show a submenu or dialog to select a group
-        // For now, we'll just provide the infrastructure
-    }
-
     private void OnDeleteEdge()
     {
         _canvas.Selection.DeleteSelected();
@@ -265,16 +316,6 @@ public class FlowCanvasContextMenu
         var graph = _canvas.Graph;
         if (graph == null) return false;
         return graph.Nodes.Count(n => n.IsSelected && !n.IsGroup) >= 2;
-    }
-
-    private bool CanAddToGroup()
-    {
-        var graph = _canvas.Graph;
-        if (graph == null) return false;
-        
-        var hasSelectedNodes = graph.Nodes.Any(n => n.IsSelected && !n.IsGroup);
-        var hasGroups = graph.Nodes.Any(n => n.IsGroup);
-        return hasSelectedNodes && hasGroups;
     }
 
     private bool CanPaste()
