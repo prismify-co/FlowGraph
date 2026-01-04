@@ -1042,16 +1042,67 @@ public partial class FlowCanvas : UserControl
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
 
+        // Render order for proper z-index:
+        // 1. Groups (bottom) - rendered first in RenderNodes
+        // 2. Edges (middle) - rendered after groups, before regular nodes  
+        // 3. Regular nodes (top) - rendered last in RenderNodes
+        // 4. Ports are rendered with their nodes
+        
+        // Render groups first (they go behind everything)
+        RenderGroupNodes();
+        
+        // Render edges (on top of groups)
         RenderEdges();
         
-        _graphRenderer.RenderNodes(_mainCanvas, Graph, _theme, (control, node) =>
+        // Render regular nodes and ports (on top of edges)
+        RenderRegularNodes();
+
+        AttachPortEventHandlers();
+    }
+
+    private void RenderGroupNodes()
+    {
+        if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        // Render groups ordered by depth (outermost first)
+        var groups = Graph.Nodes
+            .Where(n => n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
+            .OrderBy(n => GetGroupDepth(n))
+            .ToList();
+
+        foreach (var group in groups)
         {
+            var control = _graphRenderer.RenderNode(_mainCanvas, group, _theme, null);
             control.PointerPressed += OnNodePointerPressed;
             control.PointerMoved += OnNodePointerMoved;
             control.PointerReleased += OnNodePointerReleased;
-        });
+        }
+    }
 
-        AttachPortEventHandlers();
+    private void RenderRegularNodes()
+    {
+        if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        foreach (var node in Graph.Nodes.Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n)))
+        {
+            var control = _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
+            control.PointerPressed += OnNodePointerPressed;
+            control.PointerMoved += OnNodePointerMoved;
+            control.PointerReleased += OnNodePointerReleased;
+        }
+    }
+
+    private int GetGroupDepth(Node node)
+    {
+        int depth = 0;
+        var current = node;
+        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        {
+            depth++;
+            current = Graph?.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
+            if (current == null) break;
+        }
+        return depth;
     }
 
     private void RenderEdges()

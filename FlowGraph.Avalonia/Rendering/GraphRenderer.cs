@@ -385,6 +385,15 @@ public class GraphRenderer
 
         var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
         
+        // Create visible edge path (rendered first, appears behind)
+        var visiblePath = new AvaloniaPath
+        {
+            Data = pathGeometry,
+            Stroke = strokeBrush,
+            StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
+            IsHitTestVisible = false  // Hit testing is handled by the hit area path
+        };
+        
         // Create invisible hit area path (wider, transparent stroke for easier clicking)
         var hitAreaPath = new AvaloniaPath
         {
@@ -394,19 +403,11 @@ public class GraphRenderer
             Tag = edge,  // Store the Edge object for click detection
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        
-        // Create visible edge path
-        var visiblePath = new AvaloniaPath
-        {
-            Data = pathGeometry,
-            Stroke = strokeBrush,
-            StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
-            IsHitTestVisible = false  // Hit testing is handled by the hit area path
-        };
 
-        // Insert visible path first (at bottom), then hit area on top
-        canvas.Children.Insert(0, visiblePath);
-        canvas.Children.Insert(1, hitAreaPath);
+        // Add paths to canvas - they will be on top of groups but we want them clickable
+        // Adding them (not inserting at 0) ensures they're above previously rendered elements
+        canvas.Children.Add(visiblePath);
+        canvas.Children.Add(hitAreaPath);
         
         // Track both paths - we use the hit area path for events, but need to update the visible path
         _edgeVisuals[edge.Id] = hitAreaPath;
@@ -453,7 +454,7 @@ public class GraphRenderer
             Tag = "marker"
         };
 
-        canvas.Children.Insert(0, markerPath);
+        canvas.Children.Add(markerPath);
     }
 
     /// <summary>
