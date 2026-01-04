@@ -98,6 +98,7 @@ public partial class FlowCanvas : UserControl
     private GraphRenderer _graphRenderer = null!;
     private CanvasInputHandler _inputHandler = null!;
     private SelectionManager _selectionManager = null!;
+    private ClipboardManager _clipboardManager = null!;
     private ThemeResources _theme = null!;
 
     #endregion
@@ -124,6 +125,7 @@ public partial class FlowCanvas : UserControl
         _graphRenderer = new GraphRenderer(Settings);
         _graphRenderer.SetViewport(_viewport);
         _inputHandler = new CanvasInputHandler(Settings, _viewport, _graphRenderer);
+        _clipboardManager = new ClipboardManager();
         _selectionManager = new SelectionManager(
             () => Graph,
             () => _graphRenderer,
@@ -145,6 +147,10 @@ public partial class FlowCanvas : UserControl
         _inputHandler.DeleteSelectedRequested += (_, _) => _selectionManager.DeleteSelected();
         _inputHandler.UndoRequested += (_, _) => Undo();
         _inputHandler.RedoRequested += (_, _) => Redo();
+        _inputHandler.CopyRequested += (_, _) => Copy();
+        _inputHandler.CutRequested += (_, _) => Cut();
+        _inputHandler.PasteRequested += (_, _) => Paste();
+        _inputHandler.DuplicateRequested += (_, _) => Duplicate();
         _inputHandler.NodesDragged += OnNodesDragged;
         _inputHandler.NodeResizing += OnNodeResizing;
         _inputHandler.NodeResized += OnNodeResized;
@@ -393,6 +399,90 @@ public partial class FlowCanvas : UserControl
     /// Redoes the last undone command.
     /// </summary>
     public void Redo() => CommandHistory.Redo();
+
+    #endregion
+
+    #region Clipboard Operations
+
+    /// <summary>
+    /// Copies selected nodes to the clipboard.
+    /// </summary>
+    public void Copy()
+    {
+        if (Graph == null) return;
+
+        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+        if (selectedNodes.Count == 0) return;
+
+        _clipboardManager.Copy(selectedNodes, Graph.Edges);
+    }
+
+    /// <summary>
+    /// Cuts selected nodes to the clipboard.
+    /// </summary>
+    public void Cut()
+    {
+        if (Graph == null) return;
+
+        Copy();
+        _selectionManager.DeleteSelected();
+    }
+
+    /// <summary>
+    /// Pastes nodes from the clipboard.
+    /// </summary>
+    public void Paste()
+    {
+        if (Graph == null || !_clipboardManager.HasContent) return;
+
+        // Deselect current selection
+        foreach (var node in Graph.Nodes)
+        {
+            node.IsSelected = false;
+        }
+
+        // Calculate paste position (center of viewport or with offset from original)
+        var viewCenter = _viewport.ScreenToCanvas(new global::Avalonia.Point(
+            _viewport.ViewSize.Width / 2,
+            _viewport.ViewSize.Height / 2));
+        var pastePosition = new Core.Point(viewCenter.X, viewCenter.Y);
+
+        var (pastedNodes, pastedEdges) = _clipboardManager.Paste(Graph, pastePosition);
+
+        if (pastedNodes.Count > 0)
+        {
+            var command = new PasteCommand(Graph, pastedNodes, pastedEdges);
+            CommandHistory.Execute(new AlreadyExecutedCommand(command));
+        }
+    }
+
+    /// <summary>
+    /// Duplicates selected nodes in place.
+    /// </summary>
+    public void Duplicate()
+    {
+        if (Graph == null) return;
+
+        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+        if (selectedNodes.Count == 0) return;
+
+        // Deselect current selection
+        foreach (var node in selectedNodes)
+        {
+            node.IsSelected = false;
+        }
+
+        // Duplicate with small offset
+        var offset = new Core.Point(20, 20);
+        var (duplicatedNodes, duplicatedEdges) = _clipboardManager.Duplicate(
+            Graph, selectedNodes, Graph.Edges, offset);
+
+        if (duplicatedNodes.Count > 0)
+        {
+            var command = new DuplicateCommand(Graph, duplicatedNodes, duplicatedEdges);
+            CommandHistory.Execute(new AlreadyExecutedCommand(command));
+        }
+    }
 
     #endregion
 

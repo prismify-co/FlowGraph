@@ -95,6 +95,26 @@ public class CanvasInputHandler
     public event EventHandler? RedoRequested;
 
     /// <summary>
+    /// Event raised when copy is requested.
+    /// </summary>
+    public event EventHandler? CopyRequested;
+
+    /// <summary>
+    /// Event raised when cut is requested.
+    /// </summary>
+    public event EventHandler? CutRequested;
+
+    /// <summary>
+    /// Event raised when paste is requested.
+    /// </summary>
+    public event EventHandler? PasteRequested;
+
+    /// <summary>
+    /// Event raised when duplicate is requested.
+    /// </summary>
+    public event EventHandler? DuplicateRequested;
+
+    /// <summary>
     /// Event raised when the grid needs to be re-rendered.
     /// </summary>
     public event EventHandler? GridRenderRequested;
@@ -148,20 +168,37 @@ public class CanvasInputHandler
         {
             if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
-                // Ctrl+Shift+Z = Redo
                 RedoRequested?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                // Ctrl+Z = Undo
                 UndoRequested?.Invoke(this, EventArgs.Empty);
             }
             return true;
         }
         else if (e.Key == Key.Y && e.KeyModifiers.HasFlag(KeyModifiers.Control))
         {
-            // Ctrl+Y = Redo
             RedoRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.C && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            CopyRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.X && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            CutRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.V && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            PasteRequested?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+        else if (e.Key == Key.D && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            DuplicateRequested?.Invoke(this, EventArgs.Empty);
             return true;
         }
         else if (e.Key == Key.Escape)
