@@ -208,9 +208,15 @@ public class FlowCanvasContextMenu
         if (target.Tag is Node node)
         {
             if (node.IsGroup)
+            {
                 menu = _groupContextMenu;
+            }
             else
+            {
+                // Update the "Add to Group" submenu before showing
+                UpdateAddToGroupSubmenu();
                 menu = _nodeContextMenu;
+            }
         }
         else if (target.Tag is Edge)
         {
