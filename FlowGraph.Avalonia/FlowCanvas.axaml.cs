@@ -254,43 +254,10 @@ public partial class FlowCanvas : UserControl
     {
         var point = e.GetCurrentPoint(_rootPanel);
         
-        // Handle right-click for context menu
+        // Handle right-click for context menu on empty canvas
         if (point.Properties.IsRightButtonPressed)
         {
-            var screenPos = e.GetPosition(_rootPanel);
-            var canvasPos = _viewport.ScreenToCanvas(screenPos);
-            
-            // Check what was clicked
-            var hitElement = _mainCanvas?.InputHitTest(screenPos);
-            
-            if (hitElement is Control control && control.Tag is Node node)
-            {
-                // Select node if not already selected
-                if (!node.IsSelected)
-                {
-                    foreach (var n in Graph?.Nodes ?? [])
-                        n.IsSelected = false;
-                    node.IsSelected = true;
-                }
-                _contextMenu.Show(control, e, new Core.Point(canvasPos.X, canvasPos.Y));
-            }
-            else if (hitElement is Control edgeControl && edgeControl.Tag is Edge edge)
-            {
-                if (!edge.IsSelected)
-                {
-                    foreach (var ed in Graph?.Edges ?? [])
-                        ed.IsSelected = false;
-                    edge.IsSelected = true;
-                }
-                _contextMenu.Show(edgeControl, e, new Core.Point(canvasPos.X, canvasPos.Y));
-            }
-            else
-            {
-                // Empty canvas
-                _contextMenu.ShowCanvasMenu(this, new Core.Point(canvasPos.X, canvasPos.Y));
-            }
-            
-            e.Handled = true;
+            HandleContextMenuRequest(e, null, null);
             return;
         }
         
@@ -317,18 +284,7 @@ public partial class FlowCanvas : UserControl
             // Handle right-click for context menu
             if (point.Properties.IsRightButtonPressed)
             {
-                // Select node if not already selected
-                if (!node.IsSelected && Graph != null)
-                {
-                    foreach (var n in Graph.Nodes)
-                        n.IsSelected = false;
-                    node.IsSelected = true;
-                }
-                
-                var screenPos = e.GetPosition(_rootPanel);
-                var canvasPos = _viewport.ScreenToCanvas(screenPos);
-                _contextMenu.Show(control, e, new Core.Point(canvasPos.X, canvasPos.Y));
-                e.Handled = true;
+                HandleContextMenuRequest(e, control, node);
                 return;
             }
             
@@ -380,20 +336,7 @@ public partial class FlowCanvas : UserControl
             // Handle right-click for context menu
             if (point.Properties.IsRightButtonPressed)
             {
-                // Select edge if not already selected
-                if (!edge.IsSelected && Graph != null)
-                {
-                    foreach (var n in Graph.Nodes)
-                        n.IsSelected = false;
-                    foreach (var ed in Graph.Edges)
-                        ed.IsSelected = false;
-                    edge.IsSelected = true;
-                }
-                
-                var screenPos = e.GetPosition(_rootPanel);
-                var canvasPos = _viewport.ScreenToCanvas(screenPos);
-                _contextMenu.Show(edgePath, e, new Core.Point(canvasPos.X, canvasPos.Y));
-                e.Handled = true;
+                HandleContextMenuRequest(e, edgePath, edge);
                 return;
             }
             
@@ -418,6 +361,74 @@ public partial class FlowCanvas : UserControl
     private void OnResizeHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         _inputHandler.HandleResizeHandlePointerReleased(e);
+    }
+
+    /// <summary>
+    /// Handles right-click context menu requests for nodes, edges, or empty canvas.
+    /// </summary>
+    private void HandleContextMenuRequest(PointerPressedEventArgs e, Control? target, object? targetObject)
+    {
+        var screenPos = e.GetPosition(_rootPanel);
+        var canvasPos = _viewport.ScreenToCanvas(screenPos);
+        var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
+
+        if (targetObject is Node node)
+        {
+            // Select node if not already selected
+            if (!node.IsSelected && Graph != null)
+            {
+                foreach (var n in Graph.Nodes)
+                    n.IsSelected = false;
+                node.IsSelected = true;
+            }
+            _contextMenu.Show(target!, e, canvasPoint);
+        }
+        else if (targetObject is Edge edge)
+        {
+            // Select edge if not already selected
+            if (!edge.IsSelected && Graph != null)
+            {
+                foreach (var n in Graph.Nodes)
+                    n.IsSelected = false;
+                foreach (var ed in Graph.Edges)
+                    ed.IsSelected = false;
+                edge.IsSelected = true;
+            }
+            _contextMenu.Show(target!, e, canvasPoint);
+        }
+        else
+        {
+            // Empty canvas - check if we hit a node or edge via hit testing
+            var hitElement = _mainCanvas?.InputHitTest(screenPos);
+            
+            if (hitElement is Control control && control.Tag is Node hitNode)
+            {
+                if (!hitNode.IsSelected)
+                {
+                    foreach (var n in Graph?.Nodes ?? [])
+                        n.IsSelected = false;
+                    hitNode.IsSelected = true;
+                }
+                _contextMenu.Show(control, e, canvasPoint);
+            }
+            else if (hitElement is Control edgeControl && edgeControl.Tag is Edge hitEdge)
+            {
+                if (!hitEdge.IsSelected)
+                {
+                    foreach (var ed in Graph?.Edges ?? [])
+                        ed.IsSelected = false;
+                    hitEdge.IsSelected = true;
+                }
+                _contextMenu.Show(edgeControl, e, canvasPoint);
+            }
+            else
+            {
+                // Empty canvas
+                _contextMenu.ShowCanvasMenu(this, canvasPoint);
+            }
+        }
+        
+        e.Handled = true;
     }
 
     #endregion
