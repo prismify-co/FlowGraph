@@ -1,55 +1,179 @@
-# FlowGraph - Cross-Platform Node-Based Graph Library
+# FlowGraph
 
-A reusable C# library for building node-based graph editors (similar to React Flow) that works cross-platform on Windows, macOS, Linux using Avalonia UI framework.
+A powerful, extensible node-based graph editor for .NET/Avalonia, inspired by [React Flow](https://reactflow.dev/).
 
-## Project Structure
-
-The solution consists of three projects:
-
-### 1. FlowGraph.Core
-A pure C# class library containing core data models and business logic:
-- **Point.cs** - 2D coordinate struct with arithmetic operators
-- **Port.cs** - Input/output connection points on nodes
-- **Node.cs** - Graph node with position, type, and data
-- **Edge.cs** - Connections between nodes
-- **Graph.cs** - Main graph container with ObservableCollections
-
-**Target Framework:** .NET 9.0  
-**Dependencies:** None (UI-agnostic)
-
-### 2. FlowGraph.Avalonia
-An Avalonia control library containing UI components:
-- **FlowCanvas** - Custom UserControl for rendering graphs
-- Automatic reactive updates via ObservableCollections
-- Dark theme with grid background
-- Styled nodes and edges
-
-**Target Framework:** .NET 9.0  
-**Dependencies:**
-- Avalonia 11.2.2
-- Avalonia.Themes.Fluent 11.2.2
-- Avalonia.ReactiveUI 11.2.2
-- FlowGraph.Core (project reference)
-
-### 3. FlowGraph.Demo
-An Avalonia MVVM demo application showcasing the library:
-- Sample graph with 3 connected nodes
-- MVVM architecture
-- Data binding to FlowCanvas
-
-**Target Framework:** .NET 9.0  
-**Dependencies:**
-- Avalonia packages 11.2.2
-- FlowGraph.Avalonia (project reference)
+![.NET 9](https://img.shields.io/badge/.NET-9.0-purple)
+![Avalonia](https://img.shields.io/badge/Avalonia-11.x-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ## Features
 
-- ✅ **Cross-Platform** - Runs on Windows, macOS, Linux
-- ✅ **Reactive UI** - Automatic updates via ObservableCollections
-- ✅ **Separation of Concerns** - Core logic is UI-agnostic
-- ✅ **Modern C#** - Uses C# preview features, collection expressions, required properties
-- ✅ **NuGet Ready** - FlowGraph.Avalonia can be packaged as a library
-- ✅ **Dark Theme** - Professional dark UI with grid background
+- 🎯 **Intuitive Editing** - Pan, zoom, drag nodes, create connections
+- 🎨 **Custom Nodes** - Create your own node types with custom rendering
+- 🔗 **Smart Edges** - Bezier, straight, step curves with routing algorithms
+- 📦 **Node Grouping** - Group nodes with collapse/expand support
+- ↩️ **Undo/Redo** - Full command history with Ctrl+Z/Y
+- 💾 **Serialization** - Save/load graphs as JSON
+- 🗺️ **Minimap** - Overview navigation
+- ✅ **Validation** - Custom connection rules
+- 📋 **Context Menus** - Right-click menus for nodes, edges, groups
+- ✂️ **Clipboard** - Copy, cut, paste, duplicate operations
+
+## Quick Start
+
+### Installation
+
+```bash
+# Coming soon to NuGet
+dotnet add package FlowGraph.Avalonia
+```
+
+### Basic Usage
+
+```xml
+<!-- In your AXAML -->
+<Window xmlns:flow="using:FlowGraph.Avalonia">
+    <flow:FlowCanvas Graph="{Binding Graph}" />
+</Window>
+```
+
+```csharp
+// In your ViewModel
+public Graph Graph { get; } = new Graph
+{
+    Nodes =
+    {
+        new Node
+        {
+            Id = "1",
+            Label = "Start",
+            Position = new Point(100, 100),
+            Outputs = { new Port { Id = "out1", Label = "Output" } }
+        },
+        new Node
+        {
+            Id = "2", 
+            Label = "End",
+            Position = new Point(400, 100),
+            Inputs = { new Port { Id = "in1", Label = "Input" } }
+        }
+    },
+    Edges =
+    {
+        new Edge { Source = "1", SourcePort = "out1", Target = "2", TargetPort = "in1" }
+    }
+};
+```
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+A` | Select all |
+| `Ctrl+C` | Copy |
+| `Ctrl+X` | Cut |
+| `Ctrl+V` | Paste |
+| `Ctrl+D` | Duplicate |
+| `Ctrl+Z` | Undo |
+| `Ctrl+Y` / `Ctrl+Shift+Z` | Redo |
+| `Ctrl+G` | Group selected |
+| `Ctrl+Shift+G` | Ungroup |
+| `Delete` | Delete selected |
+| `Escape` | Deselect all / Cancel operation |
+
+## Project Structure
+
+```
+FlowGraph.Core          - Data models, commands, serialization (no UI dependencies)
+FlowGraph.Avalonia      - Avalonia UI controls and rendering
+FlowGraph.Demo          - Sample application
+FlowGraph.Core.Tests    - Unit tests (231 tests)
+```
+
+## Custom Node Types
+
+```csharp
+public class MyCustomNodeRenderer : INodeRenderer
+{
+    public bool CanRender(string nodeType) => nodeType == "custom";
+    
+    public Control CreateNodeVisual(Node node, NodeRenderContext context)
+    {
+        return new Border
+        {
+            Background = Brushes.Purple,
+            Child = new TextBlock { Text = node.Label }
+        };
+    }
+    
+    // ... implement other interface members
+}
+
+// Register it
+canvas.NodeRenderers.Register(new MyCustomNodeRenderer());
+```
+
+## Serialization
+
+```csharp
+// Save
+var json = graph.ToJson();
+graph.Save("graph.json");
+await graph.SaveAsync("graph.json");
+
+// Load
+var graph = GraphSerializationExtensions.LoadFromFile("graph.json");
+var graph = await GraphSerializationExtensions.LoadFromFileAsync("graph.json");
+
+// Clone
+var copy = graph.Clone();
+```
+
+## Connection Validation
+
+```csharp
+canvas.ConnectionValidator = new CompositeValidator(
+    new PreventSelfConnectionValidator(),
+    new PreventDuplicateConnectionValidator(),
+    new TypeCompatibilityValidator()
+);
+
+canvas.ConnectionRejected += (s, e) => 
+{
+    Console.WriteLine($"Connection rejected: {e.Message}");
+};
+```
+
+## Edge Routing
+
+```csharp
+// Built-in routers
+var directRouter = new DirectRouter();           // Straight lines
+var orthogonalRouter = new OrthogonalRouter();   // Right-angle paths
+var bezierRouter = new SmartBezierRouter();      // Curved paths avoiding obstacles
+
+// Use routing service
+var routingService = new EdgeRoutingService();
+routingService.SetRouter(orthogonalRouter);
+routingService.RouteAllEdges(graph);
+```
+
+## Node Grouping
+
+```csharp
+// Create a group from selected nodes
+var group = canvas.GroupSelected("My Group");
+
+// Collapse/expand
+canvas.SetGroupCollapsed(group.Id, true);
+canvas.ToggleGroupCollapse(group.Id);
+
+// Add nodes to existing group
+canvas.AddNodesToGroup(groupId, nodeIds);
+
+// Ungroup
+canvas.UngroupSelected();
+```
 
 ## Building
 
@@ -60,75 +184,44 @@ dotnet restore
 # Build solution
 dotnet build
 
+# Run tests
+dotnet test
+
 # Run demo
-dotnet run --project FlowGraph.Demo/FlowGraph.Demo.csproj
+dotnet run --project FlowGraph.Demo
 ```
 
-## Usage Example
+## Roadmap
 
-```csharp
-using FlowGraph.Core;
+See [ROADMAP.md](ROADMAP.md) for the full feature roadmap.
 
-// Create a graph
-var graph = new Graph();
-
-// Add nodes
-var inputNode = new Node
-{
-    Type = "Input",
-    Position = new Point(100, 100)
-};
-
-var processNode = new Node
-{
-    Type = "Process",
-    Position = new Point(400, 150)
-};
-
-graph.AddNode(inputNode);
-graph.AddNode(processNode);
-
-// Connect nodes
-graph.AddEdge(new Edge
-{
-    Source = inputNode.Id,
-    Target = processNode.Id,
-    SourcePort = "out",
-    TargetPort = "in"
-});
-```
-
-In XAML:
-```xml
-<Window xmlns:avalonia="using:FlowGraph.Avalonia">
-    <avalonia:FlowCanvas Graph="{Binding MyGraph}"/>
-</Window>
-```
-
-## Visual Design
-
-- **Nodes:** 150x80px dark slate gray rectangles with steel blue borders
-- **Edges:** 2px gray lines connecting node centers
-- **Background:** Dark (#1E1E1E) with subtle grid pattern
-- **Text:** White text showing node type and ID
+**Coming Soon:**
+- 🎬 Animation system (smooth transitions)
+- 📐 Auto-layout algorithms (Dagre, Elk, Force)
+- 🎛️ Controls panel (zoom buttons)
+- 📱 Touch/gesture support
+- 🔄 State pattern refactor
 
 ## Technical Details
 
-- **Language Version:** C# preview
+- **Target Framework:** .NET 9.0
+- **UI Framework:** Avalonia 11.2.2
+- **Language Version:** C# 14 (preview)
 - **Nullable Reference Types:** Enabled
-- **Implicit Usings:** Enabled
-- **Target Framework:** .NET 9.0 (designed for .NET 10 compatibility)
 
-## Architecture
+## Contributing
 
-The library follows clean architecture principles:
-
-1. **FlowGraph.Core** - Domain layer (no dependencies)
-2. **FlowGraph.Avalonia** - Presentation layer (depends on Core)
-3. **FlowGraph.Demo** - Application layer (depends on Avalonia library)
-
-This design allows the core library to be used in other UI frameworks if needed, and the Avalonia library to be consumed by multiple applications.
+Contributions are welcome! Priority areas:
+1. Animation system
+2. Auto-layout algorithms
+3. State pattern implementation
+4. Documentation
 
 ## License
 
-This is a demo project created for learning purposes.
+MIT License - feel free to use in commercial projects.
+
+## Acknowledgments
+
+- Inspired by [React Flow](https://reactflow.dev/)
+- Built with [Avalonia UI](https://avaloniaui.net/)
