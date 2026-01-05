@@ -612,6 +612,9 @@ public partial class MainWindow : Window
 
         SetStatus($"Generating {nodeCount} nodes...");
 
+        // Enable debug output for performance analysis
+        FlowCanvas.DebugRenderingPerformance = true;
+
         // For large graphs, enable simplified rendering
         if (nodeCount >= 500)
         {
@@ -698,16 +701,27 @@ public partial class MainWindow : Window
         FlowCanvas.FitToView();
         
         // Now render - this is the slow part
-        SetStatus($"Rendering {nodeCount} nodes, {edgeCount} edges...");
+        SetStatus($"Rendering {nodeCount}n/{edgeCount}e...");
         await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
         
+        Console.WriteLine($"\n=== STRESS TEST: {nodeCount} nodes, {edgeCount} edges ===");
         FlowCanvas.Refresh();
         
         var renderTime = sw.ElapsedMilliseconds;
         sw.Stop();
 
-        var simplified = nodeCount >= 500 ? " (simplified)" : "";
-        SetStatus($"{nodeCount}n/{edgeCount}e{simplified} - Data: {dataGenTime}ms, Edges: {edgeGenTime}ms, Render: {renderTime}ms");
+        // Disable debug output after test
+        FlowCanvas.DebugRenderingPerformance = false;
+
+        var simplified = nodeCount >= 500 ? " (simp)" : "";
+        var total = dataGenTime + edgeGenTime + renderTime;
+        SetStatus($"{nodeCount}n/{edgeCount}e{simplified} Total:{total}ms (D:{dataGenTime} E:{edgeGenTime} R:{renderTime})");
+        
+        // Also write to console for easier viewing
+        Console.WriteLine($"Data generation: {dataGenTime}ms");
+        Console.WriteLine($"Edge generation: {edgeGenTime}ms");
+        Console.WriteLine($"Rendering: {renderTime}ms");
+        Console.WriteLine($"TOTAL: {total}ms");
     }
 
     private static double Distance(CorePoint a, CorePoint b)

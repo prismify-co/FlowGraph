@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using FlowGraph.Core;
+using System.Diagnostics;
 
 namespace FlowGraph.Avalonia;
 
@@ -9,6 +10,11 @@ namespace FlowGraph.Avalonia;
 public partial class FlowCanvas
 {
     #region Rendering
+
+    /// <summary>
+    /// Gets or sets whether to output rendering performance diagnostics.
+    /// </summary>
+    public bool DebugRenderingPerformance { get; set; } = false;
 
     private void RenderAll()
     {
@@ -34,8 +40,14 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
+        var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+        var totalNodes = Graph.Nodes.Count;
+        var totalEdges = Graph.Edges.Count;
+
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
+
+        var clearTime = sw?.ElapsedMilliseconds ?? 0;
 
         // Render order for proper z-index:
         // 1. Groups (bottom) - rendered first in RenderNodes
@@ -45,19 +57,36 @@ public partial class FlowCanvas
         
         // Render groups first (they go behind everything)
         RenderGroupNodes();
+        var groupTime = sw?.ElapsedMilliseconds ?? 0;
         
         // Render edges (on top of groups)
         RenderEdges();
+        var edgeTime = sw?.ElapsedMilliseconds ?? 0;
         
         // Render regular nodes and ports (on top of edges)
         RenderRegularNodes();
+        var nodeTime = sw?.ElapsedMilliseconds ?? 0;
 
         AttachPortEventHandlers();
+        var portHandlerTime = sw?.ElapsedMilliseconds ?? 0;
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            var renderedNodes = _mainCanvas.Children.OfType<Control>().Count(c => c.Tag is Node);
+            Console.WriteLine($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
+                $"Clear: {clearTime}ms, Groups: {groupTime - clearTime}ms, " +
+                $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms, " +
+                $"Handlers: {portHandlerTime - nodeTime}ms | " +
+                $"Graph: {totalNodes}n/{totalEdges}e, Rendered: ~{renderedNodes} visuals");
+        }
     }
 
     private void RenderGroupNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
         
         // Render groups ordered by depth (outermost first)
         var groups = Graph.Nodes
@@ -65,12 +94,22 @@ public partial class FlowCanvas
             .OrderBy(n => GetGroupDepth(n))
             .ToList();
 
+        var filterTime = sw?.ElapsedMilliseconds ?? 0;
+        var count = 0;
+
         foreach (var group in groups)
         {
             var control = _graphRenderer.RenderNode(_mainCanvas, group, _theme, null);
             control.PointerPressed += OnNodePointerPressed;
             control.PointerMoved += OnNodePointerMoved;
             control.PointerReleased += OnNodePointerReleased;
+            count++;
+        }
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            Console.WriteLine($"  [RenderGroupNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, Rendered: {count} groups");
         }
     }
 
@@ -78,12 +117,32 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
         
-        foreach (var node in Graph.Nodes.Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n)))
+        var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+        
+        var nodesToRender = Graph.Nodes
+            .Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
+            .ToList();
+
+        var filterTime = sw?.ElapsedMilliseconds ?? 0;
+        var count = 0;
+        var portCount = 0;
+
+        foreach (var node in nodesToRender)
         {
             var control = _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
             control.PointerPressed += OnNodePointerPressed;
             control.PointerMoved += OnNodePointerMoved;
             control.PointerReleased += OnNodePointerReleased;
+            count++;
+            portCount += node.Inputs.Count + node.Outputs.Count;
+        }
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            var avgPerNode = count > 0 ? (sw.ElapsedMilliseconds - filterTime) / (double)count : 0;
+            Console.WriteLine($"  [RenderRegularNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, " +
+                $"Rendered: {count} nodes, {portCount} ports, Avg: {avgPerNode:F2}ms/node");
         }
     }
 
@@ -103,12 +162,23 @@ public partial class FlowCanvas
     private void RenderEdges()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+        
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+
+        var renderTime = sw?.ElapsedMilliseconds ?? 0;
 
         // Re-apply any active opacity overrides (important if edges were re-rendered during an animation)
         ApplyEdgeOpacityOverrides();
 
         AttachEdgeEventHandlers();
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            Console.WriteLine($"  [RenderEdges] {sw.ElapsedMilliseconds}ms | Render: {renderTime}ms, Handlers: {sw.ElapsedMilliseconds - renderTime}ms");
+        }
     }
 
     private void AttachPortEventHandlers()
