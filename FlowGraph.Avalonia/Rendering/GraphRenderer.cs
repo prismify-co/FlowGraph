@@ -278,9 +278,14 @@ public class GraphRenderer
         // Get the node dimensions (may be custom per node type)
         var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
         
-        // Calculate port position in canvas coordinates
-        var portY = GetPortYCanvas(node.Position.Y, index, totalPorts, nodeHeight);
-        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
+        // Determine port position - use explicit position or default based on input/output
+        var position = port.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
+        
+        // Calculate port position in canvas coordinates based on position
+        var (portX, portY) = CalculatePortCanvasPosition(
+            node.Position.X, node.Position.Y, 
+            nodeWidth, nodeHeight,
+            position, index, totalPorts);
         
         // Transform to screen coordinates
         var screenPos = TransformToScreen(portX, portY);
@@ -305,6 +310,38 @@ public class GraphRenderer
         onPortCreated?.Invoke(portVisual, node, port, isOutput);
 
         return portVisual;
+    }
+
+    /// <summary>
+    /// Calculates port canvas position based on port position.
+    /// </summary>
+    private (double x, double y) CalculatePortCanvasPosition(
+        double nodeX, double nodeY,
+        double nodeWidth, double nodeHeight,
+        PortPosition position, int portIndex, int totalPorts)
+    {
+        return position switch
+        {
+            PortPosition.Left => (nodeX, GetPortAlongEdge(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Right => (nodeX + nodeWidth, GetPortAlongEdge(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Top => (GetPortAlongEdge(nodeX, nodeWidth, portIndex, totalPorts), nodeY),
+            PortPosition.Bottom => (GetPortAlongEdge(nodeX, nodeWidth, portIndex, totalPorts), nodeY + nodeHeight),
+            _ => (nodeX, nodeY + nodeHeight / 2)
+        };
+    }
+
+    /// <summary>
+    /// Calculates port position along an edge (distributes ports evenly).
+    /// </summary>
+    private double GetPortAlongEdge(double edgeStart, double edgeLength, int portIndex, int totalPorts)
+    {
+        if (totalPorts == 1)
+        {
+            return edgeStart + edgeLength / 2;
+        }
+
+        var spacing = edgeLength / (totalPorts + 1);
+        return edgeStart + spacing * (portIndex + 1);
     }
 
     /// <summary>
@@ -608,8 +645,12 @@ public class GraphRenderer
             var port = node.Inputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var portY = GetPortYCanvas(node.Position.Y, i, node.Inputs.Count, nodeHeight);
-                var screenPos = TransformToScreen(node.Position.X, portY);
+                var position = port.Position ?? PortPosition.Left;
+                var (portX, portY) = CalculatePortCanvasPosition(
+                    node.Position.X, node.Position.Y,
+                    nodeWidth, nodeHeight,
+                    position, i, node.Inputs.Count);
+                var screenPos = TransformToScreen(portX, portY);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
             }
@@ -620,8 +661,12 @@ public class GraphRenderer
             var port = node.Outputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var portY = GetPortYCanvas(node.Position.Y, i, node.Outputs.Count, nodeHeight);
-                var screenPos = TransformToScreen(node.Position.X + nodeWidth, portY);
+                var position = port.Position ?? PortPosition.Right;
+                var (portX, portY) = CalculatePortCanvasPosition(
+                    node.Position.X, node.Position.Y,
+                    nodeWidth, nodeHeight,
+                    position, i, node.Outputs.Count);
+                var screenPos = TransformToScreen(portX, portY);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
             }
@@ -871,8 +916,14 @@ public class GraphRenderer
         var totalPorts = isOutput ? node.Outputs.Count : node.Inputs.Count;
 
         var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
-        var portY = GetPortYCanvas(node.Position.Y, portIndex, totalPorts, nodeHeight);
-        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
+        
+        // Determine port position - use explicit position or default based on input/output
+        var position = port.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
+        
+        var (portX, portY) = CalculatePortCanvasPosition(
+            node.Position.X, node.Position.Y,
+            nodeWidth, nodeHeight,
+            position, portIndex, totalPorts);
 
         // Return screen coordinates
         return TransformToScreen(portX, portY);
