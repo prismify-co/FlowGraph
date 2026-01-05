@@ -411,6 +411,7 @@ public partial class FlowCanvas : UserControl
         _inputContext.RootPanel = _rootPanel;
         _inputContext.MainCanvas = _mainCanvas;
         _inputContext.Theme = _theme;
+        _inputContext.ConnectionValidator = ConnectionValidator;
 
         SetupEventHandlers();
         

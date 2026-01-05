@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 using AvaloniaRect = Avalonia.Rect;
@@ -39,6 +40,12 @@ public class InputStateContext
     public Canvas? MainCanvas { get; set; }
     public Graph? Graph { get; set; }
     public Rendering.ThemeResources? Theme { get; set; }
+    
+    /// <summary>
+    /// Optional connection validator for validating new connections.
+    /// Set by FlowCanvas.
+    /// </summary>
+    public IConnectionValidator? ConnectionValidator { get; set; }
 
     #endregion
 

@@ -48,6 +48,10 @@ public class ThemeResources
     public IBrush PortBorder => GetBrush("FlowCanvasPortBorder", "#FFFFFF");
     public IBrush PortHover => GetBrush("FlowCanvasPortHover", "#FF6B00");
 
+    // Connection validation colors
+    public IBrush PortValidConnection => GetBrush("FlowCanvasPortValidConnection", "#22C55E"); // Green
+    public IBrush PortInvalidConnection => GetBrush("FlowCanvasPortInvalidConnection", "#EF4444"); // Red
+
     // Group-specific colors - React Flow inspired translucent style
     // Light theme: lavender/purple tint, Dark theme: subtle highlight
     public IBrush GroupBackground => GetBrush("FlowCanvasGroupBackground", 
