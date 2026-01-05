@@ -6,13 +6,13 @@ namespace FlowGraph.Avalonia.Layout;
 /// <summary>
 /// Provides a minimal API for animating layout transitions (node position changes) without coupling to layout algorithms.
 /// </summary>
-public sealed class LayoutTransitionService
+public sealed class LayoutTransitionManager
 {
     private readonly Func<Graph?> _getGraph;
     private readonly Action _refreshEdges;
     private readonly AnimationManager _animations;
 
-    public LayoutTransitionService(Func<Graph?> getGraph, Action refreshEdges, AnimationManager animations)
+    public LayoutTransitionManager(Func<Graph?> getGraph, Action refreshEdges, AnimationManager animations)
     {
         _getGraph = getGraph;
         _refreshEdges = refreshEdges;

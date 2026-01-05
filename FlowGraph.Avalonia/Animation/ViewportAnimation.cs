@@ -5,7 +5,7 @@ namespace FlowGraph.Avalonia.Animation;
 /// <summary>
 /// Animates viewport transitions (pan and zoom).
 /// </summary>
-public class ViewportAnimation : IAnimation
+public class ViewportAnimation : IAnimation, ICategorizedAnimation
 {
     private readonly ViewportState _viewport;
     private readonly double _startZoom;
@@ -21,6 +21,10 @@ public class ViewportAnimation : IAnimation
     private double _elapsed;
 
     public bool IsComplete { get; private set; }
+    
+    public AnimationCategory Category => AnimationCategory.Viewport;
+    
+    public IReadOnlyCollection<string> AffectedNodeIds => Array.Empty<string>();
 
     /// <summary>
     /// Creates a new viewport animation.
@@ -79,13 +83,23 @@ public class ViewportAnimation : IAnimation
     /// <summary>
     /// Creates a viewport animation to fit bounds in view.
     /// </summary>
+    /// <param name="viewport">The viewport to animate.</param>
+    /// <param name="bounds">The bounds to fit.</param>
+    /// <param name="padding">Padding around the bounds.</param>
+    /// <param name="duration">Animation duration in seconds.</param>
+    /// <param name="easing">Easing function.</param>
+    /// <param name="onComplete">Callback when animation completes.</param>
+    /// <param name="minZoom">Minimum zoom level (default: 0.1).</param>
+    /// <param name="maxZoom">Maximum zoom level (default: 2.0).</param>
     public static ViewportAnimation FitToBounds(
         ViewportState viewport,
         Rect bounds,
         double padding = 50,
         double duration = 0.3,
         Func<double, double>? easing = null,
-        Action? onComplete = null)
+        Action? onComplete = null,
+        double minZoom = 0.1,
+        double maxZoom = 2.0)
     {
         if (bounds.Width <= 0 || bounds.Height <= 0 ||
             viewport.ViewSize.Width <= 0 || viewport.ViewSize.Height <= 0)
@@ -95,7 +109,7 @@ public class ViewportAnimation : IAnimation
 
         var zoomX = (viewport.ViewSize.Width - padding * 2) / bounds.Width;
         var zoomY = (viewport.ViewSize.Height - padding * 2) / bounds.Height;
-        var targetZoom = Math.Clamp(Math.Min(zoomX, zoomY), 0.1, 2.0);
+        var targetZoom = Math.Clamp(Math.Min(zoomX, zoomY), minZoom, maxZoom);
 
         var centerX = bounds.X + bounds.Width / 2;
         var centerY = bounds.Y + bounds.Height / 2;
@@ -115,6 +129,12 @@ public class ViewportAnimation : IAnimation
     /// <summary>
     /// Creates a viewport animation to zoom to a level at a specific screen point.
     /// </summary>
+    /// <param name="viewport">The viewport to animate.</param>
+    /// <param name="targetZoom">Target zoom level (will be clamped by viewport's SetZoomDirect).</param>
+    /// <param name="zoomCenter">Screen point to zoom towards.</param>
+    /// <param name="duration">Animation duration in seconds.</param>
+    /// <param name="easing">Easing function.</param>
+    /// <param name="onComplete">Callback when animation completes.</param>
     public static ViewportAnimation ZoomTo(
         ViewportState viewport,
         double targetZoom,
@@ -123,6 +143,7 @@ public class ViewportAnimation : IAnimation
         Func<double, double>? easing = null,
         Action? onComplete = null)
     {
+        // Note: targetZoom will be clamped by SetZoomDirect during animation
         var center = zoomCenter ?? new Point(viewport.ViewSize.Width / 2, viewport.ViewSize.Height / 2);
         var zoomFactor = targetZoom / viewport.Zoom;
         var targetOffsetX = center.X - (center.X - viewport.OffsetX) * zoomFactor;
@@ -152,6 +173,7 @@ public class ViewportAnimation : IAnimation
         var currentOffsetY = Lerp(_startOffsetY, _endOffsetY, easedT);
 
         // Apply to viewport without triggering recursive events
+        // SetZoomDirect clamps to min/max zoom from settings
         _viewport.SetZoomDirect(currentZoom);
         _viewport.SetOffsetDirect(currentOffsetX, currentOffsetY);
         _viewport.NotifyViewportChanged();

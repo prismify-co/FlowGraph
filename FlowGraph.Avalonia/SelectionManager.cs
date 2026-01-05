@@ -50,7 +50,11 @@ public class SelectionManager
 
         foreach (var node in graph.Nodes)
         {
-            node.IsSelected = true;
+            // Only select nodes that are selectable
+            if (node.IsSelectable)
+            {
+                node.IsSelected = true;
+            }
         }
         
         RaiseSelectionChangedIfNeeded();
@@ -86,8 +90,17 @@ public class SelectionManager
         var graph = _getGraph();
         if (graph == null) return;
 
+        // Only delete edges that are deletable (or all edges for simplicity, since Edge doesn't have IsDeletable yet)
         var selectedEdges = graph.Edges.Where(e => e.IsSelected).ToList();
-        var selectedNodes = graph.Nodes.Where(n => n.IsSelected).ToList();
+        
+        // Only delete nodes that are deletable
+        var selectedNodes = graph.Nodes.Where(n => n.IsSelected && n.IsDeletable).ToList();
+        
+        // Also filter edges - don't delete edges connected to non-deletable nodes
+        var nonDeletableNodeIds = graph.Nodes.Where(n => !n.IsDeletable).Select(n => n.Id).ToHashSet();
+        selectedEdges = selectedEdges
+            .Where(e => !nonDeletableNodeIds.Contains(e.Source) && !nonDeletableNodeIds.Contains(e.Target))
+            .ToList();
 
         if (selectedEdges.Count == 0 && selectedNodes.Count == 0)
             return;

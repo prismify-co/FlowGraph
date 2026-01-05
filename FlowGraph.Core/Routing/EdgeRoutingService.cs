@@ -30,6 +30,21 @@ public class EdgeRoutingService
     public double NodePadding { get; set; } = 10;
 
     /// <summary>
+    /// Gets the direct router instance.
+    /// </summary>
+    public IEdgeRouter DirectRouter => _directRouter;
+
+    /// <summary>
+    /// Gets the orthogonal router instance.
+    /// </summary>
+    public IEdgeRouter OrthogonalRouter => _orthogonalRouter;
+
+    /// <summary>
+    /// Gets the smart bezier router instance.
+    /// </summary>
+    public IEdgeRouter SmartBezierRouter => _smartBezierRouter;
+
+    /// <summary>
     /// Gets the appropriate router for an edge type.
     /// </summary>
     public IEdgeRouter GetRouter(EdgeType edgeType)
@@ -39,6 +54,22 @@ public class EdgeRoutingService
             EdgeType.Step or EdgeType.SmoothStep => _orthogonalRouter,
             EdgeType.Bezier => _smartBezierRouter,
             _ => _directRouter
+        };
+    }
+
+    /// <summary>
+    /// Gets a router by algorithm name.
+    /// </summary>
+    /// <param name="algorithm">The algorithm to use (Direct, Orthogonal, SmartBezier).</param>
+    /// <param name="fallbackEdgeType">Edge type to use for Auto selection.</param>
+    public IEdgeRouter GetRouterByAlgorithm(string algorithm, EdgeType fallbackEdgeType = EdgeType.Bezier)
+    {
+        return algorithm.ToLowerInvariant() switch
+        {
+            "direct" => _directRouter,
+            "orthogonal" => _orthogonalRouter,
+            "smartbezier" or "bezier" => _smartBezierRouter,
+            "auto" or _ => GetRouter(fallbackEdgeType)
         };
     }
 
@@ -55,6 +86,18 @@ public class EdgeRoutingService
 
         var context = CreateContext(graph);
         var router = GetRouter(edge.Type);
+        return router.Route(context, edge);
+    }
+
+    /// <summary>
+    /// Routes an edge using a specific router.
+    /// </summary>
+    /// <param name="graph">The graph containing the edge.</param>
+    /// <param name="edge">The edge to route.</param>
+    /// <param name="router">The router to use.</param>
+    public IReadOnlyList<Point> RouteEdgeWithRouter(Graph graph, Edge edge, IEdgeRouter router)
+    {
+        var context = CreateContext(graph);
         return router.Route(context, edge);
     }
 

@@ -13,6 +13,7 @@ public class DraggingState : InputStateBase
     private readonly AvaloniaPoint _dragStartCanvas;
     private readonly Dictionary<string, Core.Point> _startPositions;
     private readonly FlowCanvasSettings _settings;
+    private readonly List<string> _draggedNodeIds;
 
     public override string Name => "Dragging";
 
@@ -21,16 +22,18 @@ public class DraggingState : InputStateBase
         _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
         _startPositions = new Dictionary<string, Core.Point>();
         _settings = settings;
+        _draggedNodeIds = new List<string>();
 
-        // Collect all nodes to drag: selected nodes + children of selected groups
+        // Collect all nodes to drag: selected AND draggable nodes + children of selected groups
         var nodesToDrag = new HashSet<string>();
         
-        foreach (var node in graph.Nodes.Where(n => n.IsSelected))
+        foreach (var node in graph.Nodes.Where(n => n.IsSelected && n.IsDraggable))
         {
             nodesToDrag.Add(node.Id);
             
             if (node.IsGroup)
             {
+                // Include all children of dragged groups (even if not individually draggable)
                 foreach (var child in graph.GetGroupChildrenRecursive(node.Id))
                 {
                     nodesToDrag.Add(child.Id);
@@ -45,6 +48,7 @@ public class DraggingState : InputStateBase
             {
                 node.IsDragging = true;
                 _startPositions[node.Id] = node.Position;
+                _draggedNodeIds.Add(node.Id);
             }
         }
     }
@@ -76,6 +80,9 @@ public class DraggingState : InputStateBase
                 node.Position = new Core.Point(newX, newY);
             }
         }
+
+        // Raise dragging event for edge routing and other subscribers
+        context.RaiseNodesDragging(_draggedNodeIds);
 
         e.Handled = true;
         return StateTransitionResult.Stay();

@@ -88,7 +88,8 @@ public class ConnectingState : InputStateBase
             targetPortVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
         {
             // Can only connect output to input (or input to output)
-            if (_fromOutput != isOutput)
+            // Also check that target node allows connections
+            if (_fromOutput != isOutput && targetNode.IsConnectable)
             {
                 var sourceNode = _fromOutput ? _sourceNode : targetNode;
                 var sourcePort = _fromOutput ? _sourcePort : targetPort;

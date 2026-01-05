@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using FlowGraph.Avalonia;
 using FlowGraph.Avalonia.Animation;
+using FlowGraph.Avalonia.Controls;
 using FlowGraph.Core;
 using FlowGraph.Demo.Helpers;
 using System.Text;
@@ -23,6 +24,13 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         
+        // Disable built-in grid and background since we're using FlowBackground
+        FlowCanvas.Settings.ShowGrid = false;
+        FlowCanvas.Settings.ShowBackground = false;
+        
+        // Set the target canvas for FlowBackground (must be done after InitializeComponent)
+        FlowBackground.TargetCanvas = FlowCanvas;
+        
         // Initialize the animation debugger after the window is loaded
         this.Loaded += (_, _) =>
         {
@@ -35,6 +43,33 @@ public partial class MainWindow : Window
     {
         StatusText.Text = message;
     }
+
+    #region Background Variants
+
+    private void OnBackgroundDotsClick(object? sender, RoutedEventArgs e)
+    {
+        FlowBackground.Variant = BackgroundVariant.Dots;
+        FlowBackground.Size = 2;
+        FlowBackground.LineWidth = 1;
+        SetStatus("Background: Dots");
+    }
+
+    private void OnBackgroundLinesClick(object? sender, RoutedEventArgs e)
+    {
+        FlowBackground.Variant = BackgroundVariant.Lines;
+        FlowBackground.LineWidth = 0.5;
+        SetStatus("Background: Lines");
+    }
+
+    private void OnBackgroundCrossClick(object? sender, RoutedEventArgs e)
+    {
+        FlowBackground.Variant = BackgroundVariant.Cross;
+        FlowBackground.Size = 4;
+        FlowBackground.LineWidth = 1;
+        SetStatus("Background: Cross");
+    }
+
+    #endregion
 
     #region Viewport Animations
 

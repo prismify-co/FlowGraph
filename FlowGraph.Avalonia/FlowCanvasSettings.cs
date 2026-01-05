@@ -1,3 +1,5 @@
+using FlowGraph.Core;
+
 namespace FlowGraph.Avalonia;
 
 /// <summary>
@@ -19,6 +21,18 @@ public class FlowCanvasSettings
     /// Size of connection ports in pixels.
     /// </summary>
     public double PortSize { get; set; } = 12;
+
+    /// <summary>
+    /// Whether to show the built-in grid background.
+    /// Set to false when using a custom FlowBackground control.
+    /// </summary>
+    public bool ShowGrid { get; set; } = true;
+
+    /// <summary>
+    /// Whether to show the built-in canvas background color.
+    /// Set to false when using a custom FlowBackground control so it can show through.
+    /// </summary>
+    public bool ShowBackground { get; set; } = true;
 
     /// <summary>
     /// Spacing between grid dots in pixels.
@@ -114,6 +128,52 @@ public class FlowCanvasSettings
 
     #endregion
 
+    #region Edge Routing Settings
+
+    /// <summary>
+    /// Whether automatic edge routing is enabled.
+    /// When enabled, edges will be routed around obstacles automatically.
+    /// </summary>
+    public bool AutoRouteEdges { get; set; } = false;
+
+    /// <summary>
+    /// Whether to re-route edges while dragging nodes.
+    /// Only applies when AutoRouteEdges is enabled.
+    /// Set to false for better performance with many edges.
+    /// </summary>
+    public bool RouteEdgesOnDrag { get; set; } = true;
+
+    /// <summary>
+    /// Padding around nodes for edge routing calculations.
+    /// Higher values create more space between edges and nodes.
+    /// </summary>
+    public double RoutingNodePadding { get; set; } = 10;
+
+    /// <summary>
+    /// Whether to route only edges connected to dragged nodes during drag.
+    /// When true, only affected edges are re-routed (better performance).
+    /// When false, all edges are re-routed (more consistent but slower).
+    /// </summary>
+    public bool RouteOnlyAffectedEdges { get; set; } = true;
+
+    /// <summary>
+    /// Whether to automatically route newly created edges.
+    /// When true, edges created by connecting ports will be routed immediately.
+    /// </summary>
+    public bool RouteNewEdges { get; set; } = true;
+
+    /// <summary>
+    /// The default edge type to use for newly created edges.
+    /// </summary>
+    public EdgeType DefaultEdgeType { get; set; } = EdgeType.Bezier;
+
+    /// <summary>
+    /// The default router algorithm to use for routing.
+    /// </summary>
+    public RouterAlgorithm DefaultRouterAlgorithm { get; set; } = RouterAlgorithm.Auto;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>
@@ -134,4 +194,30 @@ public enum SelectionMode
     /// Node is selected only if fully contained in the selection box.
     /// </summary>
     Full
+}
+
+/// <summary>
+/// Available edge routing algorithms.
+/// </summary>
+public enum RouterAlgorithm
+{
+    /// <summary>
+    /// Automatically select the best router based on edge type.
+    /// </summary>
+    Auto,
+
+    /// <summary>
+    /// Direct straight-line routing (no obstacle avoidance).
+    /// </summary>
+    Direct,
+
+    /// <summary>
+    /// Orthogonal routing with right-angle paths using A* pathfinding.
+    /// </summary>
+    Orthogonal,
+
+    /// <summary>
+    /// Smart Bezier curves that avoid obstacles.
+    /// </summary>
+    SmartBezier
 }

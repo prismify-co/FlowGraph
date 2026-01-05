@@ -107,6 +107,12 @@ public class BoxSelectingState : InputStateBase
 
         foreach (var node in graph.Nodes)
         {
+            // Skip non-selectable nodes
+            if (!node.IsSelectable)
+            {
+                continue;
+            }
+
             var nodeWidth = node.Width ?? _settings.NodeWidth;
             var nodeHeight = node.Height ?? _settings.NodeHeight;
             var nodeRect = new Rect(

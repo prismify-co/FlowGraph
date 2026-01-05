@@ -78,6 +78,22 @@ public class BoxSelectionEventArgs : EventArgs
 }
 
 /// <summary>
+/// Event args for nodes being dragged (in progress).
+/// </summary>
+public class NodesDraggingEventArgs : EventArgs
+{
+    /// <summary>
+    /// IDs of nodes currently being dragged.
+    /// </summary>
+    public IReadOnlyList<string> NodeIds { get; }
+
+    public NodesDraggingEventArgs(IReadOnlyList<string> nodeIds)
+    {
+        NodeIds = nodeIds;
+    }
+}
+
+/// <summary>
 /// Event args for node drag completion.
 /// </summary>
 public class NodesDraggedEventArgs : EventArgs

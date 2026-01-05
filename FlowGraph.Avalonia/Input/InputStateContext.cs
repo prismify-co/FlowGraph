@@ -60,6 +60,7 @@ public class InputStateContext
     public event EventHandler<GroupToggleCollapseEventArgs>? GroupCollapseToggleRequested;
     public event EventHandler? GridRenderRequested;
     public event EventHandler<BoxSelectionEventArgs>? BoxSelectionChanged;
+    public event EventHandler<NodesDraggingEventArgs>? NodesDragging;
     public event EventHandler<NodesDraggedEventArgs>? NodesDragged;
     public event EventHandler<NodeResizedEventArgs>? NodeResized;
     public event EventHandler<NodeResizingEventArgs>? NodeResizing;
@@ -91,6 +92,8 @@ public class InputStateContext
     public void RaiseGridRender() => GridRenderRequested?.Invoke(this, EventArgs.Empty);
     public void RaiseBoxSelectionChanged(AvaloniaRect bounds)
         => BoxSelectionChanged?.Invoke(this, new BoxSelectionEventArgs(bounds));
+    public void RaiseNodesDragging(IReadOnlyList<string> nodeIds)
+        => NodesDragging?.Invoke(this, new NodesDraggingEventArgs(nodeIds));
     public void RaiseNodesDragged(Dictionary<string, Core.Point> oldPositions, Dictionary<string, Core.Point> newPositions)
         => NodesDragged?.Invoke(this, new NodesDraggedEventArgs(oldPositions, newPositions));
     public void RaiseNodeResized(Node node, double oldWidth, double oldHeight, double newWidth, double newHeight, Core.Point oldPos, Core.Point newPos)

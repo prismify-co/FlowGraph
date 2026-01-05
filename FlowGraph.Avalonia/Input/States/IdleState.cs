@@ -92,7 +92,7 @@ public class IdleState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        // Check for group collapse button click
+        // Check for group collapse button click (always allowed)
         if (node.IsGroup)
         {
             var clickPos = e.GetPosition(control);
@@ -118,23 +118,32 @@ public class IdleState : InputStateBase
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
-        // Handle selection
-        if (!ctrlHeld && !node.IsSelected)
+        // Handle selection only if node is selectable
+        if (node.IsSelectable)
         {
-            foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
-                n.IsSelected = false;
-            node.IsSelected = true;
-        }
-        else if (ctrlHeld)
-        {
-            node.IsSelected = !node.IsSelected;
+            if (!ctrlHeld && !node.IsSelected)
+            {
+                foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
+                    n.IsSelected = false;
+                node.IsSelected = true;
+            }
+            else if (ctrlHeld)
+            {
+                node.IsSelected = !node.IsSelected;
+            }
         }
 
-        // Start dragging
-        var dragState = new DraggingState(graph, position, context.Viewport, context.Settings);
-        CapturePointer(e, control);
+        // Start dragging only if node is draggable and selected
+        if (node.IsDraggable && node.IsSelected)
+        {
+            var dragState = new DraggingState(graph, position, context.Viewport, context.Settings);
+            CapturePointer(e, control);
+            e.Handled = true;
+            return StateTransitionResult.TransitionTo(dragState);
+        }
+
         e.Handled = true;
-        return StateTransitionResult.TransitionTo(dragState);
+        return StateTransitionResult.Stay();
     }
 
     private StateTransitionResult HandleEdgeClick(InputStateContext context, PointerPressedEventArgs e, Edge edge)
@@ -168,6 +177,13 @@ public class IdleState : InputStateBase
     {
         if (portVisual == null || context.MainCanvas == null || context.Theme == null)
             return StateTransitionResult.Unhandled();
+
+        // Check if node allows connections
+        if (!node.IsConnectable)
+        {
+            e.Handled = true;
+            return StateTransitionResult.Stay();
+        }
 
         var position = GetPosition(context, e);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);

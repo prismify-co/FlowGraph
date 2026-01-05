@@ -27,6 +27,38 @@ public partial class Node : ObservableObject
     [ObservableProperty]
     private bool _isResizable = true;
 
+    #region Capability Flags
+
+    /// <summary>
+    /// Whether this node can be selected. Default is true.
+    /// When false, clicking on the node will not select it.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isSelectable = true;
+
+    /// <summary>
+    /// Whether this node can be dragged. Default is true.
+    /// When false, the node cannot be moved by dragging.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isDraggable = true;
+
+    /// <summary>
+    /// Whether this node can be deleted. Default is true.
+    /// When false, the node cannot be deleted via keyboard or context menu.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isDeletable = true;
+
+    /// <summary>
+    /// Whether this node can have new connections. Default is true.
+    /// When false, new edges cannot be created from/to this node's ports.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isConnectable = true;
+
+    #endregion
+
     /// <summary>
     /// The ID of the parent group node, if this node is part of a group.
     /// </summary>

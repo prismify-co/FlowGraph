@@ -8,6 +8,7 @@ using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Input;
 using FlowGraph.Avalonia.Input.States;
 using FlowGraph.Avalonia.Rendering;
+using FlowGraph.Avalonia.Routing;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
@@ -83,14 +84,19 @@ public partial class FlowCanvas : UserControl
     public GroupManager Groups => _groupManager;
 
     /// <summary>
+    /// Gets the edge routing manager for controlling edge routing.
+    /// </summary>
+    public EdgeRoutingManager Routing => _edgeRoutingManager;
+
+    /// <summary>
     /// Gets the current input state name (for debugging).
     /// </summary>
     public string CurrentInputState => _inputStateMachine.CurrentStateName;
 
     /// <summary>
-    /// Gets the layout transition service for animating layout/arrange operations.
+    /// Gets the layout transition manager for animating layout/arrange operations.
     /// </summary>
-    public LayoutNs.LayoutTransitionService LayoutTransitions { get; private set; } = null!;
+    public LayoutNs.LayoutTransitionManager LayoutTransitions { get; private set; } = null!;
 
     /// <summary>
     /// Gets or sets the connection validator for validating new connections.
@@ -164,6 +170,7 @@ public partial class FlowCanvas : UserControl
     private FlowCanvasContextMenu _contextMenu = null!;
     private ThemeResources _theme = null!;
     private AnimationManager _animationManager = null!;
+    private EdgeRoutingManager _edgeRoutingManager = null!;
 
     // Tracks per-edge opacity overrides (used by group collapse/expand animations)
     private readonly Dictionary<string, double> _edgeOpacityOverrides = new();
@@ -210,35 +217,121 @@ public partial class FlowCanvas : UserControl
             Settings);
         _contextMenu = new FlowCanvasContextMenu(this);
 
+        // Initialize edge routing manager
+        _edgeRoutingManager = new EdgeRoutingManager(
+            () => Graph,
+            () => Settings,
+            RefreshEdges);
+
         SubscribeToInputContextEvents();
         SubscribeToSelectionManagerEvents();
         SubscribeToGroupManagerEvents();
 
         _viewport.ViewportChanged += OnViewportStateChanged;
 
-        // Keep input state machine in sync with animations
-        _animationManager.FrameUpdated += (_, _) =>
-        {
-            if (_animationManager.HasAnimations)
-            {
-                if (_inputStateMachine.CurrentStateName != AnimatingState.Instance.Name)
-                {
-                    _inputStateMachine.TransitionTo(AnimatingState.Instance);
-                }
-            }
-            else
-            {
-                if (_inputStateMachine.CurrentStateName == AnimatingState.Instance.Name)
-                {
-                    _inputStateMachine.Reset();
-                }
-            }
-        };
+        // Use refined animation states based on what's animating
+        _animationManager.CategoriesChanged += OnAnimationCategoriesChanged;
+        _animationManager.FrameUpdated += OnAnimationFrameUpdated;
 
-        LayoutTransitions = new LayoutNs.LayoutTransitionService(
+        LayoutTransitions = new LayoutNs.LayoutTransitionManager(
             getGraph: () => Graph,
             refreshEdges: RefreshEdges,
             animations: _animationManager);
+    }
+
+    /// <summary>
+    /// Handles animation category changes to update input state.
+    /// </summary>
+    private void OnAnimationCategoriesChanged(object? sender, AnimationCategoriesChangedEventArgs e)
+    {
+        UpdateAnimationInputState();
+    }
+
+    /// <summary>
+    /// Handles animation frame updates to ensure state is current.
+    /// </summary>
+    private void OnAnimationFrameUpdated(object? sender, EventArgs e)
+    {
+        // Ensure we transition out of animation states when animations complete
+        if (!_animationManager.HasAnimations)
+        {
+            if (IsInAnimationState())
+            {
+                _inputStateMachine.Reset();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates the input state based on currently running animations.
+    /// </summary>
+    private void UpdateAnimationInputState()
+    {
+        if (!_animationManager.HasAnimations)
+        {
+            // No animations - ensure we're in idle state
+            if (IsInAnimationState())
+            {
+                _inputStateMachine.Reset();
+            }
+            return;
+        }
+
+        var categories = _animationManager.ActiveCategories;
+
+        // Determine the appropriate animation state
+        if (categories.Contains(AnimationCategory.Group))
+        {
+            // Group animations are modal - block all input
+            if (_inputStateMachine.CurrentStateName != AnimatingState.Instance.Name)
+            {
+                _inputStateMachine.TransitionTo(AnimatingState.Instance);
+            }
+        }
+        else if (categories.Contains(AnimationCategory.Viewport))
+        {
+            // Viewport animations allow cancellation and zoom wheel
+            if (_inputStateMachine.CurrentStateName != "AnimatingViewport")
+            {
+                var viewportState = new AnimatingViewportState(
+                    cancelAnimation: () => _animationManager.StopViewportAnimations());
+                _inputStateMachine.TransitionTo(viewportState);
+            }
+        }
+        else if (categories.Contains(AnimationCategory.NodePosition) || 
+                 categories.Contains(AnimationCategory.NodeAppearance) ||
+                 categories.Contains(AnimationCategory.Layout))
+        {
+            // Node animations allow viewport interactions
+            if (_inputStateMachine.CurrentStateName != "AnimatingNodes")
+            {
+                var animatingNodeIds = _animationManager.AnimatingNodeIds;
+                var nodesState = new AnimatingNodesState(
+                    animatingNodeIds,
+                    cancelAnimation: () => _animationManager.StopNodeAnimations());
+                _inputStateMachine.TransitionTo(nodesState);
+            }
+        }
+        else
+        {
+            // Other animations (edge, etc.) - allow most interactions
+            // For now, treat as non-blocking
+            if (IsInAnimationState())
+            {
+                _inputStateMachine.Reset();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Checks if the current input state is an animation state.
+    /// </summary>
+    private bool IsInAnimationState()
+    {
+        var stateName = _inputStateMachine.CurrentStateName;
+        return stateName == AnimatingState.Instance.Name ||
+               stateName == "AnimatingViewport" ||
+               stateName == "AnimatingNodes";
     }
 
     private void OnViewportStateChanged(object? sender, EventArgs e)
@@ -273,6 +366,7 @@ public partial class FlowCanvas : UserControl
         _inputContext.UngroupRequested += (_, _) => UngroupSelected();
         _inputContext.GroupCollapseToggleRequested += (_, e) => ToggleGroupCollapse(e.GroupId);
         _inputContext.NodesDragged += OnNodesDragged;
+        _inputContext.NodesDragging += OnNodesDragging;
         _inputContext.NodeResizing += OnNodeResizing;
         _inputContext.NodeResized += OnNodeResized;
         _inputContext.GridRenderRequested += (_, _) => RenderGrid();
@@ -304,6 +398,14 @@ public partial class FlowCanvas : UserControl
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
         _theme = new ThemeResources(this);
+
+        // Apply background setting - make transparent if ShowBackground is false
+        // This allows FlowBackground control to show through
+        if (!Settings.ShowBackground && _rootPanel != null)
+        {
+            _rootPanel.Background = Brushes.Transparent;
+            Background = Brushes.Transparent;
+        }
 
         // Update input context with UI elements
         _inputContext.RootPanel = _rootPanel;
@@ -602,10 +704,15 @@ public partial class FlowCanvas : UserControl
                 Source = e.SourceNode.Id,
                 Target = e.TargetNode.Id,
                 SourcePort = e.SourcePort.Id,
-                TargetPort = e.TargetPort.Id
+                TargetPort = e.TargetPort.Id,
+                Type = Settings.DefaultEdgeType
             };
 
+            // Add the edge first
             CommandHistory.Execute(new AddEdgeCommand(Graph, newEdge));
+
+            // Route the new edge if enabled
+            _edgeRoutingManager.RouteNewEdge(newEdge);
         }
     }
 
@@ -614,9 +721,19 @@ public partial class FlowCanvas : UserControl
         _selectionManager.HandleEdgeClicked(e.Edge, e.WasCtrlHeld);
     }
 
+    private void OnNodesDragging(object? sender, NodesDraggingEventArgs e)
+    {
+        // Trigger edge re-routing during drag if enabled
+        _edgeRoutingManager.OnNodesDragging(e.NodeIds);
+    }
+
     private void OnNodesDragged(object? sender, NodesDraggedEventArgs e)
     {
         if (Graph == null) return;
+        
+        // Trigger final edge re-routing after drag completes
+        _edgeRoutingManager.OnNodesDragCompleted(e.OldPositions.Keys);
+        
         var command = new MoveNodesCommand(Graph, e.OldPositions, e.NewPositions);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
     }
@@ -1115,6 +1232,14 @@ public partial class FlowCanvas : UserControl
     private void RenderGrid()
     {
         if (_gridCanvas == null || _theme == null) return;
+        
+        // Skip grid rendering if ShowGrid is disabled (e.g., when using FlowBackground)
+        if (!Settings.ShowGrid)
+        {
+            _gridCanvas.Children.Clear();
+            return;
+        }
+        
         _gridRenderer.Render(_gridCanvas, Bounds.Size, _viewport, _theme.GridColor);
     }
 
