@@ -80,6 +80,14 @@ public class ReconnectingState : InputStateBase
         canvas.Children.Add(_tempLine);
     }
 
+    public override void Enter(InputStateContext context)
+    {
+        base.Enter(context);
+        
+        // Hide the original edge while reconnecting
+        HideOriginalEdge(context);
+    }
+
     public override void Exit(InputStateContext context)
     {
         // Restore hovered port color
@@ -91,6 +99,9 @@ public class ReconnectingState : InputStateBase
             context.MainCanvas.Children.Remove(_tempLine);
             _tempLine = null;
         }
+        
+        // Show the original edge again (it will be re-rendered if reconnection happened)
+        ShowOriginalEdge(context);
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
@@ -400,5 +411,79 @@ public class ReconnectingState : InputStateBase
         if (graph == null) return;
 
         context.RaiseEdgeDisconnected(_edge);
+    }
+
+    /// <summary>
+    /// Hides the original edge visuals while reconnecting.
+    /// </summary>
+    private void HideOriginalEdge(InputStateContext context)
+    {
+        // Hide the visible path
+        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
+        if (visiblePath != null)
+        {
+            visiblePath.IsVisible = false;
+        }
+
+        // Hide the hit area path
+        var hitArea = context.GraphRenderer.GetEdgeVisual(_edge.Id);
+        if (hitArea != null)
+        {
+            hitArea.IsVisible = false;
+        }
+
+        // Hide markers
+        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
+        if (markers != null)
+        {
+            foreach (var marker in markers)
+            {
+                marker.IsVisible = false;
+            }
+        }
+
+        // Hide label
+        var label = context.GraphRenderer.GetEdgeLabel(_edge.Id);
+        if (label != null)
+        {
+            label.IsVisible = false;
+        }
+    }
+
+    /// <summary>
+    /// Shows the original edge visuals (called on cancel or after state exits).
+    /// </summary>
+    private void ShowOriginalEdge(InputStateContext context)
+    {
+        // Show the visible path
+        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
+        if (visiblePath != null)
+        {
+            visiblePath.IsVisible = true;
+        }
+
+        // Show the hit area path
+        var hitArea = context.GraphRenderer.GetEdgeVisual(_edge.Id);
+        if (hitArea != null)
+        {
+            hitArea.IsVisible = true;
+        }
+
+        // Show markers
+        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
+        if (markers != null)
+        {
+            foreach (var marker in markers)
+            {
+                marker.IsVisible = true;
+            }
+        }
+
+        // Show label
+        var label = context.GraphRenderer.GetEdgeLabel(_edge.Id);
+        if (label != null)
+        {
+            label.IsVisible = true;
+        }
     }
 }
