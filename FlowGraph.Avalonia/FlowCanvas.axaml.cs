@@ -13,6 +13,7 @@ using FlowGraph.Core;
 using FlowGraph.Core.Commands;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using LayoutNs = FlowGraph.Avalonia.Layout;
 
 namespace FlowGraph.Avalonia;
 
@@ -85,6 +86,11 @@ public partial class FlowCanvas : UserControl
     /// Gets the current input state name (for debugging).
     /// </summary>
     public string CurrentInputState => _inputStateMachine.CurrentStateName;
+
+    /// <summary>
+    /// Gets the layout transition service for animating layout/arrange operations.
+    /// </summary>
+    public LayoutNs.LayoutTransitionService LayoutTransitions { get; private set; } = null!;
 
     /// <summary>
     /// Gets or sets the connection validator for validating new connections.
@@ -228,6 +234,11 @@ public partial class FlowCanvas : UserControl
                 }
             }
         };
+
+        LayoutTransitions = new LayoutNs.LayoutTransitionService(
+            getGraph: () => Graph,
+            refreshEdges: RefreshEdges,
+            animations: _animationManager);
     }
 
     private void OnViewportStateChanged(object? sender, EventArgs e)
