@@ -78,17 +78,23 @@ public class InputNodeRenderer : DefaultNodeRenderer
 
     protected override string GetDisplayText(Node node)
     {
+        var truncatedId = node.Id[..Math.Min(8, node.Id.Length)];
+        
         // Use Label if available, then Data, then default
+        string name;
         if (!string.IsNullOrEmpty(node.Label))
-            return node.Label;
-        if (node.Data is string label && !string.IsNullOrEmpty(label))
-            return label;
-        return "Input";
+            name = node.Label;
+        else if (node.Data is string data && !string.IsNullOrEmpty(data))
+            name = data;
+        else
+            name = "Input";
+        
+        return $"{name}\n({truncatedId})";
     }
 
     protected override string GetEditableText(Node node)
     {
-        // For input nodes, edit the Label or Data
+        // For editing, show just the label or data (without the ID)
         if (!string.IsNullOrEmpty(node.Label))
             return node.Label;
         if (node.Data is string data && !string.IsNullOrEmpty(data))

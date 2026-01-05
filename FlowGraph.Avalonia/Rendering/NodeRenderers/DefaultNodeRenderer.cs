@@ -92,13 +92,14 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     /// </summary>
     protected virtual string GetDisplayText(Node node)
     {
-        // Use Label if available, otherwise fall back to Type + truncated Id
-        if (!string.IsNullOrEmpty(node.Label))
-        {
-            return node.Label;
-        }
+        var truncatedId = node.Id[..Math.Min(8, node.Id.Length)];
         
-        return $"{node.Type}\n{node.Id[..Math.Min(8, node.Id.Length)]}";
+        // Use Label if available, otherwise use Type
+        var name = !string.IsNullOrEmpty(node.Label) 
+            ? node.Label 
+            : node.Type ?? "Node";
+        
+        return $"{name}\n({truncatedId})";
     }
 
     public virtual void UpdateSelection(Control visual, Node node, NodeRenderContext context)
@@ -263,13 +264,11 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     /// </summary>
     protected virtual string GetEditableText(Node node)
     {
-        // Show the same text that GetDisplayText shows, but for editing
-        // If there's a label, edit that. Otherwise show Type (without Id) as starting point.
+        // For editing, show just the label or type (without the ID)
         if (!string.IsNullOrEmpty(node.Label))
         {
             return node.Label;
         }
-        // For nodes without labels, start with the Type as default editable text
         return node.Type ?? "";
     }
 
