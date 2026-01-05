@@ -238,6 +238,23 @@ public class FlowCanvasSettings
 
     #endregion
 
+    #region Editing Settings
+
+    /// <summary>
+    /// Whether double-clicking a node triggers a label edit request.
+    /// When enabled, double-clicking raises the NodeLabelEditRequested event.
+    /// </summary>
+    public bool EnableNodeLabelEditing { get; set; } = true;
+
+    /// <summary>
+    /// Whether double-clicking a group triggers a label edit request.
+    /// When false, double-click toggles collapse (default behavior).
+    /// When true, double-click raises NodeLabelEditRequested for the group.
+    /// </summary>
+    public bool EnableGroupLabelEditing { get; set; } = false;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>

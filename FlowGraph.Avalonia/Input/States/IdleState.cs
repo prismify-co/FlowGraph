@@ -122,10 +122,31 @@ public class IdleState : InputStateBase
                 return StateTransitionResult.Stay();
             }
 
-            // Double-click to toggle collapse
+            // Double-click handling for groups
             if (e.ClickCount == 2)
             {
-                context.RaiseGroupCollapseToggle(node.Id);
+                if (context.Settings.EnableGroupLabelEditing)
+                {
+                    // Raise label edit request for the group
+                    var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
+                    context.RaiseNodeLabelEditRequested(node, screenPos);
+                }
+                else
+                {
+                    // Default: toggle collapse
+                    context.RaiseGroupCollapseToggle(node.Id);
+                }
+                e.Handled = true;
+                return StateTransitionResult.Stay();
+            }
+        }
+        else
+        {
+            // Double-click handling for regular nodes
+            if (e.ClickCount == 2 && context.Settings.EnableNodeLabelEditing)
+            {
+                var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
+                context.RaiseNodeLabelEditRequested(node, screenPos);
                 e.Handled = true;
                 return StateTransitionResult.Stay();
             }
