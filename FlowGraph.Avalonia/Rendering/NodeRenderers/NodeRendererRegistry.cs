@@ -7,7 +7,7 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 public class NodeRendererRegistry
 {
     private readonly Dictionary<string, INodeRenderer> _renderers = new(StringComparer.OrdinalIgnoreCase);
-    private readonly INodeRenderer _defaultRenderer;
+    private INodeRenderer _defaultRenderer;
 
     /// <summary>
     /// Creates a new registry with built-in renderers registered.
@@ -51,6 +51,16 @@ public class NodeRendererRegistry
     }
 
     /// <summary>
+    /// Sets the default renderer used for unregistered node types.
+    /// </summary>
+    /// <param name="renderer">The renderer to use as default.</param>
+    public void SetDefaultRenderer(INodeRenderer renderer)
+    {
+        ArgumentNullException.ThrowIfNull(renderer);
+        _defaultRenderer = renderer;
+    }
+
+    /// <summary>
     /// Removes a registered renderer for a node type.
     /// </summary>
     /// <param name="nodeType">The node type name to unregister.</param>
@@ -66,7 +76,7 @@ public class NodeRendererRegistry
     /// </summary>
     /// <param name="nodeType">The node type name.</param>
     /// <returns>The appropriate renderer for the node type.</returns>
-    public INodeRenderer GetRenderer(string nodeType)
+    public INodeRenderer GetRenderer(string? nodeType)
     {
         if (string.IsNullOrEmpty(nodeType))
             return _defaultRenderer;
@@ -90,6 +100,16 @@ public class NodeRendererRegistry
     /// Checks if a renderer is registered for a specific node type.
     /// </summary>
     public bool IsRegistered(string nodeType) => _renderers.ContainsKey(nodeType);
+
+    /// <summary>
+    /// Clears all registered renderers except built-in ones and resets to default renderer.
+    /// </summary>
+    public void Reset()
+    {
+        _renderers.Clear();
+        _defaultRenderer = new DefaultNodeRenderer();
+        RegisterBuiltInRenderers();
+    }
 
     /// <summary>
     /// Clears all registered renderers except built-in ones.

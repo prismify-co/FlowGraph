@@ -605,12 +605,22 @@ public partial class MainWindow : Window
         SetStatus("Graph cleared");
     }
 
-    private void GenerateStressTestGraph(int nodeCount)
+    private async void GenerateStressTestGraph(int nodeCount)
     {
         var graph = FlowCanvas.Graph;
         if (graph == null) return;
 
         SetStatus($"Generating {nodeCount} nodes...");
+
+        // For large graphs, enable simplified rendering
+        if (nodeCount >= 500)
+        {
+            FlowCanvas.EnableSimplifiedRendering();
+        }
+        else
+        {
+            FlowCanvas.DisableSimplifiedRendering();
+        }
 
         // Clear existing
         graph.Edges.Clear();
@@ -621,13 +631,12 @@ public partial class MainWindow : Window
 
         // Calculate grid layout
         var cols = (int)Math.Ceiling(Math.Sqrt(nodeCount * 2)); // Wider than tall
-        var rows = (int)Math.Ceiling((double)nodeCount / cols);
         var spacingX = 200.0;
         var spacingY = 120.0;
 
         var nodeTypes = new[] { "input", "Process", "output", "default" };
 
-        // Generate nodes in a grid
+        // Generate nodes in a grid (data only - fast)
         for (int i = 0; i < nodeCount; i++)
         {
             var col = i % cols;
@@ -642,7 +651,7 @@ public partial class MainWindow : Window
             {
                 Id = $"node-{i}",
                 Type = nodeType,
-                Label = $"Node {i}",
+                Label = $"N{i}",  // Shorter labels for performance
                 Position = new CorePoint(col * spacingX + offsetX, row * spacingY + offsetY),
                 Inputs = nodeType != "input" ? [new Port { Id = "in", Type = "data" }] : [],
                 Outputs = nodeType != "output" ? [new Port { Id = "out", Type = "data" }] : []
@@ -651,18 +660,24 @@ public partial class MainWindow : Window
             graph.Nodes.Add(node);
         }
 
-        // Generate edges (connect each node to 1-3 nearby nodes)
+        var dataGenTime = sw.ElapsedMilliseconds;
+        sw.Restart();
+
+        // Generate edges (connect each node to 1-2 nearby nodes - fewer edges for perf)
         var edgeCount = 0;
-        foreach (var node in graph.Nodes.Where(n => n.Outputs.Count > 0))
+        var nodesWithOutputs = graph.Nodes.Where(n => n.Outputs.Count > 0).ToList();
+        
+        foreach (var node in nodesWithOutputs)
         {
-            // Find nearby nodes that have inputs
-            var targets = graph.Nodes
+            // Find nearby nodes that have inputs (limit search for performance)
+            var nearbyNodes = graph.Nodes
                 .Where(n => n.Id != node.Id && n.Inputs.Count > 0)
-                .OrderBy(n => Distance(node.Position, n.Position))
-                .Take(random.Next(1, 4))
+                .Where(n => Math.Abs(n.Position.X - node.Position.X) < spacingX * 3 &&
+                           Math.Abs(n.Position.Y - node.Position.Y) < spacingY * 3)
+                .Take(random.Next(1, 3))
                 .ToList();
 
-            foreach (var target in targets)
+            foreach (var target in nearbyNodes)
             {
                 graph.Edges.Add(new Edge
                 {
@@ -676,13 +691,23 @@ public partial class MainWindow : Window
             }
         }
 
+        var edgeGenTime = sw.ElapsedMilliseconds;
+        sw.Restart();
+
+        // Fit to view first (calculate bounds without rendering)
+        FlowCanvas.FitToView();
+        
+        // Now render - this is the slow part
+        SetStatus($"Rendering {nodeCount} nodes, {edgeCount} edges...");
+        await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
+        
+        FlowCanvas.Refresh();
+        
+        var renderTime = sw.ElapsedMilliseconds;
         sw.Stop();
 
-        // Refresh the canvas
-        FlowCanvas.Refresh();
-        FlowCanvas.FitToView();
-
-        SetStatus($"Generated {nodeCount} nodes, {edgeCount} edges in {sw.ElapsedMilliseconds}ms");
+        var simplified = nodeCount >= 500 ? " (simplified)" : "";
+        SetStatus($"{nodeCount}n/{edgeCount}e{simplified} - Data: {dataGenTime}ms, Edges: {edgeGenTime}ms, Render: {renderTime}ms");
     }
 
     private static double Distance(CorePoint a, CorePoint b)

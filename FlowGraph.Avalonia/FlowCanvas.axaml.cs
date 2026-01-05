@@ -107,6 +107,37 @@ public partial class FlowCanvas : UserControl
 
     #endregion
 
+    #region Public Methods - Performance
+
+    /// <summary>
+    /// Enables simplified node rendering for better performance with large graphs.
+    /// This replaces the default renderer with a minimal renderer that uses fewer visual elements.
+    /// Call before loading a large graph.
+    /// </summary>
+    public void EnableSimplifiedRendering()
+    {
+        Settings.UseSimplifiedNodeRendering = true;
+        var simplifiedRenderer = new Rendering.NodeRenderers.SimplifiedNodeRenderer();
+        
+        // Use simplified renderer for all types except groups
+        NodeRenderers.SetDefaultRenderer(simplifiedRenderer);
+        NodeRenderers.Register("input", simplifiedRenderer);
+        NodeRenderers.Register("output", simplifiedRenderer);
+        // Keep group renderer for proper group functionality
+        NodeRenderers.Register("group", new Rendering.NodeRenderers.GroupNodeRenderer());
+    }
+
+    /// <summary>
+    /// Disables simplified rendering and restores the default node renderers.
+    /// </summary>
+    public void DisableSimplifiedRendering()
+    {
+        Settings.UseSimplifiedNodeRendering = false;
+        NodeRenderers.Reset();
+    }
+
+    #endregion
+
     #region Events
 
     /// <summary>

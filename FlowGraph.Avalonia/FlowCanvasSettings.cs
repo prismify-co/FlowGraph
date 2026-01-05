@@ -278,6 +278,20 @@ public class FlowCanvasSettings
     /// </summary>
     public double VirtualizationBuffer { get; set; } = 200;
 
+    /// <summary>
+    /// Gets or sets the batch size for rendering nodes.
+    /// When rendering large graphs, nodes are rendered in batches to keep the UI responsive.
+    /// Set to 0 to disable batching (render all at once). Default is 50.
+    /// </summary>
+    public int RenderBatchSize { get; set; } = 50;
+
+    /// <summary>
+    /// Gets or sets whether to use simplified node rendering for better performance.
+    /// When enabled, nodes use a minimal visual tree (single Border + TextBlock).
+    /// Recommended for graphs with 500+ nodes. Default is false.
+    /// </summary>
+    public bool UseSimplifiedNodeRendering { get; set; } = false;
+
     #endregion
 
     /// <summary>
