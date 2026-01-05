@@ -42,10 +42,13 @@ public class InputNodeRenderer : DefaultNodeRenderer
             VerticalAlignment = VerticalAlignment.Center
         };
 
+        // Simple arrow icon using text
         panel.Children.Add(new TextBlock
         {
-            Text = "??",
-            FontSize = 20 * context.Scale,
+            Text = ">",
+            FontSize = 18 * context.Scale,
+            FontWeight = FontWeight.Bold,
+            Foreground = InputBorder,
             HorizontalAlignment = HorizontalAlignment.Center,
             IsHitTestVisible = false
         });
@@ -66,7 +69,9 @@ public class InputNodeRenderer : DefaultNodeRenderer
 
     protected override string GetDisplayText(Node node)
     {
-        // Show custom label if available in Data, otherwise show type
+        // Use Label if available, then Data, then default
+        if (!string.IsNullOrEmpty(node.Label))
+            return node.Label;
         if (node.Data is string label && !string.IsNullOrEmpty(label))
             return label;
         return "Input";

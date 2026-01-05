@@ -59,35 +59,39 @@ public partial class MainWindow : Window
         // Get current display text
         var currentLabel = !string.IsNullOrEmpty(node.Label) 
             ? node.Label 
-            : (node.IsGroup ? "Group" : node.Type ?? "Node");
+            : (node.IsGroup ? "Group" : (node.Data as string ?? node.Type ?? "Node"));
         
-        // Get the node visual to position the editor correctly
+        // Get the node visual bounds in screen coordinates
         var nodeVisual = GetNodeVisualBounds(node);
         if (nodeVisual == null) return;
         
-        // Create inline TextBox for editing - sized to fit inside the node
+        var bounds = nodeVisual.Value;
+        var textBoxWidth = Math.Max(bounds.Width * 0.8, 80);
+        
+        // Create inline TextBox for editing - styled to match node
         _activeRenameTextBox = new TextBox
         {
             Text = currentLabel,
-            Width = Math.Max(nodeVisual.Value.Width - 16, 60),
+            Width = textBoxWidth,
             FontSize = 12,
-            Padding = new Thickness(4, 2),
-            Background = Brushes.White,
-            Foreground = Brushes.Black,
+            Padding = new Thickness(6, 4),
+            Background = new SolidColorBrush(Colors.White),
+            Foreground = new SolidColorBrush(Colors.Black),
             BorderBrush = new SolidColorBrush(Color.FromRgb(0, 120, 212)),
             BorderThickness = new Thickness(2),
+            CornerRadius = new CornerRadius(4),
             TextAlignment = TextAlignment.Center,
             VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
             Tag = node
         };
         
         // Position the TextBox centered on the node
-        var centerX = nodeVisual.Value.X + nodeVisual.Value.Width / 2;
-        var centerY = nodeVisual.Value.Y + nodeVisual.Value.Height / 2;
-        Canvas.SetLeft(_activeRenameTextBox, centerX - _activeRenameTextBox.Width / 2);
-        Canvas.SetTop(_activeRenameTextBox, centerY - 12); // Approximate vertical center
+        var centerX = bounds.X + bounds.Width / 2 - textBoxWidth / 2;
+        var centerY = bounds.Y + bounds.Height / 2 - 14; // Approximate height of TextBox
+        Canvas.SetLeft(_activeRenameTextBox, centerX);
+        Canvas.SetTop(_activeRenameTextBox, centerY);
         _activeRenameTextBox.ZIndex = 1000;
-
+        
         // Handle Enter to save, Escape to cancel
         _activeRenameTextBox.KeyDown += OnRenameTextBoxKeyDown;
         _activeRenameTextBox.LostFocus += OnRenameTextBoxLostFocus;
@@ -106,7 +110,7 @@ public partial class MainWindow : Window
         }
         
         e.Handled = true;
-        SetStatus($"Renaming: {currentLabel}");
+        SetStatus("Press Enter to save, Escape to cancel");
     }
 
     /// <summary>
