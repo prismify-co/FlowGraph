@@ -14,6 +14,7 @@ namespace FlowGraph.Avalonia.Input.States;
 
 /// <summary>
 /// State for reconnecting an existing edge by dragging its endpoint.
+/// Similar to React Flow's reconnectable edges - the edge visual updates in real-time.
 /// </summary>
 public class ReconnectingState : InputStateBase
 {
@@ -23,8 +24,7 @@ public class ReconnectingState : InputStateBase
     private readonly Port _fixedPort;
     private readonly Node _originalMovingNode;
     private readonly Port _originalMovingPort;
-    private AvaloniaPoint _endPoint;
-    private AvaloniaPath? _tempLine;
+    private AvaloniaPoint _currentEndPoint;
     private readonly ThemeResources _theme;
 
     // Track hovered/snapped port for validation visual feedback
@@ -40,14 +40,6 @@ public class ReconnectingState : InputStateBase
     /// <summary>
     /// Creates a new reconnecting state.
     /// </summary>
-    /// <param name="edge">The edge being reconnected.</param>
-    /// <param name="draggingTarget">True if dragging the target (input) end, false for source (output) end.</param>
-    /// <param name="fixedNode">The node that stays connected.</param>
-    /// <param name="fixedPort">The port that stays connected.</param>
-    /// <param name="movingNode">The original node being disconnected.</param>
-    /// <param name="movingPort">The original port being disconnected.</param>
-    /// <param name="startPosition">Initial screen position.</param>
-    /// <param name="theme">Theme resources for styling.</param>
     public ReconnectingState(
         Edge edge,
         bool draggingTarget,
@@ -64,55 +56,42 @@ public class ReconnectingState : InputStateBase
         _fixedPort = fixedPort;
         _originalMovingNode = movingNode;
         _originalMovingPort = movingPort;
-        _endPoint = startPosition;
+        _currentEndPoint = startPosition;
         _theme = theme;
     }
 
     public void CreateTempLine(Canvas canvas)
     {
-        _tempLine = new AvaloniaPath
-        {
-            Stroke = _theme.EdgeStroke,
-            StrokeThickness = 2,
-            StrokeDashArray = [5, 3],
-            Opacity = 0.7
-        };
-        canvas.Children.Add(_tempLine);
+        // We no longer create a separate temp line - we update the existing edge visual
     }
 
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
         
-        // Hide the original edge while reconnecting
-        HideOriginalEdge(context);
+        // Make the edge appear "detached" by styling it as a connection-in-progress
+        UpdateEdgeVisualAsDetached(context);
     }
 
     public override void Exit(InputStateContext context)
     {
         // Restore hovered port color
         RestoreHoveredPortColor();
-
-        // Remove temp line
-        if (_tempLine != null && context.MainCanvas != null)
-        {
-            context.MainCanvas.Children.Remove(_tempLine);
-            _tempLine = null;
-        }
         
-        // Show the original edge again (it will be re-rendered if reconnection happened)
-        ShowOriginalEdge(context);
+        // Reset the edge visual styling (it will be re-rendered if reconnection happened)
+        ResetEdgeVisual(context);
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        _endPoint = GetPosition(context, e);
+        _currentEndPoint = GetPosition(context, e);
         
         // Try to find a snap target
-        _snappedTarget = FindSnapTarget(context, _endPoint);
+        _snappedTarget = FindSnapTarget(context, _currentEndPoint);
         
-        UpdateTempLine(context);
-        UpdatePortValidationVisual(context, _endPoint);
+        // Update the edge visual to follow the cursor (or snap to target)
+        UpdateEdgeVisual(context);
+        UpdatePortValidationVisual(context, _currentEndPoint);
         
         return StateTransitionResult.Stay();
     }
@@ -177,19 +156,38 @@ public class ReconnectingState : InputStateBase
     {
         if (e.Key == Key.Escape)
         {
-            // Cancel - do nothing, edge stays as is
+            // Cancel - edge stays as is, visual will be reset in Exit()
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
         return StateTransitionResult.Unhandled();
     }
 
-    private void UpdateTempLine(InputStateContext context)
+    /// <summary>
+    /// Updates the edge visual to show it as "detached" and following the cursor.
+    /// </summary>
+    private void UpdateEdgeVisualAsDetached(InputStateContext context)
     {
-        if (_tempLine == null) return;
+        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
+        if (visiblePath != null)
+        {
+            // Style as a connection in progress (dashed, slightly transparent)
+            visiblePath.StrokeDashArray = [5, 3];
+            visiblePath.Opacity = 0.8;
+        }
+    }
 
+    /// <summary>
+    /// Updates the edge visual to follow the cursor or snap to a target port.
+    /// </summary>
+    private void UpdateEdgeVisual(InputStateContext context)
+    {
+        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
+        if (visiblePath == null) return;
+
+        // Get the fixed endpoint
         var fixedPoint = context.GraphRenderer.GetPortPosition(_fixedNode, _fixedPort, !_draggingTarget);
         
-        // If we have a snapped target, draw to that port
+        // Determine the moving endpoint
         AvaloniaPoint movingPoint;
         if (_snappedTarget.HasValue)
         {
@@ -200,15 +198,64 @@ public class ReconnectingState : InputStateBase
         }
         else
         {
-            movingPoint = _endPoint;
+            movingPoint = _currentEndPoint;
         }
 
-        // Create bezier path - direction depends on which end we're dragging
-        var pathGeometry = _draggingTarget
-            ? BezierHelper.CreateBezierPath(fixedPoint, movingPoint, false)  // Source to target
-            : BezierHelper.CreateBezierPath(movingPoint, fixedPoint, true);  // Source to target (reversed)
+        // Create the path geometry
+        PathGeometry pathGeometry;
+        if (_draggingTarget)
+        {
+            // Fixed is source, moving is target
+            pathGeometry = BezierHelper.CreateBezierPath(fixedPoint, movingPoint, false);
+        }
+        else
+        {
+            // Moving is source, fixed is target
+            pathGeometry = BezierHelper.CreateBezierPath(movingPoint, fixedPoint, false);
+        }
         
-        _tempLine.Data = pathGeometry;
+        visiblePath.Data = pathGeometry;
+        
+        // Also update the hit area path
+        var hitAreaPath = context.GraphRenderer.GetEdgeVisual(_edge.Id);
+        if (hitAreaPath != null)
+        {
+            hitAreaPath.Data = pathGeometry;
+        }
+        
+        // Hide markers while dragging (they would be at wrong positions)
+        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
+        if (markers != null)
+        {
+            foreach (var marker in markers)
+            {
+                marker.IsVisible = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Resets the edge visual to its normal state.
+    /// </summary>
+    private void ResetEdgeVisual(InputStateContext context)
+    {
+        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
+        if (visiblePath != null)
+        {
+            // Reset styling
+            visiblePath.StrokeDashArray = null;
+            visiblePath.Opacity = 1.0;
+        }
+        
+        // Show markers again
+        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
+        if (markers != null)
+        {
+            foreach (var marker in markers)
+            {
+                marker.IsVisible = true;
+            }
+        }
     }
 
     private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint screenPoint)
@@ -361,9 +408,7 @@ public class ReconnectingState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return;
 
-        // Create a composite command: remove old edge, add new edge
-        var oldEdge = _edge;
-        
+        // Create the new edge
         Edge newEdge;
         if (_draggingTarget)
         {
@@ -373,10 +418,10 @@ public class ReconnectingState : InputStateBase
                 SourcePort = _fixedPort.Id,
                 Target = newNode.Id,
                 TargetPort = newPort.Id,
-                Type = oldEdge.Type,
-                Label = oldEdge.Label,
-                MarkerStart = oldEdge.MarkerStart,
-                MarkerEnd = oldEdge.MarkerEnd
+                Type = _edge.Type,
+                Label = _edge.Label,
+                MarkerStart = _edge.MarkerStart,
+                MarkerEnd = _edge.MarkerEnd
             };
         }
         else
@@ -387,22 +432,14 @@ public class ReconnectingState : InputStateBase
                 SourcePort = newPort.Id,
                 Target = _fixedNode.Id,
                 TargetPort = _fixedPort.Id,
-                Type = oldEdge.Type,
-                Label = oldEdge.Label,
-                MarkerStart = oldEdge.MarkerStart,
-                MarkerEnd = oldEdge.MarkerEnd
+                Type = _edge.Type,
+                Label = _edge.Label,
+                MarkerStart = _edge.MarkerStart,
+                MarkerEnd = _edge.MarkerEnd
             };
         }
 
-        // Execute as composite for undo support
-        var commands = new List<IGraphCommand>
-        {
-            new RemoveEdgeCommand(graph, oldEdge),
-            new AddEdgeCommand(graph, newEdge)
-        };
-        
-        // We need access to command history - raise an event instead
-        context.RaiseEdgeReconnected(oldEdge, newEdge);
+        context.RaiseEdgeReconnected(_edge, newEdge);
     }
 
     private void DeleteEdge(InputStateContext context)
@@ -411,79 +448,5 @@ public class ReconnectingState : InputStateBase
         if (graph == null) return;
 
         context.RaiseEdgeDisconnected(_edge);
-    }
-
-    /// <summary>
-    /// Hides the original edge visuals while reconnecting.
-    /// </summary>
-    private void HideOriginalEdge(InputStateContext context)
-    {
-        // Hide the visible path
-        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
-        if (visiblePath != null)
-        {
-            visiblePath.IsVisible = false;
-        }
-
-        // Hide the hit area path
-        var hitArea = context.GraphRenderer.GetEdgeVisual(_edge.Id);
-        if (hitArea != null)
-        {
-            hitArea.IsVisible = false;
-        }
-
-        // Hide markers
-        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
-        if (markers != null)
-        {
-            foreach (var marker in markers)
-            {
-                marker.IsVisible = false;
-            }
-        }
-
-        // Hide label
-        var label = context.GraphRenderer.GetEdgeLabel(_edge.Id);
-        if (label != null)
-        {
-            label.IsVisible = false;
-        }
-    }
-
-    /// <summary>
-    /// Shows the original edge visuals (called on cancel or after state exits).
-    /// </summary>
-    private void ShowOriginalEdge(InputStateContext context)
-    {
-        // Show the visible path
-        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
-        if (visiblePath != null)
-        {
-            visiblePath.IsVisible = true;
-        }
-
-        // Show the hit area path
-        var hitArea = context.GraphRenderer.GetEdgeVisual(_edge.Id);
-        if (hitArea != null)
-        {
-            hitArea.IsVisible = true;
-        }
-
-        // Show markers
-        var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
-        if (markers != null)
-        {
-            foreach (var marker in markers)
-            {
-                marker.IsVisible = true;
-            }
-        }
-
-        // Show label
-        var label = context.GraphRenderer.GetEdgeLabel(_edge.Id);
-        if (label != null)
-        {
-            label.IsVisible = true;
-        }
     }
 }
