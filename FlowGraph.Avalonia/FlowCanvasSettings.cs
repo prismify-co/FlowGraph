@@ -205,6 +205,22 @@ public class FlowCanvasSettings
 
     #endregion
 
+    #region Connection Settings
+
+    /// <summary>
+    /// Distance in screen pixels within which a connection will snap to the nearest compatible port.
+    /// Set to 0 to disable snap-to-port behavior.
+    /// </summary>
+    public double ConnectionSnapDistance { get; set; } = 30;
+
+    /// <summary>
+    /// Whether to snap connections to nodes when dragging near them.
+    /// When true, dragging near a node will find the nearest compatible port.
+    /// </summary>
+    public bool SnapConnectionToNode { get; set; } = true;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>

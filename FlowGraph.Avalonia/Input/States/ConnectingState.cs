@@ -25,9 +25,12 @@ public class ConnectingState : InputStateBase
     private readonly Cursor? _previousCursor;
     private readonly ThemeResources _theme;
 
-    // Track hovered port for validation visual feedback
+    // Track hovered/snapped port for validation visual feedback
     private Ellipse? _hoveredPortVisual;
     private IBrush? _hoveredPortOriginalFill;
+    
+    // Track the currently snapped target for the temp line
+    private (Node node, Port port, bool isOutput)? _snappedTarget;
     
     // Track whether connect start was raised
     private bool _connectStartRaised;
@@ -96,6 +99,10 @@ public class ConnectingState : InputStateBase
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         _endPoint = GetPosition(context, e);
+        
+        // Try to find a snap target
+        _snappedTarget = FindSnapTarget(context, _endPoint);
+        
         UpdateTempLine(context);
         
         // Update port validation visual
@@ -107,21 +114,42 @@ public class ConnectingState : InputStateBase
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
         var screenPoint = GetPosition(context, e);
-        var hitElement = HitTest(context, screenPoint);
         
         bool connectionCompleted = false;
         Node? targetNode = null;
         Port? targetPort = null;
 
+        // First try direct hit test on port
+        var hitElement = HitTest(context, screenPoint);
+        
         if (hitElement is Ellipse targetPortVisual && 
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
             targetNode = tn;
             targetPort = tp;
+        }
+        // If no direct hit, try snap target
+        else if (_snappedTarget.HasValue)
+        {
+            targetNode = _snappedTarget.Value.node;
+            targetPort = _snappedTarget.Value.port;
+            var snappedIsOutput = _snappedTarget.Value.isOutput;
+            
+            // Verify the snap is still valid
+            if (_fromOutput == snappedIsOutput || !targetNode.IsConnectable)
+            {
+                targetNode = null;
+                targetPort = null;
+            }
+        }
+
+        // Attempt connection if we have a target
+        if (targetNode != null && targetPort != null)
+        {
+            var targetIsOutput = targetNode.Outputs.Contains(targetPort);
             
             // Can only connect output to input (or input to output)
-            // Also check that target node allows connections
-            if (_fromOutput != isOutput && targetNode.IsConnectable)
+            if (_fromOutput != targetIsOutput && targetNode.IsConnectable)
             {
                 // Validate connection if validator exists
                 if (IsConnectionValid(context, targetNode, targetPort))
@@ -166,8 +194,75 @@ public class ConnectingState : InputStateBase
         if (_tempLine == null) return;
 
         var startPoint = context.GraphRenderer.GetPortPosition(_sourceNode, _sourcePort, _fromOutput);
-        var pathGeometry = BezierHelper.CreateBezierPath(startPoint, _endPoint, !_fromOutput);
+        
+        // If we have a snapped target, draw to that port instead of the cursor
+        AvaloniaPoint endPoint;
+        if (_snappedTarget.HasValue)
+        {
+            endPoint = context.GraphRenderer.GetPortPosition(
+                _snappedTarget.Value.node, 
+                _snappedTarget.Value.port, 
+                _snappedTarget.Value.isOutput);
+        }
+        else
+        {
+            endPoint = _endPoint;
+        }
+        
+        var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
         _tempLine.Data = pathGeometry;
+    }
+
+    /// <summary>
+    /// Finds the nearest compatible port within snap distance.
+    /// </summary>
+    private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint screenPoint)
+    {
+        var graph = context.Graph;
+        var settings = context.Settings;
+        
+        if (graph == null || !settings.SnapConnectionToNode || settings.ConnectionSnapDistance <= 0)
+            return null;
+
+        var snapDistance = settings.ConnectionSnapDistance;
+        var canvasPoint = context.ScreenToCanvas(screenPoint);
+        
+        (Node node, Port port, bool isOutput)? bestTarget = null;
+        double bestDistance = double.MaxValue;
+
+        foreach (var node in graph.Nodes)
+        {
+            // Skip the source node and non-connectable nodes
+            if (node.Id == _sourceNode.Id || !node.IsConnectable || node.IsGroup)
+                continue;
+
+            // Check ports on the opposite side (if from output, look at inputs)
+            var portsToCheck = _fromOutput ? node.Inputs : node.Outputs;
+            var isOutput = !_fromOutput;
+
+            foreach (var port in portsToCheck)
+            {
+                // Get the port's screen position
+                var portScreenPos = context.GraphRenderer.GetPortPosition(node, port, isOutput);
+                
+                // Calculate distance
+                var dx = portScreenPos.X - screenPoint.X;
+                var dy = portScreenPos.Y - screenPoint.Y;
+                var distance = Math.Sqrt(dx * dx + dy * dy);
+
+                if (distance < snapDistance && distance < bestDistance)
+                {
+                    // Check if this connection would be valid
+                    if (IsConnectionValid(context, node, port))
+                    {
+                        bestDistance = distance;
+                        bestTarget = (node, port, isOutput);
+                    }
+                }
+            }
+        }
+
+        return bestTarget;
     }
 
     /// <summary>
@@ -176,14 +271,36 @@ public class ConnectingState : InputStateBase
     /// </summary>
     private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint screenPoint)
     {
+        // First check direct hit test
         var hitElement = HitTest(context, screenPoint);
+        Ellipse? targetPortVisual = null;
+        Node? targetNode = null;
+        Port? targetPort = null;
+        bool isOutput = false;
 
-        // Check if we're hovering over a port
-        if (hitElement is Ellipse targetPortVisual && 
-            targetPortVisual.Tag is (Node targetNode, Port targetPort, bool isOutput) &&
-            targetPortVisual != _portVisual) // Don't highlight source port
+        if (hitElement is Ellipse portVisual && 
+            portVisual.Tag is (Node tn, Port tp, bool io) &&
+            portVisual != _portVisual)
         {
-            // New port being hovered
+            targetPortVisual = portVisual;
+            targetNode = tn;
+            targetPort = tp;
+            isOutput = io;
+        }
+        // If no direct hit, check snap target
+        else if (_snappedTarget.HasValue)
+        {
+            targetNode = _snappedTarget.Value.node;
+            targetPort = _snappedTarget.Value.port;
+            isOutput = _snappedTarget.Value.isOutput;
+            
+            // Get the visual for the snapped port
+            targetPortVisual = context.GraphRenderer.GetPortVisual(targetNode.Id, targetPort.Id);
+        }
+
+        if (targetPortVisual != null && targetNode != null && targetPort != null)
+        {
+            // New port being hovered/snapped
             if (_hoveredPortVisual != targetPortVisual)
             {
                 // Restore previous hovered port
@@ -200,7 +317,6 @@ public class ConnectingState : InputStateBase
                 // Apply validation color
                 if (!canConnect)
                 {
-                    // Can't connect (same direction or node not connectable)
                     targetPortVisual.Fill = _theme.PortInvalidConnection;
                 }
                 else if (isValid)
@@ -209,7 +325,6 @@ public class ConnectingState : InputStateBase
                 }
                 else
                 {
-                    // Connection rejected by validator
                     targetPortVisual.Fill = _theme.PortInvalidConnection;
                 }
             }
@@ -242,7 +357,6 @@ public class ConnectingState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return true;
 
-        // Get the validator from FlowCanvas (via a method we'll need to add to context)
         var validator = context.ConnectionValidator;
         if (validator == null) return true;
 
