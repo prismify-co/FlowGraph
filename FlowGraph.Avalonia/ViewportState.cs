@@ -88,6 +88,33 @@ public class ViewportState
     }
 
     /// <summary>
+    /// Sets the zoom level directly without triggering change events.
+    /// Used by animations to avoid recursive updates.
+    /// </summary>
+    internal void SetZoomDirect(double zoom)
+    {
+        Zoom = Math.Clamp(zoom, _settings.MinZoom, _settings.MaxZoom);
+    }
+
+    /// <summary>
+    /// Sets the offset directly without triggering change events.
+    /// Used by animations to avoid recursive updates.
+    /// </summary>
+    internal void SetOffsetDirect(double x, double y)
+    {
+        OffsetX = x;
+        OffsetY = y;
+    }
+
+    /// <summary>
+    /// Notifies that the viewport changed (used after animation updates).
+    /// </summary>
+    internal void NotifyViewportChanged()
+    {
+        OnViewportChanged();
+    }
+
+    /// <summary>
     /// Zooms in by one step, centered on the view.
     /// </summary>
     public void ZoomIn(Point? zoomCenter = null)

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
+using AvaloniaRect = Avalonia.Rect;
 using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Avalonia;
@@ -202,5 +203,194 @@ public class ContextMenuRequestedEventArgs : EventArgs
         CanvasPosition = canvasPosition;
         Node = node;
         Edge = edge;
+    }
+}
+
+/// <summary>
+/// Event args for selection changed event.
+/// </summary>
+public class SelectionChangedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The currently selected nodes.
+    /// </summary>
+    public IReadOnlyList<Node> SelectedNodes { get; }
+
+    /// <summary>
+    /// The currently selected edges.
+    /// </summary>
+    public IReadOnlyList<Edge> SelectedEdges { get; }
+
+    /// <summary>
+    /// Nodes that were added to the selection.
+    /// </summary>
+    public IReadOnlyList<Node> AddedNodes { get; }
+
+    /// <summary>
+    /// Nodes that were removed from the selection.
+    /// </summary>
+    public IReadOnlyList<Node> RemovedNodes { get; }
+
+    /// <summary>
+    /// Edges that were added to the selection.
+    /// </summary>
+    public IReadOnlyList<Edge> AddedEdges { get; }
+
+    /// <summary>
+    /// Edges that were removed from the selection.
+    /// </summary>
+    public IReadOnlyList<Edge> RemovedEdges { get; }
+
+    public SelectionChangedEventArgs(
+        IReadOnlyList<Node> selectedNodes,
+        IReadOnlyList<Edge> selectedEdges,
+        IReadOnlyList<Node>? addedNodes = null,
+        IReadOnlyList<Node>? removedNodes = null,
+        IReadOnlyList<Edge>? addedEdges = null,
+        IReadOnlyList<Edge>? removedEdges = null)
+    {
+        SelectedNodes = selectedNodes;
+        SelectedEdges = selectedEdges;
+        AddedNodes = addedNodes ?? [];
+        RemovedNodes = removedNodes ?? [];
+        AddedEdges = addedEdges ?? [];
+        RemovedEdges = removedEdges ?? [];
+    }
+}
+
+/// <summary>
+/// Event args for viewport changed event.
+/// </summary>
+public class ViewportChangedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The current zoom level.
+    /// </summary>
+    public double Zoom { get; }
+
+    /// <summary>
+    /// The current X offset (pan).
+    /// </summary>
+    public double OffsetX { get; }
+
+    /// <summary>
+    /// The current Y offset (pan).
+    /// </summary>
+    public double OffsetY { get; }
+
+    /// <summary>
+    /// The visible area in canvas coordinates.
+    /// </summary>
+    public AvaloniaRect VisibleRect { get; }
+
+    public ViewportChangedEventArgs(double zoom, double offsetX, double offsetY, AvaloniaRect visibleRect)
+    {
+        Zoom = zoom;
+        OffsetX = offsetX;
+        OffsetY = offsetY;
+        VisibleRect = visibleRect;
+    }
+}
+
+/// <summary>
+/// Event args for node drag start event.
+/// </summary>
+public class NodeDragStartEventArgs : EventArgs
+{
+    /// <summary>
+    /// The nodes being dragged.
+    /// </summary>
+    public IReadOnlyList<Node> Nodes { get; }
+
+    /// <summary>
+    /// Starting positions of the nodes.
+    /// </summary>
+    public IReadOnlyDictionary<string, CorePoint> StartPositions { get; }
+
+    public NodeDragStartEventArgs(IReadOnlyList<Node> nodes, IReadOnlyDictionary<string, CorePoint> startPositions)
+    {
+        Nodes = nodes;
+        StartPositions = startPositions;
+    }
+}
+
+/// <summary>
+/// Event args for node drag stop event.
+/// </summary>
+public class NodeDragStopEventArgs : EventArgs
+{
+    /// <summary>
+    /// The nodes that were dragged.
+    /// </summary>
+    public IReadOnlyList<Node> Nodes { get; }
+
+    /// <summary>
+    /// Starting positions of the nodes.
+    /// </summary>
+    public IReadOnlyDictionary<string, CorePoint> StartPositions { get; }
+
+    /// <summary>
+    /// Final positions of the nodes.
+    /// </summary>
+    public IReadOnlyDictionary<string, CorePoint> EndPositions { get; }
+
+    public NodeDragStopEventArgs(
+        IReadOnlyList<Node> nodes, 
+        IReadOnlyDictionary<string, CorePoint> startPositions,
+        IReadOnlyDictionary<string, CorePoint> endPositions)
+    {
+        Nodes = nodes;
+        StartPositions = startPositions;
+        EndPositions = endPositions;
+    }
+}
+
+/// <summary>
+/// Event args for connection start event.
+/// </summary>
+public class ConnectStartEventArgs : EventArgs
+{
+    /// <summary>
+    /// The source node.
+    /// </summary>
+    public Node SourceNode { get; }
+
+    /// <summary>
+    /// The source port.
+    /// </summary>
+    public Port SourcePort { get; }
+
+    /// <summary>
+    /// Whether the connection started from an output port.
+    /// </summary>
+    public bool IsFromOutput { get; }
+
+    public ConnectStartEventArgs(Node sourceNode, Port sourcePort, bool isFromOutput)
+    {
+        SourceNode = sourceNode;
+        SourcePort = sourcePort;
+        IsFromOutput = isFromOutput;
+    }
+}
+
+/// <summary>
+/// Event args for connection end event.
+/// </summary>
+public class ConnectEndEventArgs : EventArgs
+{
+    /// <summary>
+    /// Whether the connection was successfully completed.
+    /// </summary>
+    public bool WasSuccessful { get; }
+
+    /// <summary>
+    /// The created edge, if successful.
+    /// </summary>
+    public Edge? CreatedEdge { get; }
+
+    public ConnectEndEventArgs(bool wasSuccessful, Edge? createdEdge = null)
+    {
+        WasSuccessful = wasSuccessful;
+        CreatedEdge = createdEdge;
     }
 }

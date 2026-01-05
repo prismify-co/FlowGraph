@@ -13,6 +13,10 @@ public class SelectionManager
     private readonly Func<GraphRenderer> _getRenderer;
     private readonly Func<ThemeResources> _getTheme;
     private readonly CommandHistory _commandHistory;
+    
+    // Track previous selection state to detect changes
+    private HashSet<string> _previousSelectedNodeIds = new();
+    private HashSet<string> _previousSelectedEdgeIds = new();
 
     public SelectionManager(
         Func<Graph?> getGraph,
@@ -32,6 +36,11 @@ public class SelectionManager
     public event EventHandler? EdgesNeedRerender;
 
     /// <summary>
+    /// Event raised when the selection changes.
+    /// </summary>
+    public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
+
+    /// <summary>
     /// Selects all nodes in the graph.
     /// </summary>
     public void SelectAll()
@@ -43,6 +52,8 @@ public class SelectionManager
         {
             node.IsSelected = true;
         }
+        
+        RaiseSelectionChangedIfNeeded();
     }
 
     /// <summary>
@@ -64,6 +75,7 @@ public class SelectionManager
         }
 
         EdgesNeedRerender?.Invoke(this, EventArgs.Empty);
+        RaiseSelectionChangedIfNeeded();
     }
 
     /// <summary>
@@ -101,6 +113,7 @@ public class SelectionManager
         };
 
         _commandHistory.Execute(new CompositeCommand(description, commands));
+        RaiseSelectionChangedIfNeeded();
     }
 
     /// <summary>
@@ -128,6 +141,16 @@ public class SelectionManager
                 renderer.UpdateNodeSelection(node, theme);
             }
         }
+        
+        RaiseSelectionChangedIfNeeded();
+    }
+
+    /// <summary>
+    /// Notifies that the selection may have changed (called by external code).
+    /// </summary>
+    public void NotifySelectionMayHaveChanged()
+    {
+        RaiseSelectionChangedIfNeeded();
     }
 
     /// <summary>
@@ -152,4 +175,47 @@ public class SelectionManager
     /// Gets whether any items are selected.
     /// </summary>
     public bool HasSelection => GetSelectedNodes().Any() || GetSelectedEdges().Any();
+
+    private void RaiseSelectionChangedIfNeeded()
+    {
+        var graph = _getGraph();
+        if (graph == null) return;
+
+        var currentSelectedNodes = graph.Nodes.Where(n => n.IsSelected).ToList();
+        var currentSelectedEdges = graph.Edges.Where(e => e.IsSelected).ToList();
+        
+        var currentNodeIds = currentSelectedNodes.Select(n => n.Id).ToHashSet();
+        var currentEdgeIds = currentSelectedEdges.Select(e => e.Id).ToHashSet();
+
+        // Check if selection actually changed
+        if (currentNodeIds.SetEquals(_previousSelectedNodeIds) && 
+            currentEdgeIds.SetEquals(_previousSelectedEdgeIds))
+        {
+            return;
+        }
+
+        // Calculate added/removed
+        var addedNodeIds = currentNodeIds.Except(_previousSelectedNodeIds).ToHashSet();
+        var removedNodeIds = _previousSelectedNodeIds.Except(currentNodeIds).ToHashSet();
+        var addedEdgeIds = currentEdgeIds.Except(_previousSelectedEdgeIds).ToHashSet();
+        var removedEdgeIds = _previousSelectedEdgeIds.Except(currentEdgeIds).ToHashSet();
+
+        var addedNodes = currentSelectedNodes.Where(n => addedNodeIds.Contains(n.Id)).ToList();
+        var removedNodes = graph.Nodes.Where(n => removedNodeIds.Contains(n.Id)).ToList();
+        var addedEdges = currentSelectedEdges.Where(e => addedEdgeIds.Contains(e.Id)).ToList();
+        var removedEdges = graph.Edges.Where(e => removedEdgeIds.Contains(e.Id)).ToList();
+
+        // Update tracking
+        _previousSelectedNodeIds = currentNodeIds;
+        _previousSelectedEdgeIds = currentEdgeIds;
+
+        // Raise event
+        SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(
+            currentSelectedNodes,
+            currentSelectedEdges,
+            addedNodes,
+            removedNodes,
+            addedEdges,
+            removedEdges));
+    }
 }

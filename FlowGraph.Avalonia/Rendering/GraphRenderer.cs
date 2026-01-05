@@ -21,6 +21,8 @@ public class GraphRenderer
     private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
     private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
     private readonly Dictionary<string, AvaloniaPath> _edgeVisiblePaths = new();  // Visible paths
+    private readonly Dictionary<string, List<AvaloniaPath>> _edgeMarkers = new();  // Edge markers (arrows)
+    private readonly Dictionary<string, TextBlock> _edgeLabels = new();  // Edge labels
     private readonly Dictionary<string, List<Rectangle>> _resizeHandles = new();  // Resize handles per node
     
     // Current viewport state for transforming positions
@@ -99,11 +101,35 @@ public class GraphRenderer
     }
 
     /// <summary>
-    /// Gets the visual element for an edge.
+    /// Gets the visual element for an edge (hit area path).
     /// </summary>
     public AvaloniaPath? GetEdgeVisual(string edgeId)
     {
         return _edgeVisuals.TryGetValue(edgeId, out var path) ? path : null;
+    }
+
+    /// <summary>
+    /// Gets the visible path for an edge (the actual rendered stroke).
+    /// </summary>
+    public AvaloniaPath? GetEdgeVisiblePath(string edgeId)
+    {
+        return _edgeVisiblePaths.TryGetValue(edgeId, out var path) ? path : null;
+    }
+
+    /// <summary>
+    /// Gets the markers (arrows) for an edge.
+    /// </summary>
+    public IReadOnlyList<AvaloniaPath>? GetEdgeMarkers(string edgeId)
+    {
+        return _edgeMarkers.TryGetValue(edgeId, out var markers) ? markers : null;
+    }
+
+    /// <summary>
+    /// Gets the edge label for an edge.
+    /// </summary>
+    public TextBlock? GetEdgeLabel(string edgeId)
+    {
+        return _edgeLabels.TryGetValue(edgeId, out var label) ? label : null;
     }
 
     /// <summary>
@@ -115,6 +141,8 @@ public class GraphRenderer
         _portVisuals.Clear();
         _edgeVisuals.Clear();
         _edgeVisiblePaths.Clear();
+        _edgeMarkers.Clear();
+        _edgeLabels.Clear();
         _resizeHandles.Clear();
     }
 
@@ -306,7 +334,9 @@ public class GraphRenderer
         // Clear edge visuals dictionaries
         _edgeVisuals.Clear();
         _edgeVisiblePaths.Clear();
-        
+        _edgeMarkers.Clear();
+        _edgeLabels.Clear();
+
         // Remove existing edges, markers, labels, and hit areas
         var elementsToRemove = canvas.Children
             .Where(c => 
@@ -380,8 +410,27 @@ public class GraphRenderer
 
         var scale = GetScale();
         
-        // Create path based on edge type
-        var pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type);
+        // Create path based on edge type - use waypoints if available
+        PathGeometry pathGeometry;
+        if (edge.Waypoints != null && edge.Waypoints.Count > 0)
+        {
+            // Transform waypoints to screen coordinates
+            var transformedWaypoints = edge.Waypoints
+                .Select(wp => new Core.Point(
+                    TransformToScreen(wp.X, wp.Y).X,
+                    TransformToScreen(wp.X, wp.Y).Y))
+                .ToList();
+            
+            pathGeometry = EdgePathHelper.CreatePathWithWaypoints(
+                startPoint, 
+                endPoint, 
+                transformedWaypoints, 
+                edge.Type);
+        }
+        else
+        {
+            pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type);
+        }
 
         var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
         
@@ -413,31 +462,78 @@ public class GraphRenderer
         _edgeVisuals[edge.Id] = hitAreaPath;
         _edgeVisiblePaths[edge.Id] = visiblePath;
 
-        // Render end marker (arrow)
+        // Track markers for this edge
+        var markers = new List<AvaloniaPath>();
+
+        // Render end marker (arrow) - calculate angle from last segment
         if (edge.MarkerEnd != EdgeMarker.None)
         {
-            RenderEdgeMarker(canvas, endPoint, startPoint, edge.MarkerEnd, strokeBrush, scale);
+            var lastFromPoint = GetLastFromPoint(startPoint, endPoint, edge.Waypoints);
+            var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, scale);
+            if (markerPath != null)
+            {
+                markers.Add(markerPath);
+            }
         }
 
-        // Render start marker
+        // Render start marker - calculate angle from first segment
         if (edge.MarkerStart != EdgeMarker.None)
         {
-            RenderEdgeMarker(canvas, startPoint, endPoint, edge.MarkerStart, strokeBrush, scale);
+            var firstToPoint = GetFirstToPoint(startPoint, endPoint, edge.Waypoints);
+            var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, scale);
+            if (markerPath != null)
+            {
+                markers.Add(markerPath);
+            }
+        }
+
+        // Store markers for animation
+        if (markers.Count > 0)
+        {
+            _edgeMarkers[edge.Id] = markers;
         }
 
         // Render label if present
         if (!string.IsNullOrEmpty(edge.Label))
         {
-            RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale);
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale);
+            if (labelVisual != null)
+            {
+                _edgeLabels[edge.Id] = labelVisual;
+            }
         }
 
         return hitAreaPath;
     }
 
     /// <summary>
+    /// Gets the "from" point for calculating the end marker angle.
+    /// </summary>
+    private AvaloniaPoint GetLastFromPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints)
+    {
+        if (waypoints == null || waypoints.Count == 0)
+            return start;
+        
+        var lastWaypoint = waypoints[^1];
+        return TransformToScreen(lastWaypoint.X, lastWaypoint.Y);
+    }
+
+    /// <summary>
+    /// Gets the "to" point for calculating the start marker angle.
+    /// </summary>
+    private AvaloniaPoint GetFirstToPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints)
+    {
+        if (waypoints == null || waypoints.Count == 0)
+            return end;
+        
+        var firstWaypoint = waypoints[0];
+        return TransformToScreen(firstWaypoint.X, firstWaypoint.Y);
+    }
+
+    /// <summary>
     /// Renders a marker (arrow) at an edge endpoint.
     /// </summary>
-    private void RenderEdgeMarker(Canvas canvas, AvaloniaPoint point, AvaloniaPoint fromPoint, EdgeMarker marker, IBrush stroke, double scale)
+    private AvaloniaPath RenderEdgeMarker(Canvas canvas, AvaloniaPoint point, AvaloniaPoint fromPoint, EdgeMarker marker, IBrush stroke, double scale)
     {
         var angle = EdgePathHelper.CalculateAngle(fromPoint, point);
         var markerSize = 10 * scale;
@@ -455,12 +551,13 @@ public class GraphRenderer
         };
 
         canvas.Children.Add(markerPath);
+        return markerPath;
     }
 
     /// <summary>
     /// Renders a label on an edge.
     /// </summary>
-    private void RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale)
     {
         var midPoint = new AvaloniaPoint((start.X + end.X) / 2, (start.Y + end.Y) / 2);
         
@@ -479,6 +576,7 @@ public class GraphRenderer
         Canvas.SetTop(textBlock, midPoint.Y - 10 * scale);
 
         canvas.Children.Add(textBlock);
+        return textBlock;
     }
 
     /// <summary>
