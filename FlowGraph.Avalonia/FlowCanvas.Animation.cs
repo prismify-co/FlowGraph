@@ -552,9 +552,13 @@ public partial class FlowCanvas
 
     /// <summary>
     /// Updates an edge's opacity and keeps all associated visuals in sync.
+    /// Also stores the override so it persists across re-renders during animations.
     /// </summary>
     private void UpdateEdgeOpacity(Edge edge, double opacity)
     {
+        // Store the opacity override so it persists across re-renders
+        _edgeOpacityOverrides[edge.Id] = opacity;
+
         var visiblePath = _graphRenderer.GetEdgeVisiblePath(edge.Id);
         if (visiblePath != null)
         {
