@@ -55,32 +55,44 @@ public partial class MainWindow : Window
         CloseRenameTextBox(save: false);
         
         var node = e.Node;
-        var currentLabel = node.Label ?? node.Type ?? "";
         
-        // Create inline TextBox for editing
+        // Get current display text
+        var currentLabel = !string.IsNullOrEmpty(node.Label) 
+            ? node.Label 
+            : (node.IsGroup ? "Group" : node.Type ?? "Node");
+        
+        // Get the node visual to position the editor correctly
+        var nodeVisual = GetNodeVisualBounds(node);
+        if (nodeVisual == null) return;
+        
+        // Create inline TextBox for editing - sized to fit inside the node
         _activeRenameTextBox = new TextBox
         {
             Text = currentLabel,
-            MinWidth = 120,
+            Width = Math.Max(nodeVisual.Value.Width - 16, 60),
             FontSize = 12,
             Padding = new Thickness(4, 2),
             Background = Brushes.White,
             Foreground = Brushes.Black,
             BorderBrush = new SolidColorBrush(Color.FromRgb(0, 120, 212)),
             BorderThickness = new Thickness(2),
-            Tag = node // Store reference to the node
+            TextAlignment = TextAlignment.Center,
+            VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
+            Tag = node
         };
         
-        // Position the TextBox at the node's screen position
-        Canvas.SetLeft(_activeRenameTextBox, e.ScreenPosition.X);
-        Canvas.SetTop(_activeRenameTextBox, e.ScreenPosition.Y);
+        // Position the TextBox centered on the node
+        var centerX = nodeVisual.Value.X + nodeVisual.Value.Width / 2;
+        var centerY = nodeVisual.Value.Y + nodeVisual.Value.Height / 2;
+        Canvas.SetLeft(_activeRenameTextBox, centerX - _activeRenameTextBox.Width / 2);
+        Canvas.SetTop(_activeRenameTextBox, centerY - 12); // Approximate vertical center
         _activeRenameTextBox.ZIndex = 1000;
 
         // Handle Enter to save, Escape to cancel
         _activeRenameTextBox.KeyDown += OnRenameTextBoxKeyDown;
         _activeRenameTextBox.LostFocus += OnRenameTextBoxLostFocus;
         
-        // Add to root panel (the Panel containing everything)
+        // Add to root panel
         if (this.Content is Panel rootPanel)
         {
             rootPanel.Children.Add(_activeRenameTextBox);
@@ -95,6 +107,24 @@ public partial class MainWindow : Window
         
         e.Handled = true;
         SetStatus($"Renaming: {currentLabel}");
+    }
+
+    /// <summary>
+    /// Gets the screen bounds of a node visual.
+    /// </summary>
+    private Rect? GetNodeVisualBounds(Node node)
+    {
+        // Get node dimensions
+        var width = node.Width ?? FlowCanvas.Settings.NodeWidth;
+        var height = node.Height ?? FlowCanvas.Settings.NodeHeight;
+        
+        // Transform to screen coordinates
+        var topLeft = FlowCanvas.Viewport.CanvasToScreen(
+            new global::Avalonia.Point(node.Position.X, node.Position.Y));
+        var bottomRight = FlowCanvas.Viewport.CanvasToScreen(
+            new global::Avalonia.Point(node.Position.X + width, node.Position.Y + height));
+        
+        return new Rect(topLeft, bottomRight);
     }
 
     private void OnRenameTextBoxKeyDown(object? sender, KeyEventArgs e)
@@ -131,7 +161,7 @@ public partial class MainWindow : Window
         if (save && textBox.Tag is Node node)
         {
             var newLabel = textBox.Text?.Trim();
-            if (!string.IsNullOrEmpty(newLabel) && newLabel != node.Label)
+            if (!string.IsNullOrEmpty(newLabel))
             {
                 node.Label = newLabel;
                 FlowCanvas.Refresh(); // Refresh to show updated label

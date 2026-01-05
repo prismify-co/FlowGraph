@@ -74,6 +74,12 @@ public class DefaultNodeRenderer : INodeRenderer
     /// </summary>
     protected virtual string GetDisplayText(Node node)
     {
+        // Use Label if available, otherwise fall back to Type + truncated Id
+        if (!string.IsNullOrEmpty(node.Label))
+        {
+            return node.Label;
+        }
+        
         return $"{node.Type}\n{node.Id[..Math.Min(8, node.Id.Length)]}";
     }
 
