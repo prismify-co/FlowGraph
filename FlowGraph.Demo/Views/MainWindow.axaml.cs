@@ -37,6 +37,17 @@ public partial class MainWindow : Window
         FlowCanvas.NodeLabelEditRequested += OnNodeLabelEditRequested;
         FlowCanvas.EdgeLabelEditRequested += OnEdgeLabelEditRequested;
         
+        // Subscribe to debug output
+        FlowCanvas.DebugOutput += msg => Dispatcher.UIThread.Post(() =>
+        {
+            System.Diagnostics.Debug.WriteLine(msg);
+            // Append to status for visibility
+            if (msg.Contains("[RenderGraph]"))
+            {
+                _lastRenderDebug = msg;
+            }
+        });
+        
         // Initialize the animation debugger after the window is loaded
         this.Loaded += (_, _) =>
         {
@@ -44,6 +55,8 @@ public partial class MainWindow : Window
             _debugger.IsEnabled = false; // Disabled by default
         };
     }
+
+    private string? _lastRenderDebug;
 
     #region Node Rename
 
@@ -614,6 +627,7 @@ public partial class MainWindow : Window
 
         // Enable debug output for performance analysis
         FlowCanvas.DebugRenderingPerformance = true;
+        _lastRenderDebug = null;
 
         // For large graphs, enable simplified rendering
         if (nodeCount >= 500)
@@ -704,7 +718,6 @@ public partial class MainWindow : Window
         SetStatus($"Rendering {nodeCount}n/{edgeCount}e...");
         await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
         
-        Console.WriteLine($"\n=== STRESS TEST: {nodeCount} nodes, {edgeCount} edges ===");
         FlowCanvas.Refresh();
         
         var renderTime = sw.ElapsedMilliseconds;
@@ -713,15 +726,25 @@ public partial class MainWindow : Window
         // Disable debug output after test
         FlowCanvas.DebugRenderingPerformance = false;
 
-        var simplified = nodeCount >= 500 ? " (simp)" : "";
+        var simplified = nodeCount >= 500 ? " [S]" : "";
         var total = dataGenTime + edgeGenTime + renderTime;
-        SetStatus($"{nodeCount}n/{edgeCount}e{simplified} Total:{total}ms (D:{dataGenTime} E:{edgeGenTime} R:{renderTime})");
         
-        // Also write to console for easier viewing
-        Console.WriteLine($"Data generation: {dataGenTime}ms");
-        Console.WriteLine($"Edge generation: {edgeGenTime}ms");
-        Console.WriteLine($"Rendering: {renderTime}ms");
-        Console.WriteLine($"TOTAL: {total}ms");
+        // Show detailed timing in status
+        var status = $"{nodeCount}n/{edgeCount}e{simplified} - D:{dataGenTime}ms E:{edgeGenTime}ms R:{renderTime}ms = {total}ms";
+        SetStatus(status);
+        
+        // Show in Output window (View > Output in VS, select "Debug" from dropdown)
+        System.Diagnostics.Debug.WriteLine($"\n=== STRESS TEST RESULTS ===");
+        System.Diagnostics.Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgeCount}, Simplified: {nodeCount >= 500}");
+        System.Diagnostics.Debug.WriteLine($"Data Gen: {dataGenTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Edge Gen: {edgeGenTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Render:   {renderTime}ms");
+        System.Diagnostics.Debug.WriteLine($"TOTAL:    {total}ms");
+        if (_lastRenderDebug != null)
+        {
+            System.Diagnostics.Debug.WriteLine($"Details:  {_lastRenderDebug}");
+        }
+        System.Diagnostics.Debug.WriteLine("===========================\n");
     }
 
     private static double Distance(CorePoint a, CorePoint b)

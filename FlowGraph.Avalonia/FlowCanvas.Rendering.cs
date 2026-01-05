@@ -16,6 +16,21 @@ public partial class FlowCanvas
     /// </summary>
     public bool DebugRenderingPerformance { get; set; } = false;
 
+    /// <summary>
+    /// Event raised when debug performance info is available.
+    /// Subscribe to this to receive performance metrics.
+    /// </summary>
+    public event Action<string>? DebugOutput;
+
+    private void LogDebug(string message)
+    {
+        if (DebugRenderingPerformance)
+        {
+            Debug.WriteLine(message);
+            DebugOutput?.Invoke(message);
+        }
+    }
+
     private void RenderAll()
     {
         RenderGrid();
@@ -74,7 +89,7 @@ public partial class FlowCanvas
         {
             sw.Stop();
             var renderedNodes = _mainCanvas.Children.OfType<Control>().Count(c => c.Tag is Node);
-            Console.WriteLine($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
+            LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
                 $"Clear: {clearTime}ms, Groups: {groupTime - clearTime}ms, " +
                 $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms, " +
                 $"Handlers: {portHandlerTime - nodeTime}ms | " +
@@ -109,7 +124,7 @@ public partial class FlowCanvas
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
-            Console.WriteLine($"  [RenderGroupNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, Rendered: {count} groups");
+            LogDebug($"  [RenderGroupNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, Rendered: {count} groups");
         }
     }
 
@@ -141,7 +156,7 @@ public partial class FlowCanvas
         {
             sw.Stop();
             var avgPerNode = count > 0 ? (sw.ElapsedMilliseconds - filterTime) / (double)count : 0;
-            Console.WriteLine($"  [RenderRegularNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, " +
+            LogDebug($"  [RenderRegularNodes] {sw.ElapsedMilliseconds}ms | Filter: {filterTime}ms, " +
                 $"Rendered: {count} nodes, {portCount} ports, Avg: {avgPerNode:F2}ms/node");
         }
     }
@@ -177,7 +192,7 @@ public partial class FlowCanvas
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
-            Console.WriteLine($"  [RenderEdges] {sw.ElapsedMilliseconds}ms | Render: {renderTime}ms, Handlers: {sw.ElapsedMilliseconds - renderTime}ms");
+            LogDebug($"  [RenderEdges] {sw.ElapsedMilliseconds}ms | Render: {renderTime}ms, Handlers: {sw.ElapsedMilliseconds - renderTime}ms");
         }
     }
 
