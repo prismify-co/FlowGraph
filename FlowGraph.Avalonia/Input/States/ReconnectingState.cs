@@ -22,6 +22,7 @@ public class ReconnectingState : InputStateBase
     private readonly bool _draggingTarget; // true = dragging target end, false = dragging source end
     private readonly Node _fixedNode;
     private readonly Port _fixedPort;
+    private readonly bool _fixedPortIsOutput; // true if the fixed port is an output port
     private readonly Node _originalMovingNode;
     private readonly Port _originalMovingPort;
     private AvaloniaPoint _currentEndPoint;
@@ -40,6 +41,14 @@ public class ReconnectingState : InputStateBase
     /// <summary>
     /// Creates a new reconnecting state.
     /// </summary>
+    /// <param name="edge">The edge being reconnected.</param>
+    /// <param name="draggingTarget">True if dragging the target (input) end, false if dragging the source (output) end.</param>
+    /// <param name="fixedNode">The node whose connection stays fixed.</param>
+    /// <param name="fixedPort">The port that stays connected.</param>
+    /// <param name="movingNode">The node we're disconnecting from.</param>
+    /// <param name="movingPort">The port we're disconnecting from.</param>
+    /// <param name="startPosition">Initial screen position of the cursor.</param>
+    /// <param name="theme">Theme resources for styling.</param>
     public ReconnectingState(
         Edge edge,
         bool draggingTarget,
@@ -54,6 +63,9 @@ public class ReconnectingState : InputStateBase
         _draggingTarget = draggingTarget;
         _fixedNode = fixedNode;
         _fixedPort = fixedPort;
+        // If we're dragging the target end, the fixed end is the source (output)
+        // If we're dragging the source end, the fixed end is the target (input)
+        _fixedPortIsOutput = draggingTarget; // source is output, target is input
         _originalMovingNode = movingNode;
         _originalMovingPort = movingPort;
         _currentEndPoint = startPosition;
@@ -184,8 +196,8 @@ public class ReconnectingState : InputStateBase
         var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
         if (visiblePath == null) return;
 
-        // Get the fixed endpoint
-        var fixedPoint = context.GraphRenderer.GetPortPosition(_fixedNode, _fixedPort, !_draggingTarget);
+        // Get the fixed endpoint - use the correct isOutput value
+        var fixedPoint = context.GraphRenderer.GetPortPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
         
         // Determine the moving endpoint
         AvaloniaPoint movingPoint;
@@ -202,15 +214,17 @@ public class ReconnectingState : InputStateBase
         }
 
         // Create the path geometry
+        // When dragging target: fixed is source (output), moving is target (input)
+        // When dragging source: moving is source (output), fixed is target (input)
         PathGeometry pathGeometry;
         if (_draggingTarget)
         {
-            // Fixed is source, moving is target
+            // Fixed point is source, moving point is target
             pathGeometry = BezierHelper.CreateBezierPath(fixedPoint, movingPoint, false);
         }
         else
         {
-            // Moving is source, fixed is target
+            // Moving point is source, fixed point is target
             pathGeometry = BezierHelper.CreateBezierPath(movingPoint, fixedPoint, false);
         }
         
