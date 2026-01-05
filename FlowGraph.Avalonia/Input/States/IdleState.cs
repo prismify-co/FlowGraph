@@ -360,22 +360,17 @@ public class IdleState : InputStateBase
         }
 
         // F2 to rename selected node (like Windows Explorer)
+        // F2 always works for renaming, regardless of EnableNodeLabelEditing/EnableGroupLabelEditing settings
+        // (those settings only control double-click behavior)
         if (e.Key == Key.F2)
         {
             var graph = context.Graph;
             var selectedNode = graph?.Nodes.FirstOrDefault(n => n.IsSelected);
             if (selectedNode != null)
             {
-                bool canEdit = selectedNode.IsGroup 
-                    ? context.Settings.EnableGroupLabelEditing 
-                    : context.Settings.EnableNodeLabelEditing;
-                
-                if (canEdit)
-                {
-                    var screenPos = context.CanvasToScreen(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));
-                    context.RaiseNodeLabelEditRequested(selectedNode, screenPos);
-                    return StateTransitionResult.Stay(true);
-                }
+                var screenPos = context.CanvasToScreen(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));
+                context.RaiseNodeLabelEditRequested(selectedNode, screenPos);
+                return StateTransitionResult.Stay(true);
             }
         }
 
