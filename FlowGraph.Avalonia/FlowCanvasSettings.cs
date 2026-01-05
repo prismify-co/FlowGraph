@@ -261,6 +261,25 @@ public class FlowCanvasSettings
 
     #endregion
 
+    #region Performance
+
+    /// <summary>
+    /// Gets or sets whether virtualization is enabled.
+    /// When enabled, only nodes and edges visible in the viewport are rendered.
+    /// This significantly improves performance for large graphs (500+ nodes).
+    /// Default is true.
+    /// </summary>
+    public bool EnableVirtualization { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the buffer (in canvas coordinates) around the viewport for virtualization.
+    /// Nodes within this buffer are still rendered even if slightly outside the viewport.
+    /// This prevents "popping" during pan/zoom. Default is 200.
+    /// </summary>
+    public double VirtualizationBuffer { get; set; } = 200;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>

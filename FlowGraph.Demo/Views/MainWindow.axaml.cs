@@ -587,6 +587,113 @@ public partial class MainWindow : Window
 
     #endregion
 
+    #region Stress Test
+
+    private void OnGenerate100Click(object? sender, RoutedEventArgs e) => GenerateStressTestGraph(100);
+    private void OnGenerate500Click(object? sender, RoutedEventArgs e) => GenerateStressTestGraph(500);
+    private void OnGenerate1000Click(object? sender, RoutedEventArgs e) => GenerateStressTestGraph(1000);
+    private void OnGenerate5000Click(object? sender, RoutedEventArgs e) => GenerateStressTestGraph(5000);
+
+    private void OnClearGraphClick(object? sender, RoutedEventArgs e)
+    {
+        var graph = FlowCanvas.Graph;
+        if (graph == null) return;
+
+        graph.Edges.Clear();
+        graph.Nodes.Clear();
+        FlowCanvas.Refresh();
+        SetStatus("Graph cleared");
+    }
+
+    private void GenerateStressTestGraph(int nodeCount)
+    {
+        var graph = FlowCanvas.Graph;
+        if (graph == null) return;
+
+        SetStatus($"Generating {nodeCount} nodes...");
+
+        // Clear existing
+        graph.Edges.Clear();
+        graph.Nodes.Clear();
+
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var random = new Random(42); // Fixed seed for reproducibility
+
+        // Calculate grid layout
+        var cols = (int)Math.Ceiling(Math.Sqrt(nodeCount * 2)); // Wider than tall
+        var rows = (int)Math.Ceiling((double)nodeCount / cols);
+        var spacingX = 200.0;
+        var spacingY = 120.0;
+
+        var nodeTypes = new[] { "input", "Process", "output", "default" };
+
+        // Generate nodes in a grid
+        for (int i = 0; i < nodeCount; i++)
+        {
+            var col = i % cols;
+            var row = i / cols;
+
+            // Add some randomness to positions
+            var offsetX = random.Next(-20, 21);
+            var offsetY = random.Next(-20, 21);
+
+            var nodeType = nodeTypes[random.Next(nodeTypes.Length)];
+            var node = new Node
+            {
+                Id = $"node-{i}",
+                Type = nodeType,
+                Label = $"Node {i}",
+                Position = new CorePoint(col * spacingX + offsetX, row * spacingY + offsetY),
+                Inputs = nodeType != "input" ? [new Port { Id = "in", Type = "data" }] : [],
+                Outputs = nodeType != "output" ? [new Port { Id = "out", Type = "data" }] : []
+            };
+
+            graph.Nodes.Add(node);
+        }
+
+        // Generate edges (connect each node to 1-3 nearby nodes)
+        var edgeCount = 0;
+        foreach (var node in graph.Nodes.Where(n => n.Outputs.Count > 0))
+        {
+            // Find nearby nodes that have inputs
+            var targets = graph.Nodes
+                .Where(n => n.Id != node.Id && n.Inputs.Count > 0)
+                .OrderBy(n => Distance(node.Position, n.Position))
+                .Take(random.Next(1, 4))
+                .ToList();
+
+            foreach (var target in targets)
+            {
+                graph.Edges.Add(new Edge
+                {
+                    Source = node.Id,
+                    Target = target.Id,
+                    SourcePort = "out",
+                    TargetPort = "in",
+                    Type = EdgeType.Bezier
+                });
+                edgeCount++;
+            }
+        }
+
+        sw.Stop();
+
+        // Refresh the canvas
+        FlowCanvas.Refresh();
+        FlowCanvas.FitToView();
+
+        SetStatus($"Generated {nodeCount} nodes, {edgeCount} edges in {sw.ElapsedMilliseconds}ms");
+    }
+
+    private static double Distance(CorePoint a, CorePoint b)
+    {
+        var dx = a.X - b.X;
+        var dy = a.Y - b.Y;
+        return Math.Sqrt(dx * dx + dy * dy);
+    }
+
+    #endregion
+
     #region Node Toolbar Actions
 
     private void OnToolbarDeleteClick(object? sender, RoutedEventArgs e)

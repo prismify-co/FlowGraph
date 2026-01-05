@@ -147,7 +147,8 @@ public class EdgeVisualManager
             canvas.Children.Remove(edge);
         }
 
-        // Render new edges - only if both endpoints are visible
+        // Render new edges - only if both endpoints are visible (by group collapse)
+        // and at least one endpoint is in the visible viewport (virtualization)
         foreach (var edge in graph.Edges)
         {
             var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
@@ -157,6 +158,12 @@ public class EdgeVisualManager
             if (sourceNode == null || targetNode == null ||
                 !NodeVisualManager.IsNodeVisible(graph, sourceNode) || 
                 !NodeVisualManager.IsNodeVisible(graph, targetNode))
+            {
+                continue;
+            }
+
+            // Virtualization: Skip edges where both endpoints are outside visible bounds
+            if (!IsEdgeInVisibleBounds(sourceNode, targetNode))
             {
                 continue;
             }
@@ -385,5 +392,22 @@ public class EdgeVisualManager
 
         canvas.Children.Add(textBlock);
         return textBlock;
+    }
+
+    /// <summary>
+    /// Checks if an edge should be rendered based on whether at least one endpoint is in visible bounds.
+    /// </summary>
+    private bool IsEdgeInVisibleBounds(Node sourceNode, Node targetNode)
+    {
+        var (sourceWidth, sourceHeight) = _nodeVisualManager.GetNodeDimensions(sourceNode);
+        var (targetWidth, targetHeight) = _nodeVisualManager.GetNodeDimensions(targetNode);
+
+        var sourceInBounds = _renderContext.IsInVisibleBounds(
+            sourceNode.Position.X, sourceNode.Position.Y, sourceWidth, sourceHeight);
+        var targetInBounds = _renderContext.IsInVisibleBounds(
+            targetNode.Position.X, targetNode.Position.Y, targetWidth, targetHeight);
+
+        // Render if either endpoint is visible
+        return sourceInBounds || targetInBounds;
     }
 }

@@ -72,6 +72,7 @@ public class NodeVisualManager
     /// Renders all nodes in the graph to the canvas.
     /// Groups are rendered first (behind), then regular nodes.
     /// Nodes hidden by collapsed groups are not rendered.
+    /// When virtualization is enabled, only nodes in the visible viewport are rendered.
     /// </summary>
     /// <param name="canvas">The canvas to render to.</param>
     /// <param name="graph">The graph containing nodes.</param>
@@ -86,7 +87,7 @@ public class NodeVisualManager
         // Render groups first (they should be behind their children)
         // Order by hierarchy depth - outermost groups first
         var groups = graph.Nodes
-            .Where(n => n.IsGroup && IsNodeVisible(graph, n))
+            .Where(n => n.IsGroup && IsNodeVisible(graph, n) && IsInVisibleBounds(n))
             .OrderBy(n => GetGroupDepth(graph, n))
             .ToList();
 
@@ -96,10 +97,21 @@ public class NodeVisualManager
         }
 
         // Then render non-group nodes that are visible
-        foreach (var node in graph.Nodes.Where(n => !n.IsGroup && IsNodeVisible(graph, n)))
+        foreach (var node in graph.Nodes.Where(n => !n.IsGroup && IsNodeVisible(graph, n) && IsInVisibleBounds(n)))
         {
             RenderNode(canvas, node, theme, onNodeCreated);
         }
+    }
+
+    /// <summary>
+    /// Checks if a node is within the visible viewport bounds (with buffer for virtualization).
+    /// </summary>
+    /// <param name="node">The node to check.</param>
+    /// <returns>True if the node is in visible bounds or virtualization is disabled.</returns>
+    private bool IsInVisibleBounds(Node node)
+    {
+        var (width, height) = GetNodeDimensions(node);
+        return _renderContext.IsInVisibleBounds(node.Position.X, node.Position.Y, width, height);
     }
 
     /// <summary>
@@ -454,6 +466,11 @@ public class NodeVisualManager
     /// <summary>
     /// Calculates the Y position for a port in canvas coordinates.
     /// </summary>
+    /// <param name="nodeY">Y position of the node.</param>
+    /// <param name="portIndex">Index of the port.</param>
+    /// <param name="totalPorts">Total number of ports.</param>
+    /// <param name="nodeHeight">Optional node height override.</param>
+    /// <returns>The Y position for the port.</returns>
     public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts, double? nodeHeight = null)
     {
         var height = nodeHeight ?? _renderContext.Settings.NodeHeight;

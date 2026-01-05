@@ -1,5 +1,6 @@
 using Avalonia;
 using AvaloniaPoint = Avalonia.Point;
+using AvaloniaRect = Avalonia.Rect;
 
 namespace FlowGraph.Avalonia.Rendering;
 
@@ -43,6 +44,48 @@ public class RenderContext
     public void SetViewport(ViewportState? viewport)
     {
         _viewport = viewport;
+    }
+
+    /// <summary>
+    /// Gets the visible area in canvas coordinates, expanded by the virtualization buffer.
+    /// Used for culling nodes/edges outside the viewport.
+    /// </summary>
+    /// <returns>The visible rect with buffer, or an infinite rect if no viewport is set.</returns>
+    public AvaloniaRect GetVisibleBoundsWithBuffer()
+    {
+        if (_viewport == null)
+        {
+            // No viewport = render everything
+            return new AvaloniaRect(double.MinValue / 2, double.MinValue / 2, double.MaxValue, double.MaxValue);
+        }
+
+        var visibleRect = _viewport.GetVisibleRect();
+        var buffer = _settings.VirtualizationBuffer;
+
+        return new AvaloniaRect(
+            visibleRect.X - buffer,
+            visibleRect.Y - buffer,
+            visibleRect.Width + buffer * 2,
+            visibleRect.Height + buffer * 2);
+    }
+
+    /// <summary>
+    /// Checks if a rectangular area intersects with the visible viewport (with buffer).
+    /// </summary>
+    /// <param name="x">X coordinate of the rect.</param>
+    /// <param name="y">Y coordinate of the rect.</param>
+    /// <param name="width">Width of the rect.</param>
+    /// <param name="height">Height of the rect.</param>
+    /// <returns>True if the rect intersects the visible area.</returns>
+    public bool IsInVisibleBounds(double x, double y, double width, double height)
+    {
+        if (!_settings.EnableVirtualization)
+            return true;
+
+        var visibleBounds = GetVisibleBoundsWithBuffer();
+        var nodeRect = new AvaloniaRect(x, y, width, height);
+
+        return visibleBounds.Intersects(nodeRect);
     }
 
     /// <summary>

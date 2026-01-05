@@ -294,6 +294,37 @@
                             </StackPanel>
                         </Border>
                         
+                        <!-- Stress Test Section -->
+                        <Border Classes="card" Margin="0,10,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
+                                    <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
+                                    <TextBlock Text="STRESS TEST" Classes="section-title" Margin="0"/>
+                                </StackPanel>
+                                <TextBlock Text="Generate large graphs to test performance" Classes="hint"/>
+                                <UniformGrid Columns="2" Rows="2">
+                                    <Button Classes="icon-btn" Margin="0,0,4,4" Click="OnGenerate100Click" ToolTip.Tip="Generate 100 nodes">
+                                        <TextBlock Text="100 Nodes" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="4,0,0,4" Click="OnGenerate500Click" ToolTip.Tip="Generate 500 nodes">
+                                        <TextBlock Text="500 Nodes" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="0,4,4,0" Click="OnGenerate1000Click" ToolTip.Tip="Generate 1000 nodes">
+                                        <TextBlock Text="1K Nodes" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="4,4,0,0" Click="OnGenerate5000Click" ToolTip.Tip="Generate 5000 nodes">
+                                        <TextBlock Text="5K Nodes" VerticalAlignment="Center"/>
+                                    </Button>
+                                </UniformGrid>
+                                <Button Classes="icon-btn" Margin="0,8,0,0" HorizontalAlignment="Stretch" Click="OnClearGraphClick" ToolTip.Tip="Clear all nodes">
+                                    <StackPanel Orientation="Horizontal">
+                                        <lucide:Lucide Icon="Trash" StrokeThickness="1.5" Width="14" Height="14"/>
+                                        <TextBlock Text="Clear Graph" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                        
                         <!-- Status Bar -->
                         <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
                                 CornerRadius="4"
