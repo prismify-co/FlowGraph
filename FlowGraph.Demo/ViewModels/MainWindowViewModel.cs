@@ -17,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
         MyGraph = new Graph();
 
         // ============================================
-        // GROUP 1: Data Pipeline (pre-grouped nodes)
+        // GROUP 1: Data Pipeline (with external ports)
         // ============================================
         
         // Define child nodes first to calculate group bounds
@@ -55,7 +55,10 @@ public partial class MainWindowViewModel : ViewModelBase
             Label = "Data Pipeline",
             Position = group1Bounds.position,
             Width = group1Bounds.width,
-            Height = group1Bounds.height
+            Height = group1Bounds.height,
+            // Groups can have ports for external connections!
+            Inputs = [new Port { Id = "group-in", Type = "data", Label = "Pipeline Input" }],
+            Outputs = [new Port { Id = "group-out", Type = "data", Label = "Pipeline Output" }]
         };
 
         // Set parent after creating group
@@ -64,13 +67,32 @@ public partial class MainWindowViewModel : ViewModelBase
         outputNode.ParentGroupId = "group1";
 
         // ============================================
+        // External nodes that connect TO the group
+        // ============================================
+        var externalInput = new Node
+        {
+            Type = "input",
+            Data = "External Source",
+            Position = new Core.Point(-150, 130),
+            Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
+        };
+
+        var externalOutput = new Node
+        {
+            Type = "output",
+            Data = "External Sink",
+            Position = new Core.Point(900, 130),
+            Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
+        };
+
+        // ============================================
         // UNGROUPED: Edge type demonstrations
         // ============================================
         var straightStart = new Node
         {
             Type = "input",
             Data = "Start",
-            Position = new Core.Point(100, 300),
+            Position = new Core.Point(100, 350),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
         };
 
@@ -78,24 +100,24 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             Type = "output",
             Data = "End",
-            Position = new Core.Point(350, 360),
+            Position = new Core.Point(350, 410),
             Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
         };
 
         // ============================================
-        // GROUP 2: Step Processing
+        // GROUP 2: Step Processing (with ports)
         // ============================================
         var stepStart = new Node
         {
             Type = "Step",
-            Position = new Core.Point(100, 520),
+            Position = new Core.Point(100, 570),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
         };
 
         var stepEnd = new Node
         {
             Type = "Step End",
-            Position = new Core.Point(350, 570),
+            Position = new Core.Point(350, 620),
             Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
         };
 
@@ -109,7 +131,10 @@ public partial class MainWindowViewModel : ViewModelBase
             Label = "Step Processing",
             Position = group2Bounds.position,
             Width = group2Bounds.width,
-            Height = group2Bounds.height
+            Height = group2Bounds.height,
+            // This group also has ports
+            Inputs = [new Port { Id = "step-in", Type = "data", Label = "In" }],
+            Outputs = [new Port { Id = "step-out", Type = "data", Label = "Out" }]
         };
 
         // Set parent after creating group
@@ -120,7 +145,7 @@ public partial class MainWindowViewModel : ViewModelBase
         var smoothStepStart = new Node
         {
             Type = "SmoothStep",
-            Position = new Core.Point(600, 520),
+            Position = new Core.Point(600, 570),
             Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
         };
 
@@ -128,13 +153,17 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             Type = "output",
             Data = "Final",
-            Position = new Core.Point(850, 570),
+            Position = new Core.Point(850, 620),
             Inputs = [new Port { Id = "in", Type = "data", Label = "In" }]
         };
 
         // Add groups first (they render behind children)
         MyGraph.AddNode(group1);
         MyGraph.AddNode(group2);
+
+        // Add external nodes
+        MyGraph.AddNode(externalInput);
+        MyGraph.AddNode(externalOutput);
 
         // Add nodes
         MyGraph.AddNode(inputNode);
@@ -147,7 +176,9 @@ public partial class MainWindowViewModel : ViewModelBase
         MyGraph.AddNode(smoothStepStart);
         MyGraph.AddNode(smoothStepEnd);
 
-        // Bezier edges (default) with arrow - inside group1
+        // ============================================
+        // EDGES: Internal to group1
+        // ============================================
         MyGraph.AddEdge(new Edge
         {
             Source = inputNode.Id,
@@ -169,6 +200,36 @@ public partial class MainWindowViewModel : ViewModelBase
             MarkerEnd = EdgeMarker.ArrowClosed
         });
 
+        // ============================================
+        // EDGES: External connections to group1
+        // ============================================
+        // External node -> Group input port
+        MyGraph.AddEdge(new Edge
+        {
+            Source = externalInput.Id,
+            Target = group1.Id,
+            SourcePort = "out",
+            TargetPort = "group-in",
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "To Group"
+        });
+
+        // Group output port -> External node
+        MyGraph.AddEdge(new Edge
+        {
+            Source = group1.Id,
+            Target = externalOutput.Id,
+            SourcePort = "group-out",
+            TargetPort = "in",
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "From Group"
+        });
+
+        // ============================================
+        // EDGES: Ungrouped demonstrations
+        // ============================================
         // Straight edge (ungrouped)
         MyGraph.AddEdge(new Edge
         {
@@ -203,6 +264,23 @@ public partial class MainWindowViewModel : ViewModelBase
             Type = EdgeType.SmoothStep,
             MarkerEnd = EdgeMarker.ArrowClosed,
             Label = "SmoothStep"
+        });
+
+        // ============================================
+        // EDGE: Connect group2 output to smoothStepStart
+        // This demonstrates group-to-node connectivity
+        // ============================================
+        // Note: smoothStepStart only has outputs, so we need a different target
+        // Let's create an edge from group2 to the external area
+        MyGraph.AddEdge(new Edge
+        {
+            Source = group2.Id,
+            Target = externalOutput.Id,
+            SourcePort = "step-out",
+            TargetPort = "in", // Connect to externalOutput's only port
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow,
+            Label = "Group→External"
         });
     }
 
