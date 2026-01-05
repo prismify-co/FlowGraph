@@ -202,9 +202,15 @@ public partial class FlowCanvas : UserControl
 
     private void CommitNodeLabel(Node node, string newLabel)
     {
-        if (!string.IsNullOrWhiteSpace(newLabel))
+        var trimmed = newLabel.Trim();
+        if (string.IsNullOrEmpty(trimmed))
         {
-            node.Label = newLabel.Trim();
+            // Empty input = clear label (revert to Type+Id display)
+            node.Label = null;
+        }
+        else
+        {
+            node.Label = trimmed;
         }
         EndEditNodeLabel(node);
     }

@@ -117,6 +117,9 @@ public class InputNodeRenderer : DefaultNodeRenderer
             .FirstOrDefault(t => t.Tag as string == LabelTag);
         if (labelTextBlock == null) return;
 
+        // Store the original label for cancel/revert
+        var originalLabel = node.Label;
+
         // Hide the label
         labelTextBlock.IsVisible = false;
 
@@ -139,31 +142,40 @@ public class InputNodeRenderer : DefaultNodeRenderer
             AcceptsReturn = false
         };
 
-        bool committed = false;
+        bool finished = false;
+
+        void Commit()
+        {
+            if (finished) return;
+            finished = true;
+            onCommit(textBox.Text ?? "");
+        }
+
+        void Cancel()
+        {
+            if (finished) return;
+            finished = true;
+            node.Label = originalLabel;
+            onCancel();
+        }
 
         textBox.KeyDown += (s, e) =>
         {
-            if (e.Key == Key.Enter && !committed)
+            if (e.Key == Key.Enter)
             {
-                committed = true;
-                onCommit(textBox.Text ?? "");
+                Commit();
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
             {
-                committed = true;
-                onCancel();
+                Cancel();
                 e.Handled = true;
             }
         };
 
         textBox.LostFocus += (s, e) =>
         {
-            if (!committed)
-            {
-                committed = true;
-                onCommit(textBox.Text ?? "");
-            }
+            Commit();
         };
 
         contentPanel.Children.Add(textBox);

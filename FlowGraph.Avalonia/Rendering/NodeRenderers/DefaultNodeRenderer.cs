@@ -142,6 +142,9 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         var labelTextBlock = FindLabelTextBlock(contentPanel);
         if (labelTextBlock == null) return;
 
+        // Store the original label for cancel/revert
+        var originalLabel = node.Label;
+
         // Hide the label
         labelTextBlock.IsVisible = false;
 
@@ -165,33 +168,43 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             AcceptsReturn = false
         };
 
-        bool committed = false;
+        bool finished = false;
         
+        void Commit()
+        {
+            if (finished) return;
+            finished = true;
+            onCommit(textBox.Text ?? "");
+        }
+
+        void Cancel()
+        {
+            if (finished) return;
+            finished = true;
+            // Revert to original label
+            node.Label = originalLabel;
+            onCancel();
+        }
+
         // Handle commit/cancel
         textBox.KeyDown += (s, e) =>
         {
-            if (e.Key == Key.Enter && !committed)
+            if (e.Key == Key.Enter)
             {
-                committed = true;
-                onCommit(textBox.Text ?? "");
+                Commit();
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
             {
-                committed = true;
-                onCancel();
+                Cancel();
                 e.Handled = true;
             }
         };
 
+        // Commit on focus loss (clicking elsewhere)
         textBox.LostFocus += (s, e) =>
         {
-            // Only commit if we haven't already
-            if (!committed)
-            {
-                committed = true;
-                onCommit(textBox.Text ?? "");
-            }
+            Commit();
         };
 
         contentPanel.Children.Add(textBox);
