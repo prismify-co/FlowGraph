@@ -121,35 +121,30 @@ public class IdleState : InputStateBase
                 e.Handled = true;
                 return StateTransitionResult.Stay();
             }
+        }
 
-            // Double-click handling for groups
-            if (e.ClickCount == 2)
+        // Double-click handling - check FIRST before any selection/drag logic
+        if (e.ClickCount == 2)
+        {
+            if (node.IsGroup)
             {
                 if (context.Settings.EnableGroupLabelEditing)
                 {
-                    // Raise label edit request for the group
                     var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
                     context.RaiseNodeLabelEditRequested(node, screenPos);
                 }
                 else
                 {
-                    // Default: toggle collapse
                     context.RaiseGroupCollapseToggle(node.Id);
                 }
-                e.Handled = true;
-                return StateTransitionResult.Stay();
             }
-        }
-        else
-        {
-            // Double-click handling for regular nodes
-            if (e.ClickCount == 2 && context.Settings.EnableNodeLabelEditing)
+            else if (context.Settings.EnableNodeLabelEditing)
             {
                 var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
                 context.RaiseNodeLabelEditRequested(node, screenPos);
-                e.Handled = true;
-                return StateTransitionResult.Stay();
             }
+            e.Handled = true;
+            return StateTransitionResult.Stay();
         }
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
@@ -362,6 +357,26 @@ public class IdleState : InputStateBase
         {
             context.RaiseDeleteSelected();
             return StateTransitionResult.Stay(true);
+        }
+
+        // F2 to rename selected node (like Windows Explorer)
+        if (e.Key == Key.F2)
+        {
+            var graph = context.Graph;
+            var selectedNode = graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+            if (selectedNode != null)
+            {
+                bool canEdit = selectedNode.IsGroup 
+                    ? context.Settings.EnableGroupLabelEditing 
+                    : context.Settings.EnableNodeLabelEditing;
+                
+                if (canEdit)
+                {
+                    var screenPos = context.CanvasToScreen(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));
+                    context.RaiseNodeLabelEditRequested(selectedNode, screenPos);
+                    return StateTransitionResult.Stay(true);
+                }
+            }
         }
 
         if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
