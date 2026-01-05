@@ -142,13 +142,14 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         var labelTextBlock = FindLabelTextBlock(contentPanel);
         if (labelTextBlock == null) return;
 
-        // Store the original label for cancel/revert
+        // Store the original display text for cancel/revert (what user sees before editing)
+        var originalDisplayText = labelTextBlock.Text;
         var originalLabel = node.Label;
 
         // Hide the label
         labelTextBlock.IsVisible = false;
 
-        // Create edit TextBox
+        // Create edit TextBox - show just the label or type (without ID) for cleaner editing
         var currentText = GetEditableText(node);
         var textBox = new TextBox
         {
@@ -181,8 +182,10 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         {
             if (finished) return;
             finished = true;
-            // Revert to original label
+            // Revert label to original value
             node.Label = originalLabel;
+            // Restore the original display text directly (without going through GetDisplayText)
+            labelTextBlock.Text = originalDisplayText;
             onCancel();
         }
 
@@ -260,7 +263,14 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     /// </summary>
     protected virtual string GetEditableText(Node node)
     {
-        return node.Label ?? node.Type ?? "";
+        // Show the same text that GetDisplayText shows, but for editing
+        // If there's a label, edit that. Otherwise show Type (without Id) as starting point.
+        if (!string.IsNullOrEmpty(node.Label))
+        {
+            return node.Label;
+        }
+        // For nodes without labels, start with the Type as default editable text
+        return node.Type ?? "";
     }
 
     /// <summary>

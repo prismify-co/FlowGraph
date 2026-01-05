@@ -117,7 +117,8 @@ public class InputNodeRenderer : DefaultNodeRenderer
             .FirstOrDefault(t => t.Tag as string == LabelTag);
         if (labelTextBlock == null) return;
 
-        // Store the original label for cancel/revert
+        // Store original values for cancel/revert
+        var originalDisplayText = labelTextBlock.Text;
         var originalLabel = node.Label;
 
         // Hide the label
@@ -156,6 +157,7 @@ public class InputNodeRenderer : DefaultNodeRenderer
             if (finished) return;
             finished = true;
             node.Label = originalLabel;
+            labelTextBlock.Text = originalDisplayText;
             onCancel();
         }
 
