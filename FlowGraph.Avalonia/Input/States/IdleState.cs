@@ -269,6 +269,14 @@ public class IdleState : InputStateBase
             return StateTransitionResult.Stay();
         }
 
+        // If strict connection direction is enabled, only allow starting connections from output ports
+        if (context.Settings.StrictConnectionDirection && !isOutput)
+        {
+            // Don't start a new connection from an input port
+            e.Handled = true;
+            return StateTransitionResult.Stay();
+        }
+
         var position = GetPosition(context, e);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);
         connectingState.CreateTempLine(context.MainCanvas);

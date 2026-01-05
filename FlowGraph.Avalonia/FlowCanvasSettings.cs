@@ -229,6 +229,13 @@ public class FlowCanvasSettings
     /// </summary>
     public double EdgeEndpointHandleSize { get; set; } = 10;
 
+    /// <summary>
+    /// Whether connections can only be started from output ports.
+    /// When true (default), dragging from an input port will not start a new connection.
+    /// When false, connections can be started from either input or output ports (bidirectional).
+    /// </summary>
+    public bool StrictConnectionDirection { get; set; } = true;
+
     #endregion
 
     /// <summary>
