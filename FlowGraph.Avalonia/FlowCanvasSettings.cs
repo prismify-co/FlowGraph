@@ -253,6 +253,12 @@ public class FlowCanvasSettings
     /// </summary>
     public bool EnableGroupLabelEditing { get; set; } = false;
 
+    /// <summary>
+    /// Whether double-clicking an edge triggers a label edit request.
+    /// When enabled, double-clicking raises the EdgeLabelEditRequested event.
+    /// </summary>
+    public bool EnableEdgeLabelEditing { get; set; } = true;
+
     #endregion
 
     /// <summary>

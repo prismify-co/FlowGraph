@@ -496,3 +496,37 @@ public class NodeLabelEditRequestedEventArgs : EventArgs
         ScreenPosition = screenPosition;
     }
 }
+
+/// <summary>
+/// Event args for edge label edit request.
+/// Raised when a user double-clicks an edge label to edit it.
+/// </summary>
+public class EdgeLabelEditRequestedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The edge to edit.
+    /// </summary>
+    public Edge Edge { get; }
+
+    /// <summary>
+    /// The current label value.
+    /// </summary>
+    public string? CurrentLabel { get; }
+
+    /// <summary>
+    /// The screen position of the label (for positioning an editor).
+    /// </summary>
+    public AvaloniaPoint ScreenPosition { get; }
+
+    /// <summary>
+    /// Set to true to indicate the event was handled and no default behavior should occur.
+    /// </summary>
+    public bool Handled { get; set; }
+
+    public EdgeLabelEditRequestedEventArgs(Edge edge, string? currentLabel, AvaloniaPoint screenPosition)
+    {
+        Edge = edge;
+        CurrentLabel = currentLabel;
+        ScreenPosition = screenPosition;
+    }
+}

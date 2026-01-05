@@ -41,7 +41,9 @@ public class IdleState : InputStateBase
             
             if (source?.Tag is Edge edge)
             {
-                return HandleEdgeClick(context, e, edge);
+                // Could be edge path (hit area) or edge label (TextBlock)
+                bool isLabel = source is TextBlock;
+                return HandleEdgeClick(context, e, edge, isLabel);
             }
 
             if (source?.Tag is (Node portNode, Port port, bool isOutput))
@@ -177,14 +179,29 @@ public class IdleState : InputStateBase
         return StateTransitionResult.Stay();
     }
 
-    private StateTransitionResult HandleEdgeClick(InputStateContext context, PointerPressedEventArgs e, Edge edge)
+    private StateTransitionResult HandleEdgeClick(InputStateContext context, PointerPressedEventArgs e, Edge edge, bool isLabel = false)
     {
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
+        // Double-click on edge label to edit
+        if (e.ClickCount == 2 && isLabel && context.Settings.EnableEdgeLabelEditing)
+        {
+            var labelVisual = context.GraphRenderer.GetEdgeLabel(edge.Id);
+            if (labelVisual != null)
+            {
+                var screenPos = new AvaloniaPoint(
+                    Canvas.GetLeft(labelVisual),
+                    Canvas.GetTop(labelVisual));
+                context.RaiseEdgeLabelEditRequested(edge, screenPos);
+            }
+            e.Handled = true;
+            return StateTransitionResult.Stay();
+        }
+
         // Check if click is near edge endpoints for reconnection
-        var screenPos = GetPosition(context, e);
-        var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos);
+        var screenPos2 = GetPosition(context, e);
+        var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
         
         if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
         {
@@ -194,7 +211,7 @@ public class IdleState : InputStateBase
             if (context.Theme != null && context.MainCanvas != null)
             {
                 var reconnectState = new ReconnectingState(
-                    edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos, context.Theme);
+                    edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos2, context.Theme);
                 reconnectState.CreateTempLine(context.MainCanvas);
                 CapturePointer(e, context.RootPanel);
                 e.Handled = true;

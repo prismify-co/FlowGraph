@@ -159,6 +159,11 @@ public partial class FlowCanvas : UserControl
     /// </summary>
     public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
 
+    /// <summary>
+    /// Event raised when a user double-clicks an edge label to edit it.
+    /// </summary>
+    public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
+
     #endregion
 
     #region Public Methods - Label Editing
@@ -218,6 +223,111 @@ public partial class FlowCanvas : UserControl
     private void CancelNodeLabelEdit(Node node)
     {
         EndEditNodeLabel(node);
+    }
+
+    /// <summary>
+    /// Begins inline editing for an edge's label.
+    /// Shows an inline TextBox over the edge label.
+    /// </summary>
+    /// <param name="edge">The edge to edit.</param>
+    /// <returns>True if editing started successfully.</returns>
+    public bool BeginEditEdgeLabel(Edge edge)
+    {
+        if (_theme == null || _mainCanvas == null) return false;
+
+        var labelVisual = _graphRenderer.GetEdgeLabel(edge.Id);
+        if (labelVisual == null)
+        {
+            // Edge has no label yet - we need to create one
+            // For now, set an initial label and re-render
+            edge.Label = "Label";
+            RenderEdges();
+            labelVisual = _graphRenderer.GetEdgeLabel(edge.Id);
+            if (labelVisual == null) return false;
+        }
+
+        // Hide the label and show a TextBox in its place
+        labelVisual.IsVisible = false;
+
+        var scale = _viewport.Zoom;
+        var textBox = new TextBox
+        {
+            Text = edge.Label ?? "",
+            FontSize = 12 * scale,
+            Foreground = _theme.NodeText,
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = _theme.NodeSelectedBorder,
+            Padding = new Thickness(4 * scale, 2 * scale),
+            MinWidth = 60,
+            Tag = ("EdgeLabelEdit", edge.Id)
+        };
+
+        Canvas.SetLeft(textBox, Canvas.GetLeft(labelVisual));
+        Canvas.SetTop(textBox, Canvas.GetTop(labelVisual));
+
+        _mainCanvas.Children.Add(textBox);
+
+        bool finished = false;
+
+        void Commit()
+        {
+            if (finished) return;
+            finished = true;
+            CommitEdgeLabel(edge, textBox.Text ?? "", textBox, labelVisual);
+        }
+
+        void Cancel()
+        {
+            if (finished) return;
+            finished = true;
+            CancelEdgeLabelEdit(edge, textBox, labelVisual);
+        }
+
+        textBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == global::Avalonia.Input.Key.Enter)
+            {
+                Commit();
+                e.Handled = true;
+            }
+            else if (e.Key == global::Avalonia.Input.Key.Escape)
+            {
+                Cancel();
+                e.Handled = true;
+            }
+        };
+
+        textBox.LostFocus += (s, e) => Commit();
+
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, global::Avalonia.Threading.DispatcherPriority.Render);
+
+        return true;
+    }
+
+    private void CommitEdgeLabel(Edge edge, string newLabel, TextBox textBox, TextBlock labelVisual)
+    {
+        var trimmed = newLabel.Trim();
+        edge.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
+        
+        // Remove the TextBox
+        _mainCanvas?.Children.Remove(textBox);
+        
+        // Re-render edges to update the label
+        RenderEdges();
+    }
+
+    private void CancelEdgeLabelEdit(Edge edge, TextBox textBox, TextBlock labelVisual)
+    {
+        // Remove the TextBox
+        _mainCanvas?.Children.Remove(textBox);
+        
+        // Show the original label
+        labelVisual.IsVisible = true;
     }
 
     #endregion
@@ -354,6 +464,7 @@ public partial class FlowCanvas : UserControl
         
         // Forward label edit request
         _inputContext.NodeLabelEditRequested += (_, e) => NodeLabelEditRequested?.Invoke(this, e);
+        _inputContext.EdgeLabelEditRequested += (_, e) => EdgeLabelEditRequested?.Invoke(this, e);
     }
 
     private void SubscribeToSelectionManagerEvents()

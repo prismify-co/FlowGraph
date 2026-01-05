@@ -35,6 +35,7 @@ public partial class MainWindow : Window
         
         // Subscribe to label edit requests (double-click or context menu rename)
         FlowCanvas.NodeLabelEditRequested += OnNodeLabelEditRequested;
+        FlowCanvas.EdgeLabelEditRequested += OnEdgeLabelEditRequested;
         
         // Initialize the animation debugger after the window is loaded
         this.Loaded += (_, _) =>
@@ -59,6 +60,25 @@ public partial class MainWindow : Window
         {
             // Fallback message if renderer doesn't support editing
             SetStatus("This node type doesn't support label editing");
+        }
+    }
+
+    #endregion
+
+    #region Edge Rename
+
+    private void OnEdgeLabelEditRequested(object? sender, EdgeLabelEditRequestedEventArgs e)
+    {
+        // Use the built-in inline editing
+        var success = FlowCanvas.BeginEditEdgeLabel(e.Edge);
+        if (success)
+        {
+            e.Handled = true;
+            SetStatus("Press Enter to save, Escape to cancel");
+        }
+        else
+        {
+            SetStatus("Failed to edit edge label");
         }
     }
 

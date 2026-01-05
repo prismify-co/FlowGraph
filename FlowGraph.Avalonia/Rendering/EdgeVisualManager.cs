@@ -128,7 +128,8 @@ public class EdgeVisualManager
                 (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
                 (c is AvaloniaPath p2 && p2 != excludePath && p2.Tag is Edge) ||
                 (c is AvaloniaPath p3 && p3 != excludePath && !p3.IsHitTestVisible && p3.Tag == null) ||
-                (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel") ||
+                (c is TextBlock tb && tb.Tag is Edge) ||  // Edge labels now have Edge as tag
+                (c is TextBlock tb2 && tb2.Tag is string tbTag && tbTag == "edgeLabel") ||  // Backward compat
                 (c is Ellipse el && el.Tag is (Edge, bool)))
             .ToList();
 
@@ -288,7 +289,7 @@ public class EdgeVisualManager
         // Render label if present
         if (!string.IsNullOrEmpty(edge.Label))
         {
-            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale);
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale, edge);
             if (labelVisual != null)
             {
                 _edgeLabels[edge.Id] = labelVisual;
@@ -364,7 +365,7 @@ public class EdgeVisualManager
     /// <summary>
     /// Renders a label on an edge.
     /// </summary>
-    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale, Edge edge)
     {
         var midPoint = new AvaloniaPoint((start.X + end.X) / 2, (start.Y + end.Y) / 2);
 
@@ -375,7 +376,8 @@ public class EdgeVisualManager
             Foreground = theme.NodeText,
             Background = theme.NodeBackground,
             Padding = new Thickness(4 * scale, 2 * scale, 4 * scale, 2 * scale),
-            Tag = "edgeLabel"
+            Tag = edge,  // Store edge reference for event handling
+            Cursor = new Cursor(StandardCursorType.Hand)
         };
 
         Canvas.SetLeft(textBlock, midPoint.X);

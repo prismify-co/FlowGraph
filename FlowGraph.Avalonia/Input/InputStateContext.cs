@@ -79,6 +79,7 @@ public class InputStateContext
     public event EventHandler<EdgeReconnectedEventArgs>? EdgeReconnected;
     public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
     public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
+    public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
 
     #endregion
 
@@ -136,6 +137,16 @@ public class InputStateContext
     {
         var args = new NodeLabelEditRequestedEventArgs(node, node.Label, screenPosition);
         NodeLabelEditRequested?.Invoke(this, args);
+        return args.Handled;
+    }
+
+    /// <summary>
+    /// Raises the EdgeLabelEditRequested event and returns whether it was handled.
+    /// </summary>
+    public bool RaiseEdgeLabelEditRequested(Edge edge, AvaloniaPoint screenPosition)
+    {
+        var args = new EdgeLabelEditRequestedEventArgs(edge, edge.Label, screenPosition);
+        EdgeLabelEditRequested?.Invoke(this, args);
         return args.Handled;
     }
 
