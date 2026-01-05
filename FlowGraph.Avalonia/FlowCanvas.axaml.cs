@@ -161,6 +161,61 @@ public partial class FlowCanvas : UserControl
 
     #endregion
 
+    #region Public Methods - Label Editing
+
+    /// <summary>
+    /// Begins inline editing for a node's label.
+    /// Uses the node's renderer to show an inline TextBox.
+    /// </summary>
+    /// <param name="node">The node to edit.</param>
+    /// <returns>True if editing started successfully.</returns>
+    public bool BeginEditNodeLabel(Node node)
+    {
+        if (_theme == null) return false;
+
+        return _graphRenderer.BeginEditLabel(
+            node, 
+            _theme,
+            newLabel => CommitNodeLabel(node, newLabel),
+            () => CancelNodeLabelEdit(node));
+    }
+
+    /// <summary>
+    /// Ends inline editing for a node's label and commits the change.
+    /// </summary>
+    /// <param name="node">The node being edited.</param>
+    public void EndEditNodeLabel(Node node)
+    {
+        if (_theme == null) return;
+        _graphRenderer.EndEditLabel(node, _theme);
+    }
+
+    /// <summary>
+    /// Gets whether a node is currently in edit mode.
+    /// </summary>
+    /// <param name="node">The node to check.</param>
+    /// <returns>True if the node is being edited.</returns>
+    public bool IsEditingNodeLabel(Node node)
+    {
+        return _graphRenderer.IsEditingLabel(node);
+    }
+
+    private void CommitNodeLabel(Node node, string newLabel)
+    {
+        if (!string.IsNullOrWhiteSpace(newLabel))
+        {
+            node.Label = newLabel.Trim();
+        }
+        EndEditNodeLabel(node);
+    }
+
+    private void CancelNodeLabelEdit(Node node)
+    {
+        EndEditNodeLabel(node);
+    }
+
+    #endregion
+
     #region Private Fields
 
     // UI Elements

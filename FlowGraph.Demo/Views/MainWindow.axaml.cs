@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -10,7 +9,6 @@ using FlowGraph.Avalonia.Animation;
 using FlowGraph.Avalonia.Controls;
 using FlowGraph.Core;
 using FlowGraph.Demo.Helpers;
-using System.Text;
 using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Demo.Views;
@@ -21,7 +19,6 @@ public partial class MainWindow : Window
     private FlowDirection _flowDirection = FlowDirection.Off;
     private AnimationDebugger? _debugger;
     private bool _debugModeEnabled = false;
-    private TextBox? _activeRenameTextBox;
     
     private enum FlowDirection { Off, Forward, Reverse }
 
@@ -51,140 +48,17 @@ public partial class MainWindow : Window
 
     private void OnNodeLabelEditRequested(object? sender, NodeLabelEditRequestedEventArgs e)
     {
-        // Close any existing rename TextBox
-        CloseRenameTextBox(save: false);
-        
-        var node = e.Node;
-        
-        // Get current display text
-        var currentLabel = !string.IsNullOrEmpty(node.Label) 
-            ? node.Label 
-            : (node.IsGroup ? "Group" : (node.Data as string ?? node.Type ?? "Node"));
-        
-        // Get the node visual bounds in screen coordinates
-        var nodeVisual = GetNodeVisualBounds(node);
-        if (nodeVisual == null) return;
-        
-        var bounds = nodeVisual.Value;
-        var textBoxWidth = Math.Max(bounds.Width * 0.8, 80);
-        
-        // Create inline TextBox for editing - styled to match node
-        _activeRenameTextBox = new TextBox
+        // Use the built-in inline editing via the renderer
+        var success = FlowCanvas.BeginEditNodeLabel(e.Node);
+        if (success)
         {
-            Text = currentLabel,
-            Width = textBoxWidth,
-            FontSize = 12,
-            Padding = new Thickness(6, 4),
-            Background = new SolidColorBrush(Colors.White),
-            Foreground = new SolidColorBrush(Colors.Black),
-            BorderBrush = new SolidColorBrush(Color.FromRgb(0, 120, 212)),
-            BorderThickness = new Thickness(2),
-            CornerRadius = new CornerRadius(4),
-            TextAlignment = TextAlignment.Center,
-            VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
-            Tag = node
-        };
-        
-        // Position the TextBox centered on the node
-        var centerX = bounds.X + bounds.Width / 2 - textBoxWidth / 2;
-        var centerY = bounds.Y + bounds.Height / 2 - 14; // Approximate height of TextBox
-        Canvas.SetLeft(_activeRenameTextBox, centerX);
-        Canvas.SetTop(_activeRenameTextBox, centerY);
-        _activeRenameTextBox.ZIndex = 1000;
-        
-        // Handle Enter to save, Escape to cancel
-        _activeRenameTextBox.KeyDown += OnRenameTextBoxKeyDown;
-        _activeRenameTextBox.LostFocus += OnRenameTextBoxLostFocus;
-        
-        // Add to root panel
-        if (this.Content is Panel rootPanel)
-        {
-            rootPanel.Children.Add(_activeRenameTextBox);
-            
-            // Focus and select all text
-            Dispatcher.UIThread.Post(() =>
-            {
-                _activeRenameTextBox.Focus();
-                _activeRenameTextBox.SelectAll();
-            }, DispatcherPriority.Render);
-        }
-        
-        e.Handled = true;
-        SetStatus("Press Enter to save, Escape to cancel");
-    }
-
-    /// <summary>
-    /// Gets the screen bounds of a node visual.
-    /// </summary>
-    private Rect? GetNodeVisualBounds(Node node)
-    {
-        // Get node dimensions
-        var width = node.Width ?? FlowCanvas.Settings.NodeWidth;
-        var height = node.Height ?? FlowCanvas.Settings.NodeHeight;
-        
-        // Transform to screen coordinates
-        var topLeft = FlowCanvas.Viewport.CanvasToScreen(
-            new global::Avalonia.Point(node.Position.X, node.Position.Y));
-        var bottomRight = FlowCanvas.Viewport.CanvasToScreen(
-            new global::Avalonia.Point(node.Position.X + width, node.Position.Y + height));
-        
-        return new Rect(topLeft, bottomRight);
-    }
-
-    private void OnRenameTextBoxKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            CloseRenameTextBox(save: true);
             e.Handled = true;
-        }
-        else if (e.Key == Key.Escape)
-        {
-            CloseRenameTextBox(save: false);
-            e.Handled = true;
-        }
-    }
-
-    private void OnRenameTextBoxLostFocus(object? sender, RoutedEventArgs e)
-    {
-        // Save on focus loss (clicking elsewhere)
-        CloseRenameTextBox(save: true);
-    }
-
-    private void CloseRenameTextBox(bool save)
-    {
-        if (_activeRenameTextBox == null) return;
-        
-        var textBox = _activeRenameTextBox;
-        _activeRenameTextBox = null;
-        
-        // Unsubscribe events
-        textBox.KeyDown -= OnRenameTextBoxKeyDown;
-        textBox.LostFocus -= OnRenameTextBoxLostFocus;
-        
-        if (save && textBox.Tag is Node node)
-        {
-            var newLabel = textBox.Text?.Trim();
-            if (!string.IsNullOrEmpty(newLabel))
-            {
-                node.Label = newLabel;
-                FlowCanvas.Refresh(); // Refresh to show updated label
-                SetStatus($"Renamed to: {newLabel}");
-            }
-            else
-            {
-                SetStatus("Ready");
-            }
+            SetStatus("Press Enter to save, Escape to cancel");
         }
         else
         {
-            SetStatus("Rename cancelled");
-        }
-        
-        // Remove from parent
-        if (this.Content is Panel rootPanel)
-        {
-            rootPanel.Children.Remove(textBox);
+            // Fallback message if renderer doesn't support editing
+            SetStatus("This node type doesn't support label editing");
         }
     }
 

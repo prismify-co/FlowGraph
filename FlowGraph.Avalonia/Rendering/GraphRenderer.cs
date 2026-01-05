@@ -293,4 +293,43 @@ public class GraphRenderer
     public void UpdateResizeHandlePositions(Node node) => _resizeHandleManager.UpdateResizeHandlePositions(node);
 
     #endregion
+
+    #region Inline Editing (Delegated)
+
+    /// <summary>
+    /// Begins inline editing for a node's label.
+    /// </summary>
+    /// <param name="node">The node to edit.</param>
+    /// <param name="theme">Theme resources for styling.</param>
+    /// <param name="onCommit">Callback when editing is committed with the new label value.</param>
+    /// <param name="onCancel">Callback when editing is cancelled.</param>
+    /// <returns>True if edit mode was started successfully.</returns>
+    public bool BeginEditLabel(Node node, ThemeResources theme, Action<string> onCommit, Action onCancel)
+        => _nodeVisualManager.BeginEditLabel(node, theme, onCommit, onCancel);
+
+    /// <summary>
+    /// Ends inline editing for a node's label.
+    /// </summary>
+    /// <param name="node">The node being edited.</param>
+    /// <param name="theme">Theme resources for styling.</param>
+    public void EndEditLabel(Node node, ThemeResources theme)
+        => _nodeVisualManager.EndEditLabel(node, theme);
+
+    /// <summary>
+    /// Gets whether a node is currently in edit mode.
+    /// </summary>
+    /// <param name="node">The node to check.</param>
+    /// <returns>True if the node is being edited.</returns>
+    public bool IsEditingLabel(Node node)
+        => _nodeVisualManager.IsEditingLabel(node);
+
+    /// <summary>
+    /// Checks if a node's renderer supports inline editing.
+    /// </summary>
+    /// <param name="nodeType">The node type to check.</param>
+    /// <returns>True if the renderer supports editing.</returns>
+    public bool SupportsEditing(string? nodeType)
+        => _nodeVisualManager.SupportsEditing(nodeType);
+
+    #endregion
 }

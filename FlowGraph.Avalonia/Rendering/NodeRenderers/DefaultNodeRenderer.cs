@@ -9,9 +9,15 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 
 /// <summary>
 /// Default node renderer that creates a standard bordered box with text.
+/// Supports inline label editing via IEditableNodeRenderer.
 /// </summary>
-public class DefaultNodeRenderer : INodeRenderer
+public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
 {
+    // Tag used to identify the content panel for editing
+    private const string ContentPanelTag = "NodeContent";
+    private const string LabelTextBlockTag = "LabelTextBlock";
+    private const string EditTextBoxTag = "EditTextBox";
+
     public virtual Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
         var theme = context.Theme;
@@ -26,7 +32,6 @@ public class DefaultNodeRenderer : INodeRenderer
 
         var nodeBackground = theme.NodeBackground;
         var nodeBorder = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
-        var nodeText = theme.NodeText;
 
         var border = new Border
         {
@@ -56,7 +61,7 @@ public class DefaultNodeRenderer : INodeRenderer
     /// </summary>
     protected virtual Control CreateNodeContent(Node node, NodeRenderContext context)
     {
-        return new TextBlock
+        var textBlock = new TextBlock
         {
             Text = GetDisplayText(node),
             Foreground = context.Theme.NodeText,
@@ -65,8 +70,20 @@ public class DefaultNodeRenderer : INodeRenderer
             TextAlignment = TextAlignment.Center,
             FontWeight = FontWeight.Medium,
             FontSize = 14 * context.Scale,
-            IsHitTestVisible = false
+            IsHitTestVisible = false,
+            Tag = LabelTextBlockTag
         };
+
+        // Wrap in a panel to allow swapping for edit mode
+        var panel = new Grid
+        {
+            Tag = ContentPanelTag,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        panel.Children.Add(textBlock);
+
+        return panel;
     }
 
     /// <summary>
@@ -110,4 +127,138 @@ public class DefaultNodeRenderer : INodeRenderer
     public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
 
     public virtual double? GetMinHeight(Node node, FlowCanvasSettings settings) => 40;
+
+    #region IEditableNodeRenderer Implementation
+
+    /// <summary>
+    /// Enters edit mode - replaces the label TextBlock with a TextBox.
+    /// </summary>
+    public virtual void BeginEdit(Control visual, Node node, NodeRenderContext context, Action<string> onCommit, Action onCancel)
+    {
+        var contentPanel = FindContentPanel(visual);
+        if (contentPanel == null) return;
+
+        var labelTextBlock = FindLabelTextBlock(contentPanel);
+        if (labelTextBlock == null) return;
+
+        // Hide the label
+        labelTextBlock.IsVisible = false;
+
+        // Create edit TextBox
+        var currentText = GetEditableText(node);
+        var textBox = new TextBox
+        {
+            Text = currentText,
+            FontSize = labelTextBlock.FontSize,
+            Foreground = labelTextBlock.Foreground,
+            Background = Brushes.Transparent,
+            BorderThickness = new Thickness(0),
+            Padding = new Thickness(2),
+            TextAlignment = TextAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalContentAlignment = VerticalAlignment.Center,
+            Tag = EditTextBoxTag,
+            AcceptsReturn = false
+        };
+
+        // Handle commit/cancel
+        textBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == Key.Enter)
+            {
+                onCommit(textBox.Text ?? "");
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                onCancel();
+                e.Handled = true;
+            }
+        };
+
+        textBox.LostFocus += (s, e) =>
+        {
+            // Only commit if we're still in edit mode (not cancelled)
+            if (textBox.Tag as string == EditTextBoxTag)
+            {
+                onCommit(textBox.Text ?? "");
+            }
+        };
+
+        contentPanel.Children.Add(textBox);
+
+        // Focus and select all text
+        textBox.Focus();
+        textBox.SelectAll();
+    }
+
+    /// <summary>
+    /// Exits edit mode - removes the TextBox and shows the label.
+    /// </summary>
+    public virtual void EndEdit(Control visual, Node node, NodeRenderContext context)
+    {
+        var contentPanel = FindContentPanel(visual);
+        if (contentPanel == null) return;
+
+        // Remove the edit TextBox
+        var textBox = contentPanel.Children.OfType<TextBox>()
+            .FirstOrDefault(t => t.Tag as string == EditTextBoxTag);
+        if (textBox != null)
+        {
+            textBox.Tag = null; // Mark as no longer editing
+            contentPanel.Children.Remove(textBox);
+        }
+
+        // Show and update the label
+        var labelTextBlock = FindLabelTextBlock(contentPanel);
+        if (labelTextBlock != null)
+        {
+            labelTextBlock.Text = GetDisplayText(node);
+            labelTextBlock.IsVisible = true;
+        }
+    }
+
+    /// <summary>
+    /// Gets whether the node is currently in edit mode.
+    /// </summary>
+    public virtual bool IsEditing(Control visual)
+    {
+        var contentPanel = FindContentPanel(visual);
+        if (contentPanel == null) return false;
+
+        return contentPanel.Children.OfType<TextBox>()
+            .Any(t => t.Tag as string == EditTextBoxTag);
+    }
+
+    /// <summary>
+    /// Gets the text to edit. Override to customize.
+    /// </summary>
+    protected virtual string GetEditableText(Node node)
+    {
+        return node.Label ?? node.Type ?? "";
+    }
+
+    /// <summary>
+    /// Finds the content panel in the node visual.
+    /// </summary>
+    protected Grid? FindContentPanel(Control visual)
+    {
+        if (visual is Border border && border.Child is Grid grid && grid.Tag as string == ContentPanelTag)
+        {
+            return grid;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Finds the label TextBlock in the content panel.
+    /// </summary>
+    protected TextBlock? FindLabelTextBlock(Grid contentPanel)
+    {
+        return contentPanel.Children.OfType<TextBlock>()
+            .FirstOrDefault(t => t.Tag as string == LabelTextBlockTag);
+    }
+
+    #endregion
 }

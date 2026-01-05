@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using FlowGraph.Core;
@@ -8,12 +9,16 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 
 /// <summary>
 /// Renderer for output nodes with a distinctive red/orange color scheme.
+/// Supports inline label editing.
 /// </summary>
 public class OutputNodeRenderer : DefaultNodeRenderer
 {
     private static readonly IBrush OutputBackground = new SolidColorBrush(Color.Parse("#FBE9E7"));
     private static readonly IBrush OutputBackgroundDark = new SolidColorBrush(Color.Parse("#BF360C"));
     private static readonly IBrush OutputBorder = new SolidColorBrush(Color.Parse("#FF5722"));
+
+    private const string IconTag = "NodeIcon";
+    private const string LabelTag = "NodeLabel";
 
     public override Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
@@ -39,7 +44,8 @@ public class OutputNodeRenderer : DefaultNodeRenderer
         var panel = new StackPanel
         {
             HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center
+            VerticalAlignment = VerticalAlignment.Center,
+            Tag = "NodeContent"
         };
 
         // Simple target/output icon using text
@@ -50,7 +56,8 @@ public class OutputNodeRenderer : DefaultNodeRenderer
             FontWeight = FontWeight.Bold,
             Foreground = OutputBorder,
             HorizontalAlignment = HorizontalAlignment.Center,
-            IsHitTestVisible = false
+            IsHitTestVisible = false,
+            Tag = IconTag
         });
 
         panel.Children.Add(new TextBlock
@@ -61,7 +68,8 @@ public class OutputNodeRenderer : DefaultNodeRenderer
             TextAlignment = TextAlignment.Center,
             FontWeight = FontWeight.Medium,
             FontSize = 12 * context.Scale,
-            IsHitTestVisible = false
+            IsHitTestVisible = false,
+            Tag = LabelTag
         });
 
         return panel;
@@ -77,6 +85,16 @@ public class OutputNodeRenderer : DefaultNodeRenderer
         return "Output";
     }
 
+    protected override string GetEditableText(Node node)
+    {
+        // For output nodes, edit the Label or Data
+        if (!string.IsNullOrEmpty(node.Label))
+            return node.Label;
+        if (node.Data is string data && !string.IsNullOrEmpty(data))
+            return data;
+        return "Output";
+    }
+
     public override void UpdateSelection(Control visual, Node node, NodeRenderContext context)
     {
         base.UpdateSelection(visual, node, context);
@@ -86,4 +104,105 @@ public class OutputNodeRenderer : DefaultNodeRenderer
             border.BorderBrush = OutputBorder;
         }
     }
+
+    #region IEditableNodeRenderer Override
+
+    public override void BeginEdit(Control visual, Node node, NodeRenderContext context, Action<string> onCommit, Action onCancel)
+    {
+        var contentPanel = FindStackPanelContent(visual);
+        if (contentPanel == null) return;
+
+        var labelTextBlock = contentPanel.Children.OfType<TextBlock>()
+            .FirstOrDefault(t => t.Tag as string == LabelTag);
+        if (labelTextBlock == null) return;
+
+        // Hide the label
+        labelTextBlock.IsVisible = false;
+
+        // Create edit TextBox
+        var currentText = GetEditableText(node);
+        var textBox = new TextBox
+        {
+            Text = currentText,
+            FontSize = labelTextBlock.FontSize,
+            Foreground = labelTextBlock.Foreground,
+            Background = Brushes.Transparent,
+            BorderThickness = new Thickness(0),
+            Padding = new Thickness(2),
+            TextAlignment = TextAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center,
+            MinWidth = 60,
+            Tag = "EditTextBox",
+            AcceptsReturn = false
+        };
+
+        textBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == Key.Enter)
+            {
+                onCommit(textBox.Text ?? "");
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                onCancel();
+                e.Handled = true;
+            }
+        };
+
+        textBox.LostFocus += (s, e) =>
+        {
+            if (textBox.Tag as string == "EditTextBox")
+            {
+                onCommit(textBox.Text ?? "");
+            }
+        };
+
+        contentPanel.Children.Add(textBox);
+        textBox.Focus();
+        textBox.SelectAll();
+    }
+
+    public override void EndEdit(Control visual, Node node, NodeRenderContext context)
+    {
+        var contentPanel = FindStackPanelContent(visual);
+        if (contentPanel == null) return;
+
+        var textBox = contentPanel.Children.OfType<TextBox>()
+            .FirstOrDefault(t => t.Tag as string == "EditTextBox");
+        if (textBox != null)
+        {
+            textBox.Tag = null;
+            contentPanel.Children.Remove(textBox);
+        }
+
+        var labelTextBlock = contentPanel.Children.OfType<TextBlock>()
+            .FirstOrDefault(t => t.Tag as string == LabelTag);
+        if (labelTextBlock != null)
+        {
+            labelTextBlock.Text = GetDisplayText(node);
+            labelTextBlock.IsVisible = true;
+        }
+    }
+
+    public override bool IsEditing(Control visual)
+    {
+        var contentPanel = FindStackPanelContent(visual);
+        if (contentPanel == null) return false;
+
+        return contentPanel.Children.OfType<TextBox>()
+            .Any(t => t.Tag as string == "EditTextBox");
+    }
+
+    private StackPanel? FindStackPanelContent(Control visual)
+    {
+        if (visual is Border border && border.Child is StackPanel panel)
+        {
+            return panel;
+        }
+        return null;
+    }
+
+    #endregion
 }
