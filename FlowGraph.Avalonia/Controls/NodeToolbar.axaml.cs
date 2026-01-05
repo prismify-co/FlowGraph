@@ -189,8 +189,13 @@ public partial class NodeToolbar : UserControl
     {
         if (_container != null && Content != null && Content != _container)
         {
-            var originalContent = Content;
-            _container.Child = originalContent as Control;
+            var originalContent = Content as Control;
+            if (originalContent != null)
+            {
+                // Clear the content first to remove the parent reference
+                Content = null;
+                _container.Child = originalContent;
+            }
             Content = _container;
         }
     }

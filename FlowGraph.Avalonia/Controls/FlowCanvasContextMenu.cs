@@ -102,6 +102,14 @@ public class FlowCanvasContextMenu
         {
             ItemsSource = new List<object>
             {
+                CreateSubMenu("Add Node", new List<MenuItem>
+                {
+                    CreateMenuItem("Input Node", null, () => AddNode("input")),
+                    CreateMenuItem("Process Node", null, () => AddNode("process")),
+                    CreateMenuItem("Output Node", null, () => AddNode("output")),
+                    CreateMenuItem("Default Node", null, () => AddNode("default"))
+                }),
+                new Separator(),
                 CreateMenuItem("Paste", "Ctrl+V", OnPaste, isEnabled: () => CanPaste()),
                 new Separator(),
                 CreateMenuItem("Select All", "Ctrl+A", OnSelectAll),
@@ -279,6 +287,52 @@ public class FlowCanvasContextMenu
 
     private void OnCollapseAllGroups() => _canvas.CollapseAllGroups();
     private void OnExpandAllGroups() => _canvas.ExpandAllGroups();
+
+    private void AddNode(string nodeType)
+    {
+        var graph = _canvas.Graph;
+        if (graph == null) return;
+
+        var newNode = nodeType.ToLowerInvariant() switch
+        {
+            "input" => new Node
+            {
+                Type = "input",
+                Data = "Input",
+                Position = _contextMenuPosition,
+                Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
+            },
+            "output" => new Node
+            {
+                Type = "output",
+                Data = "Output",
+                Position = _contextMenuPosition,
+                Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }]
+            },
+            "process" => new Node
+            {
+                Type = "Process",
+                Position = _contextMenuPosition,
+                Inputs = [new Port { Id = "in", Type = "data", Label = "Input" }],
+                Outputs = [new Port { Id = "out", Type = "data", Label = "Output" }]
+            },
+            _ => new Node
+            {
+                Type = "default",
+                Position = _contextMenuPosition,
+                Inputs = [new Port { Id = "in", Type = "data", Label = "In" }],
+                Outputs = [new Port { Id = "out", Type = "data", Label = "Out" }]
+            }
+        };
+
+        // Use command for undo support
+        _canvas.CommandHistory.Execute(new FlowGraph.Core.Commands.AddNodeCommand(graph, newNode));
+
+        // Select the new node
+        foreach (var n in graph.Nodes)
+            n.IsSelected = false;
+        newNode.IsSelected = true;
+    }
 
     private void OnDeleteEdge()
     {
