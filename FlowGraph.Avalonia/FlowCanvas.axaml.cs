@@ -6,6 +6,7 @@ using Avalonia.Media;
 using FlowGraph.Avalonia.Animation;
 using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Input;
+using FlowGraph.Avalonia.Input.States;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
@@ -206,8 +207,27 @@ public partial class FlowCanvas : UserControl
         SubscribeToInputContextEvents();
         SubscribeToSelectionManagerEvents();
         SubscribeToGroupManagerEvents();
-        
+
         _viewport.ViewportChanged += OnViewportStateChanged;
+
+        // Keep input state machine in sync with animations
+        _animationManager.FrameUpdated += (_, _) =>
+        {
+            if (_animationManager.HasAnimations)
+            {
+                if (_inputStateMachine.CurrentStateName != AnimatingState.Instance.Name)
+                {
+                    _inputStateMachine.TransitionTo(AnimatingState.Instance);
+                }
+            }
+            else
+            {
+                if (_inputStateMachine.CurrentStateName == AnimatingState.Instance.Name)
+                {
+                    _inputStateMachine.Reset();
+                }
+            }
+        };
     }
 
     private void OnViewportStateChanged(object? sender, EventArgs e)
