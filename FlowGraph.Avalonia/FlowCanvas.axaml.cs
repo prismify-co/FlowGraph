@@ -86,6 +86,11 @@ public partial class FlowCanvas : UserControl
     public EdgeRoutingManager Routing => _edgeRoutingManager;
 
     /// <summary>
+    /// Gets the context menu manager for customizing context menus.
+    /// </summary>
+    public FlowCanvasContextMenu ContextMenuManager => _contextMenu;
+
+    /// <summary>
     /// Gets the current input state name (for debugging).
     /// </summary>
     public string CurrentInputState => _inputStateMachine.CurrentStateName;
@@ -221,6 +226,9 @@ public partial class FlowCanvas : UserControl
             CommandHistory,
             Settings);
         _contextMenu = new FlowCanvasContextMenu(this);
+
+        // Forward context menu rename requests to the same event
+        _contextMenu.NodeLabelEditRequested += (_, e) => NodeLabelEditRequested?.Invoke(this, e);
 
         // Initialize edge routing manager
         _edgeRoutingManager = new EdgeRoutingManager(

@@ -43,6 +43,8 @@ public class FlowCanvasContextMenu
         {
             ItemsSource = new List<object>
             {
+                CreateMenuItem("Rename", "F2", OnRenameNode),
+                new Separator(),
                 CreateMenuItem("Cut", "Ctrl+X", OnCut),
                 CreateMenuItem("Copy", "Ctrl+C", OnCopy),
                 CreateMenuItem("Duplicate", "Ctrl+D", OnDuplicate),
@@ -62,6 +64,8 @@ public class FlowCanvasContextMenu
         {
             ItemsSource = new List<object>
             {
+                CreateMenuItem("Rename", "F2", OnRenameNode),
+                new Separator(),
                 CreateMenuItem("Expand", null, OnExpandGroup, isEnabled: () => IsGroupCollapsed()),
                 CreateMenuItem("Collapse", null, OnCollapseGroup, isEnabled: () => !IsGroupCollapsed()),
                 new Separator(),
@@ -260,6 +264,31 @@ public class FlowCanvasContextMenu
     private void OnSelectAll() => _canvas.Selection.SelectAll();
     private void OnFitToView() => _canvas.FitToView();
     private void OnResetZoom() => _canvas.ResetZoom();
+
+    private void OnRenameNode()
+    {
+        var selectedNode = _canvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+        if (selectedNode != null)
+        {
+            // Get screen position for the editor
+            var screenPos = _canvas.Viewport.CanvasToScreen(
+                new global::Avalonia.Point(selectedNode.Position.X, selectedNode.Position.Y));
+            
+            // Raise the label edit request event
+            var args = new NodeLabelEditRequestedEventArgs(selectedNode, selectedNode.Label, screenPos);
+            RaiseLabelEditRequested(args);
+        }
+    }
+
+    /// <summary>
+    /// Event raised when a node rename is requested via context menu.
+    /// </summary>
+    public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
+
+    private void RaiseLabelEditRequested(NodeLabelEditRequestedEventArgs args)
+    {
+        NodeLabelEditRequested?.Invoke(this, args);
+    }
 
     private void OnGroupSelected() => _canvas.GroupSelected();
     private void OnUngroup() => _canvas.UngroupSelected();

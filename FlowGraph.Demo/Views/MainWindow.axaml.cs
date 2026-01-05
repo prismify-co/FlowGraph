@@ -1,4 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -8,6 +11,7 @@ using FlowGraph.Avalonia.Controls;
 using FlowGraph.Core;
 using FlowGraph.Demo.Helpers;
 using System.Text;
+using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Demo.Views;
 
@@ -17,6 +21,7 @@ public partial class MainWindow : Window
     private FlowDirection _flowDirection = FlowDirection.Off;
     private AnimationDebugger? _debugger;
     private bool _debugModeEnabled = false;
+    private TextBox? _activeRenameTextBox;
     
     private enum FlowDirection { Off, Forward, Reverse }
 
@@ -31,6 +36,9 @@ public partial class MainWindow : Window
         // Set the target canvas for FlowBackground (must be done after InitializeComponent)
         FlowBackground.TargetCanvas = FlowCanvas;
         
+        // Subscribe to label edit requests (double-click or context menu rename)
+        FlowCanvas.NodeLabelEditRequested += OnNodeLabelEditRequested;
+        
         // Initialize the animation debugger after the window is loaded
         this.Loaded += (_, _) =>
         {
@@ -38,6 +46,115 @@ public partial class MainWindow : Window
             _debugger.IsEnabled = false; // Disabled by default
         };
     }
+
+    #region Node Rename
+
+    private void OnNodeLabelEditRequested(object? sender, NodeLabelEditRequestedEventArgs e)
+    {
+        // Close any existing rename TextBox
+        CloseRenameTextBox(save: false);
+        
+        var node = e.Node;
+        var currentLabel = node.Label ?? node.Type ?? "";
+        
+        // Create inline TextBox for editing
+        _activeRenameTextBox = new TextBox
+        {
+            Text = currentLabel,
+            MinWidth = 120,
+            FontSize = 12,
+            Padding = new Thickness(4, 2),
+            Background = Brushes.White,
+            Foreground = Brushes.Black,
+            BorderBrush = new SolidColorBrush(Color.FromRgb(0, 120, 212)),
+            BorderThickness = new Thickness(2),
+            Tag = node // Store reference to the node
+        };
+        
+        // Position the TextBox at the node's screen position
+        Canvas.SetLeft(_activeRenameTextBox, e.ScreenPosition.X);
+        Canvas.SetTop(_activeRenameTextBox, e.ScreenPosition.Y);
+        _activeRenameTextBox.ZIndex = 1000;
+
+        // Handle Enter to save, Escape to cancel
+        _activeRenameTextBox.KeyDown += OnRenameTextBoxKeyDown;
+        _activeRenameTextBox.LostFocus += OnRenameTextBoxLostFocus;
+        
+        // Add to root panel (the Panel containing everything)
+        if (this.Content is Panel rootPanel)
+        {
+            rootPanel.Children.Add(_activeRenameTextBox);
+            
+            // Focus and select all text
+            Dispatcher.UIThread.Post(() =>
+            {
+                _activeRenameTextBox.Focus();
+                _activeRenameTextBox.SelectAll();
+            }, DispatcherPriority.Render);
+        }
+        
+        e.Handled = true;
+        SetStatus($"Renaming: {currentLabel}");
+    }
+
+    private void OnRenameTextBoxKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            CloseRenameTextBox(save: true);
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape)
+        {
+            CloseRenameTextBox(save: false);
+            e.Handled = true;
+        }
+    }
+
+    private void OnRenameTextBoxLostFocus(object? sender, RoutedEventArgs e)
+    {
+        // Save on focus loss (clicking elsewhere)
+        CloseRenameTextBox(save: true);
+    }
+
+    private void CloseRenameTextBox(bool save)
+    {
+        if (_activeRenameTextBox == null) return;
+        
+        var textBox = _activeRenameTextBox;
+        _activeRenameTextBox = null;
+        
+        // Unsubscribe events
+        textBox.KeyDown -= OnRenameTextBoxKeyDown;
+        textBox.LostFocus -= OnRenameTextBoxLostFocus;
+        
+        if (save && textBox.Tag is Node node)
+        {
+            var newLabel = textBox.Text?.Trim();
+            if (!string.IsNullOrEmpty(newLabel) && newLabel != node.Label)
+            {
+                node.Label = newLabel;
+                FlowCanvas.Refresh(); // Refresh to show updated label
+                SetStatus($"Renamed to: {newLabel}");
+            }
+            else
+            {
+                SetStatus("Ready");
+            }
+        }
+        else
+        {
+            SetStatus("Rename cancelled");
+        }
+        
+        // Remove from parent
+        if (this.Content is Panel rootPanel)
+        {
+            rootPanel.Children.Remove(textBox);
+        }
+    }
+
+    #endregion
 
     private void SetStatus(string message)
     {
@@ -114,11 +231,11 @@ public partial class MainWindow : Window
 
         SetStatus($"Moving {selectedNodes.Count} node(s)");
         var random = new Random();
-        var positions = new Dictionary<Node, Point>();
+        var positions = new Dictionary<Node, CorePoint>();
         
         foreach (var node in selectedNodes)
         {
-            positions[node] = new Point(
+            positions[node] = new CorePoint(
                 node.Position.X + random.Next(-50, 51),
                 node.Position.Y + random.Next(-50, 51));
         }
