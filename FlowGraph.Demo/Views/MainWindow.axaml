@@ -319,6 +319,19 @@
         <controls:FlowPanel Position="BottomRight" Margin="16">
             <controls:FlowMinimap TargetCanvas="{Binding #FlowCanvas}"/>
         </controls:FlowPanel>
+        
+        <!-- Node Toolbar - floating toolbar for selected nodes -->
+        <controls:NodeToolbar 
+            x:Name="NodeToolbar"
+            TargetCanvas="{Binding #FlowCanvas}" 
+            Position="Top" 
+            Offset="12">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Content="??" Padding="8,4" Click="OnToolbarDeleteClick" ToolTip.Tip="Delete selected"/>
+                <Button Content="??" Padding="8,4" Click="OnToolbarDuplicateClick" ToolTip.Tip="Duplicate selected"/>
+                <Button Content="??" Padding="8,4" Click="OnToolbarCenterClick" ToolTip.Tip="Center on selected"/>
+            </StackPanel>
+        </controls:NodeToolbar>
     </Panel>
 
 </Window>

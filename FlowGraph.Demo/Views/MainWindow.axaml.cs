@@ -541,4 +541,30 @@ public partial class MainWindow : Window
     }
 
     #endregion
+
+    #region Node Toolbar Actions
+
+    private void OnToolbarDeleteClick(object? sender, RoutedEventArgs e)
+    {
+        FlowCanvas.Selection.DeleteSelected();
+        SetStatus("Deleted selected");
+    }
+
+    private void OnToolbarDuplicateClick(object? sender, RoutedEventArgs e)
+    {
+        FlowCanvas.Duplicate();
+        SetStatus("Duplicated selected");
+    }
+
+    private void OnToolbarCenterClick(object? sender, RoutedEventArgs e)
+    {
+        var selectedNode = FlowCanvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+        if (selectedNode != null)
+        {
+            FlowCanvas.CenterOnNodeAnimated(selectedNode, duration: 0.3);
+            SetStatus("Centered on selection");
+        }
+    }
+
+    #endregion
 }
