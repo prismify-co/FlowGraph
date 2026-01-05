@@ -76,6 +76,8 @@ public class InputStateContext
     public event EventHandler<NodeDragStopEventArgs>? NodeDragStop;
     public event EventHandler<ConnectStartEventArgs>? ConnectStart;
     public event EventHandler<ConnectEndEventArgs>? ConnectEnd;
+    public event EventHandler<EdgeReconnectedEventArgs>? EdgeReconnected;
+    public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
 
     #endregion
 
@@ -121,6 +123,10 @@ public class InputStateContext
         => ConnectStart?.Invoke(this, new ConnectStartEventArgs(sourceNode, sourcePort, isOutput));
     public void RaiseConnectEnd(Node? sourceNode, Port? sourcePort, Node? targetNode, Port? targetPort, bool completed)
         => ConnectEnd?.Invoke(this, new ConnectEndEventArgs(sourceNode, sourcePort, targetNode, targetPort, completed));
+    public void RaiseEdgeReconnected(Edge oldEdge, Edge newEdge)
+        => EdgeReconnected?.Invoke(this, new EdgeReconnectedEventArgs(oldEdge, newEdge));
+    public void RaiseEdgeDisconnected(Edge edge)
+        => EdgeDisconnected?.Invoke(this, new EdgeDisconnectedEventArgs(edge));
 
     #endregion
 

@@ -166,6 +166,27 @@ public class IdleState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
+        // Check if click is near edge endpoints for reconnection
+        var screenPos = GetPosition(context, e);
+        var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos);
+        
+        if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
+        {
+            var (draggingTarget, fixedNode, fixedPort, movingNode, movingPort) = reconnectInfo.Value;
+            
+            // Start reconnecting state
+            if (context.Theme != null && context.MainCanvas != null)
+            {
+                var reconnectState = new ReconnectingState(
+                    edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos, context.Theme);
+                reconnectState.CreateTempLine(context.MainCanvas);
+                CapturePointer(e, context.RootPanel);
+                e.Handled = true;
+                return StateTransitionResult.TransitionTo(reconnectState);
+            }
+        }
+
+        // Normal edge selection
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
         if (!ctrlHeld)
@@ -180,6 +201,54 @@ public class IdleState : InputStateBase
         context.RaiseEdgeClicked(edge, ctrlHeld);
         e.Handled = true;
         return StateTransitionResult.Stay();
+    }
+
+    /// <summary>
+    /// Checks if a click is near an edge endpoint and returns reconnection info if so.
+    /// </summary>
+    private (bool draggingTarget, Node fixedNode, Port fixedPort, Node movingNode, Port movingPort)? 
+        CheckEdgeEndpointClick(InputStateContext context, Edge edge, AvaloniaPoint screenPos)
+    {
+        var graph = context.Graph;
+        if (graph == null) return null;
+
+        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        
+        if (sourceNode == null || targetNode == null) return null;
+
+        var sourcePort = sourceNode.Outputs.FirstOrDefault(p => p.Id == edge.SourcePort);
+        var targetPort = targetNode.Inputs.FirstOrDefault(p => p.Id == edge.TargetPort);
+        
+        if (sourcePort == null || targetPort == null) return null;
+
+        var sourceScreenPos = context.GraphRenderer.GetPortPosition(sourceNode, sourcePort, true);
+        var targetScreenPos = context.GraphRenderer.GetPortPosition(targetNode, targetPort, false);
+
+        var snapDistance = context.Settings.EdgeEndpointHandleSize * 2;
+
+        // Check distance to source endpoint
+        var distToSource = Math.Sqrt(
+            Math.Pow(screenPos.X - sourceScreenPos.X, 2) + 
+            Math.Pow(screenPos.Y - sourceScreenPos.Y, 2));
+        
+        // Check distance to target endpoint  
+        var distToTarget = Math.Sqrt(
+            Math.Pow(screenPos.X - targetScreenPos.X, 2) + 
+            Math.Pow(screenPos.Y - targetScreenPos.Y, 2));
+
+        if (distToTarget < snapDistance && distToTarget < distToSource)
+        {
+            // Dragging target end - source stays fixed
+            return (true, sourceNode, sourcePort, targetNode, targetPort);
+        }
+        else if (distToSource < snapDistance)
+        {
+            // Dragging source end - target stays fixed
+            return (false, targetNode, targetPort, sourceNode, sourcePort);
+        }
+
+        return null;
     }
 
     private StateTransitionResult HandlePortClick(

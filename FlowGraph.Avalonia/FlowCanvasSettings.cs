@@ -219,6 +219,16 @@ public class FlowCanvasSettings
     /// </summary>
     public bool SnapConnectionToNode { get; set; } = true;
 
+    /// <summary>
+    /// Whether to show draggable handles at edge endpoints for reconnecting/disconnecting edges.
+    /// </summary>
+    public bool ShowEdgeEndpointHandles { get; set; } = true;
+
+    /// <summary>
+    /// Size of edge endpoint handles in pixels.
+    /// </summary>
+    public double EdgeEndpointHandleSize { get; set; } = 10;
+
     #endregion
 
     /// <summary>

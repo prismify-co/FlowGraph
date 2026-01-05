@@ -424,3 +424,41 @@ public class ConnectEndEventArgs : EventArgs
         WasCompleted = wasCompleted;
     }
 }
+
+/// <summary>
+/// Event args for edge reconnection.
+/// </summary>
+public class EdgeReconnectedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The original edge that was reconnected.
+    /// </summary>
+    public Edge OldEdge { get; }
+
+    /// <summary>
+    /// The new edge with updated connection.
+    /// </summary>
+    public Edge NewEdge { get; }
+
+    public EdgeReconnectedEventArgs(Edge oldEdge, Edge newEdge)
+    {
+        OldEdge = oldEdge;
+        NewEdge = newEdge;
+    }
+}
+
+/// <summary>
+/// Event args for edge disconnection (dropped in empty space).
+/// </summary>
+public class EdgeDisconnectedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The edge that was disconnected.
+    /// </summary>
+    public Edge Edge { get; }
+
+    public EdgeDisconnectedEventArgs(Edge edge)
+    {
+        Edge = edge;
+    }
+}

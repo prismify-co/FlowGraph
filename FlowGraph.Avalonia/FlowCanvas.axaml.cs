@@ -379,6 +379,10 @@ public partial class FlowCanvas : UserControl
         // Forward connect lifecycle events
         _inputContext.ConnectStart += (_, e) => ConnectStart?.Invoke(this, e);
         _inputContext.ConnectEnd += (_, e) => ConnectEnd?.Invoke(this, e);
+        
+        // Handle edge reconnection/disconnection
+        _inputContext.EdgeReconnected += OnEdgeReconnected;
+        _inputContext.EdgeDisconnected += OnEdgeDisconnected;
     }
 
     private void SubscribeToSelectionManagerEvents()
@@ -767,6 +771,26 @@ public partial class FlowCanvas : UserControl
             e.OldWidth, e.OldHeight, e.NewWidth, e.NewHeight,
             e.OldPosition, e.NewPosition);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
+    }
+
+    private void OnEdgeReconnected(object? sender, EdgeReconnectedEventArgs e)
+    {
+        if (Graph == null) return;
+        
+        var commands = new List<IGraphCommand>
+        {
+            new RemoveEdgeCommand(Graph, e.OldEdge),
+            new AddEdgeCommand(Graph, e.NewEdge)
+        };
+        
+        CommandHistory.Execute(new CompositeCommand("Reconnect edge", commands));
+    }
+
+    private void OnEdgeDisconnected(object? sender, EdgeDisconnectedEventArgs e)
+    {
+        if (Graph == null) return;
+        
+        CommandHistory.Execute(new RemoveEdgeCommand(Graph, e.Edge));
     }
 
     #endregion

@@ -24,6 +24,7 @@ public class GraphRenderer
     private readonly Dictionary<string, List<AvaloniaPath>> _edgeMarkers = new();  // Edge markers (arrows)
     private readonly Dictionary<string, TextBlock> _edgeLabels = new();  // Edge labels
     private readonly Dictionary<string, List<Rectangle>> _resizeHandles = new();  // Resize handles per node
+    private readonly Dictionary<string, (Ellipse source, Ellipse target)> _edgeEndpointHandles = new();  // Edge endpoint handles
     
     // Current viewport state for transforming positions
     private ViewportState? _viewport;
@@ -133,6 +134,14 @@ public class GraphRenderer
     }
 
     /// <summary>
+    /// Gets the endpoint handles for an edge.
+    /// </summary>
+    public (Ellipse? source, Ellipse? target) GetEdgeEndpointHandles(string edgeId)
+    {
+        return _edgeEndpointHandles.TryGetValue(edgeId, out var handles) ? handles : (null, null);
+    }
+
+    /// <summary>
     /// Clears all rendered visuals.
     /// </summary>
     public void Clear()
@@ -143,6 +152,7 @@ public class GraphRenderer
         _edgeVisiblePaths.Clear();
         _edgeMarkers.Clear();
         _edgeLabels.Clear();
+        _edgeEndpointHandles.Clear();
         _resizeHandles.Clear();
     }
 
@@ -373,6 +383,14 @@ public class GraphRenderer
         _edgeVisiblePaths.Clear();
         _edgeMarkers.Clear();
         _edgeLabels.Clear();
+        
+        // Remove existing edge endpoint handles
+        foreach (var (_, handles) in _edgeEndpointHandles)
+        {
+            canvas.Children.Remove(handles.source);
+            canvas.Children.Remove(handles.target);
+        }
+        _edgeEndpointHandles.Clear();
 
         // Remove existing edges, markers, labels, and hit areas
         var elementsToRemove = canvas.Children
@@ -380,7 +398,8 @@ public class GraphRenderer
                 (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
                 (c is AvaloniaPath p2 && p2 != excludePath && p2.Tag is Edge) ||
                 (c is AvaloniaPath p3 && p3 != excludePath && !p3.IsHitTestVisible && p3.Tag == null) ||  // Visible paths with no hit test
-                (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel"))
+                (c is TextBlock tb && tb.Tag is string tbTag && tbTag == "edgeLabel") ||
+                (c is Ellipse el && el.Tag is (Edge, bool)))  // Edge endpoint handles
             .ToList();
         
         foreach (var element in elementsToRemove)
