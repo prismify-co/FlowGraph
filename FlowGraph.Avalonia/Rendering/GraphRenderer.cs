@@ -496,6 +496,7 @@ public class GraphRenderer
             Data = pathGeometry,
             Stroke = strokeBrush,
             StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
+            StrokeDashArray = null, // Ensure no dash array by default (can be set by animations)
             IsHitTestVisible = false  // Hit testing is handled by the hit area path
         };
         
