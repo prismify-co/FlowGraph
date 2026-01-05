@@ -1,3 +1,4 @@
+using Avalonia;
 using FlowGraph.Core;
 
 namespace FlowGraph.Avalonia;
@@ -171,6 +172,36 @@ public class FlowCanvasSettings
     /// The default router algorithm to use for routing.
     /// </summary>
     public RouterAlgorithm DefaultRouterAlgorithm { get; set; } = RouterAlgorithm.Auto;
+
+    #endregion
+
+    #region Viewport Settings
+
+    /// <summary>
+    /// Optional bounds to constrain panning.
+    /// If set, the viewport cannot pan outside these bounds.
+    /// Use null for unconstrained panning.
+    /// </summary>
+    public Rect? ViewportBounds { get; set; } = null;
+
+    /// <summary>
+    /// Padding inside the viewport bounds.
+    /// Only applies when ViewportBounds is set.
+    /// </summary>
+    public double ViewportBoundsPadding { get; set; } = 100;
+
+    /// <summary>
+    /// Whether to pan the viewport when scrolling (mouse wheel without Ctrl).
+    /// When true: scroll = pan, Ctrl+scroll = zoom
+    /// When false: scroll = zoom (default behavior)
+    /// </summary>
+    public bool PanOnScroll { get; set; } = false;
+
+    /// <summary>
+    /// Speed multiplier for pan-on-scroll behavior.
+    /// Higher values result in faster panning.
+    /// </summary>
+    public double PanOnScrollSpeed { get; set; } = 1.0;
 
     #endregion
 

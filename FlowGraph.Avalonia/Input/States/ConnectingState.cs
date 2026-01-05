@@ -28,6 +28,9 @@ public class ConnectingState : InputStateBase
     // Track hovered port for validation visual feedback
     private Ellipse? _hoveredPortVisual;
     private IBrush? _hoveredPortOriginalFill;
+    
+    // Track whether connect start was raised
+    private bool _connectStartRaised;
 
     public override string Name => "Connecting";
     public override bool IsModal => true;
@@ -47,6 +50,7 @@ public class ConnectingState : InputStateBase
         _portVisual = portVisual;
         _previousCursor = portVisual.Cursor;
         _theme = theme;
+        _connectStartRaised = false;
 
         // Change cursor during connection
         portVisual.Cursor = new Cursor(StandardCursorType.Hand);
@@ -62,6 +66,15 @@ public class ConnectingState : InputStateBase
             Opacity = 0.7
         };
         canvas.Children.Add(_tempLine);
+    }
+
+    public override void Enter(InputStateContext context)
+    {
+        base.Enter(context);
+        
+        // Raise connect start event
+        context.RaiseConnectStart(_sourceNode, _sourcePort, _fromOutput);
+        _connectStartRaised = true;
     }
 
     public override void Exit(InputStateContext context)
@@ -95,10 +108,17 @@ public class ConnectingState : InputStateBase
     {
         var screenPoint = GetPosition(context, e);
         var hitElement = HitTest(context, screenPoint);
+        
+        bool connectionCompleted = false;
+        Node? targetNode = null;
+        Port? targetPort = null;
 
         if (hitElement is Ellipse targetPortVisual && 
-            targetPortVisual.Tag is (Node targetNode, Port targetPort, bool isOutput))
+            targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
+            targetNode = tn;
+            targetPort = tp;
+            
             // Can only connect output to input (or input to output)
             // Also check that target node allows connections
             if (_fromOutput != isOutput && targetNode.IsConnectable)
@@ -112,8 +132,15 @@ public class ConnectingState : InputStateBase
                     var destPort = _fromOutput ? targetPort : _sourcePort;
 
                     context.RaiseConnectionCompleted(sourceNode, sourcePort, destNode, destPort);
+                    connectionCompleted = true;
                 }
             }
+        }
+
+        // Raise connect end event
+        if (_connectStartRaised)
+        {
+            context.RaiseConnectEnd(_sourceNode, _sourcePort, targetNode, targetPort, connectionCompleted);
         }
 
         ReleasePointer(e);
@@ -124,6 +151,11 @@ public class ConnectingState : InputStateBase
     {
         if (e.Key == Key.Escape)
         {
+            // Raise connect end with cancelled
+            if (_connectStartRaised)
+            {
+                context.RaiseConnectEnd(_sourceNode, _sourcePort, null, null, completed: false);
+            }
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
         return StateTransitionResult.Unhandled();

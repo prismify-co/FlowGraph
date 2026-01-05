@@ -64,7 +64,22 @@ public class IdleState : InputStateBase
     public override StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)
     {
         var position = GetPosition(context, e);
+        bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
         
+        // Pan on scroll behavior
+        if (context.Settings.PanOnScroll && !ctrlHeld)
+        {
+            // Scroll without Ctrl = pan
+            var speed = context.Settings.PanOnScrollSpeed * 50;
+            var deltaX = e.Delta.X * speed;
+            var deltaY = e.Delta.Y * speed;
+            context.Viewport.Pan(deltaX, deltaY);
+            context.RaiseGridRender();
+            e.Handled = true;
+            return StateTransitionResult.Stay();
+        }
+        
+        // Default zoom behavior (or Ctrl+scroll when PanOnScroll is enabled)
         if (e.Delta.Y > 0)
             context.Viewport.ZoomIn(position);
         else

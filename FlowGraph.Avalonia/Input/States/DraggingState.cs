@@ -14,6 +14,8 @@ public class DraggingState : InputStateBase
     private readonly Dictionary<string, Core.Point> _startPositions;
     private readonly FlowCanvasSettings _settings;
     private readonly List<string> _draggedNodeIds;
+    private readonly List<Node> _draggedNodes;
+    private bool _dragStartRaised;
 
     public override string Name => "Dragging";
 
@@ -23,6 +25,8 @@ public class DraggingState : InputStateBase
         _startPositions = new Dictionary<string, Core.Point>();
         _settings = settings;
         _draggedNodeIds = new List<string>();
+        _draggedNodes = new List<Node>();
+        _dragStartRaised = false;
 
         // Collect all nodes to drag: selected AND draggable nodes + children of selected groups
         var nodesToDrag = new HashSet<string>();
@@ -49,8 +53,19 @@ public class DraggingState : InputStateBase
                 node.IsDragging = true;
                 _startPositions[node.Id] = node.Position;
                 _draggedNodeIds.Add(node.Id);
+                _draggedNodes.Add(node);
             }
         }
+    }
+
+    public override void Enter(InputStateContext context)
+    {
+        base.Enter(context);
+        
+        // Raise drag start event
+        var startPos = new Core.Point(_dragStartCanvas.X, _dragStartCanvas.Y);
+        context.RaiseNodeDragStart(_draggedNodes, startPos);
+        _dragStartRaised = true;
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
@@ -94,6 +109,10 @@ public class DraggingState : InputStateBase
         if (graph == null)
         {
             ReleasePointer(e);
+            if (_dragStartRaised)
+            {
+                context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
+            }
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
 
@@ -120,6 +139,12 @@ public class DraggingState : InputStateBase
                 newPositions);
         }
 
+        // Raise drag stop event
+        if (_dragStartRaised)
+        {
+            context.RaiseNodeDragStop(_draggedNodes, cancelled: false);
+        }
+
         ReleasePointer(e);
         e.Handled = true;
         return StateTransitionResult.TransitionTo(IdleState.Instance);
@@ -143,6 +168,13 @@ public class DraggingState : InputStateBase
                     }
                 }
             }
+
+            // Raise drag stop with cancelled = true
+            if (_dragStartRaised)
+            {
+                context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
+            }
+
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
         return StateTransitionResult.Unhandled();

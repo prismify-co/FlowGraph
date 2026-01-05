@@ -72,6 +72,10 @@ public class InputStateContext
     public event EventHandler<NodeResizedEventArgs>? NodeResized;
     public event EventHandler<NodeResizingEventArgs>? NodeResizing;
     public event EventHandler<StateChangedEventArgs>? StateChanged;
+    public event EventHandler<NodeDragStartEventArgs>? NodeDragStart;
+    public event EventHandler<NodeDragStopEventArgs>? NodeDragStop;
+    public event EventHandler<ConnectStartEventArgs>? ConnectStart;
+    public event EventHandler<ConnectEndEventArgs>? ConnectEnd;
 
     #endregion
 
@@ -109,6 +113,14 @@ public class InputStateContext
         => NodeResizing?.Invoke(this, new NodeResizingEventArgs(node, newWidth, newHeight, newPos));
     public void RaiseStateChanged(string oldState, string newState)
         => StateChanged?.Invoke(this, new StateChangedEventArgs(oldState, newState));
+    public void RaiseNodeDragStart(IReadOnlyList<Node> nodes, Core.Point startPosition)
+        => NodeDragStart?.Invoke(this, new NodeDragStartEventArgs(nodes, startPosition));
+    public void RaiseNodeDragStop(IReadOnlyList<Node> nodes, bool cancelled)
+        => NodeDragStop?.Invoke(this, new NodeDragStopEventArgs(nodes, cancelled));
+    public void RaiseConnectStart(Node sourceNode, Port sourcePort, bool isOutput)
+        => ConnectStart?.Invoke(this, new ConnectStartEventArgs(sourceNode, sourcePort, isOutput));
+    public void RaiseConnectEnd(Node? sourceNode, Port? sourcePort, Node? targetNode, Port? targetPort, bool completed)
+        => ConnectEnd?.Invoke(this, new ConnectEndEventArgs(sourceNode, sourcePort, targetNode, targetPort, completed));
 
     #endregion
 

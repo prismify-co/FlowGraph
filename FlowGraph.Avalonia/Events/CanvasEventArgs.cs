@@ -319,14 +319,14 @@ public class NodeDragStartEventArgs : EventArgs
     public IReadOnlyList<Node> Nodes { get; }
 
     /// <summary>
-    /// Starting positions of the nodes.
+    /// Starting position in canvas coordinates.
     /// </summary>
-    public IReadOnlyDictionary<string, CorePoint> StartPositions { get; }
+    public CorePoint StartPosition { get; }
 
-    public NodeDragStartEventArgs(IReadOnlyList<Node> nodes, IReadOnlyDictionary<string, CorePoint> startPositions)
+    public NodeDragStartEventArgs(IReadOnlyList<Node> nodes, CorePoint startPosition)
     {
         Nodes = nodes;
-        StartPositions = startPositions;
+        StartPosition = startPosition;
     }
 }
 
@@ -341,23 +341,14 @@ public class NodeDragStopEventArgs : EventArgs
     public IReadOnlyList<Node> Nodes { get; }
 
     /// <summary>
-    /// Starting positions of the nodes.
+    /// Whether the drag was cancelled (e.g., by pressing Escape).
     /// </summary>
-    public IReadOnlyDictionary<string, CorePoint> StartPositions { get; }
+    public bool WasCancelled { get; }
 
-    /// <summary>
-    /// Final positions of the nodes.
-    /// </summary>
-    public IReadOnlyDictionary<string, CorePoint> EndPositions { get; }
-
-    public NodeDragStopEventArgs(
-        IReadOnlyList<Node> nodes, 
-        IReadOnlyDictionary<string, CorePoint> startPositions,
-        IReadOnlyDictionary<string, CorePoint> endPositions)
+    public NodeDragStopEventArgs(IReadOnlyList<Node> nodes, bool wasCancelled)
     {
         Nodes = nodes;
-        StartPositions = startPositions;
-        EndPositions = endPositions;
+        WasCancelled = wasCancelled;
     }
 }
 
@@ -395,18 +386,41 @@ public class ConnectStartEventArgs : EventArgs
 public class ConnectEndEventArgs : EventArgs
 {
     /// <summary>
-    /// Whether the connection was successfully completed.
+    /// The source node where the connection started.
     /// </summary>
-    public bool WasSuccessful { get; }
+    public Node? SourceNode { get; }
 
     /// <summary>
-    /// The created edge, if successful.
+    /// The source port where the connection started.
     /// </summary>
-    public Edge? CreatedEdge { get; }
+    public Port? SourcePort { get; }
 
-    public ConnectEndEventArgs(bool wasSuccessful, Edge? createdEdge = null)
+    /// <summary>
+    /// The target node if connection completed, null if cancelled.
+    /// </summary>
+    public Node? TargetNode { get; }
+
+    /// <summary>
+    /// The target port if connection completed, null if cancelled.
+    /// </summary>
+    public Port? TargetPort { get; }
+
+    /// <summary>
+    /// Whether the connection was successfully completed.
+    /// </summary>
+    public bool WasCompleted { get; }
+
+    public ConnectEndEventArgs(
+        Node? sourceNode, 
+        Port? sourcePort, 
+        Node? targetNode, 
+        Port? targetPort, 
+        bool wasCompleted)
     {
-        WasSuccessful = wasSuccessful;
-        CreatedEdge = createdEdge;
+        SourceNode = sourceNode;
+        SourcePort = sourcePort;
+        TargetNode = targetNode;
+        TargetPort = targetPort;
+        WasCompleted = wasCompleted;
     }
 }

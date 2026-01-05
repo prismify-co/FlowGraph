@@ -84,6 +84,7 @@ public class ViewportState
         OffsetY = center.Y - (center.Y - OffsetY) * zoomFactor;
 
         Zoom = newZoom;
+        ClampToBounds();
         OnViewportChanged();
     }
 
@@ -156,6 +157,7 @@ public class ViewportState
     {
         OffsetX += deltaX;
         OffsetY += deltaY;
+        ClampToBounds();
         OnViewportChanged();
     }
 
@@ -171,6 +173,7 @@ public class ViewportState
             
         OffsetX = ViewSize.Width / 2 - canvasPoint.X * Zoom;
         OffsetY = ViewSize.Height / 2 - canvasPoint.Y * Zoom;
+        ClampToBounds();
         OnViewportChanged();
     }
 
@@ -219,6 +222,7 @@ public class ViewportState
         OffsetX = viewSize.Width / 2 - centerX * newZoom;
         OffsetY = viewSize.Height / 2 - centerY * newZoom;
 
+        ClampToBounds();
         OnViewportChanged();
     }
 
@@ -249,5 +253,56 @@ public class ViewportState
     private void OnViewportChanged()
     {
         ViewportChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Clamps the viewport offset to stay within configured bounds.
+    /// </summary>
+    private void ClampToBounds()
+    {
+        if (_settings.ViewportBounds is not Rect bounds)
+            return;
+
+        if (ViewSize.Width <= 0 || ViewSize.Height <= 0)
+            return;
+
+        var padding = _settings.ViewportBoundsPadding;
+
+        // Calculate the visible area in canvas coordinates
+        var visibleWidth = ViewSize.Width / Zoom;
+        var visibleHeight = ViewSize.Height / Zoom;
+
+        // Calculate min/max offsets to keep the bounds visible
+        // The offset is: screenPos = canvasPos * zoom + offset
+        // So: offset = screenPos - canvasPos * zoom
+        
+        // Maximum offset (left/top edge of bounds at left/top of screen with padding)
+        var maxOffsetX = padding - bounds.Left * Zoom;
+        var maxOffsetY = padding - bounds.Top * Zoom;
+
+        // Minimum offset (right/bottom edge of bounds at right/bottom of screen with padding)
+        var minOffsetX = ViewSize.Width - padding - bounds.Right * Zoom;
+        var minOffsetY = ViewSize.Height - padding - bounds.Bottom * Zoom;
+
+        // If bounds are smaller than view, center them instead
+        if (bounds.Width * Zoom < ViewSize.Width - padding * 2)
+        {
+            var centerX = bounds.Left + bounds.Width / 2;
+            OffsetX = ViewSize.Width / 2 - centerX * Zoom;
+        }
+        else
+        {
+            OffsetX = Math.Clamp(OffsetX, minOffsetX, maxOffsetX);
+        }
+
+        if (bounds.Height * Zoom < ViewSize.Height - padding * 2)
+        {
+            var centerY = bounds.Top + bounds.Height / 2;
+            OffsetY = ViewSize.Height / 2 - centerY * Zoom;
+        }
+        else
+        {
+            OffsetY = Math.Clamp(OffsetY, minOffsetY, maxOffsetY);
+        }
     }
 }

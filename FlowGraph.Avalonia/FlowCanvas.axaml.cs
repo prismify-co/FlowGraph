@@ -371,6 +371,14 @@ public partial class FlowCanvas : UserControl
         _inputContext.NodeResized += OnNodeResized;
         _inputContext.GridRenderRequested += (_, _) => RenderGrid();
         _inputContext.StateChanged += (_, e) => InputStateChanged?.Invoke(this, e);
+        
+        // Forward drag lifecycle events
+        _inputContext.NodeDragStart += (_, e) => NodeDragStart?.Invoke(this, e);
+        _inputContext.NodeDragStop += (_, e) => NodeDragStop?.Invoke(this, e);
+        
+        // Forward connect lifecycle events
+        _inputContext.ConnectStart += (_, e) => ConnectStart?.Invoke(this, e);
+        _inputContext.ConnectEnd += (_, e) => ConnectEnd?.Invoke(this, e);
     }
 
     private void SubscribeToSelectionManagerEvents()
