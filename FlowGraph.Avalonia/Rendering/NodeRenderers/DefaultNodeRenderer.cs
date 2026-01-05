@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using FlowGraph.Core;
 
 namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
@@ -150,28 +151,34 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         {
             Text = currentText,
             FontSize = labelTextBlock.FontSize,
-            Foreground = labelTextBlock.Foreground,
-            Background = Brushes.Transparent,
-            BorderThickness = new Thickness(0),
-            Padding = new Thickness(2),
+            Foreground = context.Theme.NodeText,
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = context.Theme.NodeSelectedBorder,
+            Padding = new Thickness(4, 2),
             TextAlignment = TextAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
+            MinWidth = 80,
             Tag = EditTextBoxTag,
             AcceptsReturn = false
         };
 
+        bool committed = false;
+        
         // Handle commit/cancel
         textBox.KeyDown += (s, e) =>
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !committed)
             {
+                committed = true;
                 onCommit(textBox.Text ?? "");
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
             {
+                committed = true;
                 onCancel();
                 e.Handled = true;
             }
@@ -179,18 +186,22 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
         textBox.LostFocus += (s, e) =>
         {
-            // Only commit if we're still in edit mode (not cancelled)
-            if (textBox.Tag as string == EditTextBoxTag)
+            // Only commit if we haven't already
+            if (!committed)
             {
+                committed = true;
                 onCommit(textBox.Text ?? "");
             }
         };
 
         contentPanel.Children.Add(textBox);
 
-        // Focus and select all text
-        textBox.Focus();
-        textBox.SelectAll();
+        // Focus and select all text - must be done after control is in visual tree
+        Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, DispatcherPriority.Render);
     }
 
     /// <summary>

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using FlowGraph.Core;
 
 namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
@@ -125,10 +126,11 @@ public class OutputNodeRenderer : DefaultNodeRenderer
         {
             Text = currentText,
             FontSize = labelTextBlock.FontSize,
-            Foreground = labelTextBlock.Foreground,
-            Background = Brushes.Transparent,
-            BorderThickness = new Thickness(0),
-            Padding = new Thickness(2),
+            Foreground = context.Theme.NodeText,
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = OutputBorder,
+            Padding = new Thickness(4, 2),
             TextAlignment = TextAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
@@ -137,15 +139,19 @@ public class OutputNodeRenderer : DefaultNodeRenderer
             AcceptsReturn = false
         };
 
+        bool committed = false;
+
         textBox.KeyDown += (s, e) =>
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !committed)
             {
+                committed = true;
                 onCommit(textBox.Text ?? "");
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
             {
+                committed = true;
                 onCancel();
                 e.Handled = true;
             }
@@ -153,15 +159,20 @@ public class OutputNodeRenderer : DefaultNodeRenderer
 
         textBox.LostFocus += (s, e) =>
         {
-            if (textBox.Tag as string == "EditTextBox")
+            if (!committed)
             {
+                committed = true;
                 onCommit(textBox.Text ?? "");
             }
         };
 
         contentPanel.Children.Add(textBox);
-        textBox.Focus();
-        textBox.SelectAll();
+        
+        Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, DispatcherPriority.Render);
     }
 
     public override void EndEdit(Control visual, Node node, NodeRenderContext context)
