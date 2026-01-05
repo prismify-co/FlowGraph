@@ -382,6 +382,38 @@ canvas.GroupManager.RemoveNodeFromGroup(nodeId);
 canvas.UngroupSelected();
 ```
 
+### Group Ports
+
+Groups can have input/output ports just like regular nodes, enabling connections between groups and external nodes:
+
+```csharp
+var group = new Node
+{
+    Type = "group",
+    IsGroup = true,
+    Label = "Processing Pipeline",
+    Position = new Point(100, 100),
+    Width = 400,
+    Height = 300,
+    // Groups can have external ports!
+    Inputs = [new Port { Id = "in", Type = "data", Label = "Pipeline Input" }],
+    Outputs = [new Port { Id = "out", Type = "data", Label = "Pipeline Output" }]
+};
+
+// Connect external nodes to the group
+graph.AddEdge(new Edge
+{
+    Source = externalNode.Id,
+    Target = group.Id,
+    SourcePort = "out",
+    TargetPort = "in",  // Group's input port
+    Type = EdgeType.Bezier,
+    MarkerEnd = EdgeMarker.Arrow
+});
+```
+
+This architecture enables powerful composition patterns and is designed for future extensibility (e.g., subflows in PRO edition where group ports can map to internal interface nodes).
+
 ## 🛤️ Edge Routing
 
 ```csharp
