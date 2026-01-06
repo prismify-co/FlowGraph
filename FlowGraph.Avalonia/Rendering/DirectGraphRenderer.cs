@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using FlowGraph.Core;
-using System.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
@@ -38,7 +36,7 @@ public class DirectGraphRenderer : Control
     private Pen? _resizeHandlePen;
 
     // Typeface for labels
-    private Typeface _typeface = new Typeface("Segoe UI");
+    private readonly Typeface _typeface = new("Segoe UI");
 
     // Spatial index for fast hit testing
     private List<(Node node, double x, double y, double width, double height)>? _nodeIndex;
@@ -47,26 +45,48 @@ public class DirectGraphRenderer : Control
     // Port hover state tracking
     private (string nodeId, string portId)? _hoveredPort;
 
-    // Active edit overlay (for inline editing support)
-    private Control? _editOverlay;
+    // Inline editing state
     private string? _editingNodeId;
     private string? _editingEdgeId;
 
+    /// <summary>
+    /// Creates a new DirectGraphRenderer with the specified settings.
+    /// </summary>
+    /// <param name="settings">Canvas settings for rendering configuration.</param>
     public DirectGraphRenderer(FlowCanvasSettings settings)
     {
-        _settings = settings;
+        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         _model = new GraphRenderModel(settings);
         IsHitTestVisible = false; // Hit testing handled separately
     }
 
     /// <summary>
     /// Gets the render model used for geometry calculations.
+    /// This model is shared with other renderers to ensure visual parity.
     /// </summary>
     public GraphRenderModel Model => _model;
 
     /// <summary>
-    /// Updates the renderer with current graph state and triggers a redraw.
+    /// Gets whether inline editing is currently active.
     /// </summary>
+    public bool IsEditing => _editingNodeId != null || _editingEdgeId != null;
+
+    /// <summary>
+    /// Gets the ID of the node currently being edited, or null if no node is being edited.
+    /// </summary>
+    public string? EditingNodeId => _editingNodeId;
+
+    /// <summary>
+    /// Gets the ID of the edge currently being edited, or null if no edge is being edited.
+    /// </summary>
+    public string? EditingEdgeId => _editingEdgeId;
+
+    /// <summary>
+    /// Updates the renderer with the current graph state and triggers a redraw.
+    /// </summary>
+    /// <param name="graph">The graph to render.</param>
+    /// <param name="viewport">Current viewport state for zoom/pan.</param>
+    /// <param name="theme">Theme resources for styling.</param>
     public void Update(Graph? graph, ViewportState viewport, ThemeResources theme)
     {
         _graph = graph;
@@ -84,6 +104,7 @@ public class DirectGraphRenderer : Control
 
     /// <summary>
     /// Marks the spatial index as dirty, forcing rebuild on next hit test.
+    /// Call this when nodes are added, removed, or moved.
     /// </summary>
     public void InvalidateIndex()
     {
@@ -91,8 +112,10 @@ public class DirectGraphRenderer : Control
     }
 
     /// <summary>
-    /// Sets the hovered port for visual feedback.
+    /// Sets the currently hovered port for visual feedback.
     /// </summary>
+    /// <param name="nodeId">ID of the node containing the port, or null to clear.</param>
+    /// <param name="portId">ID of the port, or null to clear.</param>
     public void SetHoveredPort(string? nodeId, string? portId)
     {
         var newHovered = (nodeId != null && portId != null) ? (nodeId, portId) : ((string, string)?)null;
@@ -118,45 +141,42 @@ public class DirectGraphRenderer : Control
     #region Inline Editing Support
 
     /// <summary>
-    /// Shows an edit overlay control at the specified canvas position.
-    /// Used for inline label editing in direct rendering mode.
+    /// Begins editing a node's label. The label will not be drawn while editing.
     /// </summary>
-    public void ShowEditOverlay(Control overlay, AvaloniaPoint canvasPosition, string? nodeId = null, string? edgeId = null)
+    /// <param name="nodeId">ID of the node to edit.</param>
+    public void BeginEditNode(string nodeId)
     {
-        RemoveEditOverlay();
-        
-        _editOverlay = overlay;
         _editingNodeId = nodeId;
-        _editingEdgeId = edgeId;
-        
-        // Position will be set by the parent canvas
         InvalidateVisual();
     }
 
     /// <summary>
-    /// Removes the current edit overlay.
+    /// Ends editing a node's label.
     /// </summary>
-    public void RemoveEditOverlay()
+    public void EndEditNode()
     {
-        _editOverlay = null;
         _editingNodeId = null;
-        _editingEdgeId = null;
+        InvalidateVisual();
     }
 
     /// <summary>
-    /// Gets whether inline editing is currently active.
+    /// Begins editing an edge's label. The label will not be drawn while editing.
     /// </summary>
-    public bool IsEditing => _editOverlay != null;
+    /// <param name="edgeId">ID of the edge to edit.</param>
+    public void BeginEditEdge(string edgeId)
+    {
+        _editingEdgeId = edgeId;
+        InvalidateVisual();
+    }
 
     /// <summary>
-    /// Gets the ID of the node being edited, if any.
+    /// Ends editing an edge's label.
     /// </summary>
-    public string? EditingNodeId => _editingNodeId;
-
-    /// <summary>
-    /// Gets the ID of the edge being edited, if any.
-    /// </summary>
-    public string? EditingEdgeId => _editingEdgeId;
+    public void EndEditEdge()
+    {
+        _editingEdgeId = null;
+        InvalidateVisual();
+    }
 
     #endregion
 
@@ -519,22 +539,27 @@ public class DirectGraphRenderer : Control
         {
             var label = group.Label ?? "Group";
             var fontSize = 11 * zoom;
+            
+            // Get color from theme, with fallback for non-SolidColorBrush
+            var labelBrush = _theme.GroupLabelText;
+            if (labelBrush is SolidColorBrush solidBrush)
+            {
+                labelBrush = new SolidColorBrush(solidBrush.Color, 0.9);
+            }
+            
             var formattedText = new FormattedText(
                 label,
                 System.Globalization.CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 new Typeface(_typeface.FontFamily, FontStyle.Normal, FontWeight.Medium, FontStretch.Normal),
                 fontSize,
-                _theme.GroupLabelText);
+                labelBrush);
 
             var labelPos = _model.GetGroupLabelPosition(group);
             var screenLabelPos = CanvasToScreen(labelPos, zoom, offsetX, offsetY);
             
             // Adjust Y to center with button
             var textY = screenButtonBounds.Y + (screenButtonBounds.Height - formattedText.Height) / 2;
-            
-            formattedText.SetForegroundBrush(new SolidColorBrush(
-                ((SolidColorBrush)_theme.GroupLabelText).Color, 0.9));
             
             context.DrawText(formattedText, new AvaloniaPoint(screenLabelPos.X, textY));
         }
