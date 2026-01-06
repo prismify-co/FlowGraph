@@ -14,15 +14,21 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// Renderer for group nodes that contain other nodes.
 /// Uses a translucent background similar to React Flow's grouping style.
 /// Supports inline label editing via IEditableNodeRenderer.
+/// 
+/// IMPORTANT: This renderer uses constants from GraphRenderModel to ensure
+/// 100% visual parity with DirectGraphRenderer.
 /// </summary>
 public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 {
-    private const double HeaderHeight = 28;
-    private const double MinGroupWidth = 200;
-    private const double MinGroupHeight = 100;
-    private const double CollapseButtonSize = 18;
-    private const double BorderRadius = 8;
-    private const double DashedStrokeThickness = 2;
+    // Use constants from GraphRenderModel for visual parity with DirectGraphRenderer
+    private const double HeaderHeight = GraphRenderModel.GroupHeaderHeight;
+    private const double MinGroupWidth = GraphRenderModel.MinGroupWidth;
+    private const double MinGroupHeight = GraphRenderModel.MinGroupHeight;
+    private const double CollapseButtonSize = GraphRenderModel.GroupCollapseButtonSize;
+    private const double BorderRadius = GraphRenderModel.GroupBorderRadius;
+    private const double DashedStrokeThickness = GraphRenderModel.GroupDashedStrokeThickness;
+    private const double HeaderMarginX = GraphRenderModel.GroupHeaderMarginX;
+    private const double HeaderMarginY = GraphRenderModel.GroupHeaderMarginY;
 
     // Use simple ASCII characters that render in all fonts
     private const string ExpandedIcon = "-";   // Minus sign (expanded, can collapse)

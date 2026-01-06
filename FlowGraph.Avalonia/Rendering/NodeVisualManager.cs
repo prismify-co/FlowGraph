@@ -11,11 +11,13 @@ namespace FlowGraph.Avalonia.Rendering;
 /// <summary>
 /// Manages rendering and tracking of node and port visuals.
 /// Responsible for creating, updating, and removing node/port UI elements.
+/// Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectGraphRenderer.
 /// </summary>
 public class NodeVisualManager
 {
     private readonly RenderContext _renderContext;
     private readonly NodeRendererRegistry _nodeRendererRegistry;
+    private readonly GraphRenderModel _model;
     
     // Visual tracking
     private readonly Dictionary<string, Control> _nodeVisuals = new();
@@ -30,12 +32,18 @@ public class NodeVisualManager
     {
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
+        _model = new GraphRenderModel(renderContext.Settings);
     }
 
     /// <summary>
     /// Gets the node renderer registry for registering custom node types.
     /// </summary>
     public NodeRendererRegistry NodeRenderers => _nodeRendererRegistry;
+
+    /// <summary>
+    /// Gets the render model used for geometry calculations.
+    /// </summary>
+    public GraphRenderModel Model => _model;
 
     /// <summary>
     /// Gets the visual control for a node.
@@ -106,12 +114,10 @@ public class NodeVisualManager
     /// <summary>
     /// Checks if a node is within the visible viewport bounds (with buffer for virtualization).
     /// </summary>
-    /// <param name="node">The node to check.</param>
-    /// <returns>True if the node is in visible bounds or virtualization is disabled.</returns>
     private bool IsInVisibleBounds(Node node)
     {
-        var (width, height) = GetNodeDimensions(node);
-        return _renderContext.IsInVisibleBounds(node.Position.X, node.Position.Y, width, height);
+        var bounds = _model.GetNodeBounds(node);
+        return _renderContext.IsInVisibleBounds(bounds.X, bounds.Y, bounds.Width, bounds.Height);
     }
 
     /// <summary>
@@ -152,7 +158,7 @@ public class NodeVisualManager
 
         onNodeCreated?.Invoke(control, node);
 
-        // Render ports
+        // Render ports using model for positioning
         for (int i = 0; i < node.Inputs.Count; i++)
         {
             RenderPort(canvas, node, node.Inputs[i], i, node.Inputs.Count, false, theme);
@@ -167,7 +173,7 @@ public class NodeVisualManager
     }
 
     /// <summary>
-    /// Renders a single port.
+    /// Renders a single port using GraphRenderModel for positioning.
     /// </summary>
     /// <param name="canvas">The canvas to render to.</param>
     /// <param name="node">The parent node.</param>
@@ -191,20 +197,9 @@ public class NodeVisualManager
         var scale = _renderContext.Scale;
         var scaledPortSize = _renderContext.Settings.PortSize * scale;
 
-        // Get the node dimensions
-        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
-
-        // Determine port position - use explicit position or default based on input/output
-        var position = port.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
-
-        // Calculate port position in canvas coordinates
-        var (portX, portY) = CalculatePortCanvasPosition(
-            node.Position.X, node.Position.Y,
-            nodeWidth, nodeHeight,
-            position, index, totalPorts);
-
-        // Transform to screen coordinates
-        var screenPos = _renderContext.CanvasToScreen(portX, portY);
+        // Use GraphRenderModel for port position calculation
+        var canvasPos = _model.GetPortPositionByIndex(node, index, totalPorts, isOutput);
+        var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
 
         var portVisual = new Ellipse
         {
@@ -245,26 +240,21 @@ public class NodeVisualManager
     }
 
     /// <summary>
-    /// Updates the positions of all ports for a node.
+    /// Updates the positions of all ports for a node using GraphRenderModel.
     /// </summary>
     /// <param name="node">The node whose ports need updating.</param>
     public void UpdatePortPositions(Node node)
     {
         var scale = _renderContext.Scale;
         var scaledPortSize = _renderContext.Settings.PortSize * scale;
-        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
 
         for (int i = 0; i < node.Inputs.Count; i++)
         {
             var port = node.Inputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var position = port.Position ?? PortPosition.Left;
-                var (portX, portY) = CalculatePortCanvasPosition(
-                    node.Position.X, node.Position.Y,
-                    nodeWidth, nodeHeight,
-                    position, i, node.Inputs.Count);
-                var screenPos = _renderContext.CanvasToScreen(portX, portY);
+                var canvasPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
+                var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
             }
@@ -275,12 +265,8 @@ public class NodeVisualManager
             var port = node.Outputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
-                var position = port.Position ?? PortPosition.Right;
-                var (portX, portY) = CalculatePortCanvasPosition(
-                    node.Position.X, node.Position.Y,
-                    nodeWidth, nodeHeight,
-                    position, i, node.Outputs.Count);
-                var screenPos = _renderContext.CanvasToScreen(portX, portY);
+                var canvasPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
+                var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
                 Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
             }
@@ -327,8 +313,8 @@ public class NodeVisualManager
                 Scale = scale
             };
 
-            var (width, height) = GetNodeDimensions(node);
-            renderer.UpdateSize(control, node, context, width, height);
+            var bounds = _model.GetNodeBounds(node);
+            renderer.UpdateSize(control, node, context, bounds.Width, bounds.Height);
         }
     }
 
@@ -417,7 +403,7 @@ public class NodeVisualManager
     #endregion
 
     /// <summary>
-    /// Gets the screen position of a port.
+    /// Gets the screen position of a port using GraphRenderModel.
     /// </summary>
     /// <param name="node">The parent node.</param>
     /// <param name="port">The port.</param>
@@ -425,46 +411,23 @@ public class NodeVisualManager
     /// <returns>The port position in screen coordinates.</returns>
     public AvaloniaPoint GetPortPosition(Node node, Port port, bool isOutput)
     {
-        var portIndex = isOutput
-            ? node.Outputs.IndexOf(port)
-            : node.Inputs.IndexOf(port);
-        var totalPorts = isOutput ? node.Outputs.Count : node.Inputs.Count;
-
-        var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
-
-        // Determine port position - use explicit position or default based on input/output
-        var position = port.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
-
-        var (portX, portY) = CalculatePortCanvasPosition(
-            node.Position.X, node.Position.Y,
-            nodeWidth, nodeHeight,
-            position, portIndex, totalPorts);
-
-        return _renderContext.CanvasToScreen(portX, portY);
+        var canvasPos = _model.GetPortPosition(node, port, isOutput);
+        return _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
     }
 
     /// <summary>
-    /// Gets the dimensions for a node, considering custom renderer sizes and node-specific overrides.
+    /// Gets the dimensions for a node using GraphRenderModel.
     /// </summary>
     /// <param name="node">The node to get dimensions for.</param>
     /// <returns>The width and height of the node.</returns>
     public (double width, double height) GetNodeDimensions(Node node)
     {
-        // First check if the node has explicit dimensions
-        if (node.Width.HasValue && node.Height.HasValue)
-        {
-            return (node.Width.Value, node.Height.Value);
-        }
-
-        // Fall back to renderer-specified or default dimensions
-        var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
-        var width = node.Width ?? renderer.GetWidth(node, _renderContext.Settings) ?? _renderContext.Settings.NodeWidth;
-        var height = node.Height ?? renderer.GetHeight(node, _renderContext.Settings) ?? _renderContext.Settings.NodeHeight;
-        return (width, height);
+        var bounds = _model.GetNodeBounds(node);
+        return (bounds.Width, bounds.Height);
     }
 
     /// <summary>
-    /// Calculates the Y position for a port in canvas coordinates.
+    /// Calculates the Y position for a port in canvas coordinates using GraphRenderModel.
     /// </summary>
     /// <param name="nodeY">Y position of the node.</param>
     /// <param name="portIndex">Index of the port.</param>
@@ -486,24 +449,14 @@ public class NodeVisualManager
 
     /// <summary>
     /// Checks if a node is visible (not hidden by a collapsed ancestor group).
+    /// Delegates to GraphRenderModel.IsNodeVisible.
     /// </summary>
     /// <param name="graph">The graph containing the node.</param>
     /// <param name="node">The node to check.</param>
     /// <returns>True if the node is visible.</returns>
     public static bool IsNodeVisible(Graph graph, Node node)
     {
-        var currentParentId = node.ParentGroupId;
-        while (!string.IsNullOrEmpty(currentParentId))
-        {
-            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
-            if (parent == null) break;
-
-            if (parent.IsCollapsed)
-                return false;
-
-            currentParentId = parent.ParentGroupId;
-        }
-        return true;
+        return GraphRenderModel.IsNodeVisible(graph, node);
     }
 
     /// <summary>
@@ -520,37 +473,5 @@ public class NodeVisualManager
             if (current == null) break;
         }
         return depth;
-    }
-
-    /// <summary>
-    /// Calculates port canvas position based on port position.
-    /// </summary>
-    private (double x, double y) CalculatePortCanvasPosition(
-        double nodeX, double nodeY,
-        double nodeWidth, double nodeHeight,
-        PortPosition position, int portIndex, int totalPorts)
-    {
-        return position switch
-        {
-            PortPosition.Left => (nodeX, GetPortAlongEdge(nodeY, nodeHeight, portIndex, totalPorts)),
-            PortPosition.Right => (nodeX + nodeWidth, GetPortAlongEdge(nodeY, nodeHeight, portIndex, totalPorts)),
-            PortPosition.Top => (GetPortAlongEdge(nodeX, nodeWidth, portIndex, totalPorts), nodeY),
-            PortPosition.Bottom => (GetPortAlongEdge(nodeX, nodeWidth, portIndex, totalPorts), nodeY + nodeHeight),
-            _ => (nodeX, nodeY + nodeHeight / 2)
-        };
-    }
-
-    /// <summary>
-    /// Calculates port position along an edge (distributes ports evenly).
-    /// </summary>
-    private static double GetPortAlongEdge(double edgeStart, double edgeLength, int portIndex, int totalPorts)
-    {
-        if (totalPorts == 1)
-        {
-            return edgeStart + edgeLength / 2;
-        }
-
-        var spacing = edgeLength / (totalPorts + 1);
-        return edgeStart + spacing * (portIndex + 1);
     }
 }
