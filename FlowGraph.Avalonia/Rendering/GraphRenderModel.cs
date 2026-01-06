@@ -9,6 +9,37 @@ namespace FlowGraph.Avalonia.Rendering;
 /// This is the single source of truth for node bounds, port positions, edge paths, etc.
 /// Both VisualTree rendering and DirectDraw rendering use this model to ensure 100% visual parity.
 /// </summary>
+/// <remarks>
+/// <para>
+/// The GraphRenderModel provides geometry calculations for:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Node bounds and dimensions</description></item>
+/// <item><description>Port positions (supporting all 4 sides: Left, Right, Top, Bottom)</description></item>
+/// <item><description>Edge endpoints and bezier control points</description></item>
+/// <item><description>Group header and collapse button positions</description></item>
+/// <item><description>Resize handle positions</description></item>
+/// <item><description>Hit testing utilities</description></item>
+/// </list>
+/// <para>
+/// By centralizing all geometry calculations here, both the visual tree renderer (NodeVisualManager)
+/// and the direct renderer (DirectGraphRenderer) produce identical visual output.
+/// </para>
+/// </remarks>
+/// <example>
+/// <code>
+/// var model = new GraphRenderModel(settings);
+/// 
+/// // Get node bounds in canvas coordinates
+/// var bounds = model.GetNodeBounds(node);
+/// 
+/// // Get port position
+/// var portPos = model.GetPortPosition(node, port, isOutput: true);
+/// 
+/// // Calculate edge endpoints
+/// var (start, end) = model.GetEdgeEndpoints(edge, graph);
+/// </code>
+/// </example>
 public class GraphRenderModel
 {
     private readonly FlowCanvasSettings _settings;

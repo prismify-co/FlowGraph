@@ -292,6 +292,17 @@ public class FlowCanvasSettings
     /// </summary>
     public bool UseSimplifiedNodeRendering { get; set; } = false;
 
+    /// <summary>
+    /// Gets or sets the node count threshold for automatically enabling direct rendering.
+    /// When the graph has more nodes than this threshold, DirectGraphRenderer is automatically used.
+    /// Set to 0 to disable auto-switching. Default is 100.
+    /// </summary>
+    /// <remarks>
+    /// Direct rendering bypasses the Avalonia visual tree and draws directly to a DrawingContext,
+    /// providing significantly better performance for large graphs (500+ nodes).
+    /// </remarks>
+    public int DirectRenderingNodeThreshold { get; set; } = 100;
+
     #endregion
 
     /// <summary>

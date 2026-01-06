@@ -111,6 +111,22 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
+        // Auto-switch to direct rendering mode based on node count threshold
+        var nodeCount = Graph.Nodes.Count;
+        var threshold = Settings.DirectRenderingNodeThreshold;
+        
+        if (threshold > 0 && nodeCount >= threshold && !_useDirectRendering)
+        {
+            // Auto-enable direct rendering for large graphs
+            EnableDirectRendering();
+        }
+        else if (threshold > 0 && nodeCount < threshold && _useDirectRendering)
+        {
+            // Auto-disable direct rendering when graph is small enough
+            DisableDirectRendering();
+            return; // DisableDirectRendering calls RenderGraph
+        }
+
         // Use direct rendering mode if enabled (bypasses visual tree for performance)
         if (_useDirectRendering && _directRenderer != null)
         {
