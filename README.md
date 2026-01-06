@@ -7,6 +7,8 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 [![Avalonia](https://img.shields.io/badge/Avalonia-11.2-blue)](https://avaloniaui.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+![FlowGraph Demo](demo.png)
+
 ## Features
 
 ### Core
