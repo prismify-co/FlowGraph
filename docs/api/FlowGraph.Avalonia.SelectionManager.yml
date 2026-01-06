@@ -1,0 +1,1107 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.SelectionManager
+  commentId: T:FlowGraph.Avalonia.SelectionManager
+  id: SelectionManager
+  parent: FlowGraph.Avalonia
+  children:
+  - FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  - FlowGraph.Avalonia.SelectionManager.DeleteSelected
+  - FlowGraph.Avalonia.SelectionManager.DeselectAll
+  - FlowGraph.Avalonia.SelectionManager.EdgesNeedRerender
+  - FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
+  - FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+  - FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge,System.Boolean)
+  - FlowGraph.Avalonia.SelectionManager.HasSelection
+  - FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
+  - FlowGraph.Avalonia.SelectionManager.SelectAll
+  - FlowGraph.Avalonia.SelectionManager.SelectionChanged
+  langs:
+  - csharp
+  - vb
+  name: SelectionManager
+  nameWithType: SelectionManager
+  fullName: FlowGraph.Avalonia.SelectionManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelectionManager
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Manages selection state for nodes and edges in the flow canvas.
+  example: []
+  syntax:
+    content: public class SelectionManager
+    content.vb: Public Class SelectionManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  commentId: M:FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)'
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: SelectionManager(Func<Graph?>, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
+  nameWithType: SelectionManager.SelectionManager(Func<Graph?>, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager(System.Func<FlowGraph.Core.Graph?>, System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>, FlowGraph.Core.Commands.CommandHistory)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 20
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  syntax:
+    content: public SelectionManager(Func<Graph?> getGraph, Func<GraphRenderer> getRenderer, Func<ThemeResources> getTheme, CommandHistory commandHistory)
+    parameters:
+    - id: getGraph
+      type: System.Func{FlowGraph.Core.Graph}
+    - id: getRenderer
+      type: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+    - id: getTheme
+      type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+    - id: commandHistory
+      type: FlowGraph.Core.Commands.CommandHistory
+    content.vb: Public Sub New(getGraph As Func(Of Graph), getRenderer As Func(Of GraphRenderer), getTheme As Func(Of ThemeResources), commandHistory As CommandHistory)
+  overload: FlowGraph.Avalonia.SelectionManager.#ctor*
+  nameWithType.vb: SelectionManager.New(Func(Of Graph), Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
+  fullName.vb: FlowGraph.Avalonia.SelectionManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), FlowGraph.Core.Commands.CommandHistory)
+  name.vb: New(Func(Of Graph), Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
+- uid: FlowGraph.Avalonia.SelectionManager.EdgesNeedRerender
+  commentId: E:FlowGraph.Avalonia.SelectionManager.EdgesNeedRerender
+  id: EdgesNeedRerender
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: EdgesNeedRerender
+  nameWithType: SelectionManager.EdgesNeedRerender
+  fullName: FlowGraph.Avalonia.SelectionManager.EdgesNeedRerender
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgesNeedRerender
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when edges need to be re-rendered after selection changes.
+  example: []
+  syntax:
+    content: public event EventHandler? EdgesNeedRerender
+    return:
+      type: System.EventHandler
+    content.vb: Public Event EdgesNeedRerender As EventHandler
+- uid: FlowGraph.Avalonia.SelectionManager.SelectionChanged
+  commentId: E:FlowGraph.Avalonia.SelectionManager.SelectionChanged
+  id: SelectionChanged
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: SelectionChanged
+  nameWithType: SelectionManager.SelectionChanged
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectionChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelectionChanged
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 40
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when the selection changes.
+  example: []
+  syntax:
+    content: public event EventHandler<SelectionChangedEventArgs>? SelectionChanged
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.SelectionChangedEventArgs}
+    content.vb: Public Event SelectionChanged As EventHandler(Of SelectionChangedEventArgs)
+- uid: FlowGraph.Avalonia.SelectionManager.SelectAll
+  commentId: M:FlowGraph.Avalonia.SelectionManager.SelectAll
+  id: SelectAll
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: SelectAll()
+  nameWithType: SelectionManager.SelectAll()
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelectAll
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Selects all nodes in the graph.
+  example: []
+  syntax:
+    content: public void SelectAll()
+    content.vb: Public Sub SelectAll()
+  overload: FlowGraph.Avalonia.SelectionManager.SelectAll*
+- uid: FlowGraph.Avalonia.SelectionManager.DeselectAll
+  commentId: M:FlowGraph.Avalonia.SelectionManager.DeselectAll
+  id: DeselectAll
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: DeselectAll()
+  nameWithType: SelectionManager.DeselectAll()
+  fullName: FlowGraph.Avalonia.SelectionManager.DeselectAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DeselectAll
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Deselects all nodes and edges.
+  example: []
+  syntax:
+    content: public void DeselectAll()
+    content.vb: Public Sub DeselectAll()
+  overload: FlowGraph.Avalonia.SelectionManager.DeselectAll*
+- uid: FlowGraph.Avalonia.SelectionManager.DeleteSelected
+  commentId: M:FlowGraph.Avalonia.SelectionManager.DeleteSelected
+  id: DeleteSelected
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: DeleteSelected()
+  nameWithType: SelectionManager.DeleteSelected()
+  fullName: FlowGraph.Avalonia.SelectionManager.DeleteSelected()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DeleteSelected
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 87
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Deletes all selected nodes and edges.
+  example: []
+  syntax:
+    content: public void DeleteSelected()
+    content.vb: Public Sub DeleteSelected()
+  overload: FlowGraph.Avalonia.SelectionManager.DeleteSelected*
+- uid: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge,System.Boolean)
+  id: HandleEdgeClicked(FlowGraph.Core.Edge,System.Boolean)
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: HandleEdgeClicked(Edge, bool)
+  nameWithType: SelectionManager.HandleEdgeClicked(Edge, bool)
+  fullName: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandleEdgeClicked
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Handles edge click to update selection state.
+  example: []
+  syntax:
+    content: public void HandleEdgeClicked(Edge clickedEdge, bool ctrlHeld)
+    parameters:
+    - id: clickedEdge
+      type: FlowGraph.Core.Edge
+    - id: ctrlHeld
+      type: System.Boolean
+    content.vb: Public Sub HandleEdgeClicked(clickedEdge As Edge, ctrlHeld As Boolean)
+  overload: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked*
+  nameWithType.vb: SelectionManager.HandleEdgeClicked(Edge, Boolean)
+  fullName.vb: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge, Boolean)
+  name.vb: HandleEdgeClicked(Edge, Boolean)
+- uid: FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
+  commentId: M:FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
+  id: NotifySelectionMayHaveChanged
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: NotifySelectionMayHaveChanged()
+  nameWithType: SelectionManager.NotifySelectionMayHaveChanged()
+  fullName: FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NotifySelectionMayHaveChanged
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 163
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Notifies that the selection may have changed (called by external code).
+  example: []
+  syntax:
+    content: public void NotifySelectionMayHaveChanged()
+    content.vb: Public Sub NotifySelectionMayHaveChanged()
+  overload: FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged*
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+  commentId: M:FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+  id: GetSelectedNodes
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: GetSelectedNodes()
+  nameWithType: SelectionManager.GetSelectedNodes()
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedNodes()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetSelectedNodes
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 171
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all selected nodes.
+  example: []
+  syntax:
+    content: public IEnumerable<Node> GetSelectedNodes()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+    content.vb: Public Function GetSelectedNodes() As IEnumerable(Of Node)
+  overload: FlowGraph.Avalonia.SelectionManager.GetSelectedNodes*
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
+  commentId: M:FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
+  id: GetSelectedEdges
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: GetSelectedEdges()
+  nameWithType: SelectionManager.GetSelectedEdges()
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetSelectedEdges
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 180
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all selected edges.
+  example: []
+  syntax:
+    content: public IEnumerable<Edge> GetSelectedEdges()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+    content.vb: Public Function GetSelectedEdges() As IEnumerable(Of Edge)
+  overload: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges*
+- uid: FlowGraph.Avalonia.SelectionManager.HasSelection
+  commentId: P:FlowGraph.Avalonia.SelectionManager.HasSelection
+  id: HasSelection
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: HasSelection
+  nameWithType: SelectionManager.HasSelection
+  fullName: FlowGraph.Avalonia.SelectionManager.HasSelection
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasSelection
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 189
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets whether any items are selected.
+  example: []
+  syntax:
+    content: public bool HasSelection { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasSelection As Boolean
+  overload: FlowGraph.Avalonia.SelectionManager.HasSelection*
+references:
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.SelectionManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.#ctor
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_FlowGraph_Avalonia_Rendering_GraphRenderer__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__FlowGraph_Core_Commands_CommandHistory_
+  name: SelectionManager
+  nameWithType: SelectionManager.SelectionManager
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager
+  nameWithType.vb: SelectionManager.New
+  fullName.vb: FlowGraph.Avalonia.SelectionManager.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Core.Graph}
+  commentId: T:System.Func{FlowGraph.Core.Graph}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Graph>
+  nameWithType: Func<Graph>
+  fullName: System.Func<FlowGraph.Core.Graph>
+  nameWithType.vb: Func(Of Graph)
+  fullName.vb: System.Func(Of FlowGraph.Core.Graph)
+  name.vb: Func(Of Graph)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<GraphRenderer>
+  nameWithType: Func<GraphRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>
+  nameWithType.vb: Func(Of GraphRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer)
+  name.vb: Func(Of GraphRenderer)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
+    name: GraphRenderer
+    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
+    name: GraphRenderer
+    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<ThemeResources>
+  nameWithType: Func<ThemeResources>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>
+  nameWithType.vb: Func(Of ThemeResources)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources)
+  name.vb: Func(Of ThemeResources)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Core.Commands.CommandHistory
+  commentId: T:FlowGraph.Core.Commands.CommandHistory
+  parent: FlowGraph.Core.Commands
+  href: FlowGraph.Core.Commands.CommandHistory.html
+  name: CommandHistory
+  nameWithType: CommandHistory
+  fullName: FlowGraph.Core.Commands.CommandHistory
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Core.Commands
+  commentId: N:FlowGraph.Core.Commands
+  href: FlowGraph.html
+  name: FlowGraph.Core.Commands
+  nameWithType: FlowGraph.Core.Commands
+  fullName: FlowGraph.Core.Commands
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: System.EventHandler{FlowGraph.Avalonia.SelectionChangedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.SelectionChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<SelectionChangedEventArgs>
+  nameWithType: EventHandler<SelectionChangedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.SelectionChangedEventArgs>
+  nameWithType.vb: EventHandler(Of SelectionChangedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.SelectionChangedEventArgs)
+  name.vb: EventHandler(Of SelectionChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.SelectionChangedEventArgs
+    name: SelectionChangedEventArgs
+    href: FlowGraph.Avalonia.SelectionChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.SelectionChangedEventArgs
+    name: SelectionChangedEventArgs
+    href: FlowGraph.Avalonia.SelectionChangedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: FlowGraph.Avalonia.SelectionManager.SelectAll*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.SelectAll
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_SelectAll
+  name: SelectAll
+  nameWithType: SelectionManager.SelectAll
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectAll
+- uid: FlowGraph.Avalonia.SelectionManager.DeselectAll*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.DeselectAll
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_DeselectAll
+  name: DeselectAll
+  nameWithType: SelectionManager.DeselectAll
+  fullName: FlowGraph.Avalonia.SelectionManager.DeselectAll
+- uid: FlowGraph.Avalonia.SelectionManager.DeleteSelected*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.DeleteSelected
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_DeleteSelected
+  name: DeleteSelected
+  nameWithType: SelectionManager.DeleteSelected
+  fullName: FlowGraph.Avalonia.SelectionManager.DeleteSelected
+- uid: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_HandleEdgeClicked_FlowGraph_Core_Edge_System_Boolean_
+  name: HandleEdgeClicked
+  nameWithType: SelectionManager.HandleEdgeClicked
+  fullName: FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_NotifySelectionMayHaveChanged
+  name: NotifySelectionMayHaveChanged
+  nameWithType: SelectionManager.NotifySelectionMayHaveChanged
+  fullName: FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedNodes*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_GetSelectedNodes
+  name: GetSelectedNodes
+  nameWithType: SelectionManager.GetSelectedNodes
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Node>
+  nameWithType: IEnumerable<Node>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>
+  nameWithType.vb: IEnumerable(Of Node)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node)
+  name.vb: IEnumerable(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_GetSelectedEdges
+  name: GetSelectedEdges
+  nameWithType: SelectionManager.GetSelectedEdges
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Edge>
+  nameWithType: IEnumerable<Edge>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>
+  nameWithType.vb: IEnumerable(Of Edge)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge)
+  name.vb: IEnumerable(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Avalonia.SelectionManager.HasSelection*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.HasSelection
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_HasSelection
+  name: HasSelection
+  nameWithType: SelectionManager.HasSelection
+  fullName: FlowGraph.Avalonia.SelectionManager.HasSelection

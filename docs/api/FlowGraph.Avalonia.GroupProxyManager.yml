@@ -1,0 +1,864 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.GroupProxyManager
+  commentId: T:FlowGraph.Avalonia.GroupProxyManager
+  id: GroupProxyManager
+  parent: FlowGraph.Avalonia
+  children:
+  - FlowGraph.Avalonia.GroupProxyManager.#ctor(System.Func{FlowGraph.Core.Graph})
+  - FlowGraph.Avalonia.GroupProxyManager.Clear
+  - FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo(System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts(System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge(System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.IsProxyPort(System.String,System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed(System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded(System.String)
+  - FlowGraph.Avalonia.GroupProxyManager.ProxyStateChanged
+  langs:
+  - csharp
+  - vb
+  name: GroupProxyManager
+  nameWithType: GroupProxyManager
+  fullName: FlowGraph.Avalonia.GroupProxyManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupProxyManager
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Manages proxy ports and edge re-routing when groups are collapsed.
+
+    When a group is collapsed, edges that cross the group boundary are re-routed
+
+    to proxy ports on the group, maintaining visual connectivity.
+  example: []
+  syntax:
+    content: public class GroupProxyManager
+    content.vb: Public Class GroupProxyManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.GroupProxyManager.ProxyStateChanged
+  commentId: E:FlowGraph.Avalonia.GroupProxyManager.ProxyStateChanged
+  id: ProxyStateChanged
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: ProxyStateChanged
+  nameWithType: GroupProxyManager.ProxyStateChanged
+  fullName: FlowGraph.Avalonia.GroupProxyManager.ProxyStateChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ProxyStateChanged
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when proxy state changes and re-render is needed.
+  example: []
+  syntax:
+    content: public event EventHandler? ProxyStateChanged
+    return:
+      type: System.EventHandler
+    content.vb: Public Event ProxyStateChanged As EventHandler
+- uid: FlowGraph.Avalonia.GroupProxyManager.#ctor(System.Func{FlowGraph.Core.Graph})
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.#ctor(System.Func{FlowGraph.Core.Graph})
+  id: '#ctor(System.Func{FlowGraph.Core.Graph})'
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: GroupProxyManager(Func<Graph?>)
+  nameWithType: GroupProxyManager.GroupProxyManager(Func<Graph?>)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GroupProxyManager(System.Func<FlowGraph.Core.Graph?>)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  syntax:
+    content: public GroupProxyManager(Func<Graph?> getGraph)
+    parameters:
+    - id: getGraph
+      type: System.Func{FlowGraph.Core.Graph}
+    content.vb: Public Sub New(getGraph As Func(Of Graph))
+  overload: FlowGraph.Avalonia.GroupProxyManager.#ctor*
+  nameWithType.vb: GroupProxyManager.New(Func(Of Graph))
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.New(System.Func(Of FlowGraph.Core.Graph))
+  name.vb: New(Func(Of Graph))
+- uid: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed(System.String)
+  id: OnGroupCollapsed(System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: OnGroupCollapsed(string)
+  nameWithType: GroupProxyManager.OnGroupCollapsed(string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnGroupCollapsed
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Creates proxy ports and re-routes edges when a group is collapsed.
+  example: []
+  syntax:
+    content: public void OnGroupCollapsed(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    content.vb: Public Sub OnGroupCollapsed(groupId As String)
+  overload: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed*
+  nameWithType.vb: GroupProxyManager.OnGroupCollapsed(String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed(String)
+  name.vb: OnGroupCollapsed(String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded(System.String)
+  id: OnGroupExpanded(System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: OnGroupExpanded(string)
+  nameWithType: GroupProxyManager.OnGroupExpanded(string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnGroupExpanded
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 131
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Removes proxy ports and restores original edges when a group is expanded.
+  example: []
+  syntax:
+    content: public void OnGroupExpanded(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    content.vb: Public Sub OnGroupExpanded(groupId As String)
+  overload: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded*
+  nameWithType.vb: GroupProxyManager.OnGroupExpanded(String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded(String)
+  name.vb: OnGroupExpanded(String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge(System.String)
+  id: IsProxyEdge(System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: IsProxyEdge(string)
+  nameWithType: GroupProxyManager.IsProxyEdge(string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsProxyEdge
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 176
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Checks if an edge is currently using a proxy port.
+  example: []
+  syntax:
+    content: public bool IsProxyEdge(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsProxyEdge(edgeId As String) As Boolean
+  overload: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge*
+  nameWithType.vb: GroupProxyManager.IsProxyEdge(String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge(String)
+  name.vb: IsProxyEdge(String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo(System.String)
+  id: GetProxyEdgeInfo(System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: GetProxyEdgeInfo(string)
+  nameWithType: GroupProxyManager.GetProxyEdgeInfo(string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetProxyEdgeInfo
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 184
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets proxy edge info if the edge is proxied.
+  example: []
+  syntax:
+    content: public ProxyEdgeInfo? GetProxyEdgeInfo(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+    return:
+      type: FlowGraph.Avalonia.ProxyEdgeInfo
+    content.vb: Public Function GetProxyEdgeInfo(edgeId As String) As ProxyEdgeInfo
+  overload: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo*
+  nameWithType.vb: GroupProxyManager.GetProxyEdgeInfo(String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo(String)
+  name.vb: GetProxyEdgeInfo(String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts(System.String)
+  id: GetProxyPorts(System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: GetProxyPorts(string)
+  nameWithType: GroupProxyManager.GetProxyPorts(string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetProxyPorts
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 192
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all proxy ports for a group.
+  example: []
+  syntax:
+    content: public IReadOnlyList<ProxyPortInfo> GetProxyPorts(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Avalonia.ProxyPortInfo}
+    content.vb: Public Function GetProxyPorts(groupId As String) As IReadOnlyList(Of ProxyPortInfo)
+  overload: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts*
+  nameWithType.vb: GroupProxyManager.GetProxyPorts(String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts(String)
+  name.vb: GetProxyPorts(String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort(System.String,System.String)
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.IsProxyPort(System.String,System.String)
+  id: IsProxyPort(System.String,System.String)
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: IsProxyPort(string, string)
+  nameWithType: GroupProxyManager.IsProxyPort(string, string)
+  fullName: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsProxyPort
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 202
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Checks if a port is a proxy port.
+  example: []
+  syntax:
+    content: public bool IsProxyPort(string nodeId, string portId)
+    parameters:
+    - id: nodeId
+      type: System.String
+    - id: portId
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsProxyPort(nodeId As String, portId As String) As Boolean
+  overload: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort*
+  nameWithType.vb: GroupProxyManager.IsProxyPort(String, String)
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort(String, String)
+  name.vb: IsProxyPort(String, String)
+- uid: FlowGraph.Avalonia.GroupProxyManager.Clear
+  commentId: M:FlowGraph.Avalonia.GroupProxyManager.Clear
+  id: Clear
+  parent: FlowGraph.Avalonia.GroupProxyManager
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: GroupProxyManager.Clear()
+  fullName: FlowGraph.Avalonia.GroupProxyManager.Clear()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupProxyManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clear
+    path: ../FlowGraph.Avalonia/GroupProxyManager.cs
+    startLine: 213
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Clears all proxy state (call when graph changes completely).
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: FlowGraph.Avalonia.GroupProxyManager.Clear*
+references:
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: FlowGraph.Avalonia.GroupProxyManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.#ctor
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager__ctor_System_Func_FlowGraph_Core_Graph__
+  name: GroupProxyManager
+  nameWithType: GroupProxyManager.GroupProxyManager
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GroupProxyManager
+  nameWithType.vb: GroupProxyManager.New
+  fullName.vb: FlowGraph.Avalonia.GroupProxyManager.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Core.Graph}
+  commentId: T:System.Func{FlowGraph.Core.Graph}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Graph>
+  nameWithType: Func<Graph>
+  fullName: System.Func<FlowGraph.Core.Graph>
+  nameWithType.vb: Func(Of Graph)
+  fullName.vb: System.Func(Of FlowGraph.Core.Graph)
+  name.vb: Func(Of Graph)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_OnGroupCollapsed_System_String_
+  name: OnGroupCollapsed
+  nameWithType: GroupProxyManager.OnGroupCollapsed
+  fullName: FlowGraph.Avalonia.GroupProxyManager.OnGroupCollapsed
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_OnGroupExpanded_System_String_
+  name: OnGroupExpanded
+  nameWithType: GroupProxyManager.OnGroupExpanded
+  fullName: FlowGraph.Avalonia.GroupProxyManager.OnGroupExpanded
+- uid: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_IsProxyEdge_System_String_
+  name: IsProxyEdge
+  nameWithType: GroupProxyManager.IsProxyEdge
+  fullName: FlowGraph.Avalonia.GroupProxyManager.IsProxyEdge
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_GetProxyEdgeInfo_System_String_
+  name: GetProxyEdgeInfo
+  nameWithType: GroupProxyManager.GetProxyEdgeInfo
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GetProxyEdgeInfo
+- uid: FlowGraph.Avalonia.ProxyEdgeInfo
+  commentId: T:FlowGraph.Avalonia.ProxyEdgeInfo
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.ProxyEdgeInfo.html
+  name: ProxyEdgeInfo
+  nameWithType: ProxyEdgeInfo
+  fullName: FlowGraph.Avalonia.ProxyEdgeInfo
+- uid: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_GetProxyPorts_System_String_
+  name: GetProxyPorts
+  nameWithType: GroupProxyManager.GetProxyPorts
+  fullName: FlowGraph.Avalonia.GroupProxyManager.GetProxyPorts
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Avalonia.ProxyPortInfo}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Avalonia.ProxyPortInfo}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ProxyPortInfo>
+  nameWithType: IReadOnlyList<ProxyPortInfo>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Avalonia.ProxyPortInfo>
+  nameWithType.vb: IReadOnlyList(Of ProxyPortInfo)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Avalonia.ProxyPortInfo)
+  name.vb: IReadOnlyList(Of ProxyPortInfo)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ProxyPortInfo
+    name: ProxyPortInfo
+    href: FlowGraph.Avalonia.ProxyPortInfo.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ProxyPortInfo
+    name: ProxyPortInfo
+    href: FlowGraph.Avalonia.ProxyPortInfo.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.IsProxyPort
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_IsProxyPort_System_String_System_String_
+  name: IsProxyPort
+  nameWithType: GroupProxyManager.IsProxyPort
+  fullName: FlowGraph.Avalonia.GroupProxyManager.IsProxyPort
+- uid: FlowGraph.Avalonia.GroupProxyManager.Clear*
+  commentId: Overload:FlowGraph.Avalonia.GroupProxyManager.Clear
+  href: FlowGraph.Avalonia.GroupProxyManager.html#FlowGraph_Avalonia_GroupProxyManager_Clear
+  name: Clear
+  nameWithType: GroupProxyManager.Clear
+  fullName: FlowGraph.Avalonia.GroupProxyManager.Clear

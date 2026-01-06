@@ -1,0 +1,659 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Routing.DirectRouter
+  commentId: T:FlowGraph.Core.Routing.DirectRouter
+  id: DirectRouter
+  parent: FlowGraph.Core.Routing
+  children:
+  - FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node,System.String,System.Boolean,FlowGraph.Core.Routing.EdgeRoutingContext)
+  - FlowGraph.Core.Routing.DirectRouter.Instance
+  - FlowGraph.Core.Routing.DirectRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  langs:
+  - csharp
+  - vb
+  name: DirectRouter
+  nameWithType: DirectRouter
+  fullName: FlowGraph.Core.Routing.DirectRouter
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/DirectRouter.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DirectRouter
+    path: ../FlowGraph.Core/Routing/DirectRouter.cs
+    startLine: 5
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Simple edge router that doesn't modify paths (direct connection).
+  example: []
+  syntax:
+    content: 'public class DirectRouter : IEdgeRouter'
+    content.vb: Public Class DirectRouter Implements IEdgeRouter
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Core.Routing.IEdgeRouter
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Routing.DirectRouter.Instance
+  commentId: P:FlowGraph.Core.Routing.DirectRouter.Instance
+  id: Instance
+  parent: FlowGraph.Core.Routing.DirectRouter
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: DirectRouter.Instance
+  fullName: FlowGraph.Core.Routing.DirectRouter.Instance
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/DirectRouter.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Instance
+    path: ../FlowGraph.Core/Routing/DirectRouter.cs
+    startLine: 7
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  syntax:
+    content: public static DirectRouter Instance { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.DirectRouter
+    content.vb: Public Shared ReadOnly Property Instance As DirectRouter
+  overload: FlowGraph.Core.Routing.DirectRouter.Instance*
+- uid: FlowGraph.Core.Routing.DirectRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Core.Routing.DirectRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  id: Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  parent: FlowGraph.Core.Routing.DirectRouter
+  langs:
+  - csharp
+  - vb
+  name: Route(EdgeRoutingContext, Edge)
+  nameWithType: DirectRouter.Route(EdgeRoutingContext, Edge)
+  fullName: FlowGraph.Core.Routing.DirectRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext, FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/DirectRouter.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Route
+    path: ../FlowGraph.Core/Routing/DirectRouter.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Calculates waypoints for an edge to route around obstacles.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Point> Route(EdgeRoutingContext context, Edge edge)
+    parameters:
+    - id: context
+      type: FlowGraph.Core.Routing.EdgeRoutingContext
+      description: The routing context containing graph information.
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to route.
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+      description: A list of waypoints (including start and end points).
+    content.vb: Public Function Route(context As EdgeRoutingContext, edge As Edge) As IReadOnlyList(Of Point)
+  overload: FlowGraph.Core.Routing.DirectRouter.Route*
+  implements:
+  - FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+- uid: FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node,System.String,System.Boolean,FlowGraph.Core.Routing.EdgeRoutingContext)
+  commentId: M:FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node,System.String,System.Boolean,FlowGraph.Core.Routing.EdgeRoutingContext)
+  id: GetPortPosition(FlowGraph.Core.Node,System.String,System.Boolean,FlowGraph.Core.Routing.EdgeRoutingContext)
+  parent: FlowGraph.Core.Routing.DirectRouter
+  langs:
+  - csharp
+  - vb
+  name: GetPortPosition(Node, string?, bool, EdgeRoutingContext)
+  nameWithType: DirectRouter.GetPortPosition(Node, string?, bool, EdgeRoutingContext)
+  fullName: FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node, string?, bool, FlowGraph.Core.Routing.EdgeRoutingContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/DirectRouter.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortPosition
+    path: ../FlowGraph.Core/Routing/DirectRouter.cs
+    startLine: 23
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  syntax:
+    content: protected static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: portId
+      type: System.String
+    - id: isOutput
+      type: System.Boolean
+    - id: context
+      type: FlowGraph.Core.Routing.EdgeRoutingContext
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: Protected Shared Function GetPortPosition(node As Node, portId As String, isOutput As Boolean, context As EdgeRoutingContext) As Point
+  overload: FlowGraph.Core.Routing.DirectRouter.GetPortPosition*
+  nameWithType.vb: DirectRouter.GetPortPosition(Node, String, Boolean, EdgeRoutingContext)
+  fullName.vb: FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node, String, Boolean, FlowGraph.Core.Routing.EdgeRoutingContext)
+  name.vb: GetPortPosition(Node, String, Boolean, EdgeRoutingContext)
+references:
+- uid: FlowGraph.Core.Routing
+  commentId: N:FlowGraph.Core.Routing
+  href: FlowGraph.html
+  name: FlowGraph.Core.Routing
+  nameWithType: FlowGraph.Core.Routing
+  fullName: FlowGraph.Core.Routing
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.Routing.IEdgeRouter
+  commentId: T:FlowGraph.Core.Routing.IEdgeRouter
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.IEdgeRouter.html
+  name: IEdgeRouter
+  nameWithType: IEdgeRouter
+  fullName: FlowGraph.Core.Routing.IEdgeRouter
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Routing.DirectRouter.Instance*
+  commentId: Overload:FlowGraph.Core.Routing.DirectRouter.Instance
+  href: FlowGraph.Core.Routing.DirectRouter.html#FlowGraph_Core_Routing_DirectRouter_Instance
+  name: Instance
+  nameWithType: DirectRouter.Instance
+  fullName: FlowGraph.Core.Routing.DirectRouter.Instance
+- uid: FlowGraph.Core.Routing.DirectRouter
+  commentId: T:FlowGraph.Core.Routing.DirectRouter
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.DirectRouter.html
+  name: DirectRouter
+  nameWithType: DirectRouter
+  fullName: FlowGraph.Core.Routing.DirectRouter
+- uid: FlowGraph.Core.Routing.DirectRouter.Route*
+  commentId: Overload:FlowGraph.Core.Routing.DirectRouter.Route
+  href: FlowGraph.Core.Routing.DirectRouter.html#FlowGraph_Core_Routing_DirectRouter_Route_FlowGraph_Core_Routing_EdgeRoutingContext_FlowGraph_Core_Edge_
+  name: Route
+  nameWithType: DirectRouter.Route
+  fullName: FlowGraph.Core.Routing.DirectRouter.Route
+- uid: FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+  parent: FlowGraph.Core.Routing.IEdgeRouter
+  href: FlowGraph.Core.Routing.IEdgeRouter.html#FlowGraph_Core_Routing_IEdgeRouter_Route_FlowGraph_Core_Routing_EdgeRoutingContext_FlowGraph_Core_Edge_
+  name: Route(EdgeRoutingContext, Edge)
+  nameWithType: IEdgeRouter.Route(EdgeRoutingContext, Edge)
+  fullName: FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext, FlowGraph.Core.Edge)
+  spec.csharp:
+  - uid: FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+    name: Route
+    href: FlowGraph.Core.Routing.IEdgeRouter.html#FlowGraph_Core_Routing_IEdgeRouter_Route_FlowGraph_Core_Routing_EdgeRoutingContext_FlowGraph_Core_Edge_
+  - name: (
+  - uid: FlowGraph.Core.Routing.EdgeRoutingContext
+    name: EdgeRoutingContext
+    href: FlowGraph.Core.Routing.EdgeRoutingContext.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
+    name: Route
+    href: FlowGraph.Core.Routing.IEdgeRouter.html#FlowGraph_Core_Routing_IEdgeRouter_Route_FlowGraph_Core_Routing_EdgeRoutingContext_FlowGraph_Core_Edge_
+  - name: (
+  - uid: FlowGraph.Core.Routing.EdgeRoutingContext
+    name: EdgeRoutingContext
+    href: FlowGraph.Core.Routing.EdgeRoutingContext.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Core.Routing.EdgeRoutingContext
+  commentId: T:FlowGraph.Core.Routing.EdgeRoutingContext
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.EdgeRoutingContext.html
+  name: EdgeRoutingContext
+  nameWithType: EdgeRoutingContext
+  fullName: FlowGraph.Core.Routing.EdgeRoutingContext
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Point>
+  nameWithType: IReadOnlyList<Point>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Point>
+  nameWithType.vb: IReadOnlyList(Of Point)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Point)
+  name.vb: IReadOnlyList(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Routing.DirectRouter.GetPortPosition*
+  commentId: Overload:FlowGraph.Core.Routing.DirectRouter.GetPortPosition
+  href: FlowGraph.Core.Routing.DirectRouter.html#FlowGraph_Core_Routing_DirectRouter_GetPortPosition_FlowGraph_Core_Node_System_String_System_Boolean_FlowGraph_Core_Routing_EdgeRoutingContext_
+  name: GetPortPosition
+  nameWithType: DirectRouter.GetPortPosition
+  fullName: FlowGraph.Core.Routing.DirectRouter.GetPortPosition
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point

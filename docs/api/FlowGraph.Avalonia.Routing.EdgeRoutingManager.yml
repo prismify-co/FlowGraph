@@ -1,0 +1,1307 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  commentId: T:FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  id: EdgeRoutingManager
+  parent: FlowGraph.Avalonia.Routing
+  children:
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgesRouted
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted(System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging(System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges(System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge(FlowGraph.Core.Edge,System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm(FlowGraph.Core.Edge,FlowGraph.Avalonia.RouterAlgorithm,System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode(System.String,System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge(FlowGraph.Core.Edge,System.Boolean)
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+  langs:
+  - csharp
+  - vb
+  name: EdgeRoutingManager
+  nameWithType: EdgeRoutingManager
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeRoutingManager
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 8
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Manages edge routing for the FlowCanvas, integrating the Core routing service with the UI layer.
+  example: []
+  syntax:
+    content: public class EdgeRoutingManager
+    content.vb: Public Class EdgeRoutingManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgesRouted
+  commentId: E:FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgesRouted
+  id: EdgesRouted
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: EdgesRouted
+  nameWithType: EdgeRoutingManager.EdgesRouted
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgesRouted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgesRouted
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 18
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Event raised when edges have been routed and need to be re-rendered.
+  example: []
+  syntax:
+    content: public event EventHandler? EdgesRouted
+    return:
+      type: System.EventHandler
+    content.vb: Public Event EdgesRouted As EventHandler
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)'
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: EdgeRoutingManager(Func<Graph?>, Func<FlowCanvasSettings>, Action)
+  nameWithType: EdgeRoutingManager.EdgeRoutingManager(Func<Graph?>, Func<FlowCanvasSettings>, Action)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgeRoutingManager(System.Func<FlowGraph.Core.Graph?>, System.Func<FlowGraph.Avalonia.FlowCanvasSettings>, System.Action)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 20
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  syntax:
+    content: public EdgeRoutingManager(Func<Graph?> getGraph, Func<FlowCanvasSettings> getSettings, Action refreshEdges)
+    parameters:
+    - id: getGraph
+      type: System.Func{FlowGraph.Core.Graph}
+    - id: getSettings
+      type: System.Func{FlowGraph.Avalonia.FlowCanvasSettings}
+    - id: refreshEdges
+      type: System.Action
+    content.vb: Public Sub New(getGraph As Func(Of Graph), getSettings As Func(Of FlowCanvasSettings), refreshEdges As Action)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor*
+  nameWithType.vb: EdgeRoutingManager.New(Func(Of Graph), Func(Of FlowCanvasSettings), Action)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of FlowGraph.Avalonia.FlowCanvasSettings), System.Action)
+  name.vb: New(Func(Of Graph), Func(Of FlowCanvasSettings), Action)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+  commentId: P:FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+  id: IsEnabled
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: IsEnabled
+  nameWithType: EdgeRoutingManager.IsEnabled
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEnabled
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Gets whether automatic edge routing is currently enabled.
+  example: []
+  syntax:
+    content: public bool IsEnabled { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsEnabled As Boolean
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled*
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+  commentId: P:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+  id: RouteOnDrag
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteOnDrag
+  nameWithType: EdgeRoutingManager.RouteOnDrag
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteOnDrag
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Gets whether routing during drag is enabled.
+  example: []
+  syntax:
+    content: public bool RouteOnDrag { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property RouteOnDrag As Boolean
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag*
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+  commentId: P:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+  id: RouteNewEdges
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteNewEdges
+  nameWithType: EdgeRoutingManager.RouteNewEdges
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteNewEdges
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Gets whether newly created edges should be routed.
+  example: []
+  syntax:
+    content: public bool RouteNewEdges { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property RouteNewEdges As Boolean
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges*
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+  commentId: P:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+  id: RoutingService
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RoutingService
+  nameWithType: EdgeRoutingManager.RoutingService
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RoutingService
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 49
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Gets the underlying routing service for advanced configuration.
+  example: []
+  syntax:
+    content: public EdgeRoutingService RoutingService { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.EdgeRoutingService
+    content.vb: Public ReadOnly Property RoutingService As EdgeRoutingService
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService*
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges(System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges(System.Boolean)
+  id: RouteAllEdges(System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteAllEdges(bool)
+  nameWithType: EdgeRoutingManager.RouteAllEdges(bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges(bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteAllEdges
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 82
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes all edges in the graph.
+  example: []
+  syntax:
+    content: public void RouteAllEdges(bool forceRefresh = true)
+    parameters:
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    content.vb: Public Sub RouteAllEdges(forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges*
+  nameWithType.vb: EdgeRoutingManager.RouteAllEdges(Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges(Boolean)
+  name.vb: RouteAllEdges(Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  id: RouteEdgesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteEdgesForNodes(IEnumerable<string>, bool)
+  nameWithType: EdgeRoutingManager.RouteEdgesForNodes(IEnumerable<string>, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes(System.Collections.Generic.IEnumerable<string>, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteEdgesForNodes
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes edges connected to specific nodes.
+  example: []
+  syntax:
+    content: public void RouteEdgesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: IDs of nodes whose connected edges should be routed.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    content.vb: Public Sub RouteEdgesForNodes(nodeIds As IEnumerable(Of String), forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes*
+  nameWithType.vb: EdgeRoutingManager.RouteEdgesForNodes(IEnumerable(Of String), Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes(System.Collections.Generic.IEnumerable(Of String), Boolean)
+  name.vb: RouteEdgesForNodes(IEnumerable(Of String), Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge(FlowGraph.Core.Edge,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge(FlowGraph.Core.Edge,System.Boolean)
+  id: RouteEdge(FlowGraph.Core.Edge,System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteEdge(Edge, bool)
+  nameWithType: EdgeRoutingManager.RouteEdge(Edge, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge(FlowGraph.Core.Edge, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteEdge
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes a single edge.
+  example: []
+  syntax:
+    content: public void RouteEdge(Edge edge, bool forceRefresh = true)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to route.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    content.vb: Public Sub RouteEdge(edge As Edge, forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge*
+  nameWithType.vb: EdgeRoutingManager.RouteEdge(Edge, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge(FlowGraph.Core.Edge, Boolean)
+  name.vb: RouteEdge(Edge, Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm(FlowGraph.Core.Edge,FlowGraph.Avalonia.RouterAlgorithm,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm(FlowGraph.Core.Edge,FlowGraph.Avalonia.RouterAlgorithm,System.Boolean)
+  id: RouteEdgeWithAlgorithm(FlowGraph.Core.Edge,FlowGraph.Avalonia.RouterAlgorithm,System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteEdgeWithAlgorithm(Edge, RouterAlgorithm, bool)
+  nameWithType: EdgeRoutingManager.RouteEdgeWithAlgorithm(Edge, RouterAlgorithm, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm(FlowGraph.Core.Edge, FlowGraph.Avalonia.RouterAlgorithm, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteEdgeWithAlgorithm
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 157
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes a single edge using a specific router algorithm.
+  example: []
+  syntax:
+    content: public void RouteEdgeWithAlgorithm(Edge edge, RouterAlgorithm algorithm, bool forceRefresh = true)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to route.
+    - id: algorithm
+      type: FlowGraph.Avalonia.RouterAlgorithm
+      description: The routing algorithm to use.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    content.vb: Public Sub RouteEdgeWithAlgorithm(edge As Edge, algorithm As RouterAlgorithm, forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm*
+  nameWithType.vb: EdgeRoutingManager.RouteEdgeWithAlgorithm(Edge, RouterAlgorithm, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm(FlowGraph.Core.Edge, FlowGraph.Avalonia.RouterAlgorithm, Boolean)
+  name.vb: RouteEdgeWithAlgorithm(Edge, RouterAlgorithm, Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode(System.String,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode(System.String,System.Boolean)
+  id: RouteEdgesForNode(System.String,System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteEdgesForNode(string, bool)
+  nameWithType: EdgeRoutingManager.RouteEdgesForNode(string, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode(string, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteEdgesForNode
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 187
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes edges connected to a single node.
+  example: []
+  syntax:
+    content: public void RouteEdgesForNode(string nodeId, bool forceRefresh = true)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: ID of the node whose connected edges should be routed.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    content.vb: Public Sub RouteEdgesForNode(nodeId As String, forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode*
+  nameWithType.vb: EdgeRoutingManager.RouteEdgesForNode(String, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode(String, Boolean)
+  name.vb: RouteEdgesForNode(String, Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge(FlowGraph.Core.Edge,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge(FlowGraph.Core.Edge,System.Boolean)
+  id: RouteNewEdge(FlowGraph.Core.Edge,System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: RouteNewEdge(Edge, bool)
+  nameWithType: EdgeRoutingManager.RouteNewEdge(Edge, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge(FlowGraph.Core.Edge, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RouteNewEdge
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 198
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Routes a newly created edge if routing is enabled.
+  example: []
+  syntax:
+    content: public bool RouteNewEdge(Edge edge, bool forceRefresh = true)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The newly created edge.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after routing.
+    return:
+      type: System.Boolean
+      description: True if the edge was routed, false otherwise.
+    content.vb: Public Function RouteNewEdge(edge As Edge, forceRefresh As Boolean = True) As Boolean
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge*
+  nameWithType.vb: EdgeRoutingManager.RouteNewEdge(Edge, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge(FlowGraph.Core.Edge, Boolean)
+  name.vb: RouteNewEdge(Edge, Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(System.Boolean)
+  id: ClearAllRoutes(System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: ClearAllRoutes(bool)
+  nameWithType: EdgeRoutingManager.ClearAllRoutes(bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ClearAllRoutes
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 231
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Clears all waypoints from edges, returning them to default paths.
+  example: []
+  syntax:
+    content: public void ClearAllRoutes(bool forceRefresh = true)
+    parameters:
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after clearing.
+    content.vb: Public Sub ClearAllRoutes(forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes*
+  nameWithType.vb: EdgeRoutingManager.ClearAllRoutes(Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(Boolean)
+  name.vb: ClearAllRoutes(Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  id: ClearRoutesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: ClearRoutesForNodes(IEnumerable<string>, bool)
+  nameWithType: EdgeRoutingManager.ClearRoutesForNodes(IEnumerable<string>, bool)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable<string>, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ClearRoutesForNodes
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 253
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Clears waypoints from edges connected to specific nodes.
+  example: []
+  syntax:
+    content: public void ClearRoutesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: IDs of nodes whose connected edges should be cleared.
+    - id: forceRefresh
+      type: System.Boolean
+      description: If true, refreshes edge rendering after clearing.
+    content.vb: Public Sub ClearRoutesForNodes(nodeIds As IEnumerable(Of String), forceRefresh As Boolean = True)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes*
+  nameWithType.vb: EdgeRoutingManager.ClearRoutesForNodes(IEnumerable(Of String), Boolean)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable(Of String), Boolean)
+  name.vb: ClearRoutesForNodes(IEnumerable(Of String), Boolean)
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging(System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging(System.Collections.Generic.IEnumerable{System.String})
+  id: OnNodesDragging(System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: OnNodesDragging(IEnumerable<string>)
+  nameWithType: EdgeRoutingManager.OnNodesDragging(IEnumerable<string>)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging(System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnNodesDragging
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 278
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Called when nodes are being dragged. Re-routes edges if configured to do so.
+  example: []
+  syntax:
+    content: public void OnNodesDragging(IEnumerable<string> draggedNodeIds)
+    parameters:
+    - id: draggedNodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: IDs of nodes being dragged.
+    content.vb: Public Sub OnNodesDragging(draggedNodeIds As IEnumerable(Of String))
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging*
+  nameWithType.vb: EdgeRoutingManager.OnNodesDragging(IEnumerable(Of String))
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging(System.Collections.Generic.IEnumerable(Of String))
+  name.vb: OnNodesDragging(IEnumerable(Of String))
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted(System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted(System.Collections.Generic.IEnumerable{System.String})
+  id: OnNodesDragCompleted(System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: OnNodesDragCompleted(IEnumerable<string>)
+  nameWithType: EdgeRoutingManager.OnNodesDragCompleted(IEnumerable<string>)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted(System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnNodesDragCompleted
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 297
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Called when node dragging completes. Re-routes edges if configured.
+  example: []
+  syntax:
+    content: public void OnNodesDragCompleted(IEnumerable<string> draggedNodeIds)
+    parameters:
+    - id: draggedNodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: IDs of nodes that were dragged.
+    content.vb: Public Sub OnNodesDragCompleted(draggedNodeIds As IEnumerable(Of String))
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted*
+  nameWithType.vb: EdgeRoutingManager.OnNodesDragCompleted(IEnumerable(Of String))
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted(System.Collections.Generic.IEnumerable(Of String))
+  name.vb: OnNodesDragCompleted(IEnumerable(Of String))
+references:
+- uid: FlowGraph.Avalonia.Routing
+  commentId: N:FlowGraph.Avalonia.Routing
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Routing
+  nameWithType: FlowGraph.Avalonia.Routing
+  fullName: FlowGraph.Avalonia.Routing
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Routing
+    name: Routing
+    href: FlowGraph.Avalonia.Routing.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Routing
+    name: Routing
+    href: FlowGraph.Avalonia.Routing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_FlowGraph_Avalonia_FlowCanvasSettings__System_Action_
+  name: EdgeRoutingManager
+  nameWithType: EdgeRoutingManager.EdgeRoutingManager
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgeRoutingManager
+  nameWithType.vb: EdgeRoutingManager.New
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Core.Graph}
+  commentId: T:System.Func{FlowGraph.Core.Graph}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Graph>
+  nameWithType: Func<Graph>
+  fullName: System.Func<FlowGraph.Core.Graph>
+  nameWithType.vb: Func(Of Graph)
+  fullName.vb: System.Func(Of FlowGraph.Core.Graph)
+  name.vb: Func(Of Graph)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.FlowCanvasSettings}
+  commentId: T:System.Func{FlowGraph.Avalonia.FlowCanvasSettings}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<FlowCanvasSettings>
+  nameWithType: Func<FlowCanvasSettings>
+  fullName: System.Func<FlowGraph.Avalonia.FlowCanvasSettings>
+  nameWithType.vb: Func(Of FlowCanvasSettings)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.FlowCanvasSettings)
+  name.vb: Func(Of FlowCanvasSettings)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_IsEnabled
+  name: IsEnabled
+  nameWithType: EdgeRoutingManager.IsEnabled
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.IsEnabled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteOnDrag
+  name: RouteOnDrag
+  nameWithType: EdgeRoutingManager.RouteOnDrag
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteOnDrag
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteNewEdges
+  name: RouteNewEdges
+  nameWithType: EdgeRoutingManager.RouteNewEdges
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdges
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RoutingService
+  name: RoutingService
+  nameWithType: EdgeRoutingManager.RoutingService
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RoutingService
+- uid: FlowGraph.Core.Routing.EdgeRoutingService
+  commentId: T:FlowGraph.Core.Routing.EdgeRoutingService
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.EdgeRoutingService.html
+  name: EdgeRoutingService
+  nameWithType: EdgeRoutingService
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService
+- uid: FlowGraph.Core.Routing
+  commentId: N:FlowGraph.Core.Routing
+  href: FlowGraph.html
+  name: FlowGraph.Core.Routing
+  nameWithType: FlowGraph.Core.Routing
+  fullName: FlowGraph.Core.Routing
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteAllEdges_System_Boolean_
+  name: RouteAllEdges
+  nameWithType: EdgeRoutingManager.RouteAllEdges
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteAllEdges
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteEdgesForNodes_System_Collections_Generic_IEnumerable_System_String__System_Boolean_
+  name: RouteEdgesForNodes
+  nameWithType: EdgeRoutingManager.RouteEdgesForNodes
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNodes
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteEdge_FlowGraph_Core_Edge_System_Boolean_
+  name: RouteEdge
+  nameWithType: EdgeRoutingManager.RouteEdge
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteEdgeWithAlgorithm_FlowGraph_Core_Edge_FlowGraph_Avalonia_RouterAlgorithm_System_Boolean_
+  name: RouteEdgeWithAlgorithm
+  nameWithType: EdgeRoutingManager.RouteEdgeWithAlgorithm
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgeWithAlgorithm
+- uid: FlowGraph.Avalonia.RouterAlgorithm
+  commentId: T:FlowGraph.Avalonia.RouterAlgorithm
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.RouterAlgorithm.html
+  name: RouterAlgorithm
+  nameWithType: RouterAlgorithm
+  fullName: FlowGraph.Avalonia.RouterAlgorithm
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteEdgesForNode_System_String_System_Boolean_
+  name: RouteEdgesForNode
+  nameWithType: EdgeRoutingManager.RouteEdgesForNode
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteNewEdge_FlowGraph_Core_Edge_System_Boolean_
+  name: RouteNewEdge
+  nameWithType: EdgeRoutingManager.RouteNewEdge
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteNewEdge
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_ClearAllRoutes_System_Boolean_
+  name: ClearAllRoutes
+  nameWithType: EdgeRoutingManager.ClearAllRoutes
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_ClearRoutesForNodes_System_Collections_Generic_IEnumerable_System_String__System_Boolean_
+  name: ClearRoutesForNodes
+  nameWithType: EdgeRoutingManager.ClearRoutesForNodes
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_OnNodesDragging_System_Collections_Generic_IEnumerable_System_String__
+  name: OnNodesDragging
+  nameWithType: EdgeRoutingManager.OnNodesDragging
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragging
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted*
+  commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_OnNodesDragCompleted_System_Collections_Generic_IEnumerable_System_String__
+  name: OnNodesDragCompleted
+  nameWithType: EdgeRoutingManager.OnNodesDragCompleted
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.OnNodesDragCompleted

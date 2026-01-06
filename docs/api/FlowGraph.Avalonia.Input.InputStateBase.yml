@@ -1,0 +1,1419 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Input.InputStateBase
+  commentId: T:FlowGraph.Avalonia.Input.InputStateBase
+  id: InputStateBase
+  parent: FlowGraph.Avalonia.Input
+  children:
+  - FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs,Avalonia.Input.IInputElement)
+  - FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  - FlowGraph.Avalonia.Input.InputStateBase.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateBase.IsModal
+  - FlowGraph.Avalonia.Input.InputStateBase.Name
+  - FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer(Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  langs:
+  - csharp
+  - vb
+  name: InputStateBase
+  nameWithType: InputStateBase
+  fullName: FlowGraph.Avalonia.Input.InputStateBase
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InputStateBase
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Base class for input states with default implementations.
+  example: []
+  syntax:
+    content: 'public abstract class InputStateBase : IInputState'
+    content.vb: Public MustInherit Class InputStateBase Implements IInputState
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - FlowGraph.Avalonia.Input.States.AnimatingNodesState
+  - FlowGraph.Avalonia.Input.States.AnimatingViewportState
+  - FlowGraph.Avalonia.Input.States.BoxSelectingState
+  - FlowGraph.Avalonia.Input.States.ConnectingState
+  - FlowGraph.Avalonia.Input.States.DraggingState
+  - FlowGraph.Avalonia.Input.States.IdleState
+  - FlowGraph.Avalonia.Input.States.PanningState
+  - FlowGraph.Avalonia.Input.States.ReconnectingState
+  - FlowGraph.Avalonia.Input.States.ResizingState
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Name
+  commentId: P:FlowGraph.Avalonia.Input.InputStateBase.Name
+  id: Name
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: InputStateBase.Name
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Name
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Name
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 11
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Gets the name of this state for debugging.
+  example: []
+  syntax:
+    content: public abstract string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property Name As String
+  overload: FlowGraph.Avalonia.Input.InputStateBase.Name*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.Name
+- uid: FlowGraph.Avalonia.Input.InputStateBase.IsModal
+  commentId: P:FlowGraph.Avalonia.Input.InputStateBase.IsModal
+  id: IsModal
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: IsModal
+  nameWithType: InputStateBase.IsModal
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.IsModal
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsModal
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 13
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Gets whether this state blocks other interactions.
+  example: []
+  syntax:
+    content: public virtual bool IsModal { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property IsModal As Boolean
+  overload: FlowGraph.Avalonia.Input.InputStateBase.IsModal*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.IsModal
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  id: Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: Enter(InputStateContext)
+  nameWithType: InputStateBase.Enter(InputStateContext)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Enter
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Called when entering this state.
+  example: []
+  syntax:
+    content: public virtual void Enter(InputStateContext context)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    content.vb: Public Overridable Sub Enter(context As InputStateContext)
+  overload: FlowGraph.Avalonia.Input.InputStateBase.Enter*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  id: Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: Exit(InputStateContext)
+  nameWithType: InputStateBase.Exit(InputStateContext)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Exit
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 17
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Called when exiting this state.
+  example: []
+  syntax:
+    content: public virtual void Exit(InputStateContext context)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    content.vb: Public Overridable Sub [Exit](context As InputStateContext)
+  overload: FlowGraph.Avalonia.Input.InputStateBase.Exit*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  id: HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control?)
+  nameWithType: InputStateBase.HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control?)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerPressedEventArgs, Avalonia.Controls.Control?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandlePointerPressed
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 19
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Handles pointer pressed events.
+  example: []
+  syntax:
+    content: public virtual StateTransitionResult HandlePointerPressed(InputStateContext context, PointerPressedEventArgs e, Control? source)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerPressedEventArgs
+    - id: source
+      type: Avalonia.Controls.Control
+    return:
+      type: FlowGraph.Avalonia.Input.StateTransitionResult
+    content.vb: Public Overridable Function HandlePointerPressed(context As InputStateContext, e As PointerPressedEventArgs, source As Control) As StateTransitionResult
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  nameWithType.vb: InputStateBase.HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerPressedEventArgs, Avalonia.Controls.Control)
+  name.vb: HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  id: HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HandlePointerMoved(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.HandlePointerMoved(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandlePointerMoved
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 22
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Handles pointer moved events.
+  example: []
+  syntax:
+    content: public virtual StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+    return:
+      type: FlowGraph.Avalonia.Input.StateTransitionResult
+    content.vb: Public Overridable Function HandlePointerMoved(context As InputStateContext, e As PointerEventArgs) As StateTransitionResult
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  id: HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HandlePointerReleased(InputStateContext, PointerReleasedEventArgs)
+  nameWithType: InputStateBase.HandlePointerReleased(InputStateContext, PointerReleasedEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerReleasedEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandlePointerReleased
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 25
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Handles pointer released events.
+  example: []
+  syntax:
+    content: public virtual StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerReleasedEventArgs
+    return:
+      type: FlowGraph.Avalonia.Input.StateTransitionResult
+    content.vb: Public Overridable Function HandlePointerReleased(context As InputStateContext, e As PointerReleasedEventArgs) As StateTransitionResult
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  id: HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HandlePointerWheel(InputStateContext, PointerWheelEventArgs)
+  nameWithType: InputStateBase.HandlePointerWheel(InputStateContext, PointerWheelEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerWheelEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandlePointerWheel
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Handles pointer wheel events.
+  example: []
+  syntax:
+    content: public virtual StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerWheelEventArgs
+    return:
+      type: FlowGraph.Avalonia.Input.StateTransitionResult
+    content.vb: Public Overridable Function HandlePointerWheel(context As InputStateContext, e As PointerWheelEventArgs) As StateTransitionResult
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  id: HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HandleKeyDown(InputStateContext, KeyEventArgs)
+  nameWithType: InputStateBase.HandleKeyDown(InputStateContext, KeyEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.KeyEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandleKeyDown
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Handles key down events.
+  example: []
+  syntax:
+    content: public virtual StateTransitionResult HandleKeyDown(InputStateContext context, KeyEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.KeyEventArgs
+    return:
+      type: FlowGraph.Avalonia.Input.StateTransitionResult
+    content.vb: Public Overridable Function HandleKeyDown(context As InputStateContext, e As KeyEventArgs) As StateTransitionResult
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  id: Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: Update(InputStateContext, double)
+  nameWithType: InputStateBase.Update(InputStateContext, double)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Update
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Called each frame for states that need continuous updates (e.g., animations).
+  example: []
+  syntax:
+    content: public virtual void Update(InputStateContext context, double deltaTime)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: deltaTime
+      type: System.Double
+    content.vb: Public Overridable Sub Update(context As InputStateContext, deltaTime As Double)
+  overload: FlowGraph.Avalonia.Input.InputStateBase.Update*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  nameWithType.vb: InputStateBase.Update(InputStateContext, Double)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext, Double)
+  name.vb: Update(InputStateContext, Double)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  id: GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: GetPosition(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetPosition(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPosition
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Gets the current pointer position relative to the root panel.
+  example: []
+  syntax:
+    content: protected static Point GetPosition(InputStateContext context, PointerEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+    return:
+      type: Avalonia.Point
+    content.vb: Protected Shared Function GetPosition(context As InputStateContext, e As PointerEventArgs) As Point
+  overload: FlowGraph.Avalonia.Input.InputStateBase.GetPosition*
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  id: GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: GetPointerPoint(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetPointerPoint(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPointerPoint
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Gets the pointer point for button state information.
+  example: []
+  syntax:
+    content: protected static PointerPoint GetPointerPoint(InputStateContext context, PointerEventArgs e)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+    return:
+      type: Avalonia.Input.PointerPoint
+    content.vb: Protected Shared Function GetPointerPoint(context As InputStateContext, e As PointerEventArgs) As PointerPoint
+  overload: FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint*
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  id: HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: HitTest(InputStateContext, Point)
+  nameWithType: InputStateBase.HitTest(InputStateContext, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Performs hit testing on the main canvas.
+  example: []
+  syntax:
+    content: protected static IInputElement? HitTest(InputStateContext context, Point position)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Input.InputStateContext
+    - id: position
+      type: Avalonia.Point
+    return:
+      type: Avalonia.Input.IInputElement
+    content.vb: Protected Shared Function HitTest(context As InputStateContext, position As Point) As IInputElement
+  overload: FlowGraph.Avalonia.Input.InputStateBase.HitTest*
+- uid: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs,Avalonia.Input.IInputElement)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs,Avalonia.Input.IInputElement)
+  id: CapturePointer(Avalonia.Input.PointerEventArgs,Avalonia.Input.IInputElement)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: CapturePointer(PointerEventArgs, IInputElement?)
+  nameWithType: InputStateBase.CapturePointer(PointerEventArgs, IInputElement?)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs, Avalonia.Input.IInputElement?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CapturePointer
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Captures the pointer to the specified element.
+  example: []
+  syntax:
+    content: protected static void CapturePointer(PointerEventArgs e, IInputElement? element)
+    parameters:
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+    - id: element
+      type: Avalonia.Input.IInputElement
+    content.vb: Protected Shared Sub CapturePointer(e As PointerEventArgs, element As IInputElement)
+  overload: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer*
+  nameWithType.vb: InputStateBase.CapturePointer(PointerEventArgs, IInputElement)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs, Avalonia.Input.IInputElement)
+  name.vb: CapturePointer(PointerEventArgs, IInputElement)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer(Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer(Avalonia.Input.PointerEventArgs)
+  id: ReleasePointer(Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  langs:
+  - csharp
+  - vb
+  name: ReleasePointer(PointerEventArgs)
+  nameWithType: InputStateBase.ReleasePointer(PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer(Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateBase.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReleasePointer
+    path: ../FlowGraph.Avalonia/Input/InputStateBase.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Releases pointer capture.
+  example: []
+  syntax:
+    content: protected static void ReleasePointer(PointerEventArgs e)
+    parameters:
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+    content.vb: Protected Shared Sub ReleasePointer(e As PointerEventArgs)
+  overload: FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer*
+references:
+- uid: FlowGraph.Avalonia.Input
+  commentId: N:FlowGraph.Avalonia.Input
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Input
+  nameWithType: FlowGraph.Avalonia.Input
+  fullName: FlowGraph.Avalonia.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Input.IInputState
+  commentId: T:FlowGraph.Avalonia.Input.IInputState
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.IInputState.html
+  name: IInputState
+  nameWithType: IInputState
+  fullName: FlowGraph.Avalonia.Input.IInputState
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Name*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.Name
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_Name
+  name: Name
+  nameWithType: InputStateBase.Name
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Name
+- uid: FlowGraph.Avalonia.Input.IInputState.Name
+  commentId: P:FlowGraph.Avalonia.Input.IInputState.Name
+  parent: FlowGraph.Avalonia.Input.IInputState
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Name
+  name: Name
+  nameWithType: IInputState.Name
+  fullName: FlowGraph.Avalonia.Input.IInputState.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Input.InputStateBase.IsModal*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.IsModal
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_IsModal
+  name: IsModal
+  nameWithType: InputStateBase.IsModal
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.IsModal
+- uid: FlowGraph.Avalonia.Input.IInputState.IsModal
+  commentId: P:FlowGraph.Avalonia.Input.IInputState.IsModal
+  parent: FlowGraph.Avalonia.Input.IInputState
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_IsModal
+  name: IsModal
+  nameWithType: IInputState.IsModal
+  fullName: FlowGraph.Avalonia.Input.IInputState.IsModal
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Enter*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.Enter
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_Enter_FlowGraph_Avalonia_Input_InputStateContext_
+  name: Enter
+  nameWithType: InputStateBase.Enter
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Enter
+- uid: FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Enter_FlowGraph_Avalonia_Input_InputStateContext_
+  name: Enter(InputStateContext)
+  nameWithType: IInputState.Enter(InputStateContext)
+  fullName: FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+    name: Enter
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Enter_FlowGraph_Avalonia_Input_InputStateContext_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
+    name: Enter
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Enter_FlowGraph_Avalonia_Input_InputStateContext_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateContext
+  commentId: T:FlowGraph.Avalonia.Input.InputStateContext
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.InputStateContext.html
+  name: InputStateContext
+  nameWithType: InputStateContext
+  fullName: FlowGraph.Avalonia.Input.InputStateContext
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Exit*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.Exit
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_Exit_FlowGraph_Avalonia_Input_InputStateContext_
+  name: Exit
+  nameWithType: InputStateBase.Exit
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Exit
+- uid: FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Exit_FlowGraph_Avalonia_Input_InputStateContext_
+  name: Exit(InputStateContext)
+  nameWithType: IInputState.Exit(InputStateContext)
+  fullName: FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+    name: Exit
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Exit_FlowGraph_Avalonia_Input_InputStateContext_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
+    name: Exit
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Exit_FlowGraph_Avalonia_Input_InputStateContext_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HandlePointerPressed_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerPressedEventArgs_Avalonia_Controls_Control_
+  name: HandlePointerPressed
+  nameWithType: InputStateBase.HandlePointerPressed
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed
+- uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerPressed_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerPressedEventArgs_Avalonia_Controls_Control_
+  name: HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control)
+  nameWithType: IInputState.HandlePointerPressed(InputStateContext, PointerPressedEventArgs, Control)
+  fullName: FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerPressedEventArgs, Avalonia.Controls.Control)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+    name: HandlePointerPressed
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerPressed_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerPressedEventArgs_Avalonia_Controls_Control_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerPressedEventArgs
+    name: PointerPressedEventArgs
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
+    name: HandlePointerPressed
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerPressed_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerPressedEventArgs_Avalonia_Controls_Control_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerPressedEventArgs
+    name: PointerPressedEventArgs
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.PointerPressedEventArgs
+  commentId: T:Avalonia.Input.PointerPressedEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerPressedEventArgs
+  nameWithType: PointerPressedEventArgs
+  fullName: Avalonia.Input.PointerPressedEventArgs
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Avalonia.Input.StateTransitionResult
+  commentId: T:FlowGraph.Avalonia.Input.StateTransitionResult
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.StateTransitionResult.html
+  name: StateTransitionResult
+  nameWithType: StateTransitionResult
+  fullName: FlowGraph.Avalonia.Input.StateTransitionResult
+- uid: Avalonia.Input
+  commentId: N:Avalonia.Input
+  isExternal: true
+  name: Avalonia.Input
+  nameWithType: Avalonia.Input
+  fullName: Avalonia.Input
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Input
+    name: Input
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Input
+    name: Input
+    isExternal: true
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HandlePointerMoved_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: HandlePointerMoved
+  nameWithType: InputStateBase.HandlePointerMoved
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerMoved
+- uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerMoved_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: HandlePointerMoved(InputStateContext, PointerEventArgs)
+  nameWithType: IInputState.HandlePointerMoved(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: HandlePointerMoved
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerMoved_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: HandlePointerMoved
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerMoved_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.PointerEventArgs
+  commentId: T:Avalonia.Input.PointerEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerEventArgs
+  nameWithType: PointerEventArgs
+  fullName: Avalonia.Input.PointerEventArgs
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HandlePointerReleased_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerReleasedEventArgs_
+  name: HandlePointerReleased
+  nameWithType: InputStateBase.HandlePointerReleased
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerReleased
+- uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerReleased_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerReleasedEventArgs_
+  name: HandlePointerReleased(InputStateContext, PointerReleasedEventArgs)
+  nameWithType: IInputState.HandlePointerReleased(InputStateContext, PointerReleasedEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerReleasedEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+    name: HandlePointerReleased
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerReleased_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerReleasedEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerReleasedEventArgs
+    name: PointerReleasedEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
+    name: HandlePointerReleased
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerReleased_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerReleasedEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerReleasedEventArgs
+    name: PointerReleasedEventArgs
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.PointerReleasedEventArgs
+  commentId: T:Avalonia.Input.PointerReleasedEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerReleasedEventArgs
+  nameWithType: PointerReleasedEventArgs
+  fullName: Avalonia.Input.PointerReleasedEventArgs
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HandlePointerWheel_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerWheelEventArgs_
+  name: HandlePointerWheel
+  nameWithType: InputStateBase.HandlePointerWheel
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel
+- uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerWheel_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerWheelEventArgs_
+  name: HandlePointerWheel(InputStateContext, PointerWheelEventArgs)
+  nameWithType: IInputState.HandlePointerWheel(InputStateContext, PointerWheelEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerWheelEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+    name: HandlePointerWheel
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerWheel_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerWheelEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerWheelEventArgs
+    name: PointerWheelEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
+    name: HandlePointerWheel
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandlePointerWheel_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerWheelEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerWheelEventArgs
+    name: PointerWheelEventArgs
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.PointerWheelEventArgs
+  commentId: T:Avalonia.Input.PointerWheelEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerWheelEventArgs
+  nameWithType: PointerWheelEventArgs
+  fullName: Avalonia.Input.PointerWheelEventArgs
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HandleKeyDown_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_KeyEventArgs_
+  name: HandleKeyDown
+  nameWithType: InputStateBase.HandleKeyDown
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HandleKeyDown
+- uid: FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandleKeyDown_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_KeyEventArgs_
+  name: HandleKeyDown(InputStateContext, KeyEventArgs)
+  nameWithType: IInputState.HandleKeyDown(InputStateContext, KeyEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.KeyEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+    name: HandleKeyDown
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandleKeyDown_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_KeyEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.KeyEventArgs
+    name: KeyEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
+    name: HandleKeyDown
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_HandleKeyDown_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_KeyEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.KeyEventArgs
+    name: KeyEventArgs
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.KeyEventArgs
+  commentId: T:Avalonia.Input.KeyEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: KeyEventArgs
+  nameWithType: KeyEventArgs
+  fullName: Avalonia.Input.KeyEventArgs
+- uid: FlowGraph.Avalonia.Input.InputStateBase.Update*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.Update
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_Update_FlowGraph_Avalonia_Input_InputStateContext_System_Double_
+  name: Update
+  nameWithType: InputStateBase.Update
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.Update
+- uid: FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  commentId: M:FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+  parent: FlowGraph.Avalonia.Input.IInputState
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Update_FlowGraph_Avalonia_Input_InputStateContext_System_Double_
+  name: Update(InputStateContext, double)
+  nameWithType: IInputState.Update(InputStateContext, double)
+  fullName: FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext, double)
+  nameWithType.vb: IInputState.Update(InputStateContext, Double)
+  fullName.vb: FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext, Double)
+  name.vb: Update(InputStateContext, Double)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+    name: Update
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Update_FlowGraph_Avalonia_Input_InputStateContext_System_Double_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputState.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
+    name: Update
+    href: FlowGraph.Avalonia.Input.IInputState.html#FlowGraph_Avalonia_Input_IInputState_Update_FlowGraph_Avalonia_Input_InputStateContext_System_Double_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetPosition*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.GetPosition
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetPosition
+  nameWithType: InputStateBase.GetPosition
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetPosition
+- uid: Avalonia.Point
+  commentId: T:Avalonia.Point
+  parent: Avalonia
+  isExternal: true
+  name: Point
+  nameWithType: Point
+  fullName: Avalonia.Point
+- uid: Avalonia
+  commentId: N:Avalonia
+  isExternal: true
+  name: Avalonia
+  nameWithType: Avalonia
+  fullName: Avalonia
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetPointerPoint_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetPointerPoint
+  nameWithType: InputStateBase.GetPointerPoint
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint
+- uid: Avalonia.Input.PointerPoint
+  commentId: T:Avalonia.Input.PointerPoint
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerPoint
+  nameWithType: PointerPoint
+  fullName: Avalonia.Input.PointerPoint
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HitTest*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.HitTest
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTest_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  name: HitTest
+  nameWithType: InputStateBase.HitTest
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HitTest
+- uid: Avalonia.Input.IInputElement
+  commentId: T:Avalonia.Input.IInputElement
+  parent: Avalonia.Input
+  isExternal: true
+  name: IInputElement
+  nameWithType: IInputElement
+  fullName: Avalonia.Input.IInputElement
+- uid: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.CapturePointer
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_CapturePointer_Avalonia_Input_PointerEventArgs_Avalonia_Input_IInputElement_
+  name: CapturePointer
+  nameWithType: InputStateBase.CapturePointer
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.CapturePointer
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ReleasePointer_Avalonia_Input_PointerEventArgs_
+  name: ReleasePointer
+  nameWithType: InputStateBase.ReleasePointer
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer

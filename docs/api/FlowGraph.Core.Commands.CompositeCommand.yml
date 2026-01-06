@@ -1,0 +1,689 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Commands.CompositeCommand
+  commentId: T:FlowGraph.Core.Commands.CompositeCommand
+  id: CompositeCommand
+  parent: FlowGraph.Core.Commands
+  children:
+  - FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,FlowGraph.Core.Commands.IGraphCommand[])
+  - FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand})
+  - FlowGraph.Core.Commands.CompositeCommand.Description
+  - FlowGraph.Core.Commands.CompositeCommand.Execute
+  - FlowGraph.Core.Commands.CompositeCommand.Undo
+  langs:
+  - csharp
+  - vb
+  name: CompositeCommand
+  nameWithType: CompositeCommand
+  fullName: FlowGraph.Core.Commands.CompositeCommand
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CompositeCommand
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 5
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Command that groups multiple commands into a single undoable operation.
+  example: []
+  syntax:
+    content: 'public class CompositeCommand : IGraphCommand'
+    content.vb: Public Class CompositeCommand Implements IGraphCommand
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Core.Commands.IGraphCommand
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Commands.CompositeCommand.Description
+  commentId: P:FlowGraph.Core.Commands.CompositeCommand.Description
+  id: Description
+  parent: FlowGraph.Core.Commands.CompositeCommand
+  langs:
+  - csharp
+  - vb
+  name: Description
+  nameWithType: CompositeCommand.Description
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Description
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Description
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets a human-readable description of the command.
+  example: []
+  syntax:
+    content: public string Description { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Description As String
+  overload: FlowGraph.Core.Commands.CompositeCommand.Description*
+  implements:
+  - FlowGraph.Core.Commands.IGraphCommand.Description
+- uid: FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand})
+  commentId: M:FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand})
+  id: '#ctor(System.String,System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand})'
+  parent: FlowGraph.Core.Commands.CompositeCommand
+  langs:
+  - csharp
+  - vb
+  name: CompositeCommand(string, IEnumerable<IGraphCommand>)
+  nameWithType: CompositeCommand.CompositeCommand(string, IEnumerable<IGraphCommand>)
+  fullName: FlowGraph.Core.Commands.CompositeCommand.CompositeCommand(string, System.Collections.Generic.IEnumerable<FlowGraph.Core.Commands.IGraphCommand>)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 14
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Creates a composite command with a custom description.
+  example: []
+  syntax:
+    content: public CompositeCommand(string description, IEnumerable<IGraphCommand> commands)
+    parameters:
+    - id: description
+      type: System.String
+    - id: commands
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand}
+    content.vb: Public Sub New(description As String, commands As IEnumerable(Of IGraphCommand))
+  overload: FlowGraph.Core.Commands.CompositeCommand.#ctor*
+  nameWithType.vb: CompositeCommand.New(String, IEnumerable(Of IGraphCommand))
+  fullName.vb: FlowGraph.Core.Commands.CompositeCommand.New(String, System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Commands.IGraphCommand))
+  name.vb: New(String, IEnumerable(Of IGraphCommand))
+- uid: FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,FlowGraph.Core.Commands.IGraphCommand[])
+  commentId: M:FlowGraph.Core.Commands.CompositeCommand.#ctor(System.String,FlowGraph.Core.Commands.IGraphCommand[])
+  id: '#ctor(System.String,FlowGraph.Core.Commands.IGraphCommand[])'
+  parent: FlowGraph.Core.Commands.CompositeCommand
+  langs:
+  - csharp
+  - vb
+  name: CompositeCommand(string, params IGraphCommand[])
+  nameWithType: CompositeCommand.CompositeCommand(string, params IGraphCommand[])
+  fullName: FlowGraph.Core.Commands.CompositeCommand.CompositeCommand(string, params FlowGraph.Core.Commands.IGraphCommand[])
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 26
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Creates a composite command with a custom description.
+  example: []
+  syntax:
+    content: public CompositeCommand(string description, params IGraphCommand[] commands)
+    parameters:
+    - id: description
+      type: System.String
+    - id: commands
+      type: FlowGraph.Core.Commands.IGraphCommand[]
+    content.vb: Public Sub New(description As String, ParamArray commands As IGraphCommand())
+  overload: FlowGraph.Core.Commands.CompositeCommand.#ctor*
+  nameWithType.vb: CompositeCommand.New(String, ParamArray IGraphCommand())
+  fullName.vb: FlowGraph.Core.Commands.CompositeCommand.New(String, ParamArray FlowGraph.Core.Commands.IGraphCommand())
+  name.vb: New(String, ParamArray IGraphCommand())
+- uid: FlowGraph.Core.Commands.CompositeCommand.Execute
+  commentId: M:FlowGraph.Core.Commands.CompositeCommand.Execute
+  id: Execute
+  parent: FlowGraph.Core.Commands.CompositeCommand
+  langs:
+  - csharp
+  - vb
+  name: Execute()
+  nameWithType: CompositeCommand.Execute()
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Execute()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Execute
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Executes the command.
+  example: []
+  syntax:
+    content: public void Execute()
+    content.vb: Public Sub Execute()
+  overload: FlowGraph.Core.Commands.CompositeCommand.Execute*
+  implements:
+  - FlowGraph.Core.Commands.IGraphCommand.Execute
+- uid: FlowGraph.Core.Commands.CompositeCommand.Undo
+  commentId: M:FlowGraph.Core.Commands.CompositeCommand.Undo
+  id: Undo
+  parent: FlowGraph.Core.Commands.CompositeCommand
+  langs:
+  - csharp
+  - vb
+  name: Undo()
+  nameWithType: CompositeCommand.Undo()
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Undo()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CompositeCommand.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Undo
+    path: ../FlowGraph.Core/Commands/CompositeCommand.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Reverses the command (undo).
+  example: []
+  syntax:
+    content: public void Undo()
+    content.vb: Public Sub Undo()
+  overload: FlowGraph.Core.Commands.CompositeCommand.Undo*
+  implements:
+  - FlowGraph.Core.Commands.IGraphCommand.Undo
+references:
+- uid: FlowGraph.Core.Commands
+  commentId: N:FlowGraph.Core.Commands
+  href: FlowGraph.html
+  name: FlowGraph.Core.Commands
+  nameWithType: FlowGraph.Core.Commands
+  fullName: FlowGraph.Core.Commands
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.Commands.IGraphCommand
+  commentId: T:FlowGraph.Core.Commands.IGraphCommand
+  parent: FlowGraph.Core.Commands
+  href: FlowGraph.Core.Commands.IGraphCommand.html
+  name: IGraphCommand
+  nameWithType: IGraphCommand
+  fullName: FlowGraph.Core.Commands.IGraphCommand
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Commands.CompositeCommand.Description*
+  commentId: Overload:FlowGraph.Core.Commands.CompositeCommand.Description
+  href: FlowGraph.Core.Commands.CompositeCommand.html#FlowGraph_Core_Commands_CompositeCommand_Description
+  name: Description
+  nameWithType: CompositeCommand.Description
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Description
+- uid: FlowGraph.Core.Commands.IGraphCommand.Description
+  commentId: P:FlowGraph.Core.Commands.IGraphCommand.Description
+  parent: FlowGraph.Core.Commands.IGraphCommand
+  href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Description
+  name: Description
+  nameWithType: IGraphCommand.Description
+  fullName: FlowGraph.Core.Commands.IGraphCommand.Description
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Commands.CompositeCommand.#ctor*
+  commentId: Overload:FlowGraph.Core.Commands.CompositeCommand.#ctor
+  href: FlowGraph.Core.Commands.CompositeCommand.html#FlowGraph_Core_Commands_CompositeCommand__ctor_System_String_System_Collections_Generic_IEnumerable_FlowGraph_Core_Commands_IGraphCommand__
+  name: CompositeCommand
+  nameWithType: CompositeCommand.CompositeCommand
+  fullName: FlowGraph.Core.Commands.CompositeCommand.CompositeCommand
+  nameWithType.vb: CompositeCommand.New
+  fullName.vb: FlowGraph.Core.Commands.CompositeCommand.New
+  name.vb: New
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Commands.IGraphCommand}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IGraphCommand>
+  nameWithType: IEnumerable<IGraphCommand>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Commands.IGraphCommand>
+  nameWithType.vb: IEnumerable(Of IGraphCommand)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Commands.IGraphCommand)
+  name.vb: IEnumerable(Of IGraphCommand)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Commands.IGraphCommand
+    name: IGraphCommand
+    href: FlowGraph.Core.Commands.IGraphCommand.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Commands.IGraphCommand
+    name: IGraphCommand
+    href: FlowGraph.Core.Commands.IGraphCommand.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Commands.IGraphCommand[]
+  isExternal: true
+  href: FlowGraph.Core.Commands.IGraphCommand.html
+  name: IGraphCommand[]
+  nameWithType: IGraphCommand[]
+  fullName: FlowGraph.Core.Commands.IGraphCommand[]
+  nameWithType.vb: IGraphCommand()
+  fullName.vb: FlowGraph.Core.Commands.IGraphCommand()
+  name.vb: IGraphCommand()
+  spec.csharp:
+  - uid: FlowGraph.Core.Commands.IGraphCommand
+    name: IGraphCommand
+    href: FlowGraph.Core.Commands.IGraphCommand.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: FlowGraph.Core.Commands.IGraphCommand
+    name: IGraphCommand
+    href: FlowGraph.Core.Commands.IGraphCommand.html
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Commands.CompositeCommand.Execute*
+  commentId: Overload:FlowGraph.Core.Commands.CompositeCommand.Execute
+  href: FlowGraph.Core.Commands.CompositeCommand.html#FlowGraph_Core_Commands_CompositeCommand_Execute
+  name: Execute
+  nameWithType: CompositeCommand.Execute
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Execute
+- uid: FlowGraph.Core.Commands.IGraphCommand.Execute
+  commentId: M:FlowGraph.Core.Commands.IGraphCommand.Execute
+  parent: FlowGraph.Core.Commands.IGraphCommand
+  href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Execute
+  name: Execute()
+  nameWithType: IGraphCommand.Execute()
+  fullName: FlowGraph.Core.Commands.IGraphCommand.Execute()
+  spec.csharp:
+  - uid: FlowGraph.Core.Commands.IGraphCommand.Execute
+    name: Execute
+    href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Execute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Commands.IGraphCommand.Execute
+    name: Execute
+    href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Execute
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Commands.CompositeCommand.Undo*
+  commentId: Overload:FlowGraph.Core.Commands.CompositeCommand.Undo
+  href: FlowGraph.Core.Commands.CompositeCommand.html#FlowGraph_Core_Commands_CompositeCommand_Undo
+  name: Undo
+  nameWithType: CompositeCommand.Undo
+  fullName: FlowGraph.Core.Commands.CompositeCommand.Undo
+- uid: FlowGraph.Core.Commands.IGraphCommand.Undo
+  commentId: M:FlowGraph.Core.Commands.IGraphCommand.Undo
+  parent: FlowGraph.Core.Commands.IGraphCommand
+  href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Undo
+  name: Undo()
+  nameWithType: IGraphCommand.Undo()
+  fullName: FlowGraph.Core.Commands.IGraphCommand.Undo()
+  spec.csharp:
+  - uid: FlowGraph.Core.Commands.IGraphCommand.Undo
+    name: Undo
+    href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Undo
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Commands.IGraphCommand.Undo
+    name: Undo
+    href: FlowGraph.Core.Commands.IGraphCommand.html#FlowGraph_Core_Commands_IGraphCommand_Undo
+  - name: (
+  - name: )

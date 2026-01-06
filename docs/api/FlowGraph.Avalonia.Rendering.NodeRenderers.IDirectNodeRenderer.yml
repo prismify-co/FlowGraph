@@ -1,0 +1,279 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
+  id: IDirectNodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  langs:
+  - csharp
+  - vb
+  name: IDirectNodeRenderer
+  nameWithType: IDirectNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IDirectNodeRenderer
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Interface for custom node renderers that support direct DrawingContext rendering.
+
+    Implement this interface in addition to <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer" data-throw-if-not-resolved="false"></xref> to provide
+
+    custom drawing logic for the high-performance DirectGraphRenderer mode.
+  remarks: >-
+    <p>
+
+    When DirectGraphRenderer renders a node, it first checks if the node's renderer
+
+    implements IDirectNodeRenderer. If so, it delegates to <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext%2cFlowGraph.Core.Node%2cFlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)" data-throw-if-not-resolved="false"></xref>.
+
+    Otherwise, it uses the built-in default drawing logic.
+
+    </p>
+
+    <p>
+
+    Implementations should:
+
+    - Draw node background and border
+
+    - Draw node label (unless editingNodeId matches)
+
+    - NOT draw ports (handled by DirectGraphRenderer for consistency)
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">public class MyCustomRenderer : INodeRenderer, IDirectNodeRenderer
+
+    {
+        // INodeRenderer implementation for visual tree mode
+        public Control CreateNodeVisual(Node node, NodeRenderContext context) { ... }
+
+        // IDirectNodeRenderer implementation for direct mode
+        public void DrawNode(DrawingContext context, Node node, DirectNodeRenderContext ctx)
+        {
+            // Draw custom shape
+            var geometry = new EllipseGeometry(ctx.ScreenBounds);
+            context.DrawGeometry(ctx.Background, ctx.BorderPen, geometry);
+
+            // Draw label
+            if (!ctx.IsEditing)
+            {
+                // Draw text...
+            }
+        }
+    }</code></pre>
+  syntax:
+    content: public interface IDirectNodeRenderer
+    content.vb: Public Interface IDirectNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  id: DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: DrawNode(DrawingContext, Node, DirectNodeRenderContext)
+  nameWithType: IDirectNodeRenderer.DrawNode(DrawingContext, Node, DirectNodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DrawNode
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
+    startLine: 55
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Draws the node directly to a DrawingContext.
+  example: []
+  syntax:
+    content: void DrawNode(DrawingContext context, Node node, DirectNodeRenderContext renderContext)
+    parameters:
+    - id: context
+      type: Avalonia.Media.DrawingContext
+      description: The Avalonia drawing context.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to draw.
+    - id: renderContext
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+      description: Context with pre-calculated screen bounds, brushes, and state.
+    content.vb: Sub DrawNode(context As DrawingContext, node As Node, renderContext As DirectNodeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode*
+references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html
+  name: INodeRenderer
+  nameWithType: INodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IDirectNodeRenderer_DrawNode_Avalonia_Media_DrawingContext_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_DirectNodeRenderContext_
+  name: DrawNode(DrawingContext, Node, DirectNodeRenderContext)
+  nameWithType: IDirectNodeRenderer.DrawNode(DrawingContext, Node, DirectNodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+    name: DrawNode
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IDirectNodeRenderer_DrawNode_Avalonia_Media_DrawingContext_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_DirectNodeRenderContext_
+  - name: (
+  - uid: Avalonia.Media.DrawingContext
+    name: DrawingContext
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+    name: DirectNodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)
+    name: DrawNode
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IDirectNodeRenderer_DrawNode_Avalonia_Media_DrawingContext_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_DirectNodeRenderContext_
+  - name: (
+  - uid: Avalonia.Media.DrawingContext
+    name: DrawingContext
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+    name: DirectNodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.NodeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IDirectNodeRenderer_DrawNode_Avalonia_Media_DrawingContext_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_DirectNodeRenderContext_
+  name: DrawNode
+  nameWithType: IDirectNodeRenderer.DrawNode
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode
+- uid: Avalonia.Media.DrawingContext
+  commentId: T:Avalonia.Media.DrawingContext
+  parent: Avalonia.Media
+  isExternal: true
+  name: DrawingContext
+  nameWithType: DrawingContext
+  fullName: Avalonia.Media.DrawingContext
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext.html
+  name: DirectNodeRenderContext
+  nameWithType: DirectNodeRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+- uid: Avalonia.Media
+  commentId: N:Avalonia.Media
+  isExternal: true
+  name: Avalonia.Media
+  nameWithType: Avalonia.Media
+  fullName: Avalonia.Media
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Media
+    name: Media
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Media
+    name: Media
+    isExternal: true
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html

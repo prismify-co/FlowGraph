@@ -1,0 +1,774 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  commentId: T:FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  id: MultiNodeAnimation
+  parent: FlowGraph.Avalonia.Animation
+  children:
+  - FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor(System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
+  - FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel
+  - FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+  - FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: MultiNodeAnimation
+  nameWithType: MultiNodeAnimation
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/NodeAnimation.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MultiNodeAnimation
+    path: ../FlowGraph.Avalonia/Animation/NodeAnimation.cs
+    startLine: 79
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Animates multiple nodes' positions simultaneously.
+  example: []
+  syntax:
+    content: 'public class MultiNodeAnimation : IAnimation'
+    content.vb: Public Class MultiNodeAnimation Implements IAnimation
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Avalonia.Animation.IAnimation
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+  commentId: P:FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+  id: IsComplete
+  parent: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  langs:
+  - csharp
+  - vb
+  name: IsComplete
+  nameWithType: MultiNodeAnimation.IsComplete
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/NodeAnimation.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsComplete
+    path: ../FlowGraph.Avalonia/Animation/NodeAnimation.cs
+    startLine: 88
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Gets whether the animation has completed.
+  example: []
+  syntax:
+    content: public bool IsComplete { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsComplete As Boolean
+  overload: FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete*
+  implements:
+  - FlowGraph.Avalonia.Animation.IAnimation.IsComplete
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor(System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
+  commentId: M:FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor(System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
+  id: '#ctor(System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)'
+  parent: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  langs:
+  - csharp
+  - vb
+  name: MultiNodeAnimation(IReadOnlyDictionary<Node, Point>, double, Func<double, double>?, Action?)
+  nameWithType: MultiNodeAnimation.MultiNodeAnimation(IReadOnlyDictionary<Node, Point>, double, Func<double, double>?, Action?)
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.MultiNodeAnimation(System.Collections.Generic.IReadOnlyDictionary<FlowGraph.Core.Node, FlowGraph.Core.Point>, double, System.Func<double, double>?, System.Action?)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/NodeAnimation.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Animation/NodeAnimation.cs
+    startLine: 97
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Creates a new multi-node position animation.
+  example: []
+  syntax:
+    content: public MultiNodeAnimation(IReadOnlyDictionary<Node, Point> nodePositions, double duration = 0.3, Func<double, double>? easing = null, Action? onComplete = null)
+    parameters:
+    - id: nodePositions
+      type: System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point}
+      description: Dictionary mapping nodes to their target positions.
+    - id: duration
+      type: System.Double
+      description: Animation duration in seconds.
+    - id: easing
+      type: System.Func{System.Double,System.Double}
+      description: Easing function (defaults to EaseOutCubic).
+    - id: onComplete
+      type: System.Action
+      description: Callback when animation completes.
+    content.vb: Public Sub New(nodePositions As IReadOnlyDictionary(Of Node, Point), duration As Double = 0.3, easing As Func(Of Double, Double) = Nothing, onComplete As Action = Nothing)
+  overload: FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor*
+  nameWithType.vb: MultiNodeAnimation.New(IReadOnlyDictionary(Of Node, Point), Double, Func(Of Double, Double), Action)
+  fullName.vb: FlowGraph.Avalonia.Animation.MultiNodeAnimation.New(System.Collections.Generic.IReadOnlyDictionary(Of FlowGraph.Core.Node, FlowGraph.Core.Point), Double, System.Func(Of Double, Double), System.Action)
+  name.vb: New(IReadOnlyDictionary(Of Node, Point), Double, Func(Of Double, Double), Action)
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update(System.Double)
+  commentId: M:FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update(System.Double)
+  id: Update(System.Double)
+  parent: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: MultiNodeAnimation.Update(double)
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update(double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/NodeAnimation.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Update
+    path: ../FlowGraph.Avalonia/Animation/NodeAnimation.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Updates the animation with the elapsed time since the last frame.
+  example: []
+  syntax:
+    content: public void Update(double deltaTime)
+    parameters:
+    - id: deltaTime
+      type: System.Double
+      description: Time elapsed since last update in seconds.
+    content.vb: Public Sub Update(deltaTime As Double)
+  overload: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update*
+  implements:
+  - FlowGraph.Avalonia.Animation.IAnimation.Update(System.Double)
+  nameWithType.vb: MultiNodeAnimation.Update(Double)
+  fullName.vb: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update(Double)
+  name.vb: Update(Double)
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel
+  commentId: M:FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel
+  id: Cancel
+  parent: FlowGraph.Avalonia.Animation.MultiNodeAnimation
+  langs:
+  - csharp
+  - vb
+  name: Cancel()
+  nameWithType: MultiNodeAnimation.Cancel()
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/NodeAnimation.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Cancel
+    path: ../FlowGraph.Avalonia/Animation/NodeAnimation.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Called when the animation completes or is cancelled.
+  example: []
+  syntax:
+    content: public void Cancel()
+    content.vb: Public Sub Cancel()
+  overload: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel*
+  implements:
+  - FlowGraph.Avalonia.Animation.IAnimation.Cancel
+references:
+- uid: FlowGraph.Avalonia.Animation
+  commentId: N:FlowGraph.Avalonia.Animation
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Animation
+  nameWithType: FlowGraph.Avalonia.Animation
+  fullName: FlowGraph.Avalonia.Animation
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Animation.IAnimation
+  commentId: T:FlowGraph.Avalonia.Animation.IAnimation
+  parent: FlowGraph.Avalonia.Animation
+  href: FlowGraph.Avalonia.Animation.IAnimation.html
+  name: IAnimation
+  nameWithType: IAnimation
+  fullName: FlowGraph.Avalonia.Animation.IAnimation
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete*
+  commentId: Overload:FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+  href: FlowGraph.Avalonia.Animation.MultiNodeAnimation.html#FlowGraph_Avalonia_Animation_MultiNodeAnimation_IsComplete
+  name: IsComplete
+  nameWithType: MultiNodeAnimation.IsComplete
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.IsComplete
+- uid: FlowGraph.Avalonia.Animation.IAnimation.IsComplete
+  commentId: P:FlowGraph.Avalonia.Animation.IAnimation.IsComplete
+  parent: FlowGraph.Avalonia.Animation.IAnimation
+  href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_IsComplete
+  name: IsComplete
+  nameWithType: IAnimation.IsComplete
+  fullName: FlowGraph.Avalonia.Animation.IAnimation.IsComplete
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Animation.MultiNodeAnimation.#ctor
+  href: FlowGraph.Avalonia.Animation.MultiNodeAnimation.html#FlowGraph_Avalonia_Animation_MultiNodeAnimation__ctor_System_Collections_Generic_IReadOnlyDictionary_FlowGraph_Core_Node_FlowGraph_Core_Point__System_Double_System_Func_System_Double_System_Double__System_Action_
+  name: MultiNodeAnimation
+  nameWithType: MultiNodeAnimation.MultiNodeAnimation
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.MultiNodeAnimation
+  nameWithType.vb: MultiNodeAnimation.New
+  fullName.vb: FlowGraph.Avalonia.Animation.MultiNodeAnimation.New
+  name.vb: New
+- uid: System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{FlowGraph.Core.Node,FlowGraph.Core.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<Node, Point>
+  nameWithType: IReadOnlyDictionary<Node, Point>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<FlowGraph.Core.Node, FlowGraph.Core.Point>
+  nameWithType.vb: IReadOnlyDictionary(Of Node, Point)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of FlowGraph.Core.Node, FlowGraph.Core.Point)
+  name.vb: IReadOnlyDictionary(Of Node, Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Func{System.Double,System.Double}
+  commentId: T:System.Func{System.Double,System.Double}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<double, double>
+  nameWithType: Func<double, double>
+  fullName: System.Func<double, double>
+  nameWithType.vb: Func(Of Double, Double)
+  fullName.vb: System.Func(Of Double, Double)
+  name.vb: Func(Of Double, Double)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update*
+  commentId: Overload:FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update
+  href: FlowGraph.Avalonia.Animation.MultiNodeAnimation.html#FlowGraph_Avalonia_Animation_MultiNodeAnimation_Update_System_Double_
+  name: Update
+  nameWithType: MultiNodeAnimation.Update
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Update
+- uid: FlowGraph.Avalonia.Animation.IAnimation.Update(System.Double)
+  commentId: M:FlowGraph.Avalonia.Animation.IAnimation.Update(System.Double)
+  parent: FlowGraph.Avalonia.Animation.IAnimation
+  isExternal: true
+  href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Update_System_Double_
+  name: Update(double)
+  nameWithType: IAnimation.Update(double)
+  fullName: FlowGraph.Avalonia.Animation.IAnimation.Update(double)
+  nameWithType.vb: IAnimation.Update(Double)
+  fullName.vb: FlowGraph.Avalonia.Animation.IAnimation.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Animation.IAnimation.Update(System.Double)
+    name: Update
+    href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Animation.IAnimation.Update(System.Double)
+    name: Update
+    href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel*
+  commentId: Overload:FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel
+  href: FlowGraph.Avalonia.Animation.MultiNodeAnimation.html#FlowGraph_Avalonia_Animation_MultiNodeAnimation_Cancel
+  name: Cancel
+  nameWithType: MultiNodeAnimation.Cancel
+  fullName: FlowGraph.Avalonia.Animation.MultiNodeAnimation.Cancel
+- uid: FlowGraph.Avalonia.Animation.IAnimation.Cancel
+  commentId: M:FlowGraph.Avalonia.Animation.IAnimation.Cancel
+  parent: FlowGraph.Avalonia.Animation.IAnimation
+  href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Cancel
+  name: Cancel()
+  nameWithType: IAnimation.Cancel()
+  fullName: FlowGraph.Avalonia.Animation.IAnimation.Cancel()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Animation.IAnimation.Cancel
+    name: Cancel
+    href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Cancel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Animation.IAnimation.Cancel
+    name: Cancel
+    href: FlowGraph.Avalonia.Animation.IAnimation.html#FlowGraph_Avalonia_Animation_IAnimation_Cancel
+  - name: (
+  - name: )

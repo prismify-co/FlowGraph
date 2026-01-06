@@ -1,0 +1,1725 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  id: DefaultNodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock(Avalonia.Controls.Grid)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  langs:
+  - csharp
+  - vb
+  name: DefaultNodeRenderer
+  nameWithType: DefaultNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DefaultNodeRenderer
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 14
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Default node renderer that creates a standard bordered box with text.
+
+    Supports inline label editing via IEditableNodeRenderer.
+  example: []
+  syntax:
+    content: 'public class DefaultNodeRenderer : IEditableNodeRenderer, INodeRenderer'
+    content.vb: Public Class DefaultNodeRenderer Implements IEditableNodeRenderer, INodeRenderer
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: CreateNodeVisual(Node, NodeRenderContext)
+  nameWithType: DefaultNodeRenderer.CreateNodeVisual(Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreateNodeVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 21
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Creates the visual representation for a node.
+  example: []
+  syntax:
+    content: public virtual Control CreateNodeVisual(Node node, NodeRenderContext context)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data to render.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context with theme, scale, and settings.
+    return:
+      type: Avalonia.Controls.Control
+      description: A Control representing the node visual.
+    content.vb: Public Overridable Function CreateNodeVisual(node As Node, context As NodeRenderContext) As Control
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: CreateNodeContent(Node, NodeRenderContext)
+  nameWithType: DefaultNodeRenderer.CreateNodeContent(Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreateNodeContent
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 62
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Creates the content inside the node. Override to customize.
+  example: []
+  syntax:
+    content: protected virtual Control CreateNodeContent(Node node, NodeRenderContext context)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    return:
+      type: Avalonia.Controls.Control
+    content.vb: Protected Overridable Function CreateNodeContent(node As Node, context As NodeRenderContext) As Control
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText(FlowGraph.Core.Node)
+  id: GetDisplayText(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetDisplayText(Node)
+  nameWithType: DefaultNodeRenderer.GetDisplayText(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetDisplayText
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 92
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the display text for the node. Override to customize.
+  example: []
+  syntax:
+    content: protected virtual string GetDisplayText(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetDisplayText(node As Node) As String
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSelection(Control, Node, NodeRenderContext)
+  nameWithType: DefaultNodeRenderer.UpdateSelection(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSelection
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Updates the visual state when selection changes.
+  example: []
+  syntax:
+    content: public virtual void UpdateSelection(Control visual, Node node, NodeRenderContext context)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The node's visual control.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context.
+    content.vb: Public Overridable Sub UpdateSelection(visual As Control, node As Node, context As NodeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  id: UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSize(Control, Node, NodeRenderContext, double, double)
+  nameWithType: DefaultNodeRenderer.UpdateSize(Control, Node, NodeRenderContext, double, double)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSize
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 115
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Updates the size of an existing node visual.
+  example: []
+  syntax:
+    content: public virtual void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The node's visual control.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context.
+    - id: width
+      type: System.Double
+      description: The new width in canvas units.
+    - id: height
+      type: System.Double
+      description: The new height in canvas units.
+    content.vb: Public Overridable Sub UpdateSize(visual As Control, node As Node, context As NodeRenderContext, width As Double, height As Double)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  nameWithType.vb: DefaultNodeRenderer.UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, Double, Double)
+  name.vb: UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetWidth(Node, FlowCanvasSettings)
+  nameWithType: DefaultNodeRenderer.GetWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetWidth
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 124
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Gets the default width of the node in canvas units (before scaling).
+
+    Return null to use the default width from settings.
+  example: []
+  syntax:
+    content: public virtual double? GetWidth(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Overridable Function GetWidth(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetHeight(Node, FlowCanvasSettings)
+  nameWithType: DefaultNodeRenderer.GetHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetHeight
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 126
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Gets the default height of the node in canvas units (before scaling).
+
+    Return null to use the default height from settings.
+  example: []
+  syntax:
+    content: public virtual double? GetHeight(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Overridable Function GetHeight(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetMinWidth(Node, FlowCanvasSettings)
+  nameWithType: DefaultNodeRenderer.GetMinWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetMinWidth
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 128
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the minimum width for resizing. Return null for no minimum.
+  example: []
+  syntax:
+    content: public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Overridable Function GetMinWidth(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetMinHeight(Node, FlowCanvasSettings)
+  nameWithType: DefaultNodeRenderer.GetMinHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetMinHeight
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 130
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the minimum height for resizing. Return null for no minimum.
+  example: []
+  syntax:
+    content: public virtual double? GetMinHeight(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Overridable Function GetMinHeight(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  id: BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: BeginEdit(Control, Node, NodeRenderContext, Action<string>, Action)
+  nameWithType: DefaultNodeRenderer.BeginEdit(Control, Node, NodeRenderContext, Action<string>, Action)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, System.Action<string>, System.Action)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginEdit
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 137
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Enters edit mode - replaces the label TextBlock with a TextBox.
+  example: []
+  syntax:
+    content: public virtual void BeginEdit(Control visual, Node node, NodeRenderContext context, Action<string> onCommit, Action onCancel)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    - id: onCommit
+      type: System.Action{System.String}
+    - id: onCancel
+      type: System.Action
+    content.vb: Public Overridable Sub BeginEdit(visual As Control, node As Node, context As NodeRenderContext, onCommit As Action(Of String), onCancel As Action)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  nameWithType.vb: DefaultNodeRenderer.BeginEdit(Control, Node, NodeRenderContext, Action(Of String), Action)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, System.Action(Of String), System.Action)
+  name.vb: BeginEdit(Control, Node, NodeRenderContext, Action(Of String), Action)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: EndEdit(Control, Node, NodeRenderContext)
+  nameWithType: DefaultNodeRenderer.EndEdit(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EndEdit
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 226
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Exits edit mode - removes the TextBox and shows the label.
+  example: []
+  syntax:
+    content: public virtual void EndEdit(Control visual, Node node, NodeRenderContext context)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    content.vb: Public Overridable Sub EndEdit(visual As Control, node As Node, context As NodeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  id: IsEditing(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: IsEditing(Control)
+  nameWithType: DefaultNodeRenderer.IsEditing(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEditing
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 252
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets whether the node is currently in edit mode.
+  example: []
+  syntax:
+    content: public virtual bool IsEditing(Control visual)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable Function IsEditing(visual As Control) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing*
+  implements:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText(FlowGraph.Core.Node)
+  id: GetEditableText(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetEditableText(Node)
+  nameWithType: DefaultNodeRenderer.GetEditableText(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEditableText
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 264
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the text to edit. Override to customize.
+  example: []
+  syntax:
+    content: protected virtual string GetEditableText(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetEditableText(node As Node) As String
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel(Avalonia.Controls.Control)
+  id: FindContentPanel(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: FindContentPanel(Control)
+  nameWithType: DefaultNodeRenderer.FindContentPanel(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FindContentPanel
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 277
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Finds the content panel in the node visual.
+  example: []
+  syntax:
+    content: protected Grid? FindContentPanel(Control visual)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    return:
+      type: Avalonia.Controls.Grid
+    content.vb: Protected Function FindContentPanel(visual As Control) As Grid
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock(Avalonia.Controls.Grid)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock(Avalonia.Controls.Grid)
+  id: FindLabelTextBlock(Avalonia.Controls.Grid)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: FindLabelTextBlock(Grid)
+  nameWithType: DefaultNodeRenderer.FindLabelTextBlock(Grid)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock(Avalonia.Controls.Grid)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FindLabelTextBlock
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/DefaultNodeRenderer.cs
+    startLine: 289
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Finds the label TextBlock in the content panel.
+  example: []
+  syntax:
+    content: protected TextBlock? FindLabelTextBlock(Grid contentPanel)
+    parameters:
+    - id: contentPanel
+      type: Avalonia.Controls.Grid
+    return:
+      type: Avalonia.Controls.TextBlock
+    content.vb: Protected Function FindLabelTextBlock(contentPanel As Grid) As TextBlock
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock*
+references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.NodeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html
+  name: IEditableNodeRenderer
+  nameWithType: IEditableNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html
+  name: INodeRenderer
+  nameWithType: INodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: CreateNodeVisual
+  nameWithType: DefaultNodeRenderer.CreateNodeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeVisual
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: CreateNodeVisual(Node, NodeRenderContext)
+  nameWithType: INodeRenderer.CreateNodeVisual(Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: CreateNodeVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: CreateNodeVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  name: NodeRenderContext
+  nameWithType: NodeRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_CreateNodeContent_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: CreateNodeContent
+  nameWithType: DefaultNodeRenderer.CreateNodeContent
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetDisplayText_FlowGraph_Core_Node_
+  name: GetDisplayText
+  nameWithType: DefaultNodeRenderer.GetDisplayText
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: UpdateSelection
+  nameWithType: DefaultNodeRenderer.UpdateSelection
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSelection
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: UpdateSelection(Control, Node, NodeRenderContext)
+  nameWithType: INodeRenderer.UpdateSelection(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: UpdateSelection
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: UpdateSelection
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_
+  name: UpdateSize
+  nameWithType: DefaultNodeRenderer.UpdateSize
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.UpdateSize
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_
+  name: UpdateSize(Control, Node, NodeRenderContext, double, double)
+  nameWithType: INodeRenderer.UpdateSize(Control, Node, NodeRenderContext, double, double)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, double, double)
+  nameWithType.vb: INodeRenderer.UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, Double, Double)
+  name.vb: UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+    name: UpdateSize
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+    name: UpdateSize
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetWidth
+  nameWithType: DefaultNodeRenderer.GetWidth
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetWidth(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetWidth
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetWidth
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetHeight
+  nameWithType: DefaultNodeRenderer.GetHeight
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetHeight
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetHeight(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetHeight
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetHeight
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinWidth
+  nameWithType: DefaultNodeRenderer.GetMinWidth
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinWidth
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinWidth(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetMinWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetMinWidth
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetMinWidth
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinHeight
+  nameWithType: DefaultNodeRenderer.GetMinHeight
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetMinHeight
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinHeight(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetMinHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetMinHeight
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+    name: GetMinHeight
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.FlowCanvasSettings
+    name: FlowCanvasSettings
+    href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_BeginEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Action_System_String__System_Action_
+  name: BeginEdit
+  nameWithType: DefaultNodeRenderer.BeginEdit
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.BeginEdit
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_BeginEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Action_System_String__System_Action_
+  name: BeginEdit(Control, Node, NodeRenderContext, Action<string>, Action)
+  nameWithType: IEditableNodeRenderer.BeginEdit(Control, Node, NodeRenderContext, Action<string>, Action)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, System.Action<string>, System.Action)
+  nameWithType.vb: IEditableNodeRenderer.BeginEdit(Control, Node, NodeRenderContext, Action(Of String), Action)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, System.Action(Of String), System.Action)
+  name.vb: BeginEdit(Control, Node, NodeRenderContext, Action(Of String), Action)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+    name: BeginEdit
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_BeginEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Action_System_String__System_Action_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)
+    name: BeginEdit
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_BeginEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Action_System_String__System_Action_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+- uid: System.Action{System.String}
+  commentId: T:System.Action{System.String}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<string>
+  nameWithType: Action<string>
+  fullName: System.Action<string>
+  nameWithType.vb: Action(Of String)
+  fullName.vb: System.Action(Of String)
+  name.vb: Action(Of String)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_EndEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: EndEdit
+  nameWithType: DefaultNodeRenderer.EndEdit
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.EndEdit
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_EndEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: EndEdit(Control, Node, NodeRenderContext)
+  nameWithType: IEditableNodeRenderer.EndEdit(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: EndEdit
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_EndEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: EndEdit
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_EndEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_IsEditing_Avalonia_Controls_Control_
+  name: IsEditing
+  nameWithType: DefaultNodeRenderer.IsEditing
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.IsEditing
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_IsEditing_Avalonia_Controls_Control_
+  name: IsEditing(Control)
+  nameWithType: IEditableNodeRenderer.IsEditing(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+    name: IsEditing
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_IsEditing_Avalonia_Controls_Control_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.IsEditing(Avalonia.Controls.Control)
+    name: IsEditing
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IEditableNodeRenderer_IsEditing_Avalonia_Controls_Control_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetEditableText_FlowGraph_Core_Node_
+  name: GetEditableText
+  nameWithType: DefaultNodeRenderer.GetEditableText
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetEditableText
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_FindContentPanel_Avalonia_Controls_Control_
+  name: FindContentPanel
+  nameWithType: DefaultNodeRenderer.FindContentPanel
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindContentPanel
+- uid: Avalonia.Controls.Grid
+  commentId: T:Avalonia.Controls.Grid
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Grid
+  nameWithType: Grid
+  fullName: Avalonia.Controls.Grid
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_FindLabelTextBlock_Avalonia_Controls_Grid_
+  name: FindLabelTextBlock
+  nameWithType: DefaultNodeRenderer.FindLabelTextBlock
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.FindLabelTextBlock
+- uid: Avalonia.Controls.TextBlock
+  commentId: T:Avalonia.Controls.TextBlock
+  parent: Avalonia.Controls
+  isExternal: true
+  name: TextBlock
+  nameWithType: TextBlock
+  fullName: Avalonia.Controls.TextBlock

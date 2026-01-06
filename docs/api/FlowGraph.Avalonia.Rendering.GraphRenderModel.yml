@@ -1,0 +1,1913 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderModel
+  id: GraphRenderModel
+  parent: FlowGraph.Avalonia.Rendering
+  children:
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Graph)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint(Avalonia.Point,Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex(FlowGraph.Core.Node,System.Int32,System.Int32,System.Boolean)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds(Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupBorderRadius
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupCollapseButtonSize
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupDashedStrokeThickness
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderHeight
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginX
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginY
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds(FlowGraph.Core.Edge,FlowGraph.Core.Graph,Avalonia.Rect)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds(FlowGraph.Core.Node,Avalonia.Rect)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort(Avalonia.Point,Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle(Avalonia.Point,Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge(Avalonia.Point,Avalonia.Point,Avalonia.Point,System.Double)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupHeight
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupWidth
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeCornerRadius
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.PortHitPadding
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.ResizeHandleSize
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  langs:
+  - csharp
+  - vb
+  name: GraphRenderModel
+  nameWithType: GraphRenderModel
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GraphRenderModel
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Central model that calculates all rendering geometry for a graph.
+
+    This is the single source of truth for node bounds, port positions, edge paths, etc.
+
+    Both VisualTree rendering and DirectDraw rendering use this model to ensure 100% visual parity.
+  remarks: >-
+    <p>
+
+    The GraphRenderModel provides geometry calculations for:
+
+    </p>
+
+    <ul><li>Node bounds and dimensions</li><li>Port positions (supporting all 4 sides: Left, Right, Top, Bottom)</li><li>Edge endpoints and bezier control points</li><li>Group header and collapse button positions</li><li>Resize handle positions</li><li>Hit testing utilities</li></ul>
+
+    <p>
+
+    By centralizing all geometry calculations here, both the visual tree renderer (NodeVisualManager)
+
+    and the direct renderer (DirectGraphRenderer) produce identical visual output.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">var model = new GraphRenderModel(settings);
+
+
+    // Get node bounds in canvas coordinates
+
+    var bounds = model.GetNodeBounds(node);
+
+
+    // Get port position
+
+    var portPos = model.GetPortPosition(node, port, isOutput: true);
+
+
+    // Calculate edge endpoints
+
+    var (start, end) = model.GetEdgeEndpoints(edge, graph);</code></pre>
+  syntax:
+    content: public class GraphRenderModel
+    content.vb: Public Class GraphRenderModel
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderHeight
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderHeight
+  id: GroupHeaderHeight
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupHeaderHeight
+  nameWithType: GraphRenderModel.GroupHeaderHeight
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderHeight
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupHeaderHeight
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupHeaderHeight = 28
+    return:
+      type: System.Double
+    content.vb: Public Const GroupHeaderHeight As Double = 28
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupWidth
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupWidth
+  id: MinGroupWidth
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: MinGroupWidth
+  nameWithType: GraphRenderModel.MinGroupWidth
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupWidth
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MinGroupWidth
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 48
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double MinGroupWidth = 200
+    return:
+      type: System.Double
+    content.vb: Public Const MinGroupWidth As Double = 200
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupHeight
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupHeight
+  id: MinGroupHeight
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: MinGroupHeight
+  nameWithType: GraphRenderModel.MinGroupHeight
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupHeight
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MinGroupHeight
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 49
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double MinGroupHeight = 100
+    return:
+      type: System.Double
+    content.vb: Public Const MinGroupHeight As Double = 100
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupCollapseButtonSize
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupCollapseButtonSize
+  id: GroupCollapseButtonSize
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupCollapseButtonSize
+  nameWithType: GraphRenderModel.GroupCollapseButtonSize
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupCollapseButtonSize
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupCollapseButtonSize
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupCollapseButtonSize = 18
+    return:
+      type: System.Double
+    content.vb: Public Const GroupCollapseButtonSize As Double = 18
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupBorderRadius
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupBorderRadius
+  id: GroupBorderRadius
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupBorderRadius
+  nameWithType: GraphRenderModel.GroupBorderRadius
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupBorderRadius
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupBorderRadius
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupBorderRadius = 8
+    return:
+      type: System.Double
+    content.vb: Public Const GroupBorderRadius As Double = 8
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupDashedStrokeThickness
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupDashedStrokeThickness
+  id: GroupDashedStrokeThickness
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupDashedStrokeThickness
+  nameWithType: GraphRenderModel.GroupDashedStrokeThickness
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupDashedStrokeThickness
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupDashedStrokeThickness
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupDashedStrokeThickness = 2
+    return:
+      type: System.Double
+    content.vb: Public Const GroupDashedStrokeThickness As Double = 2
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginX
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginX
+  id: GroupHeaderMarginX
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupHeaderMarginX
+  nameWithType: GraphRenderModel.GroupHeaderMarginX
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginX
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupHeaderMarginX
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupHeaderMarginX = 8
+    return:
+      type: System.Double
+    content.vb: Public Const GroupHeaderMarginX As Double = 8
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginY
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginY
+  id: GroupHeaderMarginY
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GroupHeaderMarginY
+  nameWithType: GraphRenderModel.GroupHeaderMarginY
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GroupHeaderMarginY
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupHeaderMarginY
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double GroupHeaderMarginY = 6
+    return:
+      type: System.Double
+    content.vb: Public Const GroupHeaderMarginY As Double = 6
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeCornerRadius
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeCornerRadius
+  id: NodeCornerRadius
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: NodeCornerRadius
+  nameWithType: GraphRenderModel.NodeCornerRadius
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeCornerRadius
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeCornerRadius
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 55
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double NodeCornerRadius = 6
+    return:
+      type: System.Double
+    content.vb: Public Const NodeCornerRadius As Double = 6
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.ResizeHandleSize
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.ResizeHandleSize
+  id: ResizeHandleSize
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: ResizeHandleSize
+  nameWithType: GraphRenderModel.ResizeHandleSize
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.ResizeHandleSize
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ResizeHandleSize
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 56
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double ResizeHandleSize = 8
+    return:
+      type: System.Double
+    content.vb: Public Const ResizeHandleSize As Double = 8
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.PortHitPadding
+  commentId: F:FlowGraph.Avalonia.Rendering.GraphRenderModel.PortHitPadding
+  id: PortHitPadding
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: PortHitPadding
+  nameWithType: GraphRenderModel.PortHitPadding
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.PortHitPadding
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PortHitPadding
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public const double PortHitPadding = 4
+    return:
+      type: System.Double
+    content.vb: Public Const PortHitPadding As Double = 4
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
+  id: '#ctor(FlowGraph.Avalonia.FlowCanvasSettings)'
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GraphRenderModel(FlowCanvasSettings)
+  nameWithType: GraphRenderModel.GraphRenderModel(FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GraphRenderModel(FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  syntax:
+    content: public GraphRenderModel(FlowCanvasSettings settings)
+    parameters:
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    content.vb: Public Sub New(settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor*
+  nameWithType.vb: GraphRenderModel.New(FlowCanvasSettings)
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.New(FlowGraph.Avalonia.FlowCanvasSettings)
+  name.vb: New(FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  commentId: P:FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  id: Settings
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: Settings
+  nameWithType: GraphRenderModel.Settings
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Settings
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 67
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the settings used by this model.
+  example: []
+  syntax:
+    content: public FlowCanvasSettings Settings { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    content.vb: Public ReadOnly Property Settings As FlowCanvasSettings
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
+  id: GetNodeBounds(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetNodeBounds(Node)
+  nameWithType: GraphRenderModel.GetNodeBounds(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeBounds
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 74
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the bounds of a node in canvas coordinates.
+  example: []
+  syntax:
+    content: public Rect GetNodeBounds(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Function GetNodeBounds(node As Node) As Rect
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth(FlowGraph.Core.Node)
+  id: GetNodeWidth(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetNodeWidth(Node)
+  nameWithType: GraphRenderModel.GetNodeWidth(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeWidth
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 84
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the width of a node in canvas coordinates.
+  example: []
+  syntax:
+    content: public double GetNodeWidth(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.Double
+    content.vb: Public Function GetNodeWidth(node As Node) As Double
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight(FlowGraph.Core.Node)
+  id: GetNodeHeight(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetNodeHeight(Node)
+  nameWithType: GraphRenderModel.GetNodeHeight(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeHeight
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 94
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the height of a node in canvas coordinates.
+  example: []
+  syntax:
+    content: public double GetNodeHeight(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.Double
+    content.vb: Public Function GetNodeHeight(node As Node) As Double
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius(FlowGraph.Core.Node)
+  id: GetNodeCornerRadius(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetNodeCornerRadius(Node)
+  nameWithType: GraphRenderModel.GetNodeCornerRadius(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeCornerRadius
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the corner radius for a node.
+  example: []
+  syntax:
+    content: public double GetNodeCornerRadius(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.Double
+    content.vb: Public Function GetNodeCornerRadius(node As Node) As Double
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  id: GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetPortPosition(Node, Port, bool)
+  nameWithType: GraphRenderModel.GetPortPosition(Node, Port, bool)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortPosition
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Gets the position of a port in canvas coordinates.
+
+    Supports all four port positions (Left, Right, Top, Bottom).
+  example: []
+  syntax:
+    content: public Point GetPortPosition(Node node, Port port, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: port
+      type: FlowGraph.Core.Port
+    - id: isOutput
+      type: System.Boolean
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function GetPortPosition(node As Node, port As Port, isOutput As Boolean) As Point
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition*
+  nameWithType.vb: GraphRenderModel.GetPortPosition(Node, Port, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
+  name.vb: GetPortPosition(Node, Port, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex(FlowGraph.Core.Node,System.Int32,System.Int32,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex(FlowGraph.Core.Node,System.Int32,System.Int32,System.Boolean)
+  id: GetPortPositionByIndex(FlowGraph.Core.Node,System.Int32,System.Int32,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetPortPositionByIndex(Node, int, int, bool)
+  nameWithType: GraphRenderModel.GetPortPositionByIndex(Node, int, int, bool)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex(FlowGraph.Core.Node, int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortPositionByIndex
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the position of a port by index in canvas coordinates.
+  example: []
+  syntax:
+    content: public Point GetPortPositionByIndex(Node node, int portIndex, int totalPorts, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: portIndex
+      type: System.Int32
+    - id: totalPorts
+      type: System.Int32
+    - id: isOutput
+      type: System.Boolean
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function GetPortPositionByIndex(node As Node, portIndex As Integer, totalPorts As Integer, isOutput As Boolean) As Point
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex*
+  nameWithType.vb: GraphRenderModel.GetPortPositionByIndex(Node, Integer, Integer, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex(FlowGraph.Core.Node, Integer, Integer, Boolean)
+  name.vb: GetPortPositionByIndex(Node, Integer, Integer, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius
+  id: GetPortHitRadius
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetPortHitRadius()
+  nameWithType: GraphRenderModel.GetPortHitRadius()
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortHitRadius
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 192
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the hit test radius for ports (includes padding for easier clicking).
+  example: []
+  syntax:
+    content: public double GetPortHitRadius()
+    return:
+      type: System.Double
+    content.vb: Public Function GetPortHitRadius() As Double
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Graph)
+  id: GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Graph)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeEndpoints(Edge, Graph)
+  nameWithType: GraphRenderModel.GetEdgeEndpoints(Edge, Graph)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge, FlowGraph.Core.Graph)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeEndpoints
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 204
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Calculates the start and end points for an edge in canvas coordinates.
+  example: []
+  syntax:
+    content: public (Point start, Point end) GetEdgeEndpoints(Edge edge, Graph graph)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+    - id: graph
+      type: FlowGraph.Core.Graph
+    return:
+      type: System.ValueTuple{Avalonia.Point,Avalonia.Point}
+    content.vb: Public Function GetEdgeEndpoints(edge As Edge, graph As Graph) As (start As Point, [end] As Point)
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
+  id: GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetBezierControlPoints(Point, Point)
+  nameWithType: GraphRenderModel.GetBezierControlPoints(Point, Point)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point, Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetBezierControlPoints
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 226
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Calculates bezier control points for an edge.
+  example: []
+  syntax:
+    content: public (Point cp1, Point cp2) GetBezierControlPoints(Point start, Point end)
+    parameters:
+    - id: start
+      type: Avalonia.Point
+    - id: end
+      type: Avalonia.Point
+    return:
+      type: System.ValueTuple{Avalonia.Point,Avalonia.Point}
+    content.vb: Public Function GetBezierControlPoints(start As Point, [end] As Point) As (cp1 As Point, cp2 As Point)
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint(Avalonia.Point,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint(Avalonia.Point,Avalonia.Point)
+  id: GetEdgeMidpoint(Avalonia.Point,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeMidpoint(Point, Point)
+  nameWithType: GraphRenderModel.GetEdgeMidpoint(Point, Point)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint(Avalonia.Point, Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeMidpoint
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 241
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the midpoint of an edge (for label positioning).
+  example: []
+  syntax:
+    content: public Point GetEdgeMidpoint(Point start, Point end)
+    parameters:
+    - id: start
+      type: Avalonia.Point
+    - id: end
+      type: Avalonia.Point
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function GetEdgeMidpoint(start As Point, [end] As Point) As Point
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
+  id: GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetGroupCollapseButtonBounds(Node)
+  nameWithType: GraphRenderModel.GetGroupCollapseButtonBounds(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetGroupCollapseButtonBounds
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 253
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the collapse button bounds for a group in canvas coordinates.
+  example: []
+  syntax:
+    content: public Rect GetGroupCollapseButtonBounds(Node group)
+    parameters:
+    - id: group
+      type: FlowGraph.Core.Node
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Function GetGroupCollapseButtonBounds(group As Node) As Rect
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition(FlowGraph.Core.Node)
+  id: GetGroupLabelPosition(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetGroupLabelPosition(Node)
+  nameWithType: GraphRenderModel.GetGroupLabelPosition(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetGroupLabelPosition
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 266
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the label position for a group in canvas coordinates.
+  example: []
+  syntax:
+    content: public Point GetGroupLabelPosition(Node group)
+    parameters:
+    - id: group
+      type: FlowGraph.Core.Node
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function GetGroupLabelPosition(group As Node) As Point
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions(FlowGraph.Core.Node)
+  id: GetResizeHandlePositions(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetResizeHandlePositions(Node)
+  nameWithType: GraphRenderModel.GetResizeHandlePositions(Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetResizeHandlePositions
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 281
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets all resize handle positions for a node in canvas coordinates.
+  example: []
+  syntax:
+    content: public IEnumerable<(ResizeHandlePosition position, Point center)> GetResizeHandlePositions(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}}
+    content.vb: Public Function GetResizeHandlePositions(node As Node) As IEnumerable(Of (position As ResizeHandlePosition, center As Point))
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds(Avalonia.Point)
+  id: GetResizeHandleBounds(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetResizeHandleBounds(Point)
+  nameWithType: GraphRenderModel.GetResizeHandleBounds(Point)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetResizeHandleBounds
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 300
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the bounds of a resize handle given its center position.
+  example: []
+  syntax:
+    content: public Rect GetResizeHandleBounds(Point center)
+    parameters:
+    - id: center
+      type: Avalonia.Point
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Function GetResizeHandleBounds(center As Point) As Rect
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  id: IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsNodeVisible(Graph, Node)
+  nameWithType: GraphRenderModel.IsNodeVisible(Graph, Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible(FlowGraph.Core.Graph, FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsNodeVisible
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 313
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a node is visible (not hidden by a collapsed ancestor group).
+  example: []
+  syntax:
+    content: public static bool IsNodeVisible(Graph graph, Node node)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsNodeVisible(graph As Graph, node As Node) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds(FlowGraph.Core.Node,Avalonia.Rect)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds(FlowGraph.Core.Node,Avalonia.Rect)
+  id: IsInVisibleBounds(FlowGraph.Core.Node,Avalonia.Rect)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsInVisibleBounds(Node, Rect)
+  nameWithType: GraphRenderModel.IsInVisibleBounds(Node, Rect)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds(FlowGraph.Core.Node, Avalonia.Rect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsInVisibleBounds
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 329
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a node is within visible bounds (for virtualization).
+  example: []
+  syntax:
+    content: public bool IsInVisibleBounds(Node node, Rect visibleBounds)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: visibleBounds
+      type: Avalonia.Rect
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsInVisibleBounds(node As Node, visibleBounds As Rect) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds(FlowGraph.Core.Edge,FlowGraph.Core.Graph,Avalonia.Rect)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds(FlowGraph.Core.Edge,FlowGraph.Core.Graph,Avalonia.Rect)
+  id: IsEdgeInVisibleBounds(FlowGraph.Core.Edge,FlowGraph.Core.Graph,Avalonia.Rect)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsEdgeInVisibleBounds(Edge, Graph, Rect)
+  nameWithType: GraphRenderModel.IsEdgeInVisibleBounds(Edge, Graph, Rect)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds(FlowGraph.Core.Edge, FlowGraph.Core.Graph, Avalonia.Rect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEdgeInVisibleBounds
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 346
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if an edge is within visible bounds (either endpoint visible).
+  example: []
+  syntax:
+    content: public bool IsEdgeInVisibleBounds(Edge edge, Graph graph, Rect visibleBounds)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+    - id: graph
+      type: FlowGraph.Core.Graph
+    - id: visibleBounds
+      type: Avalonia.Rect
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsEdgeInVisibleBounds(edge As Edge, graph As Graph, visibleBounds As Rect) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort(Avalonia.Point,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort(Avalonia.Point,Avalonia.Point)
+  id: IsPointInPort(Avalonia.Point,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsPointInPort(Point, Point)
+  nameWithType: GraphRenderModel.IsPointInPort(Point, Point)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort(Avalonia.Point, Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsPointInPort
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 377
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a point (in canvas coords) is within a port's hit area.
+  example: []
+  syntax:
+    content: public bool IsPointInPort(Point point, Point portCenter)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    - id: portCenter
+      type: Avalonia.Point
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsPointInPort(point As Point, portCenter As Point) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge(Avalonia.Point,Avalonia.Point,Avalonia.Point,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge(Avalonia.Point,Avalonia.Point,Avalonia.Point,System.Double)
+  id: IsPointNearEdge(Avalonia.Point,Avalonia.Point,Avalonia.Point,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsPointNearEdge(Point, Point, Point, double)
+  nameWithType: GraphRenderModel.IsPointNearEdge(Point, Point, Point, double)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge(Avalonia.Point, Avalonia.Point, Avalonia.Point, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsPointNearEdge
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 388
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a point (in canvas coords) is near a bezier edge.
+  example: []
+  syntax:
+    content: public bool IsPointNearEdge(Point point, Point start, Point end, double threshold)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    - id: start
+      type: Avalonia.Point
+    - id: end
+      type: Avalonia.Point
+    - id: threshold
+      type: System.Double
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsPointNearEdge(point As Point, start As Point, [end] As Point, threshold As Double) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge*
+  nameWithType.vb: GraphRenderModel.IsPointNearEdge(Point, Point, Point, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge(Avalonia.Point, Avalonia.Point, Avalonia.Point, Double)
+  name.vb: IsPointNearEdge(Point, Point, Point, Double)
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle(Avalonia.Point,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle(Avalonia.Point,Avalonia.Point)
+  id: IsPointInResizeHandle(Avalonia.Point,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: IsPointInResizeHandle(Point, Point)
+  nameWithType: GraphRenderModel.IsPointInResizeHandle(Point, Point)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle(Avalonia.Point, Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsPointInResizeHandle
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 433
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a point is within a resize handle's hit area.
+  example: []
+  syntax:
+    content: public bool IsPointInResizeHandle(Point point, Point handleCenter)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    - id: handleCenter
+      type: Avalonia.Point
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsPointInResizeHandle(point As Point, handleCenter As Point) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle*
+references:
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel__ctor_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GraphRenderModel
+  nameWithType: GraphRenderModel.GraphRenderModel
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GraphRenderModel
+  nameWithType.vb: GraphRenderModel.New
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.New
+  name.vb: New
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_Settings
+  name: Settings
+  nameWithType: GraphRenderModel.Settings
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetNodeBounds_FlowGraph_Core_Node_
+  name: GetNodeBounds
+  nameWithType: GraphRenderModel.GetNodeBounds
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: Avalonia.Rect
+  commentId: T:Avalonia.Rect
+  parent: Avalonia
+  isExternal: true
+  name: Rect
+  nameWithType: Rect
+  fullName: Avalonia.Rect
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: Avalonia
+  commentId: N:Avalonia
+  isExternal: true
+  name: Avalonia
+  nameWithType: Avalonia
+  fullName: Avalonia
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetNodeWidth_FlowGraph_Core_Node_
+  name: GetNodeWidth
+  nameWithType: GraphRenderModel.GetNodeWidth
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeWidth
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetNodeHeight_FlowGraph_Core_Node_
+  name: GetNodeHeight
+  nameWithType: GraphRenderModel.GetNodeHeight
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeHeight
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetNodeCornerRadius_FlowGraph_Core_Node_
+  name: GetNodeCornerRadius
+  nameWithType: GraphRenderModel.GetNodeCornerRadius
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeCornerRadius
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetPortPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  name: GetPortPosition
+  nameWithType: GraphRenderModel.GetPortPosition
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPosition
+- uid: FlowGraph.Core.Port
+  commentId: T:FlowGraph.Core.Port
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Port.html
+  name: Port
+  nameWithType: Port
+  fullName: FlowGraph.Core.Port
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Avalonia.Point
+  commentId: T:Avalonia.Point
+  parent: Avalonia
+  isExternal: true
+  name: Point
+  nameWithType: Point
+  fullName: Avalonia.Point
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetPortPositionByIndex_FlowGraph_Core_Node_System_Int32_System_Int32_System_Boolean_
+  name: GetPortPositionByIndex
+  nameWithType: GraphRenderModel.GetPortPositionByIndex
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortPositionByIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetPortHitRadius
+  name: GetPortHitRadius
+  nameWithType: GraphRenderModel.GetPortHitRadius
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetPortHitRadius
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetEdgeEndpoints_FlowGraph_Core_Edge_FlowGraph_Core_Graph_
+  name: GetEdgeEndpoints
+  nameWithType: GraphRenderModel.GetEdgeEndpoints
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: System.ValueTuple{Avalonia.Point,Avalonia.Point}
+  commentId: T:System.ValueTuple{Avalonia.Point,Avalonia.Point}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.point,avalonia.point-.start
+  name: (Point start, Point end)
+  nameWithType: (Point start, Point end)
+  fullName: (Avalonia.Point start, Avalonia.Point end)
+  nameWithType.vb: (start As Point, end As Point)
+  fullName.vb: (start As Avalonia.Point, end As Avalonia.Point)
+  name.vb: (start As Point, end As Point)
+  spec.csharp:
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Point,Avalonia.Point}.start
+    name: start
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.point,avalonia.point-.start
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Point,Avalonia.Point}.end
+    name: end
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.point,avalonia.point-.end
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{Avalonia.Point,Avalonia.Point}.start
+    name: start
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.point,avalonia.point-.start
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Point,Avalonia.Point}.end
+    name: end
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.point,avalonia.point-.end
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetBezierControlPoints_Avalonia_Point_Avalonia_Point_
+  name: GetBezierControlPoints
+  nameWithType: GraphRenderModel.GetBezierControlPoints
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetEdgeMidpoint_Avalonia_Point_Avalonia_Point_
+  name: GetEdgeMidpoint
+  nameWithType: GraphRenderModel.GetEdgeMidpoint
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetGroupCollapseButtonBounds_FlowGraph_Core_Node_
+  name: GetGroupCollapseButtonBounds
+  nameWithType: GraphRenderModel.GetGroupCollapseButtonBounds
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetGroupLabelPosition_FlowGraph_Core_Node_
+  name: GetGroupLabelPosition
+  nameWithType: GraphRenderModel.GetGroupLabelPosition
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetResizeHandlePositions_FlowGraph_Core_Node_
+  name: GetResizeHandlePositions
+  nameWithType: GraphRenderModel.GetResizeHandlePositions
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandlePositions
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(ResizeHandlePosition position, Point center)>
+  nameWithType: IEnumerable<(ResizeHandlePosition position, Point center)>
+  fullName: System.Collections.Generic.IEnumerable<(FlowGraph.Avalonia.Rendering.ResizeHandlePosition position, Avalonia.Point center)>
+  nameWithType.vb: IEnumerable(Of (position As ResizeHandlePosition, center As Point))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (position As FlowGraph.Avalonia.Rendering.ResizeHandlePosition, center As Avalonia.Point))
+  name.vb: IEnumerable(Of (position As ResizeHandlePosition, center As Point))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ResizeHandlePosition
+    name: ResizeHandlePosition
+    href: FlowGraph.Avalonia.Rendering.ResizeHandlePosition.html
+  - name: " "
+  - uid: System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}.position
+    name: position
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-flowgraph.avalonia.rendering.resizehandleposition,avalonia.point-.position
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: " "
+  - uid: System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}.center
+    name: center
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-flowgraph.avalonia.rendering.resizehandleposition,avalonia.point-.center
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}.position
+    name: position
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-flowgraph.avalonia.rendering.resizehandleposition,avalonia.point-.position
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ResizeHandlePosition
+    name: ResizeHandlePosition
+    href: FlowGraph.Avalonia.Rendering.ResizeHandlePosition.html
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point}.center
+    name: center
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-flowgraph.avalonia.rendering.resizehandleposition,avalonia.point-.center
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetResizeHandleBounds_Avalonia_Point_
+  name: GetResizeHandleBounds
+  nameWithType: GraphRenderModel.GetResizeHandleBounds
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetResizeHandleBounds
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsNodeVisible_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  name: IsNodeVisible
+  nameWithType: GraphRenderModel.IsNodeVisible
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsNodeVisible
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsInVisibleBounds_FlowGraph_Core_Node_Avalonia_Rect_
+  name: IsInVisibleBounds
+  nameWithType: GraphRenderModel.IsInVisibleBounds
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsInVisibleBounds
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsEdgeInVisibleBounds_FlowGraph_Core_Edge_FlowGraph_Core_Graph_Avalonia_Rect_
+  name: IsEdgeInVisibleBounds
+  nameWithType: GraphRenderModel.IsEdgeInVisibleBounds
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsEdgeInVisibleBounds
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsPointInPort_Avalonia_Point_Avalonia_Point_
+  name: IsPointInPort
+  nameWithType: GraphRenderModel.IsPointInPort
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInPort
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsPointNearEdge_Avalonia_Point_Avalonia_Point_Avalonia_Point_System_Double_
+  name: IsPointNearEdge
+  nameWithType: GraphRenderModel.IsPointNearEdge
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointNearEdge
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_IsPointInResizeHandle_Avalonia_Point_Avalonia_Point_
+  name: IsPointInResizeHandle
+  nameWithType: GraphRenderModel.IsPointInResizeHandle
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.IsPointInResizeHandle

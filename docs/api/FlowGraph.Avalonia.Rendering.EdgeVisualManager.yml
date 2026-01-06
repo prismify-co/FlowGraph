@@ -1,0 +1,1077 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  id: EdgeVisualManager
+  parent: FlowGraph.Avalonia.Rendering
+  children:
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)
+  langs:
+  - csharp
+  - vb
+  name: EdgeVisualManager
+  nameWithType: EdgeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeVisualManager
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Manages rendering and tracking of edge visuals including paths, markers, and labels.
+
+    Responsible for creating, updating, and removing edge UI elements.
+  example: []
+  syntax:
+    content: public class EdgeVisualManager
+    content.vb: Public Class EdgeVisualManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  id: '#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)'
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: EdgeVisualManager(RenderContext, NodeVisualManager)
+  nameWithType: EdgeVisualManager.EdgeVisualManager(RenderContext, NodeVisualManager)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.EdgeVisualManager(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Creates a new edge visual manager.
+  example: []
+  syntax:
+    content: public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager)
+    parameters:
+    - id: renderContext
+      type: FlowGraph.Avalonia.Rendering.RenderContext
+      description: Shared render context.
+    - id: nodeVisualManager
+      type: FlowGraph.Avalonia.Rendering.NodeVisualManager
+      description: Node visual manager for port position calculations.
+    content.vb: Public Sub New(renderContext As RenderContext, nodeVisualManager As NodeVisualManager)
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor*
+  nameWithType.vb: EdgeVisualManager.New(RenderContext, NodeVisualManager)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.New(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  name.vb: New(RenderContext, NodeVisualManager)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
+  id: GetEdgeVisual(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeVisual(string)
+  nameWithType: EdgeVisualManager.GetEdgeVisual(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeVisual
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 43
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the hit area path for an edge.
+  example: []
+  syntax:
+    content: public Path? GetEdgeVisual(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: Avalonia.Controls.Shapes.Path
+      description: The edge's hit area path, or null if not found.
+    content.vb: Public Function GetEdgeVisual(edgeId As String) As Path
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual*
+  nameWithType.vb: EdgeVisualManager.GetEdgeVisual(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(String)
+  name.vb: GetEdgeVisual(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(System.String)
+  id: GetEdgeVisiblePath(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeVisiblePath(string)
+  nameWithType: EdgeVisualManager.GetEdgeVisiblePath(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeVisiblePath
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the visible path for an edge.
+  example: []
+  syntax:
+    content: public Path? GetEdgeVisiblePath(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: Avalonia.Controls.Shapes.Path
+      description: The edge's visible path, or null if not found.
+    content.vb: Public Function GetEdgeVisiblePath(edgeId As String) As Path
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath*
+  nameWithType.vb: EdgeVisualManager.GetEdgeVisiblePath(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(String)
+  name.vb: GetEdgeVisiblePath(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
+  id: GetEdgeMarkers(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeMarkers(string)
+  nameWithType: EdgeVisualManager.GetEdgeMarkers(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeMarkers
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 63
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the markers (arrows) for an edge.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Path>? GetEdgeMarkers(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: System.Collections.Generic.IReadOnlyList{Avalonia.Controls.Shapes.Path}
+      description: The edge's markers, or null if not found.
+    content.vb: Public Function GetEdgeMarkers(edgeId As String) As IReadOnlyList(Of Path)
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers*
+  nameWithType.vb: EdgeVisualManager.GetEdgeMarkers(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(String)
+  name.vb: GetEdgeMarkers(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)
+  id: GetEdgeLabel(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeLabel(string)
+  nameWithType: EdgeVisualManager.GetEdgeLabel(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeLabel
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 73
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the label for an edge.
+  example: []
+  syntax:
+    content: public TextBlock? GetEdgeLabel(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: Avalonia.Controls.TextBlock
+      description: The edge's label, or null if not found.
+    content.vb: Public Function GetEdgeLabel(edgeId As String) As TextBlock
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel*
+  nameWithType.vb: EdgeVisualManager.GetEdgeLabel(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(String)
+  name.vb: GetEdgeLabel(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)
+  id: GetEdgeEndpointHandles(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeEndpointHandles(string)
+  nameWithType: EdgeVisualManager.GetEdgeEndpointHandles(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeEndpointHandles
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 83
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the endpoint handles for an edge.
+  example: []
+  syntax:
+    content: public (Ellipse? source, Ellipse? target) GetEdgeEndpointHandles(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}
+      description: Tuple of source and target endpoint handles.
+    content.vb: Public Function GetEdgeEndpointHandles(edgeId As String) As (source As Ellipse, target As Ellipse)
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles*
+  nameWithType.vb: EdgeVisualManager.GetEdgeEndpointHandles(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(String)
+  name.vb: GetEdgeEndpointHandles(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
+  id: Clear
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: EdgeVisualManager.Clear()
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clear
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 92
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Clears all tracked edge visuals.
+
+    Note: This does not remove them from the canvas.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear*
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
+  id: RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RenderEdges(Canvas, Graph, ThemeResources, Path?)
+  nameWithType: EdgeVisualManager.RenderEdges(Canvas, Graph, ThemeResources, Path?)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas, FlowGraph.Core.Graph, FlowGraph.Avalonia.Rendering.ThemeResources, Avalonia.Controls.Shapes.Path?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RenderEdges
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 108
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Renders all edges in the graph to the canvas.
+  example: []
+  syntax:
+    content: public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, Path? excludePath = null)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to render to.
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The graph containing edges.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    - id: excludePath
+      type: Avalonia.Controls.Shapes.Path
+      description: Optional path to exclude from cleanup.
+    content.vb: Public Sub RenderEdges(canvas As Canvas, graph As Graph, theme As ThemeResources, excludePath As Path = Nothing)
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges*
+  nameWithType.vb: EdgeVisualManager.RenderEdges(Canvas, Graph, ThemeResources, Path)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas, FlowGraph.Core.Graph, FlowGraph.Avalonia.Rendering.ThemeResources, Avalonia.Controls.Shapes.Path)
+  name.vb: RenderEdges(Canvas, Graph, ThemeResources, Path)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RenderEdge(Canvas, Edge, Graph, ThemeResources)
+  nameWithType: EdgeVisualManager.RenderEdge(Canvas, Edge, Graph, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas, FlowGraph.Core.Edge, FlowGraph.Core.Graph, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RenderEdge
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 182
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Renders a single edge with its markers and optional label.
+  example: []
+  syntax:
+    content: public Path? RenderEdge(Canvas canvas, Edge edge, Graph graph, ThemeResources theme)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to render to.
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to render.
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The graph containing the edge.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    return:
+      type: Avalonia.Controls.Shapes.Path
+      description: The created hit area path, or null if rendering failed.
+    content.vb: Public Function RenderEdge(canvas As Canvas, edge As Edge, graph As Graph, theme As ThemeResources) As Path
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge*
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateEdgeSelection(Edge, ThemeResources)
+  nameWithType: EdgeVisualManager.UpdateEdgeSelection(Edge, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateEdgeSelection
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 313
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the selection visual state of an edge.
+  example: []
+  syntax:
+    content: public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to update.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    content.vb: Public Sub UpdateEdgeSelection(edge As Edge, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection*
+references:
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeVisualManager_
+  name: EdgeVisualManager
+  nameWithType: EdgeVisualManager.EdgeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.EdgeVisualManager
+  nameWithType.vb: EdgeVisualManager.New
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.New
+  name.vb: New
+- uid: FlowGraph.Avalonia.Rendering.RenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.RenderContext
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html
+  name: RenderContext
+  nameWithType: RenderContext
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeVisualManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html
+  name: NodeVisualManager
+  nameWithType: NodeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeVisual_System_String_
+  name: GetEdgeVisual
+  nameWithType: EdgeVisualManager.GetEdgeVisual
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Avalonia.Controls.Shapes.Path
+  commentId: T:Avalonia.Controls.Shapes.Path
+  parent: Avalonia.Controls.Shapes
+  isExternal: true
+  name: Path
+  nameWithType: Path
+  fullName: Avalonia.Controls.Shapes.Path
+- uid: Avalonia.Controls.Shapes
+  commentId: N:Avalonia.Controls.Shapes
+  isExternal: true
+  name: Avalonia.Controls.Shapes
+  nameWithType: Avalonia.Controls.Shapes
+  fullName: Avalonia.Controls.Shapes
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls.Shapes
+    name: Shapes
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls.Shapes
+    name: Shapes
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeVisiblePath_System_String_
+  name: GetEdgeVisiblePath
+  nameWithType: EdgeVisualManager.GetEdgeVisiblePath
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeMarkers_System_String_
+  name: GetEdgeMarkers
+  nameWithType: EdgeVisualManager.GetEdgeMarkers
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers
+- uid: System.Collections.Generic.IReadOnlyList{Avalonia.Controls.Shapes.Path}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Avalonia.Controls.Shapes.Path}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Path>
+  nameWithType: IReadOnlyList<Path>
+  fullName: System.Collections.Generic.IReadOnlyList<Avalonia.Controls.Shapes.Path>
+  nameWithType.vb: IReadOnlyList(Of Path)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Avalonia.Controls.Shapes.Path)
+  name.vb: IReadOnlyList(Of Path)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Avalonia.Controls.Shapes.Path
+    name: Path
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Avalonia.Controls.Shapes.Path
+    name: Path
+    isExternal: true
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeLabel_System_String_
+  name: GetEdgeLabel
+  nameWithType: EdgeVisualManager.GetEdgeLabel
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel
+- uid: Avalonia.Controls.TextBlock
+  commentId: T:Avalonia.Controls.TextBlock
+  parent: Avalonia.Controls
+  isExternal: true
+  name: TextBlock
+  nameWithType: TextBlock
+  fullName: Avalonia.Controls.TextBlock
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeEndpointHandles_System_String_
+  name: GetEdgeEndpointHandles
+  nameWithType: EdgeVisualManager.GetEdgeEndpointHandles
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles
+- uid: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}
+  commentId: T:System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.source
+  name: (Ellipse source, Ellipse target)
+  nameWithType: (Ellipse source, Ellipse target)
+  fullName: (Avalonia.Controls.Shapes.Ellipse source, Avalonia.Controls.Shapes.Ellipse target)
+  nameWithType.vb: (source As Ellipse, target As Ellipse)
+  fullName.vb: (source As Avalonia.Controls.Shapes.Ellipse, target As Avalonia.Controls.Shapes.Ellipse)
+  name.vb: (source As Ellipse, target As Ellipse)
+  spec.csharp:
+  - name: (
+  - uid: Avalonia.Controls.Shapes.Ellipse
+    name: Ellipse
+    isExternal: true
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}.source
+    name: source
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.source
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Controls.Shapes.Ellipse
+    name: Ellipse
+    isExternal: true
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}.target
+    name: target
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.target
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}.source
+    name: source
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.source
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: Avalonia.Controls.Shapes.Ellipse
+    name: Ellipse
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{Avalonia.Controls.Shapes.Ellipse,Avalonia.Controls.Shapes.Ellipse}.target
+    name: target
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.target
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: Avalonia.Controls.Shapes.Ellipse
+    name: Ellipse
+    isExternal: true
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_Clear
+  name: Clear
+  nameWithType: EdgeVisualManager.Clear
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdges_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_Avalonia_Controls_Shapes_Path_
+  name: RenderEdges
+  nameWithType: EdgeVisualManager.RenderEdges
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
+- uid: Avalonia.Controls.Canvas
+  commentId: T:Avalonia.Controls.Canvas
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Canvas
+  nameWithType: Canvas
+  fullName: Avalonia.Controls.Canvas
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources
+  commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  name: ThemeResources
+  nameWithType: ThemeResources
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdge_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: RenderEdge
+  nameWithType: EdgeVisualManager.RenderEdge
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_UpdateEdgeSelection_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdateEdgeSelection
+  nameWithType: EdgeVisualManager.UpdateEdgeSelection
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection

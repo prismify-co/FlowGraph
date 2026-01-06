@@ -1,0 +1,2409 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  id: Graph
+  parent: FlowGraph.Core
+  children:
+  - FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
+  - FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  - FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
+  - FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
+  - FlowGraph.Core.Graph.BatchLoadCompleted
+  - FlowGraph.Core.Graph.BeginBatchLoad
+  - FlowGraph.Core.Graph.Edges
+  - FlowGraph.Core.Graph.EndBatchLoad
+  - FlowGraph.Core.Graph.IsBatchLoading
+  - FlowGraph.Core.Graph.Nodes
+  - FlowGraph.Core.Graph.RemoveEdge(System.String)
+  - FlowGraph.Core.Graph.RemoveNode(System.String)
+  langs:
+  - csharp
+  - vb
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Graph
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public class Graph
+    content.vb: Public Class Graph
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(System.String,System.Double,System.Double,System.Double,System.Double)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Node)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroups
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Node)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Node,System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Edge,System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Edge,System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone
+  - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(System.String)
+  - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(System.Boolean)
+- uid: FlowGraph.Core.Graph.Nodes
+  commentId: P:FlowGraph.Core.Graph.Nodes
+  id: Nodes
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: Nodes
+  nameWithType: Graph.Nodes
+  fullName: FlowGraph.Core.Graph.Nodes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Nodes
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 46
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public BulkObservableCollection<Node> Nodes { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Node}
+    content.vb: Public ReadOnly Property Nodes As BulkObservableCollection(Of Node)
+  overload: FlowGraph.Core.Graph.Nodes*
+- uid: FlowGraph.Core.Graph.Edges
+  commentId: P:FlowGraph.Core.Graph.Edges
+  id: Edges
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: Edges
+  nameWithType: Graph.Edges
+  fullName: FlowGraph.Core.Graph.Edges
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Edges
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public BulkObservableCollection<Edge> Edges { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Edge}
+    content.vb: Public ReadOnly Property Edges As BulkObservableCollection(Of Edge)
+  overload: FlowGraph.Core.Graph.Edges*
+- uid: FlowGraph.Core.Graph.IsBatchLoading
+  commentId: P:FlowGraph.Core.Graph.IsBatchLoading
+  id: IsBatchLoading
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: IsBatchLoading
+  nameWithType: Graph.IsBatchLoading
+  fullName: FlowGraph.Core.Graph.IsBatchLoading
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsBatchLoading
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Gets whether the graph is currently in batch loading mode.
+
+    During batch loading, collection change notifications are suppressed.
+  example: []
+  syntax:
+    content: public bool IsBatchLoading { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsBatchLoading As Boolean
+  overload: FlowGraph.Core.Graph.IsBatchLoading*
+- uid: FlowGraph.Core.Graph.BatchLoadCompleted
+  commentId: E:FlowGraph.Core.Graph.BatchLoadCompleted
+  id: BatchLoadCompleted
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: BatchLoadCompleted
+  nameWithType: Graph.BatchLoadCompleted
+  fullName: FlowGraph.Core.Graph.BatchLoadCompleted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BatchLoadCompleted
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Event raised when batch loading completes.
+
+    Subscribe to this to refresh UI after bulk operations.
+  example: []
+  syntax:
+    content: public event EventHandler? BatchLoadCompleted
+    return:
+      type: System.EventHandler
+    content.vb: Public Event BatchLoadCompleted As EventHandler
+- uid: FlowGraph.Core.Graph.BeginBatchLoad
+  commentId: M:FlowGraph.Core.Graph.BeginBatchLoad
+  id: BeginBatchLoad
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: BeginBatchLoad()
+  nameWithType: Graph.BeginBatchLoad()
+  fullName: FlowGraph.Core.Graph.BeginBatchLoad()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginBatchLoad
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Begins batch loading mode. Collection change notifications are suppressed
+
+    until EndBatchLoad is called. Use this when adding many nodes/edges at once.
+  example: []
+  syntax:
+    content: public void BeginBatchLoad()
+    content.vb: Public Sub BeginBatchLoad()
+  overload: FlowGraph.Core.Graph.BeginBatchLoad*
+- uid: FlowGraph.Core.Graph.EndBatchLoad
+  commentId: M:FlowGraph.Core.Graph.EndBatchLoad
+  id: EndBatchLoad
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: EndBatchLoad()
+  nameWithType: Graph.EndBatchLoad()
+  fullName: FlowGraph.Core.Graph.EndBatchLoad()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EndBatchLoad
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 73
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Ends batch loading mode and raises BatchLoadCompleted event.
+  example: []
+  syntax:
+    content: public void EndBatchLoad()
+    content.vb: Public Sub EndBatchLoad()
+  overload: FlowGraph.Core.Graph.EndBatchLoad*
+- uid: FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
+  commentId: M:FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
+  id: AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddNodes(IEnumerable<Node>)
+  nameWithType: Graph.AddNodes(IEnumerable<Node>)
+  fullName: FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddNodes
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 82
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Adds multiple nodes at once with a single notification.
+  example: []
+  syntax:
+    content: public void AddNodes(IEnumerable<Node> nodes)
+    parameters:
+    - id: nodes
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+    content.vb: Public Sub AddNodes(nodes As IEnumerable(Of Node))
+  overload: FlowGraph.Core.Graph.AddNodes*
+  nameWithType.vb: Graph.AddNodes(IEnumerable(Of Node))
+  fullName.vb: FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node))
+  name.vb: AddNodes(IEnumerable(Of Node))
+- uid: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  commentId: M:FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  id: AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddEdges(IEnumerable<Edge>)
+  nameWithType: Graph.AddEdges(IEnumerable<Edge>)
+  fullName: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddEdges
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 90
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Adds multiple edges at once with a single notification.
+  example: []
+  syntax:
+    content: public void AddEdges(IEnumerable<Edge> edges)
+    parameters:
+    - id: edges
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+    content.vb: Public Sub AddEdges(edges As IEnumerable(Of Edge))
+  overload: FlowGraph.Core.Graph.AddEdges*
+  nameWithType.vb: Graph.AddEdges(IEnumerable(Of Edge))
+  fullName.vb: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge))
+  name.vb: AddEdges(IEnumerable(Of Edge))
+- uid: FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
+  id: AddNode(FlowGraph.Core.Node)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddNode(Node)
+  nameWithType: Graph.AddNode(Node)
+  fullName: FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddNode
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 95
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public void AddNode(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    content.vb: Public Sub AddNode(node As Node)
+  overload: FlowGraph.Core.Graph.AddNode*
+- uid: FlowGraph.Core.Graph.RemoveNode(System.String)
+  commentId: M:FlowGraph.Core.Graph.RemoveNode(System.String)
+  id: RemoveNode(System.String)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: RemoveNode(string)
+  nameWithType: Graph.RemoveNode(string)
+  fullName: FlowGraph.Core.Graph.RemoveNode(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveNode
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 101
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public void RemoveNode(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+    content.vb: Public Sub RemoveNode(nodeId As String)
+  overload: FlowGraph.Core.Graph.RemoveNode*
+  nameWithType.vb: Graph.RemoveNode(String)
+  fullName.vb: FlowGraph.Core.Graph.RemoveNode(String)
+  name.vb: RemoveNode(String)
+- uid: FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
+  id: AddEdge(FlowGraph.Core.Edge)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddEdge(Edge)
+  nameWithType: Graph.AddEdge(Edge)
+  fullName: FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddEdge
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 115
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public void AddEdge(Edge edge)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+    content.vb: Public Sub AddEdge(edge As Edge)
+  overload: FlowGraph.Core.Graph.AddEdge*
+- uid: FlowGraph.Core.Graph.RemoveEdge(System.String)
+  commentId: M:FlowGraph.Core.Graph.RemoveEdge(System.String)
+  id: RemoveEdge(System.String)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: RemoveEdge(string)
+  nameWithType: Graph.RemoveEdge(string)
+  fullName: FlowGraph.Core.Graph.RemoveEdge(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveEdge
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  syntax:
+    content: public void RemoveEdge(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+    content.vb: Public Sub RemoveEdge(edgeId As String)
+  overload: FlowGraph.Core.Graph.RemoveEdge*
+  nameWithType.vb: Graph.RemoveEdge(String)
+  fullName.vb: FlowGraph.Core.Graph.RemoveEdge(String)
+  name.vb: RemoveEdge(String)
+references:
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(System.String,System.Double,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  name: CalculateGroupBounds(Graph, string, double, double, double, double)
+  nameWithType: GraphGroupExtensions.CalculateGroupBounds(Graph, string, double, double, double, double)
+  fullName: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, string, double, double, double, double)
+  nameWithType.vb: GraphGroupExtensions.CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, String, Double, Double, Double, Double)
+  name.vb: CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+    name: CalculateGroupBounds
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+    name: CalculateGroupBounds
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  name: GetAncestorGroups(Graph, Node)
+  nameWithType: GraphGroupExtensions.GetAncestorGroups(Graph, Node)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph, FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetAncestorGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetAncestorGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  name: GetEdgesCrossingGroup(Graph, string)
+  nameWithType: GraphGroupExtensions.GetEdgesCrossingGroup(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetEdgesCrossingGroup(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph, String)
+  name.vb: GetEdgesCrossingGroup(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  name: GetEdgesInternalToGroup(Graph, string)
+  nameWithType: GraphGroupExtensions.GetEdgesInternalToGroup(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetEdgesInternalToGroup(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph, String)
+  name.vb: GetEdgesInternalToGroup(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  name: GetGroupChildren(Graph, string)
+  nameWithType: GraphGroupExtensions.GetGroupChildren(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetGroupChildren(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph, String)
+  name.vb: GetGroupChildren(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildren
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildren
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  name: GetGroupChildrenRecursive(Graph, string)
+  nameWithType: GraphGroupExtensions.GetGroupChildrenRecursive(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetGroupChildrenRecursive(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph, String)
+  name.vb: GetGroupChildrenRecursive(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildrenRecursive
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildrenRecursive
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetGroups
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  name: GetGroups(Graph)
+  nameWithType: GraphGroupExtensions.GetGroups(Graph)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+    name: GetGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+    name: GetGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  name: GetParentGroup(Graph, Node)
+  nameWithType: GraphGroupExtensions.GetParentGroup(Graph, Node)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph, FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetParentGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetParentGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  name: GetTopLevelNodes(Graph)
+  nameWithType: GraphGroupExtensions.GetTopLevelNodes(Graph)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+    name: GetTopLevelNodes
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+    name: GetTopLevelNodes
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Node,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  name: IsDescendantOf(Graph, Node, string)
+  nameWithType: GraphGroupExtensions.IsDescendantOf(Graph, Node, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph, FlowGraph.Core.Node, string)
+  nameWithType.vb: GraphGroupExtensions.IsDescendantOf(Graph, Node, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph, FlowGraph.Core.Node, String)
+  name.vb: IsDescendantOf(Graph, Node, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+    name: IsDescendantOf
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+    name: IsDescendantOf
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Edge,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  name: IsEdgeCrossingGroup(Graph, Edge, string)
+  nameWithType: GraphGroupExtensions.IsEdgeCrossingGroup(Graph, Edge, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, string)
+  nameWithType.vb: GraphGroupExtensions.IsEdgeCrossingGroup(Graph, Edge, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, String)
+  name.vb: IsEdgeCrossingGroup(Graph, Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Edge,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  parent: FlowGraph.Core.GraphGroupExtensions
+  definition: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  name: IsEdgeInternalToGroup(Graph, Edge, string)
+  nameWithType: GraphGroupExtensions.IsEdgeInternalToGroup(Graph, Edge, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, string)
+  nameWithType.vb: GraphGroupExtensions.IsEdgeInternalToGroup(Graph, Edge, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, String)
+  name.vb: IsEdgeInternalToGroup(Graph, Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.Serialization.GraphSerializationExtensions
+  definition: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  name: Clone(Graph)
+  nameWithType: GraphSerializationExtensions.Clone(Graph)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+    name: Clone
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+    name: Clone
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(System.String)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.Serialization.GraphSerializationExtensions
+  definition: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  name: Save(Graph, string)
+  nameWithType: GraphSerializationExtensions.Save(Graph, string)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphSerializationExtensions.Save(Graph, String)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph, String)
+  name.vb: Save(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+    name: Save
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+    name: Save
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(System.String)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+  parent: FlowGraph.Core.Serialization.GraphSerializationExtensions
+  definition: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  name: SaveAsync(Graph, string)
+  nameWithType: GraphSerializationExtensions.SaveAsync(Graph, string)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphSerializationExtensions.SaveAsync(Graph, String)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph, String)
+  name.vb: SaveAsync(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+    name: SaveAsync
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+    name: SaveAsync
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(System.Boolean)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+  parent: FlowGraph.Core.Serialization.GraphSerializationExtensions
+  definition: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  name: ToJson(Graph, bool)
+  nameWithType: GraphSerializationExtensions.ToJson(Graph, bool)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph, bool)
+  nameWithType.vb: GraphSerializationExtensions.ToJson(Graph, Boolean)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph, Boolean)
+  name.vb: ToJson(Graph, Boolean)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+    name: ToJson
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+    name: ToJson
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  name: CalculateGroupBounds(Graph, string, double, double, double, double)
+  nameWithType: GraphGroupExtensions.CalculateGroupBounds(Graph, string, double, double, double, double)
+  fullName: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, string, double, double, double, double)
+  nameWithType.vb: GraphGroupExtensions.CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, String, Double, Double, Double, Double)
+  name.vb: CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+    name: CalculateGroupBounds
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+    name: CalculateGroupBounds
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions
+  commentId: T:FlowGraph.Core.GraphGroupExtensions
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.GraphGroupExtensions.html
+  name: GraphGroupExtensions
+  nameWithType: GraphGroupExtensions
+  fullName: FlowGraph.Core.GraphGroupExtensions
+- uid: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  name: GetAncestorGroups(Graph, Node)
+  nameWithType: GraphGroupExtensions.GetAncestorGroups(Graph, Node)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph, FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetAncestorGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetAncestorGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetAncestorGroups_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  name: GetEdgesCrossingGroup(Graph, string)
+  nameWithType: GraphGroupExtensions.GetEdgesCrossingGroup(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetEdgesCrossingGroup(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph, String)
+  name.vb: GetEdgesCrossingGroup(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesCrossingGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  name: GetEdgesInternalToGroup(Graph, string)
+  nameWithType: GraphGroupExtensions.GetEdgesInternalToGroup(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetEdgesInternalToGroup(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph, String)
+  name.vb: GetEdgesInternalToGroup(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
+    name: GetEdgesInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetEdgesInternalToGroup_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  name: GetGroupChildren(Graph, string)
+  nameWithType: GraphGroupExtensions.GetGroupChildren(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetGroupChildren(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph, String)
+  name.vb: GetGroupChildren(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildren
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildren(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildren
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildren_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  name: GetGroupChildrenRecursive(Graph, string)
+  nameWithType: GraphGroupExtensions.GetGroupChildrenRecursive(Graph, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphGroupExtensions.GetGroupChildrenRecursive(Graph, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph, String)
+  name.vb: GetGroupChildrenRecursive(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildrenRecursive
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroupChildrenRecursive(FlowGraph.Core.Graph,System.String)
+    name: GetGroupChildrenRecursive
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroupChildrenRecursive_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  name: GetGroups(Graph)
+  nameWithType: GraphGroupExtensions.GetGroups(Graph)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+    name: GetGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetGroups(FlowGraph.Core.Graph)
+    name: GetGroups
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetGroups_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  name: GetParentGroup(Graph, Node)
+  nameWithType: GraphGroupExtensions.GetParentGroup(Graph, Node)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph, FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetParentGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetParentGroup(FlowGraph.Core.Graph,FlowGraph.Core.Node)
+    name: GetParentGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetParentGroup_FlowGraph_Core_Graph_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  name: GetTopLevelNodes(Graph)
+  nameWithType: GraphGroupExtensions.GetTopLevelNodes(Graph)
+  fullName: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+    name: GetTopLevelNodes
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes(FlowGraph.Core.Graph)
+    name: GetTopLevelNodes
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_GetTopLevelNodes_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  name: IsDescendantOf(Graph, Node, string)
+  nameWithType: GraphGroupExtensions.IsDescendantOf(Graph, Node, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph, FlowGraph.Core.Node, string)
+  nameWithType.vb: GraphGroupExtensions.IsDescendantOf(Graph, Node, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph, FlowGraph.Core.Node, String)
+  name.vb: IsDescendantOf(Graph, Node, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+    name: IsDescendantOf
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsDescendantOf(FlowGraph.Core.Graph,FlowGraph.Core.Node,System.String)
+    name: IsDescendantOf
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsDescendantOf_FlowGraph_Core_Graph_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  name: IsEdgeCrossingGroup(Graph, Edge, string)
+  nameWithType: GraphGroupExtensions.IsEdgeCrossingGroup(Graph, Edge, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, string)
+  nameWithType.vb: GraphGroupExtensions.IsEdgeCrossingGroup(Graph, Edge, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, String)
+  name.vb: IsEdgeCrossingGroup(Graph, Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeCrossingGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeCrossingGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeCrossingGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+  isExternal: true
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  name: IsEdgeInternalToGroup(Graph, Edge, string)
+  nameWithType: GraphGroupExtensions.IsEdgeInternalToGroup(Graph, Edge, string)
+  fullName: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, string)
+  nameWithType.vb: GraphGroupExtensions.IsEdgeInternalToGroup(Graph, Edge, String)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph, FlowGraph.Core.Edge, String)
+  name.vb: IsEdgeInternalToGroup(Graph, Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
+    name: IsEdgeInternalToGroup
+    href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_IsEdgeInternalToGroup_FlowGraph_Core_Graph_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  name: Clone(Graph)
+  nameWithType: GraphSerializationExtensions.Clone(Graph)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+    name: Clone
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Clone(FlowGraph.Core.Graph)
+    name: Clone
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Clone_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Serialization.GraphSerializationExtensions
+  commentId: T:FlowGraph.Core.Serialization.GraphSerializationExtensions
+  parent: FlowGraph.Core.Serialization
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html
+  name: GraphSerializationExtensions
+  nameWithType: GraphSerializationExtensions
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions
+- uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  name: Save(Graph, string)
+  nameWithType: GraphSerializationExtensions.Save(Graph, string)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphSerializationExtensions.Save(Graph, String)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph, String)
+  name.vb: Save(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+    name: Save
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(FlowGraph.Core.Graph,System.String)
+    name: Save
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_Save_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+  isExternal: true
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  name: SaveAsync(Graph, string)
+  nameWithType: GraphSerializationExtensions.SaveAsync(Graph, string)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph, string)
+  nameWithType.vb: GraphSerializationExtensions.SaveAsync(Graph, String)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph, String)
+  name.vb: SaveAsync(Graph, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+    name: SaveAsync
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(FlowGraph.Core.Graph,System.String)
+    name: SaveAsync
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_SaveAsync_FlowGraph_Core_Graph_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+  commentId: M:FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+  isExternal: true
+  href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  name: ToJson(Graph, bool)
+  nameWithType: GraphSerializationExtensions.ToJson(Graph, bool)
+  fullName: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph, bool)
+  nameWithType.vb: GraphSerializationExtensions.ToJson(Graph, Boolean)
+  fullName.vb: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph, Boolean)
+  name.vb: ToJson(Graph, Boolean)
+  spec.csharp:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+    name: ToJson
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(FlowGraph.Core.Graph,System.Boolean)
+    name: ToJson
+    href: FlowGraph.Core.Serialization.GraphSerializationExtensions.html#FlowGraph_Core_Serialization_GraphSerializationExtensions_ToJson_FlowGraph_Core_Graph_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FlowGraph.Core.Serialization
+  commentId: N:FlowGraph.Core.Serialization
+  href: FlowGraph.html
+  name: FlowGraph.Core.Serialization
+  nameWithType: FlowGraph.Core.Serialization
+  fullName: FlowGraph.Core.Serialization
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization
+    name: Serialization
+    href: FlowGraph.Core.Serialization.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization
+    name: Serialization
+    href: FlowGraph.Core.Serialization.html
+- uid: FlowGraph.Core.Graph.Nodes*
+  commentId: Overload:FlowGraph.Core.Graph.Nodes
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Nodes
+  name: Nodes
+  nameWithType: Graph.Nodes
+  fullName: FlowGraph.Core.Graph.Nodes
+- uid: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Node}
+  commentId: T:FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Node}
+  parent: FlowGraph.Core
+  definition: FlowGraph.Core.BulkObservableCollection`1
+  href: FlowGraph.Core.BulkObservableCollection-1.html
+  name: BulkObservableCollection<Node>
+  nameWithType: BulkObservableCollection<Node>
+  fullName: FlowGraph.Core.BulkObservableCollection<FlowGraph.Core.Node>
+  nameWithType.vb: BulkObservableCollection(Of Node)
+  fullName.vb: FlowGraph.Core.BulkObservableCollection(Of FlowGraph.Core.Node)
+  name.vb: BulkObservableCollection(Of Node)
+  spec.csharp:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.BulkObservableCollection`1
+  commentId: T:FlowGraph.Core.BulkObservableCollection`1
+  href: FlowGraph.Core.BulkObservableCollection-1.html
+  name: BulkObservableCollection<T>
+  nameWithType: BulkObservableCollection<T>
+  fullName: FlowGraph.Core.BulkObservableCollection<T>
+  nameWithType.vb: BulkObservableCollection(Of T)
+  fullName.vb: FlowGraph.Core.BulkObservableCollection(Of T)
+  name.vb: BulkObservableCollection(Of T)
+  spec.csharp:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Graph.Edges*
+  commentId: Overload:FlowGraph.Core.Graph.Edges
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Edges
+  name: Edges
+  nameWithType: Graph.Edges
+  fullName: FlowGraph.Core.Graph.Edges
+- uid: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Edge}
+  commentId: T:FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Edge}
+  parent: FlowGraph.Core
+  definition: FlowGraph.Core.BulkObservableCollection`1
+  href: FlowGraph.Core.BulkObservableCollection-1.html
+  name: BulkObservableCollection<Edge>
+  nameWithType: BulkObservableCollection<Edge>
+  fullName: FlowGraph.Core.BulkObservableCollection<FlowGraph.Core.Edge>
+  nameWithType.vb: BulkObservableCollection(Of Edge)
+  fullName.vb: FlowGraph.Core.BulkObservableCollection(Of FlowGraph.Core.Edge)
+  name.vb: BulkObservableCollection(Of Edge)
+  spec.csharp:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.BulkObservableCollection`1
+    name: BulkObservableCollection
+    href: FlowGraph.Core.BulkObservableCollection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Core.Graph.IsBatchLoading*
+  commentId: Overload:FlowGraph.Core.Graph.IsBatchLoading
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_IsBatchLoading
+  name: IsBatchLoading
+  nameWithType: Graph.IsBatchLoading
+  fullName: FlowGraph.Core.Graph.IsBatchLoading
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: FlowGraph.Core.Graph.BeginBatchLoad*
+  commentId: Overload:FlowGraph.Core.Graph.BeginBatchLoad
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_BeginBatchLoad
+  name: BeginBatchLoad
+  nameWithType: Graph.BeginBatchLoad
+  fullName: FlowGraph.Core.Graph.BeginBatchLoad
+- uid: FlowGraph.Core.Graph.EndBatchLoad*
+  commentId: Overload:FlowGraph.Core.Graph.EndBatchLoad
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_EndBatchLoad
+  name: EndBatchLoad
+  nameWithType: Graph.EndBatchLoad
+  fullName: FlowGraph.Core.Graph.EndBatchLoad
+- uid: FlowGraph.Core.Graph.AddNodes*
+  commentId: Overload:FlowGraph.Core.Graph.AddNodes
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNodes_System_Collections_Generic_IEnumerable_FlowGraph_Core_Node__
+  name: AddNodes
+  nameWithType: Graph.AddNodes
+  fullName: FlowGraph.Core.Graph.AddNodes
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Node>
+  nameWithType: IEnumerable<Node>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>
+  nameWithType.vb: IEnumerable(Of Node)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node)
+  name.vb: IEnumerable(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Graph.AddEdges*
+  commentId: Overload:FlowGraph.Core.Graph.AddEdges
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddEdges_System_Collections_Generic_IEnumerable_FlowGraph_Core_Edge__
+  name: AddEdges
+  nameWithType: Graph.AddEdges
+  fullName: FlowGraph.Core.Graph.AddEdges
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Edge>
+  nameWithType: IEnumerable<Edge>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>
+  nameWithType.vb: IEnumerable(Of Edge)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge)
+  name.vb: IEnumerable(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Core.Graph.AddNode*
+  commentId: Overload:FlowGraph.Core.Graph.AddNode
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNode_FlowGraph_Core_Node_
+  name: AddNode
+  nameWithType: Graph.AddNode
+  fullName: FlowGraph.Core.Graph.AddNode
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core.Graph.RemoveNode*
+  commentId: Overload:FlowGraph.Core.Graph.RemoveNode
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveNode_System_String_
+  name: RemoveNode
+  nameWithType: Graph.RemoveNode
+  fullName: FlowGraph.Core.Graph.RemoveNode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Graph.AddEdge*
+  commentId: Overload:FlowGraph.Core.Graph.AddEdge
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddEdge_FlowGraph_Core_Edge_
+  name: AddEdge
+  nameWithType: Graph.AddEdge
+  fullName: FlowGraph.Core.Graph.AddEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core.Graph.RemoveEdge*
+  commentId: Overload:FlowGraph.Core.Graph.RemoveEdge
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveEdge_System_String_
+  name: RemoveEdge
+  nameWithType: Graph.RemoveEdge
+  fullName: FlowGraph.Core.Graph.RemoveEdge

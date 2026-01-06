@@ -1,0 +1,1302 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Animation.AnimationManager
+  commentId: T:FlowGraph.Avalonia.Animation.AnimationManager
+  id: AnimationManager
+  parent: FlowGraph.Avalonia.Animation
+  children:
+  - FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+  - FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+  - FlowGraph.Avalonia.Animation.AnimationManager.CategoriesChanged
+  - FlowGraph.Avalonia.Animation.AnimationManager.Dispose
+  - FlowGraph.Avalonia.Animation.AnimationManager.FrameUpdated
+  - FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.HasCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  - FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation)
+  - FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation,FlowGraph.Avalonia.Animation.AnimationCategory,System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Avalonia.Animation.AnimationManager.Stop(FlowGraph.Avalonia.Animation.IAnimation)
+  - FlowGraph.Avalonia.Animation.AnimationManager.StopAll
+  - FlowGraph.Avalonia.Animation.AnimationManager.StopCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  - FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations
+  - FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+  langs:
+  - csharp
+  - vb
+  name: AnimationManager
+  nameWithType: AnimationManager
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AnimationManager
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 8
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Manages running animations and coordinates frame updates.
+  example: []
+  syntax:
+    content: 'public class AnimationManager : IDisposable'
+    content.vb: Public Class AnimationManager Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+  id: TargetFps
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: TargetFps
+  nameWithType: AnimationManager.TargetFps
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TargetFps
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 23
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Target frames per second for animation updates.
+  example: []
+  syntax:
+    content: public int TargetFps { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property TargetFps As Integer
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.TargetFps*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.FrameUpdated
+  commentId: E:FlowGraph.Avalonia.Animation.AnimationManager.FrameUpdated
+  id: FrameUpdated
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: FrameUpdated
+  nameWithType: AnimationManager.FrameUpdated
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.FrameUpdated
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FrameUpdated
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Event raised after each animation frame update.
+  example: []
+  syntax:
+    content: public event EventHandler? FrameUpdated
+    return:
+      type: System.EventHandler
+    content.vb: Public Event FrameUpdated As EventHandler
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.CategoriesChanged
+  commentId: E:FlowGraph.Avalonia.Animation.AnimationManager.CategoriesChanged
+  id: CategoriesChanged
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: CategoriesChanged
+  nameWithType: AnimationManager.CategoriesChanged
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.CategoriesChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CategoriesChanged
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Event raised when the set of active animation categories changes.
+  example: []
+  syntax:
+    content: public event EventHandler<AnimationCategoriesChangedEventArgs>? CategoriesChanged
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs}
+    content.vb: Public Event CategoriesChanged As EventHandler(Of AnimationCategoriesChangedEventArgs)
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+  id: HasAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: HasAnimations
+  nameWithType: AnimationManager.HasAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Gets whether any animations are currently running.
+  example: []
+  syntax:
+    content: public bool HasAnimations { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasAnimations As Boolean
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+  id: ActiveCategories
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveCategories
+  nameWithType: AnimationManager.ActiveCategories
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ActiveCategories
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Gets the currently active animation categories.
+  example: []
+  syntax:
+    content: public IReadOnlySet<AnimationCategory> ActiveCategories { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlySet{FlowGraph.Avalonia.Animation.AnimationCategory}
+    content.vb: Public ReadOnly Property ActiveCategories As IReadOnlySet(Of AnimationCategory)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+  id: AnimatingNodeIds
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: AnimatingNodeIds
+  nameWithType: AnimationManager.AnimatingNodeIds
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AnimatingNodeIds
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 78
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Gets the IDs of all nodes currently being animated.
+  example: []
+  syntax:
+    content: public IReadOnlySet<string> AnimatingNodeIds { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlySet{System.String}
+    content.vb: Public ReadOnly Property AnimatingNodeIds As IReadOnlySet(Of String)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.HasCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  id: HasCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: HasCategory(AnimationCategory)
+  nameWithType: AnimationManager.HasCategory(AnimationCategory)
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasCategory
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 103
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Checks if a specific animation category is currently active.
+  example: []
+  syntax:
+    content: public bool HasCategory(AnimationCategory category)
+    parameters:
+    - id: category
+      type: FlowGraph.Avalonia.Animation.AnimationCategory
+    return:
+      type: System.Boolean
+    content.vb: Public Function HasCategory(category As AnimationCategory) As Boolean
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.HasCategory*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+  id: HasViewportAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: HasViewportAnimations
+  nameWithType: AnimationManager.HasViewportAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasViewportAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 121
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Checks if viewport animations are running.
+  example: []
+  syntax:
+    content: public bool HasViewportAnimations { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasViewportAnimations As Boolean
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+  id: HasNodeAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: HasNodeAnimations
+  nameWithType: AnimationManager.HasNodeAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasNodeAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 126
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Checks if node position or appearance animations are running.
+  example: []
+  syntax:
+    content: public bool HasNodeAnimations { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasNodeAnimations As Boolean
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+  commentId: P:FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+  id: HasGroupAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: HasGroupAnimations
+  nameWithType: AnimationManager.HasGroupAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasGroupAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 133
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Checks if group animations are running.
+  example: []
+  syntax:
+    content: public bool HasGroupAnimations { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasGroupAnimations As Boolean
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation)
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation)
+  id: Start(FlowGraph.Avalonia.Animation.IAnimation)
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: Start(IAnimation)
+  nameWithType: AnimationManager.Start(IAnimation)
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Start
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 138
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Starts an animation.
+  example: []
+  syntax:
+    content: public void Start(IAnimation animation)
+    parameters:
+    - id: animation
+      type: FlowGraph.Avalonia.Animation.IAnimation
+    content.vb: Public Sub Start(animation As IAnimation)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.Start*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation,FlowGraph.Avalonia.Animation.AnimationCategory,System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation,FlowGraph.Avalonia.Animation.AnimationCategory,System.Collections.Generic.IEnumerable{System.String})
+  id: Start(FlowGraph.Avalonia.Animation.IAnimation,FlowGraph.Avalonia.Animation.AnimationCategory,System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: Start(IAnimation, AnimationCategory, IEnumerable<string>?)
+  nameWithType: AnimationManager.Start(IAnimation, AnimationCategory, IEnumerable<string>?)
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation, FlowGraph.Avalonia.Animation.AnimationCategory, System.Collections.Generic.IEnumerable<string>?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Start
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 163
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Starts an animation with category information.
+  example: []
+  syntax:
+    content: public void Start(IAnimation animation, AnimationCategory category, IEnumerable<string>? affectedNodeIds = null)
+    parameters:
+    - id: animation
+      type: FlowGraph.Avalonia.Animation.IAnimation
+    - id: category
+      type: FlowGraph.Avalonia.Animation.AnimationCategory
+    - id: affectedNodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public Sub Start(animation As IAnimation, category As AnimationCategory, affectedNodeIds As IEnumerable(Of String) = Nothing)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.Start*
+  nameWithType.vb: AnimationManager.Start(IAnimation, AnimationCategory, IEnumerable(Of String))
+  fullName.vb: FlowGraph.Avalonia.Animation.AnimationManager.Start(FlowGraph.Avalonia.Animation.IAnimation, FlowGraph.Avalonia.Animation.AnimationCategory, System.Collections.Generic.IEnumerable(Of String))
+  name.vb: Start(IAnimation, AnimationCategory, IEnumerable(Of String))
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Stop(FlowGraph.Avalonia.Animation.IAnimation)
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.Stop(FlowGraph.Avalonia.Animation.IAnimation)
+  id: Stop(FlowGraph.Avalonia.Animation.IAnimation)
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: Stop(IAnimation)
+  nameWithType: AnimationManager.Stop(IAnimation)
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Stop(FlowGraph.Avalonia.Animation.IAnimation)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Stop
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 172
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops and removes an animation.
+  example: []
+  syntax:
+    content: public void Stop(IAnimation animation)
+    parameters:
+    - id: animation
+      type: FlowGraph.Avalonia.Animation.IAnimation
+    content.vb: Public Sub [Stop](animation As IAnimation)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.Stop*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.StopCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  id: StopCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopCategory(AnimationCategory)
+  nameWithType: AnimationManager.StopCategory(AnimationCategory)
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopCategory(FlowGraph.Avalonia.Animation.AnimationCategory)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopCategory
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 197
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops all animations of a specific category.
+  example: []
+  syntax:
+    content: public void StopCategory(AnimationCategory category)
+    parameters:
+    - id: category
+      type: FlowGraph.Avalonia.Animation.AnimationCategory
+    content.vb: Public Sub StopCategory(category As AnimationCategory)
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.StopCategory*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations
+  id: StopViewportAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopViewportAnimations()
+  nameWithType: AnimationManager.StopViewportAnimations()
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopViewportAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 230
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops all viewport animations.
+  example: []
+  syntax:
+    content: public void StopViewportAnimations()
+    content.vb: Public Sub StopViewportAnimations()
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations
+  id: StopNodeAnimations
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopNodeAnimations()
+  nameWithType: AnimationManager.StopNodeAnimations()
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopNodeAnimations
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 235
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops all node animations.
+  example: []
+  syntax:
+    content: public void StopNodeAnimations()
+    content.vb: Public Sub StopNodeAnimations()
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopAll
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.StopAll
+  id: StopAll
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopAll()
+  nameWithType: AnimationManager.StopAll()
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopAll
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 244
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops all running animations.
+  example: []
+  syntax:
+    content: public void StopAll()
+    content.vb: Public Sub StopAll()
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.StopAll*
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Dispose
+  commentId: M:FlowGraph.Avalonia.Animation.AnimationManager.Dispose
+  id: Dispose
+  parent: FlowGraph.Avalonia.Animation.AnimationManager
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: AnimationManager.Dispose()
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Dispose()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/AnimationManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Dispose
+    path: ../FlowGraph.Avalonia/Animation/AnimationManager.cs
+    startLine: 371
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: FlowGraph.Avalonia.Animation.AnimationManager.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: FlowGraph.Avalonia.Animation
+  commentId: N:FlowGraph.Avalonia.Animation
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Animation
+  nameWithType: FlowGraph.Avalonia.Animation
+  fullName: FlowGraph.Avalonia.Animation
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.TargetFps*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_TargetFps
+  name: TargetFps
+  nameWithType: AnimationManager.TargetFps
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.TargetFps
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: System.EventHandler{FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<AnimationCategoriesChangedEventArgs>
+  nameWithType: EventHandler<AnimationCategoriesChangedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs>
+  nameWithType.vb: EventHandler(Of AnimationCategoriesChangedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs)
+  name.vb: EventHandler(Of AnimationCategoriesChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs
+    name: AnimationCategoriesChangedEventArgs
+    href: FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs
+    name: AnimationCategoriesChangedEventArgs
+    href: FlowGraph.Avalonia.Animation.AnimationCategoriesChangedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_HasAnimations
+  name: HasAnimations
+  nameWithType: AnimationManager.HasAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasAnimations
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_ActiveCategories
+  name: ActiveCategories
+  nameWithType: AnimationManager.ActiveCategories
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.ActiveCategories
+- uid: System.Collections.Generic.IReadOnlySet{FlowGraph.Avalonia.Animation.AnimationCategory}
+  commentId: T:System.Collections.Generic.IReadOnlySet{FlowGraph.Avalonia.Animation.AnimationCategory}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlySet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<AnimationCategory>
+  nameWithType: IReadOnlySet<AnimationCategory>
+  fullName: System.Collections.Generic.IReadOnlySet<FlowGraph.Avalonia.Animation.AnimationCategory>
+  nameWithType.vb: IReadOnlySet(Of AnimationCategory)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of FlowGraph.Avalonia.Animation.AnimationCategory)
+  name.vb: IReadOnlySet(Of AnimationCategory)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Animation.AnimationCategory
+    name: AnimationCategory
+    href: FlowGraph.Avalonia.Animation.AnimationCategory.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Animation.AnimationCategory
+    name: AnimationCategory
+    href: FlowGraph.Avalonia.Animation.AnimationCategory.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlySet`1
+  commentId: T:System.Collections.Generic.IReadOnlySet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<T>
+  nameWithType: IReadOnlySet<T>
+  fullName: System.Collections.Generic.IReadOnlySet<T>
+  nameWithType.vb: IReadOnlySet(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of T)
+  name.vb: IReadOnlySet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_AnimatingNodeIds
+  name: AnimatingNodeIds
+  nameWithType: AnimationManager.AnimatingNodeIds
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.AnimatingNodeIds
+- uid: System.Collections.Generic.IReadOnlySet{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlySet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlySet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<string>
+  nameWithType: IReadOnlySet<string>
+  fullName: System.Collections.Generic.IReadOnlySet<string>
+  nameWithType.vb: IReadOnlySet(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of String)
+  name.vb: IReadOnlySet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasCategory*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.HasCategory
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_HasCategory_FlowGraph_Avalonia_Animation_AnimationCategory_
+  name: HasCategory
+  nameWithType: AnimationManager.HasCategory
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasCategory
+- uid: FlowGraph.Avalonia.Animation.AnimationCategory
+  commentId: T:FlowGraph.Avalonia.Animation.AnimationCategory
+  parent: FlowGraph.Avalonia.Animation
+  href: FlowGraph.Avalonia.Animation.AnimationCategory.html
+  name: AnimationCategory
+  nameWithType: AnimationCategory
+  fullName: FlowGraph.Avalonia.Animation.AnimationCategory
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_HasViewportAnimations
+  name: HasViewportAnimations
+  nameWithType: AnimationManager.HasViewportAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasViewportAnimations
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_HasNodeAnimations
+  name: HasNodeAnimations
+  nameWithType: AnimationManager.HasNodeAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasNodeAnimations
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_HasGroupAnimations
+  name: HasGroupAnimations
+  nameWithType: AnimationManager.HasGroupAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.HasGroupAnimations
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Start*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.Start
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_Start_FlowGraph_Avalonia_Animation_IAnimation_
+  name: Start
+  nameWithType: AnimationManager.Start
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Start
+- uid: FlowGraph.Avalonia.Animation.IAnimation
+  commentId: T:FlowGraph.Avalonia.Animation.IAnimation
+  parent: FlowGraph.Avalonia.Animation
+  href: FlowGraph.Avalonia.Animation.IAnimation.html
+  name: IAnimation
+  nameWithType: IAnimation
+  fullName: FlowGraph.Avalonia.Animation.IAnimation
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Stop*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.Stop
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_Stop_FlowGraph_Avalonia_Animation_IAnimation_
+  name: Stop
+  nameWithType: AnimationManager.Stop
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Stop
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopCategory*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.StopCategory
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_StopCategory_FlowGraph_Avalonia_Animation_AnimationCategory_
+  name: StopCategory
+  nameWithType: AnimationManager.StopCategory
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopCategory
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_StopViewportAnimations
+  name: StopViewportAnimations
+  nameWithType: AnimationManager.StopViewportAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopViewportAnimations
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_StopNodeAnimations
+  name: StopNodeAnimations
+  nameWithType: AnimationManager.StopNodeAnimations
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopNodeAnimations
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.StopAll*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.StopAll
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_StopAll
+  name: StopAll
+  nameWithType: AnimationManager.StopAll
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.StopAll
+- uid: FlowGraph.Avalonia.Animation.AnimationManager.Dispose*
+  commentId: Overload:FlowGraph.Avalonia.Animation.AnimationManager.Dispose
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html#FlowGraph_Avalonia_Animation_AnimationManager_Dispose
+  name: Dispose
+  nameWithType: AnimationManager.Dispose
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

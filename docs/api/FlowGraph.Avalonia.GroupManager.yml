@@ -1,0 +1,1628 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.GroupManager
+  commentId: T:FlowGraph.Avalonia.GroupManager
+  id: GroupManager
+  parent: FlowGraph.Avalonia
+  children:
+  - FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.GroupManager.AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Avalonia.GroupManager.AutoResizeGroup(System.String)
+  - FlowGraph.Avalonia.GroupManager.CollapseAll
+  - FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String)
+  - FlowGraph.Avalonia.GroupManager.ExpandAll
+  - FlowGraph.Avalonia.GroupManager.GetAllGroups
+  - FlowGraph.Avalonia.GroupManager.GetGroupAtPoint(FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.GroupManager.GetGroupChildren(System.String)
+  - FlowGraph.Avalonia.GroupManager.GetVisibleEdges
+  - FlowGraph.Avalonia.GroupManager.GetVisibleNodes
+  - FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged
+  - FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
+  - FlowGraph.Avalonia.GroupManager.GroupPadding
+  - FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.GroupManager.HeaderHeight
+  - FlowGraph.Avalonia.GroupManager.IsNodeVisible(System.String)
+  - FlowGraph.Avalonia.GroupManager.NodesAddedToGroup
+  - FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Avalonia.GroupManager.SetCollapsed(System.String,System.Boolean)
+  - FlowGraph.Avalonia.GroupManager.ToggleCollapse(System.String)
+  - FlowGraph.Avalonia.GroupManager.Ungroup(System.String)
+  langs:
+  - csharp
+  - vb
+  name: GroupManager
+  nameWithType: GroupManager
+  fullName: FlowGraph.Avalonia.GroupManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupManager
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 8
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Manages group operations including auto-sizing, collapse state, and drag-to-add.
+  example: []
+  syntax:
+    content: public class GroupManager
+    content.vb: Public Class GroupManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.GroupManager.GroupPadding
+  commentId: P:FlowGraph.Avalonia.GroupManager.GroupPadding
+  id: GroupPadding
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GroupPadding
+  nameWithType: GroupManager.GroupPadding
+  fullName: FlowGraph.Avalonia.GroupManager.GroupPadding
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupPadding
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 17
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Padding around children when calculating group bounds.
+  example: []
+  syntax:
+    content: public double GroupPadding { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property GroupPadding As Double
+  overload: FlowGraph.Avalonia.GroupManager.GroupPadding*
+- uid: FlowGraph.Avalonia.GroupManager.HeaderHeight
+  commentId: P:FlowGraph.Avalonia.GroupManager.HeaderHeight
+  id: HeaderHeight
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: HeaderHeight
+  nameWithType: GroupManager.HeaderHeight
+  fullName: FlowGraph.Avalonia.GroupManager.HeaderHeight
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderHeight
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 22
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Height of the group header.
+  example: []
+  syntax:
+    content: public double HeaderHeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property HeaderHeight As Double
+  overload: FlowGraph.Avalonia.GroupManager.HeaderHeight*
+- uid: FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged
+  commentId: E:FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged
+  id: GroupCollapsedChanged
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GroupCollapsedChanged
+  nameWithType: GroupManager.GroupCollapsedChanged
+  fullName: FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupCollapsedChanged
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 27
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when a group's collapsed state changes.
+  example: []
+  syntax:
+    content: public event EventHandler<GroupCollapsedEventArgs>? GroupCollapsedChanged
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.GroupCollapsedEventArgs}
+    content.vb: Public Event GroupCollapsedChanged As EventHandler(Of GroupCollapsedEventArgs)
+- uid: FlowGraph.Avalonia.GroupManager.NodesAddedToGroup
+  commentId: E:FlowGraph.Avalonia.GroupManager.NodesAddedToGroup
+  id: NodesAddedToGroup
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: NodesAddedToGroup
+  nameWithType: GroupManager.NodesAddedToGroup
+  fullName: FlowGraph.Avalonia.GroupManager.NodesAddedToGroup
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodesAddedToGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when nodes are added to a group.
+  example: []
+  syntax:
+    content: public event EventHandler<NodesAddedToGroupEventArgs>? NodesAddedToGroup
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.NodesAddedToGroupEventArgs}
+    content.vb: Public Event NodesAddedToGroup As EventHandler(Of NodesAddedToGroupEventArgs)
+- uid: FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
+  commentId: E:FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
+  id: GroupNeedsRerender
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GroupNeedsRerender
+  nameWithType: GroupManager.GroupNeedsRerender
+  fullName: FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupNeedsRerender
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 37
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when a group needs to be re-rendered.
+  example: []
+  syntax:
+    content: public event EventHandler<string>? GroupNeedsRerender
+    return:
+      type: System.EventHandler{System.String}
+    content.vb: Public Event GroupNeedsRerender As EventHandler(Of String)
+- uid: FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)'
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GroupManager(Func<Graph?>, CommandHistory, FlowCanvasSettings)
+  nameWithType: GroupManager.GroupManager(Func<Graph?>, CommandHistory, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.GroupManager.GroupManager(System.Func<FlowGraph.Core.Graph?>, FlowGraph.Core.Commands.CommandHistory, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  syntax:
+    content: public GroupManager(Func<Graph?> getGraph, CommandHistory commandHistory, FlowCanvasSettings settings)
+    parameters:
+    - id: getGraph
+      type: System.Func{FlowGraph.Core.Graph}
+    - id: commandHistory
+      type: FlowGraph.Core.Commands.CommandHistory
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    content.vb: Public Sub New(getGraph As Func(Of Graph), commandHistory As CommandHistory, settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.GroupManager.#ctor*
+  nameWithType.vb: GroupManager.New(Func(Of Graph), CommandHistory, FlowCanvasSettings)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.New(System.Func(Of FlowGraph.Core.Graph), FlowGraph.Core.Commands.CommandHistory, FlowGraph.Avalonia.FlowCanvasSettings)
+  name.vb: New(Func(Of Graph), CommandHistory, FlowCanvasSettings)
+- uid: FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String)
+  id: CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: CreateGroup(IEnumerable<string>, string?)
+  nameWithType: GroupManager.CreateGroup(IEnumerable<string>, string?)
+  fullName: FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable<string>, string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreateGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Creates a group from the specified nodes.
+  example: []
+  syntax:
+    content: public Node? CreateGroup(IEnumerable<string> nodeIds, string? label = null)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+    - id: label
+      type: System.String
+    return:
+      type: FlowGraph.Core.Node
+    content.vb: Public Function CreateGroup(nodeIds As IEnumerable(Of String), label As String = Nothing) As Node
+  overload: FlowGraph.Avalonia.GroupManager.CreateGroup*
+  nameWithType.vb: GroupManager.CreateGroup(IEnumerable(Of String), String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable(Of String), String)
+  name.vb: CreateGroup(IEnumerable(Of String), String)
+- uid: FlowGraph.Avalonia.GroupManager.Ungroup(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.Ungroup(System.String)
+  id: Ungroup(System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: Ungroup(string)
+  nameWithType: GroupManager.Ungroup(string)
+  fullName: FlowGraph.Avalonia.GroupManager.Ungroup(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Ungroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 71
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Ungroups the specified group.
+  example: []
+  syntax:
+    content: public void Ungroup(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    content.vb: Public Sub Ungroup(groupId As String)
+  overload: FlowGraph.Avalonia.GroupManager.Ungroup*
+  nameWithType.vb: GroupManager.Ungroup(String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.Ungroup(String)
+  name.vb: Ungroup(String)
+- uid: FlowGraph.Avalonia.GroupManager.ToggleCollapse(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.ToggleCollapse(System.String)
+  id: ToggleCollapse(System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: ToggleCollapse(string)
+  nameWithType: GroupManager.ToggleCollapse(string)
+  fullName: FlowGraph.Avalonia.GroupManager.ToggleCollapse(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToggleCollapse
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 83
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Toggles the collapsed state of a group.
+  example: []
+  syntax:
+    content: public void ToggleCollapse(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    content.vb: Public Sub ToggleCollapse(groupId As String)
+  overload: FlowGraph.Avalonia.GroupManager.ToggleCollapse*
+  nameWithType.vb: GroupManager.ToggleCollapse(String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.ToggleCollapse(String)
+  name.vb: ToggleCollapse(String)
+- uid: FlowGraph.Avalonia.GroupManager.SetCollapsed(System.String,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.GroupManager.SetCollapsed(System.String,System.Boolean)
+  id: SetCollapsed(System.String,System.Boolean)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: SetCollapsed(string, bool)
+  nameWithType: GroupManager.SetCollapsed(string, bool)
+  fullName: FlowGraph.Avalonia.GroupManager.SetCollapsed(string, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetCollapsed
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 103
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Sets the collapsed state of a group.
+  example: []
+  syntax:
+    content: public void SetCollapsed(string groupId, bool collapsed)
+    parameters:
+    - id: groupId
+      type: System.String
+    - id: collapsed
+      type: System.Boolean
+    content.vb: Public Sub SetCollapsed(groupId As String, collapsed As Boolean)
+  overload: FlowGraph.Avalonia.GroupManager.SetCollapsed*
+  nameWithType.vb: GroupManager.SetCollapsed(String, Boolean)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.SetCollapsed(String, Boolean)
+  name.vb: SetCollapsed(String, Boolean)
+- uid: FlowGraph.Avalonia.GroupManager.AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Avalonia.GroupManager.AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})
+  id: AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: AddNodesToGroup(string, IEnumerable<string>)
+  nameWithType: GroupManager.AddNodesToGroup(string, IEnumerable<string>)
+  fullName: FlowGraph.Avalonia.GroupManager.AddNodesToGroup(string, System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddNodesToGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Adds nodes to an existing group.
+  example: []
+  syntax:
+    content: public void AddNodesToGroup(string groupId, IEnumerable<string> nodeIds)
+    parameters:
+    - id: groupId
+      type: System.String
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public Sub AddNodesToGroup(groupId As String, nodeIds As IEnumerable(Of String))
+  overload: FlowGraph.Avalonia.GroupManager.AddNodesToGroup*
+  nameWithType.vb: GroupManager.AddNodesToGroup(String, IEnumerable(Of String))
+  fullName.vb: FlowGraph.Avalonia.GroupManager.AddNodesToGroup(String, System.Collections.Generic.IEnumerable(Of String))
+  name.vb: AddNodesToGroup(String, IEnumerable(Of String))
+- uid: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable{System.String})
+  id: RemoveNodesFromGroup(System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveNodesFromGroup(IEnumerable<string>)
+  nameWithType: GroupManager.RemoveNodesFromGroup(IEnumerable<string>)
+  fullName: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveNodesFromGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 137
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Removes nodes from their parent group.
+  example: []
+  syntax:
+    content: public void RemoveNodesFromGroup(IEnumerable<string> nodeIds)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public Sub RemoveNodesFromGroup(nodeIds As IEnumerable(Of String))
+  overload: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup*
+  nameWithType.vb: GroupManager.RemoveNodesFromGroup(IEnumerable(Of String))
+  fullName.vb: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable(Of String))
+  name.vb: RemoveNodesFromGroup(IEnumerable(Of String))
+- uid: FlowGraph.Avalonia.GroupManager.AutoResizeGroup(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.AutoResizeGroup(System.String)
+  id: AutoResizeGroup(System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: AutoResizeGroup(string)
+  nameWithType: GroupManager.AutoResizeGroup(string)
+  fullName: FlowGraph.Avalonia.GroupManager.AutoResizeGroup(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AutoResizeGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 166
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Auto-resizes a group to fit its children with padding.
+  example: []
+  syntax:
+    content: public void AutoResizeGroup(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    content.vb: Public Sub AutoResizeGroup(groupId As String)
+  overload: FlowGraph.Avalonia.GroupManager.AutoResizeGroup*
+  nameWithType.vb: GroupManager.AutoResizeGroup(String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.AutoResizeGroup(String)
+  name.vb: AutoResizeGroup(String)
+- uid: FlowGraph.Avalonia.GroupManager.GetGroupAtPoint(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.GroupManager.GetGroupAtPoint(FlowGraph.Core.Point)
+  id: GetGroupAtPoint(FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GetGroupAtPoint(Point)
+  nameWithType: GroupManager.GetGroupAtPoint(Point)
+  fullName: FlowGraph.Avalonia.GroupManager.GetGroupAtPoint(FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetGroupAtPoint
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 202
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Checks if a point is inside a group's drop zone.
+  example: []
+  syntax:
+    content: public string? GetGroupAtPoint(Point canvasPoint)
+    parameters:
+    - id: canvasPoint
+      type: FlowGraph.Core.Point
+    return:
+      type: System.String
+    content.vb: Public Function GetGroupAtPoint(canvasPoint As Point) As String
+  overload: FlowGraph.Avalonia.GroupManager.GetGroupAtPoint*
+- uid: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)
+  id: HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: HandleNodeDroppedOnGroup(IEnumerable<string>, Point)
+  nameWithType: GroupManager.HandleNodeDroppedOnGroup(IEnumerable<string>, Point)
+  fullName: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable<string>, FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HandleNodeDroppedOnGroup
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 228
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Handles dropping nodes onto a group.
+  example: []
+  syntax:
+    content: public bool HandleNodeDroppedOnGroup(IEnumerable<string> nodeIds, Point dropPoint)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+    - id: dropPoint
+      type: FlowGraph.Core.Point
+    return:
+      type: System.Boolean
+    content.vb: Public Function HandleNodeDroppedOnGroup(nodeIds As IEnumerable(Of String), dropPoint As Point) As Boolean
+  overload: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup*
+  nameWithType.vb: GroupManager.HandleNodeDroppedOnGroup(IEnumerable(Of String), Point)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable(Of String), FlowGraph.Core.Point)
+  name.vb: HandleNodeDroppedOnGroup(IEnumerable(Of String), Point)
+- uid: FlowGraph.Avalonia.GroupManager.CollapseAll
+  commentId: M:FlowGraph.Avalonia.GroupManager.CollapseAll
+  id: CollapseAll
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: CollapseAll()
+  nameWithType: GroupManager.CollapseAll()
+  fullName: FlowGraph.Avalonia.GroupManager.CollapseAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CollapseAll
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 257
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Collapses all groups in the graph.
+  example: []
+  syntax:
+    content: public void CollapseAll()
+    content.vb: Public Sub CollapseAll()
+  overload: FlowGraph.Avalonia.GroupManager.CollapseAll*
+- uid: FlowGraph.Avalonia.GroupManager.ExpandAll
+  commentId: M:FlowGraph.Avalonia.GroupManager.ExpandAll
+  id: ExpandAll
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: ExpandAll()
+  nameWithType: GroupManager.ExpandAll()
+  fullName: FlowGraph.Avalonia.GroupManager.ExpandAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ExpandAll
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 271
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Expands all groups in the graph.
+  example: []
+  syntax:
+    content: public void ExpandAll()
+    content.vb: Public Sub ExpandAll()
+  overload: FlowGraph.Avalonia.GroupManager.ExpandAll*
+- uid: FlowGraph.Avalonia.GroupManager.GetAllGroups
+  commentId: M:FlowGraph.Avalonia.GroupManager.GetAllGroups
+  id: GetAllGroups
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GetAllGroups()
+  nameWithType: GroupManager.GetAllGroups()
+  fullName: FlowGraph.Avalonia.GroupManager.GetAllGroups()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetAllGroups
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 285
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all groups in the graph.
+  example: []
+  syntax:
+    content: public IEnumerable<Node> GetAllGroups()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+    content.vb: Public Function GetAllGroups() As IEnumerable(Of Node)
+  overload: FlowGraph.Avalonia.GroupManager.GetAllGroups*
+- uid: FlowGraph.Avalonia.GroupManager.GetGroupChildren(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.GetGroupChildren(System.String)
+  id: GetGroupChildren(System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GetGroupChildren(string)
+  nameWithType: GroupManager.GetGroupChildren(string)
+  fullName: FlowGraph.Avalonia.GroupManager.GetGroupChildren(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetGroupChildren
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 294
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets the children of a group.
+  example: []
+  syntax:
+    content: public IEnumerable<Node> GetGroupChildren(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+    content.vb: Public Function GetGroupChildren(groupId As String) As IEnumerable(Of Node)
+  overload: FlowGraph.Avalonia.GroupManager.GetGroupChildren*
+  nameWithType.vb: GroupManager.GetGroupChildren(String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.GetGroupChildren(String)
+  name.vb: GetGroupChildren(String)
+- uid: FlowGraph.Avalonia.GroupManager.IsNodeVisible(System.String)
+  commentId: M:FlowGraph.Avalonia.GroupManager.IsNodeVisible(System.String)
+  id: IsNodeVisible(System.String)
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: IsNodeVisible(string)
+  nameWithType: GroupManager.IsNodeVisible(string)
+  fullName: FlowGraph.Avalonia.GroupManager.IsNodeVisible(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsNodeVisible
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 303
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Checks if a node is visible (not hidden by a collapsed parent group).
+  example: []
+  syntax:
+    content: public bool IsNodeVisible(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsNodeVisible(nodeId As String) As Boolean
+  overload: FlowGraph.Avalonia.GroupManager.IsNodeVisible*
+  nameWithType.vb: GroupManager.IsNodeVisible(String)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.IsNodeVisible(String)
+  name.vb: IsNodeVisible(String)
+- uid: FlowGraph.Avalonia.GroupManager.GetVisibleNodes
+  commentId: M:FlowGraph.Avalonia.GroupManager.GetVisibleNodes
+  id: GetVisibleNodes
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GetVisibleNodes()
+  nameWithType: GroupManager.GetVisibleNodes()
+  fullName: FlowGraph.Avalonia.GroupManager.GetVisibleNodes()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetVisibleNodes
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 324
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all visible nodes (excluding those hidden by collapsed groups).
+  example: []
+  syntax:
+    content: public IEnumerable<Node> GetVisibleNodes()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+    content.vb: Public Function GetVisibleNodes() As IEnumerable(Of Node)
+  overload: FlowGraph.Avalonia.GroupManager.GetVisibleNodes*
+- uid: FlowGraph.Avalonia.GroupManager.GetVisibleEdges
+  commentId: M:FlowGraph.Avalonia.GroupManager.GetVisibleEdges
+  id: GetVisibleEdges
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GetVisibleEdges()
+  nameWithType: GroupManager.GetVisibleEdges()
+  fullName: FlowGraph.Avalonia.GroupManager.GetVisibleEdges()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetVisibleEdges
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 339
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all visible edges (excluding those with hidden endpoints).
+  example: []
+  syntax:
+    content: public IEnumerable<Edge> GetVisibleEdges()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+    content.vb: Public Function GetVisibleEdges() As IEnumerable(Of Edge)
+  overload: FlowGraph.Avalonia.GroupManager.GetVisibleEdges*
+references:
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.GroupManager.GroupPadding*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GroupPadding
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GroupPadding
+  name: GroupPadding
+  nameWithType: GroupManager.GroupPadding
+  fullName: FlowGraph.Avalonia.GroupManager.GroupPadding
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.GroupManager.HeaderHeight*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.HeaderHeight
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_HeaderHeight
+  name: HeaderHeight
+  nameWithType: GroupManager.HeaderHeight
+  fullName: FlowGraph.Avalonia.GroupManager.HeaderHeight
+- uid: System.EventHandler{FlowGraph.Avalonia.GroupCollapsedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.GroupCollapsedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<GroupCollapsedEventArgs>
+  nameWithType: EventHandler<GroupCollapsedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.GroupCollapsedEventArgs>
+  nameWithType.vb: EventHandler(Of GroupCollapsedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.GroupCollapsedEventArgs)
+  name.vb: EventHandler(Of GroupCollapsedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.GroupCollapsedEventArgs
+    name: GroupCollapsedEventArgs
+    href: FlowGraph.Avalonia.GroupCollapsedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.GroupCollapsedEventArgs
+    name: GroupCollapsedEventArgs
+    href: FlowGraph.Avalonia.GroupCollapsedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: System.EventHandler{FlowGraph.Avalonia.NodesAddedToGroupEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.NodesAddedToGroupEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<NodesAddedToGroupEventArgs>
+  nameWithType: EventHandler<NodesAddedToGroupEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.NodesAddedToGroupEventArgs>
+  nameWithType.vb: EventHandler(Of NodesAddedToGroupEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.NodesAddedToGroupEventArgs)
+  name.vb: EventHandler(Of NodesAddedToGroupEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.NodesAddedToGroupEventArgs
+    name: NodesAddedToGroupEventArgs
+    href: FlowGraph.Avalonia.NodesAddedToGroupEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.NodesAddedToGroupEventArgs
+    name: NodesAddedToGroupEventArgs
+    href: FlowGraph.Avalonia.NodesAddedToGroupEventArgs.html
+  - name: )
+- uid: System.EventHandler{System.String}
+  commentId: T:System.EventHandler{System.String}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<string>
+  nameWithType: EventHandler<string>
+  fullName: System.EventHandler<string>
+  nameWithType.vb: EventHandler(Of String)
+  fullName.vb: System.EventHandler(Of String)
+  name.vb: EventHandler(Of String)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Avalonia.GroupManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.#ctor
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager__ctor_System_Func_FlowGraph_Core_Graph__FlowGraph_Core_Commands_CommandHistory_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GroupManager
+  nameWithType: GroupManager.GroupManager
+  fullName: FlowGraph.Avalonia.GroupManager.GroupManager
+  nameWithType.vb: GroupManager.New
+  fullName.vb: FlowGraph.Avalonia.GroupManager.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Core.Graph}
+  commentId: T:System.Func{FlowGraph.Core.Graph}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Graph>
+  nameWithType: Func<Graph>
+  fullName: System.Func<FlowGraph.Core.Graph>
+  nameWithType.vb: Func(Of Graph)
+  fullName.vb: System.Func(Of FlowGraph.Core.Graph)
+  name.vb: Func(Of Graph)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Commands.CommandHistory
+  commentId: T:FlowGraph.Core.Commands.CommandHistory
+  parent: FlowGraph.Core.Commands
+  href: FlowGraph.Core.Commands.CommandHistory.html
+  name: CommandHistory
+  nameWithType: CommandHistory
+  fullName: FlowGraph.Core.Commands.CommandHistory
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Core.Commands
+  commentId: N:FlowGraph.Core.Commands
+  href: FlowGraph.html
+  name: FlowGraph.Core.Commands
+  nameWithType: FlowGraph.Core.Commands
+  fullName: FlowGraph.Core.Commands
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+- uid: FlowGraph.Avalonia.GroupManager.CreateGroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.CreateGroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_CreateGroup_System_Collections_Generic_IEnumerable_System_String__System_String_
+  name: CreateGroup
+  nameWithType: GroupManager.CreateGroup
+  fullName: FlowGraph.Avalonia.GroupManager.CreateGroup
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.GroupManager.Ungroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.Ungroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_Ungroup_System_String_
+  name: Ungroup
+  nameWithType: GroupManager.Ungroup
+  fullName: FlowGraph.Avalonia.GroupManager.Ungroup
+- uid: FlowGraph.Avalonia.GroupManager.ToggleCollapse*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.ToggleCollapse
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_ToggleCollapse_System_String_
+  name: ToggleCollapse
+  nameWithType: GroupManager.ToggleCollapse
+  fullName: FlowGraph.Avalonia.GroupManager.ToggleCollapse
+- uid: FlowGraph.Avalonia.GroupManager.SetCollapsed*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.SetCollapsed
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_SetCollapsed_System_String_System_Boolean_
+  name: SetCollapsed
+  nameWithType: GroupManager.SetCollapsed
+  fullName: FlowGraph.Avalonia.GroupManager.SetCollapsed
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.GroupManager.AddNodesToGroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.AddNodesToGroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_AddNodesToGroup_System_String_System_Collections_Generic_IEnumerable_System_String__
+  name: AddNodesToGroup
+  nameWithType: GroupManager.AddNodesToGroup
+  fullName: FlowGraph.Avalonia.GroupManager.AddNodesToGroup
+- uid: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_RemoveNodesFromGroup_System_Collections_Generic_IEnumerable_System_String__
+  name: RemoveNodesFromGroup
+  nameWithType: GroupManager.RemoveNodesFromGroup
+  fullName: FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup
+- uid: FlowGraph.Avalonia.GroupManager.AutoResizeGroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.AutoResizeGroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_AutoResizeGroup_System_String_
+  name: AutoResizeGroup
+  nameWithType: GroupManager.AutoResizeGroup
+  fullName: FlowGraph.Avalonia.GroupManager.AutoResizeGroup
+- uid: FlowGraph.Avalonia.GroupManager.GetGroupAtPoint*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GetGroupAtPoint
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GetGroupAtPoint_FlowGraph_Core_Point_
+  name: GetGroupAtPoint
+  nameWithType: GroupManager.GetGroupAtPoint
+  fullName: FlowGraph.Avalonia.GroupManager.GetGroupAtPoint
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_HandleNodeDroppedOnGroup_System_Collections_Generic_IEnumerable_System_String__FlowGraph_Core_Point_
+  name: HandleNodeDroppedOnGroup
+  nameWithType: GroupManager.HandleNodeDroppedOnGroup
+  fullName: FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup
+- uid: FlowGraph.Avalonia.GroupManager.CollapseAll*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.CollapseAll
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_CollapseAll
+  name: CollapseAll
+  nameWithType: GroupManager.CollapseAll
+  fullName: FlowGraph.Avalonia.GroupManager.CollapseAll
+- uid: FlowGraph.Avalonia.GroupManager.ExpandAll*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.ExpandAll
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_ExpandAll
+  name: ExpandAll
+  nameWithType: GroupManager.ExpandAll
+  fullName: FlowGraph.Avalonia.GroupManager.ExpandAll
+- uid: FlowGraph.Avalonia.GroupManager.GetAllGroups*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GetAllGroups
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GetAllGroups
+  name: GetAllGroups
+  nameWithType: GroupManager.GetAllGroups
+  fullName: FlowGraph.Avalonia.GroupManager.GetAllGroups
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Node>
+  nameWithType: IEnumerable<Node>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>
+  nameWithType.vb: IEnumerable(Of Node)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node)
+  name.vb: IEnumerable(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.GroupManager.GetGroupChildren*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GetGroupChildren
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GetGroupChildren_System_String_
+  name: GetGroupChildren
+  nameWithType: GroupManager.GetGroupChildren
+  fullName: FlowGraph.Avalonia.GroupManager.GetGroupChildren
+- uid: FlowGraph.Avalonia.GroupManager.IsNodeVisible*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.IsNodeVisible
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_IsNodeVisible_System_String_
+  name: IsNodeVisible
+  nameWithType: GroupManager.IsNodeVisible
+  fullName: FlowGraph.Avalonia.GroupManager.IsNodeVisible
+- uid: FlowGraph.Avalonia.GroupManager.GetVisibleNodes*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GetVisibleNodes
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GetVisibleNodes
+  name: GetVisibleNodes
+  nameWithType: GroupManager.GetVisibleNodes
+  fullName: FlowGraph.Avalonia.GroupManager.GetVisibleNodes
+- uid: FlowGraph.Avalonia.GroupManager.GetVisibleEdges*
+  commentId: Overload:FlowGraph.Avalonia.GroupManager.GetVisibleEdges
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_GetVisibleEdges
+  name: GetVisibleEdges
+  nameWithType: GroupManager.GetVisibleEdges
+  fullName: FlowGraph.Avalonia.GroupManager.GetVisibleEdges
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Edge>
+  nameWithType: IEnumerable<Edge>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>
+  nameWithType.vb: IEnumerable(Of Edge)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge)
+  name.vb: IEnumerable(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )

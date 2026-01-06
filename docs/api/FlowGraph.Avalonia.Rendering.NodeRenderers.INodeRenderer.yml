@@ -1,0 +1,553 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  id: INodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  langs:
+  - csharp
+  - vb
+  name: INodeRenderer
+  nameWithType: INodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: INodeRenderer
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Interface for custom node renderers.
+
+    Implement this interface to create custom visual representations for node types.
+  example: []
+  syntax:
+    content: public interface INodeRenderer
+    content.vb: Public Interface INodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: CreateNodeVisual(Node, NodeRenderContext)
+  nameWithType: INodeRenderer.CreateNodeVisual(Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreateNodeVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 17
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Creates the visual representation for a node.
+  example: []
+  syntax:
+    content: Control CreateNodeVisual(Node node, NodeRenderContext context)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data to render.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context with theme, scale, and settings.
+    return:
+      type: Avalonia.Controls.Control
+      description: A Control representing the node visual.
+    content.vb: Function CreateNodeVisual(node As Node, context As NodeRenderContext) As Control
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSelection(Control, Node, NodeRenderContext)
+  nameWithType: INodeRenderer.UpdateSelection(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSelection
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 25
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Updates the visual state when selection changes.
+  example: []
+  syntax:
+    content: void UpdateSelection(Control visual, Node node, NodeRenderContext context)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The node's visual control.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context.
+    content.vb: Sub UpdateSelection(visual As Control, node As Node, context As NodeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  id: UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSize(Control, Node, NodeRenderContext, double, double)
+  nameWithType: INodeRenderer.UpdateSize(Control, Node, NodeRenderContext, double, double)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSize
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Updates the size of an existing node visual.
+  example: []
+  syntax:
+    content: void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The node's visual control.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context.
+    - id: width
+      type: System.Double
+      description: The new width in canvas units.
+    - id: height
+      type: System.Double
+      description: The new height in canvas units.
+    content.vb: Sub UpdateSize(visual As Control, node As Node, context As NodeRenderContext, width As Double, height As Double)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize*
+  nameWithType.vb: INodeRenderer.UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext, Double, Double)
+  name.vb: UpdateSize(Control, Node, NodeRenderContext, Double, Double)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetWidth(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetWidth
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Gets the default width of the node in canvas units (before scaling).
+
+    Return null to use the default width from settings.
+  example: []
+  syntax:
+    content: double? GetWidth(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Function GetWidth(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetHeight(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetHeight
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Gets the default height of the node in canvas units (before scaling).
+
+    Return null to use the default height from settings.
+  example: []
+  syntax:
+    content: double? GetHeight(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Function GetHeight(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetMinWidth(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetMinWidth(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetMinWidth
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the minimum width for resizing. Return null for no minimum.
+  example: []
+  syntax:
+    content: double? GetMinWidth(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Function GetMinWidth(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetMinHeight(Node, FlowCanvasSettings)
+  nameWithType: INodeRenderer.GetMinHeight(Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetMinHeight
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the minimum height for resizing. Return null for no minimum.
+  example: []
+  syntax:
+    content: double? GetMinHeight(Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Function GetMinHeight(node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight*
+references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.NodeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: CreateNodeVisual
+  nameWithType: INodeRenderer.CreateNodeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.CreateNodeVisual
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  name: NodeRenderContext
+  nameWithType: NodeRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: UpdateSelection
+  nameWithType: INodeRenderer.UpdateSelection
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_
+  name: UpdateSize
+  nameWithType: INodeRenderer.UpdateSize
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetWidth
+  nameWithType: INodeRenderer.GetWidth
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetHeight
+  nameWithType: INodeRenderer.GetHeight
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinWidth
+  nameWithType: INodeRenderer.GetMinWidth
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetMinHeight
+  nameWithType: INodeRenderer.GetMinHeight
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight

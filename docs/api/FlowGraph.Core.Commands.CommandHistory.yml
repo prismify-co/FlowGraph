@@ -1,0 +1,808 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Commands.CommandHistory
+  commentId: T:FlowGraph.Core.Commands.CommandHistory
+  id: CommandHistory
+  parent: FlowGraph.Core.Commands
+  children:
+  - FlowGraph.Core.Commands.CommandHistory.#ctor(System.Int32)
+  - FlowGraph.Core.Commands.CommandHistory.CanRedo
+  - FlowGraph.Core.Commands.CommandHistory.CanUndo
+  - FlowGraph.Core.Commands.CommandHistory.Clear
+  - FlowGraph.Core.Commands.CommandHistory.Execute(FlowGraph.Core.Commands.IGraphCommand)
+  - FlowGraph.Core.Commands.CommandHistory.HistoryChanged
+  - FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+  - FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+  - FlowGraph.Core.Commands.CommandHistory.Redo
+  - FlowGraph.Core.Commands.CommandHistory.RedoCount
+  - FlowGraph.Core.Commands.CommandHistory.Undo
+  - FlowGraph.Core.Commands.CommandHistory.UndoCount
+  langs:
+  - csharp
+  - vb
+  name: CommandHistory
+  nameWithType: CommandHistory
+  fullName: FlowGraph.Core.Commands.CommandHistory
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CommandHistory
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 5
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Manages command history for undo/redo functionality.
+  example: []
+  syntax:
+    content: public class CommandHistory
+    content.vb: Public Class CommandHistory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Commands.CommandHistory.#ctor(System.Int32)
+  commentId: M:FlowGraph.Core.Commands.CommandHistory.#ctor(System.Int32)
+  id: '#ctor(System.Int32)'
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: CommandHistory(int)
+  nameWithType: CommandHistory.CommandHistory(int)
+  fullName: FlowGraph.Core.Commands.CommandHistory.CommandHistory(int)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 16
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Creates a new command history with the specified maximum size.
+  example: []
+  syntax:
+    content: public CommandHistory(int maxHistorySize = 100)
+    parameters:
+    - id: maxHistorySize
+      type: System.Int32
+      description: Maximum number of commands to keep in history. 0 = unlimited.
+    content.vb: Public Sub New(maxHistorySize As Integer = 100)
+  overload: FlowGraph.Core.Commands.CommandHistory.#ctor*
+  nameWithType.vb: CommandHistory.New(Integer)
+  fullName.vb: FlowGraph.Core.Commands.CommandHistory.New(Integer)
+  name.vb: New(Integer)
+- uid: FlowGraph.Core.Commands.CommandHistory.HistoryChanged
+  commentId: E:FlowGraph.Core.Commands.CommandHistory.HistoryChanged
+  id: HistoryChanged
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: HistoryChanged
+  nameWithType: CommandHistory.HistoryChanged
+  fullName: FlowGraph.Core.Commands.CommandHistory.HistoryChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HistoryChanged
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 24
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Event raised when the undo/redo state changes.
+  example: []
+  syntax:
+    content: public event EventHandler? HistoryChanged
+    return:
+      type: System.EventHandler
+    content.vb: Public Event HistoryChanged As EventHandler
+- uid: FlowGraph.Core.Commands.CommandHistory.CanUndo
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.CanUndo
+  id: CanUndo
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: CanUndo
+  nameWithType: CommandHistory.CanUndo
+  fullName: FlowGraph.Core.Commands.CommandHistory.CanUndo
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanUndo
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 29
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets whether there are commands that can be undone.
+  example: []
+  syntax:
+    content: public bool CanUndo { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property CanUndo As Boolean
+  overload: FlowGraph.Core.Commands.CommandHistory.CanUndo*
+- uid: FlowGraph.Core.Commands.CommandHistory.CanRedo
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.CanRedo
+  id: CanRedo
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: CanRedo
+  nameWithType: CommandHistory.CanRedo
+  fullName: FlowGraph.Core.Commands.CommandHistory.CanRedo
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanRedo
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets whether there are commands that can be redone.
+  example: []
+  syntax:
+    content: public bool CanRedo { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property CanRedo As Boolean
+  overload: FlowGraph.Core.Commands.CommandHistory.CanRedo*
+- uid: FlowGraph.Core.Commands.CommandHistory.UndoCount
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.UndoCount
+  id: UndoCount
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: UndoCount
+  nameWithType: CommandHistory.UndoCount
+  fullName: FlowGraph.Core.Commands.CommandHistory.UndoCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UndoCount
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets the number of commands in the undo stack.
+  example: []
+  syntax:
+    content: public int UndoCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property UndoCount As Integer
+  overload: FlowGraph.Core.Commands.CommandHistory.UndoCount*
+- uid: FlowGraph.Core.Commands.CommandHistory.RedoCount
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.RedoCount
+  id: RedoCount
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: RedoCount
+  nameWithType: CommandHistory.RedoCount
+  fullName: FlowGraph.Core.Commands.CommandHistory.RedoCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RedoCount
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets the number of commands in the redo stack.
+  example: []
+  syntax:
+    content: public int RedoCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property RedoCount As Integer
+  overload: FlowGraph.Core.Commands.CommandHistory.RedoCount*
+- uid: FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+  id: NextUndoDescription
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: NextUndoDescription
+  nameWithType: CommandHistory.NextUndoDescription
+  fullName: FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NextUndoDescription
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 49
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets the description of the next command to undo, or null if none.
+  example: []
+  syntax:
+    content: public string? NextUndoDescription { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property NextUndoDescription As String
+  overload: FlowGraph.Core.Commands.CommandHistory.NextUndoDescription*
+- uid: FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+  commentId: P:FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+  id: NextRedoDescription
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: NextRedoDescription
+  nameWithType: CommandHistory.NextRedoDescription
+  fullName: FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NextRedoDescription
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Gets the description of the next command to redo, or null if none.
+  example: []
+  syntax:
+    content: public string? NextRedoDescription { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property NextRedoDescription As String
+  overload: FlowGraph.Core.Commands.CommandHistory.NextRedoDescription*
+- uid: FlowGraph.Core.Commands.CommandHistory.Execute(FlowGraph.Core.Commands.IGraphCommand)
+  commentId: M:FlowGraph.Core.Commands.CommandHistory.Execute(FlowGraph.Core.Commands.IGraphCommand)
+  id: Execute(FlowGraph.Core.Commands.IGraphCommand)
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: Execute(IGraphCommand)
+  nameWithType: CommandHistory.Execute(IGraphCommand)
+  fullName: FlowGraph.Core.Commands.CommandHistory.Execute(FlowGraph.Core.Commands.IGraphCommand)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Execute
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Executes a command and adds it to the history.
+  example: []
+  syntax:
+    content: public void Execute(IGraphCommand command)
+    parameters:
+    - id: command
+      type: FlowGraph.Core.Commands.IGraphCommand
+    content.vb: Public Sub Execute(command As IGraphCommand)
+  overload: FlowGraph.Core.Commands.CommandHistory.Execute*
+- uid: FlowGraph.Core.Commands.CommandHistory.Undo
+  commentId: M:FlowGraph.Core.Commands.CommandHistory.Undo
+  id: Undo
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: Undo()
+  nameWithType: CommandHistory.Undo()
+  fullName: FlowGraph.Core.Commands.CommandHistory.Undo()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Undo
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 92
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Undoes the last command.
+  example: []
+  syntax:
+    content: public bool Undo()
+    return:
+      type: System.Boolean
+      description: True if a command was undone, false if there was nothing to undo.
+    content.vb: Public Function Undo() As Boolean
+  overload: FlowGraph.Core.Commands.CommandHistory.Undo*
+- uid: FlowGraph.Core.Commands.CommandHistory.Redo
+  commentId: M:FlowGraph.Core.Commands.CommandHistory.Redo
+  id: Redo
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: Redo()
+  nameWithType: CommandHistory.Redo()
+  fullName: FlowGraph.Core.Commands.CommandHistory.Redo()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Redo
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Redoes the last undone command.
+  example: []
+  syntax:
+    content: public bool Redo()
+    return:
+      type: System.Boolean
+      description: True if a command was redone, false if there was nothing to redo.
+    content.vb: Public Function Redo() As Boolean
+  overload: FlowGraph.Core.Commands.CommandHistory.Redo*
+- uid: FlowGraph.Core.Commands.CommandHistory.Clear
+  commentId: M:FlowGraph.Core.Commands.CommandHistory.Clear
+  id: Clear
+  parent: FlowGraph.Core.Commands.CommandHistory
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: CommandHistory.Clear()
+  fullName: FlowGraph.Core.Commands.CommandHistory.Clear()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Commands/CommandHistory.cs
+      branch: master
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clear
+    path: ../FlowGraph.Core/Commands/CommandHistory.cs
+    startLine: 141
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Commands
+  summary: Clears all command history.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: FlowGraph.Core.Commands.CommandHistory.Clear*
+references:
+- uid: FlowGraph.Core.Commands
+  commentId: N:FlowGraph.Core.Commands
+  href: FlowGraph.html
+  name: FlowGraph.Core.Commands
+  nameWithType: FlowGraph.Core.Commands
+  fullName: FlowGraph.Core.Commands
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Commands.CommandHistory.#ctor*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.#ctor
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory__ctor_System_Int32_
+  name: CommandHistory
+  nameWithType: CommandHistory.CommandHistory
+  fullName: FlowGraph.Core.Commands.CommandHistory.CommandHistory
+  nameWithType.vb: CommandHistory.New
+  fullName.vb: FlowGraph.Core.Commands.CommandHistory.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: FlowGraph.Core.Commands.CommandHistory.CanUndo*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.CanUndo
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_CanUndo
+  name: CanUndo
+  nameWithType: CommandHistory.CanUndo
+  fullName: FlowGraph.Core.Commands.CommandHistory.CanUndo
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Commands.CommandHistory.CanRedo*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.CanRedo
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_CanRedo
+  name: CanRedo
+  nameWithType: CommandHistory.CanRedo
+  fullName: FlowGraph.Core.Commands.CommandHistory.CanRedo
+- uid: FlowGraph.Core.Commands.CommandHistory.UndoCount*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.UndoCount
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_UndoCount
+  name: UndoCount
+  nameWithType: CommandHistory.UndoCount
+  fullName: FlowGraph.Core.Commands.CommandHistory.UndoCount
+- uid: FlowGraph.Core.Commands.CommandHistory.RedoCount*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.RedoCount
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_RedoCount
+  name: RedoCount
+  nameWithType: CommandHistory.RedoCount
+  fullName: FlowGraph.Core.Commands.CommandHistory.RedoCount
+- uid: FlowGraph.Core.Commands.CommandHistory.NextUndoDescription*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_NextUndoDescription
+  name: NextUndoDescription
+  nameWithType: CommandHistory.NextUndoDescription
+  fullName: FlowGraph.Core.Commands.CommandHistory.NextUndoDescription
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Commands.CommandHistory.NextRedoDescription*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_NextRedoDescription
+  name: NextRedoDescription
+  nameWithType: CommandHistory.NextRedoDescription
+  fullName: FlowGraph.Core.Commands.CommandHistory.NextRedoDescription
+- uid: FlowGraph.Core.Commands.CommandHistory.Execute*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.Execute
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_Execute_FlowGraph_Core_Commands_IGraphCommand_
+  name: Execute
+  nameWithType: CommandHistory.Execute
+  fullName: FlowGraph.Core.Commands.CommandHistory.Execute
+- uid: FlowGraph.Core.Commands.IGraphCommand
+  commentId: T:FlowGraph.Core.Commands.IGraphCommand
+  parent: FlowGraph.Core.Commands
+  href: FlowGraph.Core.Commands.IGraphCommand.html
+  name: IGraphCommand
+  nameWithType: IGraphCommand
+  fullName: FlowGraph.Core.Commands.IGraphCommand
+- uid: FlowGraph.Core.Commands.CommandHistory.Undo*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.Undo
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_Undo
+  name: Undo
+  nameWithType: CommandHistory.Undo
+  fullName: FlowGraph.Core.Commands.CommandHistory.Undo
+- uid: FlowGraph.Core.Commands.CommandHistory.Redo*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.Redo
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_Redo
+  name: Redo
+  nameWithType: CommandHistory.Redo
+  fullName: FlowGraph.Core.Commands.CommandHistory.Redo
+- uid: FlowGraph.Core.Commands.CommandHistory.Clear*
+  commentId: Overload:FlowGraph.Core.Commands.CommandHistory.Clear
+  href: FlowGraph.Core.Commands.CommandHistory.html#FlowGraph_Core_Commands_CommandHistory_Clear
+  name: Clear
+  nameWithType: CommandHistory.Clear
+  fullName: FlowGraph.Core.Commands.CommandHistory.Clear
