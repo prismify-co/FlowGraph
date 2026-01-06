@@ -1,41 +1,39 @@
 # FlowGraph
 
-A powerful, extensible node-based graph editor for .NET/Avalonia, inspired by [React Flow](https://reactflow.dev/).
+A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https://reactflow.dev/).
 
 [![NuGet](https://img.shields.io/nuget/v/FlowGraph.Avalonia.svg)](https://www.nuget.org/packages/FlowGraph.Avalonia/)
 [![.NET 9](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/)
 [![Avalonia](https://img.shields.io/badge/Avalonia-11.2-blue)](https://avaloniaui.net/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-<!-- ![FlowGraph Demo](docs/images/demo-screenshot.png) -->
-
-## ✨ Features
+## Features
 
 ### Core
-- 🖱️ **Pan & Zoom** - Mouse wheel zoom, middle-click pan, configurable drag behavior
-- 📦 **Node System** - Draggable, resizable, selectable nodes with custom renderers
-- 🔗 **Edge Types** - Bezier, Straight, Step, SmoothStep curves with arrow markers
-- 🎯 **Connection Validation** - Custom rules for valid connections
-- ↩️ **Undo/Redo** - Full command history with keyboard shortcuts
-- 📋 **Clipboard** - Copy, cut, paste, duplicate operations
-- 💾 **Serialization** - JSON save/load support
+- **Pan & Zoom** - Mouse wheel zoom, middle-click pan, configurable drag behavior
+- **Node System** - Draggable, resizable, selectable nodes with custom renderers
+- **Edge Types** - Bezier, Straight, Step, SmoothStep curves with arrow markers
+- **Connection Validation** - Custom rules for valid connections
+- **Undo/Redo** - Full command history with keyboard shortcuts
+- **Clipboard** - Copy, cut, paste, duplicate operations
+- **Serialization** - JSON save/load support
 
 ### Components
-- 🗺️ **FlowMinimap** - Overview with viewport navigation
-- 🎛️ **FlowControls** - Zoom in/out/fit buttons panel
-- 🎨 **FlowBackground** - Dots, lines, or cross patterns
-- 🔧 **NodeToolbar** - Floating toolbar on node selection
-- 📊 **FlowDiagnostics** - Debug panel for development
-- 📍 **FlowPanel** - Positioned overlay panels (9 positions)
+- **FlowMinimap** - Overview with viewport navigation
+- **FlowControls** - Zoom in/out/fit buttons panel
+- **FlowBackground** - Dots, lines, or cross patterns
+- **NodeToolbar** - Floating toolbar on node selection
+- **FlowDiagnostics** - Debug panel for development
+- **FlowPanel** - Positioned overlay panels (9 positions)
 
 ### Advanced
-- 📁 **Grouping** - Collapsible node groups with nesting
-- 🛤️ **Edge Routing** - Orthogonal, bezier, and smart routing algorithms
-- ✨ **Animations** - Smooth viewport, node, edge, and group animations
-- 🎮 **State Machine** - Clean input handling architecture
-- 🔄 **Edge Reconnection** - Drag edge endpoints to reconnect
+- **Grouping** - Collapsible node groups with nesting
+- **Edge Routing** - Orthogonal, bezier, and smart routing algorithms
+- **Animations** - Smooth viewport, node, edge, and group animations
+- **State Machine** - Clean input handling architecture
+- **Edge Reconnection** - Drag edge endpoints to reconnect
 
-## 📦 Installation
+## Installation
 
 ```bash
 dotnet add package FlowGraph.Avalonia
@@ -46,7 +44,7 @@ Or via NuGet Package Manager:
 Install-Package FlowGraph.Avalonia
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Add namespaces to your AXAML
 
@@ -98,7 +96,6 @@ public class MainViewModel
     {
         MyGraph = new Graph();
 
-        // Create nodes
         var inputNode = new Node
         {
             Type = "input",
@@ -121,12 +118,10 @@ public class MainViewModel
             Inputs = [new Port { Id = "in", Type = "data" }]
         };
 
-        // Add nodes
         MyGraph.AddNode(inputNode);
         MyGraph.AddNode(processNode);
         MyGraph.AddNode(outputNode);
 
-        // Create edges with arrows
         MyGraph.AddEdge(new Edge
         {
             Source = inputNode.Id,
@@ -158,16 +153,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        
-        // Connect background to canvas
         Background.TargetCanvas = Canvas;
     }
 }
 ```
 
-## ⚙️ Configuration
-
-### FlowCanvasSettings
+## Configuration
 
 ```csharp
 var settings = new FlowCanvasSettings
@@ -187,7 +178,7 @@ var settings = new FlowCanvasSettings
     NodeHeight = 80,
     
     // Connections
-    StrictConnectionDirection = true,  // Only allow connections from output ports
+    StrictConnectionDirection = true,
     ConnectionSnapDistance = 30,
     
     // Selection
@@ -197,8 +188,6 @@ var settings = new FlowCanvasSettings
     PanOnDrag = true,
     PanOnScroll = false,
     PanOnScrollSpeed = 1.0,
-    
-    // Viewport bounds (optional)
     ViewportBounds = new Rect(-1000, -1000, 3000, 3000),
     ViewportBoundsPadding = 100
 };
@@ -206,7 +195,7 @@ var settings = new FlowCanvasSettings
 canvas.Settings = settings;
 ```
 
-## 🎨 Custom Node Renderers
+## Custom Node Renderers
 
 Create custom node appearances by implementing `INodeRenderer`:
 
@@ -240,7 +229,7 @@ public class CustomNodeRenderer : DefaultNodeRenderer
 canvas.NodeRenderers.Register("custom", new CustomNodeRenderer());
 ```
 
-## ✅ Connection Validation
+## Connection Validation
 
 Implement `IConnectionValidator` for custom connection rules:
 
@@ -249,11 +238,9 @@ public class TypeMatchValidator : IConnectionValidator
 {
     public ValidationResult Validate(ConnectionContext context)
     {
-        // Prevent self-connections
         if (context.SourceNode.Id == context.TargetNode.Id)
             return ValidationResult.Invalid("Cannot connect to self");
             
-        // Require matching port types
         if (context.SourcePort.Type != context.TargetPort.Type)
             return ValidationResult.Invalid("Port types must match");
             
@@ -264,26 +251,22 @@ public class TypeMatchValidator : IConnectionValidator
 canvas.ConnectionValidator = new TypeMatchValidator();
 ```
 
-## 📡 Events
+## Events
 
 ```csharp
-// Selection changed
 canvas.SelectionChanged += (s, e) => 
 {
     Console.WriteLine($"Selected: {e.SelectedNodes.Count} nodes, {e.SelectedEdges.Count} edges");
 };
 
-// Viewport changed
 canvas.ViewportChanged += (s, e) => 
 {
     Console.WriteLine($"Zoom: {e.Zoom:P0}, Offset: ({e.OffsetX:F0}, {e.OffsetY:F0})");
 };
 
-// Node drag lifecycle
 canvas.NodeDragStart += (s, e) => Console.WriteLine($"Started dragging {e.Nodes.Count} nodes");
 canvas.NodeDragStop += (s, e) => Console.WriteLine($"Stopped dragging");
 
-// Connection lifecycle
 canvas.ConnectStart += (s, e) => Console.WriteLine($"Connection started from {e.SourceNode.Type}");
 canvas.ConnectEnd += (s, e) => 
 {
@@ -294,7 +277,7 @@ canvas.ConnectEnd += (s, e) =>
 };
 ```
 
-## ⌨️ Keyboard Shortcuts
+## Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
@@ -310,21 +293,21 @@ canvas.ConnectEnd += (s, e) =>
 | `Ctrl+Shift+G` | Ungroup |
 | `Escape` | Deselect all / Cancel operation |
 
-## ✨ Animations
+## Animations
 
 ```csharp
-// Viewport animations
+// Viewport
 canvas.FitToViewAnimated(duration: 0.5);
 canvas.CenterOnNodeAnimated(node, duration: 0.3);
 canvas.ZoomToAnimated(targetZoom: 1.5, duration: 0.2);
 
-// Node animations
+// Nodes
 canvas.AnimateNodesTo(positions, duration: 0.3);
 canvas.AnimateNodesAppear(nodes, duration: 0.3, stagger: 0.05);
 canvas.AnimateNodesDisappear(nodes, duration: 0.2);
 canvas.AnimateSelectionPulse(node);
 
-// Edge animations
+// Edges
 canvas.AnimateEdgePulse(edge, pulseCount: 3);
 canvas.AnimateEdgeFadeIn(edge, duration: 0.3);
 canvas.AnimateEdgeFadeOut(edge, duration: 0.3);
@@ -334,147 +317,90 @@ canvas.AnimateEdgeColor(edge, Colors.Red, duration: 0.5);
 var animation = canvas.StartEdgeFlowAnimation(edge, speed: 50);
 canvas.StopEdgeFlowAnimation(animation);
 
-// Group animations
+// Groups
 canvas.AnimateGroupCollapse(groupId, duration: 0.5);
 canvas.AnimateGroupExpand(groupId, duration: 0.5);
 ```
 
-## 💾 Serialization
+## Serialization
 
 ```csharp
 using FlowGraph.Core.Serialization;
 
-// Save to JSON string
+// Save/Load JSON
 var json = GraphSerializer.Serialize(graph);
-
-// Load from JSON string
 var graph = GraphSerializer.Deserialize(json);
 
-// Save to file
+// File operations
 graph.SaveToFile("graph.json");
-
-// Load from file
 var graph = GraphExtensions.LoadFromFile("graph.json");
 
-// Clone a graph
+// Clone
 var copy = graph.Clone();
 ```
 
-## 📁 Node Grouping
+## Node Grouping
 
 ```csharp
-// Create a group from selected nodes
-canvas.GroupSelected();  // or provide a label
+// Create groups
+canvas.GroupSelected();
 canvas.GroupSelected("My Group");
 
 // Collapse/expand
 canvas.ToggleGroupCollapse(groupId);
-
-// Animated collapse/expand
 canvas.AnimateGroupCollapse(groupId, duration: 0.5);
 canvas.AnimateGroupExpand(groupId, duration: 0.5);
 
-// Add/remove nodes
+// Manage nodes
 canvas.GroupManager.AddNodeToGroup(groupId, nodeId);
 canvas.GroupManager.RemoveNodeFromGroup(nodeId);
-
-// Ungroup
 canvas.UngroupSelected();
 ```
 
-### Group Ports
-
-Groups can have input/output ports just like regular nodes, enabling connections between groups and external nodes:
+## Edge Routing
 
 ```csharp
-var group = new Node
-{
-    Type = "group",
-    IsGroup = true,
-    Label = "Processing Pipeline",
-    Position = new Point(100, 100),
-    Width = 400,
-    Height = 300,
-    // Groups can have external ports!
-    Inputs = [new Port { Id = "in", Type = "data", Label = "Pipeline Input" }],
-    Outputs = [new Port { Id = "out", Type = "data", Label = "Pipeline Output" }]
-};
-
-// Connect external nodes to the group
-graph.AddEdge(new Edge
-{
-    Source = externalNode.Id,
-    Target = group.Id,
-    SourcePort = "out",
-    TargetPort = "in",  // Group's input port
-    Type = EdgeType.Bezier,
-    MarkerEnd = EdgeMarker.Arrow
-});
-```
-
-This architecture enables powerful composition patterns and is designed for future extensibility (e.g., subflows in PRO edition where group ports can map to internal interface nodes).
-
-## 🛤️ Edge Routing
-
-```csharp
-// Enable automatic routing
 canvas.Settings.EnableEdgeRouting = true;
 canvas.Settings.DefaultEdgeRouter = EdgeRouterType.Orthogonal;
 
-// Available routers
-// - Direct: Straight lines
-// - Orthogonal: Right-angle paths with A* pathfinding
-// - SmartBezier: Bezier curves that avoid obstacles
+// Available routers: Direct, Orthogonal, SmartBezier
 
-// Manual routing
 canvas.Routing.RouteAllEdges();
 canvas.Routing.RouteEdge(edgeId);
 ```
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 FlowGraph/
-├── FlowGraph.Core           # Data models, commands, serialization (no UI)
+├── FlowGraph.Core           # Data models, commands, serialization
 ├── FlowGraph.Avalonia       # Avalonia UI controls and rendering
 ├── FlowGraph.Demo           # Sample application
-└── FlowGraph.Core.Tests     # Unit tests (279 tests)
+└── FlowGraph.Core.Tests     # Unit tests
 ```
 
-## 📋 Requirements
+## Requirements
 
-- .NET 9.0+
-- Avalonia 11.2+
+- .NET 9.0 or later
+- Avalonia 11.2 or later
 
-## 🗺️ Roadmap
+## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for the full feature roadmap.
+See [ROADMAP.md](ROADMAP.md) for planned features.
 
-**v0.1.0 (Current)**
-- ✅ React Flow community feature parity
-- ✅ Animations, grouping, edge routing
-- ⬜ Documentation improvements
-- ⬜ Architecture refinements
+## Contributing
 
-**v1.0.0 (Planned - PRO)**
-- Auto Layout Package (Dagre, Tree, Force)
-- Export Package (PNG, SVG)
-- Subflows (nested graphs)
-- Performance Package (5,000+ nodes)
+Contributions are welcome. Priority areas:
+- Documentation
+- Unit tests
+- Bug fixes
+- Performance improvements
 
-## 🤝 Contributing
-
-Contributions are welcome! Priority areas:
-1. Documentation improvements
-2. Unit tests
-3. Bug fixes
-4. Performance optimizations
-
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by [React Flow](https://reactflow.dev/)
 - Built with [Avalonia UI](https://avaloniaui.net/)
