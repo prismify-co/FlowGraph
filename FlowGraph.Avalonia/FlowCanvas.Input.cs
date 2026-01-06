@@ -103,6 +103,23 @@ public partial class FlowCanvas
     private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
     {
         _inputContext.Graph = Graph;
+        
+        // Track port hover state in direct rendering mode
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            var screenPos = e.GetPosition(_rootPanel);
+            var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
+            
+            if (portHit.HasValue)
+            {
+                _directRenderer.SetHoveredPort(portHit.Value.node.Id, portHit.Value.port.Id);
+            }
+            else
+            {
+                _directRenderer.ClearHoveredPort();
+            }
+        }
+        
         _inputStateMachine.HandlePointerMoved(e);
     }
 
@@ -214,7 +231,17 @@ public partial class FlowCanvas
     {
         if (_directRenderer == null) return null;
 
-        // Check ports first (they're smaller targets on top of nodes)
+        // Check resize handles first (they're on top of everything)
+        var resizeHit = _directRenderer.HitTestResizeHandle(screenX, screenY);
+        if (resizeHit.HasValue)
+        {
+            Debug.WriteLine($"[HitTest] Resize handle hit: {resizeHit.Value.position} on node {resizeHit.Value.node.Id}");
+            // Create a dummy rectangle with the resize handle info as tag
+            var dummyHandle = new Rectangle { Tag = (resizeHit.Value.node, resizeHit.Value.position) };
+            return dummyHandle;
+        }
+
+        // Check ports (they're smaller targets on top of nodes)
         var portHit = _directRenderer.HitTestPort(screenX, screenY);
         if (portHit.HasValue)
         {

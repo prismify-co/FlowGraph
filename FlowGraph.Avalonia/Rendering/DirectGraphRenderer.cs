@@ -29,6 +29,8 @@ public class DirectGraphRenderer : Control
     private IBrush? _nodeOutputBackground;
     private IBrush? _portBrush;
     private Pen? _portPen;
+    private IBrush? _resizeHandleFill;
+    private Pen? _resizeHandlePen;
 
     // Typeface for labels
     private Typeface _typeface = new Typeface("Segoe UI");
@@ -44,6 +46,12 @@ public class DirectGraphRenderer : Control
     private const double GroupCollapseButtonSize = 18;
     private const double GroupBorderRadius = 8;
     private const double GroupDashedStrokeThickness = 2;
+
+    // Resize handle constants
+    private const double ResizeHandleSize = 8;
+
+    // Port hover state tracking
+    private (string nodeId, string portId)? _hoveredPort;
 
     public DirectGraphRenderer(FlowCanvasSettings settings)
     {
@@ -75,6 +83,34 @@ public class DirectGraphRenderer : Control
     public void InvalidateIndex()
     {
         _indexDirty = true;
+    }
+
+    /// <summary>
+    /// Sets the hovered port for visual feedback.
+    /// </summary>
+    public void SetHoveredPort(string? nodeId, string? portId)
+    {
+        if (nodeId != null && portId != null)
+        {
+            _hoveredPort = (nodeId, portId);
+        }
+        else
+        {
+            _hoveredPort = null;
+        }
+        InvalidateVisual();
+    }
+
+    /// <summary>
+    /// Clears the hovered port state.
+    /// </summary>
+    public void ClearHoveredPort()
+    {
+        if (_hoveredPort != null)
+        {
+            _hoveredPort = null;
+            InvalidateVisual();
+        }
     }
 
     private void RebuildSpatialIndex()
@@ -114,6 +150,8 @@ public class DirectGraphRenderer : Control
         _nodeOutputBackground = new SolidColorBrush(Color.FromRgb(230, 200, 200));
         _portBrush = _theme.PortBackground;
         _portPen = new Pen(_theme.PortBorder, 2);
+        _resizeHandleFill = _theme.NodeSelectedBorder;
+        _resizeHandlePen = new Pen(Brushes.White, 1);
     }
 
     public override void Render(DrawingContext context)
@@ -162,6 +200,15 @@ public class DirectGraphRenderer : Control
             if (!IsNodeVisible(_graph, node)) continue;
             
             DrawCollapsedGroup(context, node, zoom, offsetX, offsetY);
+        }
+
+        // Draw resize handles for selected nodes (on top of everything)
+        foreach (var node in _graph.Nodes)
+        {
+            if (!node.IsSelected || !node.IsResizable) continue;
+            if (!IsNodeVisible(_graph, node)) continue;
+            
+            DrawResizeHandles(context, node, zoom, offsetX, offsetY);
         }
     }
 
@@ -212,22 +259,43 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw ports
+        DrawNodePorts(context, node, x, y, width, height, zoom);
+    }
+
+    private void DrawNodePorts(DrawingContext context, Node node, double x, double y, double width, double height, double zoom)
+    {
         var portSize = _settings.PortSize * zoom;
 
         // Input ports (left side)
         for (int i = 0; i < node.Inputs.Count; i++)
         {
+            var port = node.Inputs[i];
             var portY = GetPortY(y, height, i, node.Inputs.Count);
             var portX = x;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
+            
+            // Check if this port is hovered
+            var isHovered = _hoveredPort.HasValue && 
+                           _hoveredPort.Value.nodeId == node.Id && 
+                           _hoveredPort.Value.portId == port.Id;
+            
+            var brush = isHovered ? _theme!.PortHover : _portBrush;
+            context.DrawEllipse(brush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
         }
 
         // Output ports (right side)
         for (int i = 0; i < node.Outputs.Count; i++)
         {
+            var port = node.Outputs[i];
             var portY = GetPortY(y, height, i, node.Outputs.Count);
             var portX = x + width;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
+            
+            // Check if this port is hovered
+            var isHovered = _hoveredPort.HasValue && 
+                           _hoveredPort.Value.nodeId == node.Id && 
+                           _hoveredPort.Value.portId == port.Id;
+            
+            var brush = isHovered ? _theme!.PortHover : _portBrush;
+            context.DrawEllipse(brush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
         }
     }
 
@@ -239,9 +307,10 @@ public class DirectGraphRenderer : Control
         if (sourceNode == null || targetNode == null) return;
         if (!IsNodeVisible(_graph, sourceNode) || !IsNodeVisible(_graph, targetNode)) return;
 
-        var sourceWidth = (sourceNode.Width ?? _settings.NodeWidth) * zoom;
-        var sourceHeight = (sourceNode.Height ?? _settings.NodeHeight) * zoom;
-        var targetHeight = (targetNode.Height ?? _settings.NodeHeight) * zoom;
+        // Get dimensions - handle groups specially
+        var sourceWidth = GetNodeWidth(sourceNode) * zoom;
+        var sourceHeight = GetNodeHeight(sourceNode) * zoom;
+        var targetHeight = GetNodeHeight(targetNode) * zoom;
 
         var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
         var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
@@ -306,6 +375,69 @@ public class DirectGraphRenderer : Control
         {
             DrawArrow(context, new AvaloniaPoint(endX, endY), new AvaloniaPoint(endX + controlOffset * 0.3, endY), pen!.Brush, zoom, edge.MarkerEnd == EdgeMarker.ArrowClosed);
         }
+
+        // Draw edge label
+        if (!string.IsNullOrEmpty(edge.Label))
+        {
+            DrawEdgeLabel(context, edge.Label, startX, startY, endX, endY, zoom);
+        }
+    }
+
+    private void DrawEdgeLabel(DrawingContext context, string label, double startX, double startY, double endX, double endY, double zoom)
+    {
+        var midX = (startX + endX) / 2;
+        var midY = (startY + endY) / 2;
+
+        var fontSize = 12 * zoom;
+        var formattedText = new FormattedText(
+            label,
+            System.Globalization.CultureInfo.CurrentCulture,
+            FlowDirection.LeftToRight,
+            _typeface,
+            fontSize,
+            _theme!.NodeText);
+
+        // Draw background for better readability
+        var padding = 4 * zoom;
+        var bgRect = new Rect(
+            midX - padding,
+            midY - 10 * zoom - padding,
+            formattedText.Width + padding * 2,
+            formattedText.Height + padding * 2);
+        
+        context.DrawRectangle(_theme.NodeBackground, null, bgRect, 3 * zoom, 3 * zoom);
+
+        // Draw text
+        context.DrawText(formattedText, new AvaloniaPoint(midX, midY - 10 * zoom));
+    }
+
+    private void DrawResizeHandles(DrawingContext context, Node node, double zoom, double offsetX, double offsetY)
+    {
+        var width = GetNodeWidth(node) * zoom;
+        var height = GetNodeHeight(node) * zoom;
+        var x = node.Position.X * zoom + offsetX;
+        var y = node.Position.Y * zoom + offsetY;
+
+        var handleSize = ResizeHandleSize * zoom;
+        var halfHandle = handleSize / 2;
+
+        // Corner handles
+        DrawResizeHandle(context, x - halfHandle, y - halfHandle, handleSize); // TopLeft
+        DrawResizeHandle(context, x + width - halfHandle, y - halfHandle, handleSize); // TopRight
+        DrawResizeHandle(context, x - halfHandle, y + height - halfHandle, handleSize); // BottomLeft
+        DrawResizeHandle(context, x + width - halfHandle, y + height - halfHandle, handleSize); // BottomRight
+
+        // Edge handles
+        DrawResizeHandle(context, x + width / 2 - halfHandle, y - halfHandle, handleSize); // Top
+        DrawResizeHandle(context, x + width / 2 - halfHandle, y + height - halfHandle, handleSize); // Bottom
+        DrawResizeHandle(context, x - halfHandle, y + height / 2 - halfHandle, handleSize); // Left
+        DrawResizeHandle(context, x + width - halfHandle, y + height / 2 - halfHandle, handleSize); // Right
+    }
+
+    private void DrawResizeHandle(DrawingContext context, double x, double y, double size)
+    {
+        var rect = new Rect(x, y, size, size);
+        context.DrawRectangle(_resizeHandleFill, _resizeHandlePen, rect);
     }
 
     private void DrawArrow(DrawingContext context, AvaloniaPoint tip, AvaloniaPoint from, IBrush? brush, double zoom, bool filled)
@@ -356,10 +488,24 @@ public class DirectGraphRenderer : Control
         return nodeY + spacing * (portIndex + 1);
     }
 
+    private double GetNodeWidth(Node node)
+    {
+        if (node.IsGroup)
+            return node.Width ?? MinGroupWidth;
+        return node.Width ?? _settings.NodeWidth;
+    }
+
+    private double GetNodeHeight(Node node)
+    {
+        if (node.IsGroup)
+            return node.IsCollapsed ? GroupHeaderHeight : (node.Height ?? MinGroupHeight);
+        return node.Height ?? _settings.NodeHeight;
+    }
+
     private bool IsInVisibleBounds(Node node, double zoom, double offsetX, double offsetY, Rect bounds)
     {
-        var width = (node.Width ?? _settings.NodeWidth) * zoom;
-        var height = (node.Height ?? _settings.NodeHeight) * zoom;
+        var width = GetNodeWidth(node) * zoom;
+        var height = GetNodeHeight(node) * zoom;
         var x = node.Position.X * zoom + offsetX;
         var y = node.Position.Y * zoom + offsetY;
 
@@ -383,6 +529,59 @@ public class DirectGraphRenderer : Control
     }
 
     #region Hit Testing
+
+    /// <summary>
+    /// Performs hit testing to find a resize handle at the given screen coordinates.
+    /// </summary>
+    public (Node node, ResizeHandlePosition position)? HitTestResizeHandle(double screenX, double screenY)
+    {
+        if (_graph == null || _viewport == null) return null;
+
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
+        var handleSize = ResizeHandleSize * zoom;
+        var hitRadius = handleSize; // Make handles easier to click
+
+        // Convert screen coords to canvas coords
+        var canvasX = (screenX - offsetX) / zoom;
+        var canvasY = (screenY - offsetY) / zoom;
+
+        foreach (var node in _graph.Nodes)
+        {
+            if (!node.IsSelected || !node.IsResizable) continue;
+            if (!IsNodeVisible(_graph, node)) continue;
+
+            var width = GetNodeWidth(node);
+            var height = GetNodeHeight(node);
+            var nx = node.Position.X;
+            var ny = node.Position.Y;
+
+            var positions = new (ResizeHandlePosition pos, double hx, double hy)[]
+            {
+                (ResizeHandlePosition.TopLeft, nx, ny),
+                (ResizeHandlePosition.TopRight, nx + width, ny),
+                (ResizeHandlePosition.BottomLeft, nx, ny + height),
+                (ResizeHandlePosition.BottomRight, nx + width, ny + height),
+                (ResizeHandlePosition.Top, nx + width / 2, ny),
+                (ResizeHandlePosition.Bottom, nx + width / 2, ny + height),
+                (ResizeHandlePosition.Left, nx, ny + height / 2),
+                (ResizeHandlePosition.Right, nx + width, ny + height / 2),
+            };
+
+            foreach (var (pos, hx, hy) in positions)
+            {
+                var dx = canvasX - hx;
+                var dy = canvasY - hy;
+                if (Math.Abs(dx) <= hitRadius / zoom && Math.Abs(dy) <= hitRadius / zoom)
+                {
+                    return (node, pos);
+                }
+            }
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Performs hit testing to find a node at the given screen coordinates.
@@ -573,9 +772,9 @@ public class DirectGraphRenderer : Control
             if (sourceNode == null || targetNode == null) continue;
             if (!IsNodeVisible(_graph, sourceNode) || !IsNodeVisible(_graph, targetNode)) continue;
 
-            var sourceWidth = sourceNode.Width ?? _settings.NodeWidth;
-            var sourceHeight = sourceNode.Height ?? _settings.NodeHeight;
-            var targetHeight = targetNode.Height ?? _settings.NodeHeight;
+            var sourceWidth = GetNodeWidth(sourceNode);
+            var sourceHeight = GetNodeHeight(sourceNode);
+            var targetHeight = GetNodeHeight(targetNode);
 
             var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
             var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
@@ -632,14 +831,14 @@ public class DirectGraphRenderer : Control
 
         // Use distance to closest point on curve instead of sampling
         // This is more accurate and handles all curve shapes
-        return DistanceToQuadraticBezierSquared(px, py, x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2) <= thresholdSq;
+        return DistanceToCubicBezierSquared(px, py, x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2) <= thresholdSq;
     }
 
     /// <summary>
     /// Calculates the minimum squared distance from a point to a cubic bezier curve.
     /// Uses subdivision for accuracy.
     /// </summary>
-    private static double DistanceToQuadraticBezierSquared(
+    private static double DistanceToCubicBezierSquared(
         double px, double py, 
         double x1, double y1, 
         double cp1x, double cp1y, 
@@ -672,6 +871,10 @@ public class DirectGraphRenderer : Control
         var mt = 1 - t;
         return mt * mt * mt * p0 + 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t * p3;
     }
+
+    #endregion
+
+    #region Group Rendering
 
     private void DrawGroup(DrawingContext context, Node group, double zoom, double offsetX, double offsetY)
     {
@@ -767,22 +970,41 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw group ports (groups can have external connection ports)
+        DrawGroupPorts(context, group, x, y, width, height, zoom);
+    }
+
+    private void DrawGroupPorts(DrawingContext context, Node group, double x, double y, double width, double height, double zoom)
+    {
         var portSize = _settings.PortSize * zoom;
 
         // Input ports (left side of group)
         for (int i = 0; i < group.Inputs.Count; i++)
         {
+            var port = group.Inputs[i];
             var portY = GetPortY(y, height, i, group.Inputs.Count);
             var portX = x;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
+            
+            var isHovered = _hoveredPort.HasValue && 
+                           _hoveredPort.Value.nodeId == group.Id && 
+                           _hoveredPort.Value.portId == port.Id;
+            
+            var brush = isHovered ? _theme!.PortHover : _portBrush;
+            context.DrawEllipse(brush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
         }
 
         // Output ports (right side of group)
         for (int i = 0; i < group.Outputs.Count; i++)
         {
+            var port = group.Outputs[i];
             var portY = GetPortY(y, height, i, group.Outputs.Count);
             var portX = x + width;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
+            
+            var isHovered = _hoveredPort.HasValue && 
+                           _hoveredPort.Value.nodeId == group.Id && 
+                           _hoveredPort.Value.portId == port.Id;
+            
+            var brush = isHovered ? _theme!.PortHover : _portBrush;
+            context.DrawEllipse(brush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
         }
     }
 
@@ -869,23 +1091,7 @@ public class DirectGraphRenderer : Control
         context.DrawText(formattedText, new AvaloniaPoint(textX, textY));
 
         // Draw group ports (even when collapsed, groups may have external ports)
-        var portSize = _settings.PortSize * zoom;
-
-        // Input ports (left side)
-        for (int i = 0; i < group.Inputs.Count; i++)
-        {
-            var portY = GetPortY(y, height, i, group.Inputs.Count);
-            var portX = x;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
-        }
-
-        // Output ports (right side)
-        for (int i = 0; i < group.Outputs.Count; i++)
-        {
-            var portY = GetPortY(y, height, i, group.Outputs.Count);
-            var portX = x + width;
-            context.DrawEllipse(_portBrush, _portPen, new AvaloniaPoint(portX, portY), portSize / 2, portSize / 2);
-        }
+        DrawGroupPorts(context, group, x, y, width, height, zoom);
     }
 
     #endregion
