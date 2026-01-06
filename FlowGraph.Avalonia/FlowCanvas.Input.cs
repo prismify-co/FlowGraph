@@ -104,19 +104,32 @@ public partial class FlowCanvas
     {
         _inputContext.Graph = Graph;
         
-        // Track port hover state in direct rendering mode
+        // Track hover states in direct rendering mode
         if (_useDirectRendering && _directRenderer != null)
         {
             var screenPos = e.GetPosition(_rootPanel);
-            var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
             
+            // Check port hover
+            var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
             if (portHit.HasValue)
             {
                 _directRenderer.SetHoveredPort(portHit.Value.node.Id, portHit.Value.port.Id);
+                _directRenderer.ClearHoveredEndpointHandle();
             }
             else
             {
                 _directRenderer.ClearHoveredPort();
+                
+                // Check edge endpoint handle hover
+                var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
+                if (endpointHit.HasValue)
+                {
+                    _directRenderer.SetHoveredEndpointHandle(endpointHit.Value.edge.Id, endpointHit.Value.isSource);
+                }
+                else
+                {
+                    _directRenderer.ClearHoveredEndpointHandle();
+                }
             }
         }
         
@@ -231,11 +244,21 @@ public partial class FlowCanvas
     {
         if (_directRenderer == null) return null;
 
-        // Check resize handles first (they're on top of everything)
+        // Check edge endpoint handles first (for selected edges)
+        var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenX, screenY);
+        if (endpointHit.HasValue)
+        {
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Edge endpoint handle hit: {(endpointHit.Value.isSource ? "source" : "target")} on edge {endpointHit.Value.edge.Id}");
+            // Create a dummy ellipse with the endpoint handle info as tag
+            var dummyHandle = new Ellipse { Tag = (endpointHit.Value.edge, endpointHit.Value.isSource) };
+            return dummyHandle;
+        }
+
+        // Check resize handles (they're on top of everything else)
         var resizeHit = _directRenderer.HitTestResizeHandle(screenX, screenY);
         if (resizeHit.HasValue)
         {
-            Debug.WriteLine($"[HitTest] Resize handle hit: {resizeHit.Value.position} on node {resizeHit.Value.node.Id}");
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Resize handle hit: {resizeHit.Value.position} on node {resizeHit.Value.node.Id}");
             // Create a dummy rectangle with the resize handle info as tag
             var dummyHandle = new Rectangle { Tag = (resizeHit.Value.node, resizeHit.Value.position) };
             return dummyHandle;
@@ -245,7 +268,7 @@ public partial class FlowCanvas
         var portHit = _directRenderer.HitTestPort(screenX, screenY);
         if (portHit.HasValue)
         {
-            Debug.WriteLine($"[HitTest] Port hit: {portHit.Value.port.Id} on node {portHit.Value.node.Id}");
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Port hit: {portHit.Value.port.Id} on node {portHit.Value.node.Id}");
             // Create a dummy ellipse with the port info as tag
             var dummyPort = new Ellipse { Tag = (portHit.Value.node, portHit.Value.port, portHit.Value.isOutput) };
             return dummyPort;
@@ -255,7 +278,7 @@ public partial class FlowCanvas
         var nodeHit = _directRenderer.HitTestNode(screenX, screenY);
         if (nodeHit != null)
         {
-            Debug.WriteLine($"[HitTest] Node hit: {nodeHit.Id}");
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Node hit: {nodeHit.Id}");
             // Create a dummy control with the node as tag
             var dummyNode = new Border { Tag = nodeHit };
             return dummyNode;
@@ -265,13 +288,13 @@ public partial class FlowCanvas
         var edgeHit = _directRenderer.HitTestEdge(screenX, screenY);
         if (edgeHit != null)
         {
-            Debug.WriteLine($"[HitTest] Edge hit: {edgeHit.Id}");
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Edge hit: {edgeHit.Id}");
             // Create a dummy path with the edge as tag
             var dummyEdge = new global::Avalonia.Controls.Shapes.Path { Tag = edgeHit };
             return dummyEdge;
         }
 
-        Debug.WriteLine($"[HitTest] No hit at ({screenX:F0}, {screenY:F0})");
+        System.Diagnostics.Debug.WriteLine($"[HitTest] No hit at ({screenX:F0}, {screenY:F0})");
         return null;
     }
 

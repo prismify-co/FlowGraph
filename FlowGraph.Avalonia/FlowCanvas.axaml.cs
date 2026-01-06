@@ -139,7 +139,7 @@ public partial class FlowCanvas : UserControl
     /// <summary>
     /// Enables direct GPU-accelerated rendering mode for maximum performance with very large graphs.
     /// This bypasses the Avalonia visual tree entirely and draws directly to a DrawingContext.
-    /// Note: Some interactive features (inline editing, resize handles) are disabled in this mode.
+    /// Supports custom node renderers via IDirectNodeRenderer interface.
     /// </summary>
     public void EnableDirectRendering()
     {
@@ -147,7 +147,12 @@ public partial class FlowCanvas : UserControl
         
         if (_directRenderer == null)
         {
-            _directRenderer = new DirectGraphRenderer(Settings);
+            _directRenderer = new DirectGraphRenderer(Settings, _graphRenderer.NodeRenderers);
+        }
+        else
+        {
+            // Update the node renderers reference
+            _directRenderer.NodeRenderers = _graphRenderer.NodeRenderers;
         }
 
         if (_mainCanvas != null && !_mainCanvas.Children.Contains(_directRenderer))

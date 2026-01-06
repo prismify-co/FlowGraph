@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -14,10 +15,21 @@ namespace FlowGraph.Avalonia.Rendering;
 /// Uses GraphRenderModel for all geometry calculations to ensure 100% visual parity
 /// with the normal VisualTree renderer.
 /// </summary>
+/// <remarks>
+/// <para>
+/// DirectGraphRenderer supports custom node rendering via the <see cref="IDirectNodeRenderer"/> interface.
+/// When a node's renderer implements IDirectNodeRenderer, it delegates drawing to that implementation.
+/// </para>
+/// <para>
+/// Edge endpoint handles are rendered when <see cref="FlowCanvasSettings.ShowEdgeEndpointHandles"/> is true
+/// and an edge is selected, allowing reconnection/disconnection.
+/// </para>
+/// </remarks>
 public class DirectGraphRenderer : Control
 {
     private readonly FlowCanvasSettings _settings;
     private readonly GraphRenderModel _model;
+    private NodeRendererRegistry? _nodeRenderers;
     private Graph? _graph;
     private ViewportState? _viewport;
     private ThemeResources? _theme;
@@ -34,6 +46,8 @@ public class DirectGraphRenderer : Control
     private Pen? _portPen;
     private IBrush? _resizeHandleFill;
     private Pen? _resizeHandlePen;
+    private IBrush? _endpointHandleFill;
+    private Pen? _endpointHandlePen;
 
     // Typeface for labels
     private readonly Typeface _typeface = new("Segoe UI");
@@ -45,6 +59,9 @@ public class DirectGraphRenderer : Control
     // Port hover state tracking
     private (string nodeId, string portId)? _hoveredPort;
 
+    // Edge endpoint handle hover state
+    private (string edgeId, bool isSource)? _hoveredEndpointHandle;
+
     // Inline editing state
     private string? _editingNodeId;
     private string? _editingEdgeId;
@@ -54,9 +71,20 @@ public class DirectGraphRenderer : Control
     /// </summary>
     /// <param name="settings">Canvas settings for rendering configuration.</param>
     public DirectGraphRenderer(FlowCanvasSettings settings)
+        : this(settings, null)
+    {
+    }
+
+    /// <summary>
+    /// Creates a new DirectGraphRenderer with the specified settings and node renderer registry.
+    /// </summary>
+    /// <param name="settings">Canvas settings for rendering configuration.</param>
+    /// <param name="nodeRenderers">Optional registry of custom node renderers.</param>
+    public DirectGraphRenderer(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers)
     {
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         _model = new GraphRenderModel(settings);
+        _nodeRenderers = nodeRenderers;
         IsHitTestVisible = false; // Hit testing handled separately
     }
 
@@ -65,6 +93,15 @@ public class DirectGraphRenderer : Control
     /// This model is shared with other renderers to ensure visual parity.
     /// </summary>
     public GraphRenderModel Model => _model;
+
+    /// <summary>
+    /// Gets or sets the node renderer registry for custom node types.
+    /// </summary>
+    public NodeRendererRegistry? NodeRenderers
+    {
+        get => _nodeRenderers;
+        set => _nodeRenderers = value;
+    }
 
     /// <summary>
     /// Gets whether inline editing is currently active.
@@ -134,6 +171,33 @@ public class DirectGraphRenderer : Control
         if (_hoveredPort != null)
         {
             _hoveredPort = null;
+            InvalidateVisual();
+        }
+    }
+
+    /// <summary>
+    /// Sets the currently hovered edge endpoint handle for visual feedback.
+    /// </summary>
+    /// <param name="edgeId">ID of the edge, or null to clear.</param>
+    /// <param name="isSource">True if hovering the source handle, false for target.</param>
+    public void SetHoveredEndpointHandle(string? edgeId, bool isSource)
+    {
+        var newHovered = edgeId != null ? (edgeId, isSource) : ((string, bool)?)null;
+        if (_hoveredEndpointHandle != newHovered)
+        {
+            _hoveredEndpointHandle = newHovered;
+            InvalidateVisual();
+        }
+    }
+
+    /// <summary>
+    /// Clears the hovered endpoint handle state.
+    /// </summary>
+    public void ClearHoveredEndpointHandle()
+    {
+        if (_hoveredEndpointHandle != null)
+        {
+            _hoveredEndpointHandle = null;
             InvalidateVisual();
         }
     }
@@ -217,6 +281,8 @@ public class DirectGraphRenderer : Control
         _portPen = new Pen(_theme.PortBorder, 2);
         _resizeHandleFill = _theme.NodeSelectedBorder;
         _resizeHandlePen = new Pen(Brushes.White, 1);
+        _endpointHandleFill = _theme.PortBackground;
+        _endpointHandlePen = new Pen(_theme.NodeSelectedBorder, 2);
     }
 
     public override void Render(DrawingContext context)
@@ -275,6 +341,16 @@ public class DirectGraphRenderer : Control
             
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
         }
+
+        // Draw edge endpoint handles for selected edges (on top of everything)
+        if (_settings.ShowEdgeEndpointHandles)
+        {
+            foreach (var edge in _graph.Edges)
+            {
+                if (!edge.IsSelected) continue;
+                DrawEdgeEndpointHandles(context, edge, zoom, offsetX, offsetY);
+            }
+        }
     }
 
     #region Node Rendering
@@ -283,19 +359,43 @@ public class DirectGraphRenderer : Control
     {
         var canvasBounds = _model.GetNodeBounds(node);
         var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
-        var cornerRadius = GraphRenderModel.NodeCornerRadius * zoom;
 
-        // Choose background based on type
-        var background = node.Type?.ToLowerInvariant() switch
+        // Check if custom renderer exists and implements IDirectNodeRenderer
+        if (_nodeRenderers != null)
         {
-            "input" => _nodeInputBackground,
-            "output" => _nodeOutputBackground,
-            _ => _nodeBackground
-        };
+            var renderer = _nodeRenderers.GetRenderer(node.Type);
+            if (renderer is IDirectNodeRenderer directRenderer)
+            {
+                var background = GetNodeBackground(node);
+                var borderPen = node.IsSelected ? _nodeSelectedPen : _nodeBorderPen;
+                
+                var renderContext = new DirectNodeRenderContext
+                {
+                    ScreenBounds = screenBounds,
+                    Zoom = zoom,
+                    IsSelected = node.IsSelected,
+                    IsEditing = _editingNodeId == node.Id,
+                    Background = background,
+                    BorderPen = borderPen,
+                    TextBrush = _theme!.NodeText,
+                    Theme = _theme,
+                    Settings = _settings,
+                    Model = _model
+                };
+                
+                directRenderer.DrawNode(context, node, renderContext);
+                DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
+                return;
+            }
+        }
+
+        // Default drawing
+        var cornerRadius = GraphRenderModel.NodeCornerRadius * zoom;
+        var defaultBackground = GetNodeBackground(node);
 
         // Draw rounded rectangle
         var geometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
-        context.DrawGeometry(background, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, geometry);
+        context.DrawGeometry(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, geometry);
 
         // Draw label (skip if being edited)
         if (_editingNodeId != node.Id)
@@ -309,6 +409,16 @@ public class DirectGraphRenderer : Control
 
         // Draw ports
         DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
+    }
+
+    private IBrush? GetNodeBackground(Node node)
+    {
+        return node.Type?.ToLowerInvariant() switch
+        {
+            "input" => _nodeInputBackground,
+            "output" => _nodeOutputBackground,
+            _ => _nodeBackground
+        };
     }
 
     private void DrawNodePorts(DrawingContext context, Node node, Rect canvasBounds, double zoom, double offsetX, double offsetY)
@@ -404,6 +514,35 @@ public class DirectGraphRenderer : Control
             var midScreen = CanvasToScreen(midCanvas, zoom, offsetX, offsetY);
             DrawEdgeLabel(context, edge.Label, midScreen, zoom);
         }
+    }
+
+    private void DrawEdgeEndpointHandles(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY)
+    {
+        var sourceNode = _graph!.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+
+        if (sourceNode == null || targetNode == null) return;
+
+        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+        var startScreen = CanvasToScreen(startCanvas, zoom, offsetX, offsetY);
+        var endScreen = CanvasToScreen(endCanvas, zoom, offsetX, offsetY);
+
+        var handleSize = _settings.EdgeEndpointHandleSize * zoom;
+        var halfSize = handleSize / 2;
+
+        // Source handle
+        var isSourceHovered = _hoveredEndpointHandle.HasValue && 
+                              _hoveredEndpointHandle.Value.edgeId == edge.Id && 
+                              _hoveredEndpointHandle.Value.isSource;
+        var sourceFill = isSourceHovered ? _theme!.PortHover : _endpointHandleFill;
+        context.DrawEllipse(sourceFill, _endpointHandlePen, startScreen, halfSize, halfSize);
+
+        // Target handle
+        var isTargetHovered = _hoveredEndpointHandle.HasValue && 
+                              _hoveredEndpointHandle.Value.edgeId == edge.Id && 
+                              !_hoveredEndpointHandle.Value.isSource;
+        var targetFill = isTargetHovered ? _theme!.PortHover : _endpointHandleFill;
+        context.DrawEllipse(targetFill, _endpointHandlePen, endScreen, halfSize, halfSize);
     }
 
     private void DrawEdgeLabel(DrawingContext context, string label, AvaloniaPoint midScreen, double zoom)
@@ -605,6 +744,49 @@ public class DirectGraphRenderer : Control
     #region Hit Testing
 
     /// <summary>
+    /// Performs hit testing to find an edge endpoint handle at the given screen coordinates.
+    /// </summary>
+    /// <returns>Tuple of (edge, isSource) or null if no handle hit.</returns>
+    public (Edge edge, bool isSource)? HitTestEdgeEndpointHandle(double screenX, double screenY)
+    {
+        if (_graph == null || _viewport == null || !_settings.ShowEdgeEndpointHandles) return null;
+
+        var canvasPoint = ScreenToCanvas(screenX, screenY);
+        var handleRadius = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
+
+        foreach (var edge in _graph.Edges)
+        {
+            if (!edge.IsSelected) continue;
+
+            var sourceNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+
+            if (sourceNode == null || targetNode == null) continue;
+            if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;
+
+            var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+
+            // Check source handle
+            var dxSource = canvasPoint.X - startCanvas.X;
+            var dySource = canvasPoint.Y - startCanvas.Y;
+            if (dxSource * dxSource + dySource * dySource <= handleRadius * handleRadius)
+            {
+                return (edge, true);
+            }
+
+            // Check target handle
+            var dxTarget = canvasPoint.X - endCanvas.X;
+            var dyTarget = canvasPoint.Y - endCanvas.Y;
+            if (dxTarget * dxTarget + dyTarget * dyTarget <= handleRadius * handleRadius)
+            {
+                return (edge, false);
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Performs hit testing to find a resize handle at the given screen coordinates.
     /// </summary>
     public (Node node, ResizeHandlePosition position)? HitTestResizeHandle(double screenX, double screenY)
@@ -771,6 +953,18 @@ public class DirectGraphRenderer : Control
         if (_viewport == null) return default;
         
         var canvasPos = _model.GetPortPosition(node, port, isOutput);
+        return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
+    }
+
+    /// <summary>
+    /// Gets the screen position for an edge endpoint (source or target).
+    /// </summary>
+    public AvaloniaPoint GetEdgeEndpointScreenPosition(Edge edge, bool isSource)
+    {
+        if (_graph == null || _viewport == null) return default;
+        
+        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+        var canvasPos = isSource ? startCanvas : endCanvas;
         return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
     }
 
