@@ -104,36 +104,80 @@ public partial class FlowCanvas
     {
         _inputContext.Graph = Graph;
         
-        // Track hover states in direct rendering mode
-        if (_useDirectRendering && _directRenderer != null)
+        // Track hover states and cursor in direct rendering mode
+        if (_useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
             var screenPos = e.GetPosition(_rootPanel);
             
-            // Check port hover
-            var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
-            if (portHit.HasValue)
+            // Check resize handles first (highest priority for cursor)
+            var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
+            if (resizeHit.HasValue)
             {
-                _directRenderer.SetHoveredPort(portHit.Value.node.Id, portHit.Value.port.Id);
+                _rootPanel.Cursor = GetResizeCursor(resizeHit.Value.position);
+                _directRenderer.ClearHoveredPort();
                 _directRenderer.ClearHoveredEndpointHandle();
             }
             else
             {
-                _directRenderer.ClearHoveredPort();
-                
-                // Check edge endpoint handle hover
-                var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
-                if (endpointHit.HasValue)
+                // Check port hover
+                var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
+                if (portHit.HasValue)
                 {
-                    _directRenderer.SetHoveredEndpointHandle(endpointHit.Value.edge.Id, endpointHit.Value.isSource);
+                    _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
+                    _directRenderer.SetHoveredPort(portHit.Value.node.Id, portHit.Value.port.Id);
+                    _directRenderer.ClearHoveredEndpointHandle();
                 }
                 else
                 {
-                    _directRenderer.ClearHoveredEndpointHandle();
+                    _directRenderer.ClearHoveredPort();
+                    
+                    // Check edge endpoint handle hover
+                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
+                    if (endpointHit.HasValue)
+                    {
+                        _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
+                        _directRenderer.SetHoveredEndpointHandle(endpointHit.Value.edge.Id, endpointHit.Value.isSource);
+                    }
+                    else
+                    {
+                        _directRenderer.ClearHoveredEndpointHandle();
+                        
+                        // Check if hovering a node
+                        var nodeHit = _directRenderer.HitTestNode(screenPos.X, screenPos.Y);
+                        if (nodeHit != null)
+                        {
+                            _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
+                        }
+                        else
+                        {
+                            // Default cursor
+                            _rootPanel.Cursor = Cursor.Default;
+                        }
+                    }
                 }
             }
         }
         
         _inputStateMachine.HandlePointerMoved(e);
+    }
+
+    /// <summary>
+    /// Gets the appropriate resize cursor for the given handle position.
+    /// </summary>
+    private static Cursor GetResizeCursor(Rendering.ResizeHandlePosition position)
+    {
+        return position switch
+        {
+            Rendering.ResizeHandlePosition.TopLeft => new Cursor(StandardCursorType.TopLeftCorner),
+            Rendering.ResizeHandlePosition.TopRight => new Cursor(StandardCursorType.TopRightCorner),
+            Rendering.ResizeHandlePosition.BottomLeft => new Cursor(StandardCursorType.BottomLeftCorner),
+            Rendering.ResizeHandlePosition.BottomRight => new Cursor(StandardCursorType.BottomRightCorner),
+            Rendering.ResizeHandlePosition.Top => new Cursor(StandardCursorType.TopSide),
+            Rendering.ResizeHandlePosition.Bottom => new Cursor(StandardCursorType.BottomSide),
+            Rendering.ResizeHandlePosition.Left => new Cursor(StandardCursorType.LeftSide),
+            Rendering.ResizeHandlePosition.Right => new Cursor(StandardCursorType.RightSide),
+            _ => Cursor.Default
+        };
     }
 
     private void OnRootPanelPointerReleased(object? sender, PointerReleasedEventArgs e)

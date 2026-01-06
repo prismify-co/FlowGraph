@@ -375,8 +375,8 @@ public partial class FlowCanvas : UserControl
 
     /// <summary>
     /// Ends inline editing for a node's label and commits the change.
-    /// /// <param name="node">The node being edited.</param>
     /// </summary>
+    /// <param name="node">The node being edited.</param>
     public void EndEditNodeLabel(Node node)
     {
         if (_theme == null) return;
@@ -787,23 +787,11 @@ public partial class FlowCanvas : UserControl
     {
         _groupManager.GroupCollapsedChanged += (s, e) =>
         {
-            // Handle proxy ports if enabled
-            if (Settings.UseProxyPortsOnCollapse)
-            {
-                if (e.IsCollapsed)
-                    _groupProxyManager.OnGroupCollapsed(e.GroupId);
-                else
-                    _groupProxyManager.OnGroupExpanded(e.GroupId);
-            }
-            
             RenderGraph();
             GroupCollapsedChanged?.Invoke(this, e);
         };
         _groupManager.GroupNeedsRerender += (s, groupId) => RenderGraph();
         _groupManager.NodesAddedToGroup += (s, e) => RenderGraph();
-        
-        // Re-render when proxy state changes
-        _groupProxyManager.ProxyStateChanged += (s, e) => RenderGraph();
     }
 
     #endregion

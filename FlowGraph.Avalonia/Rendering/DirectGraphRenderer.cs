@@ -275,8 +275,8 @@ public class DirectGraphRenderer : Control
         _nodeBorderPen = new Pen(_theme.NodeBorder, 2);
         _nodeSelectedPen = new Pen(_theme.NodeSelectedBorder, 3);
         _nodeBackground = _theme.NodeBackground;
-        _nodeInputBackground = new SolidColorBrush(Color.FromRgb(200, 230, 200));
-        _nodeOutputBackground = new SolidColorBrush(Color.FromRgb(230, 200, 200));
+        _nodeInputBackground = _theme.InputNodeBackground;
+        _nodeOutputBackground = _theme.OutputNodeBackground;
         _portBrush = _theme.PortBackground;
         _portPen = new Pen(_theme.PortBorder, 2);
         _resizeHandleFill = _theme.NodeSelectedBorder;
