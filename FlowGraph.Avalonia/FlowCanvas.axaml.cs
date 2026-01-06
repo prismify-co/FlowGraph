@@ -245,7 +245,8 @@ public partial class FlowCanvas : UserControl
 
     /// <summary>
     /// Begins inline editing for a node's label.
-    /// Uses the node's renderer to show an inline TextBox.
+    /// In visual tree mode, uses the node's renderer to show an inline TextBox.
+    /// In direct rendering mode, creates a TextBox overlay at the node's position.
     /// </summary>
     /// <param name="node">The node to edit.</param>
     /// <returns>True if editing started successfully.</returns>
@@ -253,11 +254,118 @@ public partial class FlowCanvas : UserControl
     {
         if (_theme == null) return false;
 
+        // In direct rendering mode, create a TextBox overlay
+        if (_useDirectRendering && _directRenderer != null && _mainCanvas != null)
+        {
+            return BeginEditNodeLabelDirect(node);
+        }
+
+        // Normal visual tree mode
         return _graphRenderer.BeginEditLabel(
             node, 
             _theme,
             newLabel => CommitNodeLabel(node, newLabel),
             () => CancelNodeLabelEdit(node));
+    }
+
+    /// <summary>
+    /// Creates an inline editing TextBox overlay for direct rendering mode.
+    /// </summary>
+    private bool BeginEditNodeLabelDirect(Node node)
+    {
+        if (_mainCanvas == null || _theme == null || _directRenderer == null) return false;
+
+        // Tell DirectRenderer to skip drawing this node's label
+        _directRenderer.BeginEditNode(node.Id);
+
+        // Calculate node bounds in screen coordinates
+        var model = _directRenderer.Model;
+        var nodeBounds = model.GetNodeBounds(node);
+        var screenX = nodeBounds.X * _viewport.Zoom + _viewport.OffsetX;
+        var screenY = nodeBounds.Y * _viewport.Zoom + _viewport.OffsetY;
+        var screenWidth = nodeBounds.Width * _viewport.Zoom;
+        var screenHeight = nodeBounds.Height * _viewport.Zoom;
+
+        var scale = _viewport.Zoom;
+        var currentLabel = node.Label ?? node.Type ?? node.Id;
+        
+        var textBox = new TextBox
+        {
+            Text = currentLabel,
+            FontSize = 10 * scale,
+            Foreground = _theme.NodeText,
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = _theme.NodeSelectedBorder,
+            Padding = new Thickness(4 * scale, 2 * scale),
+            MinWidth = Math.Max(60, screenWidth * 0.8),
+            HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Center,
+            VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
+            Tag = ("NodeLabelEditDirect", node.Id)
+        };
+
+        // Position in center of node
+        Canvas.SetLeft(textBox, screenX + (screenWidth - textBox.MinWidth) / 2);
+        Canvas.SetTop(textBox, screenY + (screenHeight - textBox.FontSize * 2) / 2);
+
+        _mainCanvas.Children.Add(textBox);
+
+        bool finished = false;
+
+        void Commit()
+        {
+            if (finished) return;
+            finished = true;
+            CommitNodeLabelDirect(node, textBox.Text ?? "", textBox);
+        }
+
+        void Cancel()
+        {
+            if (finished) return;
+            finished = true;
+            CancelNodeLabelEditDirect(node, textBox);
+        }
+
+        textBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == global::Avalonia.Input.Key.Enter)
+            {
+                Commit();
+                e.Handled = true;
+            }
+            else if (e.Key == global::Avalonia.Input.Key.Escape)
+            {
+                Cancel();
+                e.Handled = true;
+            }
+        };
+
+        textBox.LostFocus += (s, e) => Commit();
+
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, global::Avalonia.Threading.DispatcherPriority.Render);
+
+        return true;
+    }
+
+    private void CommitNodeLabelDirect(Node node, string newLabel, TextBox textBox)
+    {
+        var trimmed = newLabel.Trim();
+        node.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
+        
+        _mainCanvas?.Children.Remove(textBox);
+        _directRenderer?.EndEditNode();
+        _directRenderer?.InvalidateVisual();
+    }
+
+    private void CancelNodeLabelEditDirect(Node node, TextBox textBox)
+    {
+        _mainCanvas?.Children.Remove(textBox);
+        _directRenderer?.EndEditNode();
+        _directRenderer?.InvalidateVisual();
     }
 
     /// <summary>
@@ -267,6 +375,14 @@ public partial class FlowCanvas : UserControl
     public void EndEditNodeLabel(Node node)
     {
         if (_theme == null) return;
+        
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            _directRenderer.EndEditNode();
+            _directRenderer.InvalidateVisual();
+            return;
+        }
+        
         _graphRenderer.EndEditLabel(node, _theme);
     }
 
@@ -277,6 +393,10 @@ public partial class FlowCanvas : UserControl
     /// <returns>True if the node is being edited.</returns>
     public bool IsEditingNodeLabel(Node node)
     {
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            return _directRenderer.EditingNodeId == node.Id;
+        }
         return _graphRenderer.IsEditingLabel(node);
     }
 
@@ -310,6 +430,13 @@ public partial class FlowCanvas : UserControl
     {
         if (_theme == null || _mainCanvas == null) return false;
 
+        // In direct rendering mode, create a TextBox overlay
+        if (_useDirectRendering && _directRenderer != null && Graph != null)
+        {
+            return BeginEditEdgeLabelDirect(edge);
+        }
+
+        // Normal visual tree mode
         var labelVisual = _graphRenderer.GetEdgeLabel(edge.Id);
         if (labelVisual == null)
         {
@@ -382,6 +509,103 @@ public partial class FlowCanvas : UserControl
         }, global::Avalonia.Threading.DispatcherPriority.Render);
 
         return true;
+    }
+
+    /// <summary>
+    /// Creates an inline editing TextBox overlay for edge labels in direct rendering mode.
+    /// </summary>
+    private bool BeginEditEdgeLabelDirect(Edge edge)
+    {
+        if (_mainCanvas == null || _theme == null || _directRenderer == null || Graph == null) return false;
+
+        // Tell DirectRenderer to skip drawing this edge's label
+        _directRenderer.BeginEditEdge(edge.Id);
+
+        // Calculate edge midpoint in screen coordinates
+        var model = _directRenderer.Model;
+        var (start, end) = model.GetEdgeEndpoints(edge, Graph);
+        var midpoint = model.GetEdgeMidpoint(start, end);
+        
+        var screenX = midpoint.X * _viewport.Zoom + _viewport.OffsetX;
+        var screenY = midpoint.Y * _viewport.Zoom + _viewport.OffsetY;
+
+        var scale = _viewport.Zoom;
+        var currentLabel = edge.Label ?? "Label";
+        
+        var textBox = new TextBox
+        {
+            Text = currentLabel,
+            FontSize = 12 * scale,
+            Foreground = _theme.NodeText,
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = _theme.NodeSelectedBorder,
+            Padding = new Thickness(4 * scale, 2 * scale),
+            MinWidth = 60,
+            Tag = ("EdgeLabelEditDirect", edge.Id)
+        };
+
+        Canvas.SetLeft(textBox, screenX);
+        Canvas.SetTop(textBox, screenY - 10 * scale);
+
+        _mainCanvas.Children.Add(textBox);
+
+        bool finished = false;
+
+        void Commit()
+        {
+            if (finished) return;
+            finished = true;
+            CommitEdgeLabelDirect(edge, textBox.Text ?? "", textBox);
+        }
+
+        void Cancel()
+        {
+            if (finished) return;
+            finished = true;
+            CancelEdgeLabelEditDirect(edge, textBox);
+        }
+
+        textBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == global::Avalonia.Input.Key.Enter)
+            {
+                Commit();
+                e.Handled = true;
+            }
+            else if (e.Key == global::Avalonia.Input.Key.Escape)
+            {
+                Cancel();
+                e.Handled = true;
+            }
+        };
+
+        textBox.LostFocus += (s, e) => Commit();
+
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, global::Avalonia.Threading.DispatcherPriority.Render);
+
+        return true;
+    }
+
+    private void CommitEdgeLabelDirect(Edge edge, string newLabel, TextBox textBox)
+    {
+        var trimmed = newLabel.Trim();
+        edge.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
+        
+        _mainCanvas?.Children.Remove(textBox);
+        _directRenderer?.EndEditEdge();
+        _directRenderer?.InvalidateVisual();
+    }
+
+    private void CancelEdgeLabelEditDirect(Edge edge, TextBox textBox)
+    {
+        _mainCanvas?.Children.Remove(textBox);
+        _directRenderer?.EndEditEdge();
+        _directRenderer?.InvalidateVisual();
     }
 
     private void CommitEdgeLabel(Edge edge, string newLabel, TextBox textBox, TextBlock labelVisual)
