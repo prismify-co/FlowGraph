@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Input;
 using FlowGraph.Core;
+using System.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Input.States;
@@ -10,23 +11,30 @@ namespace FlowGraph.Avalonia.Input.States;
 /// </summary>
 public class DraggingState : InputStateBase
 {
+    private readonly AvaloniaPoint _dragStartScreen;
     private readonly AvaloniaPoint _dragStartCanvas;
     private readonly Dictionary<string, Core.Point> _startPositions;
     private readonly FlowCanvasSettings _settings;
     private readonly List<string> _draggedNodeIds;
     private readonly List<Node> _draggedNodes;
     private bool _dragStartRaised;
+    private bool _dragThresholdMet;
+    
+    // Minimum distance (in screen pixels) before drag actually starts
+    private const double DragThreshold = 4.0;
 
     public override string Name => "Dragging";
 
     public DraggingState(Graph graph, AvaloniaPoint screenPosition, ViewportState viewport, FlowCanvasSettings settings)
     {
+        _dragStartScreen = screenPosition;
         _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
         _startPositions = new Dictionary<string, Core.Point>();
         _settings = settings;
         _draggedNodeIds = new List<string>();
         _draggedNodes = new List<Node>();
         _dragStartRaised = false;
+        _dragThresholdMet = false;
 
         // Collect all nodes to drag: selected AND draggable nodes + children of selected groups
         var nodesToDrag = new HashSet<string>();
@@ -50,7 +58,6 @@ public class DraggingState : InputStateBase
             var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
-                node.IsDragging = true;
                 _startPositions[node.Id] = node.Position;
                 _draggedNodeIds.Add(node.Id);
                 _draggedNodes.Add(node);
@@ -61,11 +68,7 @@ public class DraggingState : InputStateBase
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
-        
-        // Raise drag start event
-        var startPos = new Core.Point(_dragStartCanvas.X, _dragStartCanvas.Y);
-        context.RaiseNodeDragStart(_draggedNodes, startPos);
-        _dragStartRaised = true;
+        // Don't raise drag start until threshold is met
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
@@ -73,7 +76,37 @@ public class DraggingState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        var currentCanvas = context.ScreenToCanvas(GetPosition(context, e));
+        var currentScreen = GetPosition(context, e);
+        
+        // Check if we've met the drag threshold
+        if (!_dragThresholdMet)
+        {
+            var distX = currentScreen.X - _dragStartScreen.X;
+            var distY = currentScreen.Y - _dragStartScreen.Y;
+            var distance = Math.Sqrt(distX * distX + distY * distY);
+            
+            if (distance < DragThreshold)
+            {
+                // Haven't moved enough yet - don't start dragging
+                return StateTransitionResult.Stay();
+            }
+            
+            // Threshold met - start actual drag
+            _dragThresholdMet = true;
+            
+            // Set IsDragging on all nodes now
+            foreach (var node in _draggedNodes)
+            {
+                node.IsDragging = true;
+            }
+            
+            // Raise drag start event
+            var startPos = new Core.Point(_dragStartCanvas.X, _dragStartCanvas.Y);
+            context.RaiseNodeDragStart(_draggedNodes, startPos);
+            _dragStartRaised = true;
+        }
+
+        var currentCanvas = context.ScreenToCanvas(currentScreen);
         var deltaX = currentCanvas.X - _dragStartCanvas.X;
         var deltaY = currentCanvas.Y - _dragStartCanvas.Y;
 
@@ -113,6 +146,14 @@ public class DraggingState : InputStateBase
             {
                 context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
             }
+            return StateTransitionResult.TransitionTo(IdleState.Instance);
+        }
+
+        // If threshold was never met, this was just a click - don't record any position changes
+        if (!_dragThresholdMet)
+        {
+            ReleasePointer(e);
+            e.Handled = true;
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
 

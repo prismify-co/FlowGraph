@@ -241,7 +241,8 @@ public class FlowCanvasContextMenu
 
         if (menu != null)
         {
-            menu.Open(target);
+            // Always open on the canvas itself (not the dummy control which may not be in visual tree)
+            menu.Open(_canvas);
         }
     }
 
@@ -251,7 +252,7 @@ public class FlowCanvasContextMenu
     public void ShowCanvasMenu(Control target, CorePoint canvasPosition)
     {
         _contextMenuPosition = canvasPosition;
-        _canvasContextMenu?.Open(target);
+        _canvasContextMenu?.Open(_canvas);
     }
 
     #region Menu Action Handlers

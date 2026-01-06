@@ -136,6 +136,50 @@ public partial class FlowCanvas : UserControl
         NodeRenderers.Reset();
     }
 
+    /// <summary>
+    /// Enables direct GPU-accelerated rendering mode for maximum performance with very large graphs.
+    /// This bypasses the Avalonia visual tree entirely and draws directly to a DrawingContext.
+    /// Note: Some interactive features (inline editing, resize handles) are disabled in this mode.
+    /// </summary>
+    public void EnableDirectRendering()
+    {
+        _useDirectRendering = true;
+        
+        if (_directRenderer == null)
+        {
+            _directRenderer = new DirectGraphRenderer(Settings);
+        }
+
+        if (_mainCanvas != null && !_mainCanvas.Children.Contains(_directRenderer))
+        {
+            _mainCanvas.Children.Clear();
+            _mainCanvas.Children.Add(_directRenderer);
+            _directRenderer.Width = _mainCanvas.Bounds.Width;
+            _directRenderer.Height = _mainCanvas.Bounds.Height;
+        }
+    }
+
+    /// <summary>
+    /// Disables direct rendering mode and returns to normal visual tree rendering.
+    /// </summary>
+    public void DisableDirectRendering()
+    {
+        _useDirectRendering = false;
+        
+        if (_mainCanvas != null && _directRenderer != null)
+        {
+            _mainCanvas.Children.Remove(_directRenderer);
+        }
+        
+        // Force full re-render with normal mode
+        RenderGraph();
+    }
+
+    /// <summary>
+    /// Gets whether direct rendering mode is enabled.
+    /// </summary>
+    public bool IsDirectRenderingEnabled => _useDirectRendering;
+
     #endregion
 
     #region Events
@@ -374,6 +418,7 @@ public partial class FlowCanvas : UserControl
     private ViewportState _viewport = null!;
     private GridRenderer _gridRenderer = null!;
     private GraphRenderer _graphRenderer = null!;
+    private DirectGraphRenderer? _directRenderer;
     private InputStateMachine _inputStateMachine = null!;
     private InputStateContext _inputContext = null!;
     private SelectionManager _selectionManager = null!;
@@ -383,6 +428,9 @@ public partial class FlowCanvas : UserControl
     private ThemeResources _theme = null!;
     private AnimationManager _animationManager = null!;
     private EdgeRoutingManager _edgeRoutingManager = null!;
+
+    // Rendering mode
+    private bool _useDirectRendering;
 
     // Animation state
     private readonly Dictionary<string, double> _edgeOpacityOverrides = new();
@@ -547,9 +595,13 @@ public partial class FlowCanvas : UserControl
         {
             _viewport.SetViewSize(Bounds.Size);
         }
-        
-        RenderAll();
-        CenterOnGraph();
+
+        // Defer initial render until after first layout pass to avoid redundant heavy renders.
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            RenderAll();
+            CenterOnGraph();
+        }, global::Avalonia.Threading.DispatcherPriority.Loaded);
     }
 
     private void SetupEventHandlers()

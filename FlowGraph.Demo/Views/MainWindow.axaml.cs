@@ -629,14 +629,14 @@ public partial class MainWindow : Window
         FlowCanvas.DebugRenderingPerformance = true;
         _lastRenderDebug = null;
 
-        // For large graphs, enable simplified rendering
+        // For large graphs, enable direct rendering (GPU-accelerated, bypasses visual tree)
         if (nodeCount >= 500)
         {
-            FlowCanvas.EnableSimplifiedRendering();
+            FlowCanvas.EnableDirectRendering();
         }
         else
         {
-            FlowCanvas.DisableSimplifiedRendering();
+            FlowCanvas.DisableDirectRendering();
         }
 
         // Clear existing
@@ -653,7 +653,8 @@ public partial class MainWindow : Window
 
         var nodeTypes = new[] { "input", "Process", "output", "default" };
 
-        // Generate nodes in a grid (data only - fast)
+        // Generate nodes into a temporary list first (avoids ObservableCollection notifications)
+        var nodesList = new List<Node>(nodeCount);
         for (int i = 0; i < nodeCount; i++)
         {
             var col = i % cols;
@@ -674,29 +675,30 @@ public partial class MainWindow : Window
                 Outputs = nodeType != "output" ? [new Port { Id = "out", Type = "data" }] : []
             };
 
-            graph.Nodes.Add(node);
+            nodesList.Add(node);
         }
 
         var dataGenTime = sw.ElapsedMilliseconds;
         sw.Restart();
 
-        // Generate edges (connect each node to 1-2 nearby nodes - fewer edges for perf)
-        var edgeCount = 0;
-        var nodesWithOutputs = graph.Nodes.Where(n => n.Outputs.Count > 0).ToList();
+        // Generate edges into a temporary list first (avoids ObservableCollection notifications)
+        var edgesList = new List<Edge>();
+        var nodesWithOutputs = nodesList.Where(n => n.Outputs.Count > 0).ToList();
         
         foreach (var node in nodesWithOutputs)
         {
-            // Find nearby nodes that have inputs (limit search for performance)
-            var nearbyNodes = graph.Nodes
+            // Find nearby nodes that have inputs - only connect to immediate neighbors
+            var nearbyNodes = nodesList
                 .Where(n => n.Id != node.Id && n.Inputs.Count > 0)
-                .Where(n => Math.Abs(n.Position.X - node.Position.X) < spacingX * 3 &&
-                           Math.Abs(n.Position.Y - node.Position.Y) < spacingY * 3)
+                .Where(n => Math.Abs(n.Position.X - node.Position.X) < spacingX * 1.5 &&
+                           Math.Abs(n.Position.Y - node.Position.Y) < spacingY * 1.5)
+                .OrderBy(n => Math.Abs(n.Position.X - node.Position.X) + Math.Abs(n.Position.Y - node.Position.Y))
                 .Take(random.Next(1, 3))
                 .ToList();
 
             foreach (var target in nearbyNodes)
             {
-                graph.Edges.Add(new Edge
+                edgesList.Add(new Edge
                 {
                     Source = node.Id,
                     Target = target.Id,
@@ -704,18 +706,27 @@ public partial class MainWindow : Window
                     TargetPort = "in",
                     Type = EdgeType.Bezier
                 });
-                edgeCount++;
             }
         }
 
         var edgeGenTime = sw.ElapsedMilliseconds;
         sw.Restart();
 
+        // Use bulk add methods to avoid triggering UI updates for each item
+        graph.AddNodes(nodesList);
+        graph.AddEdges(edgesList);
+
+        var collectionAddTime = sw.ElapsedMilliseconds;
+        sw.Restart();
+
         // Fit to view first (calculate bounds without rendering)
         FlowCanvas.FitToView();
+
+        var fitTime = sw.ElapsedMilliseconds;
+        sw.Restart();
         
-        // Now render - this is the slow part
-        SetStatus($"Rendering {nodeCount}n/{edgeCount}e...");
+        // Now render - this should be fast with direct rendering
+        SetStatus($"Rendering {nodeCount}n/{edgesList.Count}e...");
         await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
         
         FlowCanvas.Refresh();
@@ -726,23 +737,25 @@ public partial class MainWindow : Window
         // Disable debug output after test
         FlowCanvas.DebugRenderingPerformance = false;
 
-        var simplified = nodeCount >= 500 ? " [S]" : "";
-        var total = dataGenTime + edgeGenTime + renderTime;
+        var directMode = nodeCount >= 500 ? " [Direct]" : "";
+        var total = dataGenTime + edgeGenTime + collectionAddTime + fitTime + renderTime;
         
         // Show detailed timing in status
-        var status = $"{nodeCount}n/{edgeCount}e{simplified} - D:{dataGenTime}ms E:{edgeGenTime}ms R:{renderTime}ms = {total}ms";
+        var status = $"{nodeCount}n/{edgesList.Count}e{directMode} - D:{dataGenTime}ms E:{edgeGenTime}ms C:{collectionAddTime}ms F:{fitTime}ms R:{renderTime}ms = {total}ms";
         SetStatus(status);
         
         // Show in Output window (View > Output in VS, select "Debug" from dropdown)
         System.Diagnostics.Debug.WriteLine($"\n=== STRESS TEST RESULTS ===");
-        System.Diagnostics.Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgeCount}, Simplified: {nodeCount >= 500}");
-        System.Diagnostics.Debug.WriteLine($"Data Gen: {dataGenTime}ms");
-        System.Diagnostics.Debug.WriteLine($"Edge Gen: {edgeGenTime}ms");
-        System.Diagnostics.Debug.WriteLine($"Render:   {renderTime}ms");
-        System.Diagnostics.Debug.WriteLine($"TOTAL:    {total}ms");
+        System.Diagnostics.Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgesList.Count}, DirectRendering: {nodeCount >= 500}");
+        System.Diagnostics.Debug.WriteLine($"Data Gen:       {dataGenTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Edge Gen:       {edgeGenTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Collection Add: {collectionAddTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Fit To View:    {fitTime}ms");
+        System.Diagnostics.Debug.WriteLine($"Render:         {renderTime}ms");
+        System.Diagnostics.Debug.WriteLine($"TOTAL:          {total}ms");
         if (_lastRenderDebug != null)
         {
-            System.Diagnostics.Debug.WriteLine($"Details:  {_lastRenderDebug}");
+            System.Diagnostics.Debug.WriteLine($"Details:        {_lastRenderDebug}");
         }
         System.Diagnostics.Debug.WriteLine("===========================\n");
     }

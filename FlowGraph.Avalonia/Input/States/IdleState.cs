@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
+using System.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Input.States;
@@ -109,16 +110,27 @@ public class IdleState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
+        Debug.WriteLine($"[IdleState.HandleNodeClick] Node={node.Id}, position=({position.X:F0},{position.Y:F0}), IsSelected={node.IsSelected}");
+
         // Check for group collapse button click (always allowed)
         if (node.IsGroup)
         {
-            var clickPos = e.GetPosition(control);
-            var scale = context.Viewport.Zoom;
-            var buttonWidth = 35 * scale;
-            var buttonHeight = 28 * scale;
+            // Calculate the click position relative to the node
+            // In direct rendering mode, we can't use e.GetPosition(control) because the control is a dummy
+            // Instead, convert screen position to canvas position and check relative to node position
+            var canvasPos = context.ScreenToCanvas(position);
+            var relativeX = canvasPos.X - node.Position.X;
+            var relativeY = canvasPos.Y - node.Position.Y;
+            
+            // Button area is in the top-left corner (approximately 30x25 canvas units)
+            var buttonWidth = 30.0;
+            var buttonHeight = 25.0;
 
-            if (clickPos.X < buttonWidth && clickPos.Y < buttonHeight)
+            Debug.WriteLine($"[IdleState.HandleNodeClick] Group click relative=({relativeX:F0},{relativeY:F0}), button area=({buttonWidth},{buttonHeight})");
+
+            if (relativeX >= 0 && relativeX < buttonWidth && relativeY >= 0 && relativeY < buttonHeight)
             {
+                Debug.WriteLine($"[IdleState.HandleNodeClick] Collapse button clicked for group {node.Id}");
                 context.RaiseGroupCollapseToggle(node.Id);
                 e.Handled = true;
                 return StateTransitionResult.Stay();
@@ -156,6 +168,7 @@ public class IdleState : InputStateBase
         {
             if (!ctrlHeld && !node.IsSelected)
             {
+                Debug.WriteLine($"[IdleState.HandleNodeClick] Selecting node {node.Id}, deselecting others");
                 foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
                     n.IsSelected = false;
                 node.IsSelected = true;
@@ -169,8 +182,10 @@ public class IdleState : InputStateBase
         // Start dragging only if node is draggable and selected
         if (node.IsDraggable && node.IsSelected)
         {
+            Debug.WriteLine($"[IdleState.HandleNodeClick] Starting drag for node {node.Id}");
             var dragState = new DraggingState(graph, position, context.Viewport, context.Settings);
-            CapturePointer(e, control);
+            // Always capture on RootPanel, not on the source control (which may be a dummy control in direct rendering mode)
+            CapturePointer(e, context.RootPanel);
             e.Handled = true;
             return StateTransitionResult.TransitionTo(dragState);
         }
@@ -292,7 +307,7 @@ public class IdleState : InputStateBase
         Port port,
         bool isOutput)
     {
-        if (portVisual == null || context.MainCanvas == null || context.Theme == null)
+        if (context.MainCanvas == null || context.Theme == null)
             return StateTransitionResult.Unhandled();
 
         // Check if node allows connections
@@ -313,7 +328,8 @@ public class IdleState : InputStateBase
         var position = GetPosition(context, e);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);
         connectingState.CreateTempLine(context.MainCanvas);
-        CapturePointer(e, portVisual);
+        // Always capture on RootPanel, not on the port visual (which may be a dummy control in direct rendering mode)
+        CapturePointer(e, context.RootPanel);
         e.Handled = true;
         return StateTransitionResult.TransitionTo(connectingState);
     }
@@ -326,10 +342,10 @@ public class IdleState : InputStateBase
         ResizeHandlePosition handlePos,
         AvaloniaPoint position)
     {
-        if (handle == null) return StateTransitionResult.Unhandled();
-
+        // Note: handle can be null in direct rendering mode, but resize isn't supported there anyway
         var resizeState = new ResizingState(node, handlePos, position, context.Settings, context.Viewport, context.GraphRenderer);
-        CapturePointer(e, handle);
+        // Always capture on RootPanel for consistent behavior
+        CapturePointer(e, context.RootPanel);
         e.Handled = true;
         return StateTransitionResult.TransitionTo(resizeState);
     }

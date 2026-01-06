@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using FlowGraph.Core;
 using System.Diagnostics;
 
@@ -21,6 +22,61 @@ public partial class FlowCanvas
     /// Subscribe to this to receive performance metrics.
     /// </summary>
     public event Action<string>? DebugOutput;
+
+    private bool _inputHandlersAttached;
+
+    private void EnsureCanvasInputHandlers()
+    {
+        if (_inputHandlersAttached || _mainCanvas == null) return;
+
+        _inputHandlersAttached = true;
+
+        // Centralized pointer handling to avoid attaching handlers per visual on each render.
+        _mainCanvas.AddHandler(PointerPressedEvent, OnCanvasPointerPressed, handledEventsToo: true);
+        _mainCanvas.AddHandler(PointerMovedEvent, OnCanvasPointerMoved, handledEventsToo: true);
+        _mainCanvas.AddHandler(PointerReleasedEvent, OnCanvasPointerReleased, handledEventsToo: true);
+    }
+
+    private void OnCanvasPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var source = e.Source as Control;
+
+        if (source?.Tag is ValueTuple<Node, Port, bool> portHit)
+        {
+            OnPortPointerPressed(source, e);
+            return;
+        }
+
+        if (source?.Tag is Edge)
+        {
+            OnEdgePointerPressed(source, e);
+            return;
+        }
+
+        if (source?.Tag is Node)
+        {
+            OnNodePointerPressed(source, e);
+            return;
+        }
+    }
+
+    private void OnCanvasPointerMoved(object? sender, PointerEventArgs e)
+    {
+        var source = e.Source as Control;
+        if (source?.Tag is Node)
+        {
+            OnNodePointerMoved(source, e);
+        }
+    }
+
+    private void OnCanvasPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        var source = e.Source as Control;
+        if (source?.Tag is Node)
+        {
+            OnNodePointerReleased(source, e);
+        }
+    }
 
     private void LogDebug(string message)
     {
@@ -55,6 +111,17 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
+        // Use direct rendering mode if enabled (bypasses visual tree for performance)
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            _directRenderer.Width = _mainCanvas.Bounds.Width;
+            _directRenderer.Height = _mainCanvas.Bounds.Height;
+            _directRenderer.Update(Graph, _viewport, _theme);
+            return;
+        }
+
+        EnsureCanvasInputHandlers();
+
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
         var totalNodes = Graph.Nodes.Count;
         var totalEdges = Graph.Edges.Count;
@@ -82,17 +149,13 @@ public partial class FlowCanvas
         RenderRegularNodes();
         var nodeTime = sw?.ElapsedMilliseconds ?? 0;
 
-        AttachPortEventHandlers();
-        var portHandlerTime = sw?.ElapsedMilliseconds ?? 0;
-
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
             var renderedNodes = _mainCanvas.Children.OfType<Control>().Count(c => c.Tag is Node);
             LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
                 $"Clear: {clearTime}ms, Groups: {groupTime - clearTime}ms, " +
-                $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms, " +
-                $"Handlers: {portHandlerTime - nodeTime}ms | " +
+                $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms | " +
                 $"Graph: {totalNodes}n/{totalEdges}e, Rendered: ~{renderedNodes} visuals");
         }
     }
@@ -114,10 +177,7 @@ public partial class FlowCanvas
 
         foreach (var group in groups)
         {
-            var control = _graphRenderer.RenderNode(_mainCanvas, group, _theme, null);
-            control.PointerPressed += OnNodePointerPressed;
-            control.PointerMoved += OnNodePointerMoved;
-            control.PointerReleased += OnNodePointerReleased;
+            _graphRenderer.RenderNode(_mainCanvas, group, _theme, null);
             count++;
         }
 
@@ -144,10 +204,7 @@ public partial class FlowCanvas
 
         foreach (var node in nodesToRender)
         {
-            var control = _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
-            control.PointerPressed += OnNodePointerPressed;
-            control.PointerMoved += OnNodePointerMoved;
-            control.PointerReleased += OnNodePointerReleased;
+            _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
             count++;
             portCount += node.Inputs.Count + node.Outputs.Count;
         }
@@ -178,6 +235,9 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
         
+        // Skip if using direct rendering - edges are drawn by DirectGraphRenderer
+        if (_useDirectRendering) return;
+        
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
         
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
@@ -187,46 +247,10 @@ public partial class FlowCanvas
         // Re-apply any active opacity overrides (important if edges were re-rendered during an animation)
         ApplyEdgeOpacityOverrides();
 
-        AttachEdgeEventHandlers();
-
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
-            LogDebug($"  [RenderEdges] {sw.ElapsedMilliseconds}ms | Render: {renderTime}ms, Handlers: {sw.ElapsedMilliseconds - renderTime}ms");
-        }
-    }
-
-    private void AttachPortEventHandlers()
-    {
-        if (Graph == null) return;
-        
-        foreach (var node in Graph.Nodes)
-        {
-            foreach (var port in node.Inputs.Concat(node.Outputs))
-            {
-                var portVisual = _graphRenderer.GetPortVisual(node.Id, port.Id);
-                if (portVisual != null)
-                {
-                    portVisual.PointerPressed += OnPortPointerPressed;
-                    portVisual.PointerEntered += OnPortPointerEntered;
-                    portVisual.PointerExited += OnPortPointerExited;
-                }
-            }
-        }
-    }
-
-    private void AttachEdgeEventHandlers()
-    {
-        if (Graph == null) return;
-        
-        foreach (var edge in Graph.Edges)
-        {
-            var edgeVisual = _graphRenderer.GetEdgeVisual(edge.Id);
-            if (edgeVisual != null)
-            {
-                edgeVisual.PointerPressed -= OnEdgePointerPressed;
-                edgeVisual.PointerPressed += OnEdgePointerPressed;
-            }
+            LogDebug($"  [RenderEdges] {sw.ElapsedMilliseconds}ms | Render: {renderTime}ms");
         }
     }
 

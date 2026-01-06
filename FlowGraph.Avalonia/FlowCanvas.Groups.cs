@@ -23,15 +23,25 @@ public partial class FlowCanvas
             .Where(n => n.IsSelected && !n.IsGroup)
             .ToList();
 
-        if (selectedNodes.Count < 2) return null;
+        System.Diagnostics.Debug.WriteLine($"[GroupSelected] Selected nodes: {selectedNodes.Count} ({string.Join(", ", selectedNodes.Select(n => n.Id))})");
+
+        if (selectedNodes.Count < 2)
+        {
+            System.Diagnostics.Debug.WriteLine($"[GroupSelected] Need at least 2 nodes, got {selectedNodes.Count}");
+            return null;
+        }
 
         var nodeIds = selectedNodes.Select(n => n.Id).ToList();
         var command = new GroupNodesCommand(Graph, nodeIds, groupLabel);
         CommandHistory.Execute(command);
 
         // Return the created group
-        return Graph.Nodes.FirstOrDefault(n => n.IsGroup &&
+        var createdGroup = Graph.Nodes.FirstOrDefault(n => n.IsGroup &&
             nodeIds.All(id => Graph.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
+        
+        System.Diagnostics.Debug.WriteLine($"[GroupSelected] Created group: {createdGroup?.Id ?? "null"}");
+        
+        return createdGroup;
     }
 
     /// <summary>

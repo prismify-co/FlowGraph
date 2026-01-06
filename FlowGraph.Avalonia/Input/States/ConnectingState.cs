@@ -21,7 +21,7 @@ public class ConnectingState : InputStateBase
     private readonly bool _fromOutput;
     private AvaloniaPoint _endPoint;
     private AvaloniaPath? _tempLine;
-    private readonly Ellipse _portVisual;
+    private readonly Ellipse? _portVisual;
     private readonly Cursor? _previousCursor;
     private readonly ThemeResources _theme;
 
@@ -43,7 +43,7 @@ public class ConnectingState : InputStateBase
         Port sourcePort, 
         bool fromOutput, 
         AvaloniaPoint startPosition,
-        Ellipse portVisual,
+        Ellipse? portVisual,
         ThemeResources theme)
     {
         _sourceNode = sourceNode;
@@ -51,12 +51,15 @@ public class ConnectingState : InputStateBase
         _fromOutput = fromOutput;
         _endPoint = startPosition;
         _portVisual = portVisual;
-        _previousCursor = portVisual.Cursor;
+        _previousCursor = portVisual?.Cursor;
         _theme = theme;
         _connectStartRaised = false;
 
-        // Change cursor during connection
-        portVisual.Cursor = new Cursor(StandardCursorType.Hand);
+        // Change cursor during connection (only if we have a real visual)
+        if (portVisual != null)
+        {
+            portVisual.Cursor = new Cursor(StandardCursorType.Hand);
+        }
     }
 
     public void CreateTempLine(Canvas canvas)
@@ -82,8 +85,11 @@ public class ConnectingState : InputStateBase
 
     public override void Exit(InputStateContext context)
     {
-        // Restore cursor
-        _portVisual.Cursor = _previousCursor;
+        // Restore cursor (only if we have a real visual)
+        if (_portVisual != null)
+        {
+            _portVisual.Cursor = _previousCursor;
+        }
 
         // Restore hovered port color
         RestoreHoveredPortColor();

@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using FlowGraph.Core;
+using System.Diagnostics;
 
 namespace FlowGraph.Avalonia;
 
@@ -29,12 +30,43 @@ public partial class FlowCanvas
 
     private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        var sw = Stopwatch.StartNew();
+        
         var point = e.GetCurrentPoint(_rootPanel);
+        var screenPos = e.GetPosition(_rootPanel);
+        
+        Debug.WriteLine($"[Input] PointerPressed at ({screenPos.X:F0}, {screenPos.Y:F0}), DirectRendering={_useDirectRendering}, RightButton={point.Properties.IsRightButtonPressed}");
         
         // Handle right-click for context menu
         if (point.Properties.IsRightButtonPressed)
         {
-            HandleContextMenuRequest(e, null, null);
+            Debug.WriteLine($"[Input] Right-click detected, performing hit test...");
+            
+            // In direct rendering mode, do hit testing first to find what was clicked
+            if (_useDirectRendering && _directRenderer != null)
+            {
+                var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+                Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
+                
+                if (rightClickHit?.Tag is Node node)
+                {
+                    HandleContextMenuRequest(e, rightClickHit, node);
+                }
+                else if (rightClickHit?.Tag is Edge edge)
+                {
+                    HandleContextMenuRequest(e, rightClickHit, edge);
+                }
+                else
+                {
+                    // Empty canvas
+                    HandleContextMenuRequest(e, null, null);
+                }
+            }
+            else
+            {
+                // Normal rendering - use visual tree hit testing
+                HandleContextMenuRequest(e, null, null);
+            }
             return;
         }
 
@@ -42,10 +74,29 @@ public partial class FlowCanvas
         _inputContext.Graph = Graph;
         
         // Determine the source control for state handling
-        var screenPos = e.GetPosition(_rootPanel);
-        var hitElement = _mainCanvas?.InputHitTest(screenPos);
+        Control? hitElement = null;
         
-        _inputStateMachine.HandlePointerPressed(e, hitElement as Control);
+        // In direct rendering mode, use coordinate-based hit testing
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            var hitSw = Stopwatch.StartNew();
+            hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+            hitSw.Stop();
+            Debug.WriteLine($"[Input] DirectHitTest took {hitSw.ElapsedMilliseconds}ms, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
+        }
+        else
+        {
+            hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
+            Debug.WriteLine($"[Input] VisualTreeHitTest, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
+        }
+        
+        var stateSw = Stopwatch.StartNew();
+        _inputStateMachine.HandlePointerPressed(e, hitElement);
+        stateSw.Stop();
+        
+        sw.Stop();
+        Debug.WriteLine($"[Input] StateMachine took {stateSw.ElapsedMilliseconds}ms, Total={sw.ElapsedMilliseconds}ms");
+        
         Focus();
     }
 
@@ -155,6 +206,48 @@ public partial class FlowCanvas
         _inputStateMachine.HandlePointerReleased(e);
     }
 
+    /// <summary>
+    /// Performs hit testing for direct rendering mode by checking coordinates against node/port/edge positions.
+    /// Returns a dummy Control with the appropriate Tag set for the input state machine.
+    /// </summary>
+    private Control? PerformDirectRenderingHitTest(double screenX, double screenY)
+    {
+        if (_directRenderer == null) return null;
+
+        // Check ports first (they're smaller targets on top of nodes)
+        var portHit = _directRenderer.HitTestPort(screenX, screenY);
+        if (portHit.HasValue)
+        {
+            Debug.WriteLine($"[HitTest] Port hit: {portHit.Value.port.Id} on node {portHit.Value.node.Id}");
+            // Create a dummy ellipse with the port info as tag
+            var dummyPort = new Ellipse { Tag = (portHit.Value.node, portHit.Value.port, portHit.Value.isOutput) };
+            return dummyPort;
+        }
+
+        // Check nodes
+        var nodeHit = _directRenderer.HitTestNode(screenX, screenY);
+        if (nodeHit != null)
+        {
+            Debug.WriteLine($"[HitTest] Node hit: {nodeHit.Id}");
+            // Create a dummy control with the node as tag
+            var dummyNode = new Border { Tag = nodeHit };
+            return dummyNode;
+        }
+
+        // Check edges AFTER nodes - edges are visually behind nodes
+        var edgeHit = _directRenderer.HitTestEdge(screenX, screenY);
+        if (edgeHit != null)
+        {
+            Debug.WriteLine($"[HitTest] Edge hit: {edgeHit.Id}");
+            // Create a dummy path with the edge as tag
+            var dummyEdge = new global::Avalonia.Controls.Shapes.Path { Tag = edgeHit };
+            return dummyEdge;
+        }
+
+        Debug.WriteLine($"[HitTest] No hit at ({screenX:F0}, {screenY:F0})");
+        return null;
+    }
+
     #endregion
 
     #region Context Menu
@@ -168,20 +261,24 @@ public partial class FlowCanvas
         var canvasPos = _viewport.ScreenToCanvas(screenPos);
         var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
 
+        // In direct rendering mode, target may be a dummy control - use _rootPanel for positioning
+        var menuAnchor = target ?? _rootPanel;
+
         if (targetObject is Node node)
         {
-            // Select node if not already selected
+            // Only change selection if the clicked node is NOT already selected
+            // This preserves multi-selection for grouping etc.
             if (!node.IsSelected && Graph != null)
             {
                 foreach (var n in Graph.Nodes)
                     n.IsSelected = false;
                 node.IsSelected = true;
             }
-            _contextMenu.Show(target!, e, canvasPoint);
+            _contextMenu.Show(menuAnchor!, e, canvasPoint);
         }
         else if (targetObject is Edge edge)
         {
-            // Select edge if not already selected
+            // Only change selection if the clicked edge is NOT already selected
             if (!edge.IsSelected && Graph != null)
             {
                 foreach (var n in Graph.Nodes)
@@ -190,32 +287,43 @@ public partial class FlowCanvas
                     ed.IsSelected = false;
                 edge.IsSelected = true;
             }
-            _contextMenu.Show(target!, e, canvasPoint);
+            _contextMenu.Show(menuAnchor!, e, canvasPoint);
         }
         else
         {
-            // Empty canvas - check if we hit a node or edge via hit testing
-            var hitElement = _mainCanvas?.InputHitTest(screenPos);
+            // Empty canvas or need to hit test
+            Control? hitElement = null;
             
-            if (hitElement is Control control && control.Tag is Node hitNode)
+            if (_useDirectRendering && _directRenderer != null)
             {
+                hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+            }
+            else
+            {
+                hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
+            }
+            
+            if (hitElement?.Tag is Node hitNode)
+            {
+                // Only change selection if the clicked node is NOT already selected
                 if (!hitNode.IsSelected)
                 {
                     foreach (var n in Graph?.Nodes ?? [])
                         n.IsSelected = false;
                     hitNode.IsSelected = true;
                 }
-                _contextMenu.Show(control, e, canvasPoint);
+                _contextMenu.Show(_rootPanel!, e, canvasPoint);
             }
-            else if (hitElement is Control edgeControl && edgeControl.Tag is Edge hitEdge)
+            else if (hitElement?.Tag is Edge hitEdge)
             {
+                // Only change selection if the clicked edge is NOT already selected
                 if (!hitEdge.IsSelected)
                 {
                     foreach (var ed in Graph?.Edges ?? [])
                         ed.IsSelected = false;
                     hitEdge.IsSelected = true;
                 }
-                _contextMenu.Show(edgeControl, e, canvasPoint);
+                _contextMenu.Show(_rootPanel!, e, canvasPoint);
             }
             else
             {

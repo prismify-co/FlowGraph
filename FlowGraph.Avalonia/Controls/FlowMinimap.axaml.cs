@@ -122,6 +122,7 @@ public partial class FlowMinimap : UserControl
         _subscribedGraph = graph;
         graph.Nodes.CollectionChanged += OnGraphChanged;
         graph.Edges.CollectionChanged += OnGraphChanged;
+        graph.BatchLoadCompleted += OnBatchLoadCompleted;
 
         foreach (var node in graph.Nodes)
             node.PropertyChanged += OnNodeChanged;
@@ -133,6 +134,7 @@ public partial class FlowMinimap : UserControl
 
         _subscribedGraph.Nodes.CollectionChanged -= OnGraphChanged;
         _subscribedGraph.Edges.CollectionChanged -= OnGraphChanged;
+        _subscribedGraph.BatchLoadCompleted -= OnBatchLoadCompleted;
 
         foreach (var node in _subscribedGraph.Nodes)
             node.PropertyChanged -= OnNodeChanged;
@@ -149,6 +151,22 @@ public partial class FlowMinimap : UserControl
 
     private void OnGraphChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        // Skip UI updates during batch loading - will render once when batch completes
+        if (_subscribedGraph?.IsBatchLoading == true)
+        {
+            // Still need to track property changes for new nodes
+            if (e.NewItems != null)
+                foreach (var item in e.NewItems)
+                    if (item is Node node)
+                        node.PropertyChanged += OnNodeChanged;
+
+            if (e.OldItems != null)
+                foreach (var item in e.OldItems)
+                    if (item is Node node)
+                        node.PropertyChanged -= OnNodeChanged;
+            return;
+        }
+
         if (e.NewItems != null)
             foreach (var item in e.NewItems)
                 if (item is Node node)
@@ -159,6 +177,20 @@ public partial class FlowMinimap : UserControl
                 if (item is Node node)
                     node.PropertyChanged -= OnNodeChanged;
 
+        RenderMinimap();
+    }
+
+    private void OnBatchLoadCompleted(object? sender, EventArgs e)
+    {
+        // Re-subscribe to all nodes that were added during batch
+        if (_subscribedGraph != null)
+        {
+            foreach (var node in _subscribedGraph.Nodes)
+            {
+                node.PropertyChanged -= OnNodeChanged; // Avoid double-subscribe
+                node.PropertyChanged += OnNodeChanged;
+            }
+        }
         RenderMinimap();
     }
 

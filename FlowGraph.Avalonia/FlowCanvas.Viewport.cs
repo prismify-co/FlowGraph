@@ -16,6 +16,12 @@ public partial class FlowCanvas
     /// </summary>
     public void RefreshEdges()
     {
+        // In direct rendering mode, just trigger a full redraw
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            _directRenderer.InvalidateVisual();
+            return;
+        }
         RenderEdges();
     }
 
