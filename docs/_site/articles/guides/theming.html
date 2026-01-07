@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Theming | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Theming | FlowGraph ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="theming">Theming</h1>
+
+<p>FlowGraph supports full theming through Avalonia's resource system. All colors can be customized by defining resources in your application.</p>
+<h2 id="theme-resources">Theme Resources</h2>
+<p>Define resources in your <code>App.axaml</code>:</p>
+<pre><code class="lang-xml">&lt;Application.Resources&gt;
+    &lt;!-- Canvas --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasBackground&quot; Color=&quot;#1E1E1E&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasGridColor&quot; Color=&quot;#333333&quot;/&gt;
+    
+    &lt;!-- Nodes --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeBackground&quot; Color=&quot;#2D2D30&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeBorder&quot; Color=&quot;#4682B4&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeSelectedBorder&quot; Color=&quot;#FF6B00&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeText&quot; Color=&quot;#FFFFFF&quot;/&gt;
+    
+    &lt;!-- Input Nodes --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasInputNodeBackground&quot; Color=&quot;#1B5E20&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasInputNodeBorder&quot; Color=&quot;#4CAF50&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasInputNodeText&quot; Color=&quot;#FFFFFF&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasInputNodeIcon&quot; Color=&quot;#4CAF50&quot;/&gt;
+    
+    &lt;!-- Output Nodes --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasOutputNodeBackground&quot; Color=&quot;#B71C1C&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasOutputNodeBorder&quot; Color=&quot;#EF5350&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasOutputNodeText&quot; Color=&quot;#FFFFFF&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasOutputNodeIcon&quot; Color=&quot;#EF5350&quot;/&gt;
+    
+    &lt;!-- Edges --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasEdgeStroke&quot; Color=&quot;#808080&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasEdgeSelectedStroke&quot; Color=&quot;#FF6B00&quot;/&gt;
+    
+    &lt;!-- Ports --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasPortBackground&quot; Color=&quot;#4682B4&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasPortBorder&quot; Color=&quot;#FFFFFF&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasPortHover&quot; Color=&quot;#FF6B00&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasPortValidConnection&quot; Color=&quot;#22C55E&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasPortInvalidConnection&quot; Color=&quot;#EF4444&quot;/&gt;
+    
+    &lt;!-- Groups --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasGroupBackground&quot; Color=&quot;#18FFFFFF&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasGroupBorder&quot; Color=&quot;#606060&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasGroupLabelText&quot; Color=&quot;#B0B0B0&quot;/&gt;
+    
+    &lt;!-- Selection --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasSelectionBoxFill&quot; Color=&quot;#204682B4&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasSelectionBoxStroke&quot; Color=&quot;#4682B4&quot;/&gt;
+    
+    &lt;!-- Minimap --&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasMinimapBackground&quot; Color=&quot;#252526&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasMinimapViewportFill&quot; Color=&quot;#304682B4&quot;/&gt;
+    &lt;SolidColorBrush x:Key=&quot;FlowCanvasMinimapViewportStroke&quot; Color=&quot;#4682B4&quot;/&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h2 id="light-and-dark-themes">Light and Dark Themes</h2>
+<p>FlowGraph automatically detects light and dark themes via Avalonia's <code>ActualThemeVariant</code>. Default colors adjust based on the detected theme.</p>
+<p>To force a specific theme:</p>
+<pre><code class="lang-csharp">Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
+</code></pre>
+<h2 id="accessing-theme-resources">Accessing Theme Resources</h2>
+<p>In custom renderers, use the <code>ThemeResources</code> class:</p>
+<pre><code class="lang-csharp">public override Control CreateNodeVisual(Node node, NodeRenderContext context)
+{
+    var background = context.Theme.NodeBackground;
+    var border = context.Theme.NodeBorder;
+    // ...
+}
+</code></pre>
+<h2 id="available-resource-keys">Available Resource Keys</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Canvas</td>
+<td><code>FlowCanvasBackground</code>, <code>FlowCanvasGridColor</code></td>
+</tr>
+<tr>
+<td>Node</td>
+<td><code>FlowCanvasNodeBackground</code>, <code>FlowCanvasNodeBorder</code>, <code>FlowCanvasNodeSelectedBorder</code>, <code>FlowCanvasNodeText</code></td>
+</tr>
+<tr>
+<td>Input Node</td>
+<td><code>FlowCanvasInputNodeBackground</code>, <code>FlowCanvasInputNodeBorder</code>, <code>FlowCanvasInputNodeText</code>, <code>FlowCanvasInputNodeIcon</code></td>
+</tr>
+<tr>
+<td>Output Node</td>
+<td><code>FlowCanvasOutputNodeBackground</code>, <code>FlowCanvasOutputNodeBorder</code>, <code>FlowCanvasOutputNodeText</code>, <code>FlowCanvasOutputNodeIcon</code></td>
+</tr>
+<tr>
+<td>Edge</td>
+<td><code>FlowCanvasEdgeStroke</code>, <code>FlowCanvasEdgeSelectedStroke</code></td>
+</tr>
+<tr>
+<td>Port</td>
+<td><code>FlowCanvasPortBackground</code>, <code>FlowCanvasPortBorder</code>, <code>FlowCanvasPortHover</code>, <code>FlowCanvasPortValidConnection</code>, <code>FlowCanvasPortInvalidConnection</code></td>
+</tr>
+<tr>
+<td>Group</td>
+<td><code>FlowCanvasGroupBackground</code>, <code>FlowCanvasGroupBorder</code>, <code>FlowCanvasGroupLabelText</code></td>
+</tr>
+<tr>
+<td>Selection</td>
+<td><code>FlowCanvasSelectionBoxFill</code>, <code>FlowCanvasSelectionBoxStroke</code></td>
+</tr>
+<tr>
+<td>Minimap</td>
+<td><code>FlowCanvasMinimapBackground</code>, <code>FlowCanvasMinimapViewportFill</code>, <code>FlowCanvasMinimapViewportStroke</code></td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

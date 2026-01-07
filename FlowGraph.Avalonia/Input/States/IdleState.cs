@@ -116,19 +116,25 @@ public class IdleState : InputStateBase
         if (node.IsGroup)
         {
             // Calculate the click position relative to the node
-            // In direct rendering mode, we can't use e.GetPosition(control) because the control is a dummy
-            // Instead, convert screen position to canvas position and check relative to node position
             var canvasPos = context.ScreenToCanvas(position);
             var relativeX = canvasPos.X - node.Position.X;
             var relativeY = canvasPos.Y - node.Position.Y;
             
-            // Button area is in the top-left corner (approximately 30x25 canvas units)
-            var buttonWidth = 30.0;
-            var buttonHeight = 25.0;
+            // Button area uses the same constants as GraphRenderModel
+            var buttonX = GraphRenderModel.GroupHeaderMarginX;
+            var buttonY = GraphRenderModel.GroupHeaderMarginY;
+            var buttonSize = GraphRenderModel.GroupCollapseButtonSize;
+            
+            // Add extra padding for easier clicking
+            var hitPadding = 4.0;
+            var hitLeft = buttonX - hitPadding;
+            var hitTop = buttonY - hitPadding;
+            var hitRight = buttonX + buttonSize + hitPadding;
+            var hitBottom = buttonY + buttonSize + hitPadding;
 
-            Debug.WriteLine($"[IdleState.HandleNodeClick] Group click relative=({relativeX:F0},{relativeY:F0}), button area=({buttonWidth},{buttonHeight})");
+            Debug.WriteLine($"[IdleState.HandleNodeClick] Group click relative=({relativeX:F0},{relativeY:F0}), button area=({hitLeft:F0},{hitTop:F0})-({hitRight:F0},{hitBottom:F0})");
 
-            if (relativeX >= 0 && relativeX < buttonWidth && relativeY >= 0 && relativeY < buttonHeight)
+            if (relativeX >= hitLeft && relativeX < hitRight && relativeY >= hitTop && relativeY < hitBottom)
             {
                 Debug.WriteLine($"[IdleState.HandleNodeClick] Collapse button clicked for group {node.Id}");
                 context.RaiseGroupCollapseToggle(node.Id);

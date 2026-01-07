@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ThemeResources | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ThemeResources | FlowGraph ">
+      
+      <meta name="description" content="Provides theme-aware resource access for FlowCanvas components.  All colors can be customized by defining resources in your App.axaml:  &amp;lt;Application.Resources&amp;gt;     &amp;lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeBackground&quot; Color=&quot;#2D2D30&quot;/&amp;gt;     &amp;lt;SolidColorBrush x:Key=&quot;FlowCanvasNodeBorder&quot; Color=&quot;#4682B4&quot;/&amp;gt;     &amp;lt;!-- etc. --&amp;gt; &amp;lt;/Application.Resources&amp;gt;  Available resource keys:  Canvas: FlowCanvasBackground, FlowCanvasGridColorNode: FlowCanvasNodeBackground, FlowCanvasNodeBorder, FlowCanvasNodeSelectedBorder, FlowCanvasNodeTextInput Node: FlowCanvasInputNodeBackground, FlowCanvasInputNodeBorder, FlowCanvasInputNodeText, FlowCanvasInputNodeIconOutput Node: FlowCanvasOutputNodeBackground, FlowCanvasOutputNodeBorder, FlowCanvasOutputNodeText, FlowCanvasOutputNodeIconEdge: FlowCanvasEdgeStroke, FlowCanvasEdgeSelectedStrokePort: FlowCanvasPortBackground, FlowCanvasPortBorder, FlowCanvasPortHover, FlowCanvasPortValidConnection, FlowCanvasPortInvalidConnectionGroup: FlowCanvasGroupBackground, FlowCanvasGroupBorder, FlowCanvasGroupLabelTextSelection: FlowCanvasSelectionBoxFill, FlowCanvasSelectionBoxStrokeMinimap: FlowCanvasMinimapBackground, FlowCanvasMinimapViewportFill, FlowCanvasMinimapViewportStroke">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Avalonia_Rendering_ThemeResources.md&amp;value=---%0Auid%3A%20FlowGraph.Avalonia.Rendering.ThemeResources%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.Rendering.ThemeResources">
+
+
+
+  <h1 id="FlowGraph_Avalonia_Rendering_ThemeResources" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources" class="text-break">
+Class ThemeResources  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Avalonia.html">Avalonia</a>.<a class="xref" href="FlowGraph.Avalonia.Rendering.html">Rendering</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides theme-aware resource access for FlowCanvas components.</p>
+<p>
+All colors can be customized by defining resources in your App.axaml:
+</p>
+<pre><code class="lang-csharp">&lt;Application.Resources&gt;
+    &lt;SolidColorBrush x:Key="FlowCanvasNodeBackground" Color="#2D2D30"/&gt;
+    &lt;SolidColorBrush x:Key="FlowCanvasNodeBorder" Color="#4682B4"/&gt;
+    &lt;!-- etc. --&gt;
+&lt;/Application.Resources&gt;</code></pre>
+<p>
+Available resource keys:
+</p>
+<ul><li>Canvas: FlowCanvasBackground, FlowCanvasGridColor</li><li>Node: FlowCanvasNodeBackground, FlowCanvasNodeBorder, FlowCanvasNodeSelectedBorder, FlowCanvasNodeText</li><li>Input Node: FlowCanvasInputNodeBackground, FlowCanvasInputNodeBorder, FlowCanvasInputNodeText, FlowCanvasInputNodeIcon</li><li>Output Node: FlowCanvasOutputNodeBackground, FlowCanvasOutputNodeBorder, FlowCanvasOutputNodeText, FlowCanvasOutputNodeIcon</li><li>Edge: FlowCanvasEdgeStroke, FlowCanvasEdgeSelectedStroke</li><li>Port: FlowCanvasPortBackground, FlowCanvasPortBorder, FlowCanvasPortHover, FlowCanvasPortValidConnection, FlowCanvasPortInvalidConnection</li><li>Group: FlowCanvasGroupBackground, FlowCanvasGroupBorder, FlowCanvasGroupLabelText</li><li>Selection: FlowCanvasSelectionBoxFill, FlowCanvasSelectionBoxStroke</li><li>Minimap: FlowCanvasMinimapBackground, FlowCanvasMinimapViewportFill, FlowCanvasMinimapViewportStroke</li></ul>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ThemeResources</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ThemeResources</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources__ctor_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources__ctor_Avalonia_StyledElement_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.#ctor(Avalonia.StyledElement)">
+  ThemeResources(StyledElement)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ThemeResources(StyledElement element)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>element</code> <span class="xref">StyledElement</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_Background_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.Background*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_Background" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.Background">
+  Background
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush Background { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_EdgeSelectedStroke_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.EdgeSelectedStroke*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_EdgeSelectedStroke" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.EdgeSelectedStroke">
+  EdgeSelectedStroke
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush EdgeSelectedStroke { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_EdgeStroke_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.EdgeStroke*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_EdgeStroke" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.EdgeStroke">
+  EdgeStroke
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush EdgeStroke { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GridColor_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GridColor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GridColor" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GridColor">
+  GridColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GridColor { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBackground">
+  GroupBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBodyBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBodyBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBodyBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBodyBackground">
+  GroupBodyBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupBodyBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupBorder">
+  GroupBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderBackground">
+  GroupHeaderBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupHeaderBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderHover_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderHover*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderHover" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderHover">
+  GroupHeaderHover
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupHeaderHover { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderText_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderText" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText">
+  GroupHeaderText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupHeaderText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupLabelText_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupLabelText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GroupLabelText" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GroupLabelText">
+  GroupLabelText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GroupLabelText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground">
+  InputNodeBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush InputNodeBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBorder">
+  InputNodeBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush InputNodeBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeIcon_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeIcon*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeIcon" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeIcon">
+  InputNodeIcon
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush InputNodeIcon { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeText_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeText" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeText">
+  InputNodeText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush InputNodeText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_IsLightTheme_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.IsLightTheme*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_IsLightTheme" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.IsLightTheme">
+  IsLightTheme
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if the current theme is light or dark.
+Cached for performance - call InvalidateThemeCache() if theme changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsLightTheme { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground">
+  MinimapBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush MinimapBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapViewportFill_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapViewportFill*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapViewportFill" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapViewportFill">
+  MinimapViewportFill
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush MinimapViewportFill { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapViewportStroke_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapViewportStroke*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_MinimapViewportStroke" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.MinimapViewportStroke">
+  MinimapViewportStroke
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush MinimapViewportStroke { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeBackground">
+  NodeBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush NodeBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeBorder">
+  NodeBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush NodeBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeSelectedBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeSelectedBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeSelectedBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeSelectedBorder">
+  NodeSelectedBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush NodeSelectedBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeText_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_NodeText" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.NodeText">
+  NodeText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush NodeText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBackground">
+  OutputNodeBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush OutputNodeBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBorder">
+  OutputNodeBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush OutputNodeBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeIcon_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeIcon*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeIcon" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeIcon">
+  OutputNodeIcon
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush OutputNodeIcon { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeText_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_OutputNodeText" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeText">
+  OutputNodeText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush OutputNodeText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_PortBackground_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_PortBackground" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortBackground">
+  PortBackground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush PortBackground { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_PortBorder_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_PortBorder" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortBorder">
+  PortBorder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush PortBorder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_PortHover_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortHover*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_PortHover" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortHover">
+  PortHover
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush PortHover { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_PortInvalidConnection_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortInvalidConnection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_PortInvalidConnection" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortInvalidConnection">
+  PortInvalidConnection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush PortInvalidConnection { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_PortValidConnection_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_PortValidConnection" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection">
+  PortValidConnection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush PortValidConnection { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_SelectionBoxFill_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxFill*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_SelectionBoxFill" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxFill">
+  SelectionBoxFill
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush SelectionBoxFill { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_SelectionBoxStroke_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_SelectionBoxStroke" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke">
+  SelectionBoxStroke
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush SelectionBoxStroke { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GetBrush_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GetBrush_System_String_System_String_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush(System.String,System.String)">
+  GetBrush(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a brush resource with a fallback color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBrush GetBrush(string key, string fallbackColor)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>fallbackColor</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_GetResource_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GetResource*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_GetResource__1_System_String___0_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.GetResource``1(System.String,``0)">
+  GetResource&lt;T&gt;(string, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a theme resource with a fallback value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetResource&lt;T&gt;(string key, T fallback) where T : class</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>fallback</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_ThemeResources_InvalidateThemeCache_" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InvalidateThemeCache*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_ThemeResources_InvalidateThemeCache" data-uid="FlowGraph.Avalonia.Rendering.ThemeResources.InvalidateThemeCache">
+  InvalidateThemeCache()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the cached theme detection.
+Call this when the theme changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateThemeCache()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/ThemeResources.cs/#L34" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

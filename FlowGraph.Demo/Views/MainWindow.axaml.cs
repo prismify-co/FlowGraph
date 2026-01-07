@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using FlowGraph.Avalonia;
 using FlowGraph.Avalonia.Animation;
 using FlowGraph.Avalonia.Controls;
+using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using FlowGraph.Demo.Helpers;
 using CorePoint = FlowGraph.Core.Point;
@@ -29,6 +30,9 @@ public partial class MainWindow : Window
         // Disable built-in grid and background since we're using FlowBackground
         FlowCanvas.Settings.ShowGrid = false;
         FlowCanvas.Settings.ShowBackground = false;
+        
+        // Register custom node renderers for the React Flow-style demo
+        RegisterCustomNodeRenderers();
         
         // Set the target canvas for FlowBackground (must be done after InitializeComponent)
         FlowBackground.TargetCanvas = FlowCanvas;
@@ -54,6 +58,15 @@ public partial class MainWindow : Window
             _debugger = new AnimationDebugger(FlowCanvas);
             _debugger.IsEnabled = false; // Disabled by default
         };
+    }
+
+    private void RegisterCustomNodeRenderers()
+    {
+        // Register the React Flow-style node renderers
+        FlowCanvas.NodeRenderers.Register("colorpicker", new ColorPickerNodeRenderer());
+        FlowCanvas.NodeRenderers.Register("radiobutton", new RadioButtonNodeRenderer());
+        FlowCanvas.NodeRenderers.Register("zoomslider", new ZoomSliderNodeRenderer());
+        FlowCanvas.NodeRenderers.Register("outputdisplay", new OutputDisplayNodeRenderer());
     }
 
     private string? _lastRenderDebug;
