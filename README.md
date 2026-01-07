@@ -386,10 +386,6 @@ FlowGraph/
 - .NET 9.0 or later
 - Avalonia 11.2 or later
 
-## Roadmap
-
-See [ROADMAP.md](ROADMAP.md) for planned features.
-
 ## Contributing
 
 Contributions are welcome. Priority areas:
