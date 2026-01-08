@@ -94,11 +94,8 @@ public class Scene3DControl : OpenGlControlBase
 
     try
     {
-      Console.WriteLine("Scene3DControl: Starting OpenGL initialization...");
-
       // Create Silk.NET GL context from Avalonia's context
       _gl = GL.GetApi(gl.GetProcAddress);
-      Console.WriteLine($"Scene3DControl: GL context created, version: {_gl.GetStringS(StringName.Version)}");
 
       // Create and initialize the scene
       _scene = new ShapeScene();
@@ -111,16 +108,10 @@ public class Scene3DControl : OpenGlControlBase
 
       // Start animation if needed
       UpdateAnimationTimer(Parameters.AutoRotate);
-
-      Console.WriteLine("Scene3DControl: OpenGL initialization successful");
-      Debug.WriteLine("Scene3DControl: OpenGL initialization successful");
     }
     catch (Exception ex)
     {
       Console.WriteLine($"Scene3DControl: OpenGL initialization failed: {ex.Message}");
-      Console.WriteLine($"Stack trace: {ex.StackTrace}");
-      Debug.WriteLine($"Scene3DControl: OpenGL initialization failed: {ex.Message}");
-      Debug.WriteLine($"Stack trace: {ex.StackTrace}");
       _scene = null;
       _gl = null;
     }

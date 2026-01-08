@@ -34,15 +34,35 @@ public class Output3DNodeRenderer : WhiteHeaderedNodeRendererBase
     var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
     var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
 
-    var scene3D = new Scene3DControl
+    // Reuse existing Scene3DControl from registry if available (avoids OpenGL reinit flicker)
+    Scene3DControl scene3D;
+    if (Scene3DRegistry.TryGetValue(node.Id, out var existing))
     {
-      Width = baseWidth - 40,
-      Height = baseHeight - 80,
-      Parameters = SceneParameters.Default
-    };
+      scene3D = existing;
+      // Update size in case it changed
+      scene3D.Width = baseWidth - 40;
+      scene3D.Height = baseHeight - 80;
 
-    // Register in static registry for later retrieval in UpdateFromPortValues
-    Scene3DRegistry[node.Id] = scene3D;
+      // Detach from old parent if it has one
+      if (scene3D.Parent is Border oldParent)
+      {
+        oldParent.Child = null;
+      }
+    }
+    else
+    {
+      // Restore persisted parameters from Node.Data, or use default
+      var initialParams = node.Data is SceneParameters saved ? saved : SceneParameters.Default;
+
+      scene3D = new Scene3DControl
+      {
+        Width = baseWidth - 40,
+        Height = baseHeight - 80,
+        Parameters = initialParams
+      };
+
+      Scene3DRegistry[node.Id] = scene3D;
+    }
 
     var container = new Border
     {
@@ -94,6 +114,18 @@ public class Output3DNodeRenderer : WhiteHeaderedNodeRendererBase
       builder.WithZoom(zoomFactor);
     }
 
-    scene3D.Parameters = builder.Build();
+    var newParams = builder.Build();
+    scene3D.Parameters = newParams;
+
+    // Persist to Node.Data so it survives visual tree rebuilds
+    processor.Node.Data = newParams;
+  }
+
+  /// <inheritdoc />
+  public override void OnProcessorAttached(Control visual, INodeProcessor processor)
+  {
+    base.OnProcessorAttached(visual, processor);
+    // Initialize the visual with current processor values (important after visual tree rebuild)
+    UpdateFromPortValues(visual, processor);
   }
 }

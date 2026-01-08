@@ -465,6 +465,11 @@ public class RadioButtonNodeRenderer : WhiteHeaderedNodeRendererBase
     {
         base.OnProcessorAttached(visual, processor);
         ProcessorRegistry[processor.Node.Id] = processor;
+
+        // Sync persisted Node.Data value to processor (important after visual tree rebuild)
+        var (_, selectedValue) = GetRadioButtonData(processor.Node, null);
+        if (processor is InputNodeProcessor<string> sp)
+            sp.Value = selectedValue;
     }
 }
 
@@ -534,6 +539,11 @@ public class ZoomSliderNodeRenderer : WhiteHeaderedNodeRendererBase
     {
         base.OnProcessorAttached(visual, processor);
         ProcessorRegistry[processor.Node.Id] = processor;
+
+        // Sync persisted Node.Data value to processor (important after visual tree rebuild)
+        var value = processor.Node.Data is double d ? d : 50.0;
+        if (processor is InputNodeProcessor<double> dp)
+            dp.Value = value;
     }
 }
 

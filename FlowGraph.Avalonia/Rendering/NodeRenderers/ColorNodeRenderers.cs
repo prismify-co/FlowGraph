@@ -250,6 +250,13 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
     {
         base.OnProcessorAttached(visual, processor);
         ProcessorRegistry[processor.Node.Id] = processor;
+
+        // Sync persisted Node.Data value to processor (important after visual tree rebuild)
+        var color = GetColorFromNode(processor.Node, null);
+        if (processor is InputNodeProcessor<Color> cp)
+            cp.Value = color;
+        else if (processor is InputNodeProcessor<uint> up)
+            up.Value = color.ToUInt32();
     }
 }
 
