@@ -4,18 +4,23 @@ using System.Collections.Specialized;
 namespace FlowGraph.Core;
 
 /// <summary>
-/// An ObservableCollection that can suppress notifications during batch operations.
+/// An <see cref="ObservableCollection{T}"/> that can suppress notifications during batch operations.
+/// Use <see cref="AddRange"/> to add multiple items with a single notification.
 /// </summary>
+/// <typeparam name="T">The type of elements in the collection.</typeparam>
 public class BulkObservableCollection<T> : ObservableCollection<T>
 {
     private bool _suppressNotifications;
 
     /// <summary>
     /// Adds a range of items without firing individual notifications.
-    /// A single Reset notification is fired after all items are added.
+    /// A single <see cref="NotifyCollectionChangedAction.Reset"/> notification is fired after all items are added.
     /// </summary>
+    /// <param name="items">The items to add.</param>
     public void AddRange(IEnumerable<T> items)
     {
+        ArgumentNullException.ThrowIfNull(items);
+
         _suppressNotifications = true;
         try
         {
@@ -31,6 +36,7 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
         if (!_suppressNotifications)
@@ -40,6 +46,10 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
     }
 }
 
+/// <summary>
+/// Represents a flow graph containing nodes and edges.
+/// Provides methods for adding, removing, and querying graph elements.
+/// </summary>
 public class Graph
 {
     private bool _isBatchLoading;
@@ -116,19 +126,19 @@ public class Graph
     public void AddEdge(Edge edge)
     {
         ArgumentNullException.ThrowIfNull(edge);
-        
+
         // Skip validation during batch load
         if (!_isBatchLoading)
         {
             var sourceExists = Nodes.Any(n => n.Id == edge.Source);
             var targetExists = Nodes.Any(n => n.Id == edge.Target);
-            
+
             if (!sourceExists || !targetExists)
             {
                 throw new InvalidOperationException("Source and target nodes must exist before adding an edge.");
             }
         }
-        
+
         Edges.Add(edge);
     }
 

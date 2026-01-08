@@ -26,10 +26,26 @@ public enum PortPosition
     Bottom
 }
 
+/// <summary>
+/// Represents a connection point on a node where edges can attach.
+/// Ports define the interface for data flow between nodes.
+/// </summary>
 public record Port
 {
+    /// <summary>
+    /// Unique identifier for the port within its node.
+    /// </summary>
     public required string Id { get; init; }
+
+    /// <summary>
+    /// The data type that this port accepts or produces.
+    /// Used for connection validation.
+    /// </summary>
     public required string Type { get; init; }
+
+    /// <summary>
+    /// Optional display label for the port.
+    /// </summary>
     public string? Label { get; init; }
 
     /// <summary>

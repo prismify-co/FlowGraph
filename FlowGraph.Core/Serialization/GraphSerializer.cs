@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -168,32 +169,32 @@ public class NodeDto
 
     public Node ToNode()
     {
-        var node = new Node
+        var inputPorts = Inputs.Select(i => i.ToPortDefinition()).ToImmutableList();
+        var outputPorts = Outputs.Select(o => o.ToPortDefinition()).ToImmutableList();
+
+        var definition = new Models.NodeDefinition
         {
             Id = Id,
             Type = Type ?? "default",
             Label = Label,
-            Position = new Point(Position.X, Position.Y),
-            Width = Width,
-            Height = Height,
             Data = Data,
             IsGroup = IsGroup,
-            IsCollapsed = IsCollapsed,
             ParentGroupId = ParentGroupId,
-            IsResizable = IsResizable
+            IsResizable = IsResizable,
+            Inputs = inputPorts,
+            Outputs = outputPorts
         };
 
-        foreach (var input in Inputs)
+        var state = new Models.NodeState
         {
-            node.Inputs.Add(input.ToPort());
-        }
+            X = Position.X,
+            Y = Position.Y,
+            Width = Width,
+            Height = Height,
+            IsCollapsed = IsCollapsed
+        };
 
-        foreach (var output in Outputs)
-        {
-            node.Outputs.Add(output.ToPort());
-        }
-
-        return node;
+        return new Node(definition, state);
     }
 }
 
@@ -235,7 +236,7 @@ public class EdgeDto
 
     public Edge ToEdge()
     {
-        return new Edge
+        var definition = new Models.EdgeDefinition
         {
             Id = Id,
             Source = Source,
@@ -246,9 +247,15 @@ public class EdgeDto
             MarkerStart = MarkerStart,
             MarkerEnd = MarkerEnd,
             Label = Label,
-            AutoRoute = AutoRoute,
+            AutoRoute = AutoRoute
+        };
+
+        var state = new Models.EdgeState
+        {
             Waypoints = Waypoints?.Select(p => new Point(p.X, p.Y)).ToList()
         };
+
+        return new Edge(definition, state);
     }
 }
 
@@ -275,6 +282,16 @@ public class PortDto
     public Port ToPort()
     {
         return new Port
+        {
+            Id = Id,
+            Type = Type,
+            Label = Label
+        };
+    }
+
+    public Models.PortDefinition ToPortDefinition()
+    {
+        return new Models.PortDefinition
         {
             Id = Id,
             Type = Type,

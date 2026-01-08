@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Avalonia;
 
@@ -64,13 +66,12 @@ public class ClipboardManager
         // Create new nodes with new IDs and adjusted positions
         foreach (var copiedNode in _copiedNodes)
         {
-            var newNode = CloneNode(copiedNode);
             var newId = Guid.NewGuid().ToString();
             idMap[copiedNode.Id] = newId;
-            newNode.Id = newId;
-            newNode.Position = new Core.Point(
+
+            var newNode = CloneNodeWithId(copiedNode, newId, new Core.Point(
                 copiedNode.Position.X + offsetX,
-                copiedNode.Position.Y + offsetY);
+                copiedNode.Position.Y + offsetY));
             newNode.IsSelected = true; // Select pasted nodes
 
             graph.AddNode(newNode);
@@ -85,10 +86,7 @@ public class ClipboardManager
                 if (idMap.TryGetValue(copiedEdge.Source, out var newSourceId) &&
                     idMap.TryGetValue(copiedEdge.Target, out var newTargetId))
                 {
-                    var newEdge = CloneEdge(copiedEdge);
-                    newEdge.Id = Guid.NewGuid().ToString();
-                    newEdge.Source = newSourceId;
-                    newEdge.Target = newTargetId;
+                    var newEdge = CloneEdgeWithIds(copiedEdge, Guid.NewGuid().ToString(), newSourceId, newTargetId);
 
                     graph.AddEdge(newEdge);
                     pastedEdges.Add(newEdge);
@@ -127,13 +125,12 @@ public class ClipboardManager
         // Create duplicated nodes
         foreach (var node in nodeList)
         {
-            var newNode = CloneNode(node);
             var newId = Guid.NewGuid().ToString();
             idMap[node.Id] = newId;
-            newNode.Id = newId;
-            newNode.Position = new Core.Point(
+
+            var newNode = CloneNodeWithId(node, newId, new Core.Point(
                 node.Position.X + offset.X,
-                node.Position.Y + offset.Y);
+                node.Position.Y + offset.Y));
             newNode.IsSelected = true;
 
             graph.AddNode(newNode);
@@ -149,10 +146,7 @@ public class ClipboardManager
                 if (idMap.TryGetValue(edge.Source, out var newSourceId) &&
                     idMap.TryGetValue(edge.Target, out var newTargetId))
                 {
-                    var newEdge = CloneEdge(edge);
-                    newEdge.Id = Guid.NewGuid().ToString();
-                    newEdge.Source = newSourceId;
-                    newEdge.Target = newTargetId;
+                    var newEdge = CloneEdgeWithIds(edge, Guid.NewGuid().ToString(), newSourceId, newTargetId);
 
                     graph.AddEdge(newEdge);
                     duplicatedEdges.Add(newEdge);
@@ -174,18 +168,43 @@ public class ClipboardManager
 
     private static Node CloneNode(Node node)
     {
-        return new Node
+        var definition = node.Definition with
         {
-            Id = node.Id,
-            Type = node.Type,
-            Position = node.Position,
-            Width = node.Width,
-            Height = node.Height,
-            IsResizable = node.IsResizable,
-            Data = node.Data, // Note: shallow copy of data
-            Inputs = node.Inputs.Select(ClonePort).ToList(),
-            Outputs = node.Outputs.Select(ClonePort).ToList()
+            Inputs = node.Inputs.Select(p => PortDefinition.FromPort(p)).ToImmutableList(),
+            Outputs = node.Outputs.Select(p => PortDefinition.FromPort(p)).ToImmutableList()
         };
+
+        return new Node(
+            definition,
+            new NodeState
+            {
+                X = node.Position.X,
+                Y = node.Position.Y,
+                Width = node.Width,
+                Height = node.Height
+            }
+        );
+    }
+
+    private static Node CloneNodeWithId(Node node, string newId, Core.Point position)
+    {
+        var definition = node.Definition with
+        {
+            Id = newId,
+            Inputs = node.Inputs.Select(p => PortDefinition.FromPort(p)).ToImmutableList(),
+            Outputs = node.Outputs.Select(p => PortDefinition.FromPort(p)).ToImmutableList()
+        };
+
+        return new Node(
+            definition,
+            new NodeState
+            {
+                X = position.X,
+                Y = position.Y,
+                Width = node.Width,
+                Height = node.Height
+            }
+        );
     }
 
     private static Port ClonePort(Port port)
@@ -200,17 +219,18 @@ public class ClipboardManager
 
     private static Edge CloneEdge(Edge edge)
     {
-        return new Edge
+        return new Edge(edge.Definition, new EdgeState());
+    }
+
+    private static Edge CloneEdgeWithIds(Edge edge, string newId, string newSourceId, string newTargetId)
+    {
+        var definition = edge.Definition with
         {
-            Id = edge.Id,
-            Source = edge.Source,
-            Target = edge.Target,
-            SourcePort = edge.SourcePort,
-            TargetPort = edge.TargetPort,
-            Type = edge.Type,
-            Label = edge.Label,
-            MarkerStart = edge.MarkerStart,
-            MarkerEnd = edge.MarkerEnd
+            Id = newId,
+            Source = newSourceId,
+            Target = newTargetId
         };
+
+        return new Edge(definition, new EdgeState());
     }
 }

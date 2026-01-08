@@ -80,19 +80,25 @@ public static class GraphGroupExtensions
     /// <summary>
     /// Calculates the bounding box of a group based on its children.
     /// </summary>
+    /// <param name="graph">The graph containing the group.</param>
+    /// <param name="groupId">The group ID.</param>
+    /// <param name="padding">Padding around children. Defaults to <see cref="GraphDefaults.GroupPadding"/>.</param>
+    /// <param name="headerHeight">Height of group header. Defaults to <see cref="GraphDefaults.GroupHeaderHeight"/>.</param>
+    /// <param name="defaultNodeWidth">Default node width. Defaults to <see cref="GraphDefaults.NodeWidth"/>.</param>
+    /// <param name="defaultNodeHeight">Default node height. Defaults to <see cref="GraphDefaults.NodeHeight"/>.</param>
     public static (Point topLeft, double width, double height) CalculateGroupBounds(
-        this Graph graph, 
-        string groupId, 
-        double padding = 20,
-        double headerHeight = 30,
-        double defaultNodeWidth = 150,
-        double defaultNodeHeight = 80)  // Fixed: was 60, should be 80 to match FlowCanvasSettings
+        this Graph graph,
+        string groupId,
+        double padding = GraphDefaults.GroupPadding,
+        double headerHeight = GraphDefaults.GroupHeaderHeight,
+        double defaultNodeWidth = GraphDefaults.NodeWidth,
+        double defaultNodeHeight = GraphDefaults.NodeHeight)
     {
         var children = graph.GetGroupChildren(groupId).ToList();
-        
+
         if (children.Count == 0)
         {
-            return (new Point(0, 0), 200, 100);
+            return (new Point(0, 0), GraphDefaults.GroupMinWidth, GraphDefaults.GroupMinHeight);
         }
 
         var minX = double.MaxValue;
@@ -129,9 +135,9 @@ public static class GraphGroupExtensions
         if (sourceNode == null || targetNode == null)
             return false;
 
-        var sourceInGroup = sourceNode.ParentGroupId == groupId || 
+        var sourceInGroup = sourceNode.ParentGroupId == groupId ||
                            graph.IsDescendantOf(sourceNode, groupId);
-        var targetInGroup = targetNode.ParentGroupId == groupId || 
+        var targetInGroup = targetNode.ParentGroupId == groupId ||
                            graph.IsDescendantOf(targetNode, groupId);
 
         return sourceInGroup && targetInGroup;
@@ -148,9 +154,9 @@ public static class GraphGroupExtensions
         if (sourceNode == null || targetNode == null)
             return false;
 
-        var sourceInGroup = sourceNode.ParentGroupId == groupId || 
+        var sourceInGroup = sourceNode.ParentGroupId == groupId ||
                            graph.IsDescendantOf(sourceNode, groupId);
-        var targetInGroup = targetNode.ParentGroupId == groupId || 
+        var targetInGroup = targetNode.ParentGroupId == groupId ||
                            graph.IsDescendantOf(targetNode, groupId);
 
         return sourceInGroup != targetInGroup;

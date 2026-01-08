@@ -1,100 +1,269 @@
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core;
 
 /// <summary>
 /// Represents a connection between two nodes.
+/// Uses a Definition (immutable) + State (mutable) composition pattern.
 /// </summary>
+/// <remarks>
+/// <para>
+/// The edge's structural properties (Source, Target, ports, type, markers) are stored
+/// in the <see cref="Definition"/> record. Runtime state (selection, waypoints) is
+/// stored in the <see cref="State"/> object.
+/// </para>
+/// <para>
+/// For backward compatibility, pass-through properties are provided that delegate
+/// to either Definition or State as appropriate.
+/// </para>
+/// </remarks>
 public class Edge : INotifyPropertyChanged
 {
-    private bool _isSelected;
-    private List<Point>? _waypoints;
+    private EdgeDefinition _definition;
+    private IEdgeState _state;
+
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
-    /// Unique identifier for the edge.
+    /// Creates an edge with the specified definition and optional state.
     /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    
+    /// <param name="definition">The immutable edge definition.</param>
+    /// <param name="state">The mutable edge state. If null, a new EdgeState is created.</param>
+    public Edge(EdgeDefinition definition, IEdgeState? state = null)
+    {
+        _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+        _state = state ?? new EdgeState();
+        SubscribeToState();
+    }
+
     /// <summary>
-    /// The ID of the source node.
+    /// Creates an edge with default definition. For backward compatibility.
     /// </summary>
-    public required string Source { get; set; }
-    
+    public Edge()
+    {
+        _definition = new EdgeDefinition
+        {
+            Id = Guid.NewGuid().ToString(),
+            Source = null!,
+            Target = null!,
+            SourcePort = null!,
+            TargetPort = null!
+        };
+        _state = new EdgeState();
+        SubscribeToState();
+    }
+
+    #region Definition + State
+
     /// <summary>
-    /// The ID of the target node.
+    /// The immutable definition of this edge (identity, connections, visual type).
+    /// Use <c>with</c> expressions to modify: <c>edge.Definition = edge.Definition with { Label = "x" };</c>
     /// </summary>
-    public required string Target { get; set; }
-    
+    public EdgeDefinition Definition
+    {
+        get => _definition;
+        set
+        {
+            if (ReferenceEquals(_definition, value)) return;
+            var old = _definition;
+            _definition = value;
+            OnPropertyChanged(nameof(Definition));
+
+            // Raise change events for any definition properties that changed
+            if (old.Id != value.Id) OnPropertyChanged(nameof(Id));
+            if (old.Source != value.Source) OnPropertyChanged(nameof(Source));
+            if (old.Target != value.Target) OnPropertyChanged(nameof(Target));
+            if (old.SourcePort != value.SourcePort) OnPropertyChanged(nameof(SourcePort));
+            if (old.TargetPort != value.TargetPort) OnPropertyChanged(nameof(TargetPort));
+            if (old.Type != value.Type) OnPropertyChanged(nameof(Type));
+            if (old.MarkerStart != value.MarkerStart) OnPropertyChanged(nameof(MarkerStart));
+            if (old.MarkerEnd != value.MarkerEnd) OnPropertyChanged(nameof(MarkerEnd));
+            if (old.Label != value.Label) OnPropertyChanged(nameof(Label));
+            if (old.AutoRoute != value.AutoRoute) OnPropertyChanged(nameof(AutoRoute));
+        }
+    }
+
     /// <summary>
-    /// The ID of the source port on the source node.
+    /// The mutable runtime state of this edge (selection, waypoints).
     /// </summary>
-    public required string SourcePort { get; set; }
-    
+    public IEdgeState State
+    {
+        get => _state;
+        set
+        {
+            if (ReferenceEquals(_state, value)) return;
+            UnsubscribeFromState();
+            _state = value ?? throw new ArgumentNullException(nameof(value));
+            SubscribeToState();
+            OnPropertyChanged(nameof(State));
+            OnPropertyChanged(nameof(IsSelected));
+            OnPropertyChanged(nameof(Waypoints));
+        }
+    }
+
+    #endregion
+
+    #region Pass-through Properties (Definition)
+
     /// <summary>
-    /// The ID of the target port on the target node.
+    /// Unique identifier for the edge. Immutable - to change, replace the Definition.
     /// </summary>
-    public required string TargetPort { get; set; }
-    
+    public string Id => Definition.Id;
+
     /// <summary>
-    /// The visual type of the edge (bezier, straight, step, etc.).
+    /// The ID of the source node. To modify, use: <c>edge.Definition = edge.Definition with { Source = "x" };</c>
     /// </summary>
-    public EdgeType Type { get; set; } = EdgeType.Bezier;
-    
+    public string Source
+    {
+        get => Definition.Source;
+        set => Definition = Definition with { Source = value };
+    }
+
     /// <summary>
-    /// The marker to display at the start of the edge.
+    /// The ID of the target node. To modify, use: <c>edge.Definition = edge.Definition with { Target = "x" };</c>
     /// </summary>
-    public EdgeMarker MarkerStart { get; set; } = EdgeMarker.None;
-    
+    public string Target
+    {
+        get => Definition.Target;
+        set => Definition = Definition with { Target = value };
+    }
+
     /// <summary>
-    /// The marker to display at the end of the edge.
+    /// The ID of the source port. To modify, use: <c>edge.Definition = edge.Definition with { SourcePort = "x" };</c>
     /// </summary>
-    public EdgeMarker MarkerEnd { get; set; } = EdgeMarker.Arrow;
-    
+    public string SourcePort
+    {
+        get => Definition.SourcePort;
+        set => Definition = Definition with { SourcePort = value };
+    }
+
     /// <summary>
-    /// Optional label to display on the edge.
+    /// The ID of the target port. To modify, use: <c>edge.Definition = edge.Definition with { TargetPort = "x" };</c>
     /// </summary>
-    public string? Label { get; set; }
-    
+    public string TargetPort
+    {
+        get => Definition.TargetPort;
+        set => Definition = Definition with { TargetPort = value };
+    }
+
+    /// <summary>
+    /// The visual type of the edge. To modify, use: <c>edge.Definition = edge.Definition with { Type = EdgeType.Straight };</c>
+    /// </summary>
+    public EdgeType Type
+    {
+        get => Definition.Type;
+        set => Definition = Definition with { Type = value };
+    }
+
+    /// <summary>
+    /// The marker at the start of the edge.
+    /// </summary>
+    public EdgeMarker MarkerStart
+    {
+        get => Definition.MarkerStart;
+        set => Definition = Definition with { MarkerStart = value };
+    }
+
+    /// <summary>
+    /// The marker at the end of the edge.
+    /// </summary>
+    public EdgeMarker MarkerEnd
+    {
+        get => Definition.MarkerEnd;
+        set => Definition = Definition with { MarkerEnd = value };
+    }
+
+    /// <summary>
+    /// Optional label for the edge.
+    /// </summary>
+    public string? Label
+    {
+        get => Definition.Label;
+        set => Definition = Definition with { Label = value };
+    }
+
+    /// <summary>
+    /// Whether automatic routing is enabled.
+    /// </summary>
+    public bool AutoRoute
+    {
+        get => Definition.AutoRoute;
+        set => Definition = Definition with { AutoRoute = value };
+    }
+
+    #endregion
+
+    #region Pass-through Properties (State)
+
     /// <summary>
     /// Whether this edge is currently selected.
     /// </summary>
-    public bool IsSelected 
-    { 
-        get => _isSelected;
-        set => SetField(ref _isSelected, value);
+    public bool IsSelected
+    {
+        get => State.IsSelected;
+        set => State.IsSelected = value;
     }
 
     /// <summary>
     /// Optional waypoints for custom edge routing.
-    /// When set, the edge will pass through these intermediate points.
-    /// Does not include the start and end points (port positions).
     /// </summary>
     public List<Point>? Waypoints
     {
-        get => _waypoints;
-        set => SetField(ref _waypoints, value);
+        get => State.Waypoints?.ToList();
+        set => State.Waypoints = value;
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>
+    /// Reconnects this edge to a different target node and port.
+    /// </summary>
+    public void Reconnect(string newTarget, string newTargetPort)
+    {
+        Definition = Definition.ReconnectTarget(newTarget, newTargetPort);
     }
 
     /// <summary>
-    /// Whether this edge should use automatic routing to avoid obstacles.
+    /// Reconnects this edge from a different source node and port.
     /// </summary>
-    public bool AutoRoute { get; set; } = false;
+    public void ReconnectSource(string newSource, string newSourcePort)
+    {
+        Definition = Definition.ReconnectSource(newSource, newSourcePort);
+    }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    #endregion
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    #region INotifyPropertyChanged
+
+    private void SubscribeToState()
+    {
+        _state.PropertyChanged += OnStatePropertyChanged;
+    }
+
+    private void UnsubscribeFromState()
+    {
+        _state.PropertyChanged -= OnStatePropertyChanged;
+    }
+
+    private void OnStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        // Forward state property changes
+        OnPropertyChanged(e.PropertyName);
+    }
+
+    /// <summary>
+    /// Raises the PropertyChanged event.
+    /// </summary>
+    protected virtual void OnPropertyChanged(string? propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
-    }
+    #endregion
 }
 
 /// <summary>
@@ -106,17 +275,17 @@ public enum EdgeType
     /// A smooth bezier curve (default).
     /// </summary>
     Bezier,
-    
+
     /// <summary>
     /// A straight line between points.
     /// </summary>
     Straight,
-    
+
     /// <summary>
     /// A path with right-angle turns.
     /// </summary>
     Step,
-    
+
     /// <summary>
     /// A path with rounded right-angle turns.
     /// </summary>
@@ -132,12 +301,12 @@ public enum EdgeMarker
     /// No marker.
     /// </summary>
     None,
-    
+
     /// <summary>
     /// An open arrow (lines only).
     /// </summary>
     Arrow,
-    
+
     /// <summary>
     /// A filled/closed arrow.
     /// </summary>

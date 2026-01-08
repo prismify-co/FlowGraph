@@ -15,7 +15,7 @@ public class MoveNodesCommand : IGraphCommand
     /// Creates a move command for a single node.
     /// </summary>
     public MoveNodesCommand(Graph graph, Node node, Point oldPosition, Point newPosition)
-        : this(graph, 
+        : this(graph,
                new Dictionary<string, Point> { { node.Id, oldPosition } },
                new Dictionary<string, Point> { { node.Id, newPosition } })
     {
@@ -24,17 +24,29 @@ public class MoveNodesCommand : IGraphCommand
     /// <summary>
     /// Creates a move command for multiple nodes.
     /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when graph is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when position dictionaries are empty or have mismatched keys.</exception>
     public MoveNodesCommand(
         Graph graph,
         Dictionary<string, Point> oldPositions,
         Dictionary<string, Point> newPositions)
     {
         _graph = graph ?? throw new ArgumentNullException(nameof(graph));
+
+        ArgumentNullException.ThrowIfNull(oldPositions);
+        ArgumentNullException.ThrowIfNull(newPositions);
+
+        if (oldPositions.Count == 0)
+            throw new ArgumentException("At least one node position must be specified", nameof(oldPositions));
+
+        if (oldPositions.Count != newPositions.Count)
+            throw new ArgumentException("Old and new position dictionaries must have the same count", nameof(newPositions));
+
         _oldPositions = new Dictionary<string, Point>(oldPositions);
         _newPositions = new Dictionary<string, Point>(newPositions);
 
-        Description = _oldPositions.Count == 1 
-            ? "Move node" 
+        Description = _oldPositions.Count == 1
+            ? "Move node"
             : $"Move {_oldPositions.Count} nodes";
     }
 

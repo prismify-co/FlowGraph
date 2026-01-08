@@ -8,7 +8,7 @@ namespace FlowGraph.Avalonia;
 /// </summary>
 public class GroupManager
 {
-    private readonly Func<Graph?> _getGraph;
+    private readonly IGraphContext _context;
     private readonly CommandHistory _commandHistory;
     private readonly FlowCanvasSettings _settings;
 
@@ -35,16 +35,32 @@ public class GroupManager
     /// <summary>
     /// Event raised when a group needs to be re-rendered.
     /// </summary>
-    public event EventHandler<string>? GroupNeedsRerender;
+    public event EventHandler<string>? GroupRerenderRequested;
 
+    /// <summary>
+    /// Creates a new group manager.
+    /// </summary>
+    /// <param name="context">The graph context providing access to the current graph.</param>
+    /// <param name="commandHistory">The command history for undo/redo support.</param>
+    /// <param name="settings">The canvas settings.</param>
+    public GroupManager(
+        IGraphContext context,
+        CommandHistory commandHistory,
+        FlowCanvasSettings settings)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _commandHistory = commandHistory ?? throw new ArgumentNullException(nameof(commandHistory));
+        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+    }
+
+    // Backwards compatibility constructor
+    [Obsolete("Use the constructor that accepts IGraphContext instead.")]
     public GroupManager(
         Func<Graph?> getGraph,
         CommandHistory commandHistory,
         FlowCanvasSettings settings)
+        : this(new FuncGraphContext(getGraph), commandHistory, settings)
     {
-        _getGraph = getGraph;
-        _commandHistory = commandHistory;
-        _settings = settings;
     }
 
     /// <summary>
@@ -52,7 +68,7 @@ public class GroupManager
     /// </summary>
     public Node? CreateGroup(IEnumerable<string> nodeIds, string? label = null)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return null;
 
         var nodeIdList = nodeIds.ToList();
@@ -62,7 +78,7 @@ public class GroupManager
         _commandHistory.Execute(command);
 
         // Return the created group
-        return graph.Nodes.FirstOrDefault(n => n.IsGroup && 
+        return graph.Nodes.FirstOrDefault(n => n.IsGroup &&
             nodeIdList.All(id => graph.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
     }
 
@@ -71,7 +87,7 @@ public class GroupManager
     /// </summary>
     public void Ungroup(string groupId)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var command = new UngroupNodesCommand(graph, groupId);
@@ -83,7 +99,7 @@ public class GroupManager
     /// </summary>
     public void ToggleCollapse(string groupId)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
@@ -103,7 +119,7 @@ public class GroupManager
     /// </summary>
     public void SetCollapsed(string groupId, bool collapsed)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
@@ -117,7 +133,7 @@ public class GroupManager
     /// </summary>
     public void AddNodesToGroup(string groupId, IEnumerable<string> nodeIds)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var nodeIdList = nodeIds.ToList();
@@ -137,7 +153,7 @@ public class GroupManager
     /// </summary>
     public void RemoveNodesFromGroup(IEnumerable<string> nodeIds)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var nodeIdList = nodeIds.ToList();
@@ -166,7 +182,7 @@ public class GroupManager
     /// </summary>
     public void AutoResizeGroup(string groupId)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
@@ -194,7 +210,7 @@ public class GroupManager
         group.Width = maxX - minX + GroupPadding * 2;
         group.Height = maxY - minY + GroupPadding * 2 + HeaderHeight;
 
-        GroupNeedsRerender?.Invoke(this, groupId);
+        GroupRerenderRequested?.Invoke(this, groupId);
     }
 
     /// <summary>
@@ -202,7 +218,7 @@ public class GroupManager
     /// </summary>
     public string? GetGroupAtPoint(Point canvasPoint)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return null;
 
         // Find groups that contain this point (check in reverse order for top-most)
@@ -228,14 +244,14 @@ public class GroupManager
     /// </summary>
     public bool HandleNodeDroppedOnGroup(IEnumerable<string> nodeIds, Point dropPoint)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return false;
 
         var targetGroupId = GetGroupAtPoint(dropPoint);
         if (targetGroupId == null) return false;
 
         var nodeIdList = nodeIds.ToList();
-        
+
         // Filter out nodes that are already in this group or are the group itself
         var nodesToAdd = nodeIdList
             .Where(id => id != targetGroupId)
@@ -257,7 +273,7 @@ public class GroupManager
     /// </summary>
     public void CollapseAll()
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         foreach (var group in graph.Nodes.Where(n => n.IsGroup && !n.IsCollapsed))
@@ -271,7 +287,7 @@ public class GroupManager
     /// </summary>
     public void ExpandAll()
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         foreach (var group in graph.Nodes.Where(n => n.IsGroup && n.IsCollapsed))
@@ -285,7 +301,7 @@ public class GroupManager
     /// </summary>
     public IEnumerable<Node> GetAllGroups()
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         return graph?.GetGroups() ?? [];
     }
 
@@ -294,7 +310,7 @@ public class GroupManager
     /// </summary>
     public IEnumerable<Node> GetGroupChildren(string groupId)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         return graph?.GetGroupChildren(groupId) ?? [];
     }
 
@@ -303,7 +319,7 @@ public class GroupManager
     /// </summary>
     public bool IsNodeVisible(string nodeId)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return false;
 
         var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
@@ -324,7 +340,7 @@ public class GroupManager
     /// </summary>
     public IEnumerable<Node> GetVisibleNodes()
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) yield break;
 
         foreach (var node in graph.Nodes)
@@ -339,7 +355,7 @@ public class GroupManager
     /// </summary>
     public IEnumerable<Edge> GetVisibleEdges()
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) yield break;
 
         foreach (var edge in graph.Edges)

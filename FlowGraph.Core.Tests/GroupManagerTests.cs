@@ -4,6 +4,14 @@ using FlowGraph.Core.Commands;
 
 namespace FlowGraph.Core.Tests;
 
+/// <summary>
+/// Test implementation of IGraphContext for unit testing.
+/// </summary>
+internal class TestGraphContext : IGraphContext
+{
+    public Graph? Graph { get; set; }
+}
+
 public class GroupManagerTests
 {
     private static (Graph graph, GroupManager manager, CommandHistory history) CreateTestSetup()
@@ -11,7 +19,8 @@ public class GroupManagerTests
         var graph = new Graph();
         var history = new CommandHistory();
         var settings = FlowCanvasSettings.Default;
-        var manager = new GroupManager(() => graph, history, settings);
+        var context = new TestGraphContext { Graph = graph };
+        var manager = new GroupManager(context, history, settings);
         return (graph, manager, history);
     }
 
@@ -95,7 +104,7 @@ public class GroupManagerTests
         var (graph, manager, _) = CreateTestSetup();
         AddTestNodes(graph);
         var group1 = manager.CreateGroup(["node1", "node2"]);
-        
+
         graph.AddNode(new Node { Id = "node4", Position = new Point(400, 100) });
         graph.AddNode(new Node { Id = "node5", Position = new Point(500, 100) });
         var group2 = manager.CreateGroup(["node4", "node5"]);
@@ -197,7 +206,7 @@ public class GroupManagerTests
         var (graph, manager, _) = CreateTestSetup();
         AddTestNodes(graph);
         var group = manager.CreateGroup(["node1", "node2"]);
-        
+
         string? eventGroupId = null;
         manager.NodesAddedToGroup += (s, e) => eventGroupId = e.GroupId;
 
@@ -277,7 +286,7 @@ public class GroupManagerTests
         var (graph, manager, _) = CreateTestSetup();
         AddTestNodes(graph);
         var group = manager.CreateGroup(["node1", "node2"]);
-        
+
         // Move a node to change bounds
         var node2 = graph.Nodes.First(n => n.Id == "node2");
         node2.Position = new Point(500, 300);
@@ -334,7 +343,7 @@ public class GroupManagerTests
         var (graph, manager, _) = CreateTestSetup();
         AddTestNodes(graph);
         var group = manager.CreateGroup(["node1", "node2"]);
-        
+
         bool eventRaised = false;
         bool? eventIsCollapsed = null;
         manager.GroupCollapsedChanged += (s, e) =>

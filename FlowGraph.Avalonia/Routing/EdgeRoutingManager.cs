@@ -8,8 +8,7 @@ namespace FlowGraph.Avalonia.Routing;
 /// </summary>
 public class EdgeRoutingManager
 {
-    private readonly Func<Graph?> _getGraph;
-    private readonly Func<FlowCanvasSettings> _getSettings;
+    private readonly IFlowCanvasContext _context;
     private readonly Action _refreshEdges;
     private readonly EdgeRoutingService _routingService;
 
@@ -18,31 +17,44 @@ public class EdgeRoutingManager
     /// </summary>
     public event EventHandler? EdgesRouted;
 
+    /// <summary>
+    /// Creates a new edge routing manager.
+    /// </summary>
+    /// <param name="context">The context providing access to the graph and settings.</param>
+    /// <param name="refreshEdges">Action to call when edges need re-rendering.</param>
+    public EdgeRoutingManager(
+        IFlowCanvasContext context,
+        Action refreshEdges)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _refreshEdges = refreshEdges ?? throw new ArgumentNullException(nameof(refreshEdges));
+        _routingService = new EdgeRoutingService();
+    }
+
+    // Backwards compatibility constructor
+    [Obsolete("Use the constructor that accepts IFlowCanvasContext instead.")]
     public EdgeRoutingManager(
         Func<Graph?> getGraph,
         Func<FlowCanvasSettings> getSettings,
         Action refreshEdges)
+        : this(new FuncFlowCanvasContext(getGraph, getSettings), refreshEdges)
     {
-        _getGraph = getGraph;
-        _getSettings = getSettings;
-        _refreshEdges = refreshEdges;
-        _routingService = new EdgeRoutingService();
     }
 
     /// <summary>
     /// Gets whether automatic edge routing is currently enabled.
     /// </summary>
-    public bool IsEnabled => _getSettings().AutoRouteEdges;
+    public bool IsEnabled => _context.Settings.AutoRouteEdges;
 
     /// <summary>
     /// Gets whether routing during drag is enabled.
     /// </summary>
-    public bool RouteOnDrag => _getSettings().RouteEdgesOnDrag;
+    public bool RouteOnDrag => _context.Settings.RouteEdgesOnDrag;
 
     /// <summary>
     /// Gets whether newly created edges should be routed.
     /// </summary>
-    public bool RouteNewEdges => _getSettings().RouteNewEdges;
+    public bool RouteNewEdges => _context.Settings.RouteNewEdges;
 
     /// <summary>
     /// Gets the underlying routing service for advanced configuration.
@@ -54,7 +66,7 @@ public class EdgeRoutingManager
     /// </summary>
     private void SyncSettings()
     {
-        var settings = _getSettings();
+        var settings = _context.Settings;
         _routingService.IsRoutingEnabled = settings.AutoRouteEdges;
         _routingService.DefaultNodeWidth = settings.NodeWidth;
         _routingService.DefaultNodeHeight = settings.NodeHeight;
@@ -66,7 +78,7 @@ public class EdgeRoutingManager
     /// </summary>
     private IEdgeRouter GetRouterForEdge(Edge edge)
     {
-        var settings = _getSettings();
+        var settings = _context.Settings;
         return settings.DefaultRouterAlgorithm switch
         {
             RouterAlgorithm.Direct => _routingService.DirectRouter,
@@ -82,7 +94,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after routing.</param>
     public void RouteAllEdges(bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         SyncSettings();
@@ -104,7 +116,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after routing.</param>
     public void RouteEdgesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         SyncSettings();
@@ -134,7 +146,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after routing.</param>
     public void RouteEdge(Edge edge, bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         SyncSettings();
@@ -157,7 +169,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after routing.</param>
     public void RouteEdgeWithAlgorithm(Edge edge, RouterAlgorithm algorithm, bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         SyncSettings();
@@ -198,15 +210,15 @@ public class EdgeRoutingManager
     /// <returns>True if the edge was routed, false otherwise.</returns>
     public bool RouteNewEdge(Edge edge, bool forceRefresh = true)
     {
-        var settings = _getSettings();
-        
+        var settings = _context.Settings;
+
         // Check if we should route new edges
         if (!settings.AutoRouteEdges || !settings.RouteNewEdges)
         {
             return false;
         }
 
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return false;
 
         SyncSettings();
@@ -231,7 +243,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after clearing.</param>
     public void ClearAllRoutes(bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         foreach (var edge in graph.Edges)
@@ -253,7 +265,7 @@ public class EdgeRoutingManager
     /// <param name="forceRefresh">If true, refreshes edge rendering after clearing.</param>
     public void ClearRoutesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
     {
-        var graph = _getGraph();
+        var graph = _context.Graph;
         if (graph == null) return;
 
         var nodeIdSet = nodeIds.ToHashSet();
@@ -280,7 +292,7 @@ public class EdgeRoutingManager
     {
         if (!IsEnabled || !RouteOnDrag) return;
 
-        var settings = _getSettings();
+        var settings = _context.Settings;
         if (settings.RouteOnlyAffectedEdges)
         {
             RouteEdgesForNodes(draggedNodeIds, forceRefresh: true);
@@ -300,7 +312,7 @@ public class EdgeRoutingManager
         if (!IsEnabled) return;
 
         // Always do a final route after drag completes for consistency
-        var settings = _getSettings();
+        var settings = _context.Settings;
         if (settings.RouteOnlyAffectedEdges)
         {
             RouteEdgesForNodes(draggedNodeIds, forceRefresh: true);

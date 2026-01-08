@@ -15,14 +15,8 @@ public class GroupNodesCommand : IGraphCommand
     private double _groupWidth;
     private double _groupHeight;
 
-    // Default node dimensions - should match FlowCanvasSettings defaults
-    private const double DefaultNodeWidth = 150;
-    private const double DefaultNodeHeight = 80;
-    private const double GroupPadding = 20;
-    private const double GroupHeaderHeight = 30;
-
-    public string Description => _nodeIds.Count == 1 
-        ? "Group node" 
+    public string Description => _nodeIds.Count == 1
+        ? "Group node"
         : $"Group {_nodeIds.Count} nodes";
 
     public GroupNodesCommand(Graph graph, IEnumerable<string> nodeIds, string? groupLabel = null)
@@ -66,8 +60,8 @@ public class GroupNodesCommand : IGraphCommand
 
         foreach (var node in nodes)
         {
-            var nodeWidth = node.Width ?? DefaultNodeWidth;
-            var nodeHeight = node.Height ?? DefaultNodeHeight;
+            var nodeWidth = node.Width ?? GraphDefaults.NodeWidth;
+            var nodeHeight = node.Height ?? GraphDefaults.NodeHeight;
 
             minX = Math.Min(minX, node.Position.X);
             minY = Math.Min(minY, node.Position.Y);
@@ -75,22 +69,28 @@ public class GroupNodesCommand : IGraphCommand
             maxY = Math.Max(maxY, node.Position.Y + nodeHeight);
         }
 
-        _groupPosition = new Point(minX - GroupPadding, minY - GroupPadding - GroupHeaderHeight);
-        _groupWidth = maxX - minX + GroupPadding * 2;
-        _groupHeight = maxY - minY + GroupPadding * 2 + GroupHeaderHeight;
+        _groupPosition = new Point(minX - GraphDefaults.GroupPadding, minY - GraphDefaults.GroupPadding - GraphDefaults.GroupHeaderHeight);
+        _groupWidth = maxX - minX + GraphDefaults.GroupPadding * 2;
+        _groupHeight = maxY - minY + GraphDefaults.GroupPadding * 2 + GraphDefaults.GroupHeaderHeight;
 
         // Create the group node
-        _createdGroup = new Node
-        {
-            Id = _groupId,
-            Type = "group",
-            IsGroup = true,
-            Label = _groupLabel ?? "Group",
-            Position = _groupPosition,
-            Width = _groupWidth,
-            Height = _groupHeight,
-            IsResizable = true
-        };
+        _createdGroup = new Node(
+            new Models.NodeDefinition
+            {
+                Id = _groupId,
+                Type = "group",
+                IsGroup = true,
+                Label = _groupLabel ?? "Group",
+                IsResizable = true
+            },
+            new Models.NodeState
+            {
+                X = _groupPosition.X,
+                Y = _groupPosition.Y,
+                Width = _groupWidth,
+                Height = _groupHeight
+            }
+        );
 
         // Add group to graph first
         _graph.AddNode(_createdGroup);
@@ -234,8 +234,8 @@ public class AddNodesToGroupCommand : IGraphCommand
     private readonly List<string> _nodeIds;
     private readonly Dictionary<string, string?> _previousParentGroupIds = new();
 
-    public string Description => _nodeIds.Count == 1 
-        ? "Add node to group" 
+    public string Description => _nodeIds.Count == 1
+        ? "Add node to group"
         : $"Add {_nodeIds.Count} nodes to group";
 
     public AddNodesToGroupCommand(Graph graph, string groupId, IEnumerable<string> nodeIds)
@@ -284,8 +284,8 @@ public class RemoveNodesFromGroupCommand : IGraphCommand
     private readonly List<string> _nodeIds;
     private readonly Dictionary<string, string?> _previousParentGroupIds = new();
 
-    public string Description => _nodeIds.Count == 1 
-        ? "Remove node from group" 
+    public string Description => _nodeIds.Count == 1
+        ? "Remove node from group"
         : $"Remove {_nodeIds.Count} nodes from group";
 
     public RemoveNodesFromGroupCommand(Graph graph, IEnumerable<string> nodeIds)
@@ -302,7 +302,7 @@ public class RemoveNodesFromGroupCommand : IGraphCommand
             if (node != null && !string.IsNullOrEmpty(node.ParentGroupId))
             {
                 _previousParentGroupIds[nodeId] = node.ParentGroupId;
-                
+
                 // Get the group's parent to handle nested groups
                 var group = _graph.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId);
                 node.ParentGroupId = group?.ParentGroupId;

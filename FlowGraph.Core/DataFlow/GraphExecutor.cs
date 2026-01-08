@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Specialized;
 
 namespace FlowGraph.Core.DataFlow;
@@ -6,6 +7,7 @@ namespace FlowGraph.Core.DataFlow;
 /// Executes a graph by propagating data through connected nodes.
 /// Uses topological sorting for correct execution order.
 /// Optimized for incremental updates - only re-executes affected nodes.
+/// Thread-safe for concurrent access from multiple threads.
 /// </summary>
 public sealed class GraphExecutor : IDisposable
 {
@@ -13,11 +15,11 @@ public sealed class GraphExecutor : IDisposable
     private readonly Dictionary<string, INodeProcessor> _processors = new();
     private readonly Dictionary<string, HashSet<string>> _dependencyGraph = new(); // nodeId -> dependent nodeIds
     private readonly Dictionary<string, int> _topologicalOrder = new();
-    private readonly HashSet<string> _dirtyNodes = new();
-    private readonly object _lock = new();
-    private bool _isBatchUpdate;
-    private bool _isExecuting;
-    private bool _isDisposed;
+    private readonly ConcurrentDictionary<string, byte> _dirtyNodes = new(); // Using ConcurrentDictionary as a thread-safe set
+    private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.SupportsRecursion);
+    private volatile bool _isBatchUpdate;
+    private volatile bool _isExecuting;
+    private volatile bool _isDisposed;
 
     /// <summary>
     /// Creates a new graph executor.
@@ -59,7 +61,8 @@ public sealed class GraphExecutor : IDisposable
     {
         ArgumentNullException.ThrowIfNull(processor);
 
-        lock (_lock)
+        _lock.EnterWriteLock();
+        try
         {
             _processors[processor.Node.Id] = processor;
 
@@ -70,6 +73,10 @@ public sealed class GraphExecutor : IDisposable
                 output.ValueChanged -= OnOutputValueChanged;
                 output.ValueChanged += OnOutputValueChanged;
             }
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
         }
 
         UpdateTopologicalOrder();
@@ -82,7 +89,8 @@ public sealed class GraphExecutor : IDisposable
     /// <returns>True if the processor was found and removed.</returns>
     public bool UnregisterProcessor(string nodeId)
     {
-        lock (_lock)
+        _lock.EnterWriteLock();
+        try
         {
             if (_processors.TryGetValue(nodeId, out var processor))
             {
@@ -91,9 +99,13 @@ public sealed class GraphExecutor : IDisposable
                     output.ValueChanged -= OnOutputValueChanged;
                 }
                 _processors.Remove(nodeId);
-                UpdateTopologicalOrder();
+                UpdateTopologicalOrderUnsafe();
                 return true;
             }
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
         }
 
         return false;
@@ -106,9 +118,14 @@ public sealed class GraphExecutor : IDisposable
     /// <returns>The processor, or null if not found.</returns>
     public INodeProcessor? GetProcessor(string nodeId)
     {
-        lock (_lock)
+        _lock.EnterReadLock();
+        try
         {
             return _processors.GetValueOrDefault(nodeId);
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
     }
 
@@ -129,10 +146,7 @@ public sealed class GraphExecutor : IDisposable
     /// </summary>
     public void BeginBatchUpdate()
     {
-        lock (_lock)
-        {
-            _isBatchUpdate = true;
-        }
+        _isBatchUpdate = true;
     }
 
     /// <summary>
@@ -140,11 +154,7 @@ public sealed class GraphExecutor : IDisposable
     /// </summary>
     public void EndBatchUpdate()
     {
-        lock (_lock)
-        {
-            _isBatchUpdate = false;
-        }
-
+        _isBatchUpdate = false;
         ExecuteDirtyNodes();
     }
 
@@ -161,11 +171,16 @@ public sealed class GraphExecutor : IDisposable
             ExecutionStarted?.Invoke(this, EventArgs.Empty);
 
             List<INodeProcessor> sortedNodes;
-            lock (_lock)
+            _lock.EnterReadLock();
+            try
             {
                 sortedNodes = _processors.Values
                     .OrderBy(p => _topologicalOrder.GetValueOrDefault(p.Node.Id, int.MaxValue))
                     .ToList();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
 
             foreach (var processor in sortedNodes)
@@ -197,22 +212,25 @@ public sealed class GraphExecutor : IDisposable
 
             var affectedNodes = GetAffectedNodes(nodeId);
 
-            List<string> sortedAffected;
-            lock (_lock)
+            List<(string Id, INodeProcessor Processor)> sortedAffected;
+            _lock.EnterReadLock();
+            try
             {
                 sortedAffected = affectedNodes
                     .Where(id => _processors.ContainsKey(id))
-                    .OrderBy(id => _topologicalOrder.GetValueOrDefault(id, int.MaxValue))
+                    .Select(id => (Id: id, Processor: _processors[id]))
+                    .OrderBy(x => _topologicalOrder.GetValueOrDefault(x.Id, int.MaxValue))
                     .ToList();
             }
-
-            foreach (var id in sortedAffected)
+            finally
             {
-                if (_processors.TryGetValue(id, out var processor))
-                {
-                    processor.Process();
-                    NodeProcessed?.Invoke(this, new NodeProcessedEventArgs(id));
-                }
+                _lock.ExitReadLock();
+            }
+
+            foreach (var (id, processor) in sortedAffected)
+            {
+                processor.Process();
+                NodeProcessed?.Invoke(this, new NodeProcessedEventArgs(id));
             }
         }
         finally
@@ -229,7 +247,17 @@ public sealed class GraphExecutor : IDisposable
     /// <param name="sourcePortId">The source port ID.</param>
     public void PropagateFromPort(string sourceNodeId, string sourcePortId)
     {
-        if (!_processors.TryGetValue(sourceNodeId, out var sourceProcessor)) return;
+        INodeProcessor? sourceProcessor;
+        _lock.EnterReadLock();
+        try
+        {
+            if (!_processors.TryGetValue(sourceNodeId, out sourceProcessor)) return;
+        }
+        finally
+        {
+            _lock.ExitReadLock();
+        }
+
         if (!sourceProcessor.OutputValues.TryGetValue(sourcePortId, out var sourcePort)) return;
 
         PropagateValue(sourceNodeId, sourcePortId, sourcePort.Value);
@@ -242,24 +270,26 @@ public sealed class GraphExecutor : IDisposable
 
         // Find the node that owns this output
         INodeProcessor? sourceProcessor = null;
-        lock (_lock)
+        _lock.EnterReadLock();
+        try
         {
             sourceProcessor = _processors.Values
                 .FirstOrDefault(p => p.OutputValues.Values.Contains(portValue));
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
 
         if (sourceProcessor == null) return;
 
         if (_isBatchUpdate)
         {
-            // Mark dependent nodes as dirty
-            lock (_lock)
+            // Mark dependent nodes as dirty using thread-safe ConcurrentDictionary
+            var affected = GetAffectedNodes(sourceProcessor.Node.Id);
+            foreach (var nodeId in affected)
             {
-                var affected = GetAffectedNodes(sourceProcessor.Node.Id);
-                foreach (var nodeId in affected)
-                {
-                    _dirtyNodes.Add(nodeId);
-                }
+                _dirtyNodes.TryAdd(nodeId, 0);
             }
         }
         else
@@ -276,47 +306,61 @@ public sealed class GraphExecutor : IDisposable
             .Where(e => e.Source == sourceNodeId && e.SourcePort == sourcePortId)
             .ToList();
 
-        foreach (var edge in outgoingEdges)
+        _lock.EnterReadLock();
+        try
         {
-            if (_processors.TryGetValue(edge.Target, out var targetProcessor))
+            foreach (var edge in outgoingEdges)
             {
-                if (targetProcessor.InputValues.TryGetValue(edge.TargetPort, out var input))
+                if (_processors.TryGetValue(edge.Target, out var targetProcessor))
                 {
-                    input.SetValue(value);
+                    if (targetProcessor.InputValues.TryGetValue(edge.TargetPort, out var input))
+                    {
+                        input.SetValue(value);
+                    }
                 }
             }
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
     }
 
     private void ExecuteDirtyNodes()
     {
         if (_isExecuting) return;
+        if (_dirtyNodes.IsEmpty) return;
 
-        HashSet<string> nodesToExecute;
-        lock (_lock)
-        {
-            if (_dirtyNodes.Count == 0) return;
-            nodesToExecute = new HashSet<string>(_dirtyNodes);
-            _dirtyNodes.Clear();
-        }
+        // Atomically extract and clear dirty nodes
+        var nodesToExecute = _dirtyNodes.Keys.ToHashSet();
+        _dirtyNodes.Clear();
+
+        if (nodesToExecute.Count == 0) return;
 
         try
         {
             _isExecuting = true;
             ExecutionStarted?.Invoke(this, EventArgs.Empty);
 
-            var sorted = nodesToExecute
-                .Where(id => _processors.ContainsKey(id))
-                .OrderBy(id => _topologicalOrder.GetValueOrDefault(id, int.MaxValue))
-                .ToList();
-
-            foreach (var id in sorted)
+            List<(string Id, INodeProcessor Processor)> sorted;
+            _lock.EnterReadLock();
+            try
             {
-                if (_processors.TryGetValue(id, out var processor))
-                {
-                    processor.Process();
-                    NodeProcessed?.Invoke(this, new NodeProcessedEventArgs(id));
-                }
+                sorted = nodesToExecute
+                    .Where(id => _processors.ContainsKey(id))
+                    .Select(id => (Id: id, Processor: _processors[id]))
+                    .OrderBy(x => _topologicalOrder.GetValueOrDefault(x.Id, int.MaxValue))
+                    .ToList();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            foreach (var (id, processor) in sorted)
+            {
+                processor.Process();
+                NodeProcessed?.Invoke(this, new NodeProcessedEventArgs(id));
             }
         }
         finally
@@ -332,13 +376,14 @@ public sealed class GraphExecutor : IDisposable
         var queue = new Queue<string>();
         queue.Enqueue(startNodeId);
 
-        while (queue.Count > 0)
+        _lock.EnterReadLock();
+        try
         {
-            var current = queue.Dequeue();
-            if (!affected.Add(current)) continue;
-
-            lock (_lock)
+            while (queue.Count > 0)
             {
+                var current = queue.Dequeue();
+                if (!affected.Add(current)) continue;
+
                 if (_dependencyGraph.TryGetValue(current, out var dependents))
                 {
                     foreach (var dependent in dependents)
@@ -348,13 +393,18 @@ public sealed class GraphExecutor : IDisposable
                 }
             }
         }
+        finally
+        {
+            _lock.ExitReadLock();
+        }
 
         return affected;
     }
 
     private void RebuildDependencyGraph()
     {
-        lock (_lock)
+        _lock.EnterWriteLock();
+        try
         {
             _dependencyGraph.Clear();
 
@@ -367,53 +417,70 @@ public sealed class GraphExecutor : IDisposable
                 }
                 dependents.Add(edge.Target);
             }
-        }
 
-        UpdateTopologicalOrder();
+            UpdateTopologicalOrderUnsafe();
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     private void UpdateTopologicalOrder()
     {
-        lock (_lock)
+        _lock.EnterWriteLock();
+        try
         {
-            _topologicalOrder.Clear();
+            UpdateTopologicalOrderUnsafe();
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+    }
 
-            // Kahn's algorithm for topological sort
-            var inDegree = new Dictionary<string, int>();
-            var allNodes = new HashSet<string>(_processors.Keys);
+    /// <summary>
+    /// Updates topological order without acquiring lock. Caller must hold write lock.
+    /// </summary>
+    private void UpdateTopologicalOrderUnsafe()
+    {
+        _topologicalOrder.Clear();
 
-            foreach (var nodeId in allNodes)
+        // Kahn's algorithm for topological sort
+        var inDegree = new Dictionary<string, int>();
+        var allNodes = new HashSet<string>(_processors.Keys);
+
+        foreach (var nodeId in allNodes)
+        {
+            inDegree[nodeId] = 0;
+        }
+
+        foreach (var edge in _graph.Edges)
+        {
+            if (inDegree.ContainsKey(edge.Target))
             {
-                inDegree[nodeId] = 0;
+                inDegree[edge.Target]++;
             }
+        }
 
-            foreach (var edge in _graph.Edges)
+        var queue = new Queue<string>(inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key));
+        var order = 0;
+
+        while (queue.Count > 0)
+        {
+            var node = queue.Dequeue();
+            _topologicalOrder[node] = order++;
+
+            if (_dependencyGraph.TryGetValue(node, out var dependents))
             {
-                if (inDegree.ContainsKey(edge.Target))
+                foreach (var dependent in dependents)
                 {
-                    inDegree[edge.Target]++;
-                }
-            }
-
-            var queue = new Queue<string>(inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key));
-            var order = 0;
-
-            while (queue.Count > 0)
-            {
-                var node = queue.Dequeue();
-                _topologicalOrder[node] = order++;
-
-                if (_dependencyGraph.TryGetValue(node, out var dependents))
-                {
-                    foreach (var dependent in dependents)
+                    if (inDegree.ContainsKey(dependent))
                     {
-                        if (inDegree.ContainsKey(dependent))
+                        inDegree[dependent]--;
+                        if (inDegree[dependent] == 0)
                         {
-                            inDegree[dependent]--;
-                            if (inDegree[dependent] == 0)
-                            {
-                                queue.Enqueue(dependent);
-                            }
+                            queue.Enqueue(dependent);
                         }
                     }
                 }
@@ -456,7 +523,8 @@ public sealed class GraphExecutor : IDisposable
         _graph.Edges.CollectionChanged -= OnEdgesChanged;
         _graph.Nodes.CollectionChanged -= OnNodesChanged;
 
-        lock (_lock)
+        _lock.EnterWriteLock();
+        try
         {
             foreach (var processor in _processors.Values)
             {
@@ -470,6 +538,12 @@ public sealed class GraphExecutor : IDisposable
             _topologicalOrder.Clear();
             _dirtyNodes.Clear();
         }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+
+        _lock.Dispose();
     }
 }
 

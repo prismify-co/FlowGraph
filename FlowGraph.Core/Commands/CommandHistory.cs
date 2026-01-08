@@ -2,10 +2,11 @@ namespace FlowGraph.Core.Commands;
 
 /// <summary>
 /// Manages command history for undo/redo functionality.
+/// Uses a bounded deque structure for O(1) trimming operations.
 /// </summary>
 public class CommandHistory
 {
-    private readonly Stack<IGraphCommand> _undoStack = new();
+    private readonly LinkedList<IGraphCommand> _undoList = new();
     private readonly Stack<IGraphCommand> _redoStack = new();
     private readonly int _maxHistorySize;
     private bool _isExecutingCommand;
@@ -14,7 +15,7 @@ public class CommandHistory
     /// Creates a new command history with the specified maximum size.
     /// </summary>
     /// <param name="maxHistorySize">Maximum number of commands to keep in history. 0 = unlimited.</param>
-    public CommandHistory(int maxHistorySize = 100)
+    public CommandHistory(int maxHistorySize = GraphDefaults.MaxHistorySize)
     {
         _maxHistorySize = maxHistorySize;
     }
@@ -27,7 +28,7 @@ public class CommandHistory
     /// <summary>
     /// Gets whether there are commands that can be undone.
     /// </summary>
-    public bool CanUndo => _undoStack.Count > 0;
+    public bool CanUndo => _undoList.Count > 0;
 
     /// <summary>
     /// Gets whether there are commands that can be redone.
@@ -37,7 +38,7 @@ public class CommandHistory
     /// <summary>
     /// Gets the number of commands in the undo stack.
     /// </summary>
-    public int UndoCount => _undoStack.Count;
+    public int UndoCount => _undoList.Count;
 
     /// <summary>
     /// Gets the number of commands in the redo stack.
@@ -47,7 +48,7 @@ public class CommandHistory
     /// <summary>
     /// Gets the description of the next command to undo, or null if none.
     /// </summary>
-    public string? NextUndoDescription => _undoStack.Count > 0 ? _undoStack.Peek().Description : null;
+    public string? NextUndoDescription => _undoList.Last?.Value.Description;
 
     /// <summary>
     /// Gets the description of the next command to redo, or null if none.
@@ -71,13 +72,13 @@ public class CommandHistory
         {
             _isExecutingCommand = true;
             command.Execute();
-            
-            _undoStack.Push(command);
+
+            _undoList.AddLast(command);
             _redoStack.Clear(); // Clear redo stack when new command is executed
 
-            // Trim history if needed
+            // Trim history if needed - O(1) operation
             TrimHistory();
-            
+
             HistoryChanged?.Invoke(this, EventArgs.Empty);
         }
         finally
@@ -98,10 +99,11 @@ public class CommandHistory
         try
         {
             _isExecutingCommand = true;
-            var command = _undoStack.Pop();
+            var command = _undoList.Last!.Value;
+            _undoList.RemoveLast();
             command.Undo();
             _redoStack.Push(command);
-            
+
             HistoryChanged?.Invoke(this, EventArgs.Empty);
             return true;
         }
@@ -125,8 +127,8 @@ public class CommandHistory
             _isExecutingCommand = true;
             var command = _redoStack.Pop();
             command.Execute();
-            _undoStack.Push(command);
-            
+            _undoList.AddLast(command);
+
             HistoryChanged?.Invoke(this, EventArgs.Empty);
             return true;
         }
@@ -141,26 +143,22 @@ public class CommandHistory
     /// </summary>
     public void Clear()
     {
-        _undoStack.Clear();
+        _undoList.Clear();
         _redoStack.Clear();
         HistoryChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Trims history to max size. O(1) per item removed.
+    /// </summary>
     private void TrimHistory()
     {
         if (_maxHistorySize <= 0) return;
 
-        // Remove oldest commands if we exceed the limit
-        while (_undoStack.Count > _maxHistorySize)
+        // Remove oldest commands (from front) if we exceed the limit
+        while (_undoList.Count > _maxHistorySize)
         {
-            // Convert to list, remove from bottom, convert back
-            var commands = _undoStack.ToList();
-            commands.RemoveAt(commands.Count - 1);
-            _undoStack.Clear();
-            for (int i = commands.Count - 1; i >= 0; i--)
-            {
-                _undoStack.Push(commands[i]);
-            }
+            _undoList.RemoveFirst();
         }
     }
 }
