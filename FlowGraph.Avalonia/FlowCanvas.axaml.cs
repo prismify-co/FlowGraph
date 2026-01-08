@@ -61,6 +61,14 @@ public partial class FlowCanvas : UserControl
     public Rendering.NodeRenderers.NodeRendererRegistry NodeRenderers => _graphRenderer.NodeRenderers;
 
     /// <summary>
+    /// Gets the visual control for a node by its ID.
+    /// This can be used to access the node's rendered visual for customization (e.g., changing border color).
+    /// </summary>
+    /// <param name="nodeId">The node ID.</param>
+    /// <returns>The node's visual control, or null if not found.</returns>
+    public Control? GetNodeVisual(string nodeId) => _graphRenderer.GetNodeVisual(nodeId);
+
+    /// <summary>
     /// Gets the command history for undo/redo operations.
     /// </summary>
     public CommandHistory CommandHistory { get; } = new();
@@ -118,7 +126,7 @@ public partial class FlowCanvas : UserControl
     {
         Settings.UseSimplifiedNodeRendering = true;
         var simplifiedRenderer = new Rendering.NodeRenderers.SimplifiedNodeRenderer();
-        
+
         // Use simplified renderer for all types except groups
         NodeRenderers.SetDefaultRenderer(simplifiedRenderer);
         NodeRenderers.Register("input", simplifiedRenderer);
@@ -144,7 +152,7 @@ public partial class FlowCanvas : UserControl
     public void EnableDirectRendering()
     {
         _useDirectRendering = true;
-        
+
         if (_directRenderer == null)
         {
             _directRenderer = new DirectGraphRenderer(Settings, _graphRenderer.NodeRenderers);
@@ -170,12 +178,12 @@ public partial class FlowCanvas : UserControl
     public void DisableDirectRendering()
     {
         _useDirectRendering = false;
-        
+
         if (_mainCanvas != null && _directRenderer != null)
         {
             _mainCanvas.Children.Remove(_directRenderer);
         }
-        
+
         // Force full re-render with normal mode
         RenderGraph();
     }
@@ -267,7 +275,7 @@ public partial class FlowCanvas : UserControl
 
         // Normal visual tree mode
         return _graphRenderer.BeginEditLabel(
-            node, 
+            node,
             _theme,
             newLabel => CommitNodeLabel(node, newLabel),
             () => CancelNodeLabelEdit(node));
@@ -293,7 +301,7 @@ public partial class FlowCanvas : UserControl
 
         var scale = _viewport.Zoom;
         var currentLabel = node.Label ?? node.Type ?? node.Id;
-        
+
         var textBox = new TextBox
         {
             Text = currentLabel,
@@ -360,7 +368,7 @@ public partial class FlowCanvas : UserControl
     {
         var trimmed = newLabel.Trim();
         node.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
-        
+
         _mainCanvas?.Children.Remove(textBox);
         _directRenderer?.EndEditNode();
         _directRenderer?.InvalidateVisual();
@@ -380,14 +388,14 @@ public partial class FlowCanvas : UserControl
     public void EndEditNodeLabel(Node node)
     {
         if (_theme == null) return;
-        
+
         if (_useDirectRendering && _directRenderer != null)
         {
             _directRenderer.EndEditNode();
             _directRenderer.InvalidateVisual();
             return;
         }
-        
+
         _graphRenderer.EndEditLabel(node, _theme);
     }
 
@@ -530,13 +538,13 @@ public partial class FlowCanvas : UserControl
         var model = _directRenderer.Model;
         var (start, end) = model.GetEdgeEndpoints(edge, Graph);
         var midpoint = model.GetEdgeMidpoint(start, end);
-        
+
         var screenX = midpoint.X * _viewport.Zoom + _viewport.OffsetX;
         var screenY = midpoint.Y * _viewport.Zoom + _viewport.OffsetY;
 
         var scale = _viewport.Zoom;
         var currentLabel = edge.Label ?? "Label";
-        
+
         var textBox = new TextBox
         {
             Text = currentLabel,
@@ -600,7 +608,7 @@ public partial class FlowCanvas : UserControl
     {
         var trimmed = newLabel.Trim();
         edge.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
-        
+
         _mainCanvas?.Children.Remove(textBox);
         _directRenderer?.EndEditEdge();
         _directRenderer?.InvalidateVisual();
@@ -617,10 +625,10 @@ public partial class FlowCanvas : UserControl
     {
         var trimmed = newLabel.Trim();
         edge.Label = string.IsNullOrEmpty(trimmed) ? null : trimmed;
-        
+
         // Remove the TextBox
         _mainCanvas?.Children.Remove(textBox);
-        
+
         // Re-render edges to update the label
         RenderEdges();
     }
@@ -629,7 +637,7 @@ public partial class FlowCanvas : UserControl
     {
         // Remove the TextBox
         _mainCanvas?.Children.Remove(textBox);
-        
+
         // Show the original label
         labelVisual.IsVisible = true;
     }
@@ -673,7 +681,7 @@ public partial class FlowCanvas : UserControl
     {
         InitializeComponent();
         InitializeComponents();
-        
+
         // Re-render when theme changes
         this.ActualThemeVariantChanged += (_, _) =>
         {
@@ -690,11 +698,11 @@ public partial class FlowCanvas : UserControl
         _graphRenderer = new GraphRenderer(Settings);
         _graphRenderer.SetViewport(_viewport);
         _animationManager = new AnimationManager();
-        
+
         // Initialize input state machine
         _inputContext = new InputStateContext(Settings, _viewport, _graphRenderer);
         _inputStateMachine = new InputStateMachine(_inputContext);
-        
+
         _clipboardManager = new ClipboardManager();
         _selectionManager = new SelectionManager(
             () => Graph,
@@ -759,19 +767,19 @@ public partial class FlowCanvas : UserControl
         _inputContext.NodeResized += OnNodeResized;
         _inputContext.GridRenderRequested += (_, _) => RenderGrid();
         _inputContext.StateChanged += (_, e) => InputStateChanged?.Invoke(this, e);
-        
+
         // Forward drag lifecycle events
         _inputContext.NodeDragStart += (_, e) => NodeDragStart?.Invoke(this, e);
         _inputContext.NodeDragStop += (_, e) => NodeDragStop?.Invoke(this, e);
-        
+
         // Forward connect lifecycle events
         _inputContext.ConnectStart += (_, e) => ConnectStart?.Invoke(this, e);
         _inputContext.ConnectEnd += (_, e) => ConnectEnd?.Invoke(this, e);
-        
+
         // Handle edge reconnection/disconnection
         _inputContext.EdgeReconnected += OnEdgeReconnected;
         _inputContext.EdgeDisconnected += OnEdgeDisconnected;
-        
+
         // Forward label edit request
         _inputContext.NodeLabelEditRequested += (_, e) => NodeLabelEditRequested?.Invoke(this, e);
         _inputContext.EdgeLabelEditRequested += (_, e) => EdgeLabelEditRequested?.Invoke(this, e);
@@ -801,7 +809,7 @@ public partial class FlowCanvas : UserControl
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
-        
+
         _mainCanvas = this.FindControl<Canvas>("MainCanvas");
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
@@ -821,7 +829,7 @@ public partial class FlowCanvas : UserControl
         _inputContext.ConnectionValidator = ConnectionValidator;
 
         SetupEventHandlers();
-        
+
         if (Bounds.Width > 0 && Bounds.Height > 0)
         {
             _viewport.SetViewSize(Bounds.Size);
@@ -906,7 +914,7 @@ public partial class FlowCanvas : UserControl
                 _inputStateMachine.TransitionTo(viewportState);
             }
         }
-        else if (categories.Contains(AnimationCategory.NodePosition) || 
+        else if (categories.Contains(AnimationCategory.NodePosition) ||
                  categories.Contains(AnimationCategory.NodeAppearance) ||
                  categories.Contains(AnimationCategory.Layout))
         {
@@ -1011,9 +1019,9 @@ public partial class FlowCanvas : UserControl
     private void OnNodesDragged(object? sender, NodesDraggedEventArgs e)
     {
         if (Graph == null) return;
-        
+
         _edgeRoutingManager.OnNodesDragCompleted(e.OldPositions.Keys);
-        
+
         var command = new MoveNodesCommand(Graph, e.OldPositions, e.NewPositions);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
     }
@@ -1023,7 +1031,7 @@ public partial class FlowCanvas : UserControl
         e.Node.Width = e.NewWidth;
         e.Node.Height = e.NewHeight;
         e.Node.Position = e.NewPosition;
-        
+
         _graphRenderer.UpdateNodeSize(e.Node, _theme);
         _graphRenderer.UpdateNodePosition(e.Node);
         _graphRenderer.UpdateResizeHandlePositions(e.Node);
@@ -1043,13 +1051,13 @@ public partial class FlowCanvas : UserControl
     private void OnEdgeReconnected(object? sender, EdgeReconnectedEventArgs e)
     {
         if (Graph == null) return;
-        
+
         var commands = new List<IGraphCommand>
         {
             new RemoveEdgeCommand(Graph, e.OldEdge),
             new AddEdgeCommand(Graph, e.NewEdge)
         };
-        
+
         CommandHistory.Execute(new CompositeCommand("Reconnect edge", commands));
     }
 
