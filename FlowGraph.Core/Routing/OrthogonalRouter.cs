@@ -38,7 +38,7 @@ public class OrthogonalRouter : IEdgeRouter
 
         // Use A* to find path through visibility graph
         var path = FindOrthogonalPath(start, end, obstacles);
-        
+
         return path.Count > 0 ? path : CreateSimpleOrthogonalPath(start, end);
     }
 
@@ -46,7 +46,7 @@ public class OrthogonalRouter : IEdgeRouter
     {
         // Check if a simple orthogonal path would intersect any obstacles
         var midX = (start.X + end.X) / 2;
-        
+
         // Check horizontal segment from start
         foreach (var obs in obstacles)
         {
@@ -57,14 +57,14 @@ public class OrthogonalRouter : IEdgeRouter
             if (obs.IntersectsLine(new Point(midX, end.Y), end))
                 return true;
         }
-        
+
         return false;
     }
 
     private List<Point> CreateSimpleOrthogonalPath(Point start, Point end)
     {
         var midX = (start.X + end.X) / 2;
-        
+
         // Ensure minimum horizontal segment from ports
         if (midX < start.X + PreferredOffset)
             midX = start.X + PreferredOffset;
@@ -84,10 +84,10 @@ public class OrthogonalRouter : IEdgeRouter
     {
         // Build visibility graph nodes from obstacle corners
         var graphNodes = BuildGraphNodes(start, end, obstacles);
-        
+
         // A* search
         var path = AStarSearch(start, end, graphNodes, obstacles);
-        
+
         if (path.Count == 0)
             return [];
 
@@ -106,7 +106,7 @@ public class OrthogonalRouter : IEdgeRouter
             nodes.Add(new Point(obs.Right + Margin, obs.Top - Margin));
             nodes.Add(new Point(obs.Left - Margin, obs.Bottom + Margin));
             nodes.Add(new Point(obs.Right + Margin, obs.Bottom + Margin));
-            
+
             // Add midpoints on edges for better orthogonal routing
             var midY = (obs.Top + obs.Bottom) / 2;
             var midX = (obs.Left + obs.Right) / 2;
@@ -221,7 +221,7 @@ public class OrthogonalRouter : IEdgeRouter
     private List<Point> ReconstructPath(Dictionary<Point, Point> cameFrom, Point current, Point end)
     {
         var path = new List<Point> { end };
-        
+
         if (current != end)
             path.Insert(0, current);
 
@@ -248,7 +248,7 @@ public class OrthogonalRouter : IEdgeRouter
             var next = path[i + 1];
 
             // Keep point if direction changes
-            var directionChanges = 
+            var directionChanges =
                 (Math.Abs(prev.X - curr.X) > 0.1 && Math.Abs(curr.X - next.X) < 0.1) ||
                 (Math.Abs(prev.Y - curr.Y) > 0.1 && Math.Abs(curr.Y - next.Y) < 0.1) ||
                 (Math.Abs(prev.X - curr.X) < 0.1 && Math.Abs(curr.X - next.X) > 0.1) ||
@@ -270,12 +270,12 @@ public class OrthogonalRouter : IEdgeRouter
 
     private static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     {
-        return DirectRouter.Instance.Route(context, new Edge 
-        { 
-            Source = node.Id, 
-            Target = node.Id, 
-            SourcePort = portId, 
-            TargetPort = portId 
+        return DirectRouter.Instance.Route(context, new Edge
+        {
+            Source = node.Id,
+            Target = node.Id,
+            SourcePort = portId!,
+            TargetPort = portId!
         })[0];
     }
 }

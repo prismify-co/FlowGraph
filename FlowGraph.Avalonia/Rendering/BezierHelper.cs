@@ -79,7 +79,7 @@ public static class EdgePathHelper
         }
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
         return pathGeometry;
     }
 
@@ -144,7 +144,7 @@ public static class EdgePathHelper
         }
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
         return pathGeometry;
     }
 
@@ -180,7 +180,7 @@ public static class EdgePathHelper
         }
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
         return pathGeometry;
     }
 
@@ -253,7 +253,7 @@ public static class EdgePathHelper
         }
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
         return pathGeometry;
     }
 
@@ -326,7 +326,7 @@ public static class EdgePathHelper
         pathFigure.Segments.Add(bezierSegment);
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
     }
@@ -347,7 +347,7 @@ public static class EdgePathHelper
         };
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
     }
@@ -373,7 +373,7 @@ public static class EdgePathHelper
         pathFigure.Segments.Add(new LineSegment { Point = end });
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
     }
@@ -440,7 +440,7 @@ public static class EdgePathHelper
         pathFigure.Segments.Add(new LineSegment { Point = end });
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
     }
@@ -485,7 +485,7 @@ public static class EdgePathHelper
         }
 
         var pathGeometry = new PathGeometry();
-        pathGeometry.Figures.Add(pathFigure);
+        pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
     }

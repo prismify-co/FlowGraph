@@ -19,11 +19,11 @@ namespace FlowGraph.Demo.Views;
 public partial class MainWindow : Window
 {
     private EdgeFlowAnimation? _activeFlowAnimation;
-    private FlowDirection _flowDirection = FlowDirection.Off;
+    private EdgeFlowDirection _edgeFlowDirection = EdgeFlowDirection.Off;
     private AnimationDebugger? _debugger;
     private bool _debugModeEnabled = false;
 
-    private enum FlowDirection { Off, Forward, Reverse }
+    private enum EdgeFlowDirection { Off, Forward, Reverse }
 
     public MainWindow()
     {
@@ -346,15 +346,15 @@ public partial class MainWindow : Window
             _activeFlowAnimation = null;
         }
 
-        _flowDirection = _flowDirection switch
+        _edgeFlowDirection = _edgeFlowDirection switch
         {
-            FlowDirection.Off => FlowDirection.Forward,
-            FlowDirection.Forward => FlowDirection.Reverse,
-            FlowDirection.Reverse => FlowDirection.Off,
-            _ => FlowDirection.Off
+            EdgeFlowDirection.Off => EdgeFlowDirection.Forward,
+            EdgeFlowDirection.Forward => EdgeFlowDirection.Reverse,
+            EdgeFlowDirection.Reverse => EdgeFlowDirection.Off,
+            _ => EdgeFlowDirection.Off
         };
 
-        if (_flowDirection == FlowDirection.Off)
+        if (_edgeFlowDirection == EdgeFlowDirection.Off)
         {
             FlowCanvas.RefreshEdges();
             UpdateFlowButton();
@@ -362,7 +362,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            bool reverse = _flowDirection == FlowDirection.Reverse;
+            bool reverse = _edgeFlowDirection == EdgeFlowDirection.Reverse;
             _activeFlowAnimation = FlowCanvas.StartEdgeFlowAnimation(edge, speed: 50, reverse: reverse);
             UpdateFlowButton();
             SetStatus(reverse ? "Flow: Reverse" : "Flow: Forward");
@@ -371,10 +371,10 @@ public partial class MainWindow : Window
 
     private void UpdateFlowButton()
     {
-        FlowText.Text = _flowDirection switch
+        FlowText.Text = _edgeFlowDirection switch
         {
-            FlowDirection.Forward => ">",
-            FlowDirection.Reverse => "<",
+            EdgeFlowDirection.Forward => ">",
+            EdgeFlowDirection.Reverse => "<",
             _ => "Flow"
         };
     }
@@ -652,7 +652,7 @@ public partial class MainWindow : Window
     {
         FlowCanvas.StopAllAnimations();
         _activeFlowAnimation = null;
-        _flowDirection = FlowDirection.Off;
+        _edgeFlowDirection = EdgeFlowDirection.Off;
         UpdateFlowButton();
         FlowCanvas.Refresh();
         SetStatus("Stopped");

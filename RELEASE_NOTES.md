@@ -1,3 +1,13 @@
+## FlowGraph v0.2.2
+
+### Improvements
+
+- Fixed all compiler warnings (CS8601, CS8602, CS0108, CS0109)
+- Improved null safety across codebase
+- Renamed internal `FlowDirection` enum to `EdgeFlowDirection` to avoid conflict with `Visual.FlowDirection`
+
+---
+
 ## FlowGraph v0.2.0
 
 ### New Features

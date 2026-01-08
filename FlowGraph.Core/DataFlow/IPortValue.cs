@@ -42,7 +42,7 @@ public interface IPortValue<T> : IPortValue
     /// <summary>
     /// Gets or sets the current value.
     /// </summary>
-    new T? TypedValue { get; set; }
+    T? TypedValue { get; set; }
 
     /// <summary>
     /// Event raised when the value changes with typed arguments.

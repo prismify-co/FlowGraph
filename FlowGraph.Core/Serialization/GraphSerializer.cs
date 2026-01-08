@@ -171,7 +171,7 @@ public class NodeDto
         var node = new Node
         {
             Id = Id,
-            Type = Type,
+            Type = Type ?? "default",
             Label = Label,
             Position = new Point(Position.X, Position.Y),
             Width = Width,

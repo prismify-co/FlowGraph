@@ -118,7 +118,10 @@ public class Output3DNodeRenderer : WhiteHeaderedNodeRendererBase
     scene3D.Parameters = newParams;
 
     // Persist to Node.Data so it survives visual tree rebuilds
-    processor.Node.Data = newParams;
+    if (processor.Node != null)
+    {
+      processor.Node.Data = newParams;
+    }
   }
 
   /// <inheritdoc />
