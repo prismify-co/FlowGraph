@@ -41,16 +41,22 @@ public class SliderNodeRenderer : DataNodeRendererBase
 
         var slider = new Slider
         {
-            Minimum = Minimum, Maximum = Maximum, Value = initialValue,
-            TickFrequency = TickFrequency, IsSnapToTickEnabled = TickFrequency > 0,
-            Width = 140, Tag = "Slider"
+            Minimum = Minimum,
+            Maximum = Maximum,
+            Value = initialValue,
+            TickFrequency = TickFrequency,
+            IsSnapToTickEnabled = TickFrequency > 0,
+            Width = 140,
+            Tag = "Slider"
         };
 
         var valueText = new TextBlock
         {
-            Text = initialValue.ToString("F1"), FontSize = 11,
+            Text = initialValue.ToString("F1"),
+            FontSize = 11,
             Foreground = context.Theme.NodeText,
-            HorizontalAlignment = HorizontalAlignment.Center, Tag = "ValueText"
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Tag = "ValueText"
         };
 
         slider.PointerPressed += (s, e) => e.Handled = true;
@@ -113,14 +119,18 @@ public class NumberInputNodeRenderer : DataNodeRendererBase
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Number",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
+            FontWeight = FontWeight.SemiBold,
+            FontSize = 12,
             Foreground = context.Theme.NodeText
         });
 
         var textBox = new TextBox
         {
-            Text = initialValue.ToString(), Width = 100, FontSize = 12,
-            HorizontalContentAlignment = HorizontalAlignment.Center, Tag = "NumberInput"
+            Text = initialValue.ToString(),
+            Width = 100,
+            FontSize = 12,
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            Tag = "NumberInput"
         };
 
         textBox.PointerPressed += (s, e) => e.Handled = true;
@@ -163,7 +173,8 @@ public class TextInputNodeRenderer : DataNodeRendererBase
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Text",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
+            FontWeight = FontWeight.SemiBold,
+            FontSize = 12,
             Foreground = context.Theme.NodeText
         });
 
@@ -202,7 +213,10 @@ public class ToggleNodeRenderer : DataNodeRendererBase
 
         var checkBox = new CheckBox
         {
-            Content = node.Label ?? "Toggle", FontSize = 12, IsChecked = initialValue, Tag = "Toggle"
+            Content = node.Label ?? "Toggle",
+            FontSize = 12,
+            IsChecked = initialValue,
+            Tag = "Toggle"
         };
 
         checkBox.PointerPressed += (s, e) => e.Handled = true;
@@ -249,7 +263,8 @@ public class DropdownNodeRenderer : DataNodeRendererBase
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Select",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
+            FontWeight = FontWeight.SemiBold,
+            FontSize = 12,
             Foreground = context.Theme.NodeText
         });
 
@@ -312,18 +327,23 @@ public class DisplayNodeRenderer : DataNodeRendererBase
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Output",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
+            FontWeight = FontWeight.SemiBold,
+            FontSize = 12,
             Foreground = context.Theme.NodeText
         });
 
         var valueDisplay = new Border
         {
             Background = new SolidColorBrush(Color.FromRgb(240, 240, 240)),
-            CornerRadius = new CornerRadius(4), Padding = new Thickness(8, 4),
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(8, 4),
             Child = new TextBlock
             {
-                Text = "—", FontSize = 14, FontWeight = FontWeight.Medium,
-                HorizontalAlignment = HorizontalAlignment.Center, Tag = "ValueDisplay"
+                Text = "ï¿½",
+                FontSize = 14,
+                FontWeight = FontWeight.Medium,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Tag = "ValueDisplay"
             },
             Tag = "ValueContainer"
         };
@@ -349,68 +369,45 @@ public class DisplayNodeRenderer : DataNodeRendererBase
             double d => d.ToString("F2"),
             float f => f.ToString("F2"),
             bool b => b ? "True" : "False",
-            null => "—",
-            var v => v.ToString() ?? "—"
+            null => "ï¿½",
+            var v => v.ToString() ?? "ï¿½"
         };
     }
 }
 
 /// <summary>
-/// Renders a radio button group node. Value persisted in Node.Data as RadioButtonData.
+/// Renders a radio button group node using the white headered base.
+/// Value persisted in Node.Data as RadioButtonData.
 /// </summary>
-public class RadioButtonNodeRenderer : DataNodeRendererBase
+public class RadioButtonNodeRenderer : WhiteHeaderedNodeRendererBase
 {
-    private static readonly IBrush HeaderBackground = new SolidColorBrush(Color.FromRgb(255, 230, 240));
-    private static readonly IBrush HeaderBorder = new SolidColorBrush(Color.FromRgb(255, 182, 193));
+    // Static registry to store processor mappings (survives visual tree rebuilds)
+    private static readonly Dictionary<string, INodeProcessor> ProcessorRegistry = new();
 
     public IList<string> Options { get; set; } = new List<string> { "cube", "pyramid" };
 
     public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 120;
 
-    public override Control CreateNodeVisual(Node node, NodeRenderContext context) => CreateDataBoundVisual(node, null, context);
+    protected override string GetDefaultLabel() => "shape type";
 
-    public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
+    protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
-        var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
-
-        var border = new Border
-        {
-            Width = baseWidth * scale, Height = baseHeight * scale,
-            Background = HeaderBackground,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : HeaderBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(12 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale, OffsetY = 2 * scale, Blur = 8 * scale,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            }),
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node, ClipToBounds = true
-        };
-
         var (options, selectedValue) = GetRadioButtonData(node, processor);
 
-        var content = new StackPanel { Spacing = 8, VerticalAlignment = VerticalAlignment.Center };
-
-        content.Children.Add(new TextBlock
-        {
-            Text = node.Label ?? "shape type",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
-            Foreground = new SolidColorBrush(Color.FromRgb(180, 50, 80))
-        });
-
+        // Create container Border with Tag = node for processor lookup (like ZoomSlider)
+        var container = new Border { Tag = node };
         var radioPanel = new StackPanel { Spacing = 6 };
 
         foreach (var option in options)
         {
             var radio = new RadioButton
             {
-                Content = option, FontSize = 11, IsChecked = option == selectedValue,
-                GroupName = node.Id, Foreground = new SolidColorBrush(Color.FromRgb(80, 80, 80)),
+                Content = option,
+                FontSize = 11,
+                IsChecked = option == selectedValue,
+                GroupName = node.Id,
+                Foreground = new SolidColorBrush(Color.FromRgb(80, 80, 80)),
                 Tag = option
             };
 
@@ -420,17 +417,19 @@ public class RadioButtonNodeRenderer : DataNodeRendererBase
                 if (radio.IsChecked == true)
                 {
                     node.Data = new RadioButtonData { Options = options, SelectedValue = option };
-                    if (processor is InputNodeProcessor<string> sp) sp.Value = option;
+                    if (ProcessorRegistry.TryGetValue(node.Id, out var currentProcessor) &&
+                        currentProcessor is InputNodeProcessor<string> sp)
+                    {
+                        sp.Value = option;
+                    }
                 }
             };
 
             radioPanel.Children.Add(radio);
         }
 
-        content.Children.Add(radioPanel);
-
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(10 * scale) };
-        return border;
+        container.Child = radioPanel;
+        return container;
     }
 
     private (IList<string> options, string selectedValue) GetRadioButtonData(Node node, INodeProcessor? processor)
@@ -452,20 +451,20 @@ public class RadioButtonNodeRenderer : DataNodeRendererBase
         if (visual is not Border border) return;
         var value = processor.OutputValues.TryGetValue("out", out var port) && port.Value is string s ? s : "";
 
-        if (border.Child is Viewbox vb && vb.Child is StackPanel content)
+        // Find radio buttons via recursive search
+        var radios = FindAll<RadioButton>(border);
+        foreach (var radio in radios)
         {
-            foreach (var child in content.Children)
-            {
-                if (child is StackPanel radioPanel)
-                {
-                    foreach (var rc in radioPanel.Children)
-                    {
-                        if (rc is RadioButton radio && radio.Tag is string tag)
-                            radio.IsChecked = tag == value;
-                    }
-                }
-            }
+            if (radio.Tag is string tag)
+                radio.IsChecked = tag == value;
         }
+    }
+
+    /// <inheritdoc />
+    public override void OnProcessorAttached(Control visual, INodeProcessor processor)
+    {
+        base.OnProcessorAttached(visual, processor);
+        ProcessorRegistry[processor.Node.Id] = processor;
     }
 }
 
@@ -476,52 +475,33 @@ public class RadioButtonData
 }
 
 /// <summary>
-/// Renders a zoom slider node. Value persisted in Node.Data as double.
+/// Renders a zoom slider node using the white headered base.
+/// Value persisted in Node.Data as double.
 /// </summary>
-public class ZoomSliderNodeRenderer : DataNodeRendererBase
+public class ZoomSliderNodeRenderer : WhiteHeaderedNodeRendererBase
 {
-    private static readonly IBrush HeaderBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-    private static readonly IBrush HeaderBorder = new SolidColorBrush(Color.FromRgb(220, 220, 220));
+    // Static registry to store processor mappings (survives visual tree rebuilds)
+    private static readonly Dictionary<string, INodeProcessor> ProcessorRegistry = new();
 
     public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 90;
 
-    public override Control CreateNodeVisual(Node node, NodeRenderContext context) => CreateDataBoundVisual(node, null, context);
+    protected override string GetDefaultLabel() => "zoom level";
 
-    public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
+    protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
-        var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
-
-        var border = new Border
-        {
-            Width = baseWidth * scale, Height = baseHeight * scale,
-            Background = HeaderBackground,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : HeaderBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(12 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale, OffsetY = 2 * scale, Blur = 8 * scale,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            }),
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node, ClipToBounds = true
-        };
-
         var initialValue = node.Data is double d ? d : (processor is InputNodeProcessor<double> p ? p.Value : 50.0);
 
-        var content = new StackPanel { Spacing = 10, VerticalAlignment = VerticalAlignment.Center };
+        var container = new Border { Tag = node }; // Container for processor lookup
 
-        content.Children.Add(new TextBlock
+        var slider = new Slider
         {
-            Text = node.Label ?? "zoom level",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
-            Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 100))
-        });
-
-        var slider = new Slider { Minimum = 0, Maximum = 100, Value = initialValue, Width = 120, Tag = "Slider" };
+            Minimum = 0,
+            Maximum = 100,
+            Value = initialValue,
+            Width = 120,
+            Tag = "Slider"
+        };
 
         slider.PointerPressed += (s, e) => e.Handled = true;
         slider.PropertyChanged += (s, e) =>
@@ -529,14 +509,16 @@ public class ZoomSliderNodeRenderer : DataNodeRendererBase
             if (e.Property == RangeBase.ValueProperty)
             {
                 node.Data = slider.Value;
-                if (processor is InputNodeProcessor<double> dp) dp.Value = slider.Value;
+                if (ProcessorRegistry.TryGetValue(node.Id, out var currentProcessor) &&
+                    currentProcessor is InputNodeProcessor<double> dp)
+                {
+                    dp.Value = slider.Value;
+                }
             }
         };
 
-        content.Children.Add(slider);
-
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(10 * scale) };
-        return border;
+        container.Child = slider;
+        return container;
     }
 
     public override void UpdateFromPortValues(Control visual, INodeProcessor processor)
@@ -546,69 +528,50 @@ public class ZoomSliderNodeRenderer : DataNodeRendererBase
         if (slider != null && processor.OutputValues.TryGetValue("out", out var port) && port.Value is double value)
             slider.Value = value;
     }
+
+    /// <inheritdoc />
+    public override void OnProcessorAttached(Control visual, INodeProcessor processor)
+    {
+        base.OnProcessorAttached(visual, processor);
+        ProcessorRegistry[processor.Node.Id] = processor;
+    }
 }
 
 /// <summary>
-/// Renders an output display node with large content area.
+/// Renders an output display node using the white headered base with large content area.
 /// </summary>
-public class OutputDisplayNodeRenderer : DataNodeRendererBase
+public class OutputDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
 {
     public override double? GetWidth(Node node, FlowCanvasSettings settings) => 220;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 200;
 
-    public override Control CreateNodeVisual(Node node, NodeRenderContext context) => CreateDataBoundVisual(node, null, context);
+    protected override string GetDefaultLabel() => "output";
 
-    public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
+    protected override double ContentVerticalPadding => 10;
+
+    protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
-        var scale = context.Scale;
         var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
         var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
 
-        var border = new Border
-        {
-            Width = baseWidth * scale, Height = baseHeight * scale,
-            Background = Brushes.White,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : new SolidColorBrush(Color.FromRgb(220, 220, 220)),
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(12 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale, OffsetY = 2 * scale, Blur = 8 * scale,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            }),
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node, ClipToBounds = true
-        };
-
-        var content = new StackPanel { Spacing = 8, VerticalAlignment = VerticalAlignment.Top };
-
-        content.Children.Add(new TextBlock
-        {
-            Text = node.Label ?? "output",
-            FontWeight = FontWeight.SemiBold, FontSize = 12,
-            Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 100))
-        });
-
         var contentArea = new Border
         {
-            Width = baseWidth - 24, Height = baseHeight - 60,
+            Width = baseWidth - 40,
+            Height = baseHeight - 80,
             Background = new SolidColorBrush(Color.FromRgb(250, 250, 250)),
-            CornerRadius = new CornerRadius(8), Tag = "ContentArea",
+            CornerRadius = new CornerRadius(8),
+            Tag = "ContentArea",
             Child = new TextBlock
             {
-                Text = "Preview", FontSize = 24,
+                Text = "Preview",
+                FontSize = 24,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200))
             }
         };
 
-        content.Children.Add(contentArea);
-
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(10 * scale) };
-
-        if (processor != null) UpdateFromPortValues(border, processor);
-        return border;
+        return contentArea;
     }
 
     public override void UpdateFromPortValues(Control visual, INodeProcessor processor) { }

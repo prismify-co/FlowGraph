@@ -9,7 +9,9 @@ using FlowGraph.Avalonia.Animation;
 using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.DataFlow;
 using FlowGraph.Demo.Helpers;
+using FlowGraph.Demo.Renderers;
 using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Demo.Views;
@@ -20,27 +22,27 @@ public partial class MainWindow : Window
     private FlowDirection _flowDirection = FlowDirection.Off;
     private AnimationDebugger? _debugger;
     private bool _debugModeEnabled = false;
-    
+
     private enum FlowDirection { Off, Forward, Reverse }
 
     public MainWindow()
     {
         InitializeComponent();
-        
+
         // Disable built-in grid and background since we're using FlowBackground
         FlowCanvas.Settings.ShowGrid = false;
         FlowCanvas.Settings.ShowBackground = false;
-        
+
         // Register custom node renderers for the React Flow-style demo
         RegisterCustomNodeRenderers();
-        
+
         // Set the target canvas for FlowBackground (must be done after InitializeComponent)
         FlowBackground.TargetCanvas = FlowCanvas;
-        
+
         // Subscribe to label edit requests (double-click or context menu rename)
         FlowCanvas.NodeLabelEditRequested += OnNodeLabelEditRequested;
         FlowCanvas.EdgeLabelEditRequested += OnEdgeLabelEditRequested;
-        
+
         // Subscribe to debug output
         FlowCanvas.DebugOutput += msg => Dispatcher.UIThread.Post(() =>
         {
@@ -51,13 +53,55 @@ public partial class MainWindow : Window
                 _lastRenderDebug = msg;
             }
         });
-        
+
         // Initialize the animation debugger after the window is loaded
         this.Loaded += (_, _) =>
         {
             _debugger = new AnimationDebugger(FlowCanvas);
             _debugger.IsEnabled = false; // Disabled by default
+
+            // Enable data flow for the 3D demo - use Dispatcher to ensure layout is complete
+            // Use Background priority to ensure rendering has completed
+            Dispatcher.UIThread.Post(() => SetupDataFlow(), DispatcherPriority.Background);
         };
+    }
+
+    private void SetupDataFlow()
+    {
+        if (FlowCanvas.Graph == null) return;
+
+        // Enable data flow processing
+        var executor = FlowCanvas.EnableDataFlow();
+
+        // Create processors for input nodes
+        var colorNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "shape-color");
+        var shapeNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "shape-type");
+        var zoomNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "zoom-level");
+        var outputNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "output");
+
+        if (colorNode != null)
+        {
+            FlowCanvas.CreateInputProcessor<Color>(colorNode, "color", Color.FromRgb(255, 0, 113));
+        }
+
+        if (shapeNode != null)
+        {
+            FlowCanvas.CreateInputProcessor<string>(shapeNode, "type", "cube");
+        }
+
+        if (zoomNode != null)
+        {
+            FlowCanvas.CreateInputProcessor<double>(zoomNode, "zoom", 50.0);
+        }
+
+        if (outputNode != null)
+        {
+            var processor = new MultiInputOutputProcessor(outputNode);
+            FlowCanvas.RegisterProcessor(processor);
+        }
+
+        // Execute initial graph state
+        FlowCanvas.ExecuteGraph();
     }
 
     private void RegisterCustomNodeRenderers()
@@ -67,6 +111,9 @@ public partial class MainWindow : Window
         FlowCanvas.NodeRenderers.Register("radiobutton", new RadioButtonNodeRenderer());
         FlowCanvas.NodeRenderers.Register("zoomslider", new ZoomSliderNodeRenderer());
         FlowCanvas.NodeRenderers.Register("outputdisplay", new OutputDisplayNodeRenderer());
+
+        // Register the 3D output renderer
+        FlowCanvas.NodeRenderers.Register("output3d", new Output3DNodeRenderer());
     }
 
     private string? _lastRenderDebug;
@@ -186,14 +233,14 @@ public partial class MainWindow : Window
         SetStatus($"Moving {selectedNodes.Count} node(s)");
         var random = new Random();
         var positions = new Dictionary<Node, CorePoint>();
-        
+
         foreach (var node in selectedNodes)
         {
             positions[node] = new CorePoint(
                 node.Position.X + random.Next(-50, 51),
                 node.Position.Y + random.Next(-50, 51));
         }
-        
+
         FlowCanvas.AnimateNodesTo(positions, duration: 0.5, easing: Easing.EaseOutElastic);
     }
 
@@ -341,8 +388,8 @@ public partial class MainWindow : Window
             return;
         }
 
-        var colors = new[] 
-        { 
+        var colors = new[]
+        {
             Color.FromRgb(231, 76, 60),   // Red
             Color.FromRgb(241, 196, 15),  // Yellow
             Color.FromRgb(46, 204, 113),  // Green
@@ -352,7 +399,7 @@ public partial class MainWindow : Window
         };
         var random = new Random();
         var targetColor = colors[random.Next(colors.Length)];
-        
+
         SetStatus("Changing color...");
         FlowCanvas.AnimateEdgeColor(edge, targetColor, duration: 0.5, onComplete: () =>
         {
@@ -394,7 +441,7 @@ public partial class MainWindow : Window
             SetStatus("Collapsing group (DEBUG)...");
             _debugger.StartSession($"GroupCollapse_{selectedGroup.Label ?? selectedGroup.Id}");
             _debugger.CaptureFrame("Init", 0, "before_start");
-            
+
             AnimateGroupCollapseWithDebug(selectedGroup.Id, 0.6, async () =>
             {
                 _debugger.CaptureFrame("Complete", 1.0, "finished");
@@ -427,7 +474,7 @@ public partial class MainWindow : Window
             SetStatus("Expanding group (DEBUG)...");
             _debugger.StartSession($"GroupExpand_{selectedGroup.Label ?? selectedGroup.Id}");
             _debugger.CaptureFrame("Init", 0, "before_start");
-            
+
             AnimateGroupExpandWithDebug(selectedGroup.Id, 0.6, async () =>
             {
                 _debugger.CaptureFrame("Complete", 1.0, "finished");
@@ -471,7 +518,7 @@ public partial class MainWindow : Window
         var shrinkDuration = actualDuration * 0.5;
 
         int frameCount = 0;
-        
+
         // Phase 1: Content fade with screenshots
         var contentFadeAnimation = new FlowGraph.Avalonia.Animation.GenericAnimation(
             contentFadeDuration,
@@ -487,7 +534,7 @@ public partial class MainWindow : Window
             onComplete: () =>
             {
                 _debugger?.CaptureFrame("ContentFade", 1.0, "phase_complete");
-                
+
                 frameCount = 0;
                 // Phase 2: Shrink with screenshots
                 var shrinkAnimation = new FlowGraph.Avalonia.Animation.GenericAnimation(
@@ -510,7 +557,7 @@ public partial class MainWindow : Window
 
         // Start with the actual animation (which handles the visual changes)
         FlowCanvas.AnimateGroupCollapse(groupId, actualDuration, onComplete: () => { });
-        
+
         // Run our debug capture in parallel
         FlowCanvas.Animations.Start(contentFadeAnimation);
     }
@@ -522,7 +569,7 @@ public partial class MainWindow : Window
     {
         // Use a slower animation for better screenshot capture
         var actualDuration = duration * 2; // Double the duration for debug
-        
+
         int frameCount = 0;
         var expandDuration = actualDuration * 0.5;
         var contentFadeDuration = actualDuration * 0.5;
@@ -541,7 +588,7 @@ public partial class MainWindow : Window
             onComplete: () =>
             {
                 _debugger?.CaptureFrame("Expand", 1.0, "phase_complete");
-                
+
                 frameCount = 0;
                 // Phase 2: Content fade with screenshots
                 var contentFadeAnimation = new FlowGraph.Avalonia.Animation.GenericAnimation(
@@ -564,7 +611,7 @@ public partial class MainWindow : Window
 
         // Start with the actual animation
         FlowCanvas.AnimateGroupExpand(groupId, actualDuration, onComplete: () => { });
-        
+
         // Run our debug capture in parallel
         FlowCanvas.Animations.Start(expandAnimation);
     }
@@ -580,7 +627,7 @@ public partial class MainWindow : Window
         {
             _debugger.IsEnabled = _debugModeEnabled;
         }
-        
+
         DebugText.Text = _debugModeEnabled ? "ON" : "Debug";
         SetStatus(_debugModeEnabled ? "Debug mode ON - screenshots will be captured" : "Debug mode OFF");
     }
@@ -697,7 +744,7 @@ public partial class MainWindow : Window
         // Generate edges into a temporary list first (avoids ObservableCollection notifications)
         var edgesList = new List<Edge>();
         var nodesWithOutputs = nodesList.Where(n => n.Outputs.Count > 0).ToList();
-        
+
         foreach (var node in nodesWithOutputs)
         {
             // Find nearby nodes that have inputs - only connect to immediate neighbors
@@ -737,13 +784,13 @@ public partial class MainWindow : Window
 
         var fitTime = sw.ElapsedMilliseconds;
         sw.Restart();
-        
+
         // Now render - this should be fast with direct rendering
         SetStatus($"Rendering {nodeCount}n/{edgesList.Count}e...");
         await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
-        
+
         FlowCanvas.Refresh();
-        
+
         var renderTime = sw.ElapsedMilliseconds;
         sw.Stop();
 
@@ -752,11 +799,11 @@ public partial class MainWindow : Window
 
         var directMode = nodeCount >= 500 ? " [Direct]" : "";
         var total = dataGenTime + edgeGenTime + collectionAddTime + fitTime + renderTime;
-        
+
         // Show detailed timing in status
         var status = $"{nodeCount}n/{edgesList.Count}e{directMode} - D:{dataGenTime}ms E:{edgeGenTime}ms C:{collectionAddTime}ms F:{fitTime}ms R:{renderTime}ms = {total}ms";
         SetStatus(status);
-        
+
         // Show in Output window (View > Output in VS, select "Debug" from dropdown)
         System.Diagnostics.Debug.WriteLine($"\n=== STRESS TEST RESULTS ===");
         System.Diagnostics.Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgesList.Count}, DirectRendering: {nodeCount >= 500}");

@@ -44,7 +44,7 @@ public partial class FlowCanvas
             throw new InvalidOperationException("Cannot enable data flow without a Graph.");
 
         _graphExecutor = new GraphExecutor(Graph);
-        
+
         // Register any processors that were added before data flow was enabled
         foreach (var (nodeId, processor) in _nodeProcessors)
         {
@@ -181,10 +181,18 @@ public partial class FlowCanvas
 
     private void UpdateNodeVisualForProcessor(INodeProcessor processor)
     {
-        if (_mainCanvas == null || _theme == null) return;
+        if (_mainCanvas == null || _theme == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DataFlow] UpdateNodeVisualForProcessor: _mainCanvas or _theme is null");
+            return;
+        }
 
         var node = processor.Node;
         var renderer = NodeRenderers.GetRenderer(node.Type);
+
+        System.Diagnostics.Debug.WriteLine($"[DataFlow] UpdateNodeVisualForProcessor for node {node.Id}, type={node.Type}");
+        System.Diagnostics.Debug.WriteLine($"[DataFlow] Renderer type: {renderer?.GetType().Name ?? "null"}");
+        System.Diagnostics.Debug.WriteLine($"[DataFlow] Is IDataNodeRenderer: {renderer is IDataNodeRenderer}");
 
         // Check if the renderer supports data binding
         if (renderer is IDataNodeRenderer dataRenderer)
@@ -198,10 +206,16 @@ public partial class FlowCanvas
 
             // Get the existing visual
             var existingVisual = _graphRenderer.GetNodeVisual(node.Id);
+            System.Diagnostics.Debug.WriteLine($"[DataFlow] existingVisual: {existingVisual?.GetType().Name ?? "null"}");
             if (existingVisual != null)
             {
                 // Attach the processor to the renderer
+                System.Diagnostics.Debug.WriteLine($"[DataFlow] Calling OnProcessorAttached");
                 dataRenderer.OnProcessorAttached(existingVisual, processor);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[DataFlow] WARNING: No visual found for node {node.Id}!");
             }
         }
     }

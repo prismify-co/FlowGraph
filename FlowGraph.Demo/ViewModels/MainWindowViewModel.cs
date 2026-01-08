@@ -57,18 +57,18 @@ public partial class MainWindowViewModel : ViewModelBase
             Outputs = [new Port { Id = "zoom", Type = "number", Label = "Zoom" }]
         };
 
-        // Output node (right side)
+        // Output node (right side) - uses 3D renderer
         var outputNode = new Node
         {
             Id = "output",
-            Type = "outputdisplay",
-            Label = "output",
+            Type = "output3d",
+            Label = "3D output",
             Position = new Core.Point(350, 100),
             Width = 220,
             Height = 260,
             Inputs = [
                 new Port { Id = "color", Type = "color", Label = "Color" },
-                new Port { Id = "type", Type = "string", Label = "Type" },
+                new Port { Id = "shape", Type = "string", Label = "Shape" },
                 new Port { Id = "zoom", Type = "number", Label = "Zoom" }
             ]
         };
@@ -95,7 +95,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Source = shapeTypeNode.Id,
             Target = outputNode.Id,
             SourcePort = "type",
-            TargetPort = "type",
+            TargetPort = "shape",
             Type = EdgeType.Bezier,
             MarkerEnd = EdgeMarker.None
         });

@@ -14,11 +14,12 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// Uses Avalonia's built-in ColorView for full color selection with hex input fallback.
 /// The selected color is persisted in Node.Data as a uint (ARGB).
 /// </summary>
-public class ColorPickerNodeRenderer : DataNodeRendererBase
+public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
 {
-    private static readonly IBrush HeaderBackground = new SolidColorBrush(Color.FromRgb(255, 240, 245));
-    private static readonly IBrush HeaderBorder = new SolidColorBrush(Color.FromRgb(255, 182, 193));
     private static readonly Color DefaultColor = Color.FromRgb(255, 0, 113); // Hot pink (#ff0071)
+
+    // Static registry to store processor mappings (survives visual tree rebuilds)
+    private static readonly Dictionary<string, INodeProcessor> ProcessorRegistry = new();
 
     /// <inheritdoc />
     public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
@@ -27,61 +28,17 @@ public class ColorPickerNodeRenderer : DataNodeRendererBase
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 100;
 
     /// <inheritdoc />
-    public override Control CreateNodeVisual(Node node, NodeRenderContext context)
-    {
-        return CreateDataBoundVisual(node, null, context);
-    }
+    protected override string GetDefaultLabel() => "shape color";
 
     /// <inheritdoc />
-    public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
+    protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
-        var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
-
-        // Main container - scaled dimensions
-        var border = new Border
-        {
-            Width = baseWidth * scale,
-            Height = baseHeight * scale,
-            Background = HeaderBackground,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : HeaderBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(12 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale,
-                OffsetY = 2 * scale,
-                Blur = 8 * scale,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            }),
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node,
-            ClipToBounds = true
-        };
-
-        // Content at base size inside a Viewbox for uniform scaling
-        var content = new StackPanel
-        {
-            Spacing = 8,
-            Width = baseWidth - 24,  // Account for margins
-            VerticalAlignment = VerticalAlignment.Center
-        };
-
-        // Title
-        content.Children.Add(new TextBlock
-        {
-            Text = node.Label ?? "shape color",
-            FontWeight = FontWeight.SemiBold,
-            FontSize = 12,
-            Foreground = new SolidColorBrush(Color.FromRgb(180, 50, 80))
-        });
-
         // Color row
         var colorRow = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Spacing = 8
+            Spacing = 8,
+            VerticalAlignment = VerticalAlignment.Center
         };
 
         // Get initial color from Node.Data, processor, or default
@@ -134,20 +91,22 @@ public class ColorPickerNodeRenderer : DataNodeRendererBase
             Placement = PlacementMode.Bottom
         };
 
+        // Create a container Border with Tag = node for processor lookup (like ZoomSlider)
+        var container = new Border { Tag = node };
+
         // Helper to save color to node and processor
         void SaveColor(Color newColor)
         {
             // Persist to Node.Data so it survives re-renders
             node.Data = newColor.ToUInt32();
 
-            // Also update processor if available
-            if (processor is InputNodeProcessor<Color> cp)
+            // Look up processor from static registry by node ID
+            if (ProcessorRegistry.TryGetValue(node.Id, out var currentProcessor))
             {
-                cp.Value = newColor;
-            }
-            else if (processor is InputNodeProcessor<uint> up)
-            {
-                up.Value = newColor.ToUInt32();
+                if (currentProcessor is InputNodeProcessor<Color> cp)
+                    cp.Value = newColor;
+                else if (currentProcessor is InputNodeProcessor<uint> up)
+                    up.Value = newColor.ToUInt32();
             }
         }
 
@@ -195,18 +154,9 @@ public class ColorPickerNodeRenderer : DataNodeRendererBase
 
         colorRow.Children.Add(colorPreview);
         colorRow.Children.Add(hexInput);
-        content.Children.Add(colorRow);
 
-        // Use Viewbox for uniform scaling
-        var viewbox = new Viewbox
-        {
-            Stretch = Stretch.Uniform,
-            Child = content,
-            Margin = new Thickness(10 * scale)
-        };
-
-        border.Child = viewbox;
-        return border;
+        container.Child = colorRow;
+        return container;
     }
 
     /// <summary>
@@ -294,13 +244,20 @@ public class ColorPickerNodeRenderer : DataNodeRendererBase
             return false;
         }
     }
+
+    /// <inheritdoc />
+    public override void OnProcessorAttached(Control visual, INodeProcessor processor)
+    {
+        base.OnProcessorAttached(visual, processor);
+        ProcessorRegistry[processor.Node.Id] = processor;
+    }
 }
 
 /// <summary>
 /// Renders a color display output node.
 /// Shows a large color swatch with the received color value.
 /// </summary>
-public class ColorDisplayNodeRenderer : DataNodeRendererBase
+public class ColorDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
 {
     /// <inheritdoc />
     public override double? GetWidth(Node node, FlowCanvasSettings settings) => 120;
@@ -309,47 +266,11 @@ public class ColorDisplayNodeRenderer : DataNodeRendererBase
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 120;
 
     /// <inheritdoc />
-    public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
+    protected override string GetDefaultLabel() => "Color";
+
+    /// <inheritdoc />
+    protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var baseWidth = node.Width ?? GetWidth(node, context.Settings) ?? context.Settings.NodeWidth;
-        var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
-
-        var border = new Border
-        {
-            Width = baseWidth * scale,
-            Height = baseHeight * scale,
-            Background = context.Theme.NodeBackground,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : context.Theme.NodeBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(12 * scale),
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 2 * scale,
-                OffsetY = 2 * scale,
-                Blur = 8 * scale,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            }),
-            Tag = node,
-            ClipToBounds = true
-        };
-
-        var content = new StackPanel
-        {
-            Spacing = 8,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center
-        };
-
-        content.Children.Add(new TextBlock
-        {
-            Text = node.Label ?? "Color",
-            FontWeight = FontWeight.SemiBold,
-            FontSize = 11,
-            Foreground = context.Theme.NodeText,
-            HorizontalAlignment = HorizontalAlignment.Center
-        });
-
         var colorSwatch = new Border
         {
             Width = 60,
@@ -358,22 +279,11 @@ public class ColorDisplayNodeRenderer : DataNodeRendererBase
             Background = Brushes.Gray,
             BorderBrush = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
             BorderThickness = new Thickness(1),
-            Tag = "ColorSwatch"
+            Tag = "ColorSwatch",
+            HorizontalAlignment = HorizontalAlignment.Center
         };
 
-        content.Children.Add(colorSwatch);
-
-        var viewbox = new Viewbox
-        {
-            Stretch = Stretch.Uniform,
-            Child = content,
-            Margin = new Thickness(8 * scale)
-        };
-
-        border.Child = viewbox;
-
-        if (processor != null) UpdateFromPortValues(border, processor);
-        return border;
+        return colorSwatch;
     }
 
     /// <inheritdoc />

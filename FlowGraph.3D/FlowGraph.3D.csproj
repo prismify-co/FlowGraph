@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    
+    <!-- Package Information -->
+    <Version>0.1.0</Version>
+    <PackageId>FlowGraph.3D</PackageId>
+    <Title>FlowGraph 3D Rendering</Title>
+    <Description>3D rendering capabilities for FlowGraph using OpenGL via Silk.NET. Provides hardware-accelerated 3D visualization for node-based graphs.</Description>
+    <Authors>Prismify LLC</Authors>
+    <Company>Prismify LLC</Company>
+    <Copyright>Copyright © 2026 Prismify LLC</Copyright>
+    <PackageTags>flowgraph;3d;opengl;rendering;silk.net;avalonia</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Silk.NET for OpenGL -->
+    <PackageReference Include="Silk.NET.OpenGL" Version="2.21.0" />
+    
+    <!-- Avalonia for control hosting -->
+    <PackageReference Include="Avalonia" Version="11.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlowGraph.Core\FlowGraph.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Embed shaders as resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Rendering\Shaders\*.vert" />
+    <EmbeddedResource Include="Rendering\Shaders\*.frag" />
+  </ItemGroup>
+
+</Project>
