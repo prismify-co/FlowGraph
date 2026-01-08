@@ -727,10 +727,10 @@ public partial class MainWindow : Window
             var offsetY = random.Next(-20, 21);
 
             var nodeType = nodeTypes[random.Next(nodeTypes.Length)];
-            var inputs = nodeType != "input" 
+            var inputs = nodeType != "input"
                 ? ImmutableList.Create(new PortDefinition { Id = "in", Type = "data" })
                 : ImmutableList<PortDefinition>.Empty;
-            var outputs = nodeType != "output" 
+            var outputs = nodeType != "output"
                 ? ImmutableList.Create(new PortDefinition { Id = "out", Type = "data" })
                 : ImmutableList<PortDefinition>.Empty;
 
