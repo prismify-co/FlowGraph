@@ -1,3 +1,39 @@
+## FlowGraph v0.3.1
+
+### Documentation Updates
+
+- **Comprehensive API Documentation** - Updated README and docs to reflect all v0.3.0 API changes
+- **Definition + State Pattern** - Documented new immutable Definition + mutable State architecture
+- **Batch Loading Guide** - Added documentation for `BeginBatchLoad()`, `EndBatchLoad()`, and bulk operations
+- **Performance Guide** - New comprehensive guide for optimizing large graphs (virtualization, simplified rendering, direct GPU rendering)
+- **Enhanced Configuration** - Documented all new FlowCanvasSettings properties
+- **Connection Validation** - Updated with new built-in validators and composite patterns
+- **Events Documentation** - Updated event examples with correct property names and new events
+- **Edge Routing Guide** - Updated with new routing API and configuration options
+
+---
+
+## FlowGraph v0.3.0
+
+### API Improvements
+
+- Definition + State pattern for cleaner separation of concerns
+- `NodeDefinition` and `NodeState` for immutable/mutable properties
+- `EdgeDefinition` and `EdgeState` for better edge management
+- `PortDefinition` with new properties (`MaxConnections`, `IsRequired`)
+- `BulkObservableCollection` with `AddRange()` for batch operations
+- Improved connection validation with built-in validators
+- Enhanced performance settings for large graphs (500+ nodes)
+
+### Breaking Changes
+
+- Node and Edge constructors now accept Definition and State parameters (backward-compatible pass-through properties maintained)
+- `ValidationResult` renamed to `ConnectionValidationResult`
+- `BoxSelectionMode` renamed to `SelectionMode`
+- Event property names updated for consistency
+
+---
+
 ## FlowGraph v0.2.2
 
 ### Improvements
