@@ -10,6 +10,7 @@ In-depth guides for FlowGraph features.
 - [Grouping](grouping.md) - Organize nodes into groups
 - [Edge Routing](edge-routing.md) - Configure edge paths
 - [Serialization](serialization.md) - Save and load graphs
+- [Performance](performance.md) - Optimize for large graphs
 
 ## Additional Resources
 

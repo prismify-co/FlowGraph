@@ -43,6 +43,8 @@ In your ViewModel or code-behind:
 
 ```csharp
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
+using System.Collections.Immutable;
 
 public class MainViewModel
 {
@@ -50,34 +52,64 @@ public class MainViewModel
 
     public MainViewModel()
     {
-        // Create nodes
-        var node1 = new Node
+        // Create nodes using Definition + State pattern
+        var node1Definition = new NodeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Type = "default",
-            Position = new Point(100, 100),
             Label = "Node 1",
-            Outputs = [new Port { Id = "out", Type = "data" }]
+            Outputs = [new PortDefinition { Id = "out", Type = "data" }]
         };
 
-        var node2 = new Node
+        var node1State = new NodeState { X = 100, Y = 100 };
+        var node1 = new Node(node1Definition, node1State);
+
+        var node2Definition = new NodeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Type = "default",
-            Position = new Point(350, 100),
             Label = "Node 2",
-            Inputs = [new Port { Id = "in", Type = "data" }]
+            Inputs = [new PortDefinition { Id = "in", Type = "data" }]
         };
+
+        var node2State = new NodeState { X = 350, Y = 100 };
+        var node2 = new Node(node2Definition, node2State);
 
         Graph.AddNode(node1);
         Graph.AddNode(node2);
 
         // Connect nodes
-        Graph.AddEdge(new Edge
+        var edgeDefinition = new EdgeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Source = node1.Id,
             Target = node2.Id,
             SourcePort = "out",
-            TargetPort = "in"
-        });
+            TargetPort = "in",
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow
+        };
+
+        Graph.AddEdge(new Edge(edgeDefinition, new EdgeState()));
+    }
+}
+
+// Backward-compatible shorthand using parameterless constructor
+public class LegacyViewModel
+{
+    public Graph Graph { get; } = new Graph();
+
+    public LegacyViewModel()
+    {
+        var node = new Node
+        {
+            Type = "default",
+            Position = new Point(100, 100),
+            Label = "My Node",
+            Outputs = [new Port { Id = "out", Type = "data" }]
+        };
+
+        Graph.AddNode(node);
     }
 }
 ```
