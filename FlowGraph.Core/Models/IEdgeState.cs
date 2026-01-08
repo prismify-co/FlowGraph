@@ -15,15 +15,15 @@ namespace FlowGraph.Core.Models;
 /// </remarks>
 public interface IEdgeState : INotifyPropertyChanged
 {
-    /// <summary>
-    /// Whether this edge is currently selected.
-    /// </summary>
-    bool IsSelected { get; set; }
+  /// <summary>
+  /// Whether this edge is currently selected.
+  /// </summary>
+  bool IsSelected { get; set; }
 
-    /// <summary>
-    /// Optional waypoints for custom edge routing.
-    /// When set, the edge will pass through these intermediate points.
-    /// Does not include the start and end points (port positions).
-    /// </summary>
-    IReadOnlyList<Point>? Waypoints { get; set; }
+  /// <summary>
+  /// Optional waypoints for custom edge routing.
+  /// When set, the edge will pass through these intermediate points.
+  /// Does not include the start and end points (port positions).
+  /// </summary>
+  IReadOnlyList<Point>? Waypoints { get; set; }
 }

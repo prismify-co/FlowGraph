@@ -1,4 +1,6 @@
 ﻿using FlowGraph.Core;
+using FlowGraph.Core.Models;
+using System.Collections.Immutable;
 
 namespace FlowGraph.Demo.ViewModels;
 
@@ -21,57 +23,49 @@ public partial class MainWindowViewModel : ViewModelBase
         // ============================================
 
         // Shape Color input node (left side, top)
-        var shapeColorNode = new Node
-        {
-            Id = "shape-color",
-            Type = "colorpicker",
-            Label = "shape color",
-            Position = new Core.Point(50, 50),
-            Width = 160,
-            Height = 100,
-            Outputs = [new Port { Id = "color", Type = "color", Label = "Color" }]
-        };
+        var shapeColorNode = CreateNode(
+            id: "shape-color",
+            type: "colorpicker",
+            label: "shape color",
+            x: 50, y: 50,
+            width: 160, height: 100,
+            outputs: [new PortDefinition { Id = "color", Type = "color", Label = "Color" }]
+        );
 
         // Shape Type input node (left side, middle)
-        var shapeTypeNode = new Node
-        {
-            Id = "shape-type",
-            Type = "radiobutton",
-            Label = "shape type",
-            Position = new Core.Point(50, 180),
-            Width = 160,
-            Height = 120,
-            Data = new List<string> { "cube", "pyramid" },
-            Outputs = [new Port { Id = "type", Type = "string", Label = "Type" }]
-        };
+        var shapeTypeNode = CreateNode(
+            id: "shape-type",
+            type: "radiobutton",
+            label: "shape type",
+            x: 50, y: 180,
+            width: 160, height: 120,
+            data: new List<string> { "cube", "pyramid" },
+            outputs: [new PortDefinition { Id = "type", Type = "string", Label = "Type" }]
+        );
 
         // Zoom Level input node (left side, bottom)
-        var zoomLevelNode = new Node
-        {
-            Id = "zoom-level",
-            Type = "zoomslider",
-            Label = "zoom level",
-            Position = new Core.Point(50, 330),
-            Width = 160,
-            Height = 90,
-            Outputs = [new Port { Id = "zoom", Type = "number", Label = "Zoom" }]
-        };
+        var zoomLevelNode = CreateNode(
+            id: "zoom-level",
+            type: "zoomslider",
+            label: "zoom level",
+            x: 50, y: 330,
+            width: 160, height: 90,
+            outputs: [new PortDefinition { Id = "zoom", Type = "number", Label = "Zoom" }]
+        );
 
         // Output node (right side) - uses 3D renderer
-        var outputNode = new Node
-        {
-            Id = "output",
-            Type = "output3d",
-            Label = "3D output",
-            Position = new Core.Point(350, 100),
-            Width = 220,
-            Height = 260,
-            Inputs = [
-                new Port { Id = "color", Type = "color", Label = "Color" },
-                new Port { Id = "shape", Type = "string", Label = "Shape" },
-                new Port { Id = "zoom", Type = "number", Label = "Zoom" }
+        var outputNode = CreateNode(
+            id: "output",
+            type: "output3d",
+            label: "3D output",
+            x: 350, y: 100,
+            width: 220, height: 260,
+            inputs: [
+                new PortDefinition { Id = "color", Type = "color", Label = "Color" },
+                new PortDefinition { Id = "shape", Type = "string", Label = "Shape" },
+                new PortDefinition { Id = "zoom", Type = "number", Label = "Zoom" }
             ]
-        };
+        );
 
         // Add nodes
         MyGraph.AddNode(shapeColorNode);
@@ -80,35 +74,84 @@ public partial class MainWindowViewModel : ViewModelBase
         MyGraph.AddNode(outputNode);
 
         // Add edges with dashed/curved style
-        MyGraph.AddEdge(new Edge
-        {
-            Source = shapeColorNode.Id,
-            Target = outputNode.Id,
-            SourcePort = "color",
-            TargetPort = "color",
-            Type = EdgeType.Bezier,
-            MarkerEnd = EdgeMarker.None
-        });
+        MyGraph.AddEdge(CreateEdge(
+            source: shapeColorNode.Id,
+            target: outputNode.Id,
+            sourcePort: "color",
+            targetPort: "color",
+            markerEnd: EdgeMarker.None
+        ));
 
-        MyGraph.AddEdge(new Edge
-        {
-            Source = shapeTypeNode.Id,
-            Target = outputNode.Id,
-            SourcePort = "type",
-            TargetPort = "shape",
-            Type = EdgeType.Bezier,
-            MarkerEnd = EdgeMarker.None
-        });
+        MyGraph.AddEdge(CreateEdge(
+            source: shapeTypeNode.Id,
+            target: outputNode.Id,
+            sourcePort: "type",
+            targetPort: "shape",
+            markerEnd: EdgeMarker.None
+        ));
 
-        MyGraph.AddEdge(new Edge
+        MyGraph.AddEdge(CreateEdge(
+            source: zoomLevelNode.Id,
+            target: outputNode.Id,
+            sourcePort: "zoom",
+            targetPort: "zoom",
+            markerEnd: EdgeMarker.None
+        ));
+    }
+
+    private static Node CreateNode(
+        string id,
+        string type,
+        string? label = null,
+        double x = 0,
+        double y = 0,
+        double? width = null,
+        double? height = null,
+        object? data = null,
+        IEnumerable<PortDefinition>? inputs = null,
+        IEnumerable<PortDefinition>? outputs = null)
+    {
+        var definition = new NodeDefinition
         {
-            Source = zoomLevelNode.Id,
-            Target = outputNode.Id,
-            SourcePort = "zoom",
-            TargetPort = "zoom",
-            Type = EdgeType.Bezier,
-            MarkerEnd = EdgeMarker.None
-        });
+            Id = id,
+            Type = type,
+            Label = label,
+            Data = data,
+            Inputs = inputs?.ToImmutableList() ?? [],
+            Outputs = outputs?.ToImmutableList() ?? []
+        };
+
+        var state = new NodeState
+        {
+            X = x,
+            Y = y,
+            Width = width,
+            Height = height
+        };
+
+        return new Node(definition, state);
+    }
+
+    private static Edge CreateEdge(
+        string source,
+        string target,
+        string sourcePort,
+        string targetPort,
+        EdgeType type = EdgeType.Bezier,
+        EdgeMarker markerEnd = EdgeMarker.Arrow)
+    {
+        var definition = new EdgeDefinition
+        {
+            Id = Guid.NewGuid().ToString(),
+            Source = source,
+            Target = target,
+            SourcePort = sourcePort,
+            TargetPort = targetPort,
+            Type = type,
+            MarkerEnd = markerEnd
+        };
+
+        return new Edge(definition, new EdgeState());
     }
 
     private static (Core.Point position, double width, double height) CalculateGroupBounds(Node[] nodes)

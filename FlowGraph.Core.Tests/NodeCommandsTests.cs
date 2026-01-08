@@ -1,5 +1,6 @@
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -9,7 +10,7 @@ public class NodeCommandsTests
     public void AddNodeCommand_Execute_AddsNodeToGraph()
     {
         var graph = new Graph();
-        var node = new Node { Type = "test" };
+        var node = TestHelpers.CreateNode("n1", type: "test");
         var command = new AddNodeCommand(graph, node);
 
         command.Execute();
@@ -22,7 +23,7 @@ public class NodeCommandsTests
     public void AddNodeCommand_Undo_RemovesNodeFromGraph()
     {
         var graph = new Graph();
-        var node = new Node { Type = "test" };
+        var node = TestHelpers.CreateNode("n1", type: "test");
         var command = new AddNodeCommand(graph, node);
         command.Execute();
 
@@ -35,7 +36,7 @@ public class NodeCommandsTests
     public void RemoveNodeCommand_Execute_RemovesNodeFromGraph()
     {
         var graph = new Graph();
-        var node = new Node { Type = "test" };
+        var node = TestHelpers.CreateNode("n1", type: "test");
         graph.AddNode(node);
         var command = new RemoveNodeCommand(graph, node);
 
@@ -48,28 +49,16 @@ public class NodeCommandsTests
     public void RemoveNodeCommand_Undo_RestoresNodeAndEdges()
     {
         var graph = new Graph();
-        var node1 = new Node 
-        { 
-            Type = "test1",
-            Outputs = [new Port { Id = "out", Type = "data" }]
-        };
-        var node2 = new Node 
-        { 
-            Type = "test2",
-            Inputs = [new Port { Id = "in", Type = "data" }]
-        };
+        var node1 = TestHelpers.CreateNode("n1", type: "test1",
+            outputs: [new Port { Id = "out", Type = "data" }]);
+        var node2 = TestHelpers.CreateNode("n2", type: "test2",
+            inputs: [new Port { Id = "in", Type = "data" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
-        
-        var edge = new Edge 
-        { 
-            Source = node1.Id, 
-            Target = node2.Id,
-            SourcePort = "out",
-            TargetPort = "in"
-        };
+
+        var edge = TestHelpers.CreateEdge("e1", node1.Id, node2.Id, "out", "in");
         graph.AddEdge(edge);
-        
+
         var command = new RemoveNodeCommand(graph, node1);
         command.Execute();
 
@@ -83,11 +72,11 @@ public class NodeCommandsTests
     public void RemoveNodesCommand_Execute_RemovesMultipleNodes()
     {
         var graph = new Graph();
-        var node1 = new Node { Type = "test1" };
-        var node2 = new Node { Type = "test2" };
+        var node1 = TestHelpers.CreateNode("n1", type: "test1");
+        var node2 = TestHelpers.CreateNode("n2", type: "test2");
         graph.AddNode(node1);
         graph.AddNode(node2);
-        
+
         var command = new RemoveNodesCommand(graph, [node1, node2]);
         command.Execute();
 
@@ -98,11 +87,11 @@ public class NodeCommandsTests
     public void RemoveNodesCommand_Undo_RestoresAllNodes()
     {
         var graph = new Graph();
-        var node1 = new Node { Type = "test1" };
-        var node2 = new Node { Type = "test2" };
+        var node1 = TestHelpers.CreateNode("n1", type: "test1");
+        var node2 = TestHelpers.CreateNode("n2", type: "test2");
         graph.AddNode(node1);
         graph.AddNode(node2);
-        
+
         var command = new RemoveNodesCommand(graph, [node1, node2]);
         command.Execute();
         command.Undo();
@@ -114,13 +103,9 @@ public class NodeCommandsTests
     public void MoveNodesCommand_Execute_MovesNode()
     {
         var graph = new Graph();
-        var node = new Node 
-        { 
-            Type = "test",
-            Position = new Point(0, 0)
-        };
+        var node = TestHelpers.CreateNode("n1", type: "test", x: 0, y: 0);
         graph.AddNode(node);
-        
+
         var command = new MoveNodesCommand(graph, node, new Point(0, 0), new Point(100, 100));
         command.Execute();
 
@@ -132,13 +117,9 @@ public class NodeCommandsTests
     public void MoveNodesCommand_Undo_RestoresPosition()
     {
         var graph = new Graph();
-        var node = new Node 
-        { 
-            Type = "test",
-            Position = new Point(0, 0)
-        };
+        var node = TestHelpers.CreateNode("n1", type: "test", x: 0, y: 0);
         graph.AddNode(node);
-        
+
         var command = new MoveNodesCommand(graph, node, new Point(0, 0), new Point(100, 100));
         command.Execute();
         command.Undo();
@@ -151,11 +132,11 @@ public class NodeCommandsTests
     public void MoveNodesCommand_MovesMultipleNodes()
     {
         var graph = new Graph();
-        var node1 = new Node { Id = "n1", Type = "test1", Position = new Point(0, 0) };
-        var node2 = new Node { Id = "n2", Type = "test2", Position = new Point(100, 100) };
+        var node1 = TestHelpers.CreateNode("n1", type: "test1", x: 0, y: 0);
+        var node2 = TestHelpers.CreateNode("n2", type: "test2", x: 100, y: 100);
         graph.AddNode(node1);
         graph.AddNode(node2);
-        
+
         var oldPositions = new Dictionary<string, Point>
         {
             { "n1", new Point(0, 0) },
@@ -166,7 +147,7 @@ public class NodeCommandsTests
             { "n1", new Point(50, 50) },
             { "n2", new Point(150, 150) }
         };
-        
+
         var command = new MoveNodesCommand(graph, oldPositions, newPositions);
         command.Execute();
 

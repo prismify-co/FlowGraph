@@ -2,6 +2,7 @@ using FlowGraph.Avalonia;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using Xunit;
 
 namespace FlowGraph.Core.Tests.Rendering;
@@ -21,7 +22,7 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context, null);
-        
+
         Assert.NotNull(manager.NodeRenderers);
     }
 
@@ -30,7 +31,7 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        
+
         Assert.Null(manager.GetNodeVisual("nonexistent"));
     }
 
@@ -39,7 +40,7 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        
+
         Assert.Null(manager.GetPortVisual("node", "port"));
     }
 
@@ -48,14 +49,10 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        var node = new Node
-        {
-            Width = 200,
-            Height = 100
-        };
-        
+        var node = TestHelpers.CreateNode("n1", width: 200, height: 100);
+
         var (width, height) = manager.GetNodeDimensions(node);
-        
+
         Assert.Equal(200, width);
         Assert.Equal(100, height);
     }
@@ -66,10 +63,10 @@ public class NodeVisualManagerTests
         var settings = new FlowCanvasSettings { NodeWidth = 150, NodeHeight = 80 };
         var context = new RenderContext(settings);
         var manager = new NodeVisualManager(context);
-        var node = new Node { Type = "unknown" };
-        
+        var node = TestHelpers.CreateNode("n1", type: "unknown");
+
         var (width, height) = manager.GetNodeDimensions(node);
-        
+
         Assert.Equal(150, width);
         Assert.Equal(80, height);
     }
@@ -78,9 +75,9 @@ public class NodeVisualManagerTests
     public void IsNodeVisible_NodeWithNoParent_ReturnsTrue()
     {
         var graph = new Graph();
-        var node = new Node { Id = "test" };
+        var node = TestHelpers.CreateNode("test");
         graph.AddNode(node);
-        
+
         Assert.True(NodeVisualManager.IsNodeVisible(graph, node));
     }
 
@@ -88,11 +85,12 @@ public class NodeVisualManagerTests
     public void IsNodeVisible_NodeInCollapsedGroup_ReturnsFalse()
     {
         var graph = new Graph();
-        var group = new Node { Id = "group", IsGroup = true, IsCollapsed = true };
-        var node = new Node { Id = "test", ParentGroupId = "group" };
+        var group = TestHelpers.CreateNode("group", isGroup: true);
+        group.IsCollapsed = true;
+        var node = TestHelpers.CreateNode("test", parentGroupId: "group");
         graph.AddNode(group);
         graph.AddNode(node);
-        
+
         Assert.False(NodeVisualManager.IsNodeVisible(graph, node));
     }
 
@@ -100,11 +98,12 @@ public class NodeVisualManagerTests
     public void IsNodeVisible_NodeInExpandedGroup_ReturnsTrue()
     {
         var graph = new Graph();
-        var group = new Node { Id = "group", IsGroup = true, IsCollapsed = false };
-        var node = new Node { Id = "test", ParentGroupId = "group" };
+        var group = TestHelpers.CreateNode("group", isGroup: true);
+        group.IsCollapsed = false;
+        var node = TestHelpers.CreateNode("test", parentGroupId: "group");
         graph.AddNode(group);
         graph.AddNode(node);
-        
+
         Assert.True(NodeVisualManager.IsNodeVisible(graph, node));
     }
 
@@ -112,13 +111,15 @@ public class NodeVisualManagerTests
     public void IsNodeVisible_NodeInNestedCollapsedGroup_ReturnsFalse()
     {
         var graph = new Graph();
-        var outerGroup = new Node { Id = "outer", IsGroup = true, IsCollapsed = true };
-        var innerGroup = new Node { Id = "inner", IsGroup = true, IsCollapsed = false, ParentGroupId = "outer" };
-        var node = new Node { Id = "test", ParentGroupId = "inner" };
+        var outerGroup = TestHelpers.CreateNode("outer", isGroup: true);
+        outerGroup.IsCollapsed = true;
+        var innerGroup = TestHelpers.CreateNode("inner", isGroup: true, parentGroupId: "outer");
+        innerGroup.IsCollapsed = false;
+        var node = TestHelpers.CreateNode("test", parentGroupId: "inner");
         graph.AddNode(outerGroup);
         graph.AddNode(innerGroup);
         graph.AddNode(node);
-        
+
         Assert.False(NodeVisualManager.IsNodeVisible(graph, node));
     }
 
@@ -127,9 +128,9 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        
+
         var y = manager.GetPortYCanvas(0, 0, 1, 100);
-        
+
         Assert.Equal(50, y); // Centered at height/2
     }
 
@@ -138,11 +139,11 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        
+
         var y1 = manager.GetPortYCanvas(0, 0, 3, 100);
         var y2 = manager.GetPortYCanvas(0, 1, 3, 100);
         var y3 = manager.GetPortYCanvas(0, 2, 3, 100);
-        
+
         Assert.Equal(25, y1);  // 100 / 4 * 1
         Assert.Equal(50, y2);  // 100 / 4 * 2
         Assert.Equal(75, y3);  // 100 / 4 * 3
@@ -153,10 +154,10 @@ public class NodeVisualManagerTests
     {
         var context = CreateContext();
         var manager = new NodeVisualManager(context);
-        
+
         // Just verify it doesn't throw
         manager.Clear();
-        
+
         Assert.Null(manager.GetNodeVisual("any"));
         Assert.Null(manager.GetPortVisual("any", "any"));
     }

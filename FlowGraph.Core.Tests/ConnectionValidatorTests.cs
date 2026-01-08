@@ -1,6 +1,7 @@
 using FlowGraph.Avalonia;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -9,25 +10,13 @@ public class ConnectionValidatorTests
     private static Graph CreateTestGraph()
     {
         var graph = new Graph();
-        var node1 = new Node
-        {
-            Id = "node1",
-            Type = "default",
-            Outputs = [new Port { Id = "out1", Type = "string" }]
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Type = "default",
-            Inputs = [new Port { Id = "in1", Type = "string" }]
-        };
-        var node3 = new Node
-        {
-            Id = "node3",
-            Type = "default",
-            Inputs = [new Port { Id = "in1", Type = "number" }],
-            Outputs = [new Port { Id = "out1", Type = "number" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1", type: "default",
+            outputs: [new Port { Id = "out1", Type = "string" }]);
+        var node2 = TestHelpers.CreateNode("node2", type: "default",
+            inputs: [new Port { Id = "in1", Type = "string" }]);
+        var node3 = TestHelpers.CreateNode("node3", type: "default",
+            inputs: [new Port { Id = "in1", Type = "number" }],
+            outputs: [new Port { Id = "out1", Type = "number" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
         graph.AddNode(node3);
@@ -95,16 +84,10 @@ public class ConnectionValidatorTests
     public void TypeMatchingValidator_AllowsAnyType()
     {
         var graph = new Graph();
-        var node1 = new Node
-        {
-            Id = "node1",
-            Outputs = [new Port { Id = "out1", Type = "any" }]
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Inputs = [new Port { Id = "in1", Type = "string" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1",
+            outputs: [new Port { Id = "out1", Type = "any" }]);
+        var node2 = TestHelpers.CreateNode("node2",
+            inputs: [new Port { Id = "in1", Type = "string" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
 
@@ -143,13 +126,7 @@ public class ConnectionValidatorTests
     public void NoDuplicateValidator_RejectsDuplicateConnection()
     {
         var graph = CreateTestGraph();
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            SourcePort = "out1",
-            Target = "node2",
-            TargetPort = "in1"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out1", "in1"));
 
         var validator = new NoDuplicateConnectionValidator();
         var context = CreateContext(graph, "node1", "out1", "node2", "in1");
@@ -180,12 +157,9 @@ public class ConnectionValidatorTests
     public void NoSelfConnectionValidator_RejectsSelfConnection()
     {
         var graph = new Graph();
-        var node = new Node
-        {
-            Id = "node1",
-            Inputs = [new Port { Id = "in1", Type = "string" }],
-            Outputs = [new Port { Id = "out1", Type = "string" }]
-        };
+        var node = TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in1", Type = "string" }],
+            outputs: [new Port { Id = "out1", Type = "string" }]);
         graph.AddNode(node);
 
         var validator = new NoSelfConnectionValidator();
@@ -224,29 +198,17 @@ public class ConnectionValidatorTests
     public void NoCycleValidator_RejectsCyclicConnection()
     {
         var graph = new Graph();
-        var node1 = new Node
-        {
-            Id = "node1",
-            Inputs = [new Port { Id = "in1", Type = "any" }],
-            Outputs = [new Port { Id = "out1", Type = "any" }]
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Inputs = [new Port { Id = "in1", Type = "any" }],
-            Outputs = [new Port { Id = "out1", Type = "any" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in1", Type = "any" }],
+            outputs: [new Port { Id = "out1", Type = "any" }]);
+        var node2 = TestHelpers.CreateNode("node2",
+            inputs: [new Port { Id = "in1", Type = "any" }],
+            outputs: [new Port { Id = "out1", Type = "any" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
-        
+
         // Add edge from node1 -> node2
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            SourcePort = "out1",
-            Target = "node2",
-            TargetPort = "in1"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out1", "in1"));
 
         var validator = new NoCycleConnectionValidator();
         // Try to add edge from node2 -> node1 (would create cycle)
@@ -269,16 +231,22 @@ public class ConnectionValidatorTests
     public void NoCycleValidator_DetectsIndirectCycle()
     {
         var graph = new Graph();
-        var node1 = new Node { Id = "node1", Inputs = [new Port { Id = "in", Type = "any" }], Outputs = [new Port { Id = "out", Type = "any" }] };
-        var node2 = new Node { Id = "node2", Inputs = [new Port { Id = "in", Type = "any" }], Outputs = [new Port { Id = "out", Type = "any" }] };
-        var node3 = new Node { Id = "node3", Inputs = [new Port { Id = "in", Type = "any" }], Outputs = [new Port { Id = "out", Type = "any" }] };
+        var node1 = TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in", Type = "any" }],
+            outputs: [new Port { Id = "out", Type = "any" }]);
+        var node2 = TestHelpers.CreateNode("node2",
+            inputs: [new Port { Id = "in", Type = "any" }],
+            outputs: [new Port { Id = "out", Type = "any" }]);
+        var node3 = TestHelpers.CreateNode("node3",
+            inputs: [new Port { Id = "in", Type = "any" }],
+            outputs: [new Port { Id = "out", Type = "any" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
         graph.AddNode(node3);
-        
+
         // node1 -> node2 -> node3
-        graph.AddEdge(new Edge { Source = "node1", SourcePort = "out", Target = "node2", TargetPort = "in" });
-        graph.AddEdge(new Edge { Source = "node2", SourcePort = "out", Target = "node3", TargetPort = "in" });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out", "in"));
+        graph.AddEdge(TestHelpers.CreateEdge("edge2", "node2", "node3", "out", "in"));
 
         var validator = new NoCycleConnectionValidator();
         // Try node3 -> node1 (would create cycle)
@@ -319,13 +287,7 @@ public class ConnectionValidatorTests
     public void CompositeValidator_FailsWhenAnyValidatorFails()
     {
         var graph = CreateTestGraph();
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            SourcePort = "out1",
-            Target = "node2",
-            TargetPort = "in1"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out1", "in1"));
 
         var validator = new CompositeConnectionValidator()
             .Add(new NoSelfConnectionValidator())
@@ -343,12 +305,9 @@ public class ConnectionValidatorTests
     {
         var validator = CompositeConnectionValidator.CreateStandard();
         var graph = new Graph();
-        var node = new Node
-        {
-            Id = "node1",
-            Inputs = [new Port { Id = "in1", Type = "string" }],
-            Outputs = [new Port { Id = "out1", Type = "string" }]
-        };
+        var node = TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in1", Type = "string" }],
+            outputs: [new Port { Id = "out1", Type = "string" }]);
         graph.AddNode(node);
 
         // Test self-connection (should fail)

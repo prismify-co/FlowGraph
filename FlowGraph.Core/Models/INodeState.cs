@@ -15,50 +15,50 @@ namespace FlowGraph.Core.Models;
 /// </remarks>
 public interface INodeState : INotifyPropertyChanged
 {
-    #region Position
+  #region Position
 
-    /// <summary>
-    /// The X coordinate of the node in canvas space.
-    /// </summary>
-    double X { get; set; }
+  /// <summary>
+  /// The X coordinate of the node in canvas space.
+  /// </summary>
+  double X { get; set; }
 
-    /// <summary>
-    /// The Y coordinate of the node in canvas space.
-    /// </summary>
-    double Y { get; set; }
+  /// <summary>
+  /// The Y coordinate of the node in canvas space.
+  /// </summary>
+  double Y { get; set; }
 
-    #endregion
+  #endregion
 
-    #region Size
+  #region Size
 
-    /// <summary>
-    /// The width of the node. Null means auto-sized based on content.
-    /// </summary>
-    double? Width { get; set; }
+  /// <summary>
+  /// The width of the node. Null means auto-sized based on content.
+  /// </summary>
+  double? Width { get; set; }
 
-    /// <summary>
-    /// The height of the node. Null means auto-sized based on content.
-    /// </summary>
-    double? Height { get; set; }
+  /// <summary>
+  /// The height of the node. Null means auto-sized based on content.
+  /// </summary>
+  double? Height { get; set; }
 
-    #endregion
+  #endregion
 
-    #region UI State
+  #region UI State
 
-    /// <summary>
-    /// Whether this node is currently selected.
-    /// </summary>
-    bool IsSelected { get; set; }
+  /// <summary>
+  /// Whether this node is currently selected.
+  /// </summary>
+  bool IsSelected { get; set; }
 
-    /// <summary>
-    /// Whether this node is currently being dragged.
-    /// </summary>
-    bool IsDragging { get; set; }
+  /// <summary>
+  /// Whether this node is currently being dragged.
+  /// </summary>
+  bool IsDragging { get; set; }
 
-    /// <summary>
-    /// Whether a group node is collapsed (only meaningful when IsGroup is true).
-    /// </summary>
-    bool IsCollapsed { get; set; }
+  /// <summary>
+  /// Whether a group node is collapsed (only meaningful when IsGroup is true).
+  /// </summary>
+  bool IsCollapsed { get; set; }
 
-    #endregion
+  #endregion
 }

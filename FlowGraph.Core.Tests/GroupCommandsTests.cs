@@ -1,5 +1,6 @@
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -8,24 +9,9 @@ public class GroupCommandsTests
     private static Graph CreateTestGraph()
     {
         var graph = new Graph();
-        var node1 = new Node
-        {
-            Id = "node1",
-            Type = "default",
-            Position = new Point(100, 100)
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Type = "default",
-            Position = new Point(300, 100)
-        };
-        var node3 = new Node
-        {
-            Id = "node3",
-            Type = "default",
-            Position = new Point(200, 200)
-        };
+        var node1 = TestHelpers.CreateNode("node1", type: "default", x: 100, y: 100);
+        var node2 = TestHelpers.CreateNode("node2", type: "default", x: 300, y: 100);
+        var node3 = TestHelpers.CreateNode("node3", type: "default", x: 200, y: 200);
         graph.AddNode(node1);
         graph.AddNode(node2);
         graph.AddNode(node3);

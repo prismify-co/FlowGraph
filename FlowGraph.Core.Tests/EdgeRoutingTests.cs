@@ -1,4 +1,5 @@
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using FlowGraph.Core.Routing;
 
 namespace FlowGraph.Core.Tests;
@@ -116,11 +117,11 @@ public class EdgeRoutingTests
         {
             var p1 = path[i];
             var p2 = path[i + 1];
-            
+
             // Either X or Y should be the same (orthogonal)
             var isHorizontal = Math.Abs(p1.Y - p2.Y) < 0.1;
             var isVertical = Math.Abs(p1.X - p2.X) < 0.1;
-            
+
             // For simple paths without obstacles, we may have diagonal portions
             // So we just verify the path exists
             Assert.True(path.Count >= 2);
@@ -241,9 +242,9 @@ public class EdgeRoutingTests
     public void EdgeRoutingService_GetRouter_ReturnsBezierRouterForBezierEdge()
     {
         var service = new EdgeRoutingService();
-        
+
         var router = service.GetRouter(EdgeType.Bezier);
-        
+
         Assert.IsType<SmartBezierRouter>(router);
     }
 
@@ -251,9 +252,9 @@ public class EdgeRoutingTests
     public void EdgeRoutingService_GetRouter_ReturnsOrthogonalRouterForStepEdge()
     {
         var service = new EdgeRoutingService();
-        
+
         var router = service.GetRouter(EdgeType.Step);
-        
+
         Assert.IsType<OrthogonalRouter>(router);
     }
 
@@ -308,30 +309,16 @@ public class EdgeRoutingTests
     {
         var graph = new Graph();
 
-        var node1 = new Node
-        {
-            Id = "node1",
-            Position = new Point(100, 100),
-            Outputs = [new Port { Id = "out", Type = "data" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1", x: 100, y: 100,
+            outputs: [new Port { Id = "out", Type = "data" }]);
 
-        var node2 = new Node
-        {
-            Id = "node2",
-            Position = new Point(400, 100),
-            Inputs = [new Port { Id = "in", Type = "data" }]
-        };
+        var node2 = TestHelpers.CreateNode("node2", x: 400, y: 100,
+            inputs: [new Port { Id = "in", Type = "data" }]);
 
         graph.AddNode(node1);
         graph.AddNode(node2);
 
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            Target = "node2",
-            SourcePort = "out",
-            TargetPort = "in"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out", "in"));
 
         return graph;
     }
@@ -341,41 +328,21 @@ public class EdgeRoutingTests
         var graph = new Graph();
 
         // Source node on the left
-        var node1 = new Node
-        {
-            Id = "node1",
-            Position = new Point(100, 200),
-            Outputs = [new Port { Id = "out", Type = "data" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1", x: 100, y: 200,
+            outputs: [new Port { Id = "out", Type = "data" }]);
 
         // Obstacle node in the middle
-        var node2 = new Node
-        {
-            Id = "node2",
-            Position = new Point(350, 180),
-            Width = 150,
-            Height = 80
-        };
+        var node2 = TestHelpers.CreateNode("node2", x: 350, y: 180, width: 150, height: 80);
 
         // Target node on the right
-        var node3 = new Node
-        {
-            Id = "node3",
-            Position = new Point(600, 200),
-            Inputs = [new Port { Id = "in", Type = "data" }]
-        };
+        var node3 = TestHelpers.CreateNode("node3", x: 600, y: 200,
+            inputs: [new Port { Id = "in", Type = "data" }]);
 
         graph.AddNode(node1);
         graph.AddNode(node2);
         graph.AddNode(node3);
 
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            Target = "node3",
-            SourcePort = "out",
-            TargetPort = "in"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node3", "out", "in"));
 
         return graph;
     }

@@ -3,6 +3,7 @@ using FlowGraph.Avalonia;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using Xunit;
 
 namespace FlowGraph.Core.Tests.Rendering;
@@ -13,7 +14,7 @@ public class GraphRendererTests
     public void Constructor_Default_CreatesAllManagers()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.NotNull(renderer.RenderContext);
         Assert.NotNull(renderer.Nodes);
         Assert.NotNull(renderer.Edges);
@@ -26,7 +27,7 @@ public class GraphRendererTests
     {
         var settings = new FlowCanvasSettings { NodeWidth = 200 };
         var renderer = new GraphRenderer(settings);
-        
+
         Assert.Equal(200, renderer.RenderContext.Settings.NodeWidth);
     }
 
@@ -35,7 +36,7 @@ public class GraphRendererTests
     {
         var registry = new NodeRendererRegistry();
         var renderer = new GraphRenderer(null, registry);
-        
+
         Assert.Same(registry, renderer.NodeRenderers);
     }
 
@@ -45,9 +46,9 @@ public class GraphRendererTests
         var renderer = new GraphRenderer();
         var viewport = new ViewportState();
         viewport.SetZoom(2.0);
-        
+
         renderer.SetViewport(viewport);
-        
+
         Assert.Equal(2.0, renderer.RenderContext.Scale);
     }
 
@@ -55,7 +56,7 @@ public class GraphRendererTests
     public void GetNodeVisual_DelegatesToNodeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         // Not rendered, should return null
         Assert.Null(renderer.GetNodeVisual("test"));
     }
@@ -64,7 +65,7 @@ public class GraphRendererTests
     public void GetPortVisual_DelegatesToNodeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.Null(renderer.GetPortVisual("node", "port"));
     }
 
@@ -72,7 +73,7 @@ public class GraphRendererTests
     public void GetEdgeVisual_DelegatesToEdgeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.Null(renderer.GetEdgeVisual("test"));
     }
 
@@ -80,7 +81,7 @@ public class GraphRendererTests
     public void GetEdgeVisiblePath_DelegatesToEdgeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.Null(renderer.GetEdgeVisiblePath("test"));
     }
 
@@ -88,7 +89,7 @@ public class GraphRendererTests
     public void GetEdgeMarkers_DelegatesToEdgeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.Null(renderer.GetEdgeMarkers("test"));
     }
 
@@ -96,7 +97,7 @@ public class GraphRendererTests
     public void GetEdgeLabel_DelegatesToEdgeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         Assert.Null(renderer.GetEdgeLabel("test"));
     }
 
@@ -104,7 +105,7 @@ public class GraphRendererTests
     public void GetEdgeEndpointHandles_DelegatesToEdgeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         var (source, target) = renderer.GetEdgeEndpointHandles("test");
         Assert.Null(source);
         Assert.Null(target);
@@ -115,10 +116,10 @@ public class GraphRendererTests
     {
         var settings = new FlowCanvasSettings { NodeWidth = 150, NodeHeight = 80 };
         var renderer = new GraphRenderer(settings);
-        var node = new Node();
-        
+        var node = TestHelpers.CreateNode("n1");
+
         var (width, height) = renderer.GetNodeDimensions(node);
-        
+
         Assert.Equal(150, width);
         Assert.Equal(80, height);
     }
@@ -128,9 +129,9 @@ public class GraphRendererTests
     {
         var renderer = new GraphRenderer();
         var graph = new Graph();
-        var node = new Node { Id = "test" };
+        var node = TestHelpers.CreateNode("test");
         graph.AddNode(node);
-        
+
         Assert.True(renderer.IsNodeVisible(graph, node));
     }
 
@@ -138,9 +139,9 @@ public class GraphRendererTests
     public void GetPortYCanvas_DelegatesToNodeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         var y = renderer.GetPortYCanvas(0, 0, 1, 100);
-        
+
         Assert.Equal(50, y);
     }
 
@@ -148,9 +149,9 @@ public class GraphRendererTests
     public void GetPortY_DelegatesToNodeManager()
     {
         var renderer = new GraphRenderer();
-        
+
         var y = renderer.GetPortY(0, 0, 1);
-        
+
         // Default height is 80, so center is 40
         Assert.Equal(40, y);
     }
@@ -159,7 +160,7 @@ public class GraphRendererTests
     public void Clear_ClearsAllManagers()
     {
         var renderer = new GraphRenderer();
-        
+
         // Just verify it doesn't throw
         renderer.Clear();
     }

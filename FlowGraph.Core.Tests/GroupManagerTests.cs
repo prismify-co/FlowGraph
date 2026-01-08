@@ -1,6 +1,7 @@
 using FlowGraph.Avalonia;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -26,9 +27,9 @@ public class GroupManagerTests
 
     private static void AddTestNodes(Graph graph)
     {
-        graph.AddNode(new Node { Id = "node1", Position = new Point(100, 100), Width = 150, Height = 60 });
-        graph.AddNode(new Node { Id = "node2", Position = new Point(300, 100), Width = 150, Height = 60 });
-        graph.AddNode(new Node { Id = "node3", Position = new Point(200, 200), Width = 150, Height = 60 });
+        graph.AddNode(TestHelpers.CreateNode("node1", x: 100, y: 100, width: 150, height: 60));
+        graph.AddNode(TestHelpers.CreateNode("node2", x: 300, y: 100, width: 150, height: 60));
+        graph.AddNode(TestHelpers.CreateNode("node3", x: 200, y: 200, width: 150, height: 60));
     }
 
     #region CreateGroup Tests
@@ -105,8 +106,8 @@ public class GroupManagerTests
         AddTestNodes(graph);
         var group1 = manager.CreateGroup(["node1", "node2"]);
 
-        graph.AddNode(new Node { Id = "node4", Position = new Point(400, 100) });
-        graph.AddNode(new Node { Id = "node5", Position = new Point(500, 100) });
+        graph.AddNode(TestHelpers.CreateNode("node4", x: 400, y: 100));
+        graph.AddNode(TestHelpers.CreateNode("node5", x: 500, y: 100));
         var group2 = manager.CreateGroup(["node4", "node5"]);
 
         manager.CollapseAll();

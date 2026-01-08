@@ -1,5 +1,6 @@
 using FlowGraph.Avalonia;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using Xunit;
 
 namespace FlowGraph.Core.Tests;
@@ -16,41 +17,19 @@ public class GroupProxyManagerTests
     private void CreateNodesWithGroup(Graph graph)
     {
         // Create nodes
-        var node1 = new Node
-        {
-            Id = "node1",
-            Type = "default",
-            Position = new Point(100, 100),
-            Inputs = [new Port { Id = "in1", Type = "default" }],
-            Outputs = [new Port { Id = "out1", Type = "default" }]
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Type = "default",
-            Position = new Point(200, 100),
-            Inputs = [new Port { Id = "in2", Type = "default" }],
-            Outputs = [new Port { Id = "out2", Type = "default" }]
-        };
-        var node3 = new Node
-        {
-            Id = "node3",
-            Type = "default",
-            Position = new Point(400, 100),
-            Inputs = [new Port { Id = "in3", Type = "default" }],
-            Outputs = [new Port { Id = "out3", Type = "default" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1", type: "default", x: 100, y: 100,
+            inputs: [new Port { Id = "in1", Type = "default" }],
+            outputs: [new Port { Id = "out1", Type = "default" }]);
+        var node2 = TestHelpers.CreateNode("node2", type: "default", x: 200, y: 100,
+            inputs: [new Port { Id = "in2", Type = "default" }],
+            outputs: [new Port { Id = "out2", Type = "default" }]);
+        var node3 = TestHelpers.CreateNode("node3", type: "default", x: 400, y: 100,
+            inputs: [new Port { Id = "in3", Type = "default" }],
+            outputs: [new Port { Id = "out3", Type = "default" }]);
 
         // Create a group containing node1 and node2
-        var group = new Node
-        {
-            Id = "group1",
-            Type = "group",
-            IsGroup = true,
-            Position = new Point(50, 50),
-            Width = 300,
-            Height = 200
-        };
+        var group = TestHelpers.CreateNode("group1", type: "group", isGroup: true,
+            x: 50, y: 50, width: 300, height: 200);
 
         graph.Nodes.Add(node1);
         graph.Nodes.Add(node2);
@@ -63,34 +42,13 @@ public class GroupProxyManagerTests
 
         // Create edges:
         // Internal edge: node1 -> node2
-        graph.AddEdge(new Edge
-        {
-            Id = "edge_internal",
-            Source = "node1",
-            SourcePort = "out1",
-            Target = "node2",
-            TargetPort = "in2"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge_internal", "node1", "node2", "out1", "in2"));
 
         // Crossing edge: node2 -> node3 (from inside group to outside)
-        graph.AddEdge(new Edge
-        {
-            Id = "edge_crossing_out",
-            Source = "node2",
-            SourcePort = "out2",
-            Target = "node3",
-            TargetPort = "in3"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge_crossing_out", "node2", "node3", "out2", "in3"));
 
         // Crossing edge: node3 -> node1 (from outside group to inside)
-        graph.AddEdge(new Edge
-        {
-            Id = "edge_crossing_in",
-            Source = "node3",
-            SourcePort = "out3",
-            Target = "node1",
-            TargetPort = "in1"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge_crossing_in", "node3", "node1", "out3", "in1"));
     }
 
     [Fact]
@@ -102,7 +60,7 @@ public class GroupProxyManagerTests
         manager.OnGroupCollapsed("group1");
 
         var group = graph.Nodes.First(n => n.Id == "group1");
-        
+
         // Should have created proxy ports for crossing edges
         Assert.NotEmpty(group.Inputs);  // For edge_crossing_in
         Assert.NotEmpty(group.Outputs); // For edge_crossing_out
@@ -170,7 +128,7 @@ public class GroupProxyManagerTests
         manager.OnGroupExpanded("group1");
 
         var group = graph.Nodes.First(n => n.Id == "group1");
-        
+
         // Proxy ports should be removed
         Assert.Empty(group.Inputs);
         Assert.Empty(group.Outputs);

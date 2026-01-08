@@ -1,4 +1,5 @@
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using FlowGraph.Core.Serialization;
 using System.Text.Json;
 
@@ -12,9 +13,9 @@ public class SerializationTests
     public void Serialize_EmptyGraph_ReturnsValidJson()
     {
         var graph = new Graph();
-        
+
         var json = graph.ToJson();
-        
+
         Assert.NotEmpty(json);
         Assert.Contains("nodes", json);
         Assert.Contains("edges", json);
@@ -24,9 +25,9 @@ public class SerializationTests
     public void Serialize_GraphWithNodes_IncludesAllNodes()
     {
         var graph = CreateTestGraph();
-        
+
         var json = graph.ToJson();
-        
+
         Assert.Contains("node1", json);
         Assert.Contains("node2", json);
     }
@@ -36,9 +37,9 @@ public class SerializationTests
     {
         var originalGraph = CreateTestGraph();
         var json = originalGraph.ToJson();
-        
+
         var graph = GraphSerializationExtensions.LoadFromJson(json);
-        
+
         Assert.NotNull(graph);
         Assert.Equal(originalGraph.Nodes.Count, graph.Nodes.Count);
         Assert.Equal(originalGraph.Edges.Count, graph.Edges.Count);
@@ -48,9 +49,9 @@ public class SerializationTests
     public void Deserialize_InvalidJson_ReturnsNull()
     {
         var json = "{ invalid json }";
-        
+
         var graph = GraphSerializationExtensions.LoadFromJson(json);
-        
+
         Assert.Null(graph);
     }
 
@@ -62,16 +63,8 @@ public class SerializationTests
     public void Serialize_NodeProperties_AllPropertiesIncluded()
     {
         var graph = new Graph();
-        graph.AddNode(new Node
-        {
-            Id = "test-node",
-            Type = "custom",
-            Label = "Test Node",
-            Position = new Point(100, 200),
-            Width = 180,
-            Height = 90,
-            Data = "custom data"
-        });
+        graph.AddNode(TestHelpers.CreateNode("test-node", type: "custom", label: "Test Node",
+            x: 100, y: 200, width: 180, height: 90, data: "custom data"));
 
         var json = graph.ToJson();
 
@@ -86,12 +79,9 @@ public class SerializationTests
     public void Serialize_NodePorts_PortsIncluded()
     {
         var graph = new Graph();
-        graph.AddNode(new Node
-        {
-            Id = "node1",
-            Inputs = [new Port { Id = "in1", Type = "data", Label = "Input" }],
-            Outputs = [new Port { Id = "out1", Type = "data", Label = "Output" }]
-        });
+        graph.AddNode(TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in1", Type = "data", Label = "Input" }],
+            outputs: [new Port { Id = "out1", Type = "data", Label = "Output" }]));
 
         var json = graph.ToJson();
 
@@ -105,15 +95,12 @@ public class SerializationTests
     public void RoundTrip_NodeWithPorts_PortsPreserved()
     {
         var graph = new Graph();
-        graph.AddNode(new Node
-        {
-            Id = "node1",
-            Inputs = [new Port { Id = "in1", Type = "data", Label = "Input" }],
-            Outputs = [
+        graph.AddNode(TestHelpers.CreateNode("node1",
+            inputs: [new Port { Id = "in1", Type = "data", Label = "Input" }],
+            outputs: [
                 new Port { Id = "out1", Type = "data", Label = "Output 1" },
                 new Port { Id = "out2", Type = "control", Label = "Output 2" }
-            ]
-        });
+            ]));
 
         var json = graph.ToJson();
         var restored = GraphSerializationExtensions.LoadFromJson(json);
@@ -134,7 +121,7 @@ public class SerializationTests
     public void Serialize_EdgeProperties_AllPropertiesIncluded()
     {
         var graph = CreateTestGraph();
-        
+
         var json = graph.ToJson();
 
         Assert.Contains("source", json);
@@ -213,17 +200,10 @@ public class SerializationTests
     public void RoundTrip_GroupNode_GroupPropertiesPreserved()
     {
         var graph = new Graph();
-        graph.AddNode(new Node
-        {
-            Id = "group1",
-            Type = "group",
-            IsGroup = true,
-            Label = "My Group",
-            Position = new Point(50, 50),
-            Width = 400,
-            Height = 300,
-            IsCollapsed = true
-        });
+        var groupNode = TestHelpers.CreateNode("group1", type: "group", isGroup: true, label: "My Group",
+            x: 50, y: 50, width: 400, height: 300);
+        groupNode.IsCollapsed = true;
+        graph.AddNode(groupNode);
 
         var json = graph.ToJson();
         var restored = GraphSerializationExtensions.LoadFromJson(json);
@@ -241,8 +221,8 @@ public class SerializationTests
     public void RoundTrip_NestedGroups_ParentIdPreserved()
     {
         var graph = new Graph();
-        graph.AddNode(new Node { Id = "group1", IsGroup = true });
-        graph.AddNode(new Node { Id = "node1", ParentGroupId = "group1" });
+        graph.AddNode(TestHelpers.CreateNode("group1", isGroup: true));
+        graph.AddNode(TestHelpers.CreateNode("node1", parentGroupId: "group1"));
 
         var json = graph.ToJson();
         var restored = GraphSerializationExtensions.LoadFromJson(json);
@@ -260,9 +240,9 @@ public class SerializationTests
     public void Clone_Graph_CreatesDeepCopy()
     {
         var original = CreateTestGraph();
-        
+
         var clone = original.Clone();
-        
+
         Assert.NotSame(original, clone);
         Assert.Equal(original.Nodes.Count, clone.Nodes.Count);
         Assert.Equal(original.Edges.Count, clone.Edges.Count);
@@ -273,10 +253,10 @@ public class SerializationTests
     {
         var original = CreateTestGraph();
         var originalNodeCount = original.Nodes.Count;
-        
+
         var clone = original.Clone();
-        clone.AddNode(new Node { Id = "new-node" });
-        
+        clone.AddNode(TestHelpers.CreateNode("new-node"));
+
         Assert.Equal(originalNodeCount, original.Nodes.Count);
         Assert.Equal(originalNodeCount + 1, clone.Nodes.Count);
     }
@@ -361,9 +341,9 @@ public class SerializationTests
     public void ToJson_CamelCaseNaming_Used()
     {
         var graph = CreateTestGraph();
-        
+
         var json = graph.ToJson();
-        
+
         // Should use camelCase, not PascalCase
         Assert.Contains("sourcePort", json);
         Assert.DoesNotContain("SourcePort", json);
@@ -374,9 +354,9 @@ public class SerializationTests
     {
         var graph = CreateTestGraph();
         graph.Edges.First().Type = EdgeType.SmoothStep;
-        
+
         var json = graph.ToJson();
-        
+
         // Should serialize enum as camelCase string
         Assert.Contains("smoothStep", json);
     }
@@ -385,9 +365,9 @@ public class SerializationTests
     public void ToJson_Indented_FormattedNicely()
     {
         var graph = CreateTestGraph();
-        
+
         var json = graph.ToJson(indented: true);
-        
+
         Assert.Contains("\n", json);
         Assert.Contains("  ", json); // Indentation
     }
@@ -396,9 +376,9 @@ public class SerializationTests
     public void ToJson_NotIndented_Compact()
     {
         var graph = CreateTestGraph();
-        
+
         var json = graph.ToJson(indented: false);
-        
+
         Assert.DoesNotContain("\n  ", json);
     }
 
@@ -410,29 +390,13 @@ public class SerializationTests
     {
         var graph = new Graph();
 
-        graph.AddNode(new Node
-        {
-            Id = "node1",
-            Type = "input",
-            Position = new Point(100, 100),
-            Outputs = [new Port { Id = "out", Type = "data" }]
-        });
+        graph.AddNode(TestHelpers.CreateNode("node1", type: "input", x: 100, y: 100,
+            outputs: [new Port { Id = "out", Type = "data" }]));
 
-        graph.AddNode(new Node
-        {
-            Id = "node2",
-            Type = "output",
-            Position = new Point(400, 100),
-            Inputs = [new Port { Id = "in", Type = "data" }]
-        });
+        graph.AddNode(TestHelpers.CreateNode("node2", type: "output", x: 400, y: 100,
+            inputs: [new Port { Id = "in", Type = "data" }]));
 
-        graph.AddEdge(new Edge
-        {
-            Source = "node1",
-            Target = "node2",
-            SourcePort = "out",
-            TargetPort = "in"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out", "in"));
 
         return graph;
     }

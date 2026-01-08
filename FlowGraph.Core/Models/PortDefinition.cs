@@ -10,58 +10,58 @@ namespace FlowGraph.Core.Models;
 /// </remarks>
 public sealed record PortDefinition
 {
-    /// <summary>
-    /// Unique identifier for the port within its node.
-    /// </summary>
-    public required string Id { get; init; }
+  /// <summary>
+  /// Unique identifier for the port within its node.
+  /// </summary>
+  public required string Id { get; init; }
 
-    /// <summary>
-    /// The data type that this port accepts or produces.
-    /// Used for connection validation.
-    /// </summary>
-    public required string Type { get; init; }
+  /// <summary>
+  /// The data type that this port accepts or produces.
+  /// Used for connection validation.
+  /// </summary>
+  public required string Type { get; init; }
 
-    /// <summary>
-    /// Optional display label for the port.
-    /// </summary>
-    public string? Label { get; init; }
+  /// <summary>
+  /// Optional display label for the port.
+  /// </summary>
+  public string? Label { get; init; }
 
-    /// <summary>
-    /// The position of the port on the node.
-    /// If null, defaults to Left for inputs and Right for outputs.
-    /// </summary>
-    public PortPosition? Position { get; init; }
+  /// <summary>
+  /// The position of the port on the node.
+  /// If null, defaults to Left for inputs and Right for outputs.
+  /// </summary>
+  public PortPosition? Position { get; init; }
 
-    /// <summary>
-    /// Maximum number of connections allowed to this port.
-    /// Null means unlimited connections.
-    /// </summary>
-    public int? MaxConnections { get; init; }
+  /// <summary>
+  /// Maximum number of connections allowed to this port.
+  /// Null means unlimited connections.
+  /// </summary>
+  public int? MaxConnections { get; init; }
 
-    /// <summary>
-    /// Whether this port is required to have at least one connection.
-    /// </summary>
-    public bool IsRequired { get; init; }
+  /// <summary>
+  /// Whether this port is required to have at least one connection.
+  /// </summary>
+  public bool IsRequired { get; init; }
 
-    /// <summary>
-    /// Creates a PortDefinition from a legacy Port record.
-    /// </summary>
-    public static PortDefinition FromPort(Port port) => new()
-    {
-        Id = port.Id,
-        Type = port.Type,
-        Label = port.Label,
-        Position = port.Position
-    };
+  /// <summary>
+  /// Creates a PortDefinition from a legacy Port record.
+  /// </summary>
+  public static PortDefinition FromPort(Port port) => new()
+  {
+    Id = port.Id,
+    Type = port.Type,
+    Label = port.Label,
+    Position = port.Position
+  };
 
-    /// <summary>
-    /// Converts to a legacy Port record for backward compatibility.
-    /// </summary>
-    public Port ToPort() => new()
-    {
-        Id = Id,
-        Type = Type,
-        Label = Label,
-        Position = Position
-    };
+  /// <summary>
+  /// Converts to a legacy Port record for backward compatibility.
+  /// </summary>
+  public Port ToPort() => new()
+  {
+    Id = Id,
+    Type = Type,
+    Label = Label,
+    Position = Position
+  };
 }

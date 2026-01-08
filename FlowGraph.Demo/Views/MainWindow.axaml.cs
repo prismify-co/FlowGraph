@@ -10,6 +10,8 @@ using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using FlowGraph.Core.DataFlow;
+using FlowGraph.Core.Models;
+using System.Collections.Immutable;
 using FlowGraph.Demo.Helpers;
 using FlowGraph.Demo.Renderers;
 using CorePoint = FlowGraph.Core.Point;
@@ -725,15 +727,29 @@ public partial class MainWindow : Window
             var offsetY = random.Next(-20, 21);
 
             var nodeType = nodeTypes[random.Next(nodeTypes.Length)];
-            var node = new Node
+            var inputs = nodeType != "input" 
+                ? ImmutableList.Create(new PortDefinition { Id = "in", Type = "data" })
+                : ImmutableList<PortDefinition>.Empty;
+            var outputs = nodeType != "output" 
+                ? ImmutableList.Create(new PortDefinition { Id = "out", Type = "data" })
+                : ImmutableList<PortDefinition>.Empty;
+
+            var definition = new NodeDefinition
             {
                 Id = $"node-{i}",
                 Type = nodeType,
-                Label = $"N{i}",  // Shorter labels for performance
-                Position = new CorePoint(col * spacingX + offsetX, row * spacingY + offsetY),
-                Inputs = nodeType != "input" ? [new Port { Id = "in", Type = "data" }] : [],
-                Outputs = nodeType != "output" ? [new Port { Id = "out", Type = "data" }] : []
+                Label = $"N{i}",
+                Inputs = inputs,
+                Outputs = outputs
             };
+
+            var state = new NodeState
+            {
+                X = col * spacingX + offsetX,
+                Y = row * spacingY + offsetY
+            };
+
+            var node = new Node(definition, state);
 
             nodesList.Add(node);
         }

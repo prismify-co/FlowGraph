@@ -15,100 +15,100 @@ namespace FlowGraph.Core.Models;
 /// </remarks>
 public sealed record NodeDefinition
 {
-    /// <summary>
-    /// Unique identifier for the node. Required and immutable.
-    /// </summary>
-    public required string Id { get; init; }
+  /// <summary>
+  /// Unique identifier for the node. Required and immutable.
+  /// </summary>
+  public required string Id { get; init; }
 
-    /// <summary>
-    /// The type/category of the node (e.g., "process", "decision", "input").
-    /// Used for rendering and validation.
-    /// </summary>
-    public string Type { get; init; } = "default";
+  /// <summary>
+  /// The type/category of the node (e.g., "process", "decision", "input").
+  /// Used for rendering and validation.
+  /// </summary>
+  public string Type { get; init; } = "default";
 
-    /// <summary>
-    /// Optional display label for the node.
-    /// </summary>
-    public string? Label { get; init; }
+  /// <summary>
+  /// Optional display label for the node.
+  /// </summary>
+  public string? Label { get; init; }
 
-    /// <summary>
-    /// The ID of the parent group node, if this node is part of a group.
-    /// </summary>
-    public string? ParentGroupId { get; init; }
+  /// <summary>
+  /// The ID of the parent group node, if this node is part of a group.
+  /// </summary>
+  public string? ParentGroupId { get; init; }
 
-    /// <summary>
-    /// Whether this node is a group container.
-    /// </summary>
-    public bool IsGroup { get; init; }
+  /// <summary>
+  /// Whether this node is a group container.
+  /// </summary>
+  public bool IsGroup { get; init; }
 
-    /// <summary>
-    /// Input ports for this node (immutable list).
-    /// </summary>
-    public ImmutableList<PortDefinition> Inputs { get; init; } = [];
+  /// <summary>
+  /// Input ports for this node (immutable list).
+  /// </summary>
+  public ImmutableList<PortDefinition> Inputs { get; init; } = [];
 
-    /// <summary>
-    /// Output ports for this node (immutable list).
-    /// </summary>
-    public ImmutableList<PortDefinition> Outputs { get; init; } = [];
+  /// <summary>
+  /// Output ports for this node (immutable list).
+  /// </summary>
+  public ImmutableList<PortDefinition> Outputs { get; init; } = [];
 
-    /// <summary>
-    /// Custom user data associated with the node.
-    /// Consider using immutable types for full immutability.
-    /// </summary>
-    public object? Data { get; init; }
+  /// <summary>
+  /// Custom user data associated with the node.
+  /// Consider using immutable types for full immutability.
+  /// </summary>
+  public object? Data { get; init; }
 
-    #region Capability Flags
+  #region Capability Flags
 
-    /// <summary>
-    /// Whether this node can be selected. Default is true.
-    /// </summary>
-    public bool IsSelectable { get; init; } = true;
+  /// <summary>
+  /// Whether this node can be selected. Default is true.
+  /// </summary>
+  public bool IsSelectable { get; init; } = true;
 
-    /// <summary>
-    /// Whether this node can be dragged. Default is true.
-    /// </summary>
-    public bool IsDraggable { get; init; } = true;
+  /// <summary>
+  /// Whether this node can be dragged. Default is true.
+  /// </summary>
+  public bool IsDraggable { get; init; } = true;
 
-    /// <summary>
-    /// Whether this node can be deleted. Default is true.
-    /// </summary>
-    public bool IsDeletable { get; init; } = true;
+  /// <summary>
+  /// Whether this node can be deleted. Default is true.
+  /// </summary>
+  public bool IsDeletable { get; init; } = true;
 
-    /// <summary>
-    /// Whether this node can have new connections. Default is true.
-    /// </summary>
-    public bool IsConnectable { get; init; } = true;
+  /// <summary>
+  /// Whether this node can have new connections. Default is true.
+  /// </summary>
+  public bool IsConnectable { get; init; } = true;
 
-    /// <summary>
-    /// Whether this node can be resized. Default is true.
-    /// </summary>
-    public bool IsResizable { get; init; } = true;
+  /// <summary>
+  /// Whether this node can be resized. Default is true.
+  /// </summary>
+  public bool IsResizable { get; init; } = true;
 
-    #endregion
+  #endregion
 
-    /// <summary>
-    /// Creates a NodeDefinition with the specified ports using a builder pattern.
-    /// </summary>
-    public NodeDefinition WithPorts(
-        IEnumerable<PortDefinition>? inputs = null,
-        IEnumerable<PortDefinition>? outputs = null)
+  /// <summary>
+  /// Creates a NodeDefinition with the specified ports using a builder pattern.
+  /// </summary>
+  public NodeDefinition WithPorts(
+      IEnumerable<PortDefinition>? inputs = null,
+      IEnumerable<PortDefinition>? outputs = null)
+  {
+    return this with
     {
-        return this with
-        {
-            Inputs = inputs?.ToImmutableList() ?? Inputs,
-            Outputs = outputs?.ToImmutableList() ?? Outputs
-        };
-    }
+      Inputs = inputs?.ToImmutableList() ?? Inputs,
+      Outputs = outputs?.ToImmutableList() ?? Outputs
+    };
+  }
 
-    /// <summary>
-    /// Adds an input port to the definition.
-    /// </summary>
-    public NodeDefinition AddInput(PortDefinition port) =>
-        this with { Inputs = Inputs.Add(port) };
+  /// <summary>
+  /// Adds an input port to the definition.
+  /// </summary>
+  public NodeDefinition AddInput(PortDefinition port) =>
+      this with { Inputs = Inputs.Add(port) };
 
-    /// <summary>
-    /// Adds an output port to the definition.
-    /// </summary>
-    public NodeDefinition AddOutput(PortDefinition port) =>
-        this with { Outputs = Outputs.Add(port) };
+  /// <summary>
+  /// Adds an output port to the definition.
+  /// </summary>
+  public NodeDefinition AddOutput(PortDefinition port) =>
+      this with { Outputs = Outputs.Add(port) };
 }

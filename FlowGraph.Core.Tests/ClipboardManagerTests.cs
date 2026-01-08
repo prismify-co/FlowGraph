@@ -1,5 +1,6 @@
 using FlowGraph.Avalonia;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -8,32 +9,15 @@ public class ClipboardManagerTests
     private static Graph CreateTestGraph()
     {
         var graph = new Graph();
-        var node1 = new Node
-        {
-            Id = "node1",
-            Type = "default",
-            Position = new Point(100, 100),
-            Inputs = [new Port { Id = "in1", Type = "string" }],
-            Outputs = [new Port { Id = "out1", Type = "string" }]
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            Type = "default",
-            Position = new Point(300, 100),
-            Inputs = [new Port { Id = "in1", Type = "string" }],
-            Outputs = [new Port { Id = "out1", Type = "string" }]
-        };
+        var node1 = TestHelpers.CreateNode("node1", type: "default", x: 100, y: 100,
+            inputs: [new Port { Id = "in1", Type = "string" }],
+            outputs: [new Port { Id = "out1", Type = "string" }]);
+        var node2 = TestHelpers.CreateNode("node2", type: "default", x: 300, y: 100,
+            inputs: [new Port { Id = "in1", Type = "string" }],
+            outputs: [new Port { Id = "out1", Type = "string" }]);
         graph.AddNode(node1);
         graph.AddNode(node2);
-        graph.AddEdge(new Edge
-        {
-            Id = "edge1",
-            Source = "node1",
-            SourcePort = "out1",
-            Target = "node2",
-            TargetPort = "in1"
-        });
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out1", "in1"));
         return graph;
     }
 
@@ -192,17 +176,11 @@ public class ClipboardManagerTests
     public void Copy_PreservesNodeProperties()
     {
         var clipboard = new ClipboardManager();
-        var node = new Node
-        {
-            Id = "test",
-            Type = "custom",
-            Position = new Point(50, 50),
-            Width = 200,
-            Height = 150,
-            IsResizable = true,
-            Inputs = [new Port { Id = "in1", Type = "number", Label = "Input" }],
-            Outputs = [new Port { Id = "out1", Type = "number", Label = "Output" }]
-        };
+        var node = TestHelpers.CreateNode("test", type: "custom", x: 50, y: 50,
+            width: 200, height: 150,
+            inputs: [new Port { Id = "in1", Type = "number", Label = "Input" }],
+            outputs: [new Port { Id = "out1", Type = "number", Label = "Output" }]);
+        // Note: IsResizable is a definition-level capability, we'll handle it if needed
         var graph = new Graph();
         graph.AddNode(node);
 

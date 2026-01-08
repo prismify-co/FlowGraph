@@ -1,4 +1,5 @@
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Tests;
 
@@ -7,46 +8,26 @@ public class GraphGroupExtensionsTests
     private static Graph CreateTestGraphWithGroups()
     {
         var graph = new Graph();
-        
+
         // Create a group
-        var group = new Node
-        {
-            Id = "group1",
-            IsGroup = true,
-            Label = "Group 1",
-            Position = new Point(50, 50)
-        };
-        
+        var group = TestHelpers.CreateNode("group1", isGroup: true, label: "Group 1", x: 50, y: 50);
+
         // Create nodes in the group
-        var node1 = new Node
-        {
-            Id = "node1",
-            ParentGroupId = "group1",
-            Position = new Point(100, 100)
-        };
-        var node2 = new Node
-        {
-            Id = "node2",
-            ParentGroupId = "group1",
-            Position = new Point(200, 100)
-        };
-        
+        var node1 = TestHelpers.CreateNode("node1", parentGroupId: "group1", x: 100, y: 100);
+        var node2 = TestHelpers.CreateNode("node2", parentGroupId: "group1", x: 200, y: 100);
+
         // Create node outside group
-        var node3 = new Node
-        {
-            Id = "node3",
-            Position = new Point(400, 100)
-        };
-        
+        var node3 = TestHelpers.CreateNode("node3", x: 400, y: 100);
+
         graph.AddNode(group);
         graph.AddNode(node1);
         graph.AddNode(node2);
         graph.AddNode(node3);
-        
+
         // Add edges
-        graph.AddEdge(new Edge { Id = "edge1", Source = "node1", SourcePort = "out", Target = "node2", TargetPort = "in" }); // Internal
-        graph.AddEdge(new Edge { Id = "edge2", Source = "node2", SourcePort = "out", Target = "node3", TargetPort = "in" }); // Crossing
-        
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out", "in")); // Internal
+        graph.AddEdge(TestHelpers.CreateEdge("edge2", "node2", "node3", "out", "in")); // Crossing
+
         return graph;
     }
 
@@ -189,7 +170,7 @@ public class GraphGroupExtensionsTests
     {
         var graph = CreateTestGraphWithGroups();
 
-        var (topLeft, width, height) = graph.CalculateGroupBounds("group1", 
+        var (topLeft, width, height) = graph.CalculateGroupBounds("group1",
             padding: 20, headerHeight: 30, defaultNodeWidth: 150, defaultNodeHeight: 60);
 
         // Node1 at (100, 100), Node2 at (200, 100)
@@ -204,19 +185,19 @@ public class GraphGroupExtensionsTests
     public void GetGroupChildrenRecursive_IncludesNestedChildren()
     {
         var graph = new Graph();
-        
+
         // Outer group
-        var outerGroup = new Node { Id = "outer", IsGroup = true };
-        
+        var outerGroup = TestHelpers.CreateNode("outer", isGroup: true);
+
         // Inner group (child of outer)
-        var innerGroup = new Node { Id = "inner", IsGroup = true, ParentGroupId = "outer" };
-        
+        var innerGroup = TestHelpers.CreateNode("inner", isGroup: true, parentGroupId: "outer");
+
         // Node in inner group
-        var nestedNode = new Node { Id = "nested", ParentGroupId = "inner" };
-        
+        var nestedNode = TestHelpers.CreateNode("nested", parentGroupId: "inner");
+
         // Direct child of outer
-        var directChild = new Node { Id = "direct", ParentGroupId = "outer" };
-        
+        var directChild = TestHelpers.CreateNode("direct", parentGroupId: "outer");
+
         graph.AddNode(outerGroup);
         graph.AddNode(innerGroup);
         graph.AddNode(nestedNode);
@@ -234,10 +215,10 @@ public class GraphGroupExtensionsTests
     public void GetAncestorGroups_ReturnsAllAncestors()
     {
         var graph = new Graph();
-        var outer = new Node { Id = "outer", IsGroup = true };
-        var inner = new Node { Id = "inner", IsGroup = true, ParentGroupId = "outer" };
-        var node = new Node { Id = "node", ParentGroupId = "inner" };
-        
+        var outer = TestHelpers.CreateNode("outer", isGroup: true);
+        var inner = TestHelpers.CreateNode("inner", isGroup: true, parentGroupId: "outer");
+        var node = TestHelpers.CreateNode("node", parentGroupId: "inner");
+
         graph.AddNode(outer);
         graph.AddNode(inner);
         graph.AddNode(node);
@@ -253,10 +234,10 @@ public class GraphGroupExtensionsTests
     public void IsDescendantOf_ReturnsTrueForNestedNode()
     {
         var graph = new Graph();
-        var outer = new Node { Id = "outer", IsGroup = true };
-        var inner = new Node { Id = "inner", IsGroup = true, ParentGroupId = "outer" };
-        var node = new Node { Id = "node", ParentGroupId = "inner" };
-        
+        var outer = TestHelpers.CreateNode("outer", isGroup: true);
+        var inner = TestHelpers.CreateNode("inner", isGroup: true, parentGroupId: "outer");
+        var node = TestHelpers.CreateNode("node", parentGroupId: "inner");
+
         graph.AddNode(outer);
         graph.AddNode(inner);
         graph.AddNode(node);
