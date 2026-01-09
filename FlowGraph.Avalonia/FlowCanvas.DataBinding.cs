@@ -22,6 +22,25 @@ public partial class FlowCanvas
         {
             HandleGraphChanged(change.OldValue as Graph, change.NewValue as Graph);
         }
+        else if (change.Property == SettingsProperty)
+        {
+            HandleSettingsChanged(change.NewValue as FlowCanvasSettings);
+        }
+    }
+
+    private void HandleSettingsChanged(FlowCanvasSettings? newSettings)
+    {
+        if (newSettings == null) return;
+
+        // Propagate settings to all dependent components
+        _graphRenderer.UpdateSettings(newSettings);
+        _viewport.UpdateSettings(newSettings);
+        _gridRenderer.UpdateSettings(newSettings);
+        _inputContext?.UpdateSettings(newSettings);
+        _directRenderer?.UpdateSettings(newSettings);
+
+        // Re-render with new settings
+        RenderAll();
     }
 
     private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
@@ -40,7 +59,7 @@ public partial class FlowCanvas
             newGraph.Edges.CollectionChanged += OnEdgesChanged;
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
-            
+
             CenterOnGraph();
             ApplyViewportTransforms();
         }
@@ -50,10 +69,10 @@ public partial class FlowCanvas
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
         base.OnSizeChanged(e);
-        
+
         var wasZeroSize = _viewport.ViewSize.Width <= 0 || _viewport.ViewSize.Height <= 0;
         _viewport.SetViewSize(e.NewSize);
-        
+
         if (wasZeroSize && e.NewSize.Width > 0 && e.NewSize.Height > 0 && Graph != null)
         {
             CenterOnGraph();
@@ -104,7 +123,7 @@ public partial class FlowCanvas
         // In direct rendering mode, just invalidate the renderer for any visual change
         if (_useDirectRendering && _directRenderer != null)
         {
-            if (e.PropertyName is nameof(Node.Position) or nameof(Node.IsSelected) 
+            if (e.PropertyName is nameof(Node.Position) or nameof(Node.IsSelected)
                 or nameof(Node.Width) or nameof(Node.Height) or nameof(Node.IsCollapsed))
             {
                 _directRenderer.InvalidateVisual();
@@ -165,8 +184,8 @@ public partial class FlowCanvas
         if (_mainCanvas == null || _theme == null) return;
 
         // Don't show resize handles for collapsed groups
-        bool shouldShowHandles = node.IsSelected && 
-                                 node.IsResizable && 
+        bool shouldShowHandles = node.IsSelected &&
+                                 node.IsResizable &&
                                  !(node.IsGroup && node.IsCollapsed);
 
         if (shouldShowHandles)

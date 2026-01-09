@@ -165,8 +165,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
         else
         {
-            // Update the node renderers reference
+            // Update the node renderers reference and settings
             _directRenderer.NodeRenderers = _graphRenderer.NodeRenderers;
+            _directRenderer.UpdateSettings(Settings);
         }
 
         if (_mainCanvas != null && !_mainCanvas.Children.Contains(_directRenderer))

@@ -42,7 +42,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// </example>
 public class GraphRenderModel
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
 
     // Constants that must match across all renderers
     public const double GroupHeaderHeight = 28;
@@ -66,6 +66,15 @@ public class GraphRenderModel
     /// Gets the settings used by this model.
     /// </summary>
     public FlowCanvasSettings Settings => _settings;
+
+    /// <summary>
+    /// Updates the settings used by this model.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+    }
 
     #region Node Geometry
 
@@ -136,7 +145,7 @@ public class GraphRenderModel
     {
         var bounds = GetNodeBounds(node);
         var ports = isOutput ? node.Outputs : node.Inputs;
-        
+
         // Get position from port if available
         PortPosition position;
         if (portIndex >= 0 && portIndex < ports.Count)
@@ -337,7 +346,7 @@ public class GraphRenderModel
             nodeBounds.Y - buffer,
             nodeBounds.Width + buffer * 2,
             nodeBounds.Height + buffer * 2);
-        
+
         return visibleBounds.Intersects(expandedBounds);
     }
 
@@ -347,24 +356,24 @@ public class GraphRenderModel
     public bool IsEdgeInVisibleBounds(Edge edge, Graph graph, Rect visibleBounds)
     {
         var (start, end) = GetEdgeEndpoints(edge, graph);
-        
+
         // Check if start point is in bounds
         if (visibleBounds.Contains(start)) return true;
-        
+
         // Check if end point is in bounds
         if (visibleBounds.Contains(end)) return true;
-        
+
         // Check if the edge might cross through the visible area
         var edgeBounds = new Rect(
             Math.Min(start.X, end.X),
             Math.Min(start.Y, end.Y),
             Math.Abs(end.X - start.X),
             Math.Abs(end.Y - start.Y));
-        
+
         // Expand for bezier curves
         var curveMargin = Math.Max(50, edgeBounds.Width * 0.5);
         edgeBounds = edgeBounds.Inflate(curveMargin);
-        
+
         return visibleBounds.Intersects(edgeBounds);
     }
 
@@ -404,21 +413,21 @@ public class GraphRenderModel
     {
         double minDistSq = double.MaxValue;
         const int samples = 50;
-        
+
         for (int i = 0; i <= samples; i++)
         {
             double t = i / (double)samples;
             var bx = BezierPoint(t, p0.X, p1.X, p2.X, p3.X);
             var by = BezierPoint(t, p0.Y, p1.Y, p2.Y, p3.Y);
-            
+
             var dx = point.X - bx;
             var dy = point.Y - by;
             var distSq = dx * dx + dy * dy;
-            
+
             if (distSq < minDistSq)
                 minDistSq = distSq;
         }
-        
+
         return minDistSq;
     }
 

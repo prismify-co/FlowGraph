@@ -58,6 +58,15 @@ public class NodeVisualManager
     public GraphRenderModel Model => _model;
 
     /// <summary>
+    /// Updates the settings used by this manager and its render model.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _model.UpdateSettings(settings);
+    }
+
+    /// <summary>
     /// Gets the visual control for a node.
     /// </summary>
     /// <param name="nodeId">The node ID.</param>

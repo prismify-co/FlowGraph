@@ -1,3 +1,19 @@
+## FlowGraph v0.3.5
+
+### Bug Fixes
+
+- **Fixed Node Selection Flakiness** - Visual tree hit testing now correctly walks up parent hierarchy to find nodes when clicking on nested child elements (labels, inner grids, etc.)
+- **Fixed Settings Propagation** - `FlowCanvasSettings` changes now properly propagate to all rendering components at runtime:
+  - Added `UpdateSettings()` methods to `RenderContext`, `GraphRenderModel`, `NodeVisualManager`, `GraphRenderer`, `ViewportState`, `GridRenderer`, `InputStateContext`, and `DirectGraphRenderer`
+  - Settings changes via property binding now trigger full component updates
+- **Fixed DirectGraphRenderer Settings Sync** - Direct rendering mode now correctly updates its internal `GraphRenderModel` when settings change, fixing spatial index/hit testing mismatches
+
+### Improvements
+
+- Enhanced debug logging for input hit testing diagnostics
+
+---
+
 ## FlowGraph v0.3.3
 
 ### New Features

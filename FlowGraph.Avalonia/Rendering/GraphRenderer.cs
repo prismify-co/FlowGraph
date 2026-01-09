@@ -84,6 +84,21 @@ public class GraphRenderer
 
     #endregion
 
+    #region Settings Management
+
+    /// <summary>
+    /// Updates the settings used by this renderer and all its sub-components.
+    /// Call this when FlowCanvasSettings property changes to propagate the new values.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _renderContext.UpdateSettings(settings);
+        _nodeVisualManager.UpdateSettings(settings);
+    }
+
+    #endregion
+
     #region Viewport Management
 
     /// <summary>

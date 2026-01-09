@@ -9,12 +9,22 @@ namespace FlowGraph.Avalonia;
 /// </summary>
 public class GridRenderer
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
     private GridDrawingControl? _gridControl;
 
     public GridRenderer(FlowCanvasSettings? settings = null)
     {
         _settings = settings ?? FlowCanvasSettings.Default;
+    }
+
+    /// <summary>
+    /// Updates the settings used by this renderer.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings ?? FlowCanvasSettings.Default;
+        _gridControl?.UpdateSettings(_settings);
     }
 
     /// <summary>
@@ -49,7 +59,7 @@ public class GridRenderer
 /// </summary>
 internal class GridDrawingControl : Control
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
     private ViewportState? _viewport;
     private IBrush? _gridBrush;
     private Pen? _gridPen;
@@ -67,10 +77,17 @@ internal class GridDrawingControl : Control
         IsHitTestVisible = false;
     }
 
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings;
+        InvalidateGeometryCache();
+        InvalidateVisual();
+    }
+
     public void UpdateGrid(ViewportState viewport, IBrush gridBrush)
     {
         _viewport = viewport;
-        
+
         if (_gridBrush != gridBrush)
         {
             _gridBrush = gridBrush;

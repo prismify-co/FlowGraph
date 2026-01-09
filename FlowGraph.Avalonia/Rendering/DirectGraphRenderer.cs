@@ -27,7 +27,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// </remarks>
 public class DirectGraphRenderer : Control
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
     private readonly GraphRenderModel _model;
     private NodeRendererRegistry? _nodeRenderers;
     private Graph? _graph;
@@ -95,6 +95,18 @@ public class DirectGraphRenderer : Control
     public GraphRenderModel Model => _model;
 
     /// <summary>
+    /// Updates the settings and propagates to the render model.
+    /// </summary>
+    /// <param name="settings">The new settings.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        _model.UpdateSettings(settings);
+        _indexDirty = true; // Force spatial index rebuild with new dimensions
+        InvalidateVisual();
+    }
+
+    /// <summary>
     /// Gets or sets the node renderer registry for custom node types.
     /// </summary>
     public NodeRendererRegistry? NodeRenderers
@@ -128,7 +140,7 @@ public class DirectGraphRenderer : Control
     {
         _graph = graph;
         _viewport = viewport;
-        
+
         if (_theme != theme)
         {
             _theme = theme;
@@ -253,7 +265,7 @@ public class DirectGraphRenderer : Control
         }
 
         _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Nodes.Count);
-        
+
         foreach (var node in _graph.Nodes)
         {
             if (node.IsGroup) continue;
@@ -304,7 +316,7 @@ public class DirectGraphRenderer : Control
             if (!node.IsGroup) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
             if (node.IsCollapsed) continue; // Don't draw collapsed groups' background
-            
+
             DrawGroup(context, node, zoom, offsetX, offsetY);
         }
 
@@ -329,7 +341,7 @@ public class DirectGraphRenderer : Control
         {
             if (!node.IsGroup || !node.IsCollapsed) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
-            
+
             DrawCollapsedGroup(context, node, zoom, offsetX, offsetY);
         }
 
@@ -338,7 +350,7 @@ public class DirectGraphRenderer : Control
         {
             if (!node.IsSelected || !node.IsResizable) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
-            
+
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
         }
 
@@ -368,7 +380,7 @@ public class DirectGraphRenderer : Control
             {
                 var background = GetNodeBackground(node);
                 var borderPen = node.IsSelected ? _nodeSelectedPen : _nodeBorderPen;
-                
+
                 var renderContext = new DirectNodeRenderContext
                 {
                     ScreenBounds = screenBounds,
@@ -382,7 +394,7 @@ public class DirectGraphRenderer : Control
                     Settings = _settings,
                     Model = _model
                 };
-                
+
                 directRenderer.DrawNode(context, node, renderContext);
                 DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
                 return;
@@ -431,11 +443,11 @@ public class DirectGraphRenderer : Control
             var port = node.Inputs[i];
             var canvasPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
             var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-            
-            var isHovered = _hoveredPort.HasValue && 
-                           _hoveredPort.Value.nodeId == node.Id && 
+
+            var isHovered = _hoveredPort.HasValue &&
+                           _hoveredPort.Value.nodeId == node.Id &&
                            _hoveredPort.Value.portId == port.Id;
-            
+
             var brush = isHovered ? _theme!.PortHover : _portBrush;
             context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
         }
@@ -446,11 +458,11 @@ public class DirectGraphRenderer : Control
             var port = node.Outputs[i];
             var canvasPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
             var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-            
-            var isHovered = _hoveredPort.HasValue && 
-                           _hoveredPort.Value.nodeId == node.Id && 
+
+            var isHovered = _hoveredPort.HasValue &&
+                           _hoveredPort.Value.nodeId == node.Id &&
                            _hoveredPort.Value.portId == port.Id;
-            
+
             var brush = isHovered ? _theme!.PortHover : _portBrush;
             context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
         }
@@ -478,7 +490,7 @@ public class DirectGraphRenderer : Control
         var edgeMaxX = Math.Max(startScreen.X, endScreen.X) + margin;
         var edgeMinY = Math.Min(startScreen.Y, endScreen.Y) - margin;
         var edgeMaxY = Math.Max(startScreen.Y, endScreen.Y) + margin;
-        
+
         if (edgeMaxX < 0 || edgeMinX > viewBounds.Width || edgeMaxY < 0 || edgeMinY > viewBounds.Height)
             return;
 
@@ -531,15 +543,15 @@ public class DirectGraphRenderer : Control
         var halfSize = handleSize / 2;
 
         // Source handle
-        var isSourceHovered = _hoveredEndpointHandle.HasValue && 
-                              _hoveredEndpointHandle.Value.edgeId == edge.Id && 
+        var isSourceHovered = _hoveredEndpointHandle.HasValue &&
+                              _hoveredEndpointHandle.Value.edgeId == edge.Id &&
                               _hoveredEndpointHandle.Value.isSource;
         var sourceFill = isSourceHovered ? _theme!.PortHover : _endpointHandleFill;
         context.DrawEllipse(sourceFill, _endpointHandlePen, startScreen, halfSize, halfSize);
 
         // Target handle
-        var isTargetHovered = _hoveredEndpointHandle.HasValue && 
-                              _hoveredEndpointHandle.Value.edgeId == edge.Id && 
+        var isTargetHovered = _hoveredEndpointHandle.HasValue &&
+                              _hoveredEndpointHandle.Value.edgeId == edge.Id &&
                               !_hoveredEndpointHandle.Value.isSource;
         var targetFill = isTargetHovered ? _theme!.PortHover : _endpointHandleFill;
         context.DrawEllipse(targetFill, _endpointHandlePen, endScreen, halfSize, halfSize);
@@ -562,7 +574,7 @@ public class DirectGraphRenderer : Control
             midScreen.Y - 10 * zoom - padding,
             formattedText.Width + padding * 2,
             formattedText.Height + padding * 2);
-        
+
         context.DrawRectangle(_theme.NodeBackground, null, bgRect, 3 * zoom, 3 * zoom);
         context.DrawText(formattedText, new AvaloniaPoint(midScreen.X, midScreen.Y - 10 * zoom));
     }
@@ -598,7 +610,7 @@ public class DirectGraphRenderer : Control
     private void DrawResizeHandles(DrawingContext context, Node node, double zoom, double offsetX, double offsetY)
     {
         var handleSize = GraphRenderModel.ResizeHandleSize * zoom;
-        
+
         foreach (var (_, center) in _model.GetResizeHandlePositions(node))
         {
             var screenCenter = CanvasToScreen(center, zoom, offsetX, offsetY);
@@ -654,10 +666,10 @@ public class DirectGraphRenderer : Control
         // Collapse button
         var buttonBounds = _model.GetGroupCollapseButtonBounds(group);
         var screenButtonBounds = CanvasToScreen(buttonBounds, zoom, offsetX, offsetY);
-        
+
         var buttonBrush = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128));
         context.DrawRectangle(buttonBrush, null, screenButtonBounds, 3 * zoom, 3 * zoom);
-        
+
         // Collapse indicator
         var indicatorText = group.IsCollapsed ? "+" : "-";
         var indicatorFontSize = 12 * zoom;
@@ -668,7 +680,7 @@ public class DirectGraphRenderer : Control
             new Typeface(_typeface.FontFamily, FontStyle.Normal, FontWeight.Bold, FontStretch.Normal),
             indicatorFontSize,
             _theme!.GroupLabelText);
-        
+
         var indicatorX = screenButtonBounds.X + (screenButtonBounds.Width - indicatorFormatted.Width) / 2;
         var indicatorY = screenButtonBounds.Y + (screenButtonBounds.Height - indicatorFormatted.Height) / 2;
         context.DrawText(indicatorFormatted, new AvaloniaPoint(indicatorX, indicatorY));
@@ -678,14 +690,14 @@ public class DirectGraphRenderer : Control
         {
             var label = group.Label ?? "Group";
             var fontSize = 11 * zoom;
-            
+
             // Get color from theme, with fallback for non-SolidColorBrush
             var labelBrush = _theme.GroupLabelText;
             if (labelBrush is SolidColorBrush solidBrush)
             {
                 labelBrush = new SolidColorBrush(solidBrush.Color, 0.9);
             }
-            
+
             var formattedText = new FormattedText(
                 label,
                 System.Globalization.CultureInfo.CurrentCulture,
@@ -696,10 +708,10 @@ public class DirectGraphRenderer : Control
 
             var labelPos = _model.GetGroupLabelPosition(group);
             var screenLabelPos = CanvasToScreen(labelPos, zoom, offsetX, offsetY);
-            
+
             // Adjust Y to center with button
             var textY = screenButtonBounds.Y + (screenButtonBounds.Height - formattedText.Height) / 2;
-            
+
             context.DrawText(formattedText, new AvaloniaPoint(screenLabelPos.X, textY));
         }
     }
@@ -714,11 +726,11 @@ public class DirectGraphRenderer : Control
             var port = group.Inputs[i];
             var canvasPos = _model.GetPortPositionByIndex(group, i, group.Inputs.Count, false);
             var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-            
-            var isHovered = _hoveredPort.HasValue && 
-                           _hoveredPort.Value.nodeId == group.Id && 
+
+            var isHovered = _hoveredPort.HasValue &&
+                           _hoveredPort.Value.nodeId == group.Id &&
                            _hoveredPort.Value.portId == port.Id;
-            
+
             var brush = isHovered ? _theme!.PortHover : _portBrush;
             context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
         }
@@ -729,11 +741,11 @@ public class DirectGraphRenderer : Control
             var port = group.Outputs[i];
             var canvasPos = _model.GetPortPositionByIndex(group, i, group.Outputs.Count, true);
             var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-            
-            var isHovered = _hoveredPort.HasValue && 
-                           _hoveredPort.Value.nodeId == group.Id && 
+
+            var isHovered = _hoveredPort.HasValue &&
+                           _hoveredPort.Value.nodeId == group.Id &&
                            _hoveredPort.Value.portId == port.Id;
-            
+
             var brush = isHovered ? _theme!.PortHover : _portBrush;
             context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
         }
@@ -829,7 +841,7 @@ public class DirectGraphRenderer : Control
         {
             var (node, nx, ny, nw, nh) = _nodeIndex[i];
             var bounds = new Rect(nx, ny, nw, nh);
-            
+
             if (bounds.Contains(canvasPoint))
             {
                 return node;
@@ -840,7 +852,7 @@ public class DirectGraphRenderer : Control
         foreach (var group in _graph.Nodes.Where(n => n.IsGroup))
         {
             if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
-            
+
             var bounds = _model.GetNodeBounds(group);
             if (bounds.Contains(canvasPoint))
             {
@@ -891,7 +903,7 @@ public class DirectGraphRenderer : Control
         foreach (var group in _graph.Nodes.Where(n => n.IsGroup))
         {
             if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
-            
+
             // Check input ports
             for (int i = 0; i < group.Inputs.Count; i++)
             {
@@ -935,7 +947,7 @@ public class DirectGraphRenderer : Control
             if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;
 
             var (start, end) = _model.GetEdgeEndpoints(edge, _graph);
-            
+
             if (_model.IsPointNearEdge(canvasPoint, start, end, hitDistance))
             {
                 return edge;
@@ -951,7 +963,7 @@ public class DirectGraphRenderer : Control
     public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
     {
         if (_viewport == null) return default;
-        
+
         var canvasPos = _model.GetPortPosition(node, port, isOutput);
         return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
     }
@@ -962,7 +974,7 @@ public class DirectGraphRenderer : Control
     public AvaloniaPoint GetEdgeEndpointScreenPosition(Edge edge, bool isSource)
     {
         if (_graph == null || _viewport == null) return default;
-        
+
         var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
         var canvasPos = isSource ? startCanvas : endCanvas;
         return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
@@ -1001,10 +1013,10 @@ public class DirectGraphRenderer : Control
         var canvasBounds = _model.GetNodeBounds(node);
         var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
         var buffer = _settings.PortSize * zoom;
-        
-        return screenBounds.X + screenBounds.Width + buffer >= 0 && 
+
+        return screenBounds.X + screenBounds.Width + buffer >= 0 &&
                screenBounds.X - buffer <= viewBounds.Width &&
-               screenBounds.Y + screenBounds.Height + buffer >= 0 && 
+               screenBounds.Y + screenBounds.Height + buffer >= 0 &&
                screenBounds.Y - buffer <= viewBounds.Height;
     }
 

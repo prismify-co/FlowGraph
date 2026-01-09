@@ -86,8 +86,54 @@ public partial class FlowCanvas
         }
         else
         {
-            hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
-            Debug.WriteLine($"[Input] VisualTreeHitTest, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
+            var rawHit = _mainCanvas?.InputHitTest(screenPos);
+            hitElement = rawHit as Control;
+
+            // Debug: log what we actually hit
+            if (rawHit == null)
+            {
+                Debug.WriteLine($"[Input] VisualTreeHitTest returned null - nothing at ({screenPos.X:F0}, {screenPos.Y:F0})");
+
+                // Debug: Check node bounds
+                if (Graph != null && _graphRenderer != null)
+                {
+                    Debug.WriteLine($"[Input]   Canvas has {_mainCanvas?.Children.Count} children, checking node visuals:");
+                    foreach (var node in Graph.Nodes.Take(5))
+                    {
+                        var visual = _graphRenderer.GetNodeVisual(node.Id);
+                        if (visual != null)
+                        {
+                            var left = Canvas.GetLeft(visual);
+                            var top = Canvas.GetTop(visual);
+                            Debug.WriteLine($"[Input]   Node {node.Id}: Visual at ({left:F0},{top:F0}), Size=({visual.Bounds.Width:F0}x{visual.Bounds.Height:F0}), IsHitTestVisible={visual.IsHitTestVisible}");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"[Input]   Node {node.Id}: NO VISUAL");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"[Input] VisualTreeHitTest hit: {rawHit.GetType().Name}, Tag={GetTagDescription(rawHit)}, IsHitTestVisible={(rawHit as Control)?.IsHitTestVisible}");
+
+                // Walk up tree to find node
+                var current = rawHit as Control;
+                int depth = 0;
+                while (current != null && hitElement?.Tag is not Node && depth < 20)
+                {
+                    if (current.Tag is Node)
+                    {
+                        hitElement = current;
+                        Debug.WriteLine($"[Input]   Found Node at depth {depth}: {current.GetType().Name}");
+                        break;
+                    }
+                    Debug.WriteLine($"[Input]   Parent[{depth}]: {current.GetType().Name}, Tag={GetTagDescription(current)}");
+                    current = current.Parent as Control;
+                    depth++;
+                }
+            }
         }
 
         var stateSw = Stopwatch.StartNew();
@@ -427,6 +473,16 @@ public partial class FlowCanvas
         }
 
         e.Handled = true;
+    }
+
+    private static string GetTagDescription(object? element)
+    {
+        if (element == null) return "null";
+        var control = element as Control;
+        if (control?.Tag == null) return "no-tag";
+        if (control.Tag is Node n) return $"Node({n.Id})";
+        if (control.Tag is Edge e) return $"Edge({e.Id})";
+        return control.Tag.GetType().Name;
     }
 
     #endregion

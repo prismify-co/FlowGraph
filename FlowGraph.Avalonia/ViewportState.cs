@@ -8,9 +8,18 @@ namespace FlowGraph.Avalonia;
 /// </summary>
 public class ViewportState
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
 
     public ViewportState(FlowCanvasSettings? settings = null)
+    {
+        _settings = settings ?? FlowCanvasSettings.Default;
+    }
+
+    /// <summary>
+    /// Updates the settings used by this viewport.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
     {
         _settings = settings ?? FlowCanvasSettings.Default;
     }
@@ -170,7 +179,7 @@ public class ViewportState
         // Don't center if view size is not set yet
         if (ViewSize.Width <= 0 || ViewSize.Height <= 0)
             return;
-            
+
         OffsetX = ViewSize.Width / 2 - canvasPoint.X * Zoom;
         OffsetY = ViewSize.Height / 2 - canvasPoint.Y * Zoom;
         ClampToBounds();
@@ -275,7 +284,7 @@ public class ViewportState
         // Calculate min/max offsets to keep the bounds visible
         // The offset is: screenPos = canvasPos * zoom + offset
         // So: offset = screenPos - canvasPos * zoom
-        
+
         // Maximum offset (left/top edge of bounds at left/top of screen with padding)
         var maxOffsetX = padding - bounds.Left * Zoom;
         var maxOffsetY = padding - bounds.Top * Zoom;

@@ -66,6 +66,10 @@ public class ResizeHandleManager
         var scaledWidth = nodeWidth * scale;
         var scaledHeight = nodeHeight * scale;
 
+        System.Diagnostics.Debug.WriteLine($"[ResizeHandles] Node={node.Id}: NodeDimensions=({nodeWidth:F0}x{nodeHeight:F0}), node.Width={node.Width}, node.Height={node.Height}");
+        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Scale={scale:F2}, ScreenPos=({screenPos.X:F0},{screenPos.Y:F0}), ScaledSize=({scaledWidth:F0}x{scaledHeight:F0})");
+        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Settings: NodeWidth={_renderContext.Settings.NodeWidth}, NodeHeight={_renderContext.Settings.NodeHeight}");
+
         var handles = new List<Rectangle>();
         var positions = new[]
         {

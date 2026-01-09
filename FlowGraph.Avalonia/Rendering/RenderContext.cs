@@ -10,7 +10,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// </summary>
 public class RenderContext
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
     private ViewportState? _viewport;
 
     /// <summary>
@@ -26,6 +26,15 @@ public class RenderContext
     /// Gets the canvas settings.
     /// </summary>
     public FlowCanvasSettings Settings => _settings;
+
+    /// <summary>
+    /// Updates the settings. Call this when FlowCanvasSettings property changes.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings ?? FlowCanvasSettings.Default;
+    }
 
     /// <summary>
     /// Gets the current viewport state.
@@ -104,14 +113,14 @@ public class RenderContext
             }
             return new AvaloniaPoint(canvasX, canvasY);
         }
-        
+
         var result = _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
-        
+
         if (_settings.DebugCoordinateTransforms)
         {
             System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToScreen: ({canvasX}, {canvasY}) -> ({result.X}, {result.Y}) [zoom={_viewport.Zoom}, offset=({_viewport.OffsetX}, {_viewport.OffsetY})]");
         }
-        
+
         return result;
     }
 
@@ -137,7 +146,7 @@ public class RenderContext
         {
             return new AvaloniaPoint(screenX, screenY);
         }
-        
+
         return _viewport.ScreenToCanvas(new AvaloniaPoint(screenX, screenY));
     }
 

@@ -15,10 +15,10 @@ namespace FlowGraph.Avalonia.Input;
 /// </summary>
 public class InputStateContext
 {
-    private readonly FlowCanvasSettings _settings;
+    private FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
     private readonly Rendering.GraphRenderer _graphRenderer;
-    
+
     public InputStateContext(
         FlowCanvasSettings settings,
         ViewportState viewport,
@@ -27,6 +27,15 @@ public class InputStateContext
         _settings = settings;
         _viewport = viewport;
         _graphRenderer = graphRenderer;
+    }
+
+    /// <summary>
+    /// Updates the settings used by this context.
+    /// </summary>
+    /// <param name="settings">The new settings to use.</param>
+    public void UpdateSettings(FlowCanvasSettings settings)
+    {
+        _settings = settings ?? FlowCanvasSettings.Default;
     }
 
     #region Component Access
@@ -40,7 +49,7 @@ public class InputStateContext
     public Canvas? MainCanvas { get; set; }
     public Graph? Graph { get; set; }
     public Rendering.ThemeResources? Theme { get; set; }
-    
+
     /// <summary>
     /// Optional connection validator for validating new connections.
     /// Set by FlowCanvas.
@@ -129,7 +138,7 @@ public class InputStateContext
         => EdgeReconnected?.Invoke(this, new EdgeReconnectedEventArgs(oldEdge, newEdge));
     public void RaiseEdgeDisconnected(Edge edge)
         => EdgeDisconnected?.Invoke(this, new EdgeDisconnectedEventArgs(edge));
-    
+
     /// <summary>
     /// Raises the NodeLabelEditRequested event and returns whether it was handled.
     /// </summary>
