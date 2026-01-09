@@ -11,12 +11,12 @@ public interface IPortRenderer
     /// Creates the visual control for a port.
     /// </summary>
     Control CreatePortVisual(PortRenderContext context);
-    
+
     /// <summary>
     /// Updates the visual state of a port (hover, connected, dragging).
     /// </summary>
     void UpdateState(Control visual, PortVisualState state, PortRenderContext context);
-    
+
     /// <summary>
     /// Gets the size of the port visual.
     /// </summary>
@@ -28,25 +28,25 @@ public interface IPortRenderer
 
 The `PortRenderContext` provides all the information needed to render a port:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Port` | `Port` | The port being rendered |
-| `Node` | `Node` | The parent node |
-| `IsOutput` | `bool` | Whether this is an output port |
-| `Theme` | `ThemeResources` | Theme colors and brushes |
-| `PortIndex` | `int` | Index of the port (0-based) |
-| `TotalPorts` | `int` | Total ports on this side of the node |
+| Property     | Type             | Description                          |
+| ------------ | ---------------- | ------------------------------------ |
+| `Port`       | `Port`           | The port being rendered              |
+| `Node`       | `Node`           | The parent node                      |
+| `IsOutput`   | `bool`           | Whether this is an output port       |
+| `Theme`      | `ThemeResources` | Theme colors and brushes             |
+| `PortIndex`  | `int`            | Index of the port (0-based)          |
+| `TotalPorts` | `int`            | Total ports on this side of the node |
 
 ## PortVisualState
 
 The `PortVisualState` enum indicates the current state of the port:
 
-| Value | Description |
-|-------|-------------|
-| `Normal` | Default state |
-| `Hover` | Mouse is hovering over the port |
-| `Connected` | Port has one or more connections |
-| `Dragging` | Connection is being dragged from this port |
+| Value       | Description                                |
+| ----------- | ------------------------------------------ |
+| `Normal`    | Default state                              |
+| `Hover`     | Mouse is hovering over the port            |
+| `Connected` | Port has one or more connections           |
+| `Dragging`  | Connection is being dragged from this port |
 
 ## Basic Custom Renderer
 
@@ -62,12 +62,12 @@ using FlowGraph.Avalonia.Rendering.PortRenderers;
 public class SquarePortRenderer : IPortRenderer
 {
     private readonly double _size;
-    
+
     public SquarePortRenderer(double size = 12)
     {
         _size = size;
     }
-    
+
     public Control CreatePortVisual(PortRenderContext context)
     {
         return new Rectangle
@@ -79,7 +79,7 @@ public class SquarePortRenderer : IPortRenderer
             StrokeThickness = 2
         };
     }
-    
+
     public void UpdateState(Control visual, PortVisualState state, PortRenderContext context)
     {
         if (visual is Rectangle rect)
@@ -93,7 +93,7 @@ public class SquarePortRenderer : IPortRenderer
             };
         }
     }
-    
+
     public Size GetSize(PortRenderContext context) => new Size(_size, _size);
 }
 ```
@@ -106,12 +106,12 @@ Create a diamond-shaped port using a rotated square:
 public class DiamondPortRenderer : IPortRenderer
 {
     private readonly double _size;
-    
+
     public DiamondPortRenderer(double size = 12)
     {
         _size = size;
     }
-    
+
     public Control CreatePortVisual(PortRenderContext context)
     {
         return new Rectangle
@@ -125,17 +125,17 @@ public class DiamondPortRenderer : IPortRenderer
             RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative)
         };
     }
-    
+
     public void UpdateState(Control visual, PortVisualState state, PortRenderContext context)
     {
         if (visual is Rectangle rect)
         {
-            rect.Fill = state == PortVisualState.Hover 
-                ? context.Theme.PortHoverBackground 
+            rect.Fill = state == PortVisualState.Hover
+                ? context.Theme.PortHoverBackground
                 : context.Theme.PortBackground;
         }
     }
-    
+
     public Size GetSize(PortRenderContext context) => new Size(_size, _size);
 }
 ```
@@ -210,7 +210,7 @@ public class LargePortRenderer : DefaultPortRenderer
         ellipse.Height = 16;
         return ellipse;
     }
-    
+
     public override Size GetSize(PortRenderContext context) => new Size(16, 16);
 }
 ```
@@ -219,13 +219,13 @@ public class LargePortRenderer : DefaultPortRenderer
 
 The `ThemeResources` class provides standard colors for ports:
 
-| Property | Description |
-|----------|-------------|
-| `PortBackground` | Default port fill color |
-| `PortBorder` | Default port border color |
-| `PortHoverBackground` | Fill color when hovering |
-| `PortHoverBorder` | Border color when hovering |
-| `PortConnectedBackground` | Fill color when connected |
+| Property                  | Description                |
+| ------------------------- | -------------------------- |
+| `PortBackground`          | Default port fill color    |
+| `PortBorder`              | Default port border color  |
+| `PortHoverBackground`     | Fill color when hovering   |
+| `PortHoverBorder`         | Border color when hovering |
+| `PortConnectedBackground` | Fill color when connected  |
 
 ## Best Practices
 

@@ -62,6 +62,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     public Rendering.NodeRenderers.NodeRendererRegistry NodeRenderers => _graphRenderer.NodeRenderers;
 
     /// <summary>
+    /// Gets the port renderer registry for registering custom port types.
+    /// </summary>
+    public Rendering.PortRenderers.PortRendererRegistry PortRenderers => _graphRenderer.PortRenderers;
+
+    /// <summary>
     /// Gets the visual control for a node by its ID.
     /// This can be used to access the node's rendered visual for customization (e.g., changing border color).
     /// </summary>
