@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core.Serialization;
 
@@ -212,6 +213,7 @@ public class EdgeDto
     public EdgeMarker MarkerStart { get; set; } = EdgeMarker.None;
     public EdgeMarker MarkerEnd { get; set; } = EdgeMarker.Arrow;
     public string? Label { get; set; }
+    public LabelInfoDto? LabelInfo { get; set; }
     public bool AutoRoute { get; set; }
     public List<PointDto>? Waypoints { get; set; }
     public Dictionary<string, object>? Metadata { get; set; }
@@ -229,6 +231,9 @@ public class EdgeDto
             MarkerStart = edge.MarkerStart,
             MarkerEnd = edge.MarkerEnd,
             Label = edge.Label,
+            LabelInfo = edge.Definition.LabelInfo != null 
+                ? LabelInfoDto.FromLabelInfo(edge.Definition.LabelInfo) 
+                : null,
             AutoRoute = edge.AutoRoute,
             Waypoints = edge.Waypoints?.Select(p => new PointDto { X = p.X, Y = p.Y }).ToList()
         };
@@ -247,6 +252,7 @@ public class EdgeDto
             MarkerStart = MarkerStart,
             MarkerEnd = MarkerEnd,
             Label = Label,
+            LabelInfo = LabelInfo?.ToLabelInfo(),
             AutoRoute = AutoRoute
         };
 
@@ -307,4 +313,31 @@ public class PointDto
 {
     public double X { get; set; }
     public double Y { get; set; }
+}
+
+/// <summary>
+/// Data transfer object for LabelInfo serialization.
+/// </summary>
+public class LabelInfoDto
+{
+    public required string Text { get; set; }
+    public LabelAnchor Anchor { get; set; } = LabelAnchor.Center;
+    public double OffsetX { get; set; }
+    public double OffsetY { get; set; }
+
+    public static LabelInfoDto FromLabelInfo(LabelInfo labelInfo)
+    {
+        return new LabelInfoDto
+        {
+            Text = labelInfo.Text,
+            Anchor = labelInfo.Anchor,
+            OffsetX = labelInfo.OffsetX,
+            OffsetY = labelInfo.OffsetY
+        };
+    }
+
+    public LabelInfo ToLabelInfo()
+    {
+        return new LabelInfo(Text, Anchor, OffsetX, OffsetY);
+    }
 }

@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using FlowGraph.Core;
+using FlowGraph.Core.Models;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -293,10 +294,11 @@ public class EdgeVisualManager
             _edgeMarkers[edge.Id] = markers;
         }
 
-        // Render label if present
-        if (!string.IsNullOrEmpty(edge.Label))
+        // Render label if present (use LabelInfo if available, else fall back to Label)
+        var effectiveLabel = edge.Definition.EffectiveLabel;
+        if (!string.IsNullOrEmpty(effectiveLabel))
         {
-            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge.Label, theme, scale, edge);
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge, theme, scale);
             if (labelVisual != null)
             {
                 _edgeLabels[edge.Id] = labelVisual;
@@ -370,15 +372,39 @@ public class EdgeVisualManager
     }
 
     /// <summary>
-    /// Renders a label on an edge.
+    /// Renders a label on an edge with support for anchor positioning and offsets.
     /// </summary>
-    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, string label, ThemeResources theme, double scale, Edge edge)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, Edge edge, ThemeResources theme, double scale)
     {
-        var midPoint = new AvaloniaPoint((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+        var labelInfo = edge.Definition.LabelInfo;
+        var labelText = labelInfo?.Text ?? edge.Label;
+
+        if (string.IsNullOrEmpty(labelText))
+            return null;
+
+        // Calculate position based on anchor
+        double t = 0.5; // Default to center
+        if (labelInfo != null)
+        {
+            t = labelInfo.Anchor switch
+            {
+                LabelAnchor.Start => 0.25,
+                LabelAnchor.End => 0.75,
+                _ => 0.5
+            };
+        }
+
+        // Interpolate position along the edge
+        var posX = start.X + (end.X - start.X) * t;
+        var posY = start.Y + (end.Y - start.Y) * t;
+
+        // Apply offsets (default -10 Y offset if no LabelInfo specified)
+        var offsetX = labelInfo?.OffsetX ?? 0;
+        var offsetY = labelInfo?.OffsetY ?? -10;
 
         var textBlock = new TextBlock
         {
-            Text = label,
+            Text = labelText,
             FontSize = 12 * scale,
             Foreground = theme.NodeText,
             Background = theme.NodeBackground,
@@ -387,8 +413,8 @@ public class EdgeVisualManager
             Cursor = new Cursor(StandardCursorType.Hand)
         };
 
-        Canvas.SetLeft(textBlock, midPoint.X);
-        Canvas.SetTop(textBlock, midPoint.Y - 10 * scale);
+        Canvas.SetLeft(textBlock, posX + offsetX * scale);
+        Canvas.SetTop(textBlock, posY + offsetY * scale);
 
         canvas.Children.Add(textBlock);
         return textBlock;
