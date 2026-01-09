@@ -1,3 +1,29 @@
+## FlowGraph v0.3.6
+
+### New Features
+
+- **Custom Edge Renderers** - Full extensibility API for custom edge visuals
+  - `IEdgeRenderer` interface for creating custom edge representations (sequence messages, swimlane flows, etc.)
+  - `EdgeRendererRegistry` with wildcard pattern matching (e.g., `sequence-*` matches `sequence-message`)
+  - `EdgeRenderContext` provides source/target nodes, coordinates, theme, and scale
+  - `EdgeRenderResult` returns visible path, hit area, markers, labels, and additional visuals
+  - Access via `canvas.EdgeRenderers.Register("my-edge-type", myRenderer)`
+
+- **Custom Background Renderers** - Extensibility API for custom background layers
+  - `IBackgroundRenderer` interface for rendering behind graph content (lifelines, swimlane lanes, etc.)
+  - `BackgroundRendererRegistry` supports multiple concurrent renderers or single-renderer mode
+  - `BackgroundRenderContext` provides viewport bounds, pan/zoom state, and coordinate transforms
+  - Callbacks for `OnGraphChanged` and `OnViewportChanged` for efficient updates
+  - Access via `canvas.BackgroundRenderers.Add(myRenderer)` or `canvas.BackgroundRenderers.SetSingle(myRenderer)`
+
+### API Additions
+
+- `FlowCanvas.EdgeRenderers` property for registering custom edge types
+- `FlowCanvas.BackgroundRenderers` property for registering custom backgrounds
+- Custom renderers are fully integrated into the FlowCanvas render pipeline
+
+---
+
 ## FlowGraph v0.3.5
 
 ### Bug Fixes

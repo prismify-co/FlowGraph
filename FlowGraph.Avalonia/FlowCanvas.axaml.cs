@@ -67,6 +67,16 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     public Rendering.PortRenderers.PortRendererRegistry PortRenderers => _graphRenderer.PortRenderers;
 
     /// <summary>
+    /// Gets the edge renderer registry for registering custom edge types.
+    /// </summary>
+    public Rendering.EdgeRenderers.EdgeRendererRegistry EdgeRenderers => _graphRenderer.EdgeRenderers;
+
+    /// <summary>
+    /// Gets the background renderer registry for custom background rendering.
+    /// </summary>
+    public Rendering.BackgroundRenderers.BackgroundRendererRegistry BackgroundRenderers => _graphRenderer.BackgroundRenderers;
+
+    /// <summary>
     /// Gets the visual control for a node by its ID.
     /// This can be used to access the node's rendered visual for customization (e.g., changing border color).
     /// </summary>

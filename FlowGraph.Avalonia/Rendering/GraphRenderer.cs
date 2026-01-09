@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using FlowGraph.Avalonia.Rendering.BackgroundRenderers;
+using FlowGraph.Avalonia.Rendering.EdgeRenderers;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Avalonia.Rendering.PortRenderers;
 using FlowGraph.Core;
@@ -19,6 +21,8 @@ public class GraphRenderer
     private readonly NodeVisualManager _nodeVisualManager;
     private readonly EdgeVisualManager _edgeVisualManager;
     private readonly ResizeHandleManager _resizeHandleManager;
+    private readonly EdgeRendererRegistry _edgeRendererRegistry;
+    private readonly BackgroundRendererRegistry _backgroundRendererRegistry;
 
     /// <summary>
     /// Creates a new graph renderer with default settings.
@@ -46,7 +50,9 @@ public class GraphRenderer
     {
         _renderContext = new RenderContext(settings);
         _nodeVisualManager = new NodeVisualManager(_renderContext, nodeRendererRegistry);
-        _edgeVisualManager = new EdgeVisualManager(_renderContext, _nodeVisualManager);
+        _edgeRendererRegistry = new EdgeRendererRegistry();
+        _backgroundRendererRegistry = new BackgroundRendererRegistry();
+        _edgeVisualManager = new EdgeVisualManager(_renderContext, _nodeVisualManager, _edgeRendererRegistry);
         _resizeHandleManager = new ResizeHandleManager(_renderContext, _nodeVisualManager);
     }
 
@@ -61,6 +67,16 @@ public class GraphRenderer
     /// Gets the port renderer registry for registering custom port types.
     /// </summary>
     public PortRendererRegistry PortRenderers => _nodeVisualManager.PortRenderers;
+
+    /// <summary>
+    /// Gets the edge renderer registry for registering custom edge types.
+    /// </summary>
+    public EdgeRendererRegistry EdgeRenderers => _edgeRendererRegistry;
+
+    /// <summary>
+    /// Gets the background renderer registry for custom background rendering.
+    /// </summary>
+    public BackgroundRendererRegistry BackgroundRenderers => _backgroundRendererRegistry;
 
     /// <summary>
     /// Gets the render context for coordinate transformations.

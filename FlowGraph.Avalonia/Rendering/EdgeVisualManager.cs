@@ -18,6 +18,10 @@ public class EdgeVisualManager
 {
     private readonly RenderContext _renderContext;
     private readonly NodeVisualManager _nodeVisualManager;
+    private readonly EdgeRenderers.EdgeRendererRegistry? _edgeRendererRegistry;
+
+    // Custom render results tracked separately
+    private readonly Dictionary<string, EdgeRenderers.EdgeRenderResult> _customRenderResults = new();
 
     // Visual tracking
     private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
@@ -31,10 +35,12 @@ public class EdgeVisualManager
     /// </summary>
     /// <param name="renderContext">Shared render context.</param>
     /// <param name="nodeVisualManager">Node visual manager for port position calculations.</param>
-    public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager)
+    /// <param name="edgeRendererRegistry">Optional registry for custom edge renderers.</param>
+    public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager, EdgeRenderers.EdgeRendererRegistry? edgeRendererRegistry = null)
     {
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeVisualManager = nodeVisualManager ?? throw new ArgumentNullException(nameof(nodeVisualManager));
+        _edgeRendererRegistry = edgeRendererRegistry;
     }
 
     /// <summary>
@@ -98,6 +104,7 @@ public class EdgeVisualManager
         _edgeMarkers.Clear();
         _edgeLabels.Clear();
         _edgeEndpointHandles.Clear();
+        _customRenderResults.Clear();
     }
 
     /// <summary>
@@ -211,6 +218,13 @@ public class EdgeVisualManager
 
         var scale = _renderContext.Scale;
 
+        // Check for custom edge renderer
+        var customRenderer = _edgeRendererRegistry?.GetRenderer(edge);
+        if (customRenderer != null)
+        {
+            return RenderCustomEdge(canvas, edge, graph, theme, customRenderer, sourceNode, targetNode, startPoint, endPoint, scale);
+        }
+
         // Create path based on edge type - use waypoints if available
         PathGeometry pathGeometry;
         if (edge.Waypoints != null && edge.Waypoints.Count > 0)
@@ -315,12 +329,106 @@ public class EdgeVisualManager
     /// <param name="theme">Theme resources for styling.</param>
     public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
     {
+        // Check if this edge has a custom render result
+        if (_customRenderResults.TryGetValue(edge.Id, out var customResult))
+        {
+            var customRenderer = _edgeRendererRegistry?.GetRenderer(edge);
+            if (customRenderer != null)
+            {
+                var context = new EdgeRenderers.EdgeRenderContext
+                {
+                    Theme = theme,
+                    Settings = _renderContext.Settings,
+                    Scale = _renderContext.Scale,
+                    SourceNode = null!, // Not needed for selection update
+                    TargetNode = null!,
+                    StartPoint = default,
+                    EndPoint = default,
+                    Graph = null!
+                };
+                customRenderer.UpdateSelection(customResult, edge, context);
+                return;
+            }
+        }
+
         if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
         {
             var scale = _renderContext.Scale;
             visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
             visiblePath.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
         }
+    }
+
+    /// <summary>
+    /// Renders an edge using a custom renderer.
+    /// </summary>
+    private AvaloniaPath? RenderCustomEdge(
+        Canvas canvas,
+        Edge edge,
+        Graph graph,
+        ThemeResources theme,
+        EdgeRenderers.IEdgeRenderer renderer,
+        Node sourceNode,
+        Node targetNode,
+        AvaloniaPoint startPoint,
+        AvaloniaPoint endPoint,
+        double scale)
+    {
+        var context = new EdgeRenderers.EdgeRenderContext
+        {
+            Theme = theme,
+            Settings = _renderContext.Settings,
+            Scale = scale,
+            SourceNode = sourceNode,
+            TargetNode = targetNode,
+            StartPoint = startPoint,
+            EndPoint = endPoint,
+            Graph = graph
+        };
+
+        var result = renderer.Render(edge, context);
+
+        // Add visuals to canvas
+        canvas.Children.Add(result.VisiblePath);
+        canvas.Children.Add(result.HitAreaPath);
+
+        // Track the paths
+        _edgeVisuals[edge.Id] = result.HitAreaPath;
+        _edgeVisiblePaths[edge.Id] = result.VisiblePath;
+        _customRenderResults[edge.Id] = result;
+
+        // Add markers if present
+        if (result.Markers is { Count: > 0 })
+        {
+            var markerList = new List<AvaloniaPath>();
+            foreach (var marker in result.Markers)
+            {
+                canvas.Children.Add(marker);
+                markerList.Add(marker);
+            }
+            _edgeMarkers[edge.Id] = markerList;
+        }
+
+        // Add label if present
+        if (result.Label != null)
+        {
+            canvas.Children.Add(result.Label);
+            if (result.Label is TextBlock tb)
+            {
+                _edgeLabels[edge.Id] = tb;
+            }
+        }
+
+        // Add additional visuals
+        if (result.AdditionalVisuals != null)
+        {
+            foreach (var visual in result.AdditionalVisuals)
+            {
+                canvas.Children.Add(visual);
+            }
+        }
+
+        return result.HitAreaPath;
     }
 
     /// <summary>

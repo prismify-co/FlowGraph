@@ -90,21 +90,48 @@ public partial class FlowCanvas
     private void RenderAll()
     {
         RenderGrid();
+        RenderCustomBackgrounds();
         RenderGraph();
     }
 
     private void RenderGrid()
     {
         if (_gridCanvas == null || _theme == null) return;
-        
+
         // Skip grid rendering if ShowGrid is disabled (e.g., when using FlowBackground)
         if (!Settings.ShowGrid)
         {
             _gridCanvas.Children.Clear();
             return;
         }
-        
+
         _gridRenderer.Render(_gridCanvas, Bounds.Size, _viewport, _theme.GridColor);
+    }
+
+    private void RenderCustomBackgrounds()
+    {
+        if (_gridCanvas == null || _theme == null) return;
+
+        var registry = _graphRenderer.BackgroundRenderers;
+        if (!registry.HasRenderers) return;
+
+        var context = new Rendering.BackgroundRenderers.BackgroundRenderContext
+        {
+            Theme = _theme,
+            Settings = Settings,
+            Scale = _viewport.Zoom,
+            Graph = Graph,
+            VisibleBounds = new global::Avalonia.Rect(0, 0, Bounds.Width, Bounds.Height),
+            Offset = new global::Avalonia.Point(_viewport.OffsetX, _viewport.OffsetY),
+            CanvasToScreen = (x, y) => new global::Avalonia.Point(
+                (x - _viewport.OffsetX) * _viewport.Zoom,
+                (y - _viewport.OffsetY) * _viewport.Zoom),
+            ScreenToCanvas = (x, y) => new global::Avalonia.Point(
+                x / _viewport.Zoom + _viewport.OffsetX,
+                y / _viewport.Zoom + _viewport.OffsetY)
+        };
+
+        registry.Render(_gridCanvas, context);
     }
 
     private void RenderGraph()
@@ -114,7 +141,7 @@ public partial class FlowCanvas
         // Auto-switch to direct rendering mode based on node count threshold
         var nodeCount = Graph.Nodes.Count;
         var threshold = Settings.DirectRenderingNodeThreshold;
-        
+
         if (threshold > 0 && nodeCount >= threshold && !_useDirectRendering)
         {
             // Auto-enable direct rendering for large graphs
@@ -152,15 +179,15 @@ public partial class FlowCanvas
         // 2. Edges (middle) - rendered after groups, before regular nodes  
         // 3. Regular nodes (top) - rendered last in RenderNodes
         // 4. Ports are rendered with their nodes
-        
+
         // Render groups first (they go behind everything)
         RenderGroupNodes();
         var groupTime = sw?.ElapsedMilliseconds ?? 0;
-        
+
         // Render edges (on top of groups)
         RenderEdges();
         var edgeTime = sw?.ElapsedMilliseconds ?? 0;
-        
+
         // Render regular nodes and ports (on top of edges)
         RenderRegularNodes();
         var nodeTime = sw?.ElapsedMilliseconds ?? 0;
@@ -179,9 +206,9 @@ public partial class FlowCanvas
     private void RenderGroupNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-        
+
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
-        
+
         // Render groups ordered by depth (outermost first)
         var groups = Graph.Nodes
             .Where(n => n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
@@ -207,9 +234,9 @@ public partial class FlowCanvas
     private void RenderRegularNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-        
+
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
-        
+
         var nodesToRender = Graph.Nodes
             .Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
             .ToList();
@@ -250,12 +277,12 @@ public partial class FlowCanvas
     private void RenderEdges()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-        
+
         // Skip if using direct rendering - edges are drawn by DirectGraphRenderer
         if (_useDirectRendering) return;
-        
+
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
-        
+
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
 
         var renderTime = sw?.ElapsedMilliseconds ?? 0;
