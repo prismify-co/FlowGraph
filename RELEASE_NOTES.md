@@ -1,3 +1,23 @@
+## FlowGraph v0.3.2
+
+### New Features
+
+- **LabelInfo for Edge Labels** - Enhanced edge label positioning with anchor points and offsets
+  - `LabelAnchor.Start` - Position label at ~25% along edge (near source)
+  - `LabelAnchor.Center` - Position label at midpoint (default)
+  - `LabelAnchor.End` - Position label at ~75% along edge (near target)
+  - Custom `OffsetX` and `OffsetY` for fine-tuning label position
+  - Fluent API: `edge.Definition.WithLabelInfo("Label", LabelAnchor.Start, offsetY: -10)`
+  - Full JSON serialization support via `LabelInfoDto`
+
+### Documentation
+
+- Added Edge Label Positioning section to README
+- Updated edge-routing.md with LabelInfo documentation
+- Added tables documenting LabelAnchor positions and LabelInfo properties
+
+---
+
 ## FlowGraph v0.3.1
 
 ### Documentation Updates
