@@ -21,17 +21,17 @@ public class ConnectingState : InputStateBase
     private readonly bool _fromOutput;
     private AvaloniaPoint _endPoint;
     private AvaloniaPath? _tempLine;
-    private readonly Ellipse? _portVisual;
+    private readonly Control? _portVisual;
     private readonly Cursor? _previousCursor;
     private readonly ThemeResources _theme;
 
     // Track hovered/snapped port for validation visual feedback
-    private Ellipse? _hoveredPortVisual;
+    private Control? _hoveredPortVisual;
     private IBrush? _hoveredPortOriginalFill;
-    
+
     // Track the currently snapped target for the temp line
     private (Node node, Port port, bool isOutput)? _snappedTarget;
-    
+
     // Track whether connect start was raised
     private bool _connectStartRaised;
 
@@ -39,11 +39,11 @@ public class ConnectingState : InputStateBase
     public override bool IsModal => true;
 
     public ConnectingState(
-        Node sourceNode, 
-        Port sourcePort, 
-        bool fromOutput, 
+        Node sourceNode,
+        Port sourcePort,
+        bool fromOutput,
         AvaloniaPoint startPosition,
-        Ellipse? portVisual,
+        Control? portVisual,
         ThemeResources theme)
     {
         _sourceNode = sourceNode;
@@ -77,7 +77,7 @@ public class ConnectingState : InputStateBase
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
-        
+
         // Raise connect start event
         context.RaiseConnectStart(_sourceNode, _sourcePort, _fromOutput);
         _connectStartRaised = true;
@@ -105,30 +105,30 @@ public class ConnectingState : InputStateBase
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         _endPoint = GetPosition(context, e);
-        
+
         // Try to find a snap target
         _snappedTarget = FindSnapTarget(context, _endPoint);
-        
+
         UpdateTempLine(context);
-        
+
         // Update port validation visual
         UpdatePortValidationVisual(context, _endPoint);
-        
+
         return StateTransitionResult.Stay();
     }
 
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
         var screenPoint = GetPosition(context, e);
-        
+
         bool connectionCompleted = false;
         Node? targetNode = null;
         Port? targetPort = null;
 
         // First try direct hit test on port
         var hitElement = HitTest(context, screenPoint);
-        
-        if (hitElement is Ellipse targetPortVisual && 
+
+        if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
             targetNode = tn;
@@ -140,7 +140,7 @@ public class ConnectingState : InputStateBase
             targetNode = _snappedTarget.Value.node;
             targetPort = _snappedTarget.Value.port;
             var snappedIsOutput = _snappedTarget.Value.isOutput;
-            
+
             // Verify the snap is still valid
             if (_fromOutput == snappedIsOutput || !targetNode.IsConnectable)
             {
@@ -153,7 +153,7 @@ public class ConnectingState : InputStateBase
         if (targetNode != null && targetPort != null)
         {
             var targetIsOutput = targetNode.Outputs.Contains(targetPort);
-            
+
             // Can only connect output to input (or input to output)
             if (_fromOutput != targetIsOutput && targetNode.IsConnectable)
             {
@@ -200,21 +200,21 @@ public class ConnectingState : InputStateBase
         if (_tempLine == null) return;
 
         var startPoint = context.GraphRenderer.GetPortPosition(_sourceNode, _sourcePort, _fromOutput);
-        
+
         // If we have a snapped target, draw to that port instead of the cursor
         AvaloniaPoint endPoint;
         if (_snappedTarget.HasValue)
         {
             endPoint = context.GraphRenderer.GetPortPosition(
-                _snappedTarget.Value.node, 
-                _snappedTarget.Value.port, 
+                _snappedTarget.Value.node,
+                _snappedTarget.Value.port,
                 _snappedTarget.Value.isOutput);
         }
         else
         {
             endPoint = _endPoint;
         }
-        
+
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
         _tempLine.Data = pathGeometry;
     }
@@ -226,13 +226,13 @@ public class ConnectingState : InputStateBase
     {
         var graph = context.Graph;
         var settings = context.Settings;
-        
+
         if (graph == null || !settings.SnapConnectionToNode || settings.ConnectionSnapDistance <= 0)
             return null;
 
         var snapDistance = settings.ConnectionSnapDistance;
         var canvasPoint = context.ScreenToCanvas(screenPoint);
-        
+
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
 
@@ -250,7 +250,7 @@ public class ConnectingState : InputStateBase
             {
                 // Get the port's screen position
                 var portScreenPos = context.GraphRenderer.GetPortPosition(node, port, isOutput);
-                
+
                 // Calculate distance
                 var dx = portScreenPos.X - screenPoint.X;
                 var dy = portScreenPos.Y - screenPoint.Y;
@@ -279,12 +279,12 @@ public class ConnectingState : InputStateBase
     {
         // First check direct hit test
         var hitElement = HitTest(context, screenPoint);
-        Ellipse? targetPortVisual = null;
+        Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;
         bool isOutput = false;
 
-        if (hitElement is Ellipse portVisual && 
+        if (hitElement is Control portVisual &&
             portVisual.Tag is (Node tn, Port tp, bool io) &&
             portVisual != _portVisual)
         {
@@ -299,7 +299,7 @@ public class ConnectingState : InputStateBase
             targetNode = _snappedTarget.Value.node;
             targetPort = _snappedTarget.Value.port;
             isOutput = _snappedTarget.Value.isOutput;
-            
+
             // Get the visual for the snapped port
             targetPortVisual = context.GraphRenderer.GetPortVisual(targetNode.Id, targetPort.Id);
         }
@@ -314,7 +314,7 @@ public class ConnectingState : InputStateBase
 
                 // Store new hovered port info
                 _hoveredPortVisual = targetPortVisual;
-                _hoveredPortOriginalFill = targetPortVisual.Fill;
+                _hoveredPortOriginalFill = GetPortFill(targetPortVisual);
 
                 // Determine if connection would be valid
                 bool canConnect = _fromOutput != isOutput && targetNode.IsConnectable;
@@ -323,15 +323,15 @@ public class ConnectingState : InputStateBase
                 // Apply validation color
                 if (!canConnect)
                 {
-                    targetPortVisual.Fill = _theme.PortInvalidConnection;
+                    SetPortFill(targetPortVisual, _theme.PortInvalidConnection);
                 }
                 else if (isValid)
                 {
-                    targetPortVisual.Fill = _theme.PortValidConnection;
+                    SetPortFill(targetPortVisual, _theme.PortValidConnection);
                 }
                 else
                 {
-                    targetPortVisual.Fill = _theme.PortInvalidConnection;
+                    SetPortFill(targetPortVisual, _theme.PortInvalidConnection);
                 }
             }
         }
@@ -343,13 +343,32 @@ public class ConnectingState : InputStateBase
     }
 
     /// <summary>
+    /// Gets the fill brush from a port visual (works with Shape-based controls).
+    /// </summary>
+    private static IBrush? GetPortFill(Control visual)
+    {
+        return visual is Shape shape ? shape.Fill : null;
+    }
+
+    /// <summary>
+    /// Sets the fill brush on a port visual (works with Shape-based controls).
+    /// </summary>
+    private static void SetPortFill(Control visual, IBrush? fill)
+    {
+        if (visual is Shape shape)
+        {
+            shape.Fill = fill;
+        }
+    }
+
+    /// <summary>
     /// Restores the hovered port to its original color.
     /// </summary>
     private void RestoreHoveredPortColor()
     {
-        if (_hoveredPortVisual != null && _hoveredPortOriginalFill != null)
+        if (_hoveredPortVisual != null)
         {
-            _hoveredPortVisual.Fill = _hoveredPortOriginalFill;
+            SetPortFill(_hoveredPortVisual, _hoveredPortOriginalFill);
         }
         _hoveredPortVisual = null;
         _hoveredPortOriginalFill = null;

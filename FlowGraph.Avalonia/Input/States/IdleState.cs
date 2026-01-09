@@ -39,7 +39,7 @@ public class IdleState : InputStateBase
             {
                 return HandleNodeClick(context, e, source, node, position);
             }
-            
+
             if (source?.Tag is Edge edge)
             {
                 // Could be edge path (hit area) or edge label (TextBlock)
@@ -68,7 +68,7 @@ public class IdleState : InputStateBase
     {
         var position = GetPosition(context, e);
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
-        
+
         // Pan on scroll behavior
         if (context.Settings.PanOnScroll && !ctrlHeld)
         {
@@ -81,7 +81,7 @@ public class IdleState : InputStateBase
             e.Handled = true;
             return StateTransitionResult.Stay();
         }
-        
+
         // Default zoom behavior (or Ctrl+scroll when PanOnScroll is enabled)
         if (e.Delta.Y > 0)
             context.Viewport.ZoomIn(position);
@@ -101,10 +101,10 @@ public class IdleState : InputStateBase
     #region Click Handlers
 
     private StateTransitionResult HandleNodeClick(
-        InputStateContext context, 
-        PointerPressedEventArgs e, 
-        Control control, 
-        Node node, 
+        InputStateContext context,
+        PointerPressedEventArgs e,
+        Control control,
+        Node node,
         AvaloniaPoint position)
     {
         var graph = context.Graph;
@@ -119,12 +119,12 @@ public class IdleState : InputStateBase
             var canvasPos = context.ScreenToCanvas(position);
             var relativeX = canvasPos.X - node.Position.X;
             var relativeY = canvasPos.Y - node.Position.Y;
-            
+
             // Button area uses the same constants as GraphRenderModel
             var buttonX = GraphRenderModel.GroupHeaderMarginX;
             var buttonY = GraphRenderModel.GroupHeaderMarginY;
             var buttonSize = GraphRenderModel.GroupCollapseButtonSize;
-            
+
             // Add extra padding for easier clicking
             var hitPadding = 4.0;
             var hitLeft = buttonX - hitPadding;
@@ -223,11 +223,11 @@ public class IdleState : InputStateBase
         // Check if click is near edge endpoints for reconnection
         var screenPos2 = GetPosition(context, e);
         var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
-        
+
         if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
         {
             var (draggingTarget, fixedNode, fixedPort, movingNode, movingPort) = reconnectInfo.Value;
-            
+
             // Start reconnecting state
             if (context.Theme != null && context.MainCanvas != null)
             {
@@ -260,7 +260,7 @@ public class IdleState : InputStateBase
     /// <summary>
     /// Checks if a click is near an edge endpoint and returns reconnection info if so.
     /// </summary>
-    private (bool draggingTarget, Node fixedNode, Port fixedPort, Node movingNode, Port movingPort)? 
+    private (bool draggingTarget, Node fixedNode, Port fixedPort, Node movingNode, Port movingPort)?
         CheckEdgeEndpointClick(InputStateContext context, Edge edge, AvaloniaPoint screenPos)
     {
         var graph = context.Graph;
@@ -268,12 +268,12 @@ public class IdleState : InputStateBase
 
         var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
         var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
-        
+
         if (sourceNode == null || targetNode == null) return null;
 
         var sourcePort = sourceNode.Outputs.FirstOrDefault(p => p.Id == edge.SourcePort);
         var targetPort = targetNode.Inputs.FirstOrDefault(p => p.Id == edge.TargetPort);
-        
+
         if (sourcePort == null || targetPort == null) return null;
 
         var sourceScreenPos = context.GraphRenderer.GetPortPosition(sourceNode, sourcePort, true);
@@ -283,12 +283,12 @@ public class IdleState : InputStateBase
 
         // Check distance to source endpoint
         var distToSource = Math.Sqrt(
-            Math.Pow(screenPos.X - sourceScreenPos.X, 2) + 
+            Math.Pow(screenPos.X - sourceScreenPos.X, 2) +
             Math.Pow(screenPos.Y - sourceScreenPos.Y, 2));
-        
+
         // Check distance to target endpoint  
         var distToTarget = Math.Sqrt(
-            Math.Pow(screenPos.X - targetScreenPos.X, 2) + 
+            Math.Pow(screenPos.X - targetScreenPos.X, 2) +
             Math.Pow(screenPos.Y - targetScreenPos.Y, 2));
 
         if (distToTarget < snapDistance && distToTarget < distToSource)
@@ -308,7 +308,7 @@ public class IdleState : InputStateBase
     private StateTransitionResult HandlePortClick(
         InputStateContext context,
         PointerPressedEventArgs e,
-        Ellipse? portVisual,
+        Control? portVisual,
         Node node,
         Port port,
         bool isOutput)

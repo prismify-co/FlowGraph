@@ -31,23 +31,23 @@ public partial class FlowCanvas
     private void OnRootPanelPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var sw = Stopwatch.StartNew();
-        
+
         var point = e.GetCurrentPoint(_rootPanel);
         var screenPos = e.GetPosition(_rootPanel);
-        
+
         Debug.WriteLine($"[Input] PointerPressed at ({screenPos.X:F0}, {screenPos.Y:F0}), DirectRendering={_useDirectRendering}, RightButton={point.Properties.IsRightButtonPressed}");
-        
+
         // Handle right-click for context menu
         if (point.Properties.IsRightButtonPressed)
         {
             Debug.WriteLine($"[Input] Right-click detected, performing hit test...");
-            
+
             // In direct rendering mode, do hit testing first to find what was clicked
             if (_useDirectRendering && _directRenderer != null)
             {
                 var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
                 Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
-                
+
                 if (rightClickHit?.Tag is Node node)
                 {
                     HandleContextMenuRequest(e, rightClickHit, node);
@@ -72,10 +72,10 @@ public partial class FlowCanvas
 
         // Update context with current graph
         _inputContext.Graph = Graph;
-        
+
         // Determine the source control for state handling
         Control? hitElement = null;
-        
+
         // In direct rendering mode, use coordinate-based hit testing
         if (_useDirectRendering && _directRenderer != null)
         {
@@ -89,26 +89,26 @@ public partial class FlowCanvas
             hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
             Debug.WriteLine($"[Input] VisualTreeHitTest, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
         }
-        
+
         var stateSw = Stopwatch.StartNew();
         _inputStateMachine.HandlePointerPressed(e, hitElement);
         stateSw.Stop();
-        
+
         sw.Stop();
         Debug.WriteLine($"[Input] StateMachine took {stateSw.ElapsedMilliseconds}ms, Total={sw.ElapsedMilliseconds}ms");
-        
+
         Focus();
     }
 
     private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
     {
         _inputContext.Graph = Graph;
-        
+
         // Track hover states and cursor in direct rendering mode
         if (_useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
             var screenPos = e.GetPosition(_rootPanel);
-            
+
             // Check resize handles first (highest priority for cursor)
             var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
             if (resizeHit.HasValue)
@@ -130,7 +130,7 @@ public partial class FlowCanvas
                 else
                 {
                     _directRenderer.ClearHoveredPort();
-                    
+
                     // Check edge endpoint handle hover
                     var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
                     if (endpointHit.HasValue)
@@ -141,7 +141,7 @@ public partial class FlowCanvas
                     else
                     {
                         _directRenderer.ClearHoveredEndpointHandle();
-                        
+
                         // Check if hovering a node
                         var nodeHit = _directRenderer.HitTestNode(screenPos.X, screenPos.Y);
                         if (nodeHit != null)
@@ -157,7 +157,7 @@ public partial class FlowCanvas
                 }
             }
         }
-        
+
         _inputStateMachine.HandlePointerMoved(e);
     }
 
@@ -191,13 +191,13 @@ public partial class FlowCanvas
         if (sender is Control control && control.Tag is Node node)
         {
             var point = e.GetCurrentPoint(control);
-            
+
             if (point.Properties.IsRightButtonPressed)
             {
                 HandleContextMenuRequest(e, control, node);
                 return;
             }
-            
+
             _inputContext.Graph = Graph;
             _inputStateMachine.HandlePointerPressed(e, control);
             Focus();
@@ -218,7 +218,7 @@ public partial class FlowCanvas
 
     private void OnPortPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Ellipse portVisual)
+        if (sender is Control portVisual)
         {
             _inputContext.Graph = Graph;
             _inputStateMachine.HandlePointerPressed(e, portVisual);
@@ -227,17 +227,17 @@ public partial class FlowCanvas
 
     private void OnPortPointerEntered(object? sender, PointerEventArgs e)
     {
-        if (sender is Ellipse portVisual && _theme != null)
+        if (sender is Shape portShape && _theme != null)
         {
-            portVisual.Fill = _theme.PortHover;
+            portShape.Fill = _theme.PortHover;
         }
     }
 
     private void OnPortPointerExited(object? sender, PointerEventArgs e)
     {
-        if (sender is Ellipse portVisual && _theme != null)
+        if (sender is Shape portShape && _theme != null)
         {
-            portVisual.Fill = _theme.PortBackground;
+            portShape.Fill = _theme.PortBackground;
         }
     }
 
@@ -246,13 +246,13 @@ public partial class FlowCanvas
         if (sender is global::Avalonia.Controls.Shapes.Path edgePath && edgePath.Tag is Edge edge)
         {
             var point = e.GetCurrentPoint(edgePath);
-            
+
             if (point.Properties.IsRightButtonPressed)
             {
                 HandleContextMenuRequest(e, edgePath, edge);
                 return;
             }
-            
+
             _inputContext.Graph = Graph;
             _inputStateMachine.HandlePointerPressed(e, edgePath);
             Focus();
@@ -387,7 +387,7 @@ public partial class FlowCanvas
         {
             // Empty canvas or need to hit test
             Control? hitElement = null;
-            
+
             if (_useDirectRendering && _directRenderer != null)
             {
                 hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
@@ -396,7 +396,7 @@ public partial class FlowCanvas
             {
                 hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
             }
-            
+
             if (hitElement?.Tag is Node hitNode)
             {
                 // Only change selection if the clicked node is NOT already selected
@@ -425,7 +425,7 @@ public partial class FlowCanvas
                 _contextMenu.ShowCanvasMenu(this, canvasPoint);
             }
         }
-        
+
         e.Handled = true;
     }
 

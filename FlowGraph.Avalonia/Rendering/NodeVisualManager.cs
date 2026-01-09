@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
+using FlowGraph.Avalonia.Rendering.PortRenderers;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -17,21 +18,27 @@ public class NodeVisualManager
 {
     private readonly RenderContext _renderContext;
     private readonly NodeRendererRegistry _nodeRendererRegistry;
+    private readonly PortRendererRegistry _portRendererRegistry;
     private readonly GraphRenderModel _model;
-    
+
     // Visual tracking
     private readonly Dictionary<string, Control> _nodeVisuals = new();
-    private readonly Dictionary<(string nodeId, string portId), Ellipse> _portVisuals = new();
+    private readonly Dictionary<(string nodeId, string portId), Control> _portVisuals = new();
 
     /// <summary>
     /// Creates a new node visual manager.
     /// </summary>
     /// <param name="renderContext">Shared render context.</param>
     /// <param name="nodeRendererRegistry">Registry for custom node renderers. If null, a default registry is created.</param>
-    public NodeVisualManager(RenderContext renderContext, NodeRendererRegistry? nodeRendererRegistry = null)
+    /// <param name="portRendererRegistry">Registry for custom port renderers. If null, a default registry is created.</param>
+    public NodeVisualManager(
+        RenderContext renderContext,
+        NodeRendererRegistry? nodeRendererRegistry = null,
+        PortRendererRegistry? portRendererRegistry = null)
     {
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
+        _portRendererRegistry = portRendererRegistry ?? new PortRendererRegistry();
         _model = new GraphRenderModel(renderContext.Settings);
     }
 
@@ -39,6 +46,11 @@ public class NodeVisualManager
     /// Gets the node renderer registry for registering custom node types.
     /// </summary>
     public NodeRendererRegistry NodeRenderers => _nodeRendererRegistry;
+
+    /// <summary>
+    /// Gets the port renderer registry for registering custom port types.
+    /// </summary>
+    public PortRendererRegistry PortRenderers => _portRendererRegistry;
 
     /// <summary>
     /// Gets the render model used for geometry calculations.
@@ -56,14 +68,14 @@ public class NodeVisualManager
     }
 
     /// <summary>
-    /// Gets the visual ellipse for a port.
+    /// Gets the visual control for a port.
     /// </summary>
     /// <param name="nodeId">The parent node ID.</param>
     /// <param name="portId">The port ID.</param>
-    /// <returns>The port's visual ellipse, or null if not found.</returns>
-    public Ellipse? GetPortVisual(string nodeId, string portId)
+    /// <returns>The port's visual control, or null if not found.</returns>
+    public Control? GetPortVisual(string nodeId, string portId)
     {
-        return _portVisuals.TryGetValue((nodeId, portId), out var ellipse) ? ellipse : null;
+        return _portVisuals.TryGetValue((nodeId, portId), out var visual) ? visual : null;
     }
 
     /// <summary>
@@ -183,8 +195,8 @@ public class NodeVisualManager
     /// <param name="isOutput">True if this is an output port.</param>
     /// <param name="theme">Theme resources for styling.</param>
     /// <param name="onPortCreated">Optional callback when the port visual is created.</param>
-    /// <returns>The created port visual ellipse.</returns>
-    public Ellipse RenderPort(
+    /// <returns>The created port visual control.</returns>
+    public Control RenderPort(
         Canvas canvas,
         Node node,
         Port port,
@@ -192,25 +204,31 @@ public class NodeVisualManager
         int totalPorts,
         bool isOutput,
         ThemeResources theme,
-        Action<Ellipse, Node, Port, bool>? onPortCreated = null)
+        Action<Control, Node, Port, bool>? onPortCreated = null)
     {
         var scale = _renderContext.Scale;
-        var scaledPortSize = _renderContext.Settings.PortSize * scale;
+        var renderer = _portRendererRegistry.GetRenderer(port);
+
+        var context = new PortRenderContext
+        {
+            Theme = theme,
+            Settings = _renderContext.Settings,
+            Scale = scale,
+            IsOutput = isOutput,
+            Index = index,
+            TotalPorts = totalPorts
+        };
+
+        // Get port size from renderer or use default
+        var portSize = renderer.GetSize(port, node, _renderContext.Settings) ?? _renderContext.Settings.PortSize;
+        var scaledPortSize = portSize * scale;
 
         // Use GraphRenderModel for port position calculation
         var canvasPos = _model.GetPortPositionByIndex(node, index, totalPorts, isOutput);
         var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
 
-        var portVisual = new Ellipse
-        {
-            Width = scaledPortSize,
-            Height = scaledPortSize,
-            Fill = theme.PortBackground,
-            Stroke = theme.PortBorder,
-            StrokeThickness = 2,
-            Cursor = new Cursor(StandardCursorType.Cross),
-            Tag = (node, port, isOutput)
-        };
+        // Create the port visual using the renderer
+        var portVisual = renderer.CreatePortVisual(port, node, context);
 
         Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
         Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
@@ -246,13 +264,16 @@ public class NodeVisualManager
     public void UpdatePortPositions(Node node)
     {
         var scale = _renderContext.Scale;
-        var scaledPortSize = _renderContext.Settings.PortSize * scale;
 
         for (int i = 0; i < node.Inputs.Count; i++)
         {
             var port = node.Inputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
+                var renderer = _portRendererRegistry.GetRenderer(port);
+                var portSize = renderer.GetSize(port, node, _renderContext.Settings) ?? _renderContext.Settings.PortSize;
+                var scaledPortSize = portSize * scale;
+
                 var canvasPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
                 var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
@@ -265,6 +286,10 @@ public class NodeVisualManager
             var port = node.Outputs[i];
             if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
             {
+                var renderer = _portRendererRegistry.GetRenderer(port);
+                var portSize = renderer.GetSize(port, node, _renderContext.Settings) ?? _renderContext.Settings.PortSize;
+                var scaledPortSize = portSize * scale;
+
                 var canvasPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
                 var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
                 Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);

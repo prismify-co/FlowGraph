@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
+using FlowGraph.Avalonia.Rendering.PortRenderers;
 using FlowGraph.Core;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaPoint = Avalonia.Point;
@@ -57,6 +58,11 @@ public class GraphRenderer
     public NodeRendererRegistry NodeRenderers => _nodeVisualManager.NodeRenderers;
 
     /// <summary>
+    /// Gets the port renderer registry for registering custom port types.
+    /// </summary>
+    public PortRendererRegistry PortRenderers => _nodeVisualManager.PortRenderers;
+
+    /// <summary>
     /// Gets the render context for coordinate transformations.
     /// </summary>
     public RenderContext RenderContext => _renderContext;
@@ -101,7 +107,7 @@ public class GraphRenderer
     /// <summary>
     /// Gets the visual element for a port.
     /// </summary>
-    public Ellipse? GetPortVisual(string nodeId, string portId) => _nodeVisualManager.GetPortVisual(nodeId, portId);
+    public Control? GetPortVisual(string nodeId, string portId) => _nodeVisualManager.GetPortVisual(nodeId, portId);
 
     /// <summary>
     /// Gets the visual element for an edge (hit area path).
@@ -180,7 +186,7 @@ public class GraphRenderer
     /// <summary>
     /// Renders a single port.
     /// </summary>
-    public Ellipse RenderPort(
+    public Control RenderPort(
         Canvas canvas,
         Node node,
         Port port,
@@ -188,7 +194,7 @@ public class GraphRenderer
         int totalPorts,
         bool isOutput,
         ThemeResources theme,
-        Action<Ellipse, Node, Port, bool>? onPortCreated = null)
+        Action<Control, Node, Port, bool>? onPortCreated = null)
     {
         return _nodeVisualManager.RenderPort(canvas, node, port, index, totalPorts, isOutput, theme, onPortCreated);
     }

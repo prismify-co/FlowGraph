@@ -29,9 +29,9 @@ public class ReconnectingState : InputStateBase
     private readonly ThemeResources _theme;
 
     // Track hovered/snapped port for validation visual feedback
-    private Ellipse? _hoveredPortVisual;
+    private Control? _hoveredPortVisual;
     private IBrush? _hoveredPortOriginalFill;
-    
+
     // Track the currently snapped target
     private (Node node, Port port, bool isOutput)? _snappedTarget;
 
@@ -80,7 +80,7 @@ public class ReconnectingState : InputStateBase
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
-        
+
         // Make the edge appear "detached" by styling it as a connection-in-progress
         UpdateEdgeVisualAsDetached(context);
     }
@@ -89,7 +89,7 @@ public class ReconnectingState : InputStateBase
     {
         // Restore hovered port color
         RestoreHoveredPortColor();
-        
+
         // Reset the edge visual styling (it will be re-rendered if reconnection happened)
         ResetEdgeVisual(context);
     }
@@ -97,14 +97,14 @@ public class ReconnectingState : InputStateBase
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         _currentEndPoint = GetPosition(context, e);
-        
+
         // Try to find a snap target
         _snappedTarget = FindSnapTarget(context, _currentEndPoint);
-        
+
         // Update the edge visual to follow the cursor (or snap to target)
         UpdateEdgeVisual(context);
         UpdatePortValidationVisual(context, _currentEndPoint);
-        
+
         return StateTransitionResult.Stay();
     }
 
@@ -118,13 +118,13 @@ public class ReconnectingState : InputStateBase
         }
 
         var screenPoint = GetPosition(context, e);
-        
+
         // Find target port (direct hit or snapped)
         Node? targetNode = null;
         Port? targetPort = null;
-        
+
         var hitElement = HitTest(context, screenPoint);
-        if (hitElement is Ellipse targetPortVisual && 
+        if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
             // Verify it's the correct port type
@@ -198,7 +198,7 @@ public class ReconnectingState : InputStateBase
 
         // Get the fixed endpoint - use the correct isOutput value
         var fixedPoint = context.GraphRenderer.GetPortPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
-        
+
         // Determine the moving endpoint
         AvaloniaPoint movingPoint;
         if (_snappedTarget.HasValue)
@@ -227,16 +227,16 @@ public class ReconnectingState : InputStateBase
             // Moving point is source, fixed point is target
             pathGeometry = BezierHelper.CreateBezierPath(movingPoint, fixedPoint, false);
         }
-        
+
         visiblePath.Data = pathGeometry;
-        
+
         // Also update the hit area path
         var hitAreaPath = context.GraphRenderer.GetEdgeVisual(_edge.Id);
         if (hitAreaPath != null)
         {
             hitAreaPath.Data = pathGeometry;
         }
-        
+
         // Hide markers while dragging (they would be at wrong positions)
         var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
         if (markers != null)
@@ -260,7 +260,7 @@ public class ReconnectingState : InputStateBase
             visiblePath.StrokeDashArray = null;
             visiblePath.Opacity = 1.0;
         }
-        
+
         // Show markers again
         var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
         if (markers != null)
@@ -276,12 +276,12 @@ public class ReconnectingState : InputStateBase
     {
         var graph = context.Graph;
         var settings = context.Settings;
-        
+
         if (graph == null || !settings.SnapConnectionToNode || settings.ConnectionSnapDistance <= 0)
             return null;
 
         var snapDistance = settings.ConnectionSnapDistance;
-        
+
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
 
@@ -290,7 +290,7 @@ public class ReconnectingState : InputStateBase
             // Skip non-connectable nodes and groups
             if (!node.IsConnectable || node.IsGroup)
                 continue;
-            
+
             // Skip the fixed node (can't connect to same node)
             if (node.Id == _fixedNode.Id)
                 continue;
@@ -302,7 +302,7 @@ public class ReconnectingState : InputStateBase
             foreach (var port in portsToCheck)
             {
                 var portScreenPos = context.GraphRenderer.GetPortPosition(node, port, isOutput);
-                
+
                 var dx = portScreenPos.X - screenPoint.X;
                 var dy = portScreenPos.Y - screenPoint.Y;
                 var distance = Math.Sqrt(dx * dx + dy * dy);
@@ -324,12 +324,12 @@ public class ReconnectingState : InputStateBase
     private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint screenPoint)
     {
         var hitElement = HitTest(context, screenPoint);
-        Ellipse? targetPortVisual = null;
+        Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;
         bool isCorrectType = false;
 
-        if (hitElement is Ellipse portVisual && 
+        if (hitElement is Control portVisual &&
             portVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
             // Check if it's the correct port type
@@ -354,12 +354,12 @@ public class ReconnectingState : InputStateBase
             if (_hoveredPortVisual != targetPortVisual)
             {
                 RestoreHoveredPortColor();
-                
+
                 _hoveredPortVisual = targetPortVisual;
-                _hoveredPortOriginalFill = targetPortVisual.Fill;
+                _hoveredPortOriginalFill = GetPortFill(targetPortVisual);
 
                 bool isValid = targetNode.IsConnectable && IsConnectionValid(context, targetNode, targetPort);
-                targetPortVisual.Fill = isValid ? _theme.PortValidConnection : _theme.PortInvalidConnection;
+                SetPortFill(targetPortVisual, isValid ? _theme.PortValidConnection : _theme.PortInvalidConnection);
             }
         }
         else
@@ -368,11 +368,30 @@ public class ReconnectingState : InputStateBase
         }
     }
 
+    /// <summary>
+    /// Gets the fill brush from a port visual (works with Shape-based controls).
+    /// </summary>
+    private static IBrush? GetPortFill(Control visual)
+    {
+        return visual is Shape shape ? shape.Fill : null;
+    }
+
+    /// <summary>
+    /// Sets the fill brush on a port visual (works with Shape-based controls).
+    /// </summary>
+    private static void SetPortFill(Control visual, IBrush? fill)
+    {
+        if (visual is Shape shape)
+        {
+            shape.Fill = fill;
+        }
+    }
+
     private void RestoreHoveredPortColor()
     {
-        if (_hoveredPortVisual != null && _hoveredPortOriginalFill != null)
+        if (_hoveredPortVisual != null)
         {
-            _hoveredPortVisual.Fill = _hoveredPortOriginalFill;
+            SetPortFill(_hoveredPortVisual, _hoveredPortOriginalFill);
         }
         _hoveredPortVisual = null;
         _hoveredPortOriginalFill = null;
@@ -389,7 +408,7 @@ public class ReconnectingState : InputStateBase
         // Build connection context based on which end we're moving
         Node sourceNode, destNode;
         Port sourcePort, destPort;
-        
+
         if (_draggingTarget)
         {
             sourceNode = _fixedNode;

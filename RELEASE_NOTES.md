@@ -1,3 +1,22 @@
+## FlowGraph v0.3.3
+
+### New Features
+
+- **Custom Port Renderers** - Full extensibility API for custom port visuals
+  - `IPortRenderer` interface for creating custom port shapes and styles
+  - `PortRendererRegistry` to map port types to custom renderers
+  - `DefaultPortRenderer` maintains backward compatibility with standard circular ports
+  - `PortRenderContext` provides port metadata, position, and theme resources
+  - `PortVisualState` enum for hover, connected, and dragging states
+  - Access via `canvas.GraphRenderer.PortRenderers.Register("MyType", myRenderer)`
+
+### Documentation
+
+- Added Custom Port Renderers section to README features
+- New custom-ports.md guide in documentation
+
+---
+
 ## FlowGraph v0.3.2
 
 ### New Features
