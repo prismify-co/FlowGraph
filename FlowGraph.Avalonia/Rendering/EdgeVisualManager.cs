@@ -157,7 +157,7 @@ public class EdgeVisualManager
 
             // Skip edges where either endpoint is hidden by a collapsed group
             if (sourceNode == null || targetNode == null ||
-                !NodeVisualManager.IsNodeVisible(graph, sourceNode) || 
+                !NodeVisualManager.IsNodeVisible(graph, sourceNode) ||
                 !NodeVisualManager.IsNodeVisible(graph, targetNode))
             {
                 continue;

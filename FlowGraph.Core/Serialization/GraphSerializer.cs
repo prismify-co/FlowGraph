@@ -231,8 +231,8 @@ public class EdgeDto
             MarkerStart = edge.MarkerStart,
             MarkerEnd = edge.MarkerEnd,
             Label = edge.Label,
-            LabelInfo = edge.Definition.LabelInfo != null 
-                ? LabelInfoDto.FromLabelInfo(edge.Definition.LabelInfo) 
+            LabelInfo = edge.Definition.LabelInfo != null
+                ? LabelInfoDto.FromLabelInfo(edge.Definition.LabelInfo)
                 : null,
             AutoRoute = edge.AutoRoute,
             Waypoints = edge.Waypoints?.Select(p => new PointDto { X = p.X, Y = p.Y }).ToList()

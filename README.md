@@ -16,6 +16,7 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 - **Pan & Zoom** - Mouse wheel zoom, middle-click pan, configurable drag behavior
 - **Node System** - Draggable, resizable, selectable nodes with custom renderers
 - **Edge Types** - Bezier, Straight, Step, SmoothStep curves with arrow markers
+- **Edge Labels** - Positioned labels with anchor points (Start, Center, End) and offsets
 - **Connection Validation** - Custom rules for valid connections with built-in validators
 - **Undo/Redo** - Full command history with keyboard shortcuts
 - **Clipboard** - Copy, cut, paste, duplicate operations
@@ -580,10 +581,39 @@ var edgeDef = new EdgeDefinition
     TargetPort = "in",
     Type = EdgeType.Bezier,
     MarkerEnd = EdgeMarker.Arrow,
-    AutoRoute = false
+    AutoRoute = false,
+    Label = "Simple Label"  // Or use LabelInfo for positioning
 };
 
 var edge = new Edge(edgeDef, new EdgeState());
+```
+
+## Edge Label Positioning
+
+Use `LabelInfo` for precise control over edge label placement:
+
+```csharp
+using FlowGraph.Core.Models;
+
+// Label at different positions along the edge
+var edgeWithLabel = new Edge(new EdgeDefinition
+{
+    Id = Guid.NewGuid().ToString(),
+    Source = sourceNodeId,
+    Target = targetNodeId,
+    SourcePort = "out",
+    TargetPort = "in",
+    // Position label near the start with vertical offset
+    LabelInfo = new LabelInfo("Yes", LabelAnchor.Start, offsetY: -10)
+});
+
+// Fluent API for updating labels
+edge.Definition = edge.Definition.WithLabelInfo("No", LabelAnchor.End, offsetX: 5);
+
+// LabelAnchor options:
+// - LabelAnchor.Start  (25% along edge, near source)
+// - LabelAnchor.Center (50% along edge, default)
+// - LabelAnchor.End    (75% along edge, near target)
 ```
 
 ## Port Definitions

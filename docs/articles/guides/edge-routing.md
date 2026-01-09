@@ -77,6 +77,7 @@ var edge = new Edge
 Add labels to edges:
 
 ```csharp
+// Simple label (centered on edge)
 var edge = new Edge
 {
     Source = node1.Id,
@@ -86,6 +87,58 @@ var edge = new Edge
     Label = "Connection"
 };
 ```
+
+### Advanced Label Positioning
+
+Use `LabelInfo` for precise control over label placement:
+
+```csharp
+using FlowGraph.Core.Models;
+
+// Label at the start of the edge (near source)
+var edgeWithStartLabel = new Edge(new EdgeDefinition
+{
+    Id = "e1",
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = "out",
+    TargetPort = "in",
+    LabelInfo = new LabelInfo("Yes", LabelAnchor.Start, offsetY: -10)
+});
+
+// Label at the end of the edge (near target)
+var edgeWithEndLabel = new Edge(new EdgeDefinition
+{
+    Id = "e2",
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = "out",
+    TargetPort = "in",
+    LabelInfo = new LabelInfo("No", LabelAnchor.End, offsetX: 5)
+});
+
+// Using the fluent builder method
+var edge = existingEdge.Definition.WithLabelInfo("Label", LabelAnchor.Center, offsetX: 0, offsetY: -15);
+```
+
+### Label Anchor Positions
+
+| Anchor | Position | Description |
+|--------|----------|-------------|
+| `LabelAnchor.Start` | ~25% | Near the source node |
+| `LabelAnchor.Center` | ~50% | At the midpoint (default) |
+| `LabelAnchor.End` | ~75% | Near the target node |
+
+### LabelInfo Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Text` | `string` | The label text content |
+| `Anchor` | `LabelAnchor` | Position along the edge path |
+| `OffsetX` | `double` | Horizontal offset in pixels (positive = right) |
+| `OffsetY` | `double` | Vertical offset in pixels (positive = down) |
+
+> **Note:** When both `Label` and `LabelInfo` are set, `LabelInfo` takes precedence. Use `edge.Definition.EffectiveLabel` to get the resolved label text.
 
 ## Edge Reconnection
 
