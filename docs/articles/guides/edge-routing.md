@@ -19,12 +19,12 @@ var edge = new Edge
 
 ### Available Types
 
-| Type | Description |
-|------|-------------|
-| `EdgeType.Bezier` | Smooth curved path (default) |
-| `EdgeType.Straight` | Direct line |
-| `EdgeType.Step` | Right-angle path |
-| `EdgeType.SmoothStep` | Rounded right-angle path |
+| Type                  | Description                  |
+| --------------------- | ---------------------------- |
+| `EdgeType.Bezier`     | Smooth curved path (default) |
+| `EdgeType.Straight`   | Direct line                  |
+| `EdgeType.Step`       | Right-angle path             |
+| `EdgeType.SmoothStep` | Rounded right-angle path     |
 
 ## Automatic Routing
 
@@ -37,11 +37,11 @@ canvas.Settings.DefaultEdgeRouter = EdgeRouterType.Orthogonal;
 
 ### Router Types
 
-| Router | Description |
-|--------|-------------|
-| `EdgeRouterType.Direct` | Straight lines (no routing) |
-| `EdgeRouterType.Orthogonal` | Right-angle paths with A* pathfinding |
-| `EdgeRouterType.SmartBezier` | Bezier curves that avoid obstacles |
+| Router                       | Description                            |
+| ---------------------------- | -------------------------------------- |
+| `EdgeRouterType.Direct`      | Straight lines (no routing)            |
+| `EdgeRouterType.Orthogonal`  | Right-angle paths with A\* pathfinding |
+| `EdgeRouterType.SmartBezier` | Bezier curves that avoid obstacles     |
 
 ## Manual Routing
 
@@ -123,20 +123,20 @@ var edge = existingEdge.Definition.WithLabelInfo("Label", LabelAnchor.Center, of
 
 ### Label Anchor Positions
 
-| Anchor | Position | Description |
-|--------|----------|-------------|
-| `LabelAnchor.Start` | ~25% | Near the source node |
-| `LabelAnchor.Center` | ~50% | At the midpoint (default) |
-| `LabelAnchor.End` | ~75% | Near the target node |
+| Anchor               | Position | Description               |
+| -------------------- | -------- | ------------------------- |
+| `LabelAnchor.Start`  | ~25%     | Near the source node      |
+| `LabelAnchor.Center` | ~50%     | At the midpoint (default) |
+| `LabelAnchor.End`    | ~75%     | Near the target node      |
 
 ### LabelInfo Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Text` | `string` | The label text content |
-| `Anchor` | `LabelAnchor` | Position along the edge path |
-| `OffsetX` | `double` | Horizontal offset in pixels (positive = right) |
-| `OffsetY` | `double` | Vertical offset in pixels (positive = down) |
+| Property  | Type          | Description                                    |
+| --------- | ------------- | ---------------------------------------------- |
+| `Text`    | `string`      | The label text content                         |
+| `Anchor`  | `LabelAnchor` | Position along the edge path                   |
+| `OffsetX` | `double`      | Horizontal offset in pixels (positive = right) |
+| `OffsetY` | `double`      | Vertical offset in pixels (positive = down)    |
 
 > **Note:** When both `Label` and `LabelInfo` are set, `LabelInfo` takes precedence. Use `edge.Definition.EffectiveLabel` to get the resolved label text.
 
