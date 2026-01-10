@@ -302,16 +302,6 @@ public partial class FlowCanvas
         }
     }
 
-        if (DebugRenderingPerformance && sw != null)
-        {
-            sw.Stop();
-            var renderedVisuals = _mainCanvas.Children.Count;
-            LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
-                $"Clear: {clearTime}ms, Render: {sw.ElapsedMilliseconds - clearTime}ms | " +
-                $"Graph: {totalNodes}n/{totalEdges}e, Rendered: {nodeCount_rendered}n/{edgeCount_rendered}e, Visuals: {renderedVisuals}");
-        }
-    }
-
     private void RenderGroupNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;

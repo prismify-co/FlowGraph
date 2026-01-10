@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FlowGraph.Core.Elements;
 using FlowGraph.Core.Models;
 using FlowGraph.Core.Elements.Shapes;
 
@@ -305,21 +306,17 @@ public class NodeElementDto : ElementDto
 
     public override ICanvasElement ToElement()
     {
-        var definition = new NodeDefinition(
-            Id: Id,
-            Type: Type ?? "default",
-            Label: Label,
-            ParentGroupId: ParentGroupId,
-            IsGroup: IsGroup,
-            IsSelectable: true,
-            IsDraggable: true,
-            IsDeletable: true,
-            IsConnectable: true,
-            IsResizable: IsResizable,
-            Data: Data,
-            Inputs: Inputs.Select(p => new Port(p.Id, p.Type, p.Label)).ToImmutableList(),
-            Outputs: Outputs.Select(p => new Port(p.Id, p.Type, p.Label)).ToImmutableList()
-        );
+        var definition = new NodeDefinition
+        {
+            Id = Id,
+            Type = Type ?? "default",
+            Label = Label,
+            ParentGroupId = ParentGroupId,
+            IsGroup = IsGroup,
+            Data = Data,
+            Inputs = Inputs.Select(p => new PortDefinition { Id = p.Id, Type = p.Type, Label = p.Label }).ToImmutableList(),
+            Outputs = Outputs.Select(p => new PortDefinition { Id = p.Id, Type = p.Type, Label = p.Label }).ToImmutableList()
+        };
 
         var state = new NodeState
         {
@@ -379,18 +376,19 @@ public class EdgeElementDto : ElementDto
 
     public override ICanvasElement ToElement()
     {
-        var definition = new EdgeDefinition(
-            Id: Id,
-            Source: Source,
-            Target: Target,
-            SourcePort: SourcePort,
-            TargetPort: TargetPort,
-            Type: Type,
-            MarkerStart: MarkerStart,
-            MarkerEnd: MarkerEnd,
-            Label: Label,
-            AutoRoute: AutoRoute
-        );
+        var definition = new EdgeDefinition
+        {
+            Id = Id,
+            Source = Source,
+            Target = Target,
+            SourcePort = SourcePort,
+            TargetPort = TargetPort,
+            Type = Type,
+            MarkerStart = MarkerStart,
+            MarkerEnd = MarkerEnd,
+            Label = Label,
+            AutoRoute = AutoRoute
+        };
 
         var state = new EdgeState
         {
@@ -436,7 +434,7 @@ public class ShapeElementDto : ElementDto
     public double? FontSize { get; set; }
     public string? FontFamily { get; set; }
     public string? FontWeight { get; set; }
-    public string? TextAlign { get; set; }
+    public string? TextAlignment { get; set; }
 
     public Dictionary<string, object>? Metadata { get; set; }
 
@@ -480,7 +478,7 @@ public class ShapeElementDto : ElementDto
             dto.FontSize = text.FontSize;
             dto.FontFamily = text.FontFamily;
             dto.FontWeight = text.FontWeight.ToString();
-            dto.TextAlign = text.TextAlign.ToString();
+            dto.TextAlignment = text.TextAlignment.ToString();
         }
         else if (shape is EllipseElement)
         {
@@ -513,7 +511,7 @@ public class ShapeElementDto : ElementDto
                 FontSize = FontSize ?? 14,
                 FontFamily = FontFamily,
                 FontWeight = Enum.TryParse<Elements.Shapes.FontWeight>(FontWeight, out var fw) ? fw : Elements.Shapes.FontWeight.Normal,
-                TextAlign = Enum.TryParse<TextAlign>(TextAlign, out var ta) ? ta : Elements.Shapes.TextAlign.Left
+                TextAlignment = Enum.TryParse<TextAlignment>(TextAlignment, out var ta) ? ta : Elements.Shapes.TextAlignment.Left
             },
             "ellipse" => new EllipseElement(Id),
             _ => null
@@ -788,7 +786,7 @@ public class ShapeDto
     public double? FontSize { get; set; }
     public string? FontFamily { get; set; }
     public string? FontWeight { get; set; }
-    public string? TextAlign { get; set; }
+    public string? TextAlignment { get; set; }
 
     public Dictionary<string, object>? Metadata { get; set; }
 
@@ -830,7 +828,7 @@ public class ShapeDto
             dto.FontSize = text.FontSize;
             dto.FontFamily = text.FontFamily;
             dto.FontWeight = text.FontWeight.ToString();
-            dto.TextAlign = text.TextAlign.ToString();
+            dto.TextAlignment = text.TextAlignment.ToString();
         }
         else if (shape is EllipseElement)
         {
@@ -862,7 +860,7 @@ public class ShapeDto
                 FontSize = FontSize ?? 14,
                 FontFamily = FontFamily,
                 FontWeight = Enum.TryParse<FontWeight>(FontWeight, out var fw) ? fw : Elements.Shapes.FontWeight.Normal,
-                TextAlign = Enum.TryParse<TextAlign>(TextAlign, out var ta) ? ta : Elements.Shapes.TextAlign.Left
+                TextAlignment = Enum.TryParse<TextAlignment>(TextAlignment, out var ta) ? ta : Elements.Shapes.TextAlignment.Left
             },
             "ellipse" => new EllipseElement(Id),
             _ => null

@@ -850,6 +850,85 @@ public partial class MainWindow : Window
 
     #endregion
 
+    #region Element-First Architecture Demos
+
+    private void OnSaveGraphClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+
+        try
+        {
+            vm.SaveGraph();
+            SetStatus("Graph saved to MyDocuments/flowgraph-demo.json");
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Save failed: {ex.Message}");
+        }
+    }
+
+    private void OnLoadGraphClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+
+        try
+        {
+            vm.LoadGraph();
+            SetStatus("Graph loaded from MyDocuments/flowgraph-demo.json");
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Load failed: {ex.Message}");
+        }
+    }
+
+    private void OnDemoMoveClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+
+        try
+        {
+            vm.DemoMoveElements();
+            SetStatus("Moved shape elements (use Undo/Redo to test commands)");
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Move failed: {ex.Message}");
+        }
+    }
+
+    private void OnDemoUndoClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+
+        try
+        {
+            vm.DemoUndo();
+            SetStatus($"Undo - {vm.CommandHistory.UndoCount} commands in history");
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Undo failed: {ex.Message}");
+        }
+    }
+
+    private void OnDemoRedoClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+
+        try
+        {
+            vm.DemoRedo();
+            SetStatus($"Redo - {vm.CommandHistory.RedoCount} commands available");
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Redo failed: {ex.Message}");
+        }
+    }
+
+    #endregion
+
     #region Node Toolbar Actions
 
     private void OnToolbarDeleteClick(object? sender, RoutedEventArgs e)

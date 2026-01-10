@@ -366,6 +366,81 @@
                             </StackPanel>
                         </Border>
                         
+                        <Separator Margin="0,8,0,12" Opacity="0.3"/>
+                        
+                        <!-- ???????????????????????????????????????????????????? -->
+                        <!-- ELEMENT-FIRST ARCHITECTURE -->
+                        <!-- ?????????????????????????????????????????????????? -->
+                        <TextBlock Text="Element-First Architecture" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
+                        
+                        <!-- Shapes & Z-Order Section -->
+                        <Border Classes="card">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
+                                    <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
+                                    <TextBlock Text="SHAPES &amp; Z-ORDER" Classes="section-title" Margin="0"/>
+                                </StackPanel>
+                                <TextBlock Text="Demo includes shapes panel (right side) showing different Z-index layers" 
+                                           TextWrapping="Wrap" FontSize="11" Opacity="0.7" Margin="0,0,0,8"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Element Commands Section -->
+                        <Border Classes="card">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
+                                    <lucide:Lucide Icon="Command" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
+                                    <TextBlock Text="ELEMENT COMMANDS" Classes="section-title" Margin="0"/>
+                                </StackPanel>
+                                <TextBlock Text="Try undo/redo for element operations" Classes="hint"/>
+                                <UniformGrid Columns="3" Rows="1">
+                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnDemoMoveClick" ToolTip.Tip="Move shapes demo">
+                                        <StackPanel Orientation="Horizontal">
+                                            <lucide:Lucide Icon="Move" StrokeThickness="1.5" Width="14" Height="14"/>
+                                            <TextBlock Text="Move" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="4,0,4,0" Click="OnDemoUndoClick" ToolTip.Tip="Undo last command">
+                                        <StackPanel Orientation="Horizontal">
+                                            <lucide:Lucide Icon="Undo" StrokeThickness="1.5" Width="14" Height="14"/>
+                                            <TextBlock Text="Undo" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnDemoRedoClick" ToolTip.Tip="Redo last command">
+                                        <StackPanel Orientation="Horizontal">
+                                            <lucide:Lucide Icon="Redo" StrokeThickness="1.5" Width="14" Height="14"/>
+                                            <TextBlock Text="Redo" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Serialization V2 Section -->
+                        <Border Classes="card">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
+                                    <lucide:Lucide Icon="FileJson" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
+                                    <TextBlock Text="SERIALIZATION V2" Classes="section-title" Margin="0"/>
+                                </StackPanel>
+                                <TextBlock Text="Test new polymorphic elements[] format" Classes="hint"/>
+                                <UniformGrid Columns="2" Rows="1">
+                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnSaveGraphClick" ToolTip.Tip="Save graph as JSON">
+                                        <StackPanel Orientation="Horizontal">
+                                            <lucide:Lucide Icon="Save" StrokeThickness="1.5" Width="14" Height="14"/>
+                                            <TextBlock Text="Save" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnLoadGraphClick" ToolTip.Tip="Load graph from JSON">
+                                        <StackPanel Orientation="Horizontal">
+                                            <lucide:Lucide Icon="FolderOpen" StrokeThickness="1.5" Width="14" Height="14"/>
+                                            <TextBlock Text="Load" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                        
                         <!-- Status Bar -->
                         <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
                                 CornerRadius="4"
