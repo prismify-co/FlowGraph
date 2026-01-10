@@ -26,4 +26,16 @@ public interface IEdgeState : INotifyPropertyChanged
   /// Does not include the start and end points (port positions).
   /// </summary>
   IReadOnlyList<Point>? Waypoints { get; set; }
+
+  /// <summary>
+  /// Whether this edge is visible in the canvas.
+  /// Invisible edges are not rendered but remain in the graph.
+  /// </summary>
+  bool IsVisible { get; set; }
+
+  /// <summary>
+  /// Z-index for rendering order. Higher values render on top.
+  /// Default is CanvasElement.ZIndexEdges (200).
+  /// </summary>
+  int ZIndex { get; set; }
 }

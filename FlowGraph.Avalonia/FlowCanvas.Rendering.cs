@@ -193,17 +193,11 @@ public partial class FlowCanvas
 
     private void RenderElements()
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log",
-            $"[{DateTime.Now:HH:mm:ss.fff}] [RenderElements] MainCanvas null: {_mainCanvas == null}, Graph null: {Graph == null}, Theme null: {_theme == null}\n");
-
         FlowGraphLogger.Debug(LogCategory.Rendering,
             $"RenderElements called - MainCanvas null: {_mainCanvas == null}, Graph null: {Graph == null}, Theme null: {_theme == null}",
             "FlowCanvas.RenderElements");
 
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log",
-            $"[{DateTime.Now:HH:mm:ss.fff}] [RenderElements] Graph has {Graph.Elements.Nodes.Count()} nodes, DirectRendering: {_useDirectRendering}, ViewportSize: {_viewport.ViewSize}\n");
 
         FlowGraphLogger.Debug(LogCategory.Rendering,
             $"Graph has {Graph.Elements.Nodes.Count()} nodes, DirectRendering: {_useDirectRendering}",
@@ -319,9 +313,6 @@ public partial class FlowCanvas
         var nodesToRender = Graph.Elements.Nodes
             .Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
             .ToList();
-
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log",
-            $"[{DateTime.Now:HH:mm:ss.fff}] [RenderRegularNodes] Total nodes: {Graph.Elements.Nodes.Count()}, Nodes to render: {nodesToRender.Count}\n");
 
         var sequenceNodes = Graph.Elements.Nodes.Where(n => n.Type == "sequence-message").ToList();
         if (sequenceNodes.Any())

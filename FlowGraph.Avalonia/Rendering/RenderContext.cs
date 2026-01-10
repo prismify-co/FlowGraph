@@ -65,7 +65,6 @@ public class RenderContext
         if (_viewport == null)
         {
             // No viewport = render everything
-            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: NO VIEWPORT, returning infinite rect\n");
             return new AvaloniaRect(double.MinValue / 2, double.MinValue / 2, double.MaxValue, double.MaxValue);
         }
 
@@ -74,7 +73,6 @@ public class RenderContext
         // If view size is not set (Width=0), render everything to avoid incorrectly culling nodes
         if (visibleRect.Width <= 0 || visibleRect.Height <= 0)
         {
-            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: ViewSize=0, returning infinite rect (ViewSize={_viewport.ViewSize})\n");
             return new AvaloniaRect(double.MinValue / 2, double.MinValue / 2, double.MaxValue, double.MaxValue);
         }
 
@@ -85,8 +83,6 @@ public class RenderContext
             visibleRect.Y - buffer,
             visibleRect.Width + buffer * 2,
             visibleRect.Height + buffer * 2);
-
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: ViewSize={_viewport.ViewSize}, visibleRect=({visibleRect.X:F0},{visibleRect.Y:F0},{visibleRect.Width:F0},{visibleRect.Height:F0}), result with buffer={result}\n");
 
         return result;
     }

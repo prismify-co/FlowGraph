@@ -177,12 +177,6 @@ public class NodeVisualManager
         // Transform position to screen coordinates
         var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
 
-        // DEBUG: Log viewport offset for sequence message nodes to track alignment issue
-        if (node.Type == "sequence-message")
-        {
-            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [NodeVisualManager] '{node.Label}' canvas=({node.Position.X:F1}, {node.Position.Y:F1}), screen=({screenPos.X:F1}, {screenPos.Y:F1}), offset=({_renderContext.Viewport?.OffsetX:F1}, {_renderContext.Viewport?.OffsetY:F1}), scale={scale:F2}\n");
-        }
-
         if (node.Type == "sequence-message")
         {
             var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
