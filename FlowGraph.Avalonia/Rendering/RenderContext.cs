@@ -59,23 +59,36 @@ public class RenderContext
     /// Gets the visible area in canvas coordinates, expanded by the virtualization buffer.
     /// Used for culling nodes/edges outside the viewport.
     /// </summary>
-    /// <returns>The visible rect with buffer, or an infinite rect if no viewport is set.</returns>
+    /// <returns>The visible rect with buffer, or an infinite rect if no viewport is set or view size is 0.</returns>
     public AvaloniaRect GetVisibleBoundsWithBuffer()
     {
         if (_viewport == null)
         {
             // No viewport = render everything
+            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: NO VIEWPORT, returning infinite rect\n");
             return new AvaloniaRect(double.MinValue / 2, double.MinValue / 2, double.MaxValue, double.MaxValue);
         }
 
         var visibleRect = _viewport.GetVisibleRect();
+
+        // If view size is not set (Width=0), render everything to avoid incorrectly culling nodes
+        if (visibleRect.Width <= 0 || visibleRect.Height <= 0)
+        {
+            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: ViewSize=0, returning infinite rect (ViewSize={_viewport.ViewSize})\n");
+            return new AvaloniaRect(double.MinValue / 2, double.MinValue / 2, double.MaxValue, double.MaxValue);
+        }
+
         var buffer = _settings.VirtualizationBuffer;
 
-        return new AvaloniaRect(
+        var result = new AvaloniaRect(
             visibleRect.X - buffer,
             visibleRect.Y - buffer,
             visibleRect.Width + buffer * 2,
             visibleRect.Height + buffer * 2);
+
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderContext] GetVisibleBoundsWithBuffer: ViewSize={_viewport.ViewSize}, visibleRect=({visibleRect.X:F0},{visibleRect.Y:F0},{visibleRect.Width:F0},{visibleRect.Height:F0}), result with buffer={result}\n");
+
+        return result;
     }
 
     /// <summary>
@@ -91,7 +104,21 @@ public class RenderContext
         if (!_settings.EnableVirtualization)
             return true;
 
-        var visibleBounds = GetVisibleBoundsWithBuffer();
+        // If no viewport or view size not set, render everything
+        if (_viewport == null)
+            return true;
+
+        var visibleRect = _viewport.GetVisibleRect();
+        if (visibleRect.Width <= 0 || visibleRect.Height <= 0)
+            return true;
+
+        var buffer = _settings.VirtualizationBuffer;
+        var visibleBounds = new AvaloniaRect(
+            visibleRect.X - buffer,
+            visibleRect.Y - buffer,
+            visibleRect.Width + buffer * 2,
+            visibleRect.Height + buffer * 2);
+
         var nodeRect = new AvaloniaRect(x, y, width, height);
 
         return visibleBounds.Intersects(nodeRect);

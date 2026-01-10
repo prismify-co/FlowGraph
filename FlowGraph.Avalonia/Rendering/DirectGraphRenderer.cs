@@ -306,6 +306,8 @@ public class DirectGraphRenderer : Control
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
 
+        var nodeCount = _graph.Elements.Nodes.Count();
+
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
@@ -327,13 +329,18 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw regular nodes
+        var nodesDrawn = 0;
+        var nodesSkippedGroup = 0;
+        var nodesSkippedVisibility = 0;
+        var nodesSkippedBounds = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
-            if (node.IsGroup) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
-            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) continue;
+            if (node.IsGroup) { nodesSkippedGroup++; continue; }
+            if (!GraphRenderModel.IsNodeVisible(_graph, node)) { nodesSkippedVisibility++; continue; }
+            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) { nodesSkippedBounds++; continue; }
 
             DrawNode(context, node, zoom, offsetX, offsetY);
+            nodesDrawn++;
         }
 
         // Draw collapsed groups on top (they appear as small nodes)
@@ -346,12 +353,14 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw resize handles for selected nodes (on top of everything)
+        var handlesDrawn = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsSelected || !node.IsResizable) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
 
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
+            handlesDrawn++;
         }
 
         // Draw edge endpoint handles for selected edges (on top of everything)

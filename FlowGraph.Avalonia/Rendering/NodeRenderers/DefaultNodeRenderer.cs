@@ -93,12 +93,12 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     protected virtual string GetDisplayText(Node node)
     {
         var truncatedId = node.Id[..Math.Min(8, node.Id.Length)];
-        
+
         // Use Label if available, otherwise use Type
-        var name = !string.IsNullOrEmpty(node.Label) 
-            ? node.Label 
+        var name = !string.IsNullOrEmpty(node.Label)
+            ? node.Label
             : node.Type ?? "Node";
-        
+
         return $"{name}\n({truncatedId})";
     }
 
@@ -106,8 +106,8 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     {
         if (visual is Border border)
         {
-            border.BorderBrush = node.IsSelected 
-                ? context.Theme.NodeSelectedBorder 
+            border.BorderBrush = node.IsSelected
+                ? context.Theme.NodeSelectedBorder
                 : context.Theme.NodeBorder;
             border.BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2);
         }
@@ -123,7 +123,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     }
 
     public virtual double? GetWidth(Node node, FlowCanvasSettings settings) => null;
-    
+
     public virtual double? GetHeight(Node node, FlowCanvasSettings settings) => null;
 
     public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
@@ -171,7 +171,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         };
 
         bool finished = false;
-        
+
         void Commit()
         {
             if (finished) return;

@@ -491,7 +491,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.EdgeClicked += OnEdgeClicked;
         _inputContext.DeselectAllRequested += (_, _) => _selectionManager.DeselectAll();
         _inputContext.SelectAllRequested += (_, _) => _selectionManager.SelectAll();
-        _inputContext.DeleteSelectedRequested += (_, _) => _selectionManager.DeleteSelected();
+        _inputContext.DeleteSelectedRequested += (_, _) =>
+        {
+            _selectionManager.DeleteSelected();
+            Refresh();
+        };
         _inputContext.UndoRequested += (_, _) => Undo();
         _inputContext.RedoRequested += (_, _) => Redo();
         _inputContext.CopyRequested += (_, _) => Copy();
