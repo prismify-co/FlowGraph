@@ -98,7 +98,7 @@ public partial class FlowCanvas
 
         RenderGrid();
         RenderCustomBackgrounds();
-        RenderShapes();
+        // Note: Shapes are now rendered within RenderElements() for proper Z-order
         RenderElements();
     }
 
@@ -233,38 +233,82 @@ public partial class FlowCanvas
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
         var totalNodes = Graph.Elements.Nodes.Count();
         var totalEdges = Graph.Elements.Edges.Count();
+        var totalShapes = Graph.Elements.OfElementType<ShapeElement>().Count();
 
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
+        _shapeVisualManager?.Clear();
 
         var clearTime = sw?.ElapsedMilliseconds ?? 0;
 
-        // Render order for proper z-index:
-        // 1. Groups (bottom) - rendered first in RenderNodes
-        // 2. Edges (middle) - rendered after groups, before regular nodes  
-        // 3. Regular nodes (top) - rendered last in RenderNodes
-        // 4. Ports are rendered with their nodes
+        // Element-first rendering orchestrator:
+        // Iterate all elements by ZIndex and dispatch to appropriate renderer.
+        // This ensures consistent Z-order across nodes, edges, and shapes.
+        //
+        // Note: Edges are collected and batch-rendered for routing efficiency.
+        // Shapes and nodes are rendered immediately in Z-order.
 
-        // Render groups first (they go behind everything)
-        RenderGroupNodes();
-        var groupTime = sw?.ElapsedMilliseconds ?? 0;
+        var edgesToRender = new List<Edge>();
+        int nodeCount_rendered = 0, shapeCount_rendered = 0;
 
-        // Render edges (on top of groups)
-        RenderEdges();
-        var edgeTime = sw?.ElapsedMilliseconds ?? 0;
+        // Setup shape render context
+        if (_shapeVisualManager != null)
+        {
+            var renderContext = new Rendering.RenderContext(Settings);
+            renderContext.SetViewport(_viewport);
+            _shapeVisualManager.SetRenderContext(renderContext);
+        }
 
-        // Render regular nodes and ports (on top of edges)
-        RenderRegularNodes();
-        var nodeTime = sw?.ElapsedMilliseconds ?? 0;
+        foreach (var element in Graph.Elements.ByZIndex)
+        {
+            if (!element.IsVisible) continue;
+
+            if (element is Node node)
+            {
+                // Skip nodes hidden by group collapse
+                if (!_graphRenderer.IsNodeVisible(Graph, node)) continue;
+
+                _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
+                nodeCount_rendered++;
+            }
+            else if (element is Edge edge)
+            {
+                // Collect edges for batch rendering (routing algorithm needs all edges)
+                edgesToRender.Add(edge);
+            }
+            else if (element is ShapeElement shape)
+            {
+                // Render shape immediately at its Z-index position
+                _shapeVisualManager?.AddOrUpdateShape(shape);
+                shapeCount_rendered++;
+            }
+        }
+
+        // Batch-render all edges for routing efficiency
+        // Edges are inserted at appropriate Z-index by the edge renderer
+        if (edgesToRender.Any())
+        {
+            _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+            ApplyEdgeOpacityOverrides();
+        }
 
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
-            var renderedNodes = _mainCanvas.Children.OfType<Control>().Count(c => c.Tag is Node);
+            var renderedVisuals = _mainCanvas.Children.Count;
             LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
-                $"Clear: {clearTime}ms, Groups: {groupTime - clearTime}ms, " +
-                $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms | " +
-                $"Graph: {totalNodes}n/{totalEdges}e, Rendered: ~{renderedNodes} visuals");
+                $"Clear: {clearTime}ms, Render: {sw.ElapsedMilliseconds - clearTime}ms | " +
+                $"Graph: {totalNodes}n/{totalEdges}e/{totalShapes}s, Rendered: {nodeCount_rendered}n/{edgesToRender.Count}e/{shapeCount_rendered}s, Visuals: {renderedVisuals}");
+        }
+    }
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            var renderedVisuals = _mainCanvas.Children.Count;
+            LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
+                $"Clear: {clearTime}ms, Render: {sw.ElapsedMilliseconds - clearTime}ms | " +
+                $"Graph: {totalNodes}n/{totalEdges}e, Rendered: {nodeCount_rendered}n/{edgeCount_rendered}e, Visuals: {renderedVisuals}");
         }
     }
 
