@@ -25,8 +25,8 @@ public class ConnectionValidatorTests
 
     private static ConnectionContext CreateContext(Graph graph, string sourceId, string sourcePort, string targetId, string targetPort)
     {
-        var sourceNode = graph.Nodes.First(n => n.Id == sourceId);
-        var targetNode = graph.Nodes.First(n => n.Id == targetId);
+        var sourceNode = graph.Elements.Nodes.First(n => n.Id == sourceId);
+        var targetNode = graph.Elements.Nodes.First(n => n.Id == targetId);
         return new ConnectionContext
         {
             SourceNode = sourceNode,

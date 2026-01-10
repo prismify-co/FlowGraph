@@ -26,9 +26,9 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodes = graph.Nodes.ToList();
+        var nodes = graph.Elements.Nodes.ToList();
 
-        clipboard.Copy(nodes, graph.Edges);
+        clipboard.Copy(nodes, graph.Elements.Edges);
 
         Assert.True(clipboard.HasContent);
     }
@@ -48,8 +48,8 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToCopy = graph.Nodes.ToList();
-        clipboard.Copy(nodesToCopy, graph.Edges);
+        var nodesToCopy = graph.Elements.Nodes.ToList();
+        clipboard.Copy(nodesToCopy, graph.Elements.Edges);
 
         var (pastedNodes, _) = clipboard.Paste(graph, new Point(0, 0));
 
@@ -62,8 +62,8 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToCopy = graph.Nodes.ToList();
-        clipboard.Copy(nodesToCopy, graph.Edges);
+        var nodesToCopy = graph.Elements.Nodes.ToList();
+        clipboard.Copy(nodesToCopy, graph.Elements.Edges);
 
         var (pastedNodes, pastedEdges) = clipboard.Paste(graph, new Point(0, 0));
 
@@ -78,8 +78,8 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToCopy = graph.Nodes.Take(1).ToList(); // Just node1 at (100, 100)
-        clipboard.Copy(nodesToCopy, graph.Edges);
+        var nodesToCopy = graph.Elements.Nodes.Take(1).ToList(); // Just node1 at (100, 100)
+        clipboard.Copy(nodesToCopy, graph.Elements.Edges);
 
         var (pastedNodes, _) = clipboard.Paste(graph, new Point(500, 500));
 
@@ -95,8 +95,8 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToCopy = graph.Nodes.ToList();
-        clipboard.Copy(nodesToCopy, graph.Edges);
+        var nodesToCopy = graph.Elements.Nodes.ToList();
+        clipboard.Copy(nodesToCopy, graph.Elements.Edges);
 
         var (pastedNodes, _) = clipboard.Paste(graph, new Point(0, 0));
 
@@ -108,14 +108,14 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToCopy = graph.Nodes.Take(1).ToList();
-        clipboard.Copy(nodesToCopy, graph.Edges);
+        var nodesToCopy = graph.Elements.Nodes.Take(1).ToList();
+        clipboard.Copy(nodesToCopy, graph.Elements.Edges);
 
         var (firstPaste, _) = clipboard.Paste(graph, new Point(200, 200));
         var (secondPaste, _) = clipboard.Paste(graph, new Point(300, 300));
 
         Assert.NotEqual(firstPaste[0].Id, secondPaste[0].Id);
-        Assert.Equal(4, graph.Nodes.Count); // Original 2 + 2 pasted
+        Assert.Equal(4, graph.Elements.Nodes.Count()); // Original 2 + 2 pasted
     }
 
     [Fact]
@@ -123,10 +123,10 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToDuplicate = graph.Nodes.Take(1).ToList();
+        var nodesToDuplicate = graph.Elements.Nodes.Take(1).ToList();
         var originalPosition = nodesToDuplicate[0].Position;
 
-        var (duplicated, _) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Edges, new Point(20, 20));
+        var (duplicated, _) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Elements.Edges, new Point(20, 20));
 
         Assert.Single(duplicated);
         Assert.Equal(originalPosition.X + 20, duplicated[0].Position.X);
@@ -138,9 +138,9 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToDuplicate = graph.Nodes.ToList();
+        var nodesToDuplicate = graph.Elements.Nodes.ToList();
 
-        var (duplicated, duplicatedEdges) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Edges, new Point(20, 20));
+        var (duplicated, duplicatedEdges) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Elements.Edges, new Point(20, 20));
 
         Assert.Equal(2, duplicated.Count);
         Assert.Single(duplicatedEdges);
@@ -153,9 +153,9 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        var nodesToDuplicate = graph.Nodes.ToList();
+        var nodesToDuplicate = graph.Elements.Nodes.ToList();
 
-        var (duplicated, _) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Edges, new Point(20, 20));
+        var (duplicated, _) = clipboard.Duplicate(graph, nodesToDuplicate, graph.Elements.Edges, new Point(20, 20));
 
         Assert.All(duplicated, n => Assert.True(n.IsSelected));
     }
@@ -165,7 +165,7 @@ public class ClipboardManagerTests
     {
         var clipboard = new ClipboardManager();
         var graph = CreateTestGraph();
-        clipboard.Copy(graph.Nodes.ToList(), graph.Edges);
+        clipboard.Copy(graph.Elements.Nodes.ToList(), graph.Elements.Edges);
 
         clipboard.Clear();
 

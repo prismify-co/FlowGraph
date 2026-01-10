@@ -31,10 +31,10 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+        var selectedNodes = Graph.Elements.Nodes.Where(n => n.IsSelected).ToList();
         if (selectedNodes.Count == 0) return;
 
-        _clipboardManager.Copy(selectedNodes, Graph.Edges);
+        _clipboardManager.Copy(selectedNodes, Graph.Elements.Edges);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public partial class FlowCanvas
         if (Graph == null || !_clipboardManager.HasContent) return;
 
         // Deselect current selection
-        foreach (var node in Graph.Nodes)
+        foreach (var node in Graph.Elements.Nodes)
         {
             node.IsSelected = false;
         }
@@ -83,7 +83,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        var selectedNodes = Graph.Nodes.Where(n => n.IsSelected).ToList();
+        var selectedNodes = Graph.Elements.Nodes.Where(n => n.IsSelected).ToList();
         if (selectedNodes.Count == 0) return;
 
         // Deselect current selection
@@ -95,7 +95,7 @@ public partial class FlowCanvas
         // Duplicate with small offset
         var offset = new Core.Point(20, 20);
         var (duplicatedNodes, duplicatedEdges) = _clipboardManager.Duplicate(
-            Graph, selectedNodes, Graph.Edges, offset);
+            Graph, selectedNodes, Graph.Elements.Edges, offset);
 
         if (duplicatedNodes.Count > 0)
         {

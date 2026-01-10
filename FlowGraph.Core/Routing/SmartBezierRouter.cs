@@ -18,8 +18,8 @@ public class SmartBezierRouter : IEdgeRouter
 
     public IReadOnlyList<Point> Route(EdgeRoutingContext context, Edge edge)
     {
-        var sourceNode = context.Graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = context.Graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = context.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = context.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return [];
@@ -180,8 +180,8 @@ public class SmartBezierRouter : IEdgeRouter
         var waypoints = new List<Point>();
 
         // Calculate the Y level to route at
-        var routeY = goAbove 
-            ? bounds.Top - Margin 
+        var routeY = goAbove
+            ? bounds.Top - Margin
             : bounds.Bottom + Margin;
 
         // Create intermediate points
@@ -193,7 +193,7 @@ public class SmartBezierRouter : IEdgeRouter
         {
             exitX = start.X + MinPortOffset;
             entryX = end.X - MinPortOffset;
-            
+
             // Need to go further out to avoid crossing
             exitX = Math.Max(exitX, bounds.Right + Margin);
             entryX = Math.Min(entryX, bounds.Left - Margin);

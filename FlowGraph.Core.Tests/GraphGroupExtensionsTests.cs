@@ -57,7 +57,7 @@ public class GraphGroupExtensionsTests
     public void GetParentGroup_ReturnsParentGroup()
     {
         var graph = CreateTestGraphWithGroups();
-        var node1 = graph.Nodes.First(n => n.Id == "node1");
+        var node1 = graph.Elements.Nodes.First(n => n.Id == "node1");
 
         var parent = graph.GetParentGroup(node1);
 
@@ -69,7 +69,7 @@ public class GraphGroupExtensionsTests
     public void GetParentGroup_ReturnsNullForTopLevelNode()
     {
         var graph = CreateTestGraphWithGroups();
-        var node3 = graph.Nodes.First(n => n.Id == "node3");
+        var node3 = graph.Elements.Nodes.First(n => n.Id == "node3");
 
         var parent = graph.GetParentGroup(node3);
 
@@ -103,7 +103,7 @@ public class GraphGroupExtensionsTests
     public void IsEdgeInternalToGroup_ReturnsTrueForInternalEdge()
     {
         var graph = CreateTestGraphWithGroups();
-        var internalEdge = graph.Edges.First(e => e.Id == "edge1");
+        var internalEdge = graph.Elements.Edges.First(e => e.Id == "edge1");
 
         var isInternal = graph.IsEdgeInternalToGroup(internalEdge, "group1");
 
@@ -114,7 +114,7 @@ public class GraphGroupExtensionsTests
     public void IsEdgeInternalToGroup_ReturnsFalseForCrossingEdge()
     {
         var graph = CreateTestGraphWithGroups();
-        var crossingEdge = graph.Edges.First(e => e.Id == "edge2");
+        var crossingEdge = graph.Elements.Edges.First(e => e.Id == "edge2");
 
         var isInternal = graph.IsEdgeInternalToGroup(crossingEdge, "group1");
 
@@ -125,7 +125,7 @@ public class GraphGroupExtensionsTests
     public void IsEdgeCrossingGroup_ReturnsTrueForCrossingEdge()
     {
         var graph = CreateTestGraphWithGroups();
-        var crossingEdge = graph.Edges.First(e => e.Id == "edge2");
+        var crossingEdge = graph.Elements.Edges.First(e => e.Id == "edge2");
 
         var isCrossing = graph.IsEdgeCrossingGroup(crossingEdge, "group1");
 
@@ -136,7 +136,7 @@ public class GraphGroupExtensionsTests
     public void IsEdgeCrossingGroup_ReturnsFalseForInternalEdge()
     {
         var graph = CreateTestGraphWithGroups();
-        var internalEdge = graph.Edges.First(e => e.Id == "edge1");
+        var internalEdge = graph.Elements.Edges.First(e => e.Id == "edge1");
 
         var isCrossing = graph.IsEdgeCrossingGroup(internalEdge, "group1");
 
@@ -250,7 +250,7 @@ public class GraphGroupExtensionsTests
     public void IsDescendantOf_ReturnsFalseForUnrelatedNode()
     {
         var graph = CreateTestGraphWithGroups();
-        var node3 = graph.Nodes.First(n => n.Id == "node3");
+        var node3 = graph.Elements.Nodes.First(n => n.Id == "node3");
 
         Assert.False(graph.IsDescendantOf(node3, "group1"));
     }

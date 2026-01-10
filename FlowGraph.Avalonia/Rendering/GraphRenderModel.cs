@@ -213,8 +213,8 @@ public class GraphRenderModel
     /// </summary>
     public (AvaloniaPoint start, AvaloniaPoint end) GetEdgeEndpoints(Edge edge, Graph graph)
     {
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return (default, default);
@@ -325,7 +325,7 @@ public class GraphRenderModel
         var currentParentId = node.ParentGroupId;
         while (!string.IsNullOrEmpty(currentParentId))
         {
-            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            var parent = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
             if (parent == null) break;
             if (parent.IsCollapsed) return false;
             currentParentId = parent.ParentGroupId;

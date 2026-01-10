@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using FlowGraph.Core.Elements;
 using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core;
@@ -6,6 +7,7 @@ namespace FlowGraph.Core;
 /// <summary>
 /// Represents a connection between two nodes.
 /// Uses a Definition (immutable) + State (mutable) composition pattern.
+/// Implements <see cref="ICanvasElement"/> for unified element handling.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -18,7 +20,7 @@ namespace FlowGraph.Core;
 /// to either Definition or State as appropriate.
 /// </para>
 /// </remarks>
-public class Edge : INotifyPropertyChanged
+public class Edge : ICanvasElement
 {
     private EdgeDefinition _definition;
     private IEdgeState _state;
@@ -213,6 +215,76 @@ public class Edge : INotifyPropertyChanged
     {
         get => State.Waypoints?.ToList();
         set => State.Waypoints = value;
+    }
+
+    #endregion
+
+    #region ICanvasElement Implementation
+
+    /// <summary>
+    /// Gets the type identifier for this edge (used by renderer registry).
+    /// Note: This is the string type, not EdgeType enum. Use Definition.Type.ToString().
+    /// </summary>
+    string ICanvasElement.Type => Definition.Type.ToString().ToLowerInvariant();
+
+    /// <summary>
+    /// Gets or sets the position of this edge. For edges, this is the source point.
+    /// </summary>
+    /// <remarks>
+    /// Edges don't have a fixed position like nodes - their position is derived from
+    /// the connected nodes. This returns Point.Zero for compatibility.
+    /// </remarks>
+    Point ICanvasElement.Position
+    {
+        get => Point.Zero;
+        set { } // Edges don't have settable position
+    }
+
+    /// <summary>
+    /// Gets or sets the width of this edge. Edges don't have width.
+    /// </summary>
+    double? ICanvasElement.Width
+    {
+        get => null;
+        set { } // Edges don't have width
+    }
+
+    /// <summary>
+    /// Gets or sets the height of this edge. Edges don't have height.
+    /// </summary>
+    double? ICanvasElement.Height
+    {
+        get => null;
+        set { } // Edges don't have height
+    }
+
+    /// <summary>
+    /// Gets whether this edge is visible. Edges are always visible.
+    /// </summary>
+    public bool IsVisible => true;
+
+    /// <summary>
+    /// Gets the Z-index for this edge. Edges render at Z-index 200 by default.
+    /// </summary>
+    public int ZIndex => CanvasElement.ZIndexEdges;
+
+    /// <summary>
+    /// Gets the bounding rectangle of this edge.
+    /// For edges without waypoints, returns an empty rect at origin.
+    /// </summary>
+    public Rect GetBounds()
+    {
+        // For edges, bounds are calculated from waypoints if available
+        var waypoints = Waypoints;
+        if (waypoints == null || waypoints.Count == 0)
+            return Rect.Empty;
+
+        var minX = waypoints.Min(p => p.X);
+        var minY = waypoints.Min(p => p.Y);
+        var maxX = waypoints.Max(p => p.X);
+        var maxY = waypoints.Max(p => p.Y);
+
+        return new Rect(minX, minY, maxX - minX, maxY - minY);
     }
 
     #endregion

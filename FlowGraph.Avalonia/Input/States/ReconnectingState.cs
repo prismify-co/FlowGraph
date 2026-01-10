@@ -285,7 +285,7 @@ public class ReconnectingState : InputStateBase
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             // Skip non-connectable nodes and groups
             if (!node.IsConnectable || node.IsGroup)

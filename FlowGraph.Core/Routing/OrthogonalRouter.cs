@@ -18,8 +18,8 @@ public class OrthogonalRouter : IEdgeRouter
 
     public IReadOnlyList<Point> Route(EdgeRoutingContext context, Edge edge)
     {
-        var sourceNode = context.Graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = context.Graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = context.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = context.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return [];

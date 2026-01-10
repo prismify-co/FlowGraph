@@ -140,13 +140,13 @@ public class FlowCanvasContextMenu
         }
 
         // Get all groups that we can add to (excluding groups that are selected)
-        var selectedNodeIds = graph.Nodes.Where(n => n.IsSelected).Select(n => n.Id).ToHashSet();
-        var availableGroups = graph.Nodes
+        var selectedNodeIds = graph.Elements.Nodes.Where(n => n.IsSelected).Select(n => n.Id).ToHashSet();
+        var availableGroups = graph.Elements.Nodes
             .Where(n => n.IsGroup && !n.IsSelected)
             .ToList();
 
         // Check if there are selected non-group nodes
-        var hasSelectedNonGroupNodes = graph.Nodes.Any(n => n.IsSelected && !n.IsGroup);
+        var hasSelectedNonGroupNodes = graph.Elements.Nodes.Any(n => n.IsSelected && !n.IsGroup);
 
         if (!hasSelectedNonGroupNodes || availableGroups.Count == 0)
         {
@@ -156,7 +156,7 @@ public class FlowCanvasContextMenu
         }
 
         _addToGroupMenuItem.IsEnabled = true;
-        
+
         // Create submenu items for each available group
         var groupMenuItems = availableGroups.Select(group =>
         {
@@ -182,13 +182,13 @@ public class FlowCanvasContextMenu
             InputGesture = gesture != null ? KeyGesture.Parse(gesture) : null
         };
         item.Click += (s, e) => action();
-        
+
         if (isEnabled != null)
         {
             // Update IsEnabled when menu opens
             item.AttachedToVisualTree += (s, e) => item.IsEnabled = isEnabled();
         }
-        
+
         return item;
     }
 
@@ -215,7 +215,7 @@ public class FlowCanvasContextMenu
             return;
 
         ContextMenu? menu = null;
-        
+
         // Determine which menu to show based on target
         if (target.Tag is Node node)
         {
@@ -268,13 +268,13 @@ public class FlowCanvasContextMenu
 
     private void OnRenameNode()
     {
-        var selectedNode = _canvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+        var selectedNode = _canvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
         if (selectedNode != null)
         {
             // Get screen position for the editor
             var screenPos = _canvas.Viewport.CanvasToScreen(
                 new global::Avalonia.Point(selectedNode.Position.X, selectedNode.Position.Y));
-            
+
             // Raise the label edit request event
             var args = new NodeLabelEditRequestedEventArgs(selectedNode, selectedNode.Label, screenPos);
             RaiseLabelEditRequested(args);
@@ -359,7 +359,7 @@ public class FlowCanvasContextMenu
         _canvas.CommandHistory.Execute(new FlowGraph.Core.Commands.AddNodeCommand(graph, newNode));
 
         // Select the new node
-        foreach (var n in graph.Nodes)
+        foreach (var n in graph.Elements.Nodes)
             n.IsSelected = false;
         newNode.IsSelected = true;
     }
@@ -374,11 +374,11 @@ public class FlowCanvasContextMenu
         var graph = _canvas.Graph;
         if (graph == null) return;
 
-        foreach (var edge in graph.Edges.Where(e => e.IsSelected))
+        foreach (var edge in graph.Elements.Edges.Where(e => e.IsSelected))
         {
             edge.Type = type;
         }
-        
+
         // Force re-render edges
         _canvas.RefreshEdges();
     }
@@ -388,11 +388,11 @@ public class FlowCanvasContextMenu
         var graph = _canvas.Graph;
         if (graph == null) return;
 
-        foreach (var edge in graph.Edges.Where(e => e.IsSelected))
+        foreach (var edge in graph.Elements.Edges.Where(e => e.IsSelected))
         {
             edge.MarkerEnd = marker;
         }
-        
+
         // Force re-render edges
         _canvas.RefreshEdges();
     }
@@ -405,7 +405,7 @@ public class FlowCanvasContextMenu
     {
         var graph = _canvas.Graph;
         if (graph == null) return false;
-        return graph.Nodes.Count(n => n.IsSelected && !n.IsGroup) >= 2;
+        return graph.Elements.Nodes.Count(n => n.IsSelected && !n.IsGroup) >= 2;
     }
 
     private bool CanPaste()
@@ -423,7 +423,7 @@ public class FlowCanvasContextMenu
 
     private Node? GetSelectedGroup()
     {
-        return _canvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup);
+        return _canvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup);
     }
 
     #endregion

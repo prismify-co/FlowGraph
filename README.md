@@ -525,6 +525,31 @@ graph.BatchLoadCompleted += (s, e) =>
 };
 ```
 
+## Accessing Graph Elements
+
+FlowGraph v0.4.0+ uses a unified Elements collection:
+
+```csharp
+// Preferred API (v0.4.0+)
+var nodes = graph.Elements.Nodes;
+var edges = graph.Elements.Edges;
+
+// Query nodes and edges
+var selectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected);
+var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == "myNode");
+var connectedEdges = graph.Elements.Edges.Where(e => e.Source == nodeId);
+
+// Iterate over all elements
+foreach (var node in graph.Elements.Nodes)
+{
+    Console.WriteLine($"Node: {node.Label} at ({node.Position.X}, {node.Position.Y})");
+}
+
+// Legacy API (deprecated but still functional)
+// var nodes = graph.Nodes;  // Shows deprecation warning
+// var edges = graph.Edges;  // Shows deprecation warning
+```
+
 ## Definition + State Pattern
 
 FlowGraph uses an immutable Definition + mutable State pattern for nodes and edges:

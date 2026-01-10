@@ -66,7 +66,7 @@ public class SelectionManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             // Only select nodes that are selectable
             if (node.IsSelectable)
@@ -86,12 +86,12 @@ public class SelectionManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             node.IsSelected = false;
         }
 
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             edge.IsSelected = false;
         }
@@ -109,13 +109,13 @@ public class SelectionManager
         if (graph == null) return;
 
         // Only delete edges that are deletable (or all edges for simplicity, since Edge doesn't have IsDeletable yet)
-        var selectedEdges = graph.Edges.Where(e => e.IsSelected).ToList();
+        var selectedEdges = graph.Elements.Edges.Where(e => e.IsSelected).ToList();
 
         // Only delete nodes that are deletable
-        var selectedNodes = graph.Nodes.Where(n => n.IsSelected && n.IsDeletable).ToList();
+        var selectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected && n.IsDeletable).ToList();
 
         // Also filter edges - don't delete edges connected to non-deletable nodes
-        var nonDeletableNodeIds = graph.Nodes.Where(n => !n.IsDeletable).Select(n => n.Id).ToHashSet();
+        var nonDeletableNodeIds = graph.Elements.Nodes.Where(n => !n.IsDeletable).Select(n => n.Id).ToHashSet();
         selectedEdges = selectedEdges
             .Where(e => !nonDeletableNodeIds.Contains(e.Source) && !nonDeletableNodeIds.Contains(e.Target))
             .ToList();
@@ -159,7 +159,7 @@ public class SelectionManager
         if (graph == null) return;
 
         // Update visual state for ALL edges (some may have been deselected)
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             renderer.UpdateEdgeSelection(edge, theme);
         }
@@ -167,7 +167,7 @@ public class SelectionManager
         // Also update node visuals if Ctrl was not held (nodes were deselected)
         if (!ctrlHeld)
         {
-            foreach (var node in graph.Nodes)
+            foreach (var node in graph.Elements.Nodes)
             {
                 renderer.UpdateNodeSelection(node, theme);
             }
@@ -190,7 +190,7 @@ public class SelectionManager
     public IEnumerable<Node> GetSelectedNodes()
     {
         var graph = _context.Graph;
-        return graph?.Nodes.Where(n => n.IsSelected) ?? Enumerable.Empty<Node>();
+        return graph?.Elements.Nodes.Where(n => n.IsSelected) ?? Enumerable.Empty<Node>();
     }
 
     /// <summary>
@@ -199,7 +199,7 @@ public class SelectionManager
     public IEnumerable<Edge> GetSelectedEdges()
     {
         var graph = _context.Graph;
-        return graph?.Edges.Where(e => e.IsSelected) ?? Enumerable.Empty<Edge>();
+        return graph?.Elements.Edges.Where(e => e.IsSelected) ?? Enumerable.Empty<Edge>();
     }
 
     /// <summary>
@@ -212,8 +212,8 @@ public class SelectionManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        var currentSelectedNodes = graph.Nodes.Where(n => n.IsSelected).ToList();
-        var currentSelectedEdges = graph.Edges.Where(e => e.IsSelected).ToList();
+        var currentSelectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected).ToList();
+        var currentSelectedEdges = graph.Elements.Edges.Where(e => e.IsSelected).ToList();
 
         var currentNodeIds = currentSelectedNodes.Select(n => n.Id).ToHashSet();
         var currentEdgeIds = currentSelectedEdges.Select(e => e.Id).ToHashSet();
@@ -232,9 +232,9 @@ public class SelectionManager
         var removedEdgeIds = _previousSelectedEdgeIds.Except(currentEdgeIds).ToHashSet();
 
         var addedNodes = currentSelectedNodes.Where(n => addedNodeIds.Contains(n.Id)).ToList();
-        var removedNodes = graph.Nodes.Where(n => removedNodeIds.Contains(n.Id)).ToList();
+        var removedNodes = graph.Elements.Nodes.Where(n => removedNodeIds.Contains(n.Id)).ToList();
         var addedEdges = currentSelectedEdges.Where(e => addedEdgeIds.Contains(e.Id)).ToList();
-        var removedEdges = graph.Edges.Where(e => removedEdgeIds.Contains(e.Id)).ToList();
+        var removedEdges = graph.Elements.Edges.Where(e => removedEdgeIds.Contains(e.Id)).ToList();
 
         // Update tracking
         _previousSelectedNodeIds = currentNodeIds;

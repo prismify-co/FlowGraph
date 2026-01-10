@@ -77,12 +77,24 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     public Rendering.BackgroundRenderers.BackgroundRendererRegistry BackgroundRenderers => _graphRenderer.BackgroundRenderers;
 
     /// <summary>
+    /// Gets the shape renderer registry for registering custom shape types.
+    /// </summary>
+    public Rendering.ShapeRenderers.ShapeRendererRegistry ShapeRenderers => Rendering.ShapeRenderers.ShapeRendererRegistry.Instance;
+
+    /// <summary>
     /// Gets the visual control for a node by its ID.
     /// This can be used to access the node's rendered visual for customization (e.g., changing border color).
     /// </summary>
     /// <param name="nodeId">The node ID.</param>
     /// <returns>The node's visual control, or null if not found.</returns>
     public Control? GetNodeVisual(string nodeId) => _graphRenderer.GetNodeVisual(nodeId);
+
+    /// <summary>
+    /// Gets the visual control for a shape element by its ID.
+    /// </summary>
+    /// <param name="shapeId">The shape ID.</param>
+    /// <returns>The shape's visual control, or null if not found.</returns>
+    public Control? GetShapeVisual(string shapeId) => _shapeVisualManager?.GetVisual(shapeId);
 
     /// <summary>
     /// Gets the command history for undo/redo operations.
@@ -93,6 +105,61 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// Gets the current zoom level.
     /// </summary>
     public double CurrentZoom => _viewport.Zoom;
+
+    /// <summary>
+    /// Gets the current pan offset in canvas coordinates.
+    /// </summary>
+    public global::Avalonia.Point Offset => new(_viewport.OffsetX, _viewport.OffsetY);
+
+    /// <summary>
+    /// Converts canvas coordinates to screen coordinates.
+    /// </summary>
+    /// <param name="canvasX">X position in canvas coordinates.</param>
+    /// <param name="canvasY">Y position in canvas coordinates.</param>
+    /// <returns>The equivalent position in screen coordinates.</returns>
+    public global::Avalonia.Point CanvasToScreen(double canvasX, double canvasY)
+        => new((canvasX - _viewport.OffsetX) * _viewport.Zoom,
+               (canvasY - _viewport.OffsetY) * _viewport.Zoom);
+
+    /// <summary>
+    /// Converts canvas coordinates to screen coordinates.
+    /// </summary>
+    /// <param name="canvasPoint">Position in canvas coordinates.</param>
+    /// <returns>The equivalent position in screen coordinates.</returns>
+    public global::Avalonia.Point CanvasToScreen(global::Avalonia.Point canvasPoint)
+        => CanvasToScreen(canvasPoint.X, canvasPoint.Y);
+
+    /// <summary>
+    /// Converts screen coordinates to canvas coordinates.
+    /// </summary>
+    /// <param name="screenX">X position in screen coordinates.</param>
+    /// <param name="screenY">Y position in screen coordinates.</param>
+    /// <returns>The equivalent position in canvas coordinates.</returns>
+    public global::Avalonia.Point ScreenToCanvas(double screenX, double screenY)
+        => new(screenX / _viewport.Zoom + _viewport.OffsetX,
+               screenY / _viewport.Zoom + _viewport.OffsetY);
+
+    /// <summary>
+    /// Converts screen coordinates to canvas coordinates.
+    /// </summary>
+    /// <param name="screenPoint">Position in screen coordinates.</param>
+    /// <returns>The equivalent position in canvas coordinates.</returns>
+    public global::Avalonia.Point ScreenToCanvas(global::Avalonia.Point screenPoint)
+        => ScreenToCanvas(screenPoint.X, screenPoint.Y);
+
+    /// <summary>
+    /// Gets the visible bounds in canvas coordinates.
+    /// This represents the area of the canvas currently visible in the viewport.
+    /// </summary>
+    public global::Avalonia.Rect VisibleBounds
+    {
+        get
+        {
+            var topLeft = ScreenToCanvas(0, 0);
+            var bottomRight = ScreenToCanvas(Bounds.Width, Bounds.Height);
+            return new global::Avalonia.Rect(topLeft, bottomRight);
+        }
+    }
 
     /// <summary>
     /// Gets the selection manager for managing node and edge selection.
@@ -202,7 +269,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
 
         // Force full re-render with normal mode
-        RenderGraph();
+        RenderElements();
     }
 
     /// <summary>
@@ -328,6 +395,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private AnimationManager _animationManager = null!;
     private EdgeRoutingManager _edgeRoutingManager = null!;
     private LabelEditManager _labelEditManager = null!;
+    private Rendering.ShapeRenderers.ShapeVisualManager? _shapeVisualManager;
 
     // Rendering mode
     private bool _useDirectRendering;
@@ -437,7 +505,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.NodesDragging += OnNodesDragging;
         _inputContext.NodeResizing += OnNodeResizing;
         _inputContext.NodeResized += OnNodeResized;
-        _inputContext.GridRenderRequested += (_, _) => RenderGrid();
+        _inputContext.GridRenderRequested += (_, _) => RenderAll();
         _inputContext.StateChanged += (_, e) => InputStateChanged?.Invoke(this, e);
 
         // Forward drag lifecycle events
@@ -467,11 +535,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         _groupManager.GroupCollapsedChanged += (s, e) =>
         {
-            RenderGraph();
+            RenderElements();
             GroupCollapsedChanged?.Invoke(this, e);
         };
-        _groupManager.GroupRerenderRequested += (s, groupId) => RenderGraph();
-        _groupManager.NodesAddedToGroup += (s, e) => RenderGraph();
+        _groupManager.GroupRerenderRequested += (s, groupId) => RenderElements();
+        _groupManager.NodesAddedToGroup += (s, e) => RenderElements();
     }
 
     #endregion
@@ -499,6 +567,15 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.MainCanvas = _mainCanvas;
         _inputContext.Theme = _theme;
         _inputContext.ConnectionValidator = ConnectionValidator;
+
+        // Initialize shape visual manager now that canvas is available
+        if (_mainCanvas != null)
+        {
+            _shapeVisualManager = new Rendering.ShapeRenderers.ShapeVisualManager(_mainCanvas);
+            var renderContext = new Rendering.RenderContext(Settings);
+            renderContext.SetViewport(_viewport);
+            _shapeVisualManager.SetRenderContext(renderContext);
+        }
 
         SetupEventHandlers();
 
@@ -658,7 +735,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             }
         }
 
-        var existingEdge = Graph.Edges.FirstOrDefault(edge =>
+        var existingEdge = Graph.Elements.Edges.FirstOrDefault(edge =>
             edge.Source == e.SourceNode.Id && edge.Target == e.TargetNode.Id &&
             edge.SourcePort == e.SourcePort.Id && edge.TargetPort == e.TargetPort.Id);
 

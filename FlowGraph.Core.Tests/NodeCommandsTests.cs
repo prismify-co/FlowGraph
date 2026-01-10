@@ -15,8 +15,8 @@ public class NodeCommandsTests
 
         command.Execute();
 
-        Assert.Single(graph.Nodes);
-        Assert.Same(node, graph.Nodes[0]);
+        Assert.Single(graph.Elements.Nodes);
+        Assert.Same(node, graph.Elements.Nodes.First());
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class NodeCommandsTests
 
         command.Undo();
 
-        Assert.Empty(graph.Nodes);
+        Assert.Empty(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class NodeCommandsTests
 
         command.Execute();
 
-        Assert.Empty(graph.Nodes);
+        Assert.Empty(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class NodeCommandsTests
 
         command.Undo();
 
-        Assert.Equal(2, graph.Nodes.Count);
-        Assert.Single(graph.Edges);
+        Assert.Equal(2, graph.Elements.Nodes.Count());
+        Assert.Single(graph.Elements.Edges);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class NodeCommandsTests
         var command = new RemoveNodesCommand(graph, [node1, node2]);
         command.Execute();
 
-        Assert.Empty(graph.Nodes);
+        Assert.Empty(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class NodeCommandsTests
         command.Execute();
         command.Undo();
 
-        Assert.Equal(2, graph.Nodes.Count);
+        Assert.Equal(2, graph.Elements.Nodes.Count());
     }
 
     [Fact]

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.ComponentModel;
+using FlowGraph.Core.Elements;
 using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core;
@@ -7,6 +8,7 @@ namespace FlowGraph.Core;
 /// <summary>
 /// Represents a node in the flow graph.
 /// Uses a Definition (immutable) + State (mutable) composition pattern.
+/// Implements <see cref="ICanvasElement"/> for unified element handling.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -19,7 +21,7 @@ namespace FlowGraph.Core;
 /// to either Definition or State as appropriate.
 /// </para>
 /// </remarks>
-public class Node : INotifyPropertyChanged
+public class Node : ICanvasElement
 {
     private NodeDefinition _definition;
     private INodeState _state;
@@ -329,6 +331,32 @@ public class Node : INotifyPropertyChanged
     {
         get => State.IsCollapsed;
         set => State.IsCollapsed = value;
+    }
+
+    #endregion
+
+    #region ICanvasElement Implementation
+
+    /// <summary>
+    /// Gets whether this node is visible. Nodes are always visible unless hidden by group collapse.
+    /// </summary>
+    public bool IsVisible => true;
+
+    /// <summary>
+    /// Gets the Z-index for this node. Nodes render at Z-index 300 by default.
+    /// </summary>
+    public int ZIndex => CanvasElement.ZIndexNodes;
+
+    /// <summary>
+    /// Gets the bounding rectangle of this node in canvas coordinates.
+    /// </summary>
+    public Rect GetBounds()
+    {
+        return new Rect(
+            Position.X,
+            Position.Y,
+            Width ?? GraphDefaults.NodeWidth,
+            Height ?? GraphDefaults.NodeHeight);
     }
 
     #endregion

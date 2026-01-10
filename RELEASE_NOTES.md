@@ -1,3 +1,68 @@
+## FlowGraph v0.4.1
+
+### Bug Fixes
+
+- **Fixed Background Renderer Coordinate Transformation** - Custom background renderers now correctly align with nodes when the viewport is panned or zoomed
+  - Fixed `CanvasToScreen` formula in `BackgroundRenderContext`: was `(x - offset) * zoom`, now correctly `x * zoom + offset`
+  - Fixed `ScreenToCanvas` formula: was `x / zoom + offset`, now correctly `(x - offset) / zoom`
+  - This resolves issues where sequence diagram lifelines and other background elements appeared misaligned with their associated nodes
+
+---
+
+## FlowGraph v0.4.0
+
+### ⚠️ Breaking Changes
+
+- **Canvas-First Architecture** - The Graph model now uses a unified `Elements` collection as the primary data source
+  - **New API**: Use `graph.Elements.Nodes` and `graph.Elements.Edges` for accessing nodes and edges
+  - **Deprecated**: `graph.Nodes` and `graph.Edges` properties are now marked `[Obsolete]` but remain functional for backward compatibility
+  - **Migration**: Replace `graph.Nodes` with `graph.Elements.Nodes` and `graph.Edges` with `graph.Elements.Edges` in your code
+
+### New Features
+
+- **Unified Elements Collection** - Single source of truth for all canvas elements
+
+  - `Graph.Elements` property provides access to all nodes, edges, and future element types
+  - `Graph.Elements.Nodes` returns `IEnumerable<Node>` for type-safe node access
+  - `Graph.Elements.Edges` returns `IEnumerable<Edge>` for type-safe edge access
+  - Enables future extensibility for custom element types (annotations, shapes, etc.)
+
+- **Improved Internal Architecture**
+  - Cleaner separation between the unified elements model and legacy ObservableCollection-based APIs
+  - Better support for custom renderers and element types
+  - Simplified coordinate transformations with `RenderElements()` API
+
+### Migration Guide
+
+**Before (v0.3.x):**
+
+```csharp
+// Accessing nodes and edges
+var nodes = graph.Nodes;
+var edges = graph.Edges;
+var node = graph.Nodes.FirstOrDefault(n => n.Id == "myNode");
+```
+
+**After (v0.4.0):**
+
+```csharp
+// Use Elements collection for new code
+var nodes = graph.Elements.Nodes;
+var edges = graph.Elements.Edges;
+var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == "myNode");
+
+// Legacy properties still work but show deprecation warnings
+// graph.Nodes and graph.Edges are still available for backward compatibility
+```
+
+### Notes
+
+- The deprecated `Nodes` and `Edges` properties will continue to work and fire `CollectionChanged` events
+- Internal synchronization ensures both APIs stay in sync
+- This change prepares the architecture for FlowGraph.Pro features and custom element types
+
+---
+
 ## FlowGraph v0.3.6
 
 ### New Features

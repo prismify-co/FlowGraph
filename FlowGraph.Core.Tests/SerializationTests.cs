@@ -41,8 +41,8 @@ public class SerializationTests
         var graph = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(graph);
-        Assert.Equal(originalGraph.Nodes.Count, graph.Nodes.Count);
-        Assert.Equal(originalGraph.Edges.Count, graph.Edges.Count);
+        Assert.Equal(originalGraph.Elements.Nodes.Count(), graph.Elements.Nodes.Count());
+        Assert.Equal(originalGraph.Elements.Edges.Count(), graph.Elements.Edges.Count());
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class SerializationTests
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        var node = restored.Nodes.First();
+        var node = restored.Elements.Nodes.First();
         Assert.Single(node.Inputs);
         Assert.Equal(2, node.Outputs.Count);
         Assert.Equal("in1", node.Inputs[0].Id);
@@ -134,33 +134,33 @@ public class SerializationTests
     public void RoundTrip_EdgeWithLabel_LabelPreserved()
     {
         var graph = CreateTestGraph();
-        graph.Edges.First().Label = "Test Label";
+        graph.Elements.Edges.First().Label = "Test Label";
 
         var json = graph.ToJson();
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        Assert.Equal("Test Label", restored.Edges.First().Label);
+        Assert.Equal("Test Label", restored.Elements.Edges.First().Label);
     }
 
     [Fact]
     public void RoundTrip_EdgeType_TypePreserved()
     {
         var graph = CreateTestGraph();
-        graph.Edges.First().Type = EdgeType.SmoothStep;
+        graph.Elements.Edges.First().Type = EdgeType.SmoothStep;
 
         var json = graph.ToJson();
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        Assert.Equal(EdgeType.SmoothStep, restored.Edges.First().Type);
+        Assert.Equal(EdgeType.SmoothStep, restored.Elements.Edges.First().Type);
     }
 
     [Fact]
     public void RoundTrip_EdgeMarkers_MarkersPreserved()
     {
         var graph = CreateTestGraph();
-        var edge = graph.Edges.First();
+        var edge = graph.Elements.Edges.First();
         edge.MarkerStart = EdgeMarker.Arrow;
         edge.MarkerEnd = EdgeMarker.ArrowClosed;
 
@@ -168,15 +168,15 @@ public class SerializationTests
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        Assert.Equal(EdgeMarker.Arrow, restored.Edges.First().MarkerStart);
-        Assert.Equal(EdgeMarker.ArrowClosed, restored.Edges.First().MarkerEnd);
+        Assert.Equal(EdgeMarker.Arrow, restored.Elements.Edges.First().MarkerStart);
+        Assert.Equal(EdgeMarker.ArrowClosed, restored.Elements.Edges.First().MarkerEnd);
     }
 
     [Fact]
     public void RoundTrip_EdgeWaypoints_WaypointsPreserved()
     {
         var graph = CreateTestGraph();
-        graph.Edges.First().Waypoints = [
+        graph.Elements.Edges.First().Waypoints = [
             new Point(200, 100),
             new Point(200, 200),
             new Point(300, 200)
@@ -186,7 +186,7 @@ public class SerializationTests
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        var waypoints = restored.Edges.First().Waypoints;
+        var waypoints = restored.Elements.Edges.First().Waypoints;
         Assert.NotNull(waypoints);
         Assert.Equal(3, waypoints.Count);
         Assert.Equal(200, waypoints[0].X);
@@ -209,7 +209,7 @@ public class SerializationTests
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        var group = restored.Nodes.First();
+        var group = restored.Elements.Nodes.First();
         Assert.True(group.IsGroup);
         Assert.True(group.IsCollapsed);
         Assert.Equal("My Group", group.Label);
@@ -228,7 +228,7 @@ public class SerializationTests
         var restored = GraphSerializationExtensions.LoadFromJson(json);
 
         Assert.NotNull(restored);
-        var childNode = restored.Nodes.First(n => n.Id == "node1");
+        var childNode = restored.Elements.Nodes.First(n => n.Id == "node1");
         Assert.Equal("group1", childNode.ParentGroupId);
     }
 
@@ -244,21 +244,21 @@ public class SerializationTests
         var clone = original.Clone();
 
         Assert.NotSame(original, clone);
-        Assert.Equal(original.Nodes.Count, clone.Nodes.Count);
-        Assert.Equal(original.Edges.Count, clone.Edges.Count);
+        Assert.Equal(original.Elements.Nodes.Count(), clone.Elements.Nodes.Count());
+        Assert.Equal(original.Elements.Edges.Count(), clone.Elements.Edges.Count());
     }
 
     [Fact]
     public void Clone_ModifyClone_OriginalUnchanged()
     {
         var original = CreateTestGraph();
-        var originalNodeCount = original.Nodes.Count;
+        var originalNodeCount = original.Elements.Nodes.Count();
 
         var clone = original.Clone();
         clone.AddNode(TestHelpers.CreateNode("new-node"));
 
-        Assert.Equal(originalNodeCount, original.Nodes.Count);
-        Assert.Equal(originalNodeCount + 1, clone.Nodes.Count);
+        Assert.Equal(originalNodeCount, original.Elements.Nodes.Count());
+        Assert.Equal(originalNodeCount + 1, clone.Elements.Nodes.Count());
     }
 
     #endregion
@@ -304,8 +304,8 @@ public class SerializationTests
             var loaded = GraphSerializationExtensions.LoadFromFile(tempFile);
 
             Assert.NotNull(loaded);
-            Assert.Equal(original.Nodes.Count, loaded.Nodes.Count);
-            Assert.Equal(original.Edges.Count, loaded.Edges.Count);
+            Assert.Equal(original.Elements.Nodes.Count(), loaded.Elements.Nodes.Count());
+            Assert.Equal(original.Elements.Edges.Count(), loaded.Elements.Edges.Count());
         }
         finally
         {
@@ -325,7 +325,7 @@ public class SerializationTests
             var loaded = await GraphSerializationExtensions.LoadFromFileAsync(tempFile);
 
             Assert.NotNull(loaded);
-            Assert.Equal(original.Nodes.Count, loaded.Nodes.Count);
+            Assert.Equal(original.Elements.Nodes.Count(), loaded.Elements.Nodes.Count());
         }
         finally
         {
@@ -353,7 +353,7 @@ public class SerializationTests
     public void ToJson_EnumsAsStrings_Used()
     {
         var graph = CreateTestGraph();
-        graph.Edges.First().Type = EdgeType.SmoothStep;
+        graph.Elements.Edges.First().Type = EdgeType.SmoothStep;
 
         var json = graph.ToJson();
 

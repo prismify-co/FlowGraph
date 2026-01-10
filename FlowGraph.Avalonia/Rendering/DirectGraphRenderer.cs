@@ -264,9 +264,9 @@ public class DirectGraphRenderer : Control
             return;
         }
 
-        _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Nodes.Count);
+        _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Elements.Nodes.Count());
 
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -311,7 +311,7 @@ public class DirectGraphRenderer : Control
         var offsetY = _viewport.OffsetY;
 
         // Draw groups first (behind everything)
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsGroup) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -321,13 +321,13 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw edges (behind nodes)
-        foreach (var edge in _graph.Edges)
+        foreach (var edge in _graph.Elements.Edges)
         {
             DrawEdge(context, edge, zoom, offsetX, offsetY, bounds);
         }
 
         // Draw regular nodes
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -337,7 +337,7 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw collapsed groups on top (they appear as small nodes)
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsGroup || !node.IsCollapsed) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -346,7 +346,7 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw resize handles for selected nodes (on top of everything)
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsSelected || !node.IsResizable) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -357,7 +357,7 @@ public class DirectGraphRenderer : Control
         // Draw edge endpoint handles for selected edges (on top of everything)
         if (_settings.ShowEdgeEndpointHandles)
         {
-            foreach (var edge in _graph.Edges)
+            foreach (var edge in _graph.Elements.Edges)
             {
                 if (!edge.IsSelected) continue;
                 DrawEdgeEndpointHandles(context, edge, zoom, offsetX, offsetY);
@@ -474,8 +474,8 @@ public class DirectGraphRenderer : Control
 
     private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds)
     {
-        var sourceNode = _graph!.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = _graph!.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null) return;
         if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) return;
@@ -530,8 +530,8 @@ public class DirectGraphRenderer : Control
 
     private void DrawEdgeEndpointHandles(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY)
     {
-        var sourceNode = _graph!.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = _graph!.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null) return;
 
@@ -766,12 +766,12 @@ public class DirectGraphRenderer : Control
         var canvasPoint = ScreenToCanvas(screenX, screenY);
         var handleRadius = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
 
-        foreach (var edge in _graph.Edges)
+        foreach (var edge in _graph.Elements.Edges)
         {
             if (!edge.IsSelected) continue;
 
-            var sourceNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            var sourceNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
             if (sourceNode == null || targetNode == null) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;
@@ -807,7 +807,7 @@ public class DirectGraphRenderer : Control
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
 
-        foreach (var node in _graph.Nodes)
+        foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsSelected || !node.IsResizable) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
@@ -849,7 +849,7 @@ public class DirectGraphRenderer : Control
         }
 
         // Check groups (they're behind regular nodes)
-        foreach (var group in _graph.Nodes.Where(n => n.IsGroup))
+        foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))
         {
             if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
 
@@ -900,7 +900,7 @@ public class DirectGraphRenderer : Control
         }
 
         // Check group ports
-        foreach (var group in _graph.Nodes.Where(n => n.IsGroup))
+        foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))
         {
             if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
 
@@ -938,10 +938,10 @@ public class DirectGraphRenderer : Control
         var canvasPoint = ScreenToCanvas(screenX, screenY);
         var hitDistance = _settings.EdgeHitAreaWidth / _viewport.Zoom;
 
-        foreach (var edge in _graph.Edges)
+        foreach (var edge in _graph.Elements.Edges)
         {
-            var sourceNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = _graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            var sourceNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
             if (sourceNode == null || targetNode == null) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;

@@ -26,7 +26,7 @@ public partial class FlowDiagnostics : UserControl
     private TextBlock? _visibleSizeText;
     private TextBlock? _transformText;
     private TextBlock? _graphCenterText;
-    
+
     private ViewportState? _subscribedViewport;
 
     public FlowDiagnostics()
@@ -37,7 +37,7 @@ public partial class FlowDiagnostics : UserControl
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        
+
         _zoomText = this.FindControl<TextBlock>("ZoomText");
         _offsetXText = this.FindControl<TextBlock>("OffsetXText");
         _offsetYText = this.FindControl<TextBlock>("OffsetYText");
@@ -61,7 +61,7 @@ public partial class FlowDiagnostics : UserControl
             {
                 SubscribeToViewport(newCanvas.Viewport);
             }
-            
+
             UpdateDisplay();
         }
     }
@@ -106,22 +106,22 @@ public partial class FlowDiagnostics : UserControl
 
         if (_zoomText != null)
             _zoomText.Text = $"{viewport.Zoom:P0} ({viewport.Zoom:F2})";
-        
+
         if (_offsetXText != null)
             _offsetXText.Text = $"{viewport.OffsetX:F1}";
-        
+
         if (_offsetYText != null)
             _offsetYText.Text = $"{viewport.OffsetY:F1}";
-        
+
         if (_viewSizeText != null)
             _viewSizeText.Text = $"{viewport.ViewSize.Width:F0} x {viewport.ViewSize.Height:F0}";
-        
+
         if (_visibleXText != null)
             _visibleXText.Text = $"{visibleRect.X:F1} to {visibleRect.Right:F1}";
-        
+
         if (_visibleYText != null)
             _visibleYText.Text = $"{visibleRect.Y:F1} to {visibleRect.Bottom:F1}";
-        
+
         if (_visibleSizeText != null)
             _visibleSizeText.Text = $"{visibleRect.Width:F0} x {visibleRect.Height:F0}";
 
@@ -167,12 +167,12 @@ public partial class FlowDiagnostics : UserControl
         if (_graphCenterText != null)
         {
             var graph = TargetCanvas.Graph;
-            if (graph != null && graph.Nodes.Count > 0)
+            if (graph != null && graph.Elements.Nodes.Any())
             {
-                var minX = graph.Nodes.Min(n => n.Position.X);
-                var minY = graph.Nodes.Min(n => n.Position.Y);
-                var maxX = graph.Nodes.Max(n => n.Position.X + 150); // NodeWidth
-                var maxY = graph.Nodes.Max(n => n.Position.Y + 80);  // NodeHeight
+                var minX = graph.Elements.Nodes.Min(n => n.Position.X);
+                var minY = graph.Elements.Nodes.Min(n => n.Position.Y);
+                var maxX = graph.Elements.Nodes.Max(n => n.Position.X + 150); // NodeWidth
+                var maxY = graph.Elements.Nodes.Max(n => n.Position.Y + 80);  // NodeHeight
                 var centerX = (minX + maxX) / 2;
                 var centerY = (minY + maxY) / 2;
                 _graphCenterText.Text = $"({centerX:F0}, {centerY:F0})";

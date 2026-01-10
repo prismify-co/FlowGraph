@@ -57,11 +57,11 @@ public class ResizeNodeCommand : IGraphCommand
         double? oldHeight,
         double? newWidth,
         double? newHeight)
-        : this(graph, nodeId, oldWidth, oldHeight, newWidth, newHeight, 
+        : this(graph, nodeId, oldWidth, oldHeight, newWidth, newHeight,
                new Point(0, 0), new Point(0, 0))
     {
         // Get current position for the node
-        var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+        var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
         if (node != null)
         {
             _oldPosition = node.Position;
@@ -71,7 +71,7 @@ public class ResizeNodeCommand : IGraphCommand
 
     public void Execute()
     {
-        var node = _graph.Nodes.FirstOrDefault(n => n.Id == _nodeId);
+        var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _nodeId);
         if (node != null)
         {
             node.Width = _newWidth;
@@ -82,7 +82,7 @@ public class ResizeNodeCommand : IGraphCommand
 
     public void Undo()
     {
-        var node = _graph.Nodes.FirstOrDefault(n => n.Id == _nodeId);
+        var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _nodeId);
         if (node != null)
         {
             node.Width = _oldWidth;

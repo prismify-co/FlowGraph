@@ -81,7 +81,7 @@ public class EdgeRoutingTests
             DefaultNodeHeight = 80
         };
 
-        var edge = graph.Edges.First();
+        var edge = graph.Elements.Edges.First();
         var router = new DirectRouter();
 
         var path = router.Route(context, edge);
@@ -104,7 +104,7 @@ public class EdgeRoutingTests
             DefaultNodeHeight = 80
         };
 
-        var edge = graph.Edges.First();
+        var edge = graph.Elements.Edges.First();
         var router = new OrthogonalRouter();
 
         var path = router.Route(context, edge);
@@ -141,7 +141,7 @@ public class EdgeRoutingTests
         };
 
         // Edge from node1 to node3, with node2 (obstacle) in the middle
-        var edge = graph.Edges.First(e => e.Source == "node1" && e.Target == "node3");
+        var edge = graph.Elements.Edges.First(e => e.Source == "node1" && e.Target == "node3");
         var router = new OrthogonalRouter();
 
         var path = router.Route(context, edge);
@@ -177,7 +177,7 @@ public class EdgeRoutingTests
             DefaultNodeHeight = 80
         };
 
-        var edge = graph.Edges.First();
+        var edge = graph.Elements.Edges.First();
         var router = new SmartBezierRouter();
 
         var path = router.Route(context, edge);
@@ -196,7 +196,7 @@ public class EdgeRoutingTests
             DefaultNodeHeight = 80
         };
 
-        var edge = graph.Edges.First(e => e.Source == "node1" && e.Target == "node3");
+        var edge = graph.Elements.Edges.First(e => e.Source == "node1" && e.Target == "node3");
         var router = new SmartBezierRouter();
 
         var path = router.Route(context, edge);
@@ -216,7 +216,7 @@ public class EdgeRoutingTests
         var graph = CreateTestGraph();
         var service = new EdgeRoutingService { IsRoutingEnabled = false };
 
-        var edge = graph.Edges.First();
+        var edge = graph.Elements.Edges.First();
         var path = service.RouteEdge(graph, edge);
 
         Assert.Equal(2, path.Count);
@@ -230,8 +230,8 @@ public class EdgeRoutingTests
 
         var paths = service.RouteAllEdges(graph);
 
-        Assert.Equal(graph.Edges.Count, paths.Count);
-        foreach (var edge in graph.Edges)
+        Assert.Equal(graph.Elements.Edges.Count(), paths.Count);
+        foreach (var edge in graph.Elements.Edges)
         {
             Assert.True(paths.ContainsKey(edge.Id));
             Assert.True(paths[edge.Id].Count >= 2);
@@ -273,11 +273,11 @@ public class EdgeRoutingTests
             DefaultNodeHeight = 80
         };
 
-        var node1 = graph.Nodes.First();
+        var node1 = graph.Elements.Nodes.First();
         var obstacles = context.GetObstacles(node1.Id).ToList();
 
         // Should have one less obstacle than total nodes
-        Assert.Equal(graph.Nodes.Count - 1, obstacles.Count);
+        Assert.Equal(graph.Elements.Nodes.Count() - 1, obstacles.Count);
     }
 
     [Fact]
@@ -292,7 +292,7 @@ public class EdgeRoutingTests
             NodePadding = 10
         };
 
-        var node = graph.Nodes.First();
+        var node = graph.Elements.Nodes.First();
         var bounds = context.GetNodeBounds(node);
 
         Assert.Equal(node.Position.X - 10, bounds.X);

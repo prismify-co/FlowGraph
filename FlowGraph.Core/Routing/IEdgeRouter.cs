@@ -60,20 +60,20 @@ public class EdgeRoutingContext
     public IEnumerable<Rect> GetObstacles(params string[] excludeNodeIds)
     {
         var excludeSet = new HashSet<string>(excludeNodeIds);
-        
-        foreach (var node in Graph.Nodes)
+
+        foreach (var node in Graph.Elements.Nodes)
         {
             if (excludeSet.Contains(node.Id))
                 continue;
-                
+
             // Skip collapsed group children (they're not visible)
             if (!string.IsNullOrEmpty(node.ParentGroupId))
             {
-                var parent = Graph.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId);
+                var parent = Graph.Elements.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId);
                 if (parent?.IsCollapsed == true)
                     continue;
             }
-            
+
             yield return GetNodeBounds(node);
         }
     }

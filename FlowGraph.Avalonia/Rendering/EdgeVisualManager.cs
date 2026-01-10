@@ -157,10 +157,10 @@ public class EdgeVisualManager
 
         // Render new edges - only if both endpoints are visible (by group collapse)
         // and at least one endpoint is in the visible viewport (virtualization)
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
-            var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
             // Skip edges where either endpoint is hidden by a collapsed group
             if (sourceNode == null || targetNode == null ||
@@ -190,8 +190,8 @@ public class EdgeVisualManager
     /// <returns>The created hit area path, or null if rendering failed.</returns>
     public AvaloniaPath? RenderEdge(Canvas canvas, Edge edge, Graph graph, ThemeResources theme)
     {
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return null;

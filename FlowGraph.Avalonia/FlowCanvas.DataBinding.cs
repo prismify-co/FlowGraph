@@ -1,3 +1,7 @@
+// CS0618: Suppress obsolete warnings - FlowCanvas subscribes to CollectionChanged
+// events on Graph.Nodes/Edges which require the ObservableCollection properties.
+#pragma warning disable CS0618
+
 using Avalonia;
 using Avalonia.Controls;
 using FlowGraph.Core;
@@ -45,8 +49,8 @@ public partial class FlowCanvas
 
     private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] oldGraph null: {oldGraph == null}, newGraph null: {newGraph == null}, newGraph nodes: {newGraph?.Nodes.Count ?? 0}\n");
-        
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] oldGraph null: {oldGraph == null}, newGraph null: {newGraph == null}, newGraph nodes: {newGraph?.Elements.Nodes.Count() ?? 0}\n");
+
         if (oldGraph != null)
         {
             oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
@@ -89,7 +93,7 @@ public partial class FlowCanvas
 
     private void SubscribeToNodeChanges(Graph graph)
     {
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             node.PropertyChanged += OnNodePropertyChanged;
         }
@@ -97,7 +101,7 @@ public partial class FlowCanvas
 
     private void UnsubscribeFromNodeChanges(Graph graph)
     {
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             node.PropertyChanged -= OnNodePropertyChanged;
         }
@@ -105,7 +109,7 @@ public partial class FlowCanvas
 
     private void SubscribeToEdgeChanges(Graph graph)
     {
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             edge.PropertyChanged += OnEdgePropertyChanged;
         }
@@ -113,7 +117,7 @@ public partial class FlowCanvas
 
     private void UnsubscribeFromEdgeChanges(Graph graph)
     {
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             edge.PropertyChanged -= OnEdgePropertyChanged;
         }
@@ -229,18 +233,18 @@ public partial class FlowCanvas
         if (e.Action == NotifyCollectionChangedAction.Reset && Graph != null)
         {
             // Unsubscribe from all first to avoid duplicates
-            foreach (var node in Graph.Nodes)
+            foreach (var node in Graph.Elements.Nodes)
             {
                 node.PropertyChanged -= OnNodePropertyChanged;
             }
             // Then subscribe to all
-            foreach (var node in Graph.Nodes)
+            foreach (var node in Graph.Elements.Nodes)
             {
                 node.PropertyChanged += OnNodePropertyChanged;
             }
         }
 
-        RenderGraph();
+        RenderElements();
     }
 
     private void OnEdgesChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -266,12 +270,12 @@ public partial class FlowCanvas
         if (e.Action == NotifyCollectionChangedAction.Reset && Graph != null)
         {
             // Unsubscribe from all first to avoid duplicates
-            foreach (var edge in Graph.Edges)
+            foreach (var edge in Graph.Elements.Edges)
             {
                 edge.PropertyChanged -= OnEdgePropertyChanged;
             }
             // Then subscribe to all
-            foreach (var edge in Graph.Edges)
+            foreach (var edge in Graph.Elements.Edges)
             {
                 edge.PropertyChanged += OnEdgePropertyChanged;
             }

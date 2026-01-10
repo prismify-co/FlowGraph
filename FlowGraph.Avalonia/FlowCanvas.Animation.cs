@@ -26,7 +26,7 @@ public partial class FlowCanvas
     /// <param name="easing">Optional easing function.</param>
     public void FitToViewAnimated(double duration = 0.3, Func<double, double>? easing = null)
     {
-        if (Graph == null || Graph.Nodes.Count == 0) return;
+        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var bounds = CalculateGraphBounds();
         var animation = ViewportAnimation.FitToBounds(_viewport, bounds, 50, duration, easing);
@@ -40,7 +40,7 @@ public partial class FlowCanvas
     /// <param name="easing">Optional easing function.</param>
     public void CenterOnGraphAnimated(double duration = 0.3, Func<double, double>? easing = null)
     {
-        if (Graph == null || Graph.Nodes.Count == 0) return;
+        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var bounds = CalculateGraphBounds();
         var center = new AvaloniaPoint(
@@ -61,9 +61,9 @@ public partial class FlowCanvas
     public void CenterOnAnimated(double x, double y, double duration = 0.3, Func<double, double>? easing = null)
     {
         var animation = ViewportAnimation.CenterOn(
-            _viewport, 
-            new AvaloniaPoint(x, y), 
-            duration, 
+            _viewport,
+            new AvaloniaPoint(x, y),
+            duration,
             easing);
         _animationManager.Start(animation);
     }
@@ -223,10 +223,10 @@ public partial class FlowCanvas
     {
         // Get the current color from the visible path
         var visiblePath = _graphRenderer.GetEdgeVisiblePath(edge.Id);
-        var currentColor = visiblePath?.Stroke is SolidColorBrush brush 
-            ? brush.Color 
+        var currentColor = visiblePath?.Stroke is SolidColorBrush brush
+            ? brush.Color
             : (_theme?.EdgeStroke is SolidColorBrush themeBrush ? themeBrush.Color : Colors.Gray);
-        
+
         var animation = new EdgeColorAnimation(
             edge,
             currentColor,
@@ -341,7 +341,7 @@ public partial class FlowCanvas
     {
         if (Graph == null || _mainCanvas == null || _theme == null) return;
 
-        var group = Graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = Graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null || group.IsCollapsed) return;
 
         var expandedWidth = group.Width ?? 200;
@@ -426,7 +426,7 @@ public partial class FlowCanvas
     {
         if (Graph == null || _mainCanvas == null || _theme == null) return;
 
-        var group = Graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = Graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null || !group.IsCollapsed) return;
 
         var collapsedWidth = group.Width ?? 150;
@@ -623,7 +623,7 @@ public partial class FlowCanvas
         if (Graph == null) return;
 
         // Prune missing edges
-        var existing = Graph.Edges.Select(e => e.Id).ToHashSet();
+        var existing = Graph.Elements.Edges.Select(e => e.Id).ToHashSet();
         foreach (var edgeId in _edgeOpacityOverrides.Keys.Where(id => !existing.Contains(id)).ToList())
         {
             _edgeOpacityOverrides.Remove(edgeId);
@@ -631,7 +631,7 @@ public partial class FlowCanvas
 
         foreach (var (edgeId, opacity) in _edgeOpacityOverrides)
         {
-            var edge = Graph.Edges.FirstOrDefault(e => e.Id == edgeId);
+            var edge = Graph.Elements.Edges.FirstOrDefault(e => e.Id == edgeId);
             if (edge == null) continue;
             UpdateEdgeOpacity(edge, opacity);
         }
@@ -650,7 +650,7 @@ public partial class FlowCanvas
         var children = graph.GetGroupChildren(groupId).ToList();
         var childIds = children.Select(c => c.Id).ToHashSet();
 
-        return graph.Edges
+        return graph.Elements.Edges
             .Where(e => childIds.Contains(e.Source) || childIds.Contains(e.Target))
             .ToList();
     }

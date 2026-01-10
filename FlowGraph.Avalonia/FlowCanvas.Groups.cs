@@ -19,7 +19,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return null;
 
-        var selectedNodes = Graph.Nodes
+        var selectedNodes = Graph.Elements.Nodes
             .Where(n => n.IsSelected && !n.IsGroup)
             .ToList();
 
@@ -36,11 +36,11 @@ public partial class FlowCanvas
         CommandHistory.Execute(command);
 
         // Return the created group
-        var createdGroup = Graph.Nodes.FirstOrDefault(n => n.IsGroup &&
-            nodeIds.All(id => Graph.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
-        
+        var createdGroup = Graph.Elements.Nodes.FirstOrDefault(n => n.IsGroup &&
+            nodeIds.All(id => Graph.Elements.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
+
         System.Diagnostics.Debug.WriteLine($"[GroupSelected] Created group: {createdGroup?.Id ?? "null"}");
-        
+
         return createdGroup;
     }
 
@@ -51,7 +51,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        var selectedGroups = Graph.Nodes
+        var selectedGroups = Graph.Elements.Nodes
             .Where(n => n.IsSelected && n.IsGroup)
             .ToList();
 
@@ -126,7 +126,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        var selectedNodes = Graph.Nodes
+        var selectedNodes = Graph.Elements.Nodes
             .Where(n => n.IsSelected && !n.IsGroup && n.Id != groupId)
             .Select(n => n.Id)
             .ToList();
@@ -153,7 +153,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        var selectedNodes = Graph.Nodes
+        var selectedNodes = Graph.Elements.Nodes
             .Where(n => n.IsSelected && !string.IsNullOrEmpty(n.ParentGroupId))
             .Select(n => n.Id)
             .ToList();
@@ -180,7 +180,7 @@ public partial class FlowCanvas
     {
         if (Graph == null) return;
 
-        foreach (var group in Graph.Nodes.Where(n => n.IsGroup))
+        foreach (var group in Graph.Elements.Nodes.Where(n => n.IsGroup))
         {
             _groupManager.AutoResizeGroup(group.Id);
         }

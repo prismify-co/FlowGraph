@@ -175,7 +175,7 @@ public class IdleState : InputStateBase
             if (!ctrlHeld && !node.IsSelected)
             {
                 Debug.WriteLine($"[IdleState.HandleNodeClick] Selecting node {node.Id}, deselecting others");
-                foreach (var n in graph.Nodes.Where(n => n.Id != node.Id))
+                foreach (var n in graph.Elements.Nodes.Where(n => n.Id != node.Id))
                     n.IsSelected = false;
                 node.IsSelected = true;
             }
@@ -245,9 +245,9 @@ public class IdleState : InputStateBase
 
         if (!ctrlHeld)
         {
-            foreach (var n in graph.Nodes)
+            foreach (var n in graph.Elements.Nodes)
                 n.IsSelected = false;
-            foreach (var ed in graph.Edges.Where(ed => ed.Id != edge.Id))
+            foreach (var ed in graph.Elements.Edges.Where(ed => ed.Id != edge.Id))
                 ed.IsSelected = false;
         }
 
@@ -266,8 +266,8 @@ public class IdleState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return null;
 
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null) return null;
 
@@ -404,7 +404,7 @@ public class IdleState : InputStateBase
         if (e.Key == Key.F2)
         {
             var graph = context.Graph;
-            var selectedNode = graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+            var selectedNode = graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
             if (selectedNode != null)
             {
                 var screenPos = context.CanvasToScreen(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));

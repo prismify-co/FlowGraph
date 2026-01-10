@@ -25,7 +25,7 @@ public class EdgeCommandsTests
 
         command.Execute();
 
-        Assert.Single(graph.Edges);
+        Assert.Single(graph.Elements.Edges);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class EdgeCommandsTests
 
         command.Undo();
 
-        Assert.Empty(graph.Edges);
+        Assert.Empty(graph.Elements.Edges);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class EdgeCommandsTests
         var command = new RemoveEdgeCommand(graph, edge);
         command.Execute();
 
-        Assert.Empty(graph.Edges);
+        Assert.Empty(graph.Elements.Edges);
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class EdgeCommandsTests
         command.Execute();
         command.Undo();
 
-        Assert.Single(graph.Edges);
+        Assert.Single(graph.Elements.Edges);
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class EdgeCommandsTests
         var command = new RemoveEdgesCommand(graph, [edge1, edge2]);
         command.Execute();
 
-        Assert.Empty(graph.Edges);
+        Assert.Empty(graph.Elements.Edges);
     }
 
     [Fact]
@@ -139,6 +139,6 @@ public class EdgeCommandsTests
         command.Execute();
         command.Undo();
 
-        Assert.Equal(2, graph.Edges.Count);
+        Assert.Equal(2, graph.Elements.Edges.Count());
     }
 }

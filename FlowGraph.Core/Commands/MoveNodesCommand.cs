@@ -54,7 +54,7 @@ public class MoveNodesCommand : IGraphCommand
     {
         foreach (var (nodeId, newPos) in _newPositions)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.Position = newPos;
@@ -66,7 +66,7 @@ public class MoveNodesCommand : IGraphCommand
     {
         foreach (var (nodeId, oldPos) in _oldPositions)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.Position = oldPos;

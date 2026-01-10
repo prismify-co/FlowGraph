@@ -78,8 +78,8 @@ public class GroupManager
         _commandHistory.Execute(command);
 
         // Return the created group
-        return graph.Nodes.FirstOrDefault(n => n.IsGroup &&
-            nodeIdList.All(id => graph.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
+        return graph.Elements.Nodes.FirstOrDefault(n => n.IsGroup &&
+            nodeIdList.All(id => graph.Elements.Nodes.FirstOrDefault(n2 => n2.Id == id)?.ParentGroupId == n.Id));
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null) return;
 
         var command = new ToggleGroupCollapseCommand(graph, groupId);
@@ -122,7 +122,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null || group.IsCollapsed == collapsed) return;
 
         ToggleCollapse(groupId);
@@ -161,7 +161,7 @@ public class GroupManager
 
         // Get affected groups for resize
         var affectedGroups = nodeIdList
-            .Select(id => graph.Nodes.FirstOrDefault(n => n.Id == id)?.ParentGroupId)
+            .Select(id => graph.Elements.Nodes.FirstOrDefault(n => n.Id == id)?.ParentGroupId)
             .Where(gid => !string.IsNullOrEmpty(gid))
             .Distinct()
             .ToList();
@@ -185,7 +185,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null) return;
 
         var children = graph.GetGroupChildren(groupId).ToList();
@@ -222,7 +222,7 @@ public class GroupManager
         if (graph == null) return null;
 
         // Find groups that contain this point (check in reverse order for top-most)
-        foreach (var group in graph.Nodes.Where(n => n.IsGroup && !n.IsCollapsed).Reverse())
+        foreach (var group in graph.Elements.Nodes.Where(n => n.IsGroup && !n.IsCollapsed).Reverse())
         {
             var groupWidth = group.Width ?? 200;
             var groupHeight = group.Height ?? 100;
@@ -257,7 +257,7 @@ public class GroupManager
             .Where(id => id != targetGroupId)
             .Where(id =>
             {
-                var node = graph.Nodes.FirstOrDefault(n => n.Id == id);
+                var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == id);
                 return node != null && node.ParentGroupId != targetGroupId;
             })
             .ToList();
@@ -276,7 +276,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var group in graph.Nodes.Where(n => n.IsGroup && !n.IsCollapsed))
+        foreach (var group in graph.Elements.Nodes.Where(n => n.IsGroup && !n.IsCollapsed))
         {
             SetCollapsed(group.Id, true);
         }
@@ -290,7 +290,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var group in graph.Nodes.Where(n => n.IsGroup && n.IsCollapsed))
+        foreach (var group in graph.Elements.Nodes.Where(n => n.IsGroup && n.IsCollapsed))
         {
             SetCollapsed(group.Id, false);
         }
@@ -322,7 +322,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) return false;
 
-        var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+        var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
         if (node == null) return false;
 
         // Check all ancestor groups - if any is collapsed, this node is hidden
@@ -343,7 +343,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) yield break;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             if (IsNodeVisible(node.Id))
                 yield return node;
@@ -358,7 +358,7 @@ public class GroupManager
         var graph = _context.Graph;
         if (graph == null) yield break;
 
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             if (IsNodeVisible(edge.Source) && IsNodeVisible(edge.Target))
                 yield return edge;

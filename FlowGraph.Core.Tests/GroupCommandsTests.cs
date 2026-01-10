@@ -28,7 +28,7 @@ public class GroupCommandsTests
 
         command.Execute();
 
-        var groups = graph.Nodes.Where(n => n.IsGroup).ToList();
+        var groups = graph.Elements.Nodes.Where(n => n.IsGroup).ToList();
         Assert.Single(groups);
         Assert.Equal("TestGroup", groups[0].Label);
     }
@@ -41,9 +41,9 @@ public class GroupCommandsTests
 
         command.Execute();
 
-        var group = graph.Nodes.First(n => n.IsGroup);
-        var node1 = graph.Nodes.First(n => n.Id == "node1");
-        var node2 = graph.Nodes.First(n => n.Id == "node2");
+        var group = graph.Elements.Nodes.First(n => n.IsGroup);
+        var node1 = graph.Elements.Nodes.First(n => n.Id == "node1");
+        var node2 = graph.Elements.Nodes.First(n => n.Id == "node2");
 
         Assert.Equal(group.Id, node1.ParentGroupId);
         Assert.Equal(group.Id, node2.ParentGroupId);
@@ -57,7 +57,7 @@ public class GroupCommandsTests
 
         command.Execute();
 
-        var node3 = graph.Nodes.First(n => n.Id == "node3");
+        var node3 = graph.Elements.Nodes.First(n => n.Id == "node3");
         Assert.Null(node3.ParentGroupId);
     }
 
@@ -67,13 +67,13 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var command = new GroupNodesCommand(graph, ["node1", "node2"]);
         command.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         command.Undo();
 
-        Assert.DoesNotContain(graph.Nodes, n => n.Id == groupId);
-        Assert.Null(graph.Nodes.First(n => n.Id == "node1").ParentGroupId);
-        Assert.Null(graph.Nodes.First(n => n.Id == "node2").ParentGroupId);
+        Assert.DoesNotContain(graph.Elements.Nodes, n => n.Id == groupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node1").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node2").ParentGroupId);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class GroupCommandsTests
 
         command.Execute();
 
-        var group = graph.Nodes.First(n => n.IsGroup);
+        var group = graph.Elements.Nodes.First(n => n.IsGroup);
         // Group should encompass all nodes with padding
         Assert.True(group.Position.X < 100); // Less than node1's X
         Assert.True(group.Position.Y < 100); // Less than node1's Y (with header)
@@ -101,12 +101,12 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var ungroupCommand = new UngroupNodesCommand(graph, groupId);
         ungroupCommand.Execute();
 
-        Assert.DoesNotContain(graph.Nodes, n => n.Id == groupId);
+        Assert.DoesNotContain(graph.Elements.Nodes, n => n.Id == groupId);
     }
 
     [Fact]
@@ -115,13 +115,13 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var ungroupCommand = new UngroupNodesCommand(graph, groupId);
         ungroupCommand.Execute();
 
-        Assert.Null(graph.Nodes.First(n => n.Id == "node1").ParentGroupId);
-        Assert.Null(graph.Nodes.First(n => n.Id == "node2").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node1").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node2").ParentGroupId);
     }
 
     [Fact]
@@ -130,14 +130,14 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var ungroupCommand = new UngroupNodesCommand(graph, groupId);
         ungroupCommand.Execute();
         ungroupCommand.Undo();
 
-        Assert.Contains(graph.Nodes, n => n.Id == groupId && n.IsGroup);
-        Assert.Equal(groupId, graph.Nodes.First(n => n.Id == "node1").ParentGroupId);
+        Assert.Contains(graph.Elements.Nodes, n => n.Id == groupId && n.IsGroup);
+        Assert.Equal(groupId, graph.Elements.Nodes.First(n => n.Id == "node1").ParentGroupId);
     }
 
     #endregion
@@ -150,7 +150,7 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var group = graph.Nodes.First(n => n.IsGroup);
+        var group = graph.Elements.Nodes.First(n => n.IsGroup);
 
         var toggleCommand = new ToggleGroupCollapseCommand(graph, group.Id);
         toggleCommand.Execute();
@@ -164,7 +164,7 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var group = graph.Nodes.First(n => n.IsGroup);
+        var group = graph.Elements.Nodes.First(n => n.IsGroup);
 
         var toggle1 = new ToggleGroupCollapseCommand(graph, group.Id);
         toggle1.Execute();
@@ -180,7 +180,7 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var group = graph.Nodes.First(n => n.IsGroup);
+        var group = graph.Elements.Nodes.First(n => n.IsGroup);
 
         var toggleCommand = new ToggleGroupCollapseCommand(graph, group.Id);
         toggleCommand.Execute();
@@ -199,12 +199,12 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var addCommand = new AddNodesToGroupCommand(graph, groupId, ["node3"]);
         addCommand.Execute();
 
-        Assert.Equal(groupId, graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Equal(groupId, graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     [Fact]
@@ -213,13 +213,13 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var addCommand = new AddNodesToGroupCommand(graph, groupId, ["node3"]);
         addCommand.Execute();
         addCommand.Undo();
 
-        Assert.Null(graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     #endregion
@@ -236,7 +236,7 @@ public class GroupCommandsTests
         var removeCommand = new RemoveNodesFromGroupCommand(graph, ["node3"]);
         removeCommand.Execute();
 
-        Assert.Null(graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     [Fact]
@@ -245,13 +245,13 @@ public class GroupCommandsTests
         var graph = CreateTestGraph();
         var groupCommand = new GroupNodesCommand(graph, ["node1", "node2", "node3"]);
         groupCommand.Execute();
-        var groupId = graph.Nodes.First(n => n.IsGroup).Id;
+        var groupId = graph.Elements.Nodes.First(n => n.IsGroup).Id;
 
         var removeCommand = new RemoveNodesFromGroupCommand(graph, ["node3"]);
         removeCommand.Execute();
         removeCommand.Undo();
 
-        Assert.Equal(groupId, graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Equal(groupId, graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     #endregion

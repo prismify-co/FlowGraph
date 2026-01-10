@@ -1,3 +1,7 @@
+// CS0618: Suppress obsolete warnings - FlowMinimap subscribes to CollectionChanged
+// events on Graph.Nodes/Edges which require the ObservableCollection properties.
+#pragma warning disable CS0618
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -28,7 +32,7 @@ public partial class FlowMinimap : UserControl
     private Graph? _subscribedGraph;
     private FlowCanvas? _subscribedCanvas;
     private ViewportState? _subscribedViewport;
-    
+
     // Transform: minimapPos = (canvasPos - extentOrigin) * scale
     private double _scale;
     private double _extentX;
@@ -70,7 +74,7 @@ public partial class FlowMinimap : UserControl
                 if (newCanvas.Graph != null)
                     SubscribeToGraph(newCanvas.Graph);
             }
-            
+
             RenderMinimap();
         }
     }
@@ -124,7 +128,7 @@ public partial class FlowMinimap : UserControl
         graph.Edges.CollectionChanged += OnGraphChanged;
         graph.BatchLoadCompleted += OnBatchLoadCompleted;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
             node.PropertyChanged += OnNodeChanged;
     }
 
@@ -136,7 +140,7 @@ public partial class FlowMinimap : UserControl
         _subscribedGraph.Edges.CollectionChanged -= OnGraphChanged;
         _subscribedGraph.BatchLoadCompleted -= OnBatchLoadCompleted;
 
-        foreach (var node in _subscribedGraph.Nodes)
+        foreach (var node in _subscribedGraph.Elements.Nodes)
             node.PropertyChanged -= OnNodeChanged;
 
         _subscribedGraph = null;
@@ -185,7 +189,7 @@ public partial class FlowMinimap : UserControl
         // Re-subscribe to all nodes that were added during batch
         if (_subscribedGraph != null)
         {
-            foreach (var node in _subscribedGraph.Nodes)
+            foreach (var node in _subscribedGraph.Elements.Nodes)
             {
                 node.PropertyChanged -= OnNodeChanged; // Avoid double-subscribe
                 node.PropertyChanged += OnNodeChanged;
@@ -197,7 +201,7 @@ public partial class FlowMinimap : UserControl
     private void OnNodeChanged(object? sender, PropertyChangedEventArgs e)
     {
         // Re-render on position, selection, or collapse state changes
-        if (e.PropertyName == nameof(Node.Position) || 
+        if (e.PropertyName == nameof(Node.Position) ||
             e.PropertyName == nameof(Node.IsSelected) ||
             e.PropertyName == nameof(Node.IsCollapsed) ||
             e.PropertyName == nameof(Node.Width) ||
@@ -221,12 +225,12 @@ public partial class FlowMinimap : UserControl
         var currentParentId = node.ParentGroupId;
         while (!string.IsNullOrEmpty(currentParentId))
         {
-            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            var parent = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
             if (parent == null) break;
-            
+
             if (parent.IsCollapsed)
                 return false;
-                
+
             currentParentId = parent.ParentGroupId;
         }
         return true;
@@ -264,11 +268,11 @@ public partial class FlowMinimap : UserControl
         _viewportRect = null;
 
         var graph = TargetCanvas.Graph;
-        if (graph.Nodes.Count == 0)
+        if (!graph.Elements.Nodes.Any())
             return;
 
         // Get only visible nodes (not hidden by collapsed groups)
-        var visibleNodes = graph.Nodes.Where(n => IsNodeVisible(graph, n)).ToList();
+        var visibleNodes = graph.Elements.Nodes.Where(n => IsNodeVisible(graph, n)).ToList();
         if (visibleNodes.Count == 0)
             return;
 
@@ -293,10 +297,10 @@ public partial class FlowMinimap : UserControl
         // Step 2: Get ViewportLocation and ViewportSize (like Nodify)
         var viewport = TargetCanvas.Viewport;
         var viewportRect = viewport.GetVisibleRect();
-        
+
         AvaloniaPoint viewportLocation;
         Size viewportSize;
-        
+
         if (viewportRect.Width > 0 && viewportRect.Height > 0)
         {
             viewportLocation = new AvaloniaPoint(viewportRect.X, viewportRect.Y);
@@ -337,7 +341,7 @@ public partial class FlowMinimap : UserControl
         var scaledHeight = extent.Height * _scale;
         var offsetX = (minimapWidth - scaledWidth) / 2;
         var offsetY = (minimapHeight - scaledHeight) / 2;
-        
+
         // Adjust extent origin to account for centering
         _extentX -= offsetX / _scale;
         _extentY -= offsetY / _scale;
@@ -345,15 +349,15 @@ public partial class FlowMinimap : UserControl
         // Draw edges (only between visible nodes)
         var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
         var visibleNodeIds = new HashSet<string>(visibleNodes.Select(n => n.Id));
-        
-        foreach (var edge in graph.Edges)
+
+        foreach (var edge in graph.Elements.Edges)
         {
             // Only draw edge if both endpoints are visible
             if (!visibleNodeIds.Contains(edge.Source) || !visibleNodeIds.Contains(edge.Target))
                 continue;
-                
-            var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+
+            var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
             if (sourceNode == null || targetNode == null) continue;
 
             var startPos = CanvasToMinimap(
@@ -376,13 +380,13 @@ public partial class FlowMinimap : UserControl
         var groupBrush = new SolidColorBrush(Color.FromArgb(40, 132, 94, 194)); // Translucent purple
         var groupBorderBrush = new SolidColorBrush(Color.Parse("#845EC2"));
         var collapsedGroupBrush = new SolidColorBrush(Color.FromArgb(80, 132, 94, 194)); // More opaque when collapsed
-        
+
         foreach (var node in visibleNodes.Where(n => n.IsGroup).OrderBy(n => GetGroupDepth(graph, n)))
         {
             var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
             var width = GetNodeWidth(node) * _scale;
             var height = GetNodeHeight(node) * _scale;
-            
+
             var rect = new Rectangle
             {
                 Width = Math.Max(width, 8),
@@ -401,13 +405,13 @@ public partial class FlowMinimap : UserControl
         // Draw regular nodes (on top of groups)
         var nodeBrush = new SolidColorBrush(Color.Parse("#4682B4"));
         var selectedBrush = new SolidColorBrush(Color.Parse("#FF6B00"));
-        
+
         foreach (var node in visibleNodes.Where(n => !n.IsGroup))
         {
             var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
             var width = GetNodeWidth(node) * _scale;
             var height = GetNodeHeight(node) * _scale;
-            
+
             var rect = new Rectangle
             {
                 Width = Math.Max(width, 4),
@@ -472,7 +476,7 @@ public partial class FlowMinimap : UserControl
         while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            var parent = graph.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+            var parent = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
             if (parent == null) break;
             currentParentId = parent.ParentGroupId;
         }
@@ -481,7 +485,7 @@ public partial class FlowMinimap : UserControl
 
     private void OnMinimapPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (TargetCanvas?.Graph == null || TargetCanvas.Graph.Nodes.Count == 0)
+        if (TargetCanvas?.Graph == null || !TargetCanvas.Graph.Elements.Nodes.Any())
             return;
 
         var point = e.GetCurrentPoint(_minimapCanvas);

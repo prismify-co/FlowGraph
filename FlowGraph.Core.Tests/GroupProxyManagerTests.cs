@@ -31,10 +31,10 @@ public class GroupProxyManagerTests
         var group = TestHelpers.CreateNode("group1", type: "group", isGroup: true,
             x: 50, y: 50, width: 300, height: 200);
 
-        graph.Nodes.Add(node1);
-        graph.Nodes.Add(node2);
-        graph.Nodes.Add(node3);
-        graph.Nodes.Add(group);
+        graph.AddNode(node1);
+        graph.AddNode(node2);
+        graph.AddNode(node3);
+        graph.AddNode(group);
 
         // Set parent group
         node1.ParentGroupId = "group1";
@@ -59,7 +59,7 @@ public class GroupProxyManagerTests
 
         manager.OnGroupCollapsed("group1");
 
-        var group = graph.Nodes.First(n => n.Id == "group1");
+        var group = graph.Elements.Nodes.First(n => n.Id == "group1");
 
         // Should have created proxy ports for crossing edges
         Assert.NotEmpty(group.Inputs);  // For edge_crossing_in
@@ -75,12 +75,12 @@ public class GroupProxyManagerTests
         manager.OnGroupCollapsed("group1");
 
         // edge_crossing_out should now have group1 as source
-        var crossingOut = graph.Edges.First(e => e.Id == "edge_crossing_out");
+        var crossingOut = graph.Elements.Edges.First(e => e.Id == "edge_crossing_out");
         Assert.Equal("group1", crossingOut.Source);
         Assert.Equal("node3", crossingOut.Target); // Target unchanged
 
         // edge_crossing_in should now have group1 as target
-        var crossingIn = graph.Edges.First(e => e.Id == "edge_crossing_in");
+        var crossingIn = graph.Elements.Edges.First(e => e.Id == "edge_crossing_in");
         Assert.Equal("node3", crossingIn.Source); // Source unchanged
         Assert.Equal("group1", crossingIn.Target);
     }
@@ -94,7 +94,7 @@ public class GroupProxyManagerTests
         manager.OnGroupCollapsed("group1");
 
         // Internal edge should remain unchanged
-        var internalEdge = graph.Edges.First(e => e.Id == "edge_internal");
+        var internalEdge = graph.Elements.Edges.First(e => e.Id == "edge_internal");
         Assert.Equal("node1", internalEdge.Source);
         Assert.Equal("node2", internalEdge.Target);
     }
@@ -109,11 +109,11 @@ public class GroupProxyManagerTests
         manager.OnGroupExpanded("group1");
 
         // Edges should be restored to original
-        var crossingOut = graph.Edges.First(e => e.Id == "edge_crossing_out");
+        var crossingOut = graph.Elements.Edges.First(e => e.Id == "edge_crossing_out");
         Assert.Equal("node2", crossingOut.Source);
         Assert.Equal("out2", crossingOut.SourcePort);
 
-        var crossingIn = graph.Edges.First(e => e.Id == "edge_crossing_in");
+        var crossingIn = graph.Elements.Edges.First(e => e.Id == "edge_crossing_in");
         Assert.Equal("node1", crossingIn.Target);
         Assert.Equal("in1", crossingIn.TargetPort);
     }
@@ -127,7 +127,7 @@ public class GroupProxyManagerTests
         manager.OnGroupCollapsed("group1");
         manager.OnGroupExpanded("group1");
 
-        var group = graph.Nodes.First(n => n.Id == "group1");
+        var group = graph.Elements.Nodes.First(n => n.Id == "group1");
 
         // Proxy ports should be removed
         Assert.Empty(group.Inputs);

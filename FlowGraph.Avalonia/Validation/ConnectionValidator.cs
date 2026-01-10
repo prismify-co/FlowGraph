@@ -69,7 +69,7 @@ public class ConnectionValidationResult
     /// <summary>
     /// Creates a failed validation result with an optional message.
     /// </summary>
-    public static ConnectionValidationResult Invalid(string? message = null) => 
+    public static ConnectionValidationResult Invalid(string? message = null) =>
         new() { IsValid = false, Message = message };
 }
 
@@ -112,7 +112,7 @@ public class NoDuplicateConnectionValidator : IConnectionValidator
 {
     public ConnectionValidationResult Validate(ConnectionContext context)
     {
-        var exists = context.Graph.Edges.Any(e =>
+        var exists = context.Graph.Elements.Edges.Any(e =>
             e.Source == context.SourceNode.Id &&
             e.Target == context.TargetNode.Id &&
             e.SourcePort == context.SourcePort.Id &&
@@ -176,7 +176,7 @@ public class NoCycleConnectionValidator : IConnectionValidator
                 continue;
 
             // Find all nodes that this node connects to
-            foreach (var edge in graph.Edges.Where(e => e.Source == current))
+            foreach (var edge in graph.Elements.Edges.Where(e => e.Source == current))
             {
                 queue.Enqueue(edge.Target);
             }

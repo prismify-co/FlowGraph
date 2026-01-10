@@ -53,10 +53,10 @@ public class BoxSelectingState : InputStateBase
     {
         var screenPos = GetPosition(context, e);
         _endCanvas = context.ScreenToCanvas(screenPos);
-        
+
         UpdateSelectionBoxVisual();
         UpdateSelection(context, e.KeyModifiers.HasFlag(KeyModifiers.Control));
-        
+
         e.Handled = true;
         return StateTransitionResult.Stay();
     }
@@ -105,7 +105,7 @@ public class BoxSelectingState : InputStateBase
             Math.Abs(_endCanvas.Y - _startCanvas.Y)
         );
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             // Skip non-selectable nodes
             if (!node.IsSelectable)

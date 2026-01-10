@@ -5,6 +5,7 @@ using Avalonia.Input;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Avalonia.Rendering.PortRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
@@ -115,7 +116,7 @@ public class NodeVisualManager
     {
         // Render groups first (they should be behind their children)
         // Order by hierarchy depth - outermost groups first
-        var groups = graph.Nodes
+        var groups = graph.Elements.Nodes
             .Where(n => n.IsGroup && IsNodeVisible(graph, n) && IsInVisibleBounds(n))
             .OrderBy(n => GetGroupDepth(graph, n))
             .ToList();
@@ -126,7 +127,7 @@ public class NodeVisualManager
         }
 
         // Then render non-group nodes that are visible
-        foreach (var node in graph.Nodes.Where(n => !n.IsGroup && IsNodeVisible(graph, n) && IsInVisibleBounds(n)))
+        foreach (var node in graph.Elements.Nodes.Where(n => !n.IsGroup && IsNodeVisible(graph, n) && IsInVisibleBounds(n)))
         {
             RenderNode(canvas, node, theme, onNodeCreated);
         }
@@ -155,8 +156,10 @@ public class NodeVisualManager
         ThemeResources theme,
         Action<Control, Node>? onNodeCreated = null)
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [NodeVisualManager.RenderNode] CALLED for node '{node.Label}' (type={node.Type}, id={node.Id})\n");
-        
+        FlowGraphLogger.Debug(LogCategory.Nodes,
+            $"RenderNode called for '{node.Label}' (type={node.Type}, id={node.Id})",
+            "NodeVisualManager.RenderNode");
+
         var scale = _renderContext.Scale;
         var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
 
@@ -177,7 +180,9 @@ public class NodeVisualManager
         if (node.Type == "sequence-message")
         {
             var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
-            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager] Rendering '{node.Label}': canvas=({node.Position.X:F1}, {node.Position.Y:F1}), screen=({screenPos.X:F1}, {screenPos.Y:F1}), canvasSize=({node.Width}x{node.Height}), visualSize=({nodeWidth:F1}x{nodeHeight:F1}), scale={_renderContext.Scale:F2}");
+            FlowGraphLogger.Debug(LogCategory.CustomRenderers,
+                $"Rendering '{node.Label}': canvas=({node.Position.X:F1},{node.Position.Y:F1}), screen=({screenPos.X:F1},{screenPos.Y:F1}), canvasSize=({node.Width}x{node.Height}), visualSize=({nodeWidth:F1}x{nodeHeight:F1}), scale={_renderContext.Scale:F2}",
+                "NodeVisualManager.RenderNode");
         }
 
         Canvas.SetLeft(control, screenPos.X);
@@ -512,7 +517,7 @@ public class NodeVisualManager
         while (!string.IsNullOrEmpty(current.ParentGroupId))
         {
             depth++;
-            current = graph.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
+            current = graph.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
             if (current == null) break;
         }
         return depth;

@@ -35,7 +35,7 @@ public class GroupNodesCommand : IGraphCommand
         // Store previous parent group IDs for undo
         foreach (var nodeId in _nodeIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 _previousParentGroupIds[nodeId] = node.ParentGroupId;
@@ -44,7 +44,7 @@ public class GroupNodesCommand : IGraphCommand
 
         // Calculate group bounds based on child nodes
         var nodes = _nodeIds
-            .Select(id => _graph.Nodes.FirstOrDefault(n => n.Id == id))
+            .Select(id => _graph.Elements.Nodes.FirstOrDefault(n => n.Id == id))
             .Where(n => n != null)
             .Cast<Node>()
             .ToList();
@@ -107,7 +107,7 @@ public class GroupNodesCommand : IGraphCommand
         // Restore previous parent group IDs
         foreach (var (nodeId, previousParentId) in _previousParentGroupIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.ParentGroupId = previousParentId;
@@ -143,7 +143,7 @@ public class UngroupNodesCommand : IGraphCommand
 
     public void Execute()
     {
-        var group = _graph.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
+        var group = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
         if (group == null)
             return;
 
@@ -176,7 +176,7 @@ public class UngroupNodesCommand : IGraphCommand
             // Restore children's parent group IDs
             foreach (var (nodeId, previousParentId) in _previousParentGroupIds)
             {
-                var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
                 if (node != null)
                 {
                     node.ParentGroupId = previousParentId;
@@ -205,7 +205,7 @@ public class ToggleGroupCollapseCommand : IGraphCommand
 
     public void Execute()
     {
-        var group = _graph.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
+        var group = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
         if (group == null)
             return;
 
@@ -216,7 +216,7 @@ public class ToggleGroupCollapseCommand : IGraphCommand
 
     public void Undo()
     {
-        var group = _graph.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
+        var group = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
         if (group != null)
         {
             group.IsCollapsed = _previousState;
@@ -247,13 +247,13 @@ public class AddNodesToGroupCommand : IGraphCommand
 
     public void Execute()
     {
-        var group = _graph.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
+        var group = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == _groupId && n.IsGroup);
         if (group == null)
             return;
 
         foreach (var nodeId in _nodeIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null && node.Id != _groupId)
             {
                 _previousParentGroupIds[nodeId] = node.ParentGroupId;
@@ -266,7 +266,7 @@ public class AddNodesToGroupCommand : IGraphCommand
     {
         foreach (var (nodeId, previousParentId) in _previousParentGroupIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.ParentGroupId = previousParentId;
@@ -298,13 +298,13 @@ public class RemoveNodesFromGroupCommand : IGraphCommand
     {
         foreach (var nodeId in _nodeIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null && !string.IsNullOrEmpty(node.ParentGroupId))
             {
                 _previousParentGroupIds[nodeId] = node.ParentGroupId;
 
                 // Get the group's parent to handle nested groups
-                var group = _graph.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId);
+                var group = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId);
                 node.ParentGroupId = group?.ParentGroupId;
             }
         }
@@ -314,7 +314,7 @@ public class RemoveNodesFromGroupCommand : IGraphCommand
     {
         foreach (var (nodeId, previousParentId) in _previousParentGroupIds)
         {
-            var node = _graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.ParentGroupId = previousParentId;

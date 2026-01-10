@@ -76,10 +76,10 @@ public partial class MainWindow : Window
         var executor = FlowCanvas.EnableDataFlow();
 
         // Create processors for input nodes
-        var colorNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "shape-color");
-        var shapeNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "shape-type");
-        var zoomNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "zoom-level");
-        var outputNode = FlowCanvas.Graph.Nodes.FirstOrDefault(n => n.Id == "output");
+        var colorNode = FlowCanvas.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == "shape-color");
+        var shapeNode = FlowCanvas.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == "shape-type");
+        var zoomNode = FlowCanvas.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == "zoom-level");
+        var outputNode = FlowCanvas.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == "output");
 
         if (colorNode != null)
         {
@@ -225,7 +225,7 @@ public partial class MainWindow : Window
 
     private void OnAnimateNodeClick(object? sender, RoutedEventArgs e)
     {
-        var selectedNodes = FlowCanvas.Graph?.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
+        var selectedNodes = FlowCanvas.Graph?.Elements.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
         if (selectedNodes == null || selectedNodes.Count == 0)
         {
             SetStatus("Select nodes first");
@@ -248,7 +248,7 @@ public partial class MainWindow : Window
 
     private void OnCenterOnNodeClick(object? sender, RoutedEventArgs e)
     {
-        var selectedNode = FlowCanvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected && !n.IsGroup);
+        var selectedNode = FlowCanvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected && !n.IsGroup);
         if (selectedNode == null)
         {
             SetStatus("Select a node first");
@@ -261,7 +261,7 @@ public partial class MainWindow : Window
 
     private void OnNodePulseClick(object? sender, RoutedEventArgs e)
     {
-        var selectedNodes = FlowCanvas.Graph?.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
+        var selectedNodes = FlowCanvas.Graph?.Elements.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
         if (selectedNodes == null || selectedNodes.Count == 0)
         {
             SetStatus("Select nodes first");
@@ -277,7 +277,7 @@ public partial class MainWindow : Window
 
     private void OnNodePopClick(object? sender, RoutedEventArgs e)
     {
-        var selectedNodes = FlowCanvas.Graph?.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
+        var selectedNodes = FlowCanvas.Graph?.Elements.Nodes.Where(n => n.IsSelected && !n.IsGroup).ToList();
         if (selectedNodes == null || selectedNodes.Count == 0)
         {
             SetStatus("Select nodes first");
@@ -420,8 +420,8 @@ public partial class MainWindow : Window
 
     private Edge? GetSelectedOrFirstEdge()
     {
-        var selected = FlowCanvas.Graph?.Edges.FirstOrDefault(e => e.IsSelected);
-        return selected ?? FlowCanvas.Graph?.Edges.FirstOrDefault();
+        var selected = FlowCanvas.Graph?.Elements.Edges.FirstOrDefault(e => e.IsSelected);
+        return selected ?? FlowCanvas.Graph?.Elements.Edges.FirstOrDefault();
     }
 
     #endregion
@@ -430,7 +430,7 @@ public partial class MainWindow : Window
 
     private void OnGroupCollapseClick(object? sender, RoutedEventArgs e)
     {
-        var selectedGroup = FlowCanvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup && !n.IsCollapsed);
+        var selectedGroup = FlowCanvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup && !n.IsCollapsed);
         if (selectedGroup == null)
         {
             SetStatus("Select an expanded group");
@@ -463,7 +463,7 @@ public partial class MainWindow : Window
 
     private void OnGroupExpandClick(object? sender, RoutedEventArgs e)
     {
-        var selectedGroup = FlowCanvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup && n.IsCollapsed);
+        var selectedGroup = FlowCanvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected && n.IsGroup && n.IsCollapsed);
         if (selectedGroup == null)
         {
             SetStatus("Select a collapsed group");
@@ -502,13 +502,13 @@ public partial class MainWindow : Window
         var graph = FlowCanvas.Graph;
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null || group.IsCollapsed) return;
 
         // Get children and connected edges for logging
         var children = graph.GetGroupChildren(groupId).ToList();
         var childIds = children.Select(c => c.Id).ToHashSet();
-        var connectedEdges = graph.Edges
+        var connectedEdges = graph.Elements.Edges
             .Where(e => childIds.Contains(e.Source) || childIds.Contains(e.Target))
             .ToList();
 
@@ -674,8 +674,11 @@ public partial class MainWindow : Window
         var graph = FlowCanvas.Graph;
         if (graph == null) return;
 
+        // Use legacy properties for Clear() - Elements returns IEnumerable
+#pragma warning disable CS0618
         graph.Edges.Clear();
         graph.Nodes.Clear();
+#pragma warning restore CS0618
         FlowCanvas.Refresh();
         SetStatus("Graph cleared");
     }
@@ -701,9 +704,11 @@ public partial class MainWindow : Window
             FlowCanvas.DisableDirectRendering();
         }
 
-        // Clear existing
+        // Clear existing - Use legacy properties for Clear() - Elements returns IEnumerable
+#pragma warning disable CS0618
         graph.Edges.Clear();
         graph.Nodes.Clear();
+#pragma warning restore CS0618
 
         var sw = System.Diagnostics.Stopwatch.StartNew();
         var random = new Random(42); // Fixed seed for reproducibility
@@ -861,7 +866,7 @@ public partial class MainWindow : Window
 
     private void OnToolbarCenterClick(object? sender, RoutedEventArgs e)
     {
-        var selectedNode = FlowCanvas.Graph?.Nodes.FirstOrDefault(n => n.IsSelected);
+        var selectedNode = FlowCanvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
         if (selectedNode != null)
         {
             FlowCanvas.CenterOnNodeAnimated(selectedNode, duration: 0.3);

@@ -109,7 +109,7 @@ public class EdgeRoutingService
         var result = new Dictionary<string, IReadOnlyList<Point>>();
         var context = CreateContext(graph);
 
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             if (IsRoutingEnabled)
             {
@@ -161,8 +161,8 @@ public class EdgeRoutingService
 
     private IReadOnlyList<Point> GetSimpleRoute(Graph graph, Edge edge)
     {
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return [];

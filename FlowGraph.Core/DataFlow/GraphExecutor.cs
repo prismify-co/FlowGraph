@@ -1,3 +1,7 @@
+// CS0618: Suppress obsolete warnings - GraphExecutor subscribes to CollectionChanged
+// events on Graph.Nodes/Edges which require the ObservableCollection properties.
+#pragma warning disable CS0618
+
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 

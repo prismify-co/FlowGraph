@@ -98,7 +98,7 @@ public partial class FlowCanvas
                 if (Graph != null && _graphRenderer != null)
                 {
                     Debug.WriteLine($"[Input]   Canvas has {_mainCanvas?.Children.Count} children, checking node visuals:");
-                    foreach (var node in Graph.Nodes.Take(5))
+                    foreach (var node in Graph.Elements.Nodes.Take(5))
                     {
                         var visual = _graphRenderer.GetNodeVisual(node.Id);
                         if (visual != null)
@@ -410,7 +410,7 @@ public partial class FlowCanvas
             // This preserves multi-selection for grouping etc.
             if (!node.IsSelected && Graph != null)
             {
-                foreach (var n in Graph.Nodes)
+                foreach (var n in Graph.Elements.Nodes)
                     n.IsSelected = false;
                 node.IsSelected = true;
             }
@@ -421,9 +421,9 @@ public partial class FlowCanvas
             // Only change selection if the clicked edge is NOT already selected
             if (!edge.IsSelected && Graph != null)
             {
-                foreach (var n in Graph.Nodes)
+                foreach (var n in Graph.Elements.Nodes)
                     n.IsSelected = false;
-                foreach (var ed in Graph.Edges)
+                foreach (var ed in Graph.Elements.Edges)
                     ed.IsSelected = false;
                 edge.IsSelected = true;
             }
@@ -448,7 +448,7 @@ public partial class FlowCanvas
                 // Only change selection if the clicked node is NOT already selected
                 if (!hitNode.IsSelected)
                 {
-                    foreach (var n in Graph?.Nodes ?? [])
+                    foreach (var n in Graph?.Elements.Nodes ?? [])
                         n.IsSelected = false;
                     hitNode.IsSelected = true;
                 }
@@ -459,7 +459,7 @@ public partial class FlowCanvas
                 // Only change selection if the clicked edge is NOT already selected
                 if (!hitEdge.IsSelected)
                 {
-                    foreach (var ed in Graph?.Edges ?? [])
+                    foreach (var ed in Graph?.Elements.Edges ?? [])
                         ed.IsSelected = false;
                     hitEdge.IsSelected = true;
                 }

@@ -67,7 +67,7 @@ public partial class FlowCanvas
     /// </summary>
     public void FitToView()
     {
-        if (Graph == null || Graph.Nodes.Count == 0) return;
+        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var bounds = CalculateGraphBounds();
         _viewport.FitToBounds(bounds, Bounds.Size);
@@ -79,13 +79,13 @@ public partial class FlowCanvas
     /// </summary>
     public void CenterOnGraph()
     {
-        if (Graph == null || Graph.Nodes.Count == 0) return;
+        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var bounds = CalculateGraphBounds();
         var center = new AvaloniaPoint(
             bounds.X + bounds.Width / 2,
             bounds.Y + bounds.Height / 2);
-        
+
         _viewport.CenterOn(center);
         RenderGrid();
     }
@@ -105,26 +105,26 @@ public partial class FlowCanvas
 
     private AvaloniaPoint? GetGraphCenterInScreenCoords()
     {
-        if (Graph == null || Graph.Nodes.Count == 0)
+        if (Graph == null || !Graph.Elements.Nodes.Any())
             return null;
 
         var bounds = CalculateGraphBounds();
         var center = new AvaloniaPoint(
             bounds.X + bounds.Width / 2,
             bounds.Y + bounds.Height / 2);
-        
+
         return _viewport.CanvasToScreen(center);
     }
 
     private Rect CalculateGraphBounds()
     {
-        if (Graph == null || Graph.Nodes.Count == 0)
+        if (Graph == null || !Graph.Elements.Nodes.Any())
             return default;
 
-        var minX = Graph.Nodes.Min(n => n.Position.X);
-        var minY = Graph.Nodes.Min(n => n.Position.Y);
-        var maxX = Graph.Nodes.Max(n => n.Position.X + (n.Width ?? Settings.NodeWidth));
-        var maxY = Graph.Nodes.Max(n => n.Position.Y + (n.Height ?? Settings.NodeHeight));
+        var minX = Graph.Elements.Nodes.Min(n => n.Position.X);
+        var minY = Graph.Elements.Nodes.Min(n => n.Position.Y);
+        var maxX = Graph.Elements.Nodes.Max(n => n.Position.X + (n.Width ?? Settings.NodeWidth));
+        var maxY = Graph.Elements.Nodes.Max(n => n.Position.Y + (n.Height ?? Settings.NodeHeight));
 
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }

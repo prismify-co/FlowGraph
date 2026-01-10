@@ -19,7 +19,7 @@ public class DraggingState : InputStateBase
     private readonly List<Node> _draggedNodes;
     private bool _dragStartRaised;
     private bool _dragThresholdMet;
-    
+
     // Minimum distance (in screen pixels) before drag actually starts
     private const double DragThreshold = 4.0;
 
@@ -38,11 +38,11 @@ public class DraggingState : InputStateBase
 
         // Collect all nodes to drag: selected AND draggable nodes + children of selected groups
         var nodesToDrag = new HashSet<string>();
-        
-        foreach (var node in graph.Nodes.Where(n => n.IsSelected && n.IsDraggable))
+
+        foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected && n.IsDraggable))
         {
             nodesToDrag.Add(node.Id);
-            
+
             if (node.IsGroup)
             {
                 // Include all children of dragged groups (even if not individually draggable)
@@ -55,7 +55,7 @@ public class DraggingState : InputStateBase
 
         foreach (var nodeId in nodesToDrag)
         {
-            var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 _startPositions[node.Id] = node.Position;
@@ -77,29 +77,29 @@ public class DraggingState : InputStateBase
         if (graph == null) return StateTransitionResult.Unhandled();
 
         var currentScreen = GetPosition(context, e);
-        
+
         // Check if we've met the drag threshold
         if (!_dragThresholdMet)
         {
             var distX = currentScreen.X - _dragStartScreen.X;
             var distY = currentScreen.Y - _dragStartScreen.Y;
             var distance = Math.Sqrt(distX * distX + distY * distY);
-            
+
             if (distance < DragThreshold)
             {
                 // Haven't moved enough yet - don't start dragging
                 return StateTransitionResult.Stay();
             }
-            
+
             // Threshold met - start actual drag
             _dragThresholdMet = true;
-            
+
             // Set IsDragging on all nodes now
             foreach (var node in _draggedNodes)
             {
                 node.IsDragging = true;
             }
-            
+
             // Raise drag start event
             var startPos = new Core.Point(_dragStartCanvas.X, _dragStartCanvas.Y);
             context.RaiseNodeDragStart(_draggedNodes, startPos);
@@ -112,7 +112,7 @@ public class DraggingState : InputStateBase
 
         foreach (var (nodeId, startPos) in _startPositions)
         {
-            var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 var newX = startPos.X + deltaX;
@@ -160,7 +160,7 @@ public class DraggingState : InputStateBase
         var newPositions = new Dictionary<string, Core.Point>();
         foreach (var (nodeId, _) in _startPositions)
         {
-            var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
             if (node != null)
             {
                 node.IsDragging = false;
@@ -201,7 +201,7 @@ public class DraggingState : InputStateBase
             {
                 foreach (var (nodeId, startPos) in _startPositions)
                 {
-                    var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                    var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
                     if (node != null)
                     {
                         node.IsDragging = false;

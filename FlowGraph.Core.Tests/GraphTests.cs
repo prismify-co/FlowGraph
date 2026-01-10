@@ -7,8 +7,8 @@ public class GraphTests
     {
         var graph = new Graph();
 
-        Assert.Empty(graph.Nodes);
-        Assert.Empty(graph.Edges);
+        Assert.Empty(graph.Elements.Nodes);
+        Assert.Empty(graph.Elements.Edges);
     }
 
     [Fact]
@@ -19,8 +19,8 @@ public class GraphTests
 
         graph.AddNode(node);
 
-        Assert.Single(graph.Nodes);
-        Assert.Contains(node, graph.Nodes);
+        Assert.Single(graph.Elements.Nodes);
+        Assert.Contains(node, graph.Elements.Nodes);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class GraphTests
 
         graph.RemoveNode(node.Id);
 
-        Assert.Empty(graph.Nodes);
+        Assert.Empty(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -62,12 +62,12 @@ public class GraphTests
             TargetPort = "in1"
         });
 
-        Assert.Single(graph.Edges);
+        Assert.Single(graph.Elements.Edges);
 
         graph.RemoveNode(node1.Id);
 
-        Assert.Empty(graph.Edges);
-        Assert.Single(graph.Nodes);
+        Assert.Empty(graph.Elements.Edges);
+        Assert.Single(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class GraphTests
 
         graph.RemoveNode("unknown-id");
 
-        Assert.Single(graph.Nodes);
+        Assert.Single(graph.Elements.Nodes);
     }
 
     [Fact]
@@ -103,8 +103,8 @@ public class GraphTests
         };
         graph.AddEdge(edge);
 
-        Assert.Single(graph.Edges);
-        Assert.Contains(edge, graph.Edges);
+        Assert.Single(graph.Elements.Edges);
+        Assert.Contains(edge, graph.Elements.Edges);
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class GraphTests
 
         graph.RemoveEdge(edge.Id);
 
-        Assert.Empty(graph.Edges);
+        Assert.Empty(graph.Elements.Edges);
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class GraphTests
 
         graph.RemoveEdge("unknown-id");
 
-        Assert.Single(graph.Edges);
+        Assert.Single(graph.Elements.Edges);
     }
 
     [Fact]

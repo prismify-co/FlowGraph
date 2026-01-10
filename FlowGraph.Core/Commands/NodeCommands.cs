@@ -18,7 +18,7 @@ public class AddNodeCommand : IGraphCommand
 
     public void Execute()
     {
-        if (!_graph.Nodes.Any(n => n.Id == _node.Id))
+        if (!_graph.Elements.Nodes.Any(n => n.Id == _node.Id))
         {
             _graph.AddNode(_node);
         }
@@ -45,9 +45,9 @@ public class RemoveNodeCommand : IGraphCommand
     {
         _graph = graph ?? throw new ArgumentNullException(nameof(graph));
         _node = node ?? throw new ArgumentNullException(nameof(node));
-        
+
         // Store connected edges so we can restore them on undo
-        _connectedEdges = _graph.Edges
+        _connectedEdges = _graph.Elements.Edges
             .Where(e => e.Source == node.Id || e.Target == node.Id)
             .ToList();
     }
@@ -60,7 +60,7 @@ public class RemoveNodeCommand : IGraphCommand
     public void Undo()
     {
         // Re-add the node
-        if (!_graph.Nodes.Any(n => n.Id == _node.Id))
+        if (!_graph.Elements.Nodes.Any(n => n.Id == _node.Id))
         {
             _graph.AddNode(_node);
         }
@@ -68,7 +68,7 @@ public class RemoveNodeCommand : IGraphCommand
         // Re-add connected edges
         foreach (var edge in _connectedEdges)
         {
-            if (!_graph.Edges.Any(e => e.Id == edge.Id))
+            if (!_graph.Elements.Edges.Any(e => e.Id == edge.Id))
             {
                 _graph.AddEdge(edge);
             }
@@ -85,21 +85,21 @@ public class RemoveNodesCommand : IGraphCommand
     private readonly List<Node> _nodes;
     private readonly List<Edge> _connectedEdges;
 
-    public string Description => _nodes.Count == 1 
-        ? $"Remove {_nodes[0].Type} node" 
+    public string Description => _nodes.Count == 1
+        ? $"Remove {_nodes[0].Type} node"
         : $"Remove {_nodes.Count} nodes";
 
     public RemoveNodesCommand(Graph graph, IEnumerable<Node> nodes)
     {
         _graph = graph ?? throw new ArgumentNullException(nameof(graph));
         _nodes = nodes.ToList();
-        
+
         if (_nodes.Count == 0)
             throw new ArgumentException("At least one node must be specified", nameof(nodes));
 
         // Store connected edges
         var nodeIds = new HashSet<string>(_nodes.Select(n => n.Id));
-        _connectedEdges = _graph.Edges
+        _connectedEdges = _graph.Elements.Edges
             .Where(e => nodeIds.Contains(e.Source) || nodeIds.Contains(e.Target))
             .ToList();
     }
@@ -117,7 +117,7 @@ public class RemoveNodesCommand : IGraphCommand
         // Re-add nodes
         foreach (var node in _nodes)
         {
-            if (!_graph.Nodes.Any(n => n.Id == node.Id))
+            if (!_graph.Elements.Nodes.Any(n => n.Id == node.Id))
             {
                 _graph.AddNode(node);
             }
@@ -126,7 +126,7 @@ public class RemoveNodesCommand : IGraphCommand
         // Re-add connected edges
         foreach (var edge in _connectedEdges)
         {
-            if (!_graph.Edges.Any(e => e.Id == edge.Id))
+            if (!_graph.Elements.Edges.Any(e => e.Id == edge.Id))
             {
                 _graph.AddEdge(edge);
             }

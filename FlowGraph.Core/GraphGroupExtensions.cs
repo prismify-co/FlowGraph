@@ -10,7 +10,7 @@ public static class GraphGroupExtensions
     /// </summary>
     public static IEnumerable<Node> GetGroupChildren(this Graph graph, string groupId)
     {
-        return graph.Nodes.Where(n => n.ParentGroupId == groupId);
+        return graph.Elements.Nodes.Where(n => n.ParentGroupId == groupId);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public static class GraphGroupExtensions
         if (string.IsNullOrEmpty(node.ParentGroupId))
             return null;
 
-        return graph.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId && n.IsGroup);
+        return graph.Elements.Nodes.FirstOrDefault(n => n.Id == node.ParentGroupId && n.IsGroup);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public static class GraphGroupExtensions
     /// </summary>
     public static IEnumerable<Node> GetGroups(this Graph graph)
     {
-        return graph.Nodes.Where(n => n.IsGroup);
+        return graph.Elements.Nodes.Where(n => n.IsGroup);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public static class GraphGroupExtensions
     /// </summary>
     public static IEnumerable<Node> GetTopLevelNodes(this Graph graph)
     {
-        return graph.Nodes.Where(n => string.IsNullOrEmpty(n.ParentGroupId));
+        return graph.Elements.Nodes.Where(n => string.IsNullOrEmpty(n.ParentGroupId));
     }
 
     /// <summary>
@@ -129,8 +129,8 @@ public static class GraphGroupExtensions
     /// </summary>
     public static bool IsEdgeInternalToGroup(this Graph graph, Edge edge, string groupId)
     {
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return false;
@@ -148,8 +148,8 @@ public static class GraphGroupExtensions
     /// </summary>
     public static bool IsEdgeCrossingGroup(this Graph graph, Edge edge, string groupId)
     {
-        var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+        var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
 
         if (sourceNode == null || targetNode == null)
             return false;
@@ -167,7 +167,7 @@ public static class GraphGroupExtensions
     /// </summary>
     public static IEnumerable<Edge> GetEdgesCrossingGroup(this Graph graph, string groupId)
     {
-        return graph.Edges.Where(e => graph.IsEdgeCrossingGroup(e, groupId));
+        return graph.Elements.Edges.Where(e => graph.IsEdgeCrossingGroup(e, groupId));
     }
 
     /// <summary>
@@ -175,6 +175,6 @@ public static class GraphGroupExtensions
     /// </summary>
     public static IEnumerable<Edge> GetEdgesInternalToGroup(this Graph graph, string groupId)
     {
-        return graph.Edges.Where(e => graph.IsEdgeInternalToGroup(e, groupId));
+        return graph.Elements.Edges.Where(e => graph.IsEdgeInternalToGroup(e, groupId));
     }
 }

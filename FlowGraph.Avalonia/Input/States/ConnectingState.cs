@@ -236,7 +236,7 @@ public class ConnectingState : InputStateBase
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
 
-        foreach (var node in graph.Nodes)
+        foreach (var node in graph.Elements.Nodes)
         {
             // Skip the source node and non-connectable nodes
             if (node.Id == _sourceNode.Id || !node.IsConnectable || node.IsGroup)

@@ -122,7 +122,7 @@ public class EdgeRoutingManager
         SyncSettings();
 
         var nodeIdSet = nodeIds.ToHashSet();
-        var affectedEdges = graph.Edges
+        var affectedEdges = graph.Elements.Edges
             .Where(e => nodeIdSet.Contains(e.Source) || nodeIdSet.Contains(e.Target))
             .ToList();
 
@@ -246,7 +246,7 @@ public class EdgeRoutingManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var edge in graph.Edges)
+        foreach (var edge in graph.Elements.Edges)
         {
             edge.Waypoints?.Clear();
         }
@@ -269,7 +269,7 @@ public class EdgeRoutingManager
         if (graph == null) return;
 
         var nodeIdSet = nodeIds.ToHashSet();
-        var affectedEdges = graph.Edges
+        var affectedEdges = graph.Elements.Edges
             .Where(e => nodeIdSet.Contains(e.Source) || nodeIdSet.Contains(e.Target));
 
         foreach (var edge in affectedEdges)
@@ -327,7 +327,7 @@ public class EdgeRoutingManager
     {
         foreach (var (edgeId, waypoints) in routes)
         {
-            var edge = graph.Edges.FirstOrDefault(e => e.Id == edgeId);
+            var edge = graph.Elements.Edges.FirstOrDefault(e => e.Id == edgeId);
             if (edge != null)
             {
                 ApplyRouteToEdge(edge, waypoints);

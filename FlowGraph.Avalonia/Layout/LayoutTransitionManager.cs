@@ -32,7 +32,7 @@ public sealed class LayoutTransitionManager
         var graph = _getGraph();
         if (graph == null || targetPositions.Count == 0) return;
 
-        var start = graph.Nodes
+        var start = graph.Elements.Nodes
             .Where(n => targetPositions.ContainsKey(n.Id))
             .ToDictionary(n => n.Id, n => n.Position);
 
@@ -44,7 +44,7 @@ public sealed class LayoutTransitionManager
             {
                 foreach (var (nodeId, pos) in positions)
                 {
-                    var node = graph.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                    var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
                     if (node != null)
                     {
                         node.Position = pos;

@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using FlowGraph.Core;
+using FlowGraph.Core.Diagnostics;
+using FlowGraph.Core.Elements.Shapes;
 using System.Diagnostics;
 
 namespace FlowGraph.Avalonia;
@@ -89,14 +91,15 @@ public partial class FlowCanvas
 
     private void RenderAll()
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderAll] CALLED\n");
-        
+        FlowGraphLogger.Debug(LogCategory.Rendering, "RenderAll called", "FlowCanvas.RenderAll");
+
         // Clear grid canvas once at the start of rendering
         _gridCanvas?.Children.Clear();
 
         RenderGrid();
         RenderCustomBackgrounds();
-        RenderGraph();
+        RenderShapes();
+        RenderElements();
     }
 
     private void RenderGrid()
@@ -127,27 +130,81 @@ public partial class FlowCanvas
             Graph = Graph,
             VisibleBounds = new global::Avalonia.Rect(0, 0, Bounds.Width, Bounds.Height),
             Offset = new global::Avalonia.Point(_viewport.OffsetX, _viewport.OffsetY),
+            // CanvasToScreen: converts canvas coordinates to screen coordinates
+            // Same formula as ViewportState.CanvasToScreen: screenX = canvasX * Zoom + OffsetX
             CanvasToScreen = (x, y) => new global::Avalonia.Point(
-                (x - _viewport.OffsetX) * _viewport.Zoom,
-                (y - _viewport.OffsetY) * _viewport.Zoom),
+                x * _viewport.Zoom + _viewport.OffsetX,
+                y * _viewport.Zoom + _viewport.OffsetY),
+            // ScreenToCanvas: converts screen coordinates to canvas coordinates  
+            // Same formula as ViewportState.ScreenToCanvas: canvasX = (screenX - OffsetX) / Zoom
             ScreenToCanvas = (x, y) => new global::Avalonia.Point(
-                x / _viewport.Zoom + _viewport.OffsetX,
-                y / _viewport.Zoom + _viewport.OffsetY)
+                (x - _viewport.OffsetX) / _viewport.Zoom,
+                (y - _viewport.OffsetY) / _viewport.Zoom)
         };
 
         registry.Render(_gridCanvas, context);
     }
 
-    private void RenderGraph()
+    private void RenderShapes()
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderGraph] CALLED - MainCanvas null: {_mainCanvas == null}, Graph null: {Graph == null}, Theme null: {_theme == null}\n");
-        
+        if (_shapeVisualManager == null || Graph == null) return;
+
+        var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+
+        // Update the render context with current viewport state
+        var renderContext = new Rendering.RenderContext(Settings);
+        renderContext.SetViewport(_viewport);
+        _shapeVisualManager.SetRenderContext(renderContext);
+
+        // Get all shape elements from the graph
+        var shapes = Graph.Elements.OfElementType<ShapeElement>().ToList();
+
+        if (shapes.Count == 0)
+        {
+            // Clear any existing shape visuals if no shapes
+            _shapeVisualManager.Clear();
+            return;
+        }
+
+        // Track which shapes still exist for cleanup
+        var existingShapeIds = _shapeVisualManager.GetShapeIds().ToHashSet();
+
+        // Render shapes ordered by Z-index
+        foreach (var shape in shapes.OrderBy(s => s.ZIndex))
+        {
+            _shapeVisualManager.AddOrUpdateShape(shape);
+            existingShapeIds.Remove(shape.Id);
+        }
+
+        // Remove visuals for shapes that no longer exist
+        foreach (var removedId in existingShapeIds)
+        {
+            _shapeVisualManager.RemoveShape(removedId);
+        }
+
+        if (DebugRenderingPerformance && sw != null)
+        {
+            sw.Stop();
+            FlowGraphLogger.Debug(LogCategory.Rendering,
+                $"[RenderShapes] {sw.ElapsedMilliseconds}ms | Rendered: {shapes.Count} shapes",
+                "FlowCanvas.RenderShapes");
+        }
+    }
+
+    private void RenderElements()
+    {
+        FlowGraphLogger.Debug(LogCategory.Rendering,
+            $"RenderElements called - MainCanvas null: {_mainCanvas == null}, Graph null: {Graph == null}, Theme null: {_theme == null}",
+            "FlowCanvas.RenderElements");
+
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-        
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderGraph] Graph has {Graph.Nodes.Count} nodes, DirectRendering: {_useDirectRendering}\n");
+
+        FlowGraphLogger.Debug(LogCategory.Rendering,
+            $"Graph has {Graph.Elements.Nodes.Count()} nodes, DirectRendering: {_useDirectRendering}",
+            "FlowCanvas.RenderElements");
 
         // Auto-switch to direct rendering mode based on node count threshold
-        var nodeCount = Graph.Nodes.Count;
+        var nodeCount = Graph.Elements.Nodes.Count();
         var threshold = Settings.DirectRenderingNodeThreshold;
 
         if (threshold > 0 && nodeCount >= threshold && !_useDirectRendering)
@@ -159,7 +216,7 @@ public partial class FlowCanvas
         {
             // Auto-disable direct rendering when graph is small enough
             DisableDirectRendering();
-            return; // DisableDirectRendering calls RenderGraph
+            return; // DisableDirectRendering calls RenderElements
         }
 
         // Use direct rendering mode if enabled (bypasses visual tree for performance)
@@ -174,8 +231,8 @@ public partial class FlowCanvas
         EnsureCanvasInputHandlers();
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
-        var totalNodes = Graph.Nodes.Count;
-        var totalEdges = Graph.Edges.Count;
+        var totalNodes = Graph.Elements.Nodes.Count();
+        var totalEdges = Graph.Elements.Edges.Count();
 
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
@@ -218,7 +275,7 @@ public partial class FlowCanvas
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
 
         // Render groups ordered by depth (outermost first)
-        var groups = Graph.Nodes
+        var groups = Graph.Elements.Nodes
             .Where(n => n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
             .OrderBy(n => GetGroupDepth(n))
             .ToList();
@@ -241,26 +298,35 @@ public partial class FlowCanvas
 
     private void RenderRegularNodes()
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [FlowCanvas.RenderRegularNodes] CALLED - Graph null: {Graph == null}, MainCanvas null: {_mainCanvas == null}, Theme null: {_theme == null}\n");
-        
+        FlowGraphLogger.Debug(LogCategory.Rendering,
+            $"RenderRegularNodes called - Graph null: {Graph == null}, MainCanvas null: {_mainCanvas == null}, Theme null: {_theme == null}",
+            "FlowCanvas.RenderRegularNodes");
+
         if (_mainCanvas == null || Graph == null || _theme == null) return;
-        
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [FlowCanvas.RenderRegularNodes] Graph has {Graph.Nodes.Count} nodes\n");
+
+        FlowGraphLogger.Debug(LogCategory.Rendering,
+            $"Graph has {Graph.Elements.Nodes.Count()} nodes",
+            "FlowCanvas.RenderRegularNodes");
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
 
-        var nodesToRender = Graph.Nodes
+        var nodesToRender = Graph.Elements.Nodes
             .Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
             .ToList();
 
-        var sequenceNodes = Graph.Nodes.Where(n => n.Type == "sequence-message").ToList();
+        var sequenceNodes = Graph.Elements.Nodes.Where(n => n.Type == "sequence-message").ToList();
         if (sequenceNodes.Any())
         {
-            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderRegularNodes] Total graph nodes: {Graph.Nodes.Count}, Sequence nodes: {sequenceNodes.Count}, Nodes to render: {nodesToRender.Count}\n");
+            FlowGraphLogger.Debug(LogCategory.Nodes,
+                $"Sequence diagram: Total={Graph.Elements.Nodes.Count()}, SeqNodes={sequenceNodes.Count}, ToRender={nodesToRender.Count}",
+                "FlowCanvas.RenderRegularNodes");
+
             foreach (var node in sequenceNodes)
             {
                 var isVisible = _graphRenderer.IsNodeVisible(Graph, node);
-                System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderRegularNodes] Node '{node.Label}': Type={node.Type}, IsGroup={node.IsGroup}, Visible={isVisible}\n");
+                FlowGraphLogger.Debug(LogCategory.Nodes,
+                    $"Node '{node.Label}': Type={node.Type}, IsGroup={node.IsGroup}, Visible={isVisible}, Pos=({node.Position.X:F1},{node.Position.Y:F1})",
+                    "FlowCanvas.RenderRegularNodes");
             }
         }
 
@@ -291,7 +357,7 @@ public partial class FlowCanvas
         while (!string.IsNullOrEmpty(current.ParentGroupId))
         {
             depth++;
-            current = Graph?.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
+            current = Graph?.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
             if (current == null) break;
         }
         return depth;

@@ -105,8 +105,8 @@ public class GraphDto
     {
         return new GraphDto
         {
-            Nodes = graph.Nodes.Select(NodeDto.FromNode).ToList(),
-            Edges = graph.Edges.Select(EdgeDto.FromEdge).ToList()
+            Nodes = graph.Elements.Nodes.Select(NodeDto.FromNode).ToList(),
+            Edges = graph.Elements.Edges.Select(EdgeDto.FromEdge).ToList()
         };
     }
 

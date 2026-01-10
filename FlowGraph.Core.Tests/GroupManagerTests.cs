@@ -56,8 +56,8 @@ public class GroupManagerTests
         var group = manager.CreateGroup(["node1", "node2"]);
 
         Assert.NotNull(group);
-        Assert.Equal(group.Id, graph.Nodes.First(n => n.Id == "node1").ParentGroupId);
-        Assert.Equal(group.Id, graph.Nodes.First(n => n.Id == "node2").ParentGroupId);
+        Assert.Equal(group.Id, graph.Elements.Nodes.First(n => n.Id == "node1").ParentGroupId);
+        Assert.Equal(group.Id, graph.Elements.Nodes.First(n => n.Id == "node2").ParentGroupId);
     }
 
     [Fact]
@@ -198,7 +198,7 @@ public class GroupManagerTests
 
         manager.AddNodesToGroup(group!.Id, ["node3"]);
 
-        Assert.Equal(group.Id, graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Equal(group.Id, graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     [Fact]
@@ -229,7 +229,7 @@ public class GroupManagerTests
 
         manager.RemoveNodesFromGroup(["node3"]);
 
-        Assert.Null(graph.Nodes.First(n => n.Id == "node3").ParentGroupId);
+        Assert.Null(graph.Elements.Nodes.First(n => n.Id == "node3").ParentGroupId);
     }
 
     #endregion
@@ -289,7 +289,7 @@ public class GroupManagerTests
         var group = manager.CreateGroup(["node1", "node2"]);
 
         // Move a node to change bounds
-        var node2 = graph.Nodes.First(n => n.Id == "node2");
+        var node2 = graph.Elements.Nodes.First(n => n.Id == "node2");
         node2.Position = new Point(500, 300);
 
         manager.AutoResizeGroup(group!.Id);

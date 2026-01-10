@@ -10,13 +10,13 @@ namespace FlowGraph.Avalonia;
 public class GroupProxyManager
 {
     private readonly Func<Graph?> _getGraph;
-    
+
     /// <summary>
     /// Tracks the original edge info for edges that have been re-routed to proxy ports.
     /// Key: proxy edge ID, Value: original edge info
     /// </summary>
     private readonly Dictionary<string, ProxyEdgeInfo> _proxyEdges = new();
-    
+
     /// <summary>
     /// Tracks proxy ports created on groups.
     /// Key: group ID, Value: list of proxy port info
@@ -41,7 +41,7 @@ public class GroupProxyManager
         var graph = _getGraph();
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null) return;
 
         // Find all edges that cross this group's boundary
@@ -53,8 +53,8 @@ public class GroupProxyManager
 
         foreach (var edge in crossingEdges)
         {
-            var sourceNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = graph.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
+            var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
             if (sourceNode == null || targetNode == null) continue;
 
             var sourceInGroup = childIds.Contains(edge.Source);
@@ -64,7 +64,7 @@ public class GroupProxyManager
             {
                 // Edge goes FROM inside group TO outside - need output proxy port
                 var proxyPort = GetOrCreateProxyPort(group, proxyPortsForGroup, edge.SourcePort, true, edge.Source);
-                
+
                 // Store original edge info and update edge to use proxy
                 _proxyEdges[edge.Id] = new ProxyEdgeInfo
                 {
@@ -84,7 +84,7 @@ public class GroupProxyManager
             {
                 // Edge goes FROM outside group TO inside - need input proxy port
                 var proxyPort = GetOrCreateProxyPort(group, proxyPortsForGroup, edge.TargetPort, false, edge.Target);
-                
+
                 // Store original edge info and update edge to use proxy
                 _proxyEdges[edge.Id] = new ProxyEdgeInfo
                 {
@@ -105,7 +105,7 @@ public class GroupProxyManager
         if (proxyPortsForGroup.Count > 0)
         {
             _proxyPorts[groupId] = proxyPortsForGroup;
-            
+
             // Add proxy ports to the group node
             foreach (var proxyInfo in proxyPortsForGroup)
             {
@@ -134,7 +134,7 @@ public class GroupProxyManager
         var graph = _getGraph();
         if (graph == null) return;
 
-        var group = graph.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
+        var group = graph.Elements.Nodes.FirstOrDefault(n => n.Id == groupId && n.IsGroup);
         if (group == null) return;
 
         // Restore original edges
@@ -144,7 +144,7 @@ public class GroupProxyManager
 
         foreach (var (edgeId, proxyInfo) in edgesToRestore)
         {
-            var edge = graph.Edges.FirstOrDefault(e => e.Id == edgeId);
+            var edge = graph.Elements.Edges.FirstOrDefault(e => e.Id == edgeId);
             if (edge != null)
             {
                 edge.Source = proxyInfo.OriginalSource;
@@ -192,8 +192,8 @@ public class GroupProxyManager
     /// </summary>
     public IReadOnlyList<ProxyPortInfo> GetProxyPorts(string groupId)
     {
-        return _proxyPorts.TryGetValue(groupId, out var ports) 
-            ? ports 
+        return _proxyPorts.TryGetValue(groupId, out var ports)
+            ? ports
             : Array.Empty<ProxyPortInfo>();
     }
 
@@ -218,18 +218,18 @@ public class GroupProxyManager
     }
 
     private ProxyPortInfo GetOrCreateProxyPort(
-        Node group, 
-        List<ProxyPortInfo> proxyPortsForGroup, 
-        string originalPortId, 
+        Node group,
+        List<ProxyPortInfo> proxyPortsForGroup,
+        string originalPortId,
         bool isOutput,
         string originalNodeId)
     {
         // Check if we already have a proxy for this original port
-        var existing = proxyPortsForGroup.FirstOrDefault(p => 
-            p.OriginalPortId == originalPortId && 
+        var existing = proxyPortsForGroup.FirstOrDefault(p =>
+            p.OriginalPortId == originalPortId &&
             p.OriginalNodeId == originalNodeId &&
             p.IsOutput == isOutput);
-        
+
         if (existing != null)
             return existing;
 

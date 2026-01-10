@@ -5,6 +5,7 @@ This document describes the comprehensive logging and diagnostics infrastructure
 ## Overview
 
 FlowGraph includes a robust, production-quality diagnostics system designed to help:
+
 - **Developers** debug rendering, input, and coordinate issues
 - **Contributors** submit detailed bug reports with actionable context
 - **Users** troubleshoot issues in their applications
@@ -43,40 +44,40 @@ FlowGraphLogger.Configure(config => config
 
 ## Log Levels
 
-| Level | Purpose |
-|-------|---------|
-| `Trace` | Very fine-grained information (position changes, every render frame) |
-| `Debug` | Useful debugging info (method entry/exit, state changes) |
-| `Information` | General operational messages |
-| `Warning` | Potential issues that don't prevent operation |
-| `Error` | Errors that affect functionality |
-| `None` | Disable all logging |
+| Level         | Purpose                                                              |
+| ------------- | -------------------------------------------------------------------- |
+| `Trace`       | Very fine-grained information (position changes, every render frame) |
+| `Debug`       | Useful debugging info (method entry/exit, state changes)             |
+| `Information` | General operational messages                                         |
+| `Warning`     | Potential issues that don't prevent operation                        |
+| `Error`       | Errors that affect functionality                                     |
+| `None`        | Disable all logging                                                  |
 
 ## Log Categories
 
 Categories allow filtering logs to specific subsystems:
 
-| Category | Description |
-|----------|-------------|
-| `Graph` | Graph-level operations (add/remove nodes, edges) |
-| `Rendering` | Core rendering pipeline |
-| `Nodes` | Node creation, movement, state |
-| `Edges` | Edge creation, routing |
-| `Ports` | Port operations |
-| `Input` | Mouse/keyboard input handling |
-| `Viewport` | Pan, zoom, viewport calculations |
-| `Coordinates` | Coordinate transformations |
-| `Selection` | Selection management |
-| `Commands` | Undo/redo commands |
-| `Serialization` | Save/load operations |
-| `Layout` | Layout algorithms |
-| `Animation` | Animation system |
-| `Performance` | Performance metrics |
-| `CustomRenderers` | Custom node/edge renderers |
-| `BackgroundRenderers` | Background renderers |
-| `DataFlow` | Data binding and flow |
-| `Groups` | Group operations |
-| `All` | All categories |
+| Category              | Description                                      |
+| --------------------- | ------------------------------------------------ |
+| `Graph`               | Graph-level operations (add/remove nodes, edges) |
+| `Rendering`           | Core rendering pipeline                          |
+| `Nodes`               | Node creation, movement, state                   |
+| `Edges`               | Edge creation, routing                           |
+| `Ports`               | Port operations                                  |
+| `Input`               | Mouse/keyboard input handling                    |
+| `Viewport`            | Pan, zoom, viewport calculations                 |
+| `Coordinates`         | Coordinate transformations                       |
+| `Selection`           | Selection management                             |
+| `Commands`            | Undo/redo commands                               |
+| `Serialization`       | Save/load operations                             |
+| `Layout`              | Layout algorithms                                |
+| `Animation`           | Animation system                                 |
+| `Performance`         | Performance metrics                              |
+| `CustomRenderers`     | Custom node/edge renderers                       |
+| `BackgroundRenderers` | Background renderers                             |
+| `DataFlow`            | Data binding and flow                            |
+| `Groups`              | Group operations                                 |
+| `All`                 | All categories                                   |
 
 ## Log Sinks
 
@@ -112,13 +113,13 @@ FlowGraphLogger.Configure(config => config
 public class MyCustomSink : ILogSink
 {
     public string Name => "Custom";
-    
+
     public void Write(LogEntry entry)
     {
         // Send to your logging system
         MyLogger.Log(entry.Message);
     }
-    
+
     public void Flush() { }
 }
 
@@ -232,6 +233,7 @@ Then include the generated log file with your bug report.
 ## Thread Safety
 
 The logging system is fully thread-safe:
+
 - Multiple threads can log simultaneously
 - Configuration changes are atomic
 - File sinks use internal locking
@@ -249,11 +251,11 @@ The logging system is fully thread-safe:
 
 The diagnostics system consists of:
 
-| File | Purpose |
-|------|---------|
-| `FlowGraph.Core/Diagnostics/LogLevel.cs` | Log severity levels |
-| `FlowGraph.Core/Diagnostics/LogCategory.cs` | Log categories (flags enum) |
-| `FlowGraph.Core/Diagnostics/LogEntry.cs` | Structured log entry |
-| `FlowGraph.Core/Diagnostics/LogSinks.cs` | Built-in sink implementations |
-| `FlowGraph.Core/Diagnostics/FlowGraphLogger.cs` | Central static logger |
-| `FlowGraph.Core/Diagnostics/LoggingExtensions.cs` | Extension methods |
+| File                                              | Purpose                       |
+| ------------------------------------------------- | ----------------------------- |
+| `FlowGraph.Core/Diagnostics/LogLevel.cs`          | Log severity levels           |
+| `FlowGraph.Core/Diagnostics/LogCategory.cs`       | Log categories (flags enum)   |
+| `FlowGraph.Core/Diagnostics/LogEntry.cs`          | Structured log entry          |
+| `FlowGraph.Core/Diagnostics/LogSinks.cs`          | Built-in sink implementations |
+| `FlowGraph.Core/Diagnostics/FlowGraphLogger.cs`   | Central static logger         |
+| `FlowGraph.Core/Diagnostics/LoggingExtensions.cs` | Extension methods             |
