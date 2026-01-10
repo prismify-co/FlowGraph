@@ -89,6 +89,11 @@ public partial class FlowCanvas
 
     private void RenderAll()
     {
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderAll] CALLED\n");
+        
+        // Clear grid canvas once at the start of rendering
+        _gridCanvas?.Children.Clear();
+
         RenderGrid();
         RenderCustomBackgrounds();
         RenderGraph();
@@ -98,10 +103,9 @@ public partial class FlowCanvas
     {
         if (_gridCanvas == null || _theme == null) return;
 
-        // Skip grid rendering if ShowGrid is disabled (e.g., when using FlowBackground)
+        // Skip grid rendering if ShowGrid is disabled (e.g., when using custom backgrounds)
         if (!Settings.ShowGrid)
         {
-            _gridCanvas.Children.Clear();
             return;
         }
 
@@ -136,7 +140,11 @@ public partial class FlowCanvas
 
     private void RenderGraph()
     {
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderGraph] CALLED - MainCanvas null: {_mainCanvas == null}, Graph null: {Graph == null}, Theme null: {_theme == null}\n");
+        
         if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderGraph] Graph has {Graph.Nodes.Count} nodes, DirectRendering: {_useDirectRendering}\n");
 
         // Auto-switch to direct rendering mode based on node count threshold
         var nodeCount = Graph.Nodes.Count;
@@ -233,13 +241,28 @@ public partial class FlowCanvas
 
     private void RenderRegularNodes()
     {
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [FlowCanvas.RenderRegularNodes] CALLED - Graph null: {Graph == null}, MainCanvas null: {_mainCanvas == null}, Theme null: {_theme == null}\n");
+        
         if (_mainCanvas == null || Graph == null || _theme == null) return;
+        
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [FlowCanvas.RenderRegularNodes] Graph has {Graph.Nodes.Count} nodes\n");
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
 
         var nodesToRender = Graph.Nodes
             .Where(n => !n.IsGroup && _graphRenderer.IsNodeVisible(Graph, n))
             .ToList();
+
+        var sequenceNodes = Graph.Nodes.Where(n => n.Type == "sequence-message").ToList();
+        if (sequenceNodes.Any())
+        {
+            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderRegularNodes] Total graph nodes: {Graph.Nodes.Count}, Sequence nodes: {sequenceNodes.Count}, Nodes to render: {nodesToRender.Count}\n");
+            foreach (var node in sequenceNodes)
+            {
+                var isVisible = _graphRenderer.IsNodeVisible(Graph, node);
+                System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [RenderRegularNodes] Node '{node.Label}': Type={node.Type}, IsGroup={node.IsGroup}, Visible={isVisible}\n");
+            }
+        }
 
         var filterTime = sw?.ElapsedMilliseconds ?? 0;
         var count = 0;

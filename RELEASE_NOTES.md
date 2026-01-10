@@ -3,6 +3,7 @@
 ### New Features
 
 - **Custom Edge Renderers** - Full extensibility API for custom edge visuals
+
   - `IEdgeRenderer` interface for creating custom edge representations (sequence messages, swimlane flows, etc.)
   - `EdgeRendererRegistry` with wildcard pattern matching (e.g., `sequence-*` matches `sequence-message`)
   - `EdgeRenderContext` provides source/target nodes, coordinates, theme, and scale

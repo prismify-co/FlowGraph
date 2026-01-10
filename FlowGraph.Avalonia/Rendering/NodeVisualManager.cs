@@ -155,6 +155,8 @@ public class NodeVisualManager
         ThemeResources theme,
         Action<Control, Node>? onNodeCreated = null)
     {
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [NodeVisualManager.RenderNode] CALLED for node '{node.Label}' (type={node.Type}, id={node.Id})\n");
+        
         var scale = _renderContext.Scale;
         var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
 
@@ -171,6 +173,13 @@ public class NodeVisualManager
 
         // Transform position to screen coordinates
         var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
+
+        if (node.Type == "sequence-message")
+        {
+            var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
+            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager] Rendering '{node.Label}': canvas=({node.Position.X:F1}, {node.Position.Y:F1}), screen=({screenPos.X:F1}, {screenPos.Y:F1}), canvasSize=({node.Width}x{node.Height}), visualSize=({nodeWidth:F1}x{nodeHeight:F1}), scale={_renderContext.Scale:F2}");
+        }
+
         Canvas.SetLeft(control, screenPos.X);
         Canvas.SetTop(control, screenPos.Y);
 

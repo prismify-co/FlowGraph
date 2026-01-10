@@ -45,6 +45,8 @@ public partial class FlowCanvas
 
     private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
     {
+        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] oldGraph null: {oldGraph == null}, newGraph null: {newGraph == null}, newGraph nodes: {newGraph?.Nodes.Count ?? 0}\n");
+        
         if (oldGraph != null)
         {
             oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
@@ -60,6 +62,7 @@ public partial class FlowCanvas
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
+            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] Calling CenterOnGraph and ApplyViewportTransforms\n");
             CenterOnGraph();
             ApplyViewportTransforms();
         }

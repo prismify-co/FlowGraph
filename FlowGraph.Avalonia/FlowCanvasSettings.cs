@@ -1,5 +1,6 @@
 using Avalonia;
 using FlowGraph.Core;
+using FlowGraph.Core.Diagnostics;
 
 namespace FlowGraph.Avalonia;
 
@@ -92,6 +93,61 @@ public class FlowCanvasSettings
     /// Whether to output debug information for coordinate transformations.
     /// </summary>
     public bool DebugCoordinateTransforms { get; set; } = false;
+
+    #region Diagnostics Settings
+
+    /// <summary>
+    /// Gets or sets whether diagnostic logging is enabled.
+    /// When enabled, FlowGraph will emit detailed diagnostic information.
+    /// </summary>
+    public bool EnableDiagnostics { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the minimum log level for diagnostics.
+    /// Messages below this level are ignored.
+    /// </summary>
+    public LogLevel DiagnosticsMinimumLevel { get; set; } = LogLevel.Debug;
+
+    /// <summary>
+    /// Gets or sets the categories to include in diagnostics.
+    /// Use bitwise OR to combine categories.
+    /// </summary>
+    public LogCategory DiagnosticsCategories { get; set; } = LogCategory.All;
+
+    /// <summary>
+    /// Gets or sets the path for file-based diagnostic logging.
+    /// When set, diagnostic messages are also written to this file.
+    /// </summary>
+    public string? DiagnosticsLogFilePath { get; set; } = null;
+
+    /// <summary>
+    /// Applies the diagnostics settings to the global FlowGraphLogger.
+    /// Call this after changing diagnostics settings.
+    /// </summary>
+    public void ApplyDiagnosticsSettings()
+    {
+        if (EnableDiagnostics)
+        {
+            FlowGraphLogger.Configure(config =>
+            {
+                config.Enable()
+                      .WithMinimumLevel(DiagnosticsMinimumLevel)
+                      .WithCategories(DiagnosticsCategories)
+                      .WriteToDebug();
+
+                if (!string.IsNullOrEmpty(DiagnosticsLogFilePath))
+                {
+                    config.WriteToFile(DiagnosticsLogFilePath);
+                }
+            });
+        }
+        else
+        {
+            FlowGraphLogger.DisableAll();
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// Width of the invisible hit area for edge click detection (in pixels).
