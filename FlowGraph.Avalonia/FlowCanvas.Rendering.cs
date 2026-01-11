@@ -315,11 +315,17 @@ public partial class FlowCanvas
         }
     }
 
+    // Cache for O(1) parent lookups in GetGroupDepth (avoids O(n) FirstOrDefault per group)
+    private Dictionary<string, Node>? _nodeByIdCache;
+
     private void RenderGroupNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+
+        // Build node lookup cache for O(1) parent lookups
+        _nodeByIdCache = Graph.Elements.Nodes.ToDictionary(n => n.Id);
 
         // Render groups ordered by depth (outermost first)
         var groups = Graph.Elements.Nodes
@@ -397,15 +403,29 @@ public partial class FlowCanvas
         }
     }
 
+    /// <summary>
+    /// Gets the nesting depth of a group (0 = top level).
+    /// Uses cached dictionary for O(1) parent lookup instead of O(n) FirstOrDefault.
+    /// </summary>
     private int GetGroupDepth(Node node)
     {
         int depth = 0;
-        var current = node;
-        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            current = Graph?.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
-            if (current == null) break;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeByIdCache != null && _nodeByIdCache.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = Graph?.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return depth;
     }

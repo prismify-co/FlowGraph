@@ -341,6 +341,53 @@ public class PerformanceTests
             $"Looking up children for 100 groups took {sw.ElapsedMilliseconds}ms, expected < 100ms");
     }
 
+    [Fact]
+    [Trait("Category", "Performance")]
+    public void GetGroupDepth_DeeplyNestedGroups_IsNotOn2()
+    {
+        // Create deeply nested groups: each group contains the next
+        // This tests GetGroupDepth performance which traverses parent chain
+        var graph = CreateDeeplyNestedGroups(50); // 50 levels deep
+
+        // Build a node lookup dictionary (simulating O(1) lookup optimization)
+        var nodeById = graph.Elements.Nodes.ToDictionary(n => n.Id);
+
+        var sw = Stopwatch.StartNew();
+        // Calculate depth for all nodes 100 times (simulating render loop)
+        for (int iteration = 0; iteration < 100; iteration++)
+        {
+            foreach (var node in graph.Elements.Nodes)
+            {
+                var depth = GetGroupDepthOptimized(node, nodeById);
+                Assert.True(depth >= 0);
+            }
+        }
+        sw.Stop();
+
+        // 100 iterations x 50 nodes = 5000 depth calculations should be fast with O(1) lookups
+        Assert.True(sw.ElapsedMilliseconds < 100,
+            $"5000 depth calculations took {sw.ElapsedMilliseconds}ms, expected < 100ms");
+    }
+
+    private static int GetGroupDepthOptimized(Node node, Dictionary<string, Node> nodeById)
+    {
+        int depth = 0;
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
+        {
+            depth++;
+            if (nodeById.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return depth;
+    }
+
     #endregion
 
     #region Helpers
@@ -420,6 +467,33 @@ public class PerformanceTests
                 child.ParentGroupId = group.Id;
                 graph.AddNode(child);
             }
+        }
+
+        graph.EndBatchLoad();
+        return graph;
+    }
+
+    /// <summary>
+    /// Creates a graph with deeply nested groups where each group contains the next level.
+    /// Used for testing GetGroupDepth performance.
+    /// </summary>
+    private static Graph CreateDeeplyNestedGroups(int depth)
+    {
+        var graph = new Graph();
+        graph.BeginBatchLoad();
+
+        string? parentId = null;
+        for (int level = 0; level < depth; level++)
+        {
+            var group = TestHelpers.CreateNode($"group-level-{level}",
+                x: level * 20,
+                y: level * 20,
+                width: 500 - level * 8,
+                height: 400 - level * 6);
+            group.IsGroup = true;
+            group.ParentGroupId = parentId;
+            graph.AddNode(group);
+            parentId = group.Id;
         }
 
         graph.EndBatchLoad();

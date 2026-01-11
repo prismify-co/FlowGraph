@@ -98,6 +98,9 @@ public class NodeVisualManager
         _portVisuals.Clear();
     }
 
+    // Cache for O(1) parent lookups in GetGroupDepth
+    private Dictionary<string, Node>? _nodeByIdCache;
+
     /// <summary>
     /// Renders all nodes in the graph to the canvas.
     /// Groups are rendered first (behind), then regular nodes.
@@ -114,6 +117,9 @@ public class NodeVisualManager
         ThemeResources theme,
         Action<Control, Node>? onNodeCreated = null)
     {
+        // Build node lookup cache for O(1) parent lookups in GetGroupDepth
+        _nodeByIdCache = graph.Elements.Nodes.ToDictionary(n => n.Id);
+
         // Render groups first (they should be behind their children)
         // Order by hierarchy depth - outermost groups first
         var groups = graph.Elements.Nodes
@@ -509,16 +515,27 @@ public class NodeVisualManager
 
     /// <summary>
     /// Gets the nesting depth of a group (0 = top level).
+    /// Uses cached dictionary for O(1) parent lookup instead of O(n) FirstOrDefault.
     /// </summary>
-    private static int GetGroupDepth(Graph graph, Node node)
+    private int GetGroupDepth(Graph graph, Node node)
     {
         int depth = 0;
-        var current = node;
-        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            current = graph.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
-            if (current == null) break;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeByIdCache != null && _nodeByIdCache.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return depth;
     }
