@@ -10,6 +10,7 @@ using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using FlowGraph.Core.DataFlow;
+using FlowGraph.Core.Elements.Shapes;
 using FlowGraph.Core.Models;
 using System.Collections.Immutable;
 using FlowGraph.Demo.Helpers;
@@ -671,23 +672,53 @@ public partial class MainWindow : Window
 
     private void OnClearGraphClick(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+        System.Diagnostics.Debug.WriteLine("=== CLEAR GRAPH CLICKED ===");
         
+        if (DataContext is not ViewModels.MainWindowViewModel vm)
+        {
+            System.Diagnostics.Debug.WriteLine("ERROR: DataContext is not MainWindowViewModel");
+            return;
+        }
+
         var graph = vm.MyGraph;
-        if (graph == null) return;
+        if (graph == null)
+        {
+            System.Diagnostics.Debug.WriteLine("ERROR: MyGraph is null");
+            return;
+        }
+
+        System.Diagnostics.Debug.WriteLine($"Graph instance: {graph.GetHashCode()}");
+        System.Diagnostics.Debug.WriteLine($"FlowCanvas.Graph instance: {FlowCanvas.Graph?.GetHashCode()}");
+        System.Diagnostics.Debug.WriteLine($"Are they the same? {ReferenceEquals(graph, FlowCanvas.Graph)}");
 
         // Disable direct rendering before clearing
         FlowCanvas.DisableDirectRendering();
+        System.Diagnostics.Debug.WriteLine("Direct rendering disabled");
 
-        // Clear all elements (nodes, edges, shapes)
+        // Get all elements
         var allElements = graph.Elements.ToList();
+        var nodeCount = allElements.OfType<Node>().Count();
+        var edgeCount = allElements.OfType<Edge>().Count();
+        var shapeCount = allElements.OfType<ShapeElement>().Count();
+        
+        System.Diagnostics.Debug.WriteLine($"Elements found: {allElements.Count} total ({nodeCount}n, {edgeCount}e, {shapeCount}s)");
+
+        // Clear all elements
         foreach (var element in allElements)
         {
+            System.Diagnostics.Debug.WriteLine($"  Removing {element.GetType().Name} with ID: {element.Id}");
             graph.RemoveElement(element);
         }
 
+        System.Diagnostics.Debug.WriteLine($"After removal - Elements.Count(): {graph.Elements.Count()}");
+        System.Diagnostics.Debug.WriteLine($"After removal - Nodes.Count: {graph.Elements.Nodes.Count()}");
+        System.Diagnostics.Debug.WriteLine($"After removal - Edges.Count: {graph.Elements.Edges.Count()}");
+
         FlowCanvas.Refresh();
-        SetStatus($"Graph cleared - removed {allElements.Count} elements");
+        System.Diagnostics.Debug.WriteLine("Refresh called");
+        System.Diagnostics.Debug.WriteLine("=== CLEAR GRAPH COMPLETE ===");
+        
+        SetStatus($"Graph cleared - removed {allElements.Count} elements ({nodeCount}n, {edgeCount}e, {shapeCount}s)");
     }
 
     private async void GenerateStressTestGraph(int nodeCount)
