@@ -145,13 +145,13 @@ public class DirectGraphRenderer : Control
         {
             _indexDirty = true;
             _lastIndexedGraph = null;
+            
+            // Build node lookup dictionary for O(1) edge endpoint resolution (only when graph changes!)
+            _nodeById = graph?.Elements.Nodes.ToDictionary(n => n.Id);
         }
 
         _graph = graph;
         _viewport = viewport;
-
-        // Build node lookup dictionary for O(1) edge endpoint resolution (was O(n) per edge!)
-        _nodeById = graph?.Elements.Nodes.ToDictionary(n => n.Id);
 
         if (_theme != theme)
         {
@@ -269,6 +269,8 @@ public class DirectGraphRenderer : Control
 
     private void RebuildSpatialIndex()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
         if (_graph == null)
         {
             _nodeIndex = null;
@@ -278,17 +280,24 @@ public class DirectGraphRenderer : Control
 
         _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Elements.Nodes.Count());
 
+        int totalNodes = 0;
+        int visibleNodes = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
+            totalNodes++;
             if (node.IsGroup) continue;
             if (!IsNodeVisibleFast(node)) continue;
 
+            visibleNodes++;
             var bounds = _model.GetNodeBounds(node);
             _nodeIndex.Add((node, bounds.X, bounds.Y, bounds.Width, bounds.Height));
         }
 
         _lastIndexedGraph = _graph;
         _indexDirty = false;
+        
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[SpatialIndex] Rebuilt in {sw.ElapsedMilliseconds}ms | Total:{totalNodes}, Indexed:{visibleNodes}");
     }
 
     /// <summary>
