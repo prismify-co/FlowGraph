@@ -860,11 +860,11 @@ public class DirectGraphRenderer : Control
         {
             if (!edge.IsSelected) continue;
 
-            var sourceNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            if (_nodeById == null) continue;
+            if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) continue;
+            if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) continue;
 
-            if (sourceNode == null || targetNode == null) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;
+            if (!IsNodeVisibleFast(sourceNode) || !IsNodeVisibleFast(targetNode)) continue;
 
             var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
 
@@ -1057,11 +1057,11 @@ public class DirectGraphRenderer : Control
 
         foreach (var edge in _graph.Elements.Edges)
         {
-            var sourceNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+            if (_nodeById == null) continue;
+            if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) continue;
+            if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) continue;
 
-            if (sourceNode == null || targetNode == null) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) continue;
+            if (!IsNodeVisibleFast(sourceNode) || !IsNodeVisibleFast(targetNode)) continue;
 
             var (start, end) = _model.GetEdgeEndpoints(edge, _graph);
 
