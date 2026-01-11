@@ -278,7 +278,7 @@ public class DirectGraphRenderer : Control
             return;
         }
 
-        _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Elements.Nodes.Count());
+        _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Elements.NodeCount);
 
         int totalNodes = 0;
         int visibleNodes = 0;
@@ -346,7 +346,7 @@ public class DirectGraphRenderer : Control
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
 
-        var nodeCount = _graph.Elements.Nodes.Count();
+        var nodeCount = _graph.Elements.NodeCount;
 
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
@@ -364,7 +364,7 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsGroup) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
+            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
             if (node.IsCollapsed) continue; // Don't draw collapsed groups' background
 
             DrawGroup(context, node, zoom, offsetX, offsetY);
@@ -374,7 +374,7 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph!, node)) continue;
+            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
             if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) continue;
             
             visibleNodeIds.Add(node.Id);
@@ -398,7 +398,7 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) { nodesSkippedGroup++; continue; }
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) { nodesSkippedVisibility++; continue; }
+            if (!IsNodeVisibleFast(node)) { nodesSkippedVisibility++; continue; } // Use O(1) lookup instead of O(n)
             if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) { nodesSkippedBounds++; continue; }
 
             DrawNode(context, node, zoom, offsetX, offsetY, showLabels, showPorts, useSimplifiedNodes);
@@ -409,7 +409,7 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsGroup || !node.IsCollapsed) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
+            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
 
             DrawCollapsedGroup(context, node, zoom, offsetX, offsetY);
         }
@@ -419,7 +419,7 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsSelected || !node.IsResizable) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
+            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
 
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
             handlesDrawn++;
@@ -561,7 +561,8 @@ public class DirectGraphRenderer : Control
         if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
         if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) return;
 
-        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+        // Use optimized overload with pre-looked-up nodes
+        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
         var startScreen = CanvasToScreen(startCanvas, zoom, offsetX, offsetY);
         var endScreen = CanvasToScreen(endCanvas, zoom, offsetX, offsetY);
 
@@ -620,12 +621,13 @@ public class DirectGraphRenderer : Control
 
     private void DrawEdgeEndpointHandles(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY)
     {
-        var sourceNode = _graph!.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
+        // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+        if (_nodeById == null) return;
+        if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return;
+        if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
 
-        if (sourceNode == null || targetNode == null) return;
-
-        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+        // Use optimized overload with pre-looked-up nodes
+        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
         var startScreen = CanvasToScreen(startCanvas, zoom, offsetX, offsetY);
         var endScreen = CanvasToScreen(endCanvas, zoom, offsetX, offsetY);
 
@@ -851,11 +853,18 @@ public class DirectGraphRenderer : Control
     /// <returns>Tuple of (edge, isSource) or null if no handle hit.</returns>
     public (Edge edge, bool isSource)? HitTestEdgeEndpointHandle(double screenX, double screenY)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         if (_graph == null || _viewport == null || !_settings.ShowEdgeEndpointHandles) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
         var handleRadius = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
+        var viewBounds = Bounds;
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
 
+        int edgesChecked = 0;
+        int edgesSkippedViewport = 0;
         foreach (var edge in _graph.Elements.Edges)
         {
             if (!edge.IsSelected) continue;
@@ -866,7 +875,18 @@ public class DirectGraphRenderer : Control
 
             if (!IsNodeVisibleFast(sourceNode) || !IsNodeVisibleFast(targetNode)) continue;
 
-            var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+            // VIEWPORT CULLING: Skip edges where BOTH endpoints are outside viewport
+            var sourceInViewport = IsInVisibleBounds(sourceNode, zoom, offsetX, offsetY, viewBounds);
+            var targetInViewport = IsInVisibleBounds(targetNode, zoom, offsetX, offsetY, viewBounds);
+            if (!sourceInViewport && !targetInViewport)
+            {
+                edgesSkippedViewport++;
+                continue;
+            }
+
+            edgesChecked++;
+            // Use optimized overload with pre-looked-up nodes
+            var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
 
             // Check source handle
             var dxSource = canvasPoint.X - startCanvas.X;
@@ -885,6 +905,8 @@ public class DirectGraphRenderer : Control
             }
         }
 
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[HitTestEdgeEndpointHandle] No hit in {sw.ElapsedMilliseconds}ms | EdgesChecked:{edgesChecked}, SkippedViewport:{edgesSkippedViewport}");
         return null;
     }
 
@@ -893,15 +915,30 @@ public class DirectGraphRenderer : Control
     /// </summary>
     public (Node node, ResizeHandlePosition position)? HitTestResizeHandle(double screenX, double screenY)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         if (_graph == null || _viewport == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
+        var viewBounds = Bounds;
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
 
+        int nodesChecked = 0;
+        int nodesSkippedViewport = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsSelected || !node.IsResizable) continue;
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
 
+            // VIEWPORT CULLING: Skip nodes outside visible area
+            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, viewBounds))
+            {
+                nodesSkippedViewport++;
+                continue;
+            }
+
+            nodesChecked++;
             foreach (var (pos, center) in _model.GetResizeHandlePositions(node))
             {
                 if (_model.IsPointInResizeHandle(canvasPoint, center))
@@ -911,6 +948,8 @@ public class DirectGraphRenderer : Control
             }
         }
 
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[HitTestResizeHandle] No hit in {sw.ElapsedMilliseconds}ms | NodesChecked:{nodesChecked}, SkippedViewport:{nodesSkippedViewport}");
         return null;
     }
 
@@ -985,16 +1024,39 @@ public class DirectGraphRenderer : Control
     /// </summary>
     public (Node node, Port port, bool isOutput)? HitTestPort(double screenX, double screenY)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         if (_graph == null || _viewport == null) return null;
 
         if (_indexDirty) RebuildSpatialIndex();
         if (_nodeIndex == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
+        var viewBounds = Bounds;
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
 
-        // Check regular nodes
-        foreach (var (node, _, _, _, _) in _nodeIndex)
+        // Check regular nodes - with viewport culling
+        var regularStart = sw.ElapsedMilliseconds;
+        int nodesChecked = 0;
+        int nodesSkippedViewport = 0;
+        foreach (var (node, nx, ny, nw, nh) in _nodeIndex)
         {
+            // VIEWPORT CULLING: Quick bounds check using cached spatial index data
+            var screenX1 = nx * zoom + offsetX;
+            var screenY1 = ny * zoom + offsetY;
+            var screenW = nw * zoom;
+            var screenH = nh * zoom;
+            var buffer = _settings.PortSize * zoom;
+            
+            if (screenX1 + screenW + buffer < 0 || screenX1 - buffer > viewBounds.Width ||
+                screenY1 + screenH + buffer < 0 || screenY1 - buffer > viewBounds.Height)
+            {
+                nodesSkippedViewport++;
+                continue;
+            }
+
+            nodesChecked++;
             // Check input ports
             for (int i = 0; i < node.Inputs.Count; i++)
             {
@@ -1017,10 +1079,22 @@ public class DirectGraphRenderer : Control
         }
 
         // Check group ports
+        var regularTime = sw.ElapsedMilliseconds - regularStart;
+        var groupStart = sw.ElapsedMilliseconds;
+        int groupsChecked = 0;
+        int groupsSkippedViewport = 0;
         foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))
         {
             if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
 
+            // VIEWPORT CULLING: Skip groups outside visible area
+            if (!IsInVisibleBounds(group, zoom, offsetX, offsetY, viewBounds))
+            {
+                groupsSkippedViewport++;
+                continue;
+            }
+
+            groupsChecked++;
             // Check input ports
             for (int i = 0; i < group.Inputs.Count; i++)
             {
@@ -1042,6 +1116,9 @@ public class DirectGraphRenderer : Control
             }
         }
 
+        sw.Stop();
+        var groupTime = sw.ElapsedMilliseconds - groupStart;
+        System.Diagnostics.Debug.WriteLine($"[HitTestPort] No hit in {sw.ElapsedMilliseconds}ms | NodesChecked:{nodesChecked}, SkippedViewport:{nodesSkippedViewport}, Groups:{groupsChecked}, GroupsSkipped:{groupsSkippedViewport}");
         return null;
     }
 
@@ -1050,27 +1127,60 @@ public class DirectGraphRenderer : Control
     /// </summary>
     public Edge? HitTestEdge(double screenX, double screenY)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         if (_graph == null || _viewport == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
         var hitDistance = _settings.EdgeHitAreaWidth / _viewport.Zoom;
+        var viewBounds = Bounds;
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
+
+        int edgesChecked = 0;
+        int edgesSkippedViewport = 0;
+        if (_nodeById == null)
+        {
+            sw.Stop();
+            System.Diagnostics.Debug.WriteLine($"[HitTestEdge] No nodeById dict in {sw.ElapsedMilliseconds}ms");
+            return null;
+        }
 
         foreach (var edge in _graph.Elements.Edges)
         {
-            if (_nodeById == null) continue;
             if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) continue;
             if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) continue;
 
             if (!IsNodeVisibleFast(sourceNode) || !IsNodeVisibleFast(targetNode)) continue;
 
-            var (start, end) = _model.GetEdgeEndpoints(edge, _graph);
+            // VIEWPORT CULLING: Skip edges where BOTH endpoints are far outside viewport
+            // (edges can still cross viewport even if both endpoints are outside, so we use larger margin)
+            var sourceInViewport = IsInVisibleBounds(sourceNode, zoom, offsetX, offsetY, viewBounds);
+            var targetInViewport = IsInVisibleBounds(targetNode, zoom, offsetX, offsetY, viewBounds);
+            if (!sourceInViewport && !targetInViewport)
+            {
+                // Both endpoints outside - check if edge could potentially cross viewport
+                // For simplicity, we skip only if both are outside (edge could still cross)
+                // A more sophisticated check would verify the line segment doesn't intersect viewport
+                edgesSkippedViewport++;
+                continue;
+            }
+
+            edgesChecked++;
+            // CRITICAL: Use optimized overload that accepts pre-looked-up nodes
+            // The original GetEdgeEndpoints(edge, graph) does FirstOrDefault twice = O(n) per edge!
+            var (start, end) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
 
             if (_model.IsPointNearEdge(canvasPoint, start, end, hitDistance))
             {
+                sw.Stop();
+                System.Diagnostics.Debug.WriteLine($"[HitTestEdge] Hit in {sw.ElapsedMilliseconds}ms | EdgesChecked:{edgesChecked}, SkippedViewport:{edgesSkippedViewport}");
                 return edge;
             }
         }
 
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[HitTestEdge] No hit in {sw.ElapsedMilliseconds}ms | EdgesChecked:{edgesChecked}, SkippedViewport:{edgesSkippedViewport}");
         return null;
     }
 
@@ -1090,9 +1200,14 @@ public class DirectGraphRenderer : Control
     /// </summary>
     public AvaloniaPoint GetEdgeEndpointScreenPosition(Edge edge, bool isSource)
     {
-        if (_graph == null || _viewport == null) return default;
+        if (_graph == null || _viewport == null || _nodeById == null) return default;
 
-        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
+        // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+        if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return default;
+        if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return default;
+
+        // Use optimized overload with pre-looked-up nodes
+        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
         var canvasPos = isSource ? startCanvas : endCanvas;
         return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
     }

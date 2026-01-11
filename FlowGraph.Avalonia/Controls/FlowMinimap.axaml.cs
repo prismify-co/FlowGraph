@@ -4,10 +4,9 @@
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using FlowGraph.Core;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -26,12 +25,12 @@ public partial class FlowMinimap : UserControl
         set => SetValue(TargetCanvasProperty, value);
     }
 
-    private Canvas? _minimapCanvas;
-    private Rectangle? _viewportRect;
+    private MinimapRenderControl? _minimapRenderControl;
     private bool _isDragging;
     private Graph? _subscribedGraph;
     private FlowCanvas? _subscribedCanvas;
     private ViewportState? _subscribedViewport;
+    private Dictionary<string, Node>? _nodeById; // Cache for O(1) parent lookup
 
     // Transform: minimapPos = (canvasPos - extentOrigin) * scale
     private double _scale;
@@ -40,6 +39,11 @@ public partial class FlowMinimap : UserControl
 
     private const double DefaultNodeWidth = 150;
     private const double DefaultNodeHeight = 80;
+    
+    // Throttling for minimap rendering during drag to avoid O(n) work per node position change
+    private DateTime _lastRenderTime = DateTime.MinValue;
+    private const int RenderThrottleMs = 50; // Max 20 fps for minimap during drag
+    private bool _renderPending;
 
     public FlowMinimap()
     {
@@ -49,13 +53,13 @@ public partial class FlowMinimap : UserControl
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        _minimapCanvas = this.FindControl<Canvas>("MinimapCanvas");
+        _minimapRenderControl = this.FindControl<MinimapRenderControl>("MinimapRenderControl");
 
-        if (_minimapCanvas != null)
+        if (_minimapRenderControl != null)
         {
-            _minimapCanvas.PointerPressed += OnMinimapPointerPressed;
-            _minimapCanvas.PointerMoved += OnMinimapPointerMoved;
-            _minimapCanvas.PointerReleased += OnMinimapPointerReleased;
+            _minimapRenderControl.PointerPressed += OnMinimapPointerPressed;
+            _minimapRenderControl.PointerMoved += OnMinimapPointerMoved;
+            _minimapRenderControl.PointerReleased += OnMinimapPointerReleased;
         }
     }
 
@@ -198,8 +202,13 @@ public partial class FlowMinimap : UserControl
         RenderMinimap();
     }
 
+    private static long _nodeChangedCount = 0;
+    private static long _nodeChangedSkippedCount = 0;
+    
     private void OnNodeChanged(object? sender, PropertyChangedEventArgs e)
     {
+        _nodeChangedCount++;
+        
         // Re-render on position, selection, or collapse state changes
         if (e.PropertyName == nameof(Node.Position) ||
             e.PropertyName == nameof(Node.IsSelected) ||
@@ -207,7 +216,66 @@ public partial class FlowMinimap : UserControl
             e.PropertyName == nameof(Node.Width) ||
             e.PropertyName == nameof(Node.Height))
         {
+            // OPTIMIZED: Throttle minimap rendering during rapid updates (e.g., drag)
+            // to avoid O(n) work for every node position change
+            RenderMinimapThrottled();
+        }
+        else
+        {
+            _nodeChangedSkippedCount++;
+        }
+        
+        if (_nodeChangedCount % 1000 == 0)
+        {
+            System.Diagnostics.Debug.WriteLine($"[Minimap] NodeChanged #{_nodeChangedCount}, prop={e.PropertyName}, skipped={_nodeChangedSkippedCount}");
+        }
+    }
+    
+    private static long _throttledRenderCount = 0;
+    private static long _throttledSkippedCount = 0;
+    
+    /// <summary>
+    /// Renders the minimap with throttling to avoid excessive updates during drag.
+    /// </summary>
+    private void RenderMinimapThrottled()
+    {
+        var now = DateTime.UtcNow;
+        var elapsed = (now - _lastRenderTime).TotalMilliseconds;
+        
+        if (elapsed >= RenderThrottleMs)
+        {
+            // Enough time has passed, render immediately
+            _lastRenderTime = now;
+            _renderPending = false;
+            _throttledRenderCount++;
             RenderMinimap();
+        }
+        else if (!_renderPending)
+        {
+            // Schedule a delayed render
+            _renderPending = true;
+            _throttledSkippedCount++;
+            var delay = RenderThrottleMs - (int)elapsed;
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                if (_renderPending)
+                {
+                    _renderPending = false;
+                    _lastRenderTime = DateTime.UtcNow;
+                    _throttledRenderCount++;
+                    RenderMinimap();
+                }
+            }, DispatcherPriority.Background);
+        }
+        else
+        {
+            _throttledSkippedCount++;
+        }
+        // else: render already pending, skip this update
+        
+        if ((_throttledRenderCount + _throttledSkippedCount) % 100 == 0)
+        {
+            System.Diagnostics.Debug.WriteLine($"[Minimap] ThrottledRender: rendered={_throttledRenderCount}, skipped={_throttledSkippedCount}");
         }
     }
 
@@ -219,19 +287,28 @@ public partial class FlowMinimap : UserControl
 
     /// <summary>
     /// Checks if a node is visible (not hidden by a collapsed ancestor group).
+    /// Uses cached dictionary for O(1) parent lookup.
     /// </summary>
     private bool IsNodeVisible(Graph graph, Node node)
     {
         var currentParentId = node.ParentGroupId;
         while (!string.IsNullOrEmpty(currentParentId))
         {
-            var parent = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
-            if (parent == null) break;
-
-            if (parent.IsCollapsed)
-                return false;
-
-            currentParentId = parent.ParentGroupId;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeById != null && _nodeById.TryGetValue(currentParentId, out var parent))
+            {
+                if (parent.IsCollapsed)
+                    return false;
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                if (parentNode.IsCollapsed) return false;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return true;
     }
@@ -259,26 +336,62 @@ public partial class FlowMinimap : UserControl
         );
     }
 
+    private static long _renderMinimapCount = 0;
+    private static long _totalRenderMinimapMs = 0;
+    
     private void RenderMinimap()
     {
-        if (_minimapCanvas == null || TargetCanvas?.Graph == null)
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
+        if (_minimapRenderControl == null || TargetCanvas?.Graph == null)
             return;
-
-        _minimapCanvas.Children.Clear();
-        _viewportRect = null;
 
         var graph = TargetCanvas.Graph;
         if (!graph.Elements.Nodes.Any())
+        {
+            _minimapRenderControl.Graph = null;
+            _minimapRenderControl.InvalidateVisual();
             return;
+        }
+
+        // Build node cache for O(1) parent lookup (only rebuild if graph changed)
+        if (_nodeById == null || _subscribedGraph != graph)
+        {
+            _nodeById = graph.Elements.Nodes.ToDictionary(n => n.Id);
+        }
 
         // Get only visible nodes (not hidden by collapsed groups)
-        var visibleNodes = graph.Elements.Nodes.Where(n => IsNodeVisible(graph, n)).ToList();
+        // Use a single pass to collect visible nodes and calculate bounds simultaneously
+        var visibleNodes = new List<Node>(graph.Elements.Nodes.Count);
+        double minX = double.MaxValue, minY = double.MaxValue;
+        double maxX = double.MinValue, maxY = double.MinValue;
+        
+        foreach (var node in graph.Elements.Nodes)
+        {
+            if (!IsNodeVisible(graph, node))
+                continue;
+                
+            visibleNodes.Add(node);
+            
+            var nodeWidth = GetNodeWidth(node);
+            var nodeHeight = GetNodeHeight(node);
+            
+            if (node.Position.X < minX) minX = node.Position.X;
+            if (node.Position.Y < minY) minY = node.Position.Y;
+            if (node.Position.X + nodeWidth > maxX) maxX = node.Position.X + nodeWidth;
+            if (node.Position.Y + nodeHeight > maxY) maxY = node.Position.Y + nodeHeight;
+        }
+        
         if (visibleNodes.Count == 0)
+        {
+            _minimapRenderControl.Graph = null;
+            _minimapRenderControl.InvalidateVisual();
             return;
+        }
 
         // Get minimap display area
-        var minimapWidth = _minimapCanvas.Bounds.Width;
-        var minimapHeight = _minimapCanvas.Bounds.Height;
+        var minimapWidth = _minimapRenderControl.Bounds.Width;
+        var minimapHeight = _minimapRenderControl.Bounds.Height;
         if (minimapWidth <= 0 || minimapHeight <= 0)
         {
             minimapWidth = Bounds.Width - 2;
@@ -287,36 +400,23 @@ public partial class FlowMinimap : UserControl
         if (minimapWidth <= 0 || minimapHeight <= 0)
             return;
 
-        // Step 1: Calculate ItemsExtent (bounding box of all visible nodes)
-        var itemsMinX = visibleNodes.Min(n => n.Position.X);
-        var itemsMinY = visibleNodes.Min(n => n.Position.Y);
-        var itemsMaxX = visibleNodes.Max(n => n.Position.X + GetNodeWidth(n));
-        var itemsMaxY = visibleNodes.Max(n => n.Position.Y + GetNodeHeight(n));
-        var itemsExtent = new Rect(itemsMinX, itemsMinY, itemsMaxX - itemsMinX, itemsMaxY - itemsMinY);
+        // ItemsExtent already calculated in single pass above
+        var itemsExtent = new Rect(minX, minY, maxX - minX, maxY - minY);
 
-        // Step 2: Get ViewportLocation and ViewportSize (like Nodify)
+        // Get ViewportLocation and ViewportSize
         var viewport = TargetCanvas.Viewport;
         var viewportRect = viewport.GetVisibleRect();
 
-        AvaloniaPoint viewportLocation;
-        Size viewportSize;
-
+        Rect viewportBounds = default;
         if (viewportRect.Width > 0 && viewportRect.Height > 0)
         {
-            viewportLocation = new AvaloniaPoint(viewportRect.X, viewportRect.Y);
-            viewportSize = new Size(viewportRect.Width, viewportRect.Height);
-        }
-        else
-        {
-            viewportLocation = new AvaloniaPoint(0, 0);
-            viewportSize = new Size(0, 0);
+            viewportBounds = new Rect(viewportRect.X, viewportRect.Y, viewportRect.Width, viewportRect.Height);
         }
 
-        // Step 3: Calculate Extent = union of ItemsExtent and Viewport
+        // Calculate Extent = union of ItemsExtent and Viewport
         var extent = itemsExtent;
-        if (viewportSize.Width > 0 && viewportSize.Height > 0)
+        if (viewportBounds.Width > 0 && viewportBounds.Height > 0)
         {
-            var viewportBounds = new Rect(viewportLocation, viewportSize);
             extent = extent.Union(viewportBounds);
         }
 
@@ -327,7 +427,7 @@ public partial class FlowMinimap : UserControl
         if (extent.Width <= 0 || extent.Height <= 0)
             return;
 
-        // Step 4: Calculate scale to fit extent in minimap
+        // Calculate scale to fit extent in minimap
         var scaleX = minimapWidth / extent.Width;
         var scaleY = minimapHeight / extent.Height;
         _scale = Math.Min(scaleX, scaleY);
@@ -346,104 +446,23 @@ public partial class FlowMinimap : UserControl
         _extentX -= offsetX / _scale;
         _extentY -= offsetY / _scale;
 
-        // Draw edges (only between visible nodes)
-        var edgeBrush = new SolidColorBrush(Color.Parse("#808080"));
-        var visibleNodeIds = new HashSet<string>(visibleNodes.Select(n => n.Id));
-
-        foreach (var edge in graph.Elements.Edges)
+        // Pass data to render control and trigger repaint
+        _minimapRenderControl.Graph = graph;
+        _minimapRenderControl.VisibleNodes = visibleNodes;
+        _minimapRenderControl.NodeById = _nodeById;
+        _minimapRenderControl.Scale = _scale;
+        _minimapRenderControl.ExtentX = _extentX;
+        _minimapRenderControl.ExtentY = _extentY;
+        _minimapRenderControl.ViewportBounds = viewportBounds;
+        _minimapRenderControl.InvalidateVisual();
+        
+        sw.Stop();
+        _renderMinimapCount++;
+        _totalRenderMinimapMs += sw.ElapsedMilliseconds;
+        if (_renderMinimapCount % 20 == 0)
         {
-            // Only draw edge if both endpoints are visible
-            if (!visibleNodeIds.Contains(edge.Source) || !visibleNodeIds.Contains(edge.Target))
-                continue;
-
-            var sourceNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-            var targetNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
-            if (sourceNode == null || targetNode == null) continue;
-
-            var startPos = CanvasToMinimap(
-                sourceNode.Position.X + GetNodeWidth(sourceNode) / 2,
-                sourceNode.Position.Y + GetNodeHeight(sourceNode) / 2);
-            var endPos = CanvasToMinimap(
-                targetNode.Position.X + GetNodeWidth(targetNode) / 2,
-                targetNode.Position.Y + GetNodeHeight(targetNode) / 2);
-
-            _minimapCanvas.Children.Add(new Line
-            {
-                StartPoint = startPos,
-                EndPoint = endPos,
-                Stroke = edgeBrush,
-                StrokeThickness = 1
-            });
-        }
-
-        // Draw groups first (behind regular nodes)
-        var groupBrush = new SolidColorBrush(Color.FromArgb(40, 132, 94, 194)); // Translucent purple
-        var groupBorderBrush = new SolidColorBrush(Color.Parse("#845EC2"));
-        var collapsedGroupBrush = new SolidColorBrush(Color.FromArgb(80, 132, 94, 194)); // More opaque when collapsed
-
-        foreach (var node in visibleNodes.Where(n => n.IsGroup).OrderBy(n => GetGroupDepth(graph, n)))
-        {
-            var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
-            var width = GetNodeWidth(node) * _scale;
-            var height = GetNodeHeight(node) * _scale;
-
-            var rect = new Rectangle
-            {
-                Width = Math.Max(width, 8),
-                Height = Math.Max(height, 6),
-                Fill = node.IsCollapsed ? collapsedGroupBrush : groupBrush,
-                Stroke = groupBorderBrush,
-                StrokeThickness = 1,
-                RadiusX = 3,
-                RadiusY = 3
-            };
-            Canvas.SetLeft(rect, pos.X);
-            Canvas.SetTop(rect, pos.Y);
-            _minimapCanvas.Children.Add(rect);
-        }
-
-        // Draw regular nodes (on top of groups)
-        var nodeBrush = new SolidColorBrush(Color.Parse("#4682B4"));
-        var selectedBrush = new SolidColorBrush(Color.Parse("#FF6B00"));
-
-        foreach (var node in visibleNodes.Where(n => !n.IsGroup))
-        {
-            var pos = CanvasToMinimap(node.Position.X, node.Position.Y);
-            var width = GetNodeWidth(node) * _scale;
-            var height = GetNodeHeight(node) * _scale;
-
-            var rect = new Rectangle
-            {
-                Width = Math.Max(width, 4),
-                Height = Math.Max(height, 3),
-                Fill = node.IsSelected ? selectedBrush : nodeBrush,
-                RadiusX = 2,
-                RadiusY = 2
-            };
-            Canvas.SetLeft(rect, pos.X);
-            Canvas.SetTop(rect, pos.Y);
-            _minimapCanvas.Children.Add(rect);
-        }
-
-        // Draw viewport rectangle
-        if (viewportSize.Width > 0 && viewportSize.Height > 0)
-        {
-            var vpTopLeft = CanvasToMinimap(viewportLocation.X, viewportLocation.Y);
-            var vpWidth = viewportSize.Width * _scale;
-            var vpHeight = viewportSize.Height * _scale;
-
-            _viewportRect = new Rectangle
-            {
-                Width = Math.Max(vpWidth, 10),
-                Height = Math.Max(vpHeight, 10),
-                Stroke = new SolidColorBrush(Color.Parse("#0EA5E9")),
-                StrokeThickness = 2,
-                Fill = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)),
-                IsHitTestVisible = false
-            };
-            Canvas.SetLeft(_viewportRect, vpTopLeft.X);
-            Canvas.SetTop(_viewportRect, vpTopLeft.Y);
-            _minimapCanvas.Children.Add(_viewportRect);
+            System.Diagnostics.Debug.WriteLine($"[Minimap] RenderMinimap #{_renderMinimapCount}, last20avg={_totalRenderMinimapMs}ms, nodes={visibleNodes.Count}");
+            _totalRenderMinimapMs = 0;
         }
     }
 
@@ -468,6 +487,7 @@ public partial class FlowMinimap : UserControl
 
     /// <summary>
     /// Gets the nesting depth of a group for z-ordering.
+    /// Uses cached dictionary for O(1) parent lookup.
     /// </summary>
     private int GetGroupDepth(Graph graph, Node node)
     {
@@ -476,9 +496,18 @@ public partial class FlowMinimap : UserControl
         while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            var parent = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
-            if (parent == null) break;
-            currentParentId = parent.ParentGroupId;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeById != null && _nodeById.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return depth;
     }
@@ -488,12 +517,12 @@ public partial class FlowMinimap : UserControl
         if (TargetCanvas?.Graph == null || !TargetCanvas.Graph.Elements.Nodes.Any())
             return;
 
-        var point = e.GetCurrentPoint(_minimapCanvas);
+        var point = e.GetCurrentPoint(_minimapRenderControl);
         if (point.Properties.IsLeftButtonPressed)
         {
             _isDragging = true;
-            NavigateToPoint(e.GetPosition(_minimapCanvas));
-            e.Pointer.Capture(_minimapCanvas);
+            NavigateToPoint(e.GetPosition(_minimapRenderControl));
+            e.Pointer.Capture(_minimapRenderControl);
             e.Handled = true;
         }
     }
@@ -502,7 +531,7 @@ public partial class FlowMinimap : UserControl
     {
         if (_isDragging)
         {
-            NavigateToPoint(e.GetPosition(_minimapCanvas));
+            NavigateToPoint(e.GetPosition(_minimapRenderControl));
             e.Handled = true;
         }
     }

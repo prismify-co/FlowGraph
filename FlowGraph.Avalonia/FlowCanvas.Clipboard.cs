@@ -55,8 +55,8 @@ public partial class FlowCanvas
     {
         if (Graph == null || !_clipboardManager.HasContent) return;
 
-        // Deselect current selection
-        foreach (var node in Graph.Elements.Nodes)
+        // Deselect current selection - OPTIMIZED: only iterate selected nodes
+        foreach (var node in Graph.Elements.Nodes.Where(n => n.IsSelected))
         {
             node.IsSelected = false;
         }

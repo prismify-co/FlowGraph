@@ -86,12 +86,13 @@ public class SelectionManager
         var graph = _context.Graph;
         if (graph == null) return;
 
-        foreach (var node in graph.Elements.Nodes)
+        // OPTIMIZED: Only deselect items that are actually selected
+        foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected))
         {
             node.IsSelected = false;
         }
 
-        foreach (var edge in graph.Elements.Edges)
+        foreach (var edge in graph.Elements.Edges.Where(e => e.IsSelected))
         {
             edge.IsSelected = false;
         }
@@ -158,16 +159,21 @@ public class SelectionManager
 
         if (graph == null) return;
 
-        // Update visual state for ALL edges (some may have been deselected)
-        foreach (var edge in graph.Elements.Edges)
-        {
-            renderer.UpdateEdgeSelection(edge, theme);
-        }
-
-        // Also update node visuals if Ctrl was not held (nodes were deselected)
+        // OPTIMIZED: Only update visual state for edges that changed
+        // The clicked edge's visual needs updating
+        renderer.UpdateEdgeSelection(clickedEdge, theme);
+        
+        // If ctrl wasn't held, other selected edges were deselected - update those
         if (!ctrlHeld)
         {
-            foreach (var node in graph.Elements.Nodes)
+            foreach (var edge in graph.Elements.Edges.Where(e => e.Id != clickedEdge.Id && e.IsSelected == false))
+            {
+                // Only update edges that might have changed (previously selected)
+                renderer.UpdateEdgeSelection(edge, theme);
+            }
+            
+            // Only update previously selected nodes that were deselected
+            foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected == false))
             {
                 renderer.UpdateNodeSelection(node, theme);
             }

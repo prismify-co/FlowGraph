@@ -219,6 +219,15 @@ public class GraphRenderModel
         if (sourceNode == null || targetNode == null)
             return (default, default);
 
+        return GetEdgeEndpoints(edge, sourceNode, targetNode);
+    }
+
+    /// <summary>
+    /// Calculates the start and end points for an edge in canvas coordinates.
+    /// OPTIMIZED: Use this overload when you already have the source/target nodes looked up.
+    /// </summary>
+    public (AvaloniaPoint start, AvaloniaPoint end) GetEdgeEndpoints(Edge edge, Node sourceNode, Node targetNode)
+    {
         var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
         var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
         if (sourcePortIndex < 0) sourcePortIndex = 0;

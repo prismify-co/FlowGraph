@@ -222,10 +222,7 @@ public class GraphDto
 /// </summary>
 [JsonDerivedType(typeof(NodeElementDto), "node")]
 [JsonDerivedType(typeof(EdgeElementDto), "edge")]
-[JsonDerivedType(typeof(ShapeElementDto), "shape.rectangle")]
-[JsonDerivedType(typeof(ShapeElementDto), "shape.line")]
-[JsonDerivedType(typeof(ShapeElementDto), "shape.text")]
-[JsonDerivedType(typeof(ShapeElementDto), "shape.ellipse")]
+[JsonDerivedType(typeof(ShapeElementDto), "shape")]
 public abstract class ElementDto
 {
     /// <summary>
@@ -444,7 +441,7 @@ public class ShapeElementDto : ElementDto
         var dto = new ShapeElementDto
         {
             Id = shape.Id,
-            Kind = $"shape.{shapeType}",
+            Kind = "shape",  // Use single discriminator for polymorphic JSON
             ShapeType = shapeType,
             Position = new PointDto { X = shape.Position.X, Y = shape.Position.Y },
             Width = shape.Width,

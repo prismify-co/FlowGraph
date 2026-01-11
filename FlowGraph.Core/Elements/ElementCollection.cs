@@ -23,6 +23,14 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
 {
   private bool _suppressNotifications;
   private readonly Dictionary<string, ICanvasElement> _idLookup = new();
+  
+  // PERFORMANCE: Maintain typed lists for O(1) access instead of O(n) OfType<> filtering
+  private readonly List<Node> _nodeList = new();
+  private readonly List<Edge> _edgeList = new();
+  
+  // PERFORMANCE: Index edges by source/target node for O(1) edge lookup
+  private readonly Dictionary<string, List<Edge>> _edgesBySourceNode = new();
+  private readonly Dictionary<string, List<Edge>> _edgesByTargetNode = new();
 
   /// <summary>
   /// Adds a range of elements without firing individual notifications.
@@ -40,6 +48,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
       {
         Items.Add(element);
         _idLookup[element.Id] = element;
+        AddToTypedLists(element);
       }
     }
     finally
@@ -64,6 +73,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
       foreach (var element in elements)
       {
         _idLookup.Remove(element.Id);
+        RemoveFromTypedLists(element);
         Items.Remove(element);
       }
     }
@@ -87,10 +97,15 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
     {
       Items.Clear();
       _idLookup.Clear();
+      _nodeList.Clear();
+      _edgeList.Clear();
+      _edgesBySourceNode.Clear();
+      _edgesByTargetNode.Clear();
       foreach (var element in elements)
       {
         Items.Add(element);
         _idLookup[element.Id] = element;
+        AddToTypedLists(element);
       }
     }
     finally
@@ -113,6 +128,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   protected override void InsertItem(int index, ICanvasElement item)
   {
     _idLookup[item.Id] = item;
+    AddToTypedLists(item);
     base.InsertItem(index, item);
   }
 
@@ -121,6 +137,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   {
     var item = Items[index];
     _idLookup.Remove(item.Id);
+    RemoveFromTypedLists(item);
     base.RemoveItem(index);
   }
 
@@ -129,7 +146,9 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   {
     var oldItem = Items[index];
     _idLookup.Remove(oldItem.Id);
+    RemoveFromTypedLists(oldItem);
     _idLookup[item.Id] = item;
+    AddToTypedLists(item);
     base.SetItem(index, item);
   }
 
@@ -137,20 +156,137 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   protected override void ClearItems()
   {
     _idLookup.Clear();
+    _nodeList.Clear();
+    _edgeList.Clear();
+    _edgesBySourceNode.Clear();
+    _edgesByTargetNode.Clear();
     base.ClearItems();
+  }
+  
+  private void AddToTypedLists(ICanvasElement item)
+  {
+    if (item is Node node)
+    {
+      _nodeList.Add(node);
+    }
+    else if (item is Edge edge)
+    {
+      _edgeList.Add(edge);
+      
+      // Index by source node
+      if (!_edgesBySourceNode.TryGetValue(edge.Source, out var sourceList))
+      {
+        sourceList = new List<Edge>();
+        _edgesBySourceNode[edge.Source] = sourceList;
+      }
+      sourceList.Add(edge);
+      
+      // Index by target node
+      if (!_edgesByTargetNode.TryGetValue(edge.Target, out var targetList))
+      {
+        targetList = new List<Edge>();
+        _edgesByTargetNode[edge.Target] = targetList;
+      }
+      targetList.Add(edge);
+    }
+  }
+  
+  private void RemoveFromTypedLists(ICanvasElement item)
+  {
+    if (item is Node node)
+    {
+      _nodeList.Remove(node);
+    }
+    else if (item is Edge edge)
+    {
+      _edgeList.Remove(edge);
+      
+      // Remove from source index
+      if (_edgesBySourceNode.TryGetValue(edge.Source, out var sourceList))
+      {
+        sourceList.Remove(edge);
+        if (sourceList.Count == 0)
+          _edgesBySourceNode.Remove(edge.Source);
+      }
+      
+      // Remove from target index
+      if (_edgesByTargetNode.TryGetValue(edge.Target, out var targetList))
+      {
+        targetList.Remove(edge);
+        if (targetList.Count == 0)
+          _edgesByTargetNode.Remove(edge.Target);
+      }
+    }
   }
 
   #region Typed Accessors
 
   /// <summary>
   /// Gets all node elements in the collection.
+  /// PERFORMANCE: Returns cached list for O(1) access instead of O(n) OfType filtering.
   /// </summary>
-  public IEnumerable<Node> Nodes => this.OfType<Node>();
+  public IReadOnlyList<Node> Nodes => _nodeList;
+  
+  /// <summary>
+  /// Gets the count of nodes in the collection. O(1) operation.
+  /// </summary>
+  public int NodeCount => _nodeList.Count;
 
   /// <summary>
   /// Gets all edge elements in the collection.
+  /// PERFORMANCE: Returns cached list for O(1) access instead of O(n) OfType filtering.
   /// </summary>
-  public IEnumerable<Edge> Edges => this.OfType<Edge>();
+  public IReadOnlyList<Edge> Edges => _edgeList;
+  
+  /// <summary>
+  /// Gets the count of edges in the collection. O(1) operation.
+  /// </summary>
+  public int EdgeCount => _edgeList.Count;
+  
+  /// <summary>
+  /// Gets all edges connected to a specific node (either as source or target).
+  /// PERFORMANCE: O(1) lookup using edge index instead of O(n) iteration.
+  /// </summary>
+  /// <param name="nodeId">The ID of the node to find edges for.</param>
+  /// <returns>Enumerable of edges connected to the node.</returns>
+  public IEnumerable<Edge> GetEdgesForNode(string nodeId)
+  {
+    if (_edgesBySourceNode.TryGetValue(nodeId, out var sourceEdges))
+    {
+      foreach (var edge in sourceEdges)
+        yield return edge;
+    }
+    if (_edgesByTargetNode.TryGetValue(nodeId, out var targetEdges))
+    {
+      foreach (var edge in targetEdges)
+        yield return edge;
+    }
+  }
+  
+  /// <summary>
+  /// Gets all edges connected to any of the specified nodes.
+  /// PERFORMANCE: O(k) where k is number of connected edges, instead of O(n) iteration over all edges.
+  /// </summary>
+  /// <param name="nodeIds">The IDs of nodes to find edges for.</param>
+  /// <returns>List of distinct edges connected to any of the specified nodes.</returns>
+  public List<Edge> GetEdgesForNodes(IEnumerable<string> nodeIds)
+  {
+    var result = new HashSet<Edge>();
+    foreach (var nodeId in nodeIds)
+    {
+      if (_edgesBySourceNode.TryGetValue(nodeId, out var sourceEdges))
+      {
+        foreach (var edge in sourceEdges)
+          result.Add(edge);
+      }
+      if (_edgesByTargetNode.TryGetValue(nodeId, out var targetEdges))
+      {
+        foreach (var edge in targetEdges)
+          result.Add(edge);
+      }
+    }
+    return result.ToList();
+  }
 
   /// <summary>
   /// Gets all elements of the specified type.

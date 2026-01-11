@@ -14,6 +14,7 @@ public class DraggingState : InputStateBase
     private readonly AvaloniaPoint _dragStartScreen;
     private readonly AvaloniaPoint _dragStartCanvas;
     private readonly Dictionary<string, Core.Point> _startPositions;
+    private readonly Dictionary<string, Node> _nodeById; // OPTIMIZATION: O(1) lookup instead of O(n) FirstOrDefault
     private readonly FlowCanvasSettings _settings;
     private readonly List<string> _draggedNodeIds;
     private readonly List<Node> _draggedNodes;
@@ -30,6 +31,7 @@ public class DraggingState : InputStateBase
         _dragStartScreen = screenPosition;
         _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
         _startPositions = new Dictionary<string, Core.Point>();
+        _nodeById = new Dictionary<string, Node>();
         _settings = settings;
         _draggedNodeIds = new List<string>();
         _draggedNodes = new List<Node>();
@@ -42,6 +44,7 @@ public class DraggingState : InputStateBase
         foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected && n.IsDraggable))
         {
             nodesToDrag.Add(node.Id);
+            _nodeById[node.Id] = node; // Cache node reference
 
             if (node.IsGroup)
             {
@@ -49,14 +52,14 @@ public class DraggingState : InputStateBase
                 foreach (var child in graph.GetGroupChildrenRecursive(node.Id))
                 {
                     nodesToDrag.Add(child.Id);
+                    _nodeById[child.Id] = child; // Cache node reference
                 }
             }
         }
 
         foreach (var nodeId in nodesToDrag)
         {
-            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
-            if (node != null)
+            if (_nodeById.TryGetValue(nodeId, out var node))
             {
                 _startPositions[node.Id] = node.Position;
                 _draggedNodeIds.Add(node.Id);
@@ -71,8 +74,12 @@ public class DraggingState : InputStateBase
         // Don't raise drag start until threshold is met
     }
 
+    private static long _dragMoveCount = 0;
+    private static long _totalDragMoveMs = 0;
+    
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
@@ -110,10 +117,11 @@ public class DraggingState : InputStateBase
         var deltaX = currentCanvas.X - _dragStartCanvas.X;
         var deltaY = currentCanvas.Y - _dragStartCanvas.Y;
 
+        // OPTIMIZED: Use cached node references instead of O(n) FirstOrDefault lookups
+        var posUpdateSw = System.Diagnostics.Stopwatch.StartNew();
         foreach (var (nodeId, startPos) in _startPositions)
         {
-            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
-            if (node != null)
+            if (_nodeById.TryGetValue(nodeId, out var node))
             {
                 var newX = startPos.X + deltaX;
                 var newY = startPos.Y + deltaY;
@@ -128,9 +136,23 @@ public class DraggingState : InputStateBase
                 node.Position = new Core.Point(newX, newY);
             }
         }
+        posUpdateSw.Stop();
+        var posUpdateMs = posUpdateSw.ElapsedMilliseconds;
 
         // Raise dragging event for edge routing and other subscribers
+        var routingSw = System.Diagnostics.Stopwatch.StartNew();
         context.RaiseNodesDragging(_draggedNodeIds);
+        routingSw.Stop();
+        var routingMs = routingSw.ElapsedMilliseconds;
+        
+        sw.Stop();
+        _dragMoveCount++;
+        _totalDragMoveMs += sw.ElapsedMilliseconds;
+        if (_dragMoveCount % 60 == 0)
+        {
+            Debug.WriteLine($"[DragMove] last60avg={_totalDragMoveMs}ms | Nodes={_startPositions.Count}, PosUpdate={posUpdateMs}ms, Routing={routingMs}ms");
+            _totalDragMoveMs = 0;
+        }
 
         e.Handled = true;
         return StateTransitionResult.Stay();
@@ -158,10 +180,10 @@ public class DraggingState : InputStateBase
         }
 
         var newPositions = new Dictionary<string, Core.Point>();
+        // OPTIMIZED: Use cached node references instead of O(n) FirstOrDefault lookups
         foreach (var (nodeId, _) in _startPositions)
         {
-            var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
-            if (node != null)
+            if (_nodeById.TryGetValue(nodeId, out var node))
             {
                 node.IsDragging = false;
                 newPositions[node.Id] = node.Position;
@@ -196,17 +218,13 @@ public class DraggingState : InputStateBase
         if (e.Key == Key.Escape)
         {
             // Cancel drag - restore original positions
-            var graph = context.Graph;
-            if (graph != null)
+            // OPTIMIZED: Use cached node references instead of O(n) FirstOrDefault lookups
+            foreach (var (nodeId, startPos) in _startPositions)
             {
-                foreach (var (nodeId, startPos) in _startPositions)
+                if (_nodeById.TryGetValue(nodeId, out var node))
                 {
-                    var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == nodeId);
-                    if (node != null)
-                    {
-                        node.IsDragging = false;
-                        node.Position = startPos;
-                    }
+                    node.IsDragging = false;
+                    node.Position = startPos;
                 }
             }
 

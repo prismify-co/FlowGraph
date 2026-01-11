@@ -17,8 +17,9 @@ public class SerializationTests
         var json = graph.ToJson();
 
         Assert.NotEmpty(json);
-        Assert.Contains("nodes", json);
-        Assert.Contains("edges", json);
+        // Version 2 format uses "elements" array instead of separate "nodes"/"edges"
+        Assert.Contains("elements", json);
+        Assert.Contains("version", json);
     }
 
     [Fact]

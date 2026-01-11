@@ -374,8 +374,8 @@ public class FlowCanvasContextMenu
         // Use command for undo support
         _canvas.CommandHistory.Execute(new FlowGraph.Core.Commands.AddNodeCommand(graph, newNode));
 
-        // Select the new node
-        foreach (var n in graph.Elements.Nodes)
+        // Select the new node - OPTIMIZED: only deselect selected nodes
+        foreach (var n in graph.Elements.Nodes.Where(n => n.IsSelected))
             n.IsSelected = false;
         newNode.IsSelected = true;
 

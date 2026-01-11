@@ -89,17 +89,30 @@ public partial class FlowCanvas
         }
     }
 
+    private static int _renderAllCount = 0;
+    private static long _totalRenderMs = 0;
+
     private void RenderAll()
     {
+        var sw = Stopwatch.StartNew();
         FlowGraphLogger.Debug(LogCategory.Rendering, "RenderAll called", "FlowCanvas.RenderAll");
 
-        // Clear grid canvas once at the start of rendering
-        _gridCanvas?.Children.Clear();
+        // OPTIMIZATION: Don't clear grid canvas every frame - the grid control handles its own updates
+        // _gridCanvas?.Children.Clear();  // Removed: causes unnecessary layout invalidation
 
         RenderGrid();
         RenderCustomBackgrounds();
         // Note: Shapes are now rendered within RenderElements() for proper Z-order
         RenderElements();
+        
+        sw.Stop();
+        _renderAllCount++;
+        _totalRenderMs += sw.ElapsedMilliseconds;
+        if (_renderAllCount % 60 == 0)
+        {
+            Debug.WriteLine($"[Render] RenderAll: last60calls={_totalRenderMs}ms total, count={_renderAllCount}");
+            _totalRenderMs = 0;
+        }
     }
 
     private void RenderGrid()

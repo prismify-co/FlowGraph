@@ -67,11 +67,21 @@ public partial class FlowCanvas
     /// </summary>
     public void FitToView()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
         if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
+        var boundsTime = sw.ElapsedMilliseconds;
         var bounds = CalculateGraphBounds();
+        var calcTime = sw.ElapsedMilliseconds - boundsTime;
+        
         _viewport.FitToBounds(bounds, Bounds.Size);
+        var fitTime = sw.ElapsedMilliseconds - calcTime - boundsTime;
+        
         RenderGrid();
+        
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[FitToView] Total={sw.ElapsedMilliseconds}ms | Bounds={calcTime}ms, Fit={fitTime}ms, Grid={sw.ElapsedMilliseconds - fitTime - calcTime - boundsTime}ms");
     }
 
     /// <summary>
