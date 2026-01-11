@@ -680,7 +680,7 @@ public partial class MainWindow : Window
         {
             graph.RemoveElement(element);
         }
-        
+
         FlowCanvas.Refresh();
         SetStatus("Graph cleared");
     }
@@ -706,11 +706,12 @@ public partial class MainWindow : Window
             FlowCanvas.DisableDirectRendering();
         }
 
-        // Clear existing - Use legacy properties for Clear() - Elements returns IEnumerable
-#pragma warning disable CS0618
-        graph.Edges.Clear();
-        graph.Nodes.Clear();
-#pragma warning restore CS0618
+        // Clear all existing elements (nodes, edges, shapes)
+        var existingElements = graph.Elements.ToList();
+        foreach (var element in existingElements)
+        {
+            graph.RemoveElement(element);
+        }
 
         var sw = System.Diagnostics.Stopwatch.StartNew();
         var random = new Random(42); // Fixed seed for reproducibility
