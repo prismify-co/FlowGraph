@@ -56,6 +56,7 @@ public class DirectGraphRenderer : Control
     // Spatial index for fast hit testing
     private List<(Node node, double x, double y, double width, double height)>? _nodeIndex;
     private bool _indexDirty = true;
+    private Graph? _lastIndexedGraph; // Track which graph instance was indexed
 
     // Port hover state tracking
     private (string nodeId, string portId)? _hoveredPort;
@@ -139,6 +140,13 @@ public class DirectGraphRenderer : Control
     /// <param name="theme">Theme resources for styling.</param>
     public void Update(Graph? graph, ViewportState viewport, ThemeResources theme)
     {
+        // Only rebuild spatial index if graph instance changed (not on every viewport/selection change)
+        if (_graph != graph)
+        {
+            _indexDirty = true;
+            _lastIndexedGraph = null;
+        }
+
         _graph = graph;
         _viewport = viewport;
 
@@ -151,7 +159,6 @@ public class DirectGraphRenderer : Control
             InvalidateBrushes();
         }
 
-        _indexDirty = true; // Rebuild index on next hit test
         InvalidateVisual();
     }
 
@@ -265,6 +272,7 @@ public class DirectGraphRenderer : Control
         if (_graph == null)
         {
             _nodeIndex = null;
+            _lastIndexedGraph = null;
             return;
         }
 
@@ -273,13 +281,32 @@ public class DirectGraphRenderer : Control
         foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) continue;
-            if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
+            if (!IsNodeVisibleFast(node)) continue;
 
             var bounds = _model.GetNodeBounds(node);
             _nodeIndex.Add((node, bounds.X, bounds.Y, bounds.Width, bounds.Height));
         }
 
+        _lastIndexedGraph = _graph;
         _indexDirty = false;
+    }
+
+    /// <summary>
+    /// Fast visibility check using dictionary lookup instead of LINQ FirstOrDefault.
+    /// Checks if node is visible (not inside a collapsed group).
+    /// </summary>
+    private bool IsNodeVisibleFast(Node node)
+    {
+        if (_nodeById == null) return true;
+
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
+        {
+            if (!_nodeById.TryGetValue(currentParentId, out var parent)) break;
+            if (parent.IsCollapsed) return false;
+            currentParentId = parent.ParentGroupId;
+        }
+        return true;
     }
 
     private void InvalidateBrushes()
