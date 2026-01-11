@@ -3,12 +3,13 @@
 ## Stress Test Analysis (5,000 nodes)
 
 ### Baseline Performance
+
 ```
 Nodes: 5000, Edges: 5726, DirectRendering: True
 Data Gen:       1ms       (0.03%)
 Edge Gen:       905ms     (29%)   ⚠️ BOTTLENECK
 Collection Add: 29ms      (1%)
-Fit To View:    766ms     (25%)   ⚠️ BOTTLENECK  
+Fit To View:    766ms     (25%)   ⚠️ BOTTLENECK
 Render:         1392ms    (45%)   ⚠️ BOTTLENECK
 TOTAL:          3093ms
 ```
@@ -16,6 +17,7 @@ TOTAL:          3093ms
 ## Optimizations Implemented
 
 ### 1. Spatial Grid for Edge Generation ✅
+
 **Problem**: O(n²) LINQ queries - each node searches all other nodes for neighbors  
 **Solution**: Spatial hash grid with (cellX, cellY) indexing
 
@@ -43,13 +45,14 @@ for (int dx = -1; dx <= 1; dx++)
 **Expected Improvement**: 905ms → **~50ms** (18x faster)
 
 ### 2. Level-of-Detail (LOD) Rendering ✅
+
 **Problem**: Full detail rendering even when zoomed out  
 **Solution**: Progressive detail reduction based on zoom level
 
 ```csharp
 // LOD Thresholds in DirectGraphRenderer
 var showPorts = zoom >= 0.4;          // Skip ports when zoomed out
-var showLabels = zoom >= 0.3;         // Skip labels when very zoomed out  
+var showLabels = zoom >= 0.3;         // Skip labels when very zoomed out
 var useSimplified = zoom < 0.5;       // Simplified shapes at low zoom
 
 // Simplified Mode Optimizations:
@@ -61,6 +64,7 @@ var useSimplified = zoom < 0.5;       // Simplified shapes at low zoom
 ```
 
 **Detail Levels**:
+
 - **Zoom < 0.3**: Rectangles only, no labels, no ports, straight edges
 - **Zoom 0.3-0.4**: + labels, still no ports
 - **Zoom 0.4-0.5**: + ports, still simple shapes
@@ -69,6 +73,7 @@ var useSimplified = zoom < 0.5;       // Simplified shapes at low zoom
 **Expected Improvement**: 1392ms → **~400-500ms** (2.5-3x faster at low zoom)
 
 ### 3. Bounds Tracking During Generation ✅
+
 **Problem**: FitToView re-iterates all nodes to calculate bounds  
 **Solution**: Track min/max X/Y during node generation
 
@@ -80,7 +85,7 @@ for (int i = 0; i < nodeCount; i++)
 {
     var x = col * spacingX + offsetX;
     var y = row * spacingY + offsetY;
-    
+
     minX = Math.Min(minX, x);
     minY = Math.Min(minY, y);
     maxX = Math.Max(maxX, x + nodeWidth);
@@ -93,6 +98,7 @@ for (int i = 0; i < nodeCount; i++)
 **Expected Improvement**: 766ms → **~200ms** (3.8x faster)
 
 ### 4. Batch Removal API ✅
+
 **Problem**: Removing elements one-by-one triggers N collection change notifications  
 **Solution**: `RemoveRange()` with single notification
 
@@ -133,6 +139,7 @@ graph.RemoveElements(graph.Elements.ToList());  // Instant!
 ## Expected Total Performance
 
 ### Stress Test Projection (5,000 nodes)
+
 ```
 Data Gen:       1ms       (unchanged)
 Edge Gen:       50ms      (18x improvement ✨)
@@ -143,13 +150,16 @@ TOTAL:          730ms     (4.2x faster! 🚀)
 ```
 
 ### Pan/Zoom Performance
+
 Virtualization is **enabled by default** (`EnableVirtualization = true`):
+
 - `IsInVisibleBounds()` culls nodes outside viewport + 200px buffer
 - Only visible nodes are rendered during pan/zoom
 - 10K nodes with 1920x1080 viewport ≈ 100-200 visible nodes
 - Smooth 60 FPS panning even with massive graphs
 
 **DirectRenderer already implements viewport culling**:
+
 ```csharp
 foreach (var node in _graph.Elements.Nodes)
 {
@@ -164,20 +174,23 @@ foreach (var node in _graph.Elements.Nodes)
 ### Current Architecture Capabilities
 
 **10,000 nodes**:
+
 - ✅ Direct rendering mode (GPU-accelerated)
 - ✅ Virtualization culls to ~200 visible nodes
 - ✅ LOD reduces detail when zoomed out
 - **Expected**: Smooth 60 FPS pan/zoom, 1-2s initial load
 
 **100,000 nodes**:
+
 - ✅ All optimizations still apply
 - ⚠️ Edge generation becomes bottleneck again (spatial grid is O(n) build time)
 - ⚠️ Collection add may become slow (BulkObservableCollection.AddRange)
 - **Recommendation**: Load on-demand (fetch visible region from database)
 
 **1,000,000+ nodes**:
+
 - ❌ Full graph in memory not feasible
-- **Architecture Change Required**: 
+- **Architecture Change Required**:
   - Spatial database with R-tree indexing (PostgreSQL + PostGIS)
   - Streaming API: fetch only viewport region
   - Virtual scrolling with prefetch
@@ -198,14 +211,14 @@ public class Neo4jGraphDataSource : IGraphDataSource
     {
         // LOD: fetch simplified nodes when zoomed out
         var detail = zoom < 0.5 ? "summary" : "full";
-        
+
         // Spatial query with R-tree index
         var cypher = $@"
             MATCH (n:Node)
             WHERE n.x >= {bounds.X} AND n.x <= {bounds.Right}
               AND n.y >= {bounds.Y} AND n.y <= {bounds.Bottom}
             RETURN n LIMIT 1000";
-        
+
         return await _driver.ExecuteQuery(cypher);
     }
 }
@@ -214,11 +227,13 @@ public class Neo4jGraphDataSource : IGraphDataSource
 ## Monitoring & Diagnostics
 
 ### Existing Tools
+
 - ✅ `FlowCanvas.DebugRenderingPerformance = true` (detailed timing breakdown)
 - ✅ `Settings.EnableDiagnostics` (comprehensive logging)
 - ✅ Stress test buttons (100, 500, 1K, 5K nodes)
 
 ### Recommended Additions
+
 1. **FPS Counter** - Real-time frame rate during pan/zoom
 2. **Render Stats** - `"127/5000 nodes rendered"` in status bar
 3. **Memory Usage** - Track graph size in MB
@@ -227,17 +242,20 @@ public class Neo4jGraphDataSource : IGraphDataSource
 ## Testing Recommendations
 
 1. **Test 5K Stress Test**:
+
    - Run before/after measurements
    - Verify edge gen < 100ms
    - Verify total < 1s
 
 2. **Test Zoom Performance**:
+
    - Load 5K nodes
    - Zoom out to 0.2 (verify rectangles, no labels)
    - Zoom in to 1.0 (verify full detail)
    - Check smooth transitions
 
 3. **Test Pan Performance**:
+
    - Load 10K nodes
    - Pan rapidly across graph
    - Verify smooth 60 FPS (no stuttering)
