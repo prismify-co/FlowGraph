@@ -50,6 +50,31 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   }
 
   /// <summary>
+  /// Removes a range of elements without firing individual notifications.
+  /// A single Reset notification is fired after all elements are removed.
+  /// </summary>
+  /// <param name="elements">The elements to remove.</param>
+  public void RemoveRange(IEnumerable<ICanvasElement> elements)
+  {
+    ArgumentNullException.ThrowIfNull(elements);
+
+    _suppressNotifications = true;
+    try
+    {
+      foreach (var element in elements)
+      {
+        _idLookup.Remove(element.Id);
+        Items.Remove(element);
+      }
+    }
+    finally
+    {
+      _suppressNotifications = false;
+      OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    }
+  }
+
+  /// <summary>
   /// Clears all elements and adds the specified elements.
   /// </summary>
   /// <param name="elements">The elements to set.</param>

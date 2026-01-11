@@ -173,6 +173,26 @@ public class Graph
         Edges.AddRange(elementList.OfType<Edge>());
     }
 
+    /// <summary>
+    /// Removes multiple elements at once with a single notification.
+    /// </summary>
+    /// <param name="elements">The elements to remove.</param>
+    public void RemoveElements(IEnumerable<ICanvasElement> elements)
+    {
+        ArgumentNullException.ThrowIfNull(elements);
+        var elementList = elements.ToList();
+        Elements.RemoveRange(elementList);
+
+        // Sync with legacy collections for backward compat
+        var nodes = elementList.OfType<Node>().ToList();
+        var edges = elementList.OfType<Edge>().ToList();
+
+        foreach (var node in nodes)
+            Nodes.Remove(node);
+        foreach (var edge in edges)
+            Edges.Remove(edge);
+    }
+
     #endregion
 
     #region Node Operations (Legacy API - Backward Compatible)

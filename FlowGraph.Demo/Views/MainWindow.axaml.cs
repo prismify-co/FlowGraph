@@ -672,53 +672,22 @@ public partial class MainWindow : Window
 
     private void OnClearGraphClick(object? sender, RoutedEventArgs e)
     {
-        System.Diagnostics.Debug.WriteLine("=== CLEAR GRAPH CLICKED ===");
-        
-        if (DataContext is not ViewModels.MainWindowViewModel vm)
-        {
-            System.Diagnostics.Debug.WriteLine("ERROR: DataContext is not MainWindowViewModel");
-            return;
-        }
-
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
         var graph = vm.MyGraph;
-        if (graph == null)
-        {
-            System.Diagnostics.Debug.WriteLine("ERROR: MyGraph is null");
-            return;
-        }
-
-        System.Diagnostics.Debug.WriteLine($"Graph instance: {graph.GetHashCode()}");
-        System.Diagnostics.Debug.WriteLine($"FlowCanvas.Graph instance: {FlowCanvas.Graph?.GetHashCode()}");
-        System.Diagnostics.Debug.WriteLine($"Are they the same? {ReferenceEquals(graph, FlowCanvas.Graph)}");
+        if (graph == null) return;
 
         // Disable direct rendering before clearing
         FlowCanvas.DisableDirectRendering();
-        System.Diagnostics.Debug.WriteLine("Direct rendering disabled");
 
-        // Get all elements
+        // Get snapshot and count
         var allElements = graph.Elements.ToList();
-        var nodeCount = allElements.OfType<Node>().Count();
-        var edgeCount = allElements.OfType<Edge>().Count();
-        var shapeCount = allElements.OfType<ShapeElement>().Count();
-        
-        System.Diagnostics.Debug.WriteLine($"Elements found: {allElements.Count} total ({nodeCount}n, {edgeCount}e, {shapeCount}s)");
+        var count = allElements.Count;
 
-        // Clear all elements
-        foreach (var element in allElements)
-        {
-            System.Diagnostics.Debug.WriteLine($"  Removing {element.GetType().Name} with ID: {element.Id}");
-            graph.RemoveElement(element);
-        }
-
-        System.Diagnostics.Debug.WriteLine($"After removal - Elements.Count(): {graph.Elements.Count()}");
-        System.Diagnostics.Debug.WriteLine($"After removal - Nodes.Count: {graph.Elements.Nodes.Count()}");
-        System.Diagnostics.Debug.WriteLine($"After removal - Edges.Count: {graph.Elements.Edges.Count()}");
+        // Remove all elements using batch API (single notification)
+        graph.RemoveElements(allElements);
 
         FlowCanvas.Refresh();
-        System.Diagnostics.Debug.WriteLine("Refresh called");
-        System.Diagnostics.Debug.WriteLine("=== CLEAR GRAPH COMPLETE ===");
-        
-        SetStatus($"Graph cleared - removed {allElements.Count} elements ({nodeCount}n, {edgeCount}e, {shapeCount}s)");
+        SetStatus($"Graph cleared - removed {count} elements");
     }
 
     private async void GenerateStressTestGraph(int nodeCount)
@@ -761,6 +730,9 @@ public partial class MainWindow : Window
 
         // Generate nodes into a temporary list first (avoids ObservableCollection notifications)
         var nodesList = new List<Node>(nodeCount);
+        double minX = double.MaxValue, minY = double.MaxValue;
+        double maxX = double.MinValue, maxY = double.MinValue;
+        
         for (int i = 0; i < nodeCount; i++)
         {
             var col = i % cols;
@@ -787,12 +759,16 @@ public partial class MainWindow : Window
                 Outputs = outputs
             };
 
-            var state = new NodeState
-            {
-                X = col * spacingX + offsetX,
-                Y = row * spacingY + offsetY
-            };
+            var x = col * spacingX + offsetX;
+            var y = row * spacingY + offsetY;
+            
+            // Track bounds during generation
+            minX = Math.Min(minX, x);
+            minY = Math.Min(minY, y);
+            maxX = Math.Max(maxX, x + FlowCanvas.Settings.NodeWidth);
+            maxY = Math.Max(maxY, y + FlowCanvas.Settings.NodeHeight);
 
+            var state = new NodeState { X = x, Y = y };
             var node = new Node(definition, state);
 
             nodesList.Add(node);
@@ -801,18 +777,48 @@ public partial class MainWindow : Window
         var dataGenTime = sw.ElapsedMilliseconds;
         sw.Restart();
 
-        // Generate edges into a temporary list first (avoids ObservableCollection notifications)
+        // Generate edges using spatial grid for O(1) neighbor lookup instead of O(n) per node
         var edgesList = new List<Edge>();
-        var nodesWithOutputs = nodesList.Where(n => n.Outputs.Count > 0).ToList();
-
-        foreach (var node in nodesWithOutputs)
+        
+        // Build spatial grid: each cell contains nodes in that grid position
+        var gridCellSize = Math.Max(spacingX, spacingY);
+        var grid = new Dictionary<(int, int), List<Node>>();
+        
+        foreach (var node in nodesList.Where(n => n.Inputs.Count > 0))
         {
-            // Find nearby nodes that have inputs - only connect to immediate neighbors
-            var nearbyNodes = nodesList
-                .Where(n => n.Id != node.Id && n.Inputs.Count > 0)
+            var cellX = (int)(node.Position.X / gridCellSize);
+            var cellY = (int)(node.Position.Y / gridCellSize);
+            var key = (cellX, cellY);
+            
+            if (!grid.ContainsKey(key))
+                grid[key] = new List<Node>();
+            grid[key].Add(node);
+        }
+
+        // For each node with outputs, query neighboring grid cells
+        foreach (var node in nodesList.Where(n => n.Outputs.Count > 0))
+        {
+            var cellX = (int)(node.Position.X / gridCellSize);
+            var cellY = (int)(node.Position.Y / gridCellSize);
+            
+            // Check current cell and 8 neighboring cells
+            var candidates = new List<Node>();
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    var key = (cellX + dx, cellY + dy);
+                    if (grid.TryGetValue(key, out var cellNodes))
+                        candidates.AddRange(cellNodes);
+                }
+            }
+            
+            // Filter to nearby nodes (within 1.5x spacing) and pick 1-2 random targets
+            var nearbyNodes = candidates
+                .Where(n => n.Id != node.Id)
                 .Where(n => Math.Abs(n.Position.X - node.Position.X) < spacingX * 1.5 &&
                            Math.Abs(n.Position.Y - node.Position.Y) < spacingY * 1.5)
-                .OrderBy(n => Math.Abs(n.Position.X - node.Position.X) + Math.Abs(n.Position.Y - node.Position.Y))
+                .OrderBy(n => random.Next()) // Random instead of distance sort (faster)
                 .Take(random.Next(1, 3))
                 .ToList();
 
@@ -839,7 +845,8 @@ public partial class MainWindow : Window
         var collectionAddTime = sw.ElapsedMilliseconds;
         sw.Restart();
 
-        // Fit to view first (calculate bounds without rendering)
+        // Fit to view using pre-calculated bounds (no need to iterate nodes again)
+        // Use FlowCanvas method which handles viewport and grid internally
         FlowCanvas.FitToView();
 
         var fitTime = sw.ElapsedMilliseconds;

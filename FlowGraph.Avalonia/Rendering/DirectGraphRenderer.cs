@@ -312,6 +312,11 @@ public class DirectGraphRenderer : Control
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
 
+        // Level-of-Detail thresholds
+        var showPorts = zoom >= 0.4;       // Skip ports when zoomed out
+        var showLabels = zoom >= 0.3;      // Skip labels when very zoomed out
+        var useSimplifiedNodes = zoom < 0.5; // Simplified rendering at low zoom
+
         // Draw groups first (behind everything)
         foreach (var node in _graph.Elements.Nodes)
         {
@@ -325,7 +330,7 @@ public class DirectGraphRenderer : Control
         // Draw edges (behind nodes)
         foreach (var edge in _graph.Elements.Edges)
         {
-            DrawEdge(context, edge, zoom, offsetX, offsetY, bounds);
+            DrawEdge(context, edge, zoom, offsetX, offsetY, bounds, useSimplifiedNodes);
         }
 
         // Draw regular nodes
@@ -339,7 +344,7 @@ public class DirectGraphRenderer : Control
             if (!GraphRenderModel.IsNodeVisible(_graph, node)) { nodesSkippedVisibility++; continue; }
             if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) { nodesSkippedBounds++; continue; }
 
-            DrawNode(context, node, zoom, offsetX, offsetY);
+            DrawNode(context, node, zoom, offsetX, offsetY, showLabels, showPorts, useSimplifiedNodes);
             nodesDrawn++;
         }
 
@@ -376,13 +381,13 @@ public class DirectGraphRenderer : Control
 
     #region Node Rendering
 
-    private void DrawNode(DrawingContext context, Node node, double zoom, double offsetX, double offsetY)
+    private void DrawNode(DrawingContext context, Node node, double zoom, double offsetX, double offsetY, bool showLabels, bool showPorts, bool useSimplified)
     {
         var canvasBounds = _model.GetNodeBounds(node);
         var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
 
         // Check if custom renderer exists and implements IDirectNodeRenderer
-        if (_nodeRenderers != null)
+        if (!useSimplified && _nodeRenderers != null)
         {
             var renderer = _nodeRenderers.GetRenderer(node.Type);
             if (renderer is IDirectNodeRenderer directRenderer)
@@ -405,21 +410,30 @@ public class DirectGraphRenderer : Control
                 };
 
                 directRenderer.DrawNode(context, node, renderContext);
-                DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
+                if (showPorts)
+                    DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
                 return;
             }
         }
 
-        // Default drawing
-        var cornerRadius = GraphRenderModel.NodeCornerRadius * zoom;
+        // Simplified or default drawing
+        var cornerRadius = useSimplified ? 0 : GraphRenderModel.NodeCornerRadius * zoom;
         var defaultBackground = GetNodeBackground(node);
 
-        // Draw rounded rectangle
-        var geometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
-        context.DrawGeometry(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, geometry);
+        // Draw rounded rectangle (or sharp rect if simplified)
+        if (useSimplified)
+        {
+            // Simple rectangle - faster than rounded
+            context.DrawRectangle(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, screenBounds);
+        }
+        else
+        {
+            var geometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
+            context.DrawGeometry(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, geometry);
+        }
 
-        // Draw label (skip if being edited)
-        if (_editingNodeId != node.Id)
+        // Draw label (skip if being edited or LOD disabled)
+        if (showLabels && _editingNodeId != node.Id)
         {
             var label = node.Label ?? node.Type ?? node.Id;
             if (!string.IsNullOrEmpty(label))
@@ -428,8 +442,9 @@ public class DirectGraphRenderer : Control
             }
         }
 
-        // Draw ports
-        DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
+        // Draw ports (if LOD allows)
+        if (showPorts)
+            DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
     }
 
     private IBrush? GetNodeBackground(Node node)
@@ -481,7 +496,7 @@ public class DirectGraphRenderer : Control
 
     #region Edge Rendering
 
-    private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds)
+    private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds, bool useSimplified)
     {
         var sourceNode = _graph!.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
         var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
@@ -505,31 +520,40 @@ public class DirectGraphRenderer : Control
 
         var pen = edge.IsSelected ? _edgeSelectedPen : _edgePen;
 
-        // Get control points (scaled to screen)
-        var (cp1Canvas, cp2Canvas) = _model.GetBezierControlPoints(startCanvas, endCanvas);
-        var cp1Screen = CanvasToScreen(cp1Canvas, zoom, offsetX, offsetY);
-        var cp2Screen = CanvasToScreen(cp2Canvas, zoom, offsetX, offsetY);
-
-        // Draw bezier curve
-        var geometry = new StreamGeometry();
-        using (var ctx = geometry.Open())
+        // Simplified rendering: straight line instead of bezier when zoomed out
+        if (useSimplified)
         {
-            ctx.BeginFigure(startScreen, false);
-            ctx.CubicBezierTo(cp1Screen, cp2Screen, endScreen);
-            ctx.EndFigure(false);
+            context.DrawLine(pen!, startScreen, endScreen);
+        }
+        else
+        {
+            // Get control points (scaled to screen)
+            var (cp1Canvas, cp2Canvas) = _model.GetBezierControlPoints(startCanvas, endCanvas);
+            var cp1Screen = CanvasToScreen(cp1Canvas, zoom, offsetX, offsetY);
+            var cp2Screen = CanvasToScreen(cp2Canvas, zoom, offsetX, offsetY);
+
+            // Draw bezier curve
+            var geometry = new StreamGeometry();
+            using (var ctx = geometry.Open())
+            {
+                ctx.BeginFigure(startScreen, false);
+                ctx.CubicBezierTo(cp1Screen, cp2Screen, endScreen);
+                ctx.EndFigure(false);
+            }
+
+            context.DrawGeometry(null, pen, geometry);
         }
 
-        context.DrawGeometry(null, pen, geometry);
-
-        // Draw arrow at end
-        if (edge.MarkerEnd != EdgeMarker.None)
+        // Draw arrow at end (skip in simplified mode for performance)
+        if (!useSimplified && edge.MarkerEnd != EdgeMarker.None)
         {
+            var cp2Screen = useSimplified ? startScreen : CanvasToScreen(_model.GetBezierControlPoints(startCanvas, endCanvas).Item2, zoom, offsetX, offsetY);
             var angle = Math.Atan2(endScreen.Y - cp2Screen.Y, endScreen.X - cp2Screen.X);
             DrawArrow(context, endScreen, angle, pen!.Brush, zoom, edge.MarkerEnd == EdgeMarker.ArrowClosed);
         }
 
-        // Draw edge label (skip if being edited)
-        if (!string.IsNullOrEmpty(edge.Label) && _editingEdgeId != edge.Id)
+        // Draw edge label (skip if being edited or in simplified mode)
+        if (!useSimplified && !string.IsNullOrEmpty(edge.Label) && _editingEdgeId != edge.Id)
         {
             var midCanvas = _model.GetEdgeMidpoint(startCanvas, endCanvas);
             var midScreen = CanvasToScreen(midCanvas, zoom, offsetX, offsetY);
