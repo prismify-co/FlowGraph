@@ -33,6 +33,7 @@ public class DirectGraphRenderer : Control
     private Graph? _graph;
     private ViewportState? _viewport;
     private ThemeResources? _theme;
+    private Dictionary<string, Node>? _nodeById;
 
     // Cached pens and brushes (reused across renders)
     private Pen? _edgePen;
@@ -140,6 +141,9 @@ public class DirectGraphRenderer : Control
     {
         _graph = graph;
         _viewport = viewport;
+
+        // Build node lookup dictionary for O(1) edge endpoint resolution (was O(n) per edge!)
+        _nodeById = graph?.Elements.Nodes.ToDictionary(n => n.Id);
 
         if (_theme != theme)
         {
@@ -317,6 +321,9 @@ public class DirectGraphRenderer : Control
         var showLabels = zoom >= 0.3;      // Skip labels when very zoomed out
         var useSimplifiedNodes = zoom < 0.5; // Simplified rendering at low zoom
 
+        // Build visible node set for edge culling (only render edges with visible endpoints)
+        var visibleNodeIds = new HashSet<string>();
+        
         // Draw groups first (behind everything)
         foreach (var node in _graph.Elements.Nodes)
         {
@@ -327,9 +334,23 @@ public class DirectGraphRenderer : Control
             DrawGroup(context, node, zoom, offsetX, offsetY);
         }
 
-        // Draw edges (behind nodes)
+        // Collect visible regular nodes for edge culling
+        foreach (var node in _graph.Elements.Nodes)
+        {
+            if (node.IsGroup) continue;
+            if (!GraphRenderModel.IsNodeVisible(_graph!, node)) continue;
+            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) continue;
+            
+            visibleNodeIds.Add(node.Id);
+        }
+
+        // Draw edges (behind nodes) - ONLY edges with at least one visible endpoint
         foreach (var edge in _graph.Elements.Edges)
         {
+            // Early culling: skip edges with both endpoints outside viewport
+            if (!visibleNodeIds.Contains(edge.Source) && !visibleNodeIds.Contains(edge.Target))
+                continue;
+                
             DrawEdge(context, edge, zoom, offsetX, offsetY, bounds, useSimplifiedNodes);
         }
 
@@ -498,10 +519,10 @@ public class DirectGraphRenderer : Control
 
     private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds, bool useSimplified)
     {
-        var sourceNode = _graph!.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
-        var targetNode = _graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Target);
-
-        if (sourceNode == null || targetNode == null) return;
+        // O(1) dictionary lookup instead of O(n) FirstOrDefault - massive speedup for large graphs
+        if (_nodeById == null || _graph == null) return;
+        if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return;
+        if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
         if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) return;
 
         var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, _graph);
