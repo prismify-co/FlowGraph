@@ -671,8 +671,13 @@ public partial class MainWindow : Window
 
     private void OnClearGraphClick(object? sender, RoutedEventArgs e)
     {
-        var graph = FlowCanvas.Graph;
+        if (DataContext is not ViewModels.MainWindowViewModel vm) return;
+        
+        var graph = vm.MyGraph;
         if (graph == null) return;
+
+        // Disable direct rendering before clearing
+        FlowCanvas.DisableDirectRendering();
 
         // Clear all elements (nodes, edges, shapes)
         var allElements = graph.Elements.ToList();
@@ -682,7 +687,7 @@ public partial class MainWindow : Window
         }
 
         FlowCanvas.Refresh();
-        SetStatus("Graph cleared");
+        SetStatus($"Graph cleared - removed {allElements.Count} elements");
     }
 
     private async void GenerateStressTestGraph(int nodeCount)
