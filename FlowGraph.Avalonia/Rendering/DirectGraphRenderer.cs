@@ -919,14 +919,24 @@ public class DirectGraphRenderer : Control
     /// </summary>
     public Node? HitTestNode(double screenX, double screenY)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
         if (_graph == null || _viewport == null) return null;
 
-        if (_indexDirty) RebuildSpatialIndex();
+        long rebuildTime = 0;
+        if (_indexDirty)
+        {
+            var rebuildSw = System.Diagnostics.Stopwatch.StartNew();
+            RebuildSpatialIndex();
+            rebuildTime = rebuildSw.ElapsedMilliseconds;
+        }
+        
         if (_nodeIndex == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
 
         // Check regular nodes first (they're on top)
+        var regularCheckStart = sw.ElapsedMilliseconds;
         for (int i = _nodeIndex.Count - 1; i >= 0; i--)
         {
             var (node, nx, ny, nw, nh) = _nodeIndex[i];
@@ -934,22 +944,39 @@ public class DirectGraphRenderer : Control
 
             if (bounds.Contains(canvasPoint))
             {
+                sw.Stop();
+                System.Diagnostics.Debug.WriteLine($"[HitTest] Regular node check: {sw.ElapsedMilliseconds}ms (rebuild:{rebuildTime}ms)");
                 return node;
             }
         }
+        var regularCheckTime = sw.ElapsedMilliseconds - regularCheckStart;
 
-        // Check groups (they're behind regular nodes)
-        foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))
+        // Check groups (they're behind regular nodes) - OPTIMIZED to avoid LINQ iteration
+        var groupCheckStart = sw.ElapsedMilliseconds;
+        int groupsChecked = 0;
+        if (_nodeById != null)
         {
-            if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
-
-            var bounds = _model.GetNodeBounds(group);
-            if (bounds.Contains(canvasPoint))
+            foreach (var kvp in _nodeById)
             {
-                return group;
+                var node = kvp.Value;
+                if (!node.IsGroup) continue;
+                
+                groupsChecked++;
+                if (!IsNodeVisibleFast(node)) continue;
+
+                var bounds = _model.GetNodeBounds(node);
+                if (bounds.Contains(canvasPoint))
+                {
+                    sw.Stop();
+                    System.Diagnostics.Debug.WriteLine($"[HitTest] Group found in {sw.ElapsedMilliseconds}ms | Rebuild:{rebuildTime}ms, Regular:{regularCheckTime}ms, Groups:{sw.ElapsedMilliseconds - groupCheckStart}ms, GroupsChecked:{groupsChecked}");
+                    return node;
+                }
             }
         }
+        var groupCheckTime = sw.ElapsedMilliseconds - groupCheckStart;
 
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[HitTest] No hit in {sw.ElapsedMilliseconds}ms | Rebuild:{rebuildTime}ms, Regular:{regularCheckTime}ms, Groups:{groupCheckTime}ms, GroupsChecked:{groupsChecked}");
         return null;
     }
 
