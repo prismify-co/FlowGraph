@@ -674,11 +674,13 @@ public partial class MainWindow : Window
         var graph = FlowCanvas.Graph;
         if (graph == null) return;
 
-        // Use legacy properties for Clear() - Elements returns IEnumerable
-#pragma warning disable CS0618
-        graph.Edges.Clear();
-        graph.Nodes.Clear();
-#pragma warning restore CS0618
+        // Clear all elements (nodes, edges, shapes)
+        var allElements = graph.Elements.ToList();
+        foreach (var element in allElements)
+        {
+            graph.RemoveElement(element);
+        }
+        
         FlowCanvas.Refresh();
         SetStatus("Graph cleared");
     }

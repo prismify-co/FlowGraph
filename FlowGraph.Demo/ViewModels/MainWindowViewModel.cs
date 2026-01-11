@@ -288,7 +288,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
             var json = File.ReadAllText(path);
             var loadedGraph = GraphSerializer.Deserialize(json);
-            
+
             if (loadedGraph != null)
             {
                 // Clear current graph
