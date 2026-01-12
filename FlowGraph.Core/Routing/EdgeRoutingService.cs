@@ -5,9 +5,10 @@ namespace FlowGraph.Core.Routing;
 /// </summary>
 public class EdgeRoutingService
 {
-    private readonly IEdgeRouter _directRouter = new DirectRouter();
+    private readonly IEdgeRouter _directRouter = Routing.DirectRouter.Instance;
+    private readonly IEdgeRouter _bezierRouter = Routing.BezierRouter.Instance;
     private readonly IEdgeRouter _orthogonalRouter = new OrthogonalRouter();
-    private readonly IEdgeRouter _smartBezierRouter = new SmartBezierRouter();
+    private readonly IEdgeRouter _smartBezierRouter = Routing.SmartBezierRouter.Instance;
 
     /// <summary>
     /// Whether automatic routing is enabled.
@@ -26,8 +27,18 @@ public class EdgeRoutingService
 
     /// <summary>
     /// Padding around nodes for routing.
+    /// Deprecated: Use Options.NodePadding instead.
     /// </summary>
-    public double NodePadding { get; set; } = 10;
+    public double NodePadding
+    {
+        get => Options.NodePadding;
+        set => Options.NodePadding = value;
+    }
+
+    /// <summary>
+    /// Routing options controlling corner radius, edge spacing, etc.
+    /// </summary>
+    public EdgeRoutingOptions Options { get; set; } = new();
 
     /// <summary>
     /// Gets the direct router instance.
@@ -35,12 +46,17 @@ public class EdgeRoutingService
     public IEdgeRouter DirectRouter => _directRouter;
 
     /// <summary>
+    /// Gets the simple bezier router instance (no obstacle avoidance).
+    /// </summary>
+    public IEdgeRouter BezierRouter => _bezierRouter;
+
+    /// <summary>
     /// Gets the orthogonal router instance.
     /// </summary>
     public IEdgeRouter OrthogonalRouter => _orthogonalRouter;
 
     /// <summary>
-    /// Gets the smart bezier router instance.
+    /// Gets the smart bezier router instance (with obstacle avoidance).
     /// </summary>
     public IEdgeRouter SmartBezierRouter => _smartBezierRouter;
 
@@ -109,20 +125,15 @@ public class EdgeRoutingService
         var result = new Dictionary<string, IReadOnlyList<Point>>();
         var context = CreateContext(graph);
 
-        Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] IsRoutingEnabled: {IsRoutingEnabled}");
-        Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] NodePadding: {NodePadding}");
-
         foreach (var edge in graph.Elements.Edges)
         {
             if (IsRoutingEnabled)
             {
                 var router = GetRouter(edge.Type);
-                Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] Routing edge {edge.Id} with {router.GetType().Name}");
                 result[edge.Id] = router.Route(context, edge);
             }
             else
             {
-                Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] Routing DISABLED - using simple route for {edge.Id}");
                 result[edge.Id] = GetSimpleRoute(graph, edge);
             }
         }
@@ -158,9 +169,9 @@ public class EdgeRoutingService
         return new EdgeRoutingContext
         {
             Graph = graph,
+            Options = Options,
             DefaultNodeWidth = DefaultNodeWidth,
-            DefaultNodeHeight = DefaultNodeHeight,
-            NodePadding = NodePadding
+            DefaultNodeHeight = DefaultNodeHeight
         };
     }
 

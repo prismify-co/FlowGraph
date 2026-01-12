@@ -1,6 +1,9 @@
 using Avalonia;
 using FlowGraph.Core;
 using FlowGraph.Core.Diagnostics;
+using FlowGraph.Core.Routing;
+
+using AvaloniaRect = Avalonia.Rect;
 
 namespace FlowGraph.Avalonia;
 
@@ -244,6 +247,21 @@ public class FlowCanvasSettings
     /// </summary>
     public RouterAlgorithm DefaultRouterAlgorithm { get; set; } = RouterAlgorithm.Auto;
 
+    /// <summary>
+    /// Advanced routing options controlling corner radius, edge spacing, etc.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// These options provide fine-grained control over edge routing behavior:
+    /// <list type="bullet">
+    /// <item><see cref="EdgeRoutingOptions.CornerRadius"/> - Rounding for SmoothStep edges</item>
+    /// <item><see cref="EdgeRoutingOptions.EndSegmentLength"/> - Stem length from ports</item>
+    /// <item><see cref="EdgeRoutingOptions.EdgeSpacing"/> - Gap between edges from same port</item>
+    /// </list>
+    /// </para>
+    /// </remarks>
+    public EdgeRoutingOptions RoutingOptions { get; set; } = new();
+
     #endregion
 
     #region Viewport Settings
@@ -253,7 +271,7 @@ public class FlowCanvasSettings
     /// If set, the viewport cannot pan outside these bounds.
     /// Use null for unconstrained panning.
     /// </summary>
-    public Rect? ViewportBounds { get; set; } = null;
+    public AvaloniaRect? ViewportBounds { get; set; } = null;
 
     /// <summary>
     /// Padding inside the viewport bounds.

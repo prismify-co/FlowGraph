@@ -25,6 +25,11 @@ public class EdgeRoutingContext
     public required Graph Graph { get; init; }
 
     /// <summary>
+    /// Routing options controlling behavior.
+    /// </summary>
+    public EdgeRoutingOptions Options { get; init; } = EdgeRoutingOptions.Default;
+
+    /// <summary>
     /// Default node width when not specified.
     /// </summary>
     public double DefaultNodeWidth { get; init; } = 150;
@@ -36,8 +41,10 @@ public class EdgeRoutingContext
 
     /// <summary>
     /// Padding around nodes for routing.
+    /// Uses Options.NodePadding if not explicitly set.
     /// </summary>
-    public double NodePadding { get; init; } = 10;
+    public double NodePadding { get => _nodePadding ?? Options.NodePadding; init => _nodePadding = value; }
+    private double? _nodePadding;
 
     /// <summary>
     /// Gets the bounding rectangle for a node.
