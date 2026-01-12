@@ -1,8 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:FlowGraph.Demo.ViewModels"
-        xmlns:avalonia="using:FlowGraph.Avalonia"
-        xmlns:controls="using:FlowGraph.Avalonia.Controls"
         xmlns:lucide="clr-namespace:LucideAvalonia;assembly=LucideAvalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,29 +12,22 @@
         Width="1200" Height="800">
 
     <Window.Styles>
-        <Style Selector="Button.icon-btn">
-            <Setter Property="Padding" Value="10,8"/>
-            <Setter Property="MinWidth" Value="100"/>
-        </Style>
-        <Style Selector="Button.icon-btn StackPanel">
-            <Setter Property="Spacing" Value="8"/>
-        </Style>
-        <Style Selector="TextBlock.section-title">
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="11"/>
+        <!-- Sidebar nav button -->
+        <Style Selector="Button.nav-btn">
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-        <Style Selector="TextBlock.hint">
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Opacity" Value="0.5"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-        <Style Selector="Border.card">
-            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Padding" Value="14"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Margin" Value="0,2"/>
+        </Style>
+        <Style Selector="Button.nav-btn:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListLowBrush}"/>
+        </Style>
+        <Style Selector="Button.nav-btn.selected">
+            <Setter Property="Background" Value="#6366F1"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
     </Window.Styles>
 
@@ -44,442 +35,53 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Panel>
-        <!-- FlowBackground with configurable pattern (replaces built-in grid) -->
-        <controls:FlowBackground 
-            x:Name="FlowBackground"
-            Variant="Dots"
-            Gap="20"
-            Size="2"
-            Color="#40808080"/>
-        
-        <avalonia:FlowCanvas x:Name="FlowCanvas" Graph="{Binding MyGraph}"/>
-        
-        <!-- Controls Panel - using FlowPanel for positioning -->
-        <controls:FlowPanel Position="BottomLeft" Margin="16">
-            <controls:FlowControls 
-                TargetCanvas="{Binding #FlowCanvas}"
-                DiagnosticsPanel="{Binding #DiagnosticsPanel}"/>
-        </controls:FlowPanel>
-        
-        <!-- Demo Control Panel - using FlowPanel for positioning -->
-        <controls:FlowPanel Position="TopLeft" Margin="16">
-            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Padding="20"
-                    Opacity="0.97"
-                    Width="400">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="720">
-                    <StackPanel Spacing="4">
-                        <!-- Header -->
-                        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,6">
-                            <lucide:Lucide Icon="Workflow" StrokeThickness="1.5" Width="22" Height="22"/>
-                            <TextBlock Text="FlowGraph Demo" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="Interactive demo of FlowGraph features" Classes="hint" Margin="0,0,0,14"/>
-                        
-                        <!-- ??????????????????????????????????? -->
-                        <!-- NODE TYPES SHOWCASE -->
-                        <!-- ??????????????????????????????????? -->
-                        <TextBlock Text="Node Types (HeaderedNodeRenderer)" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
-                        
-                        <Border Classes="card">
-                            <StackPanel Spacing="6">
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,4">
-                                    <lucide:Lucide Icon="Component" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="REACT FLOW STYLE NODES" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="This demo showcases custom node renderers built using HeaderedNodeRendererBase - a base class for nodes with header + content layout." 
-                                           TextWrapping="Wrap" FontSize="11" Opacity="0.7" Margin="0,0,0,8"/>
-                                
-                                <StackPanel Spacing="4">
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <Border Width="12" Height="12" CornerRadius="2" Background="#FFF0F5" BorderBrush="#FFB6C1" BorderThickness="1"/>
-                                        <TextBlock Text="ColorPicker" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        <TextBlock Text="- StyledHeaderedNodeRendererBase (pink)" FontSize="10" Opacity="0.6" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <Border Width="12" Height="12" CornerRadius="2" Background="#FFF0F5" BorderBrush="#FFB6C1" BorderThickness="1"/>
-                                        <TextBlock Text="RadioButton" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        <TextBlock Text="- StyledHeaderedNodeRendererBase (pink)" FontSize="10" Opacity="0.6" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <Border Width="12" Height="12" CornerRadius="2" Background="White" BorderBrush="#DCDCDC" BorderThickness="1"/>
-                                        <TextBlock Text="ZoomSlider" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        <TextBlock Text="- WhiteHeaderedNodeRendererBase" FontSize="10" Opacity="0.6" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <Border Width="12" Height="12" CornerRadius="2" Background="White" BorderBrush="#DCDCDC" BorderThickness="1"/>
-                                        <TextBlock Text="OutputDisplay" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        <TextBlock Text="- WhiteHeaderedNodeRendererBase" FontSize="10" Opacity="0.6" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                        
-                        <Separator Margin="0,8,0,12" Opacity="0.3"/>
-                        
-                        <!-- ??????????????????????????????????? -->
-                        <!-- CANVAS SETTINGS GROUP -->
-                        <!-- ??????????????????????????????????? -->
-                        <TextBlock Text="Canvas Settings" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
-                        
-                        <!-- Background Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Grid3X3" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="BACKGROUND PATTERN" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <UniformGrid Columns="3" Rows="1">
-                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnBackgroundDotsClick" ToolTip.Tip="Dots pattern">
-                                        <TextBlock Text="Dots" VerticalAlignment="Center"/>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,4,0" Click="OnBackgroundLinesClick" ToolTip.Tip="Lines pattern">
-                                        <TextBlock Text="Lines" VerticalAlignment="Center"/>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnBackgroundCrossClick" ToolTip.Tip="Cross pattern">
-                                        <TextBlock Text="Cross" VerticalAlignment="Center"/>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Viewport Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Move" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="VIEWPORT" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <UniformGrid Columns="2" Rows="2">
-                                    <Button Classes="icon-btn" Margin="0,0,4,4" Click="OnFitAnimatedClick" ToolTip.Tip="Fit all nodes in view">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Maximize2" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Fit View" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,4" Click="OnCenterAnimatedClick" ToolTip.Tip="Center on graph">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Focus" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Center" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="0,4,4,0" Click="OnZoomInAnimatedClick" ToolTip.Tip="Zoom in">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="ZoomIn" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Zoom In" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,4,0,0" Click="OnZoomOutAnimatedClick" ToolTip.Tip="Zoom out">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="ZoomOut" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Zoom Out" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <Separator Margin="0,8,0,12" Opacity="0.3"/>
-                        
-                        <!-- ??????????????????????????????????????????? -->
-                        <!-- ELEMENT ANIMATIONS GROUP -->
-                        <!-- ??????????????????????????????????????????? -->
-                        <TextBlock Text="Element Animations" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
-                        
-                        <!-- Nodes Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Box" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="NODES" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Select node(s) first" Classes="hint"/>
-                                <UniformGrid Columns="2" Rows="2">
-                                    <Button Classes="icon-btn" Margin="0,0,4,4" Click="OnCenterOnNodeClick" ToolTip.Tip="Center on selected">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Target" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Target" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,4" Click="OnAnimateNodeClick" ToolTip.Tip="Move randomly">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Shuffle" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Move" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="0,4,4,0" Click="OnNodePulseClick" ToolTip.Tip="Pulse effect">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Zap" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Pulse" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,4,0,0" Click="OnNodePopClick" ToolTip.Tip="Pop in/out">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Sparkles" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Pop" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Edges Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Spline" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="EDGES" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Click edge to select" Classes="hint"/>
-                                <UniformGrid Columns="2" Rows="2">
-                                    <Button Classes="icon-btn" Margin="0,0,4,4" Click="OnEdgePulseClick" ToolTip.Tip="Pulse thickness">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Activity" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Pulse" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,4" Click="OnEdgeFadeClick" ToolTip.Tip="Fade in/out">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="EyeOff" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Fade" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button x:Name="BtnEdgeFlow" Classes="icon-btn" Margin="0,4,4,0" Click="OnEdgeFlowClick" ToolTip.Tip="Toggle flow animation">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Waves" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock x:Name="FlowText" Text="Flow" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,4,0,0" Click="OnEdgeColorClick" ToolTip.Tip="Random color">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Palette" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Color" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Groups Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Group" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="GROUPS" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Click group border to select" Classes="hint"/>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnGroupCollapseClick" ToolTip.Tip="Collapse selected group">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="FoldVertical" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Collapse" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnGroupExpandClick" ToolTip.Tip="Expand selected group">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="UnfoldVertical" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Expand" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <Separator Margin="0,8,0,12" Opacity="0.3"/>
-                        
-                        <!-- ??????????????????????????????????????????? -->
-                        <!-- CONTROLS GROUP -->
-                        <!-- ??????????????????????????????????????????? -->
-                        <TextBlock Text="Controls" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
-                        
-                        <!-- Stop Button -->
-                        <Button Click="OnStopAllClick" HorizontalAlignment="Stretch" Padding="10,8" ToolTip.Tip="Stop all animations">
-                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                <lucide:Lucide Icon="Square" StrokeThickness="1.5" Width="14" Height="14"/>
-                                <TextBlock Text="Stop All Animations" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        
-                        <!-- Debug Section -->
-                        <Border Classes="card" Margin="0,10,0,0">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Bug" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="DEBUG" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Capture screenshots during animations" Classes="hint"/>
-                                <UniformGrid Columns="3" Rows="1">
-                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnToggleDebugClick" ToolTip.Tip="Toggle debug mode">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Camera" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock x:Name="DebugText" Text="Debug" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,4,0" Click="OnOpenDebugFolderClick" ToolTip.Tip="Open screenshots folder">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="FolderOpen" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Open" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnClearDebugClick" ToolTip.Tip="Clear all screenshots">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Trash2" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Clear" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Stress Test Section -->
-                        <Border Classes="card" Margin="0,10,0,0">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="STRESS TEST" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Generate large graphs to test performance" Classes="hint"/>
-                                <UniformGrid Columns="2" Rows="2">
-                                    <Button Classes="icon-btn" Margin="0,0,4,4" Click="OnGenerate100Click" ToolTip.Tip="Generate 100 nodes">
-                                        <TextBlock Text="100 Nodes" VerticalAlignment="Center"/>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,4" Click="OnGenerate500Click" ToolTip.Tip="Generate 500 nodes">
-                                        <TextBlock Text="500 Nodes" VerticalAlignment="Center"/>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="0,4,4,0" Click="OnGenerate1000Click" ToolTip.Tip="Generate 1000 nodes">
-                                        <TextBlock Text="1K Nodes" VerticalAlignment="Center"/>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,4,0,0" Click="OnGenerate5000Click" ToolTip.Tip="Generate 5000 nodes">
-                                        <TextBlock Text="5K Nodes" VerticalAlignment="Center"/>
-                                    </Button>
-                                </UniformGrid>
-                                <Button Classes="icon-btn" Margin="0,8,0,0" HorizontalAlignment="Stretch" Click="OnClearGraphClick" ToolTip.Tip="Clear all nodes">
-                                    <StackPanel Orientation="Horizontal">
-                                        <lucide:Lucide Icon="Trash" StrokeThickness="1.5" Width="14" Height="14"/>
-                                        <TextBlock Text="Clear Graph" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                        
-                        <Separator Margin="0,8,0,12" Opacity="0.3"/>
-                        
-                        <!-- ???????????????????????????????????????????????????? -->
-                        <!-- ELEMENT-FIRST ARCHITECTURE -->
-                        <!-- ?????????????????????????????????????????????????? -->
-                        <TextBlock Text="Element-First Architecture" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" Opacity="0.8"/>
-                        
-                        <!-- Shapes & Z-Order Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="SHAPES &amp; Z-ORDER" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Demo includes shapes panel (right side) showing different Z-index layers" 
-                                           TextWrapping="Wrap" FontSize="11" Opacity="0.7" Margin="0,0,0,8"/>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Element Commands Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="Command" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="ELEMENT COMMANDS" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Try undo/redo for element operations" Classes="hint"/>
-                                <UniformGrid Columns="3" Rows="1">
-                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnDemoMoveClick" ToolTip.Tip="Move shapes demo">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Move" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Move" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,4,0" Click="OnDemoUndoClick" ToolTip.Tip="Undo last command">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Undo" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Undo" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnDemoRedoClick" ToolTip.Tip="Redo last command">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Redo" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Redo" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Serialization V2 Section -->
-                        <Border Classes="card">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,8">
-                                    <lucide:Lucide Icon="FileJson" StrokeThickness="1.5" Width="14" Height="14" Opacity="0.7"/>
-                                    <TextBlock Text="SERIALIZATION V2" Classes="section-title" Margin="0"/>
-                                </StackPanel>
-                                <TextBlock Text="Test new polymorphic elements[] format" Classes="hint"/>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <Button Classes="icon-btn" Margin="0,0,4,0" Click="OnSaveGraphClick" ToolTip.Tip="Save graph as JSON">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="Save" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Save" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Classes="icon-btn" Margin="4,0,0,0" Click="OnLoadGraphClick" ToolTip.Tip="Load graph from JSON">
-                                        <StackPanel Orientation="Horizontal">
-                                            <lucide:Lucide Icon="FolderOpen" StrokeThickness="1.5" Width="14" Height="14"/>
-                                            <TextBlock Text="Load" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                        
-                        <!-- Status Bar -->
-                        <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-                                CornerRadius="4"
-                                Padding="10,6"
-                                Margin="0,12,0,0">
-                            <TextBlock x:Name="StatusText" Text="Ready" FontSize="11" Opacity="0.7" 
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+    <Grid ColumnDefinitions="220,*">
+        <!-- Sidebar -->
+        <Border Grid.Column="0" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                BorderThickness="0,0,1,0">
+            <DockPanel>
+                <!-- Header -->
+                <StackPanel DockPanel.Dock="Top" Margin="16,20,16,16">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <lucide:Lucide Icon="Workflow" StrokeThickness="1.5" Width="24" Height="24" Foreground="#6366F1"/>
+                        <TextBlock Text="FlowGraph" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
                     </StackPanel>
-                </ScrollViewer>
-            </Border>
-        </controls:FlowPanel>
+                    <TextBlock Text="Demo Application" FontSize="12" Opacity="0.5" Margin="34,4,0,0"/>
+                </StackPanel>
+                
+                <!-- Navigation -->
+                <StackPanel Margin="8,8">
+                    <TextBlock Text="PAGES" FontSize="10" FontWeight="SemiBold" Opacity="0.5" Margin="8,8,0,8"/>
+                    
+                    <Button x:Name="NavInteractive" Classes="nav-btn selected" Click="OnNavInteractiveClick">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <lucide:Lucide Icon="Boxes" StrokeThickness="1.5" Width="16" Height="16"/>
+                            <TextBlock Text="Interactive 3D" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button x:Name="NavShapes" Classes="nav-btn" Click="OnNavShapesClick">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="16" Height="16"/>
+                            <TextBlock Text="Shapes &amp; Z-Index" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button x:Name="NavPerformance" Classes="nav-btn" Click="OnNavPerformanceClick">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="16" Height="16"/>
+                            <TextBlock Text="Performance Test" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
         
-        <!-- Diagnostics Panel - using FlowPanel -->
-        <controls:FlowPanel Position="TopRight" Margin="16">
-            <controls:FlowDiagnostics
-                x:Name="DiagnosticsPanel"
-                TargetCanvas="{Binding #FlowCanvas}"
-                IsVisible="False"/>
-        </controls:FlowPanel>
-        
-        <!-- Minimap - using FlowPanel -->
-        <controls:FlowPanel Position="BottomRight" Margin="16">
-            <controls:FlowMinimap TargetCanvas="{Binding #FlowCanvas}"/>
-        </controls:FlowPanel>
-        
-        <!-- Node Toolbar - floating toolbar for selected nodes -->
-        <controls:NodeToolbar 
-            x:Name="NodeToolbar"
-            TargetCanvas="{Binding #FlowCanvas}" 
-            Position="Top" 
-            Offset="12">
-            <StackPanel Orientation="Horizontal" Spacing="4">
-                <Button Content="??" Padding="8,4" Click="OnToolbarDeleteClick" ToolTip.Tip="Delete selected"/>
-                <Button Content="??" Padding="8,4" Click="OnToolbarDuplicateClick" ToolTip.Tip="Duplicate selected"/>
-                <Button Content="??" Padding="8,4" Click="OnToolbarCenterClick" ToolTip.Tip="Center on selected"/>
-            </StackPanel>
-        </controls:NodeToolbar>
-    </Panel>
+        <!-- Main Content Area -->
+        <ContentControl x:Name="PageContent" Grid.Column="1"/>
+    </Grid>
 
 </Window>
 

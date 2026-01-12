@@ -183,21 +183,20 @@ public class ShapeVisualManager
 
   private void UpdatePosition(Control visual, ShapeElement shape)
   {
-    var scale = _renderContext?.Scale ?? 1.0;
-    var viewport = _renderContext?.Viewport;
-
-    // Calculate screen position from canvas coordinates
-    double screenX = shape.Position.X * scale;
-    double screenY = shape.Position.Y * scale;
-
-    if (viewport != null)
+    // Use RenderContext.CanvasToScreen for consistent coordinate transformation with nodes
+    if (_renderContext != null)
     {
-      screenX = (shape.Position.X - viewport.OffsetX) * scale;
-      screenY = (shape.Position.Y - viewport.OffsetY) * scale;
+      var screenPos = _renderContext.CanvasToScreen(shape.Position.X, shape.Position.Y);
+      Canvas.SetLeft(visual, screenPos.X);
+      Canvas.SetTop(visual, screenPos.Y);
     }
-
-    Canvas.SetLeft(visual, screenX);
-    Canvas.SetTop(visual, screenY);
+    else
+    {
+      // Fallback if no render context
+      Canvas.SetLeft(visual, shape.Position.X);
+      Canvas.SetTop(visual, shape.Position.Y);
+    }
+    
     visual.ZIndex = shape.ZIndex;
   }
 }
