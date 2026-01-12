@@ -483,6 +483,7 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Renders a label on an edge with support for anchor positioning and offsets.
+    /// Automatically positions labels based on edge direction to avoid overlap with the edge line.
     /// </summary>
     private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme, double scale)
     {
@@ -505,12 +506,9 @@ public class EdgeVisualManager
         }
 
         // Calculate position along the actual path (including waypoints)
-        var (posX, posY) = CalculateLabelPositionOnPath(start, end, waypoints, t, scale);
+        var (posX, posY, edgeDirection) = CalculateLabelPositionOnPathWithDirection(start, end, waypoints, t, scale);
 
-        // Apply offsets (default -10 Y offset if no LabelInfo specified)
-        var offsetX = labelInfo?.OffsetX ?? 0;
-        var offsetY = labelInfo?.OffsetY ?? -10;
-
+        // Create the text block first to measure it (if needed)
         var textBlock = new TextBlock
         {
             Text = labelText,
@@ -522,17 +520,75 @@ public class EdgeVisualManager
             Cursor = new Cursor(StandardCursorType.Hand)
         };
 
-        Canvas.SetLeft(textBlock, posX + offsetX * scale);
-        Canvas.SetTop(textBlock, posY + offsetY * scale);
+        // Get user-specified offsets if any
+        var userOffsetX = labelInfo?.OffsetX ?? 0;
+        var userOffsetY = labelInfo?.OffsetY ?? 0;
+        var hasUserOffset = labelInfo != null && (labelInfo.OffsetX != 0 || labelInfo.OffsetY != 0);
+
+        // Calculate smart offset based on edge direction (only if no user override)
+        double autoOffsetX = 0;
+        double autoOffsetY = 0;
+
+        if (!hasUserOffset)
+        {
+            // Position label based on edge direction to avoid overlap
+            switch (edgeDirection)
+            {
+                case EdgeDirection.Horizontal:
+                    // Horizontal edge: place label above
+                    autoOffsetY = -16;
+                    break;
+
+                case EdgeDirection.Vertical:
+                    // Vertical edge: place label to the right
+                    autoOffsetX = 8;
+                    autoOffsetY = -8;  // Slight vertical offset for centering
+                    break;
+
+                case EdgeDirection.DiagonalDownRight:
+                case EdgeDirection.DiagonalUpRight:
+                    // Diagonal going right: place label above-right
+                    autoOffsetX = 4;
+                    autoOffsetY = -16;
+                    break;
+
+                case EdgeDirection.DiagonalDownLeft:
+                case EdgeDirection.DiagonalUpLeft:
+                    // Diagonal going left: place label above-left
+                    autoOffsetX = -4;
+                    autoOffsetY = -16;
+                    break;
+            }
+        }
+
+        var finalOffsetX = (userOffsetX + autoOffsetX) * scale;
+        var finalOffsetY = (userOffsetY + autoOffsetY) * scale;
+
+        Canvas.SetLeft(textBlock, posX + finalOffsetX);
+        Canvas.SetTop(textBlock, posY + finalOffsetY);
 
         canvas.Children.Add(textBlock);
         return textBlock;
     }
 
     /// <summary>
-    /// Calculates the label position along the actual edge path, including waypoints.
+    /// Edge direction categories for smart label placement.
     /// </summary>
-    private static (double X, double Y) CalculateLabelPositionOnPath(
+    private enum EdgeDirection
+    {
+        Horizontal,          // Mostly left-right
+        Vertical,            // Mostly up-down
+        DiagonalDownRight,   // Going down and right
+        DiagonalDownLeft,    // Going down and left
+        DiagonalUpRight,     // Going up and right
+        DiagonalUpLeft       // Going up and left
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints,
+    /// and returns the direction of the edge segment at that point.
+    /// </summary>
+    private static (double X, double Y, EdgeDirection Direction) CalculateLabelPositionOnPathWithDirection(
         AvaloniaPoint start,
         AvaloniaPoint end,
         IReadOnlyList<Core.Point>? waypoints,
@@ -542,9 +598,11 @@ public class EdgeVisualManager
         // If no waypoints, use simple interpolation between start and end
         if (waypoints == null || waypoints.Count == 0)
         {
+            var direction = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
             return (
                 start.X + (end.X - start.X) * t,
-                start.Y + (end.Y - start.Y) * t
+                start.Y + (end.Y - start.Y) * t,
+                direction
             );
         }
 
@@ -580,16 +638,62 @@ public class EdgeVisualManager
                 var segmentT = (targetDistance - accumulatedDistance) / segmentLengths[i];
                 var p1 = allPoints[i];
                 var p2 = allPoints[i + 1];
+                var direction = DetermineEdgeDirection(p1.X, p1.Y, p2.X, p2.Y);
                 return (
                     p1.X + (p2.X - p1.X) * segmentT,
-                    p1.Y + (p2.Y - p1.Y) * segmentT
+                    p1.Y + (p2.Y - p1.Y) * segmentT,
+                    direction
                 );
             }
             accumulatedDistance += segmentLengths[i];
         }
 
         // Fallback to end point
-        return (end.X, end.Y);
+        var fallbackDirection = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
+        return (end.X, end.Y, fallbackDirection);
+    }
+
+    /// <summary>
+    /// Determines the direction category of an edge segment.
+    /// </summary>
+    private static EdgeDirection DetermineEdgeDirection(double x1, double y1, double x2, double y2)
+    {
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        var absDx = Math.Abs(dx);
+        var absDy = Math.Abs(dy);
+
+        // If mostly horizontal (|dx| > 2 * |dy|)
+        if (absDx > absDy * 2)
+            return EdgeDirection.Horizontal;
+
+        // If mostly vertical (|dy| > 2 * |dx|)
+        if (absDy > absDx * 2)
+            return EdgeDirection.Vertical;
+
+        // Diagonal - determine quadrant
+        if (dx > 0 && dy > 0)
+            return EdgeDirection.DiagonalDownRight;
+        if (dx > 0 && dy < 0)
+            return EdgeDirection.DiagonalUpRight;
+        if (dx < 0 && dy > 0)
+            return EdgeDirection.DiagonalDownLeft;
+
+        return EdgeDirection.DiagonalUpLeft;
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints.
+    /// </summary>
+    private static (double X, double Y) CalculateLabelPositionOnPath(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        var (x, y, _) = CalculateLabelPositionOnPathWithDirection(start, end, waypoints, t, scale);
+        return (x, y);
     }
 
     /// <summary>
