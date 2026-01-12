@@ -109,15 +109,20 @@ public class EdgeRoutingService
         var result = new Dictionary<string, IReadOnlyList<Point>>();
         var context = CreateContext(graph);
 
+        Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] IsRoutingEnabled: {IsRoutingEnabled}");
+        Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] NodePadding: {NodePadding}");
+
         foreach (var edge in graph.Elements.Edges)
         {
             if (IsRoutingEnabled)
             {
                 var router = GetRouter(edge.Type);
+                Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] Routing edge {edge.Id} with {router.GetType().Name}");
                 result[edge.Id] = router.Route(context, edge);
             }
             else
             {
+                Console.WriteLine($"[EdgeRoutingService.RouteAllEdges] Routing DISABLED - using simple route for {edge.Id}");
                 result[edge.Id] = GetSimpleRoute(graph, edge);
             }
         }

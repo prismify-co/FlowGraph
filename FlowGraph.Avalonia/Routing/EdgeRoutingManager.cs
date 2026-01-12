@@ -11,11 +11,11 @@ public class EdgeRoutingManager
     private readonly IFlowCanvasContext _context;
     private readonly Action _refreshEdges;
     private readonly EdgeRoutingService _routingService;
-    
+
     // Throttling for drag routing to avoid O(n) iteration on every mouse move
     private DateTime _lastDragRouteTime = DateTime.MinValue;
     private const int DragRouteThrottleMs = 16; // ~60fps max for routing during drag
-    
+
     // Cache for edges connected to dragged nodes to avoid O(n) lookup per frame
     private List<Edge>? _cachedDragEdges;
     private HashSet<string>? _cachedDragNodeIds;
@@ -103,11 +103,15 @@ public class EdgeRoutingManager
     public void RouteAllEdges(bool forceRefresh = true)
     {
         var graph = _context.Graph;
-        if (graph == null) return;
+        if (graph == null)
+        {
+            return;
+        }
 
         SyncSettings();
 
         var routes = _routingService.RouteAllEdges(graph);
+
         ApplyRoutes(graph, routes);
 
         if (forceRefresh)
@@ -293,7 +297,7 @@ public class EdgeRoutingManager
 
     private static long _routingCallCount = 0;
     private static long _routingSkippedCount = 0;
-    
+
     /// <summary>
     /// Called when nodes are being dragged. Re-routes edges if configured to do so.
     /// OPTIMIZED: Uses throttling and edge caching to avoid O(n) iteration on every mouse move.
@@ -315,7 +319,7 @@ public class EdgeRoutingManager
             return;
         }
         _lastDragRouteTime = now;
-        
+
         var sw = System.Diagnostics.Stopwatch.StartNew();
 
         var settings = _context.Settings;
@@ -327,7 +331,7 @@ public class EdgeRoutingManager
         {
             RouteAllEdges(forceRefresh: true);
         }
-        
+
         sw.Stop();
         _routingCallCount++;
         if (_routingCallCount % 30 == 0)
@@ -336,7 +340,7 @@ public class EdgeRoutingManager
             _routingSkippedCount = 0;
         }
     }
-    
+
     /// <summary>
     /// Routes edges for nodes using cached edge list to avoid O(n) iteration on every call.
     /// </summary>
@@ -346,7 +350,7 @@ public class EdgeRoutingManager
         if (graph == null) return;
 
         var nodeIdSet = nodeIds as HashSet<string> ?? nodeIds.ToHashSet();
-        
+
         // Check if we can use cached edges (same set of nodes being dragged)
         if (_cachedDragEdges == null || _cachedDragNodeIds == null || !_cachedDragNodeIds.SetEquals(nodeIdSet))
         {
@@ -377,7 +381,7 @@ public class EdgeRoutingManager
         // Clear cached edges when drag completes
         _cachedDragEdges = null;
         _cachedDragNodeIds = null;
-        
+
         if (!IsEnabled) return;
 
         // Always do a final route after drag completes for consistency
@@ -410,17 +414,19 @@ public class EdgeRoutingManager
         // Only store intermediate waypoints
         if (waypoints.Count <= 2)
         {
-            edge.Waypoints?.Clear();
+            edge.Waypoints = null;
             return;
         }
 
-        edge.Waypoints ??= new List<Point>();
-        edge.Waypoints.Clear();
+        // Build intermediate waypoints list (skip first and last - they're port positions)
+        var intermediateWaypoints = new List<Point>();
 
-        // Store intermediate waypoints (skip first and last)
         for (int i = 1; i < waypoints.Count - 1; i++)
         {
-            edge.Waypoints.Add(waypoints[i]);
+            intermediateWaypoints.Add(waypoints[i]);
         }
+
+        // Assign the complete list at once (Edge.Waypoints setter stores it correctly)
+        edge.Waypoints = intermediateWaypoints;
     }
 }

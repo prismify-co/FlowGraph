@@ -25,6 +25,13 @@ public class FlowCanvasSettings
     public double PortSize { get; set; } = 12;
 
     /// <summary>
+    /// Whether to show port indicators on nodes.
+    /// When false, ports still exist for edge routing but are not rendered visually.
+    /// Useful for diagrams where connection points should be invisible.
+    /// </summary>
+    public bool ShowPorts { get; set; } = true;
+
+    /// <summary>
     /// Whether to show the built-in grid background.
     /// Set to false when using a custom FlowBackground control.
     /// </summary>

@@ -145,7 +145,7 @@ public class DirectGraphRenderer : Control
         {
             _indexDirty = true;
             _lastIndexedGraph = null;
-            
+
             // Build node lookup dictionary for O(1) edge endpoint resolution (only when graph changes!)
             _nodeById = graph?.Elements.Nodes.ToDictionary(n => n.Id);
         }
@@ -270,7 +270,7 @@ public class DirectGraphRenderer : Control
     private void RebuildSpatialIndex()
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        
+
         if (_graph == null)
         {
             _nodeIndex = null;
@@ -295,7 +295,7 @@ public class DirectGraphRenderer : Control
 
         _lastIndexedGraph = _graph;
         _indexDirty = false;
-        
+
         sw.Stop();
         System.Diagnostics.Debug.WriteLine($"[SpatialIndex] Rebuilt in {sw.ElapsedMilliseconds}ms | Total:{totalNodes}, Indexed:{visibleNodes}");
     }
@@ -353,13 +353,13 @@ public class DirectGraphRenderer : Control
         var offsetY = _viewport.OffsetY;
 
         // Level-of-Detail thresholds
-        var showPorts = zoom >= 0.4;       // Skip ports when zoomed out
+        var showPorts = _settings.ShowPorts && zoom >= 0.4;  // Skip ports when zoomed out or disabled
         var showLabels = zoom >= 0.3;      // Skip labels when very zoomed out
         var useSimplifiedNodes = zoom < 0.5; // Simplified rendering at low zoom
 
         // Build visible node set for edge culling (only render edges with visible endpoints)
         var visibleNodeIds = new HashSet<string>();
-        
+
         // Draw groups first (behind everything)
         foreach (var node in _graph.Elements.Nodes)
         {
@@ -376,7 +376,7 @@ public class DirectGraphRenderer : Control
             if (node.IsGroup) continue;
             if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
             if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) continue;
-            
+
             visibleNodeIds.Add(node.Id);
         }
 
@@ -386,7 +386,7 @@ public class DirectGraphRenderer : Control
             // Early culling: skip edges with both endpoints outside viewport
             if (!visibleNodeIds.Contains(edge.Source) && !visibleNodeIds.Contains(edge.Target))
                 continue;
-                
+
             DrawEdge(context, edge, zoom, offsetX, offsetY, bounds, useSimplifiedNodes);
         }
 
@@ -959,7 +959,7 @@ public class DirectGraphRenderer : Control
     public Node? HitTestNode(double screenX, double screenY)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        
+
         if (_graph == null || _viewport == null) return null;
 
         long rebuildTime = 0;
@@ -969,7 +969,7 @@ public class DirectGraphRenderer : Control
             RebuildSpatialIndex();
             rebuildTime = rebuildSw.ElapsedMilliseconds;
         }
-        
+
         if (_nodeIndex == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
@@ -999,7 +999,7 @@ public class DirectGraphRenderer : Control
             {
                 var node = kvp.Value;
                 if (!node.IsGroup) continue;
-                
+
                 groupsChecked++;
                 if (!IsNodeVisibleFast(node)) continue;
 
@@ -1048,7 +1048,7 @@ public class DirectGraphRenderer : Control
             var screenW = nw * zoom;
             var screenH = nh * zoom;
             var buffer = _settings.PortSize * zoom;
-            
+
             if (screenX1 + screenW + buffer < 0 || screenX1 - buffer > viewBounds.Width ||
                 screenY1 + screenH + buffer < 0 || screenY1 - buffer > viewBounds.Height)
             {

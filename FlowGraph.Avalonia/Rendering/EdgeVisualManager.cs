@@ -196,21 +196,19 @@ public class EdgeVisualManager
         if (sourceNode == null || targetNode == null)
             return null;
 
-        var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
-        var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
-
-        if (sourcePortIndex < 0) sourcePortIndex = 0;
-        if (targetPortIndex < 0) targetPortIndex = 0;
+        // Find the actual port objects to get their positions
+        var sourcePort = sourceNode.Outputs.FirstOrDefault(p => p.Id == edge.SourcePort);
+        var targetPort = targetNode.Inputs.FirstOrDefault(p => p.Id == edge.TargetPort);
 
         // Get node dimensions for proper port positioning
         var (sourceWidth, sourceHeight) = _nodeVisualManager.GetNodeDimensions(sourceNode);
-        var (_, targetHeight) = _nodeVisualManager.GetNodeDimensions(targetNode);
+        var (targetWidth, targetHeight) = _nodeVisualManager.GetNodeDimensions(targetNode);
 
-        // Get canvas coordinates
-        var sourceY = _nodeVisualManager.GetPortYCanvas(sourceNode.Position.Y, sourcePortIndex, Math.Max(1, sourceNode.Outputs.Count), sourceHeight);
-        var targetY = _nodeVisualManager.GetPortYCanvas(targetNode.Position.Y, targetPortIndex, Math.Max(1, targetNode.Inputs.Count), targetHeight);
-        var sourceX = sourceNode.Position.X + sourceWidth;
-        var targetX = targetNode.Position.X;
+        // Calculate port positions based on Port.Position property
+        var (sourceX, sourceY) = GetPortCanvasPosition(
+            sourceNode, sourcePort, sourceWidth, sourceHeight, isOutput: true);
+        var (targetX, targetY) = GetPortCanvasPosition(
+            targetNode, targetPort, targetWidth, targetHeight, isOutput: false);
 
         // Transform to screen coordinates
         var startPoint = _renderContext.CanvasToScreen(sourceX, sourceY);
@@ -227,10 +225,13 @@ public class EdgeVisualManager
 
         // Create path based on edge type - use waypoints if available
         PathGeometry pathGeometry;
-        if (edge.Waypoints != null && edge.Waypoints.Count > 0)
+        var waypoints = edge.Waypoints;  // Get once to avoid multiple ToList() calls
+        IReadOnlyList<Core.Point>? transformedWaypoints = null;
+
+        if (waypoints != null && waypoints.Count > 0)
         {
             // Transform waypoints to screen coordinates
-            var transformedWaypoints = edge.Waypoints
+            transformedWaypoints = waypoints
                 .Select(wp => new Core.Point(
                     _renderContext.CanvasToScreen(wp.X, wp.Y).X,
                     _renderContext.CanvasToScreen(wp.X, wp.Y).Y))
@@ -312,7 +313,8 @@ public class EdgeVisualManager
         var effectiveLabel = edge.Definition.EffectiveLabel;
         if (!string.IsNullOrEmpty(effectiveLabel))
         {
-            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge, theme, scale);
+            // Pass transformed waypoints for accurate label positioning along the routed path
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, transformedWaypoints, edge, theme, scale);
             if (labelVisual != null)
             {
                 _edgeLabels[edge.Id] = labelVisual;
@@ -482,7 +484,7 @@ public class EdgeVisualManager
     /// <summary>
     /// Renders a label on an edge with support for anchor positioning and offsets.
     /// </summary>
-    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, Edge edge, ThemeResources theme, double scale)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme, double scale)
     {
         var labelInfo = edge.Definition.LabelInfo;
         var labelText = labelInfo?.Text ?? edge.Label;
@@ -502,9 +504,8 @@ public class EdgeVisualManager
             };
         }
 
-        // Interpolate position along the edge
-        var posX = start.X + (end.X - start.X) * t;
-        var posY = start.Y + (end.Y - start.Y) * t;
+        // Calculate position along the actual path (including waypoints)
+        var (posX, posY) = CalculateLabelPositionOnPath(start, end, waypoints, t, scale);
 
         // Apply offsets (default -10 Y offset if no LabelInfo specified)
         var offsetX = labelInfo?.OffsetX ?? 0;
@@ -526,6 +527,99 @@ public class EdgeVisualManager
 
         canvas.Children.Add(textBlock);
         return textBlock;
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints.
+    /// </summary>
+    private static (double X, double Y) CalculateLabelPositionOnPath(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        // If no waypoints, use simple interpolation between start and end
+        if (waypoints == null || waypoints.Count == 0)
+        {
+            return (
+                start.X + (end.X - start.X) * t,
+                start.Y + (end.Y - start.Y) * t
+            );
+        }
+
+        // Build the complete path: start -> waypoints (already in screen coords) -> end
+        var allPoints = new List<AvaloniaPoint> { start };
+        foreach (var wp in waypoints)
+        {
+            allPoints.Add(new AvaloniaPoint(wp.X, wp.Y));
+        }
+        allPoints.Add(end);
+
+        // Calculate total path length
+        double totalLength = 0;
+        var segmentLengths = new List<double>();
+        for (int i = 0; i < allPoints.Count - 1; i++)
+        {
+            var dx = allPoints[i + 1].X - allPoints[i].X;
+            var dy = allPoints[i + 1].Y - allPoints[i].Y;
+            var segmentLength = Math.Sqrt(dx * dx + dy * dy);
+            segmentLengths.Add(segmentLength);
+            totalLength += segmentLength;
+        }
+
+        // Find the position at t along the total path
+        var targetDistance = totalLength * t;
+        double accumulatedDistance = 0;
+
+        for (int i = 0; i < segmentLengths.Count; i++)
+        {
+            if (accumulatedDistance + segmentLengths[i] >= targetDistance)
+            {
+                // The point is on this segment
+                var segmentT = (targetDistance - accumulatedDistance) / segmentLengths[i];
+                var p1 = allPoints[i];
+                var p2 = allPoints[i + 1];
+                return (
+                    p1.X + (p2.X - p1.X) * segmentT,
+                    p1.Y + (p2.Y - p1.Y) * segmentT
+                );
+            }
+            accumulatedDistance += segmentLengths[i];
+        }
+
+        // Fallback to end point
+        return (end.X, end.Y);
+    }
+
+    /// <summary>
+    /// Calculates the canvas position for a port based on its Position property.
+    /// </summary>
+    /// <param name="node">The node containing the port.</param>
+    /// <param name="port">The port (can be null for default behavior).</param>
+    /// <param name="nodeWidth">Width of the node.</param>
+    /// <param name="nodeHeight">Height of the node.</param>
+    /// <param name="isOutput">True if this is an output port, false for input.</param>
+    /// <returns>Canvas coordinates (X, Y) for the port connection point.</returns>
+    private (double X, double Y) GetPortCanvasPosition(
+        Node node, Port? port, double nodeWidth, double nodeHeight, bool isOutput)
+    {
+        var nodeX = node.Position.X;
+        var nodeY = node.Position.Y;
+
+        // Determine position - use port's Position if specified, otherwise default
+        var position = port?.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
+
+        return position switch
+        {
+            PortPosition.Right => (nodeX + nodeWidth, nodeY + nodeHeight / 2),
+            PortPosition.Left => (nodeX, nodeY + nodeHeight / 2),
+            PortPosition.Top => (nodeX + nodeWidth / 2, nodeY),
+            PortPosition.Bottom => (nodeX + nodeWidth / 2, nodeY + nodeHeight),
+            _ => isOutput
+                ? (nodeX + nodeWidth, nodeY + nodeHeight / 2)  // Default output: right
+                : (nodeX, nodeY + nodeHeight / 2)              // Default input: left
+        };
     }
 
     /// <summary>

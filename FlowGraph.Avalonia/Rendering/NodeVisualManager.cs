@@ -199,15 +199,18 @@ public class NodeVisualManager
 
         onNodeCreated?.Invoke(control, node);
 
-        // Render ports using model for positioning
-        for (int i = 0; i < node.Inputs.Count; i++)
+        // Render ports using model for positioning (unless ShowPorts is disabled)
+        if (_renderContext.Settings.ShowPorts)
         {
-            RenderPort(canvas, node, node.Inputs[i], i, node.Inputs.Count, false, theme);
-        }
+            for (int i = 0; i < node.Inputs.Count; i++)
+            {
+                RenderPort(canvas, node, node.Inputs[i], i, node.Inputs.Count, false, theme);
+            }
 
-        for (int i = 0; i < node.Outputs.Count; i++)
-        {
-            RenderPort(canvas, node, node.Outputs[i], i, node.Outputs.Count, true, theme);
+            for (int i = 0; i < node.Outputs.Count; i++)
+            {
+                RenderPort(canvas, node, node.Outputs[i], i, node.Outputs.Count, true, theme);
+            }
         }
 
         return control;
