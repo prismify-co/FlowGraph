@@ -40,7 +40,7 @@ public class NodeVisualManager
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
         _portRendererRegistry = portRendererRegistry ?? new PortRendererRegistry();
-        _model = new GraphRenderModel(renderContext.Settings);
+        _model = new GraphRenderModel(renderContext.Settings, _nodeRendererRegistry);
     }
 
     /// <summary>

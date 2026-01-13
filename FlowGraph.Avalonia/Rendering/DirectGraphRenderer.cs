@@ -85,8 +85,8 @@ public class DirectGraphRenderer : Control
     public DirectGraphRenderer(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers)
     {
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        _model = new GraphRenderModel(settings);
         _nodeRenderers = nodeRenderers;
+        _model = new GraphRenderModel(settings, nodeRenderers);
         IsHitTestVisible = false; // Hit testing handled separately
     }
 
@@ -114,7 +114,11 @@ public class DirectGraphRenderer : Control
     public NodeRendererRegistry? NodeRenderers
     {
         get => _nodeRenderers;
-        set => _nodeRenderers = value;
+        set
+        {
+            _nodeRenderers = value;
+            _model.NodeRenderers = value;
+        }
     }
 
     /// <summary>
