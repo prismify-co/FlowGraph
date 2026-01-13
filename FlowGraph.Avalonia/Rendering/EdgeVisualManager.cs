@@ -376,6 +376,15 @@ public class EdgeVisualManager
         AvaloniaPoint endPoint,
         double scale)
     {
+        IReadOnlyList<AvaloniaPoint>? transformedWaypoints = null;
+        var waypoints = edge.Waypoints; // cloned list via Edge.State
+        if (waypoints != null && waypoints.Count > 0)
+        {
+            transformedWaypoints = waypoints
+                .Select(wp => _renderContext.CanvasToScreen(wp.X, wp.Y))
+                .ToList();
+        }
+
         var context = new EdgeRenderers.EdgeRenderContext
         {
             Theme = theme,
@@ -385,6 +394,7 @@ public class EdgeVisualManager
             TargetNode = targetNode,
             StartPoint = startPoint,
             EndPoint = endPoint,
+            Waypoints = transformedWaypoints,
             Graph = graph
         };
 
@@ -484,6 +494,7 @@ public class EdgeVisualManager
     /// <summary>
     /// Renders a label on an edge with support for anchor positioning and offsets.
     /// Automatically positions labels based on edge direction to avoid overlap with the edge line.
+    /// Supports perpendicular offsets that rotate with the edge direction (like GoJS segmentOffset).
     /// </summary>
     private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme, double scale)
     {
@@ -505,8 +516,8 @@ public class EdgeVisualManager
             };
         }
 
-        // Calculate position along the actual path (including waypoints)
-        var (posX, posY, edgeDirection) = CalculateLabelPositionOnPathWithDirection(start, end, waypoints, t, scale);
+        // Calculate position along the actual path (including waypoints) and get edge angle
+        var (posX, posY, edgeDirection, edgeAngle) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, scale);
 
         // Create the text block first to measure it (if needed)
         var textBlock = new TextBlock
@@ -523,13 +534,15 @@ public class EdgeVisualManager
         // Get user-specified offsets if any
         var userOffsetX = labelInfo?.OffsetX ?? 0;
         var userOffsetY = labelInfo?.OffsetY ?? 0;
+        var perpOffset = labelInfo?.PerpendicularOffset ?? 0;
         var hasUserOffset = labelInfo != null && (labelInfo.OffsetX != 0 || labelInfo.OffsetY != 0);
+        var hasPerpOffset = labelInfo != null && labelInfo.PerpendicularOffset != 0;
 
-        // Calculate smart offset based on edge direction (only if no user override)
+        // Calculate smart offset based on edge direction (only if no user override and no perpendicular offset)
         double autoOffsetX = 0;
         double autoOffsetY = 0;
 
-        if (!hasUserOffset)
+        if (!hasUserOffset && !hasPerpOffset)
         {
             // Position label based on edge direction to avoid overlap
             switch (edgeDirection)
@@ -561,8 +574,23 @@ public class EdgeVisualManager
             }
         }
 
-        var finalOffsetX = (userOffsetX + autoOffsetX) * scale;
-        var finalOffsetY = (userOffsetY + autoOffsetY) * scale;
+        // Calculate perpendicular offset (rotates with edge direction)
+        // Perpendicular to edge means: if edge angle is θ, perpendicular is θ + 90°
+        // Positive perpOffset moves to the "right" of the edge direction
+        double perpOffsetX = 0;
+        double perpOffsetY = 0;
+        if (hasPerpOffset)
+        {
+            // Calculate perpendicular direction (90° clockwise from edge direction)
+            // Edge direction vector: (cos(θ), sin(θ))
+            // Perpendicular (right side): (sin(θ), -cos(θ)) but in screen coords Y is inverted
+            // So right side is: (-sin(θ), cos(θ)) in math coords = (sin(θ), cos(θ)) in screen
+            perpOffsetX = Math.Sin(edgeAngle) * perpOffset;
+            perpOffsetY = -Math.Cos(edgeAngle) * perpOffset;  // Negative because screen Y is inverted
+        }
+
+        var finalOffsetX = (userOffsetX + autoOffsetX) * scale + perpOffsetX * scale;
+        var finalOffsetY = (userOffsetY + autoOffsetY) * scale + perpOffsetY * scale;
 
         Canvas.SetLeft(textBlock, posX + finalOffsetX);
         Canvas.SetTop(textBlock, posY + finalOffsetY);
@@ -586,9 +614,9 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Calculates the label position along the actual edge path, including waypoints,
-    /// and returns the direction of the edge segment at that point.
+    /// and returns the direction of the edge segment at that point along with the angle.
     /// </summary>
-    private static (double X, double Y, EdgeDirection Direction) CalculateLabelPositionOnPathWithDirection(
+    private static (double X, double Y, EdgeDirection Direction, double Angle) CalculateLabelPositionOnPathWithDirectionAndAngle(
         AvaloniaPoint start,
         AvaloniaPoint end,
         IReadOnlyList<Core.Point>? waypoints,
@@ -599,10 +627,12 @@ public class EdgeVisualManager
         if (waypoints == null || waypoints.Count == 0)
         {
             var direction = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
+            var angle = Math.Atan2(end.Y - start.Y, end.X - start.X);
             return (
                 start.X + (end.X - start.X) * t,
                 start.Y + (end.Y - start.Y) * t,
-                direction
+                direction,
+                angle
             );
         }
 
@@ -639,10 +669,12 @@ public class EdgeVisualManager
                 var p1 = allPoints[i];
                 var p2 = allPoints[i + 1];
                 var direction = DetermineEdgeDirection(p1.X, p1.Y, p2.X, p2.Y);
+                var angle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
                 return (
                     p1.X + (p2.X - p1.X) * segmentT,
                     p1.Y + (p2.Y - p1.Y) * segmentT,
-                    direction
+                    direction,
+                    angle
                 );
             }
             accumulatedDistance += segmentLengths[i];
@@ -650,7 +682,23 @@ public class EdgeVisualManager
 
         // Fallback to end point
         var fallbackDirection = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
-        return (end.X, end.Y, fallbackDirection);
+        var fallbackAngle = Math.Atan2(end.Y - start.Y, end.X - start.X);
+        return (end.X, end.Y, fallbackDirection, fallbackAngle);
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints,
+    /// and returns the direction of the edge segment at that point.
+    /// </summary>
+    private static (double X, double Y, EdgeDirection Direction) CalculateLabelPositionOnPathWithDirection(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        var (x, y, direction, _) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, scale);
+        return (x, y, direction);
     }
 
     /// <summary>
@@ -711,18 +759,34 @@ public class EdgeVisualManager
         var nodeX = node.Position.X;
         var nodeY = node.Position.Y;
 
-        // Determine position - use port's Position if specified, otherwise default
+        var ports = isOutput ? node.Outputs : node.Inputs;
         var position = port?.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
+
+        // Distribute ports along the edge like GraphRenderModel does.
+        var totalPorts = Math.Max(1, ports.Count);
+        var portIndex = 0;
+        if (port != null)
+        {
+            var idx = ports.IndexOf(port);
+            if (idx >= 0) portIndex = idx;
+        }
+
+        static double Along(double start, double length, int index, int total)
+        {
+            if (total <= 1) return start + length / 2;
+            var spacing = length / (total + 1);
+            return start + spacing * (index + 1);
+        }
 
         return position switch
         {
-            PortPosition.Right => (nodeX + nodeWidth, nodeY + nodeHeight / 2),
-            PortPosition.Left => (nodeX, nodeY + nodeHeight / 2),
-            PortPosition.Top => (nodeX + nodeWidth / 2, nodeY),
-            PortPosition.Bottom => (nodeX + nodeWidth / 2, nodeY + nodeHeight),
+            PortPosition.Right => (nodeX + nodeWidth, Along(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Left => (nodeX, Along(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Top => (Along(nodeX, nodeWidth, portIndex, totalPorts), nodeY),
+            PortPosition.Bottom => (Along(nodeX, nodeWidth, portIndex, totalPorts), nodeY + nodeHeight),
             _ => isOutput
-                ? (nodeX + nodeWidth, nodeY + nodeHeight / 2)  // Default output: right
-                : (nodeX, nodeY + nodeHeight / 2)              // Default input: left
+                ? (nodeX + nodeWidth, Along(nodeY, nodeHeight, portIndex, totalPorts))
+                : (nodeX, Along(nodeY, nodeHeight, portIndex, totalPorts))
         };
     }
 

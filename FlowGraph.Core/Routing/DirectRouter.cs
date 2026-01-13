@@ -21,7 +21,11 @@ public class DirectRouter : IEdgeRouter
         return [sourcePort, targetPort];
     }
 
-    protected static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
+    /// <summary>
+    /// Gets the position of a port on a node.
+    /// Distributes ports evenly along the node edge based on port index.
+    /// </summary>
+    public static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     {
         var nodeWidth = node.Width ?? context.DefaultNodeWidth;
         var nodeHeight = node.Height ?? context.DefaultNodeHeight;
@@ -32,7 +36,19 @@ public class DirectRouter : IEdgeRouter
         if (!string.IsNullOrEmpty(portId))
         {
             var idx = ports.FindIndex(p => p.Id == portId);
-            if (idx >= 0) portIndex = idx;
+            if (idx >= 0)
+            {
+                portIndex = idx;
+            }
+            else
+            {
+                // Port ID specified but not found - fall back to first port position.
+                // This can happen if edge references a port that was removed or renamed.
+                System.Diagnostics.Debug.WriteLine(
+                    $"[DirectRouter] Port '{portId}' not found on node '{node.Id}'. " +
+                    $"Available {(isOutput ? "outputs" : "inputs")}: [{string.Join(", ", ports.Select(p => p.Id))}]. " +
+                    "Falling back to index 0.");
+            }
         }
 
         var totalPorts = Math.Max(1, ports.Count);

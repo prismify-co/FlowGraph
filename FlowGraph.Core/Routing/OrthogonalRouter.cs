@@ -270,12 +270,6 @@ public class OrthogonalRouter : IEdgeRouter
 
     private static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     {
-        return DirectRouter.Instance.Route(context, new Edge
-        {
-            Source = node.Id,
-            Target = node.Id,
-            SourcePort = portId!,
-            TargetPort = portId!
-        })[0];
+        return DirectRouter.GetPortPosition(node, portId, isOutput, context);
     }
 }

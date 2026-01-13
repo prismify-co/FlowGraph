@@ -226,22 +226,6 @@ public class SmartBezierRouter : IEdgeRouter
 
     private static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     {
-        var nodeWidth = node.Width ?? context.DefaultNodeWidth;
-        var nodeHeight = node.Height ?? context.DefaultNodeHeight;
-
-        var ports = isOutput ? node.Outputs : node.Inputs;
-        var portIndex = 0;
-        if (!string.IsNullOrEmpty(portId))
-        {
-            var idx = ports.FindIndex(p => p.Id == portId);
-            if (idx >= 0) portIndex = idx;
-        }
-
-        var totalPorts = Math.Max(1, ports.Count);
-        var spacing = nodeHeight / (totalPorts + 1);
-        var portY = node.Position.Y + spacing * (portIndex + 1);
-        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
-
-        return new Point(portX, portY);
+        return DirectRouter.GetPortPosition(node, portId, isOutput, context);
     }
 }

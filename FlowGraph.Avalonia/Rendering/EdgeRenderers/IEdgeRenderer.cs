@@ -104,6 +104,12 @@ public class EdgeRenderContext
   public required AvaloniaPoint EndPoint { get; init; }
 
   /// <summary>
+  /// Optional routed waypoints in screen coordinates.
+  /// Excludes the start and end points.
+  /// </summary>
+  public IReadOnlyList<AvaloniaPoint>? Waypoints { get; init; }
+
+  /// <summary>
   /// The graph containing the edge.
   /// </summary>
   public required Graph Graph { get; init; }
