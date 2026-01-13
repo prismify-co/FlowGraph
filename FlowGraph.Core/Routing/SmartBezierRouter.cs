@@ -49,6 +49,13 @@ public class SmartBezierRouter : IEdgeRouter
         // Get obstacles (excluding source and target nodes)
         var obstacles = context.GetObstacles(edge.Source, edge.Target).ToList();
 
+        // Check for user constraints (Guided mode)
+        var userConstraints = context.UserConstraints ?? edge.State.UserWaypoints;
+        if (userConstraints != null && userConstraints.Count > 0)
+        {
+            return RouteWithConstraints(start, end, userConstraints, obstacles);
+        }
+
         // If no obstacles, return direct path
         if (obstacles.Count == 0)
             return [start, end];
@@ -59,6 +66,77 @@ public class SmartBezierRouter : IEdgeRouter
 
         // Find path around obstacles
         return FindSmartPath(start, end, obstacles, context);
+    }
+
+    /// <summary>
+    /// Routes through user constraint points while avoiding obstacles.
+    /// Used for Guided routing mode.
+    /// </summary>
+    private List<Point> RouteWithConstraints(Point start, Point end, IReadOnlyList<Point> constraints, List<Rect> obstacles)
+    {
+        var fullPath = new List<Point>();
+
+        // Route segment by segment: start -> constraint1 -> constraint2 -> ... -> end
+        var waypoints = new List<Point> { start };
+        waypoints.AddRange(constraints);
+        waypoints.Add(end);
+
+        for (int i = 0; i < waypoints.Count - 1; i++)
+        {
+            var segmentStart = waypoints[i];
+            var segmentEnd = waypoints[i + 1];
+
+            List<Point> segment;
+            if (obstacles.Count == 0 || IsDirectPathClear(segmentStart, segmentEnd, obstacles))
+            {
+                // Direct segment is clear
+                segment = [segmentStart, segmentEnd];
+            }
+            else
+            {
+                // Need to route around obstacles for this segment
+                segment = FindSmartPathSegment(segmentStart, segmentEnd, obstacles);
+            }
+
+            // Add segment to full path (skip first point of subsequent segments to avoid duplicates)
+            if (fullPath.Count == 0)
+            {
+                fullPath.AddRange(segment);
+            }
+            else if (segment.Count > 1)
+            {
+                fullPath.AddRange(segment.Skip(1));
+            }
+        }
+
+        return fullPath;
+    }
+
+    /// <summary>
+    /// Finds a path for a single segment, routing around obstacles if needed.
+    /// </summary>
+    private List<Point> FindSmartPathSegment(Point start, Point end, List<Rect> obstacles)
+    {
+        var path = new List<Point> { start };
+
+        var blockingObstacles = FindBlockingObstacles(start, end, obstacles);
+        if (blockingObstacles.Count == 0)
+        {
+            path.Add(end);
+            return path;
+        }
+
+        var blockingBounds = GetCombinedBounds(blockingObstacles);
+
+        // Simple routing around blocking obstacles
+        var goAbove = start.Y <= blockingBounds.Top || end.Y <= blockingBounds.Top;
+        var routeY = goAbove ? blockingBounds.Top - Margin : blockingBounds.Bottom + Margin;
+
+        path.Add(new Point(start.X, routeY));
+        path.Add(new Point(end.X, routeY));
+        path.Add(end);
+
+        return path;
     }
 
     private bool IsDirectPathClear(Point start, Point end, List<Rect> obstacles)
