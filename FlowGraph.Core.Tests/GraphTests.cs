@@ -1,3 +1,7 @@
+// CS0618: Suppress obsolete warnings - these tests verify backward-compatible
+// CollectionChanged events on the obsolete Graph.Nodes and Graph.Edges properties.
+#pragma warning disable CS0618
+
 namespace FlowGraph.Core.Tests;
 
 public class GraphTests
@@ -297,14 +301,14 @@ public class GraphTests
 
         // The count during the Add event is 0 (not yet added), but after AddEdge returns it's 1
         Assert.Equal(0, countDuringAddEvent); // Event fires BEFORE add
-        Assert.Equal(1, graph.Elements.Edges.Count()); // But collection IS updated after method returns
+        Assert.Single(graph.Elements.Edges); // But collection IS updated after method returns
 
         // Remove edge - event fires before collection is updated  
         graph.RemoveEdge(edge.Id);
 
         // The count during the Remove event is 1 (not yet removed), but after RemoveEdge returns it's 0
         Assert.Equal(1, countDuringRemoveEvent); // Event fires BEFORE remove
-        Assert.Equal(0, graph.Elements.Edges.Count()); // But collection IS updated after method returns
+        Assert.Empty(graph.Elements.Edges); // But collection IS updated after method returns
     }
 
     [Fact]
