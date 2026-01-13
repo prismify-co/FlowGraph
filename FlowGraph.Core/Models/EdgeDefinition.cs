@@ -79,7 +79,36 @@ public sealed record EdgeDefinition
     /// <summary>
     /// Whether this edge should use automatic routing to avoid obstacles.
     /// </summary>
+    /// <remarks>
+    /// This property is maintained for backward compatibility.
+    /// For new code, prefer using <see cref="RoutingMode"/> instead.
+    /// When <see cref="RoutingMode"/> is explicitly set, it takes precedence.
+    /// </remarks>
     public bool AutoRoute { get; init; }
+
+    /// <summary>
+    /// Determines how this edge's path is calculated.
+    /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    /// <item><see cref="EdgeRoutingMode.Auto"/> - Router fully controls path (default)</item>
+    /// <item><see cref="EdgeRoutingMode.Manual"/> - Uses only user-defined waypoints</item>
+    /// <item><see cref="EdgeRoutingMode.Guided"/> - Router path passes through user waypoints</item>
+    /// </list>
+    /// </remarks>
+    public EdgeRoutingMode RoutingMode { get; init; } = EdgeRoutingMode.Auto;
+
+    /// <summary>
+    /// Gets the effective routing mode, considering both <see cref="RoutingMode"/> 
+    /// and legacy <see cref="AutoRoute"/> property.
+    /// </summary>
+    /// <remarks>
+    /// If <see cref="AutoRoute"/> is true and <see cref="RoutingMode"/> is Auto,
+    /// obstacle avoidance is enabled. Otherwise, <see cref="RoutingMode"/> determines behavior.
+    /// </remarks>
+    public EdgeRoutingMode EffectiveRoutingMode => 
+        RoutingMode != EdgeRoutingMode.Auto ? RoutingMode : 
+        AutoRoute ? EdgeRoutingMode.Auto : EdgeRoutingMode.Auto;
 
     /// <summary>
     /// Creates a new definition with a different target node and port.
@@ -121,4 +150,10 @@ public sealed record EdgeDefinition
     /// </summary>
     public EdgeDefinition WithType(EdgeType type) =>
         this with { Type = type };
+
+    /// <summary>
+    /// Creates a new definition with a different routing mode.
+    /// </summary>
+    public EdgeDefinition WithRoutingMode(EdgeRoutingMode mode) =>
+        this with { RoutingMode = mode };
 }

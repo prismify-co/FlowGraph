@@ -47,6 +47,18 @@ public class EdgeRoutingContext
     private double? _nodePadding;
 
     /// <summary>
+    /// User-defined waypoints that routers should respect in Guided mode.
+    /// In Guided mode, the router should calculate a path that passes through
+    /// these constraint points while avoiding obstacles.
+    /// </summary>
+    /// <remarks>
+    /// This is typically populated from <see cref="Models.IEdgeState.UserWaypoints"/>
+    /// when the edge's <see cref="Models.EdgeDefinition.RoutingMode"/> is 
+    /// <see cref="Models.EdgeRoutingMode.Guided"/>.
+    /// </remarks>
+    public IReadOnlyList<Point>? UserConstraints { get; init; }
+
+    /// <summary>
     /// Gets the bounding rectangle for a node.
     /// </summary>
     public Rect GetNodeBounds(Node node)
