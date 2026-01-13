@@ -30,6 +30,7 @@ public partial class FlowCanvas
     /// </summary>
     public void Refresh()
     {
+        _graphNeedsRender = true;
         RenderAll();
     }
 

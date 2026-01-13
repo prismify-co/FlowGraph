@@ -94,7 +94,7 @@ public partial class FlowCanvas
 
     private void RenderAll()
     {
-        var sw = Stopwatch.StartNew();
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         FlowGraphLogger.Debug(LogCategory.Rendering, "RenderAll called", "FlowCanvas.RenderAll");
 
         // OPTIMIZATION: Don't clear grid canvas every frame - the grid control handles its own updates
@@ -108,11 +108,8 @@ public partial class FlowCanvas
         sw.Stop();
         _renderAllCount++;
         _totalRenderMs += sw.ElapsedMilliseconds;
-        if (_renderAllCount % 60 == 0)
-        {
-            Debug.WriteLine($"[Render] RenderAll: last60calls={_totalRenderMs}ms total, count={_renderAllCount}");
-            _totalRenderMs = 0;
-        }
+        // Log every call to see render frequency
+        Debug.WriteLine($"[RenderAll] #{_renderAllCount} took {sw.ElapsedMilliseconds}ms (total={_totalRenderMs}ms)");
     }
 
     private void RenderGrid()

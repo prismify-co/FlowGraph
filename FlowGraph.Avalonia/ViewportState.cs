@@ -84,8 +84,6 @@ public class ViewportState
         if (Math.Abs(newZoom - Zoom) < 0.001)
             return;
 
-        System.Console.WriteLine($"[ViewportState] SetZoom: {Zoom:F3} -> {newZoom:F3}, center={zoomCenter?.ToString() ?? "null"}");
-
         // If no zoom center provided, use the center of the view
         var center = zoomCenter ?? new Point(ViewSize.Width / 2, ViewSize.Height / 2);
 

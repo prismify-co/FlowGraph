@@ -290,6 +290,31 @@ public class NodeVisualManager
     }
 
     /// <summary>
+    /// Updates all existing node visuals to their current screen positions.
+    /// This is an optimized path for viewport changes (pan/zoom) that avoids
+    /// recreating the visual tree. Only updates positions, not visual properties.
+    /// </summary>
+    /// <param name="graph">The graph containing the nodes.</param>
+    public void UpdateAllNodePositions(Graph graph)
+    {
+        foreach (var node in graph.Elements.Nodes)
+        {
+            if (_nodeVisuals.TryGetValue(node.Id, out var control))
+            {
+                var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
+                Canvas.SetLeft(control, screenPos.X);
+                Canvas.SetTop(control, screenPos.Y);
+            }
+        }
+        
+        // Update all port positions
+        foreach (var node in graph.Elements.Nodes)
+        {
+            UpdatePortPositions(node);
+        }
+    }
+
+    /// <summary>
     /// Updates the positions of all ports for a node using GraphRenderModel.
     /// </summary>
     /// <param name="node">The node whose ports need updating.</param>

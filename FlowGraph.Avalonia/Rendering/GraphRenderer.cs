@@ -236,6 +236,12 @@ public class GraphRenderer
     public void UpdateNodePosition(Node node) => _nodeVisualManager.UpdateNodePosition(node);
 
     /// <summary>
+    /// Updates all node positions for viewport changes (pan/zoom).
+    /// This is an optimized path that avoids recreating the visual tree.
+    /// </summary>
+    public void UpdateAllNodePositions(Graph graph) => _nodeVisualManager.UpdateAllNodePositions(graph);
+
+    /// <summary>
     /// Updates port positions for a node.
     /// </summary>
     public void UpdatePortPositions(Node node) => _nodeVisualManager.UpdatePortPositions(node);

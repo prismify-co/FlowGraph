@@ -400,6 +400,12 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     // Rendering mode
     private bool _useDirectRendering;
 
+    // Viewport optimization - track last state to detect what changed
+    private double _lastZoom = 1.0;
+    private double _lastOffsetX = 0;
+    private double _lastOffsetY = 0;
+    private bool _graphNeedsRender = true;
+
     // Animation state
     private readonly Dictionary<string, double> _edgeOpacityOverrides = new();
 
@@ -417,6 +423,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         {
             _theme = new ThemeResources(this);
             UpdateInputContextTheme();
+            _graphNeedsRender = true;
             RenderAll();
         };
     }
@@ -509,7 +516,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.NodesDragging += OnNodesDragging;
         _inputContext.NodeResizing += OnNodeResizing;
         _inputContext.NodeResized += OnNodeResized;
-        _inputContext.GridRenderRequested += (_, _) => RenderAll();
+        // NOTE: GridRenderRequested is no longer needed to trigger renders.
+        // Viewport changes are now handled efficiently through ViewportChanged -> ApplyViewportTransforms()
+        // which uses transform-based panning (fast path) or full render (zoom changes).
+        // The old handler was: (_, _) => { _graphNeedsRender = true; RenderAll(); }
+        // which defeated the fast-path optimization.
         _inputContext.StateChanged += (_, e) => InputStateChanged?.Invoke(this, e);
 
         // Forward drag lifecycle events
@@ -591,6 +602,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Defer initial render until after first layout pass to avoid redundant heavy renders.
         global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
+            _graphNeedsRender = true;
             RenderAll();
             CenterOnGraph();
         }, global::Avalonia.Threading.DispatcherPriority.Loaded);
@@ -607,9 +619,37 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
     }
 
+    private static int _fullRenderCount = 0;
+    
     private void ApplyViewportTransforms()
     {
         _graphRenderer.SetViewport(_viewport);
+        
+        // Detect what changed for logging
+        var zoomChanged = Math.Abs(_lastZoom - _viewport.Zoom) > 0.001;
+        var offsetChanged = Math.Abs(_lastOffsetX - _viewport.OffsetX) > 0.1 || 
+                            Math.Abs(_lastOffsetY - _viewport.OffsetY) > 0.1;
+        
+        // NOTE: Transform-based fast paths (TranslateTransform/ScaleTransform) were removed because
+        // they break Avalonia's hit testing - the visual tree positions don't update when transforms
+        // are applied to the parent canvas, causing clicks to miss nodes after panning.
+        // 
+        // Future optimization options:
+        // 1. Use direct rendering mode (SkiaSharp) which doesn't rely on visual tree hit testing
+        // 2. Implement custom hit testing that accounts for canvas transforms
+        // 3. Use throttling/debouncing to reduce render frequency during continuous operations
+        
+        // Always do full render to ensure correct hit testing and visual positions
+        _fullRenderCount++;
+        if (_fullRenderCount % 50 == 0 || zoomChanged)
+        {
+            System.Diagnostics.Debug.WriteLine($"[Viewport] Render #{_fullRenderCount} (zoom={zoomChanged}, needsRender={_graphNeedsRender}, offset={offsetChanged})");
+        }
+        
+        _lastZoom = _viewport.Zoom;
+        _lastOffsetX = _viewport.OffsetX;
+        _lastOffsetY = _viewport.OffsetY;
+        _graphNeedsRender = false;
         RenderAll();
     }
 

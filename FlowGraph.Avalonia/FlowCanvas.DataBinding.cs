@@ -44,6 +44,7 @@ public partial class FlowCanvas
         _directRenderer?.UpdateSettings(newSettings);
 
         // Re-render with new settings
+        _graphNeedsRender = true;
         RenderAll();
     }
 
@@ -64,6 +65,7 @@ public partial class FlowCanvas
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
+            _graphNeedsRender = true;
             CenterOnGraph();
             ApplyViewportTransforms();
         }
@@ -252,6 +254,7 @@ public partial class FlowCanvas
             }
         }
 
+        _graphNeedsRender = true;
         RenderElements();
     }
 
@@ -289,6 +292,7 @@ public partial class FlowCanvas
             }
         }
 
+        _graphNeedsRender = true;
         // Defer rendering to next UI tick to ensure collection is fully updated.
         // The CollectionChanged event fires BEFORE the collection modification is complete,
         // so iterating over the collection immediately would see stale data.
