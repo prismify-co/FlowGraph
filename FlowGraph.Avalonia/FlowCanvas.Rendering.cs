@@ -104,7 +104,7 @@ public partial class FlowCanvas
         RenderCustomBackgrounds();
         // Note: Shapes are now rendered within RenderElements() for proper Z-order
         RenderElements();
-        
+
         sw.Stop();
         _renderAllCount++;
         _totalRenderMs += sw.ElapsedMilliseconds;
@@ -434,8 +434,13 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
-        // Skip if using direct rendering - edges are drawn by DirectGraphRenderer
-        if (_useDirectRendering) return;
+        // In direct rendering mode, force a full update to ensure edges are redrawn
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            // Use Update() instead of just InvalidateVisual() to ensure the graph state is current
+            _directRenderer.Update(Graph, _viewport, _theme);
+            return;
+        }
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
 
