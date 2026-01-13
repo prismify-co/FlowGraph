@@ -162,7 +162,7 @@ public class SelectionManager
         // OPTIMIZED: Only update visual state for edges that changed
         // The clicked edge's visual needs updating
         renderer.UpdateEdgeSelection(clickedEdge, theme);
-        
+
         // If ctrl wasn't held, other selected edges were deselected - update those
         if (!ctrlHeld)
         {
@@ -171,7 +171,7 @@ public class SelectionManager
                 // Only update edges that might have changed (previously selected)
                 renderer.UpdateEdgeSelection(edge, theme);
             }
-            
+
             // Only update previously selected nodes that were deselected
             foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected == false))
             {

@@ -446,6 +446,9 @@ public partial class FlowCanvas
 
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
 
+        // Force visual update after edge rendering
+        _mainCanvas.InvalidateVisual();
+
         var renderTime = sw?.ElapsedMilliseconds ?? 0;
 
         // Re-apply any active opacity overrides (important if edges were re-rendered during an animation)

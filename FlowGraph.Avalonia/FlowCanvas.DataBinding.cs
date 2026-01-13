@@ -122,11 +122,11 @@ public partial class FlowCanvas
 
     private static long _nodePropertyChangedCount = 0;
     private static long _invalidateVisualCount = 0;
-    
+
     private void OnNodePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not Node node) return;
-        
+
         _nodePropertyChangedCount++;
 
         // In direct rendering mode, just invalidate the renderer for any visual change
@@ -138,7 +138,7 @@ public partial class FlowCanvas
                 _invalidateVisualCount++;
                 _directRenderer.InvalidateVisual();
             }
-            
+
             if (_nodePropertyChangedCount % 1000 == 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[DataBinding] NodePropertyChanged #{_nodePropertyChangedCount}, InvalidateVisual={_invalidateVisualCount}, prop={e.PropertyName}");
@@ -289,7 +289,10 @@ public partial class FlowCanvas
             }
         }
 
-        RenderEdges();
+        // Defer rendering to next UI tick to ensure collection is fully updated.
+        // The CollectionChanged event fires BEFORE the collection modification is complete,
+        // so iterating over the collection immediately would see stale data.
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(RenderEdges, global::Avalonia.Threading.DispatcherPriority.Render);
     }
 
     #endregion
