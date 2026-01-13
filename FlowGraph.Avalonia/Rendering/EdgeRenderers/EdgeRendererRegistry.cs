@@ -75,6 +75,19 @@ public class EdgeRendererRegistry
   /// <returns>The matching renderer, or null to use built-in rendering.</returns>
   public IEdgeRenderer? GetRenderer(Edge edge)
   {
+    // First, try to match based on edge ID prefix (e.g., "hypothesis:workitem->metric")
+    // This allows custom renderers to be registered by prefix without modifying Edge.Type
+    if (!string.IsNullOrEmpty(edge.Id))
+    {
+      var colonIndex = edge.Id.IndexOf(':');
+      if (colonIndex > 0)
+      {
+        var idPrefix = edge.Id[..colonIndex];
+        if (_renderers.TryGetValue(idPrefix, out var prefixRenderer))
+          return prefixRenderer;
+      }
+    }
+
     var edgeType = GetEdgeTypeString(edge);
 
     if (string.IsNullOrEmpty(edgeType))

@@ -544,6 +544,59 @@ public static class EdgePathHelper
     {
         return Math.Atan2(to.Y - from.Y, to.X - from.X);
     }
+
+    /// <summary>
+    /// Calculates the arrow angle using a hybrid approach that combines port position (logical direction)
+    /// with path geometry (visual direction) for consistent, accurate arrow rendering.
+    /// </summary>
+    /// <param name="tip">The arrow tip point (target position).</param>
+    /// <param name="fromPoint">The point the edge comes from (preceding the tip).</param>
+    /// <param name="targetPortPosition">Optional port position for logical direction hint.</param>
+    /// <param name="angleThreshold">Angle tolerance in radians for preferring port direction (default: π/4 = 45°).</param>
+    /// <returns>The angle in radians for the arrow direction.</returns>
+    /// <remarks>
+    /// <para>
+    /// This method implements a hybrid approach:
+    /// 1. If port position is provided, get the expected angle from port side
+    /// 2. Calculate the actual segment angle from path geometry
+    /// 3. If segment angle is within threshold of expected, use port direction (cleaner)
+    /// 4. Otherwise, use actual segment direction (handles unusual routing)
+    /// </para>
+    /// <para>
+    /// This ensures consistency between custom renderers and default rendering while
+    /// handling edge cases like curved paths or unusual node arrangements.
+    /// </para>
+    /// </remarks>
+    public static double CalculateArrowAngle(
+        AvaloniaPoint tip,
+        AvaloniaPoint fromPoint,
+        PortPosition? targetPortPosition = null,
+        double angleThreshold = Math.PI / 4)
+    {
+        // Calculate the actual segment angle from path geometry
+        var segmentAngle = CalculateAngle(fromPoint, tip);
+
+        // If no port position hint, just use segment angle
+        if (targetPortPosition == null)
+            return segmentAngle;
+
+        // Get the expected angle from port position
+        var expectedAngle = targetPortPosition.Value.ToIncomingArrowAngle();
+
+        // Compare angles: if segment is close to expected, prefer the cleaner port direction
+        var angleDiff = NormalizeAngle(segmentAngle - expectedAngle);
+        return Math.Abs(angleDiff) <= angleThreshold ? expectedAngle : segmentAngle;
+    }
+
+    /// <summary>
+    /// Normalizes an angle to the range [-π, π].
+    /// </summary>
+    private static double NormalizeAngle(double angle)
+    {
+        while (angle > Math.PI) angle -= 2 * Math.PI;
+        while (angle < -Math.PI) angle += 2 * Math.PI;
+        return angle;
+    }
 }
 
 // Keep the old name as an alias for backward compatibility
