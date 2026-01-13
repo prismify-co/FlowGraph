@@ -4,6 +4,10 @@ namespace FlowGraph.Core.Routing;
 /// Routes edges using orthogonal (right-angle) paths that avoid obstacles.
 /// Uses A* pathfinding on a visibility graph.
 /// </summary>
+/// <remarks>
+/// Supports <see cref="Models.EdgeRoutingMode.Guided"/> mode where the router
+/// calculates paths that pass through user-defined waypoints while avoiding obstacles.
+/// </remarks>
 public class OrthogonalRouter : IEdgeRouter
 {
     /// <summary>
@@ -30,6 +34,14 @@ public class OrthogonalRouter : IEdgeRouter
         // Get obstacles (excluding source and target nodes)
         var obstacles = context.GetObstacles(edge.Source, edge.Target).ToList();
 
+        // Check for user constraints (Guided mode)
+        var userConstraints = context.UserConstraints ?? edge.State.UserWaypoints;
+        if (userConstraints != null && userConstraints.Count > 0)
+        {
+            return RouteWithConstraints(start, end, userConstraints, obstacles);
+        }
+
+        // Standard routing (Auto mode)
         // If no obstacles or path is clear, use simple routing
         if (obstacles.Count == 0 || !PathHasObstacles(start, end, obstacles))
         {
@@ -40,6 +52,50 @@ public class OrthogonalRouter : IEdgeRouter
         var path = FindOrthogonalPath(start, end, obstacles);
 
         return path.Count > 0 ? path : CreateSimpleOrthogonalPath(start, end);
+    }
+
+    /// <summary>
+    /// Routes through user constraint points while avoiding obstacles.
+    /// Used for Guided routing mode.
+    /// </summary>
+    private List<Point> RouteWithConstraints(Point start, Point end, IReadOnlyList<Point> constraints, List<Rect> obstacles)
+    {
+        var fullPath = new List<Point>();
+
+        // Route segment by segment: start -> constraint1 -> constraint2 -> ... -> end
+        var waypoints = new List<Point> { start };
+        waypoints.AddRange(constraints);
+        waypoints.Add(end);
+
+        for (int i = 0; i < waypoints.Count - 1; i++)
+        {
+            var segmentStart = waypoints[i];
+            var segmentEnd = waypoints[i + 1];
+
+            List<Point> segment;
+            if (obstacles.Count == 0 || !PathHasObstacles(segmentStart, segmentEnd, obstacles))
+            {
+                segment = CreateSimpleOrthogonalPath(segmentStart, segmentEnd);
+            }
+            else
+            {
+                segment = FindOrthogonalPath(segmentStart, segmentEnd, obstacles);
+                if (segment.Count == 0)
+                    segment = CreateSimpleOrthogonalPath(segmentStart, segmentEnd);
+            }
+
+            // Add segment to full path (skip first point of subsequent segments to avoid duplicates)
+            if (fullPath.Count == 0)
+            {
+                fullPath.AddRange(segment);
+            }
+            else if (segment.Count > 1)
+            {
+                fullPath.AddRange(segment.Skip(1));
+            }
+        }
+
+        return SimplifyPath(fullPath);
     }
 
     private bool PathHasObstacles(Point start, Point end, List<Rect> obstacles)
