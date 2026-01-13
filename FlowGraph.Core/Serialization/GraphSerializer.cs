@@ -506,7 +506,7 @@ public class ShapeElementDto : ElementDto
             {
                 Text = Text ?? string.Empty,
                 FontSize = FontSize ?? 14,
-                FontFamily = FontFamily,
+                FontFamily = FontFamily ?? "Segoe UI",
                 FontWeight = Enum.TryParse<Elements.Shapes.FontWeight>(FontWeight, out var fw) ? fw : Elements.Shapes.FontWeight.Normal,
                 TextAlignment = Enum.TryParse<TextAlignment>(TextAlignment, out var ta) ? ta : Elements.Shapes.TextAlignment.Left
             },
@@ -857,7 +857,7 @@ public class ShapeDto
             {
                 Text = Text ?? string.Empty,
                 FontSize = FontSize ?? 14,
-                FontFamily = FontFamily,
+                FontFamily = FontFamily ?? "Segoe UI",
                 FontWeight = Enum.TryParse<FontWeight>(FontWeight, out var fw) ? fw : Elements.Shapes.FontWeight.Normal,
                 TextAlignment = Enum.TryParse<TextAlignment>(TextAlignment, out var ta) ? ta : Elements.Shapes.TextAlignment.Left
             },
