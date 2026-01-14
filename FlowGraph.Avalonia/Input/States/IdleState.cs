@@ -79,7 +79,7 @@ public class IdleState : InputStateBase
             var deltaX = e.Delta.X * speed;
             var deltaY = e.Delta.Y * speed;
             context.Viewport.Pan(deltaX, deltaY);
-            context.RaiseGridRender();
+            context.ApplyViewportTransform();
             e.Handled = true;
             return StateTransitionResult.Stay();
         }
@@ -90,7 +90,7 @@ public class IdleState : InputStateBase
         else
             context.Viewport.ZoomOut(position);
 
-        context.RaiseGridRender();
+        context.ApplyViewportTransform();
         e.Handled = true;
         return StateTransitionResult.Stay();
     }

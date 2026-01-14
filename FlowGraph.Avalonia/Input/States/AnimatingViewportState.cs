@@ -63,7 +63,7 @@ public class AnimatingViewportState : InputStateBase
         else
             context.Viewport.ZoomOut(position);
 
-        context.RaiseGridRender();
+        context.ApplyViewportTransform();
         e.Handled = true;
         
         return StateTransitionResult.TransitionTo(IdleState.Instance);

@@ -191,19 +191,21 @@ public class NodeVisualManager
             control.Tag = node;
         }
 
-        // Transform position to screen coordinates
-        var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
+        // Position in canvas coordinates (transform will be applied by MainCanvas.RenderTransform)
+        // The MatrixTransform handles both zoom and pan, so we use raw node positions
+        var canvasX = node.Position.X;
+        var canvasY = node.Position.Y;
 
         if (node.Type == "sequence-message")
         {
             var (nodeWidth, nodeHeight) = GetNodeDimensions(node);
             FlowGraphLogger.Debug(LogCategory.CustomRenderers,
-                $"Rendering '{node.Label}': canvas=({node.Position.X:F1},{node.Position.Y:F1}), screen=({screenPos.X:F1},{screenPos.Y:F1}), canvasSize=({node.Width}x{node.Height}), visualSize=({nodeWidth:F1}x{nodeHeight:F1}), scale={_renderContext.Scale:F2}",
+                $"Rendering '{node.Label}': canvasPos=({canvasX:F1},{canvasY:F1}), visualSize=({nodeWidth:F1}x{nodeHeight:F1}), scale={scale:F2}",
                 "NodeVisualManager.RenderNode");
         }
 
-        Canvas.SetLeft(control, screenPos.X);
-        Canvas.SetTop(control, screenPos.Y);
+        Canvas.SetLeft(control, canvasX);
+        Canvas.SetTop(control, canvasY);
 
         canvas.Children.Add(control);
         _nodeVisuals[node.Id] = control;
@@ -268,13 +270,13 @@ public class NodeVisualManager
 
         // Use GraphRenderModel for port position calculation
         var canvasPos = _model.GetPortPositionByIndex(node, index, totalPorts, isOutput);
-        var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
 
         // Create the port visual using the renderer
         var portVisual = renderer.CreatePortVisual(port, node, context);
 
-        Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
-        Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
+        // Position in canvas coordinates (transform handles zoom/pan)
+        Canvas.SetLeft(portVisual, canvasPos.X - scaledPortSize / 2);
+        Canvas.SetTop(portVisual, canvasPos.Y - scaledPortSize / 2);
 
         canvas.Children.Add(portVisual);
         _portVisuals[(node.Id, port.Id)] = portVisual;
@@ -292,9 +294,9 @@ public class NodeVisualManager
     {
         if (_nodeVisuals.TryGetValue(node.Id, out var control))
         {
-            var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
-            Canvas.SetLeft(control, screenPos.X);
-            Canvas.SetTop(control, screenPos.Y);
+            // Use canvas coordinates directly (transform handles zoom/pan)
+            Canvas.SetLeft(control, node.Position.X);
+            Canvas.SetTop(control, node.Position.Y);
         }
 
         UpdatePortPositions(node);
@@ -304,6 +306,8 @@ public class NodeVisualManager
     /// Updates all existing node visuals to their current screen positions.
     /// This is an optimized path for viewport changes (pan/zoom) that avoids
     /// recreating the visual tree. Only updates positions, not visual properties.
+    /// NOTE: With transform-based rendering, this method is no longer needed for viewport changes.
+    /// It's kept for compatibility but should only be called when nodes actually move in canvas space.
     /// </summary>
     /// <param name="graph">The graph containing the nodes.</param>
     public void UpdateAllNodePositions(Graph graph)
@@ -312,9 +316,9 @@ public class NodeVisualManager
         {
             if (_nodeVisuals.TryGetValue(node.Id, out var control))
             {
-                var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
-                Canvas.SetLeft(control, screenPos.X);
-                Canvas.SetTop(control, screenPos.Y);
+                // Use canvas coordinates directly
+                Canvas.SetLeft(control, node.Position.X);
+                Canvas.SetTop(control, node.Position.Y);
             }
         }
         
@@ -343,9 +347,9 @@ public class NodeVisualManager
                 var scaledPortSize = portSize * scale;
 
                 var canvasPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
-                var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
-                Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
-                Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
+                // Use canvas coordinates directly
+                Canvas.SetLeft(portVisual, canvasPos.X - scaledPortSize / 2);
+                Canvas.SetTop(portVisual, canvasPos.Y - scaledPortSize / 2);
             }
         }
 
@@ -359,9 +363,9 @@ public class NodeVisualManager
                 var scaledPortSize = portSize * scale;
 
                 var canvasPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
-                var screenPos = _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
-                Canvas.SetLeft(portVisual, screenPos.X - scaledPortSize / 2);
-                Canvas.SetTop(portVisual, screenPos.Y - scaledPortSize / 2);
+                // Use canvas coordinates directly
+                Canvas.SetLeft(portVisual, canvasPos.X - scaledPortSize / 2);
+                Canvas.SetTop(portVisual, canvasPos.Y - scaledPortSize / 2);
             }
         }
     }

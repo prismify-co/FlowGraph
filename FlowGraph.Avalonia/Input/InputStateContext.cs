@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Media;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
@@ -47,6 +48,7 @@ public class InputStateContext
     // UI elements - set by the canvas
     public Panel? RootPanel { get; set; }
     public Canvas? MainCanvas { get; set; }
+    public MatrixTransform? ViewportTransform { get; set; }
     public Graph? Graph { get; set; }
     public Rendering.ThemeResources? Theme { get; set; }
 
@@ -165,6 +167,22 @@ public class InputStateContext
 
     public AvaloniaPoint ScreenToCanvas(AvaloniaPoint screenPoint) => _viewport.ScreenToCanvas(screenPoint);
     public AvaloniaPoint CanvasToScreen(AvaloniaPoint canvasPoint) => _viewport.CanvasToScreen(canvasPoint);
+
+    #endregion
+
+    #region Viewport Transform
+
+    /// <summary>
+    /// Applies the current viewport state to the MainCanvas transform.
+    /// This enables O(1) pan/zoom updates instead of O(n) re-rendering.
+    /// </summary>
+    public void ApplyViewportTransform()
+    {
+        if (ViewportTransform != null)
+        {
+            _viewport.ApplyToTransforms(ViewportTransform);
+        }
+    }
 
     #endregion
 }

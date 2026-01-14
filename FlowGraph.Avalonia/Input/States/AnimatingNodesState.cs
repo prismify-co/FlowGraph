@@ -138,7 +138,7 @@ public class AnimatingNodesState : InputStateBase
         else
             context.Viewport.ZoomOut(position);
 
-        context.RaiseGridRender();
+        context.ApplyViewportTransform();
         e.Handled = true;
         return StateTransitionResult.Stay();
     }
@@ -160,17 +160,17 @@ public class AnimatingNodesState : InputStateBase
                 case Key.Add:
                 case Key.OemPlus:
                     context.Viewport.ZoomIn();
-                    context.RaiseGridRender();
+                    context.ApplyViewportTransform();
                     return StateTransitionResult.Stay(true);
                 case Key.Subtract:
                 case Key.OemMinus:
                     context.Viewport.ZoomOut();
-                    context.RaiseGridRender();
+                    context.ApplyViewportTransform();
                     return StateTransitionResult.Stay(true);
                 case Key.D0:
                 case Key.NumPad0:
                     context.Viewport.ResetZoom();
-                    context.RaiseGridRender();
+                    context.ApplyViewportTransform();
                     return StateTransitionResult.Stay(true);
             }
         }

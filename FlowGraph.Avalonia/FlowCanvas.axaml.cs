@@ -420,6 +420,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
     private Panel? _rootPanel;
+    private MatrixTransform? _viewportTransform;
 
     // Components
     private ViewportState _viewport = null!;
@@ -620,6 +621,13 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _mainCanvas = this.FindControl<Canvas>("MainCanvas");
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
+        
+        // Get the MatrixTransform from MainCanvas.RenderTransform
+        if (_mainCanvas?.RenderTransform is MatrixTransform mt)
+        {
+            _viewportTransform = mt;
+        }
+        
         _theme = new ThemeResources(this);
 
         // Apply background setting
@@ -632,6 +640,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Update input context with UI elements
         _inputContext.RootPanel = _rootPanel;
         _inputContext.MainCanvas = _mainCanvas;
+        _inputContext.ViewportTransform = _viewportTransform;
         _inputContext.Theme = _theme;
         _inputContext.ConnectionValidator = ConnectionValidator;
 
@@ -682,27 +691,36 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         var offsetChanged = Math.Abs(_lastOffsetX - _viewport.OffsetX) > 0.1 || 
                             Math.Abs(_lastOffsetY - _viewport.OffsetY) > 0.1;
         
-        // NOTE: Transform-based fast paths (TranslateTransform/ScaleTransform) were removed because
-        // they break Avalonia's hit testing - the visual tree positions don't update when transforms
-        // are applied to the parent canvas, causing clicks to miss nodes after panning.
-        // 
-        // Future optimization options:
-        // 1. Use direct rendering mode (SkiaSharp) which doesn't rely on visual tree hit testing
-        // 2. Implement custom hit testing that accounts for canvas transforms
-        // 3. Use throttling/debouncing to reduce render frequency during continuous operations
-        
-        // Always do full render to ensure correct hit testing and visual positions
-        _fullRenderCount++;
-        if (_fullRenderCount % 50 == 0 || zoomChanged)
+        // Phase 1: Transform-based pan/zoom for O(1) updates
+        // Apply the viewport transform to MainCanvas for instant pan/zoom
+        if (_viewportTransform != null)
         {
-            System.Diagnostics.Debug.WriteLine($"[Viewport] Render #{_fullRenderCount} (zoom={zoomChanged}, needsRender={_graphNeedsRender}, offset={offsetChanged})");
+            _viewport.ApplyToTransforms(_viewportTransform);
         }
         
-        _lastZoom = _viewport.Zoom;
-        _lastOffsetX = _viewport.OffsetX;
-        _lastOffsetY = _viewport.OffsetY;
-        _graphNeedsRender = false;
-        RenderAll();
+        // For zoom changes, we still need to re-render edges and other elements
+        // that aren't transformed (like the grid background)
+        if (zoomChanged)
+        {
+            _fullRenderCount++;
+            if (_fullRenderCount % 50 == 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Viewport] Render #{_fullRenderCount} (zoom changed, needsRender={_graphNeedsRender})");
+            }
+            
+            _lastZoom = _viewport.Zoom;
+            _lastOffsetX = _viewport.OffsetX;
+            _lastOffsetY = _viewport.OffsetY;
+            _graphNeedsRender = false;
+            RenderAll();
+        }
+        else if (offsetChanged)
+        {
+            // Pan-only change - just update the transform (O(1) operation)
+            _lastOffsetX = _viewport.OffsetX;
+            _lastOffsetY = _viewport.OffsetY;
+            // Note: Grid background may need updating for pan, but it's on a separate canvas
+        }
     }
 
     private void UpdateInputContextTheme()
