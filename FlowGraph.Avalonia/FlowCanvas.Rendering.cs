@@ -55,9 +55,11 @@ public partial class FlowCanvas
             return;
         }
 
-        if (source?.Tag is Node)
+        // Check for Node in Tag (may be direct or in dictionary from ResizableVisual)
+        var nodeFromTag = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
+        if (nodeFromTag != null)
         {
-            OnNodePointerPressed(source, e);
+            OnNodePointerPressed(source!, e);
             return;
         }
     }
@@ -65,18 +67,18 @@ public partial class FlowCanvas
     private void OnCanvasPointerMoved(object? sender, PointerEventArgs e)
     {
         var source = e.Source as Control;
-        if (source?.Tag is Node)
+        if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag) != null)
         {
-            OnNodePointerMoved(source, e);
+            OnNodePointerMoved(source!, e);
         }
     }
 
     private void OnCanvasPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         var source = e.Source as Control;
-        if (source?.Tag is Node)
+        if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag) != null)
         {
-            OnNodePointerReleased(source, e);
+            OnNodePointerReleased(source!, e);
         }
     }
 
@@ -300,6 +302,14 @@ public partial class FlowCanvas
         {
             _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
             ApplyEdgeOpacityOverrides();
+        }
+
+        // Re-render resize handles for selected nodes after full re-render
+        // This is needed because Clear() removes all handles, but IsSelected doesn't change
+        // so no PropertyChanged event fires to trigger UpdateResizeHandlesForNode
+        foreach (var node in Graph.Elements.Nodes.Where(n => n.IsSelected && n.IsResizable))
+        {
+            UpdateResizeHandlesForNode(node);
         }
 
         if (DebugRenderingPerformance && sw != null)

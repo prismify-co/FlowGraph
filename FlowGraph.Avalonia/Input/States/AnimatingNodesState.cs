@@ -74,7 +74,8 @@ public class AnimatingNodesState : InputStateBase
         }
 
         // Check if clicking on an animating node - block interaction
-        if (point.Properties.IsLeftButtonPressed && source?.Tag is Node node)
+        var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
+        if (point.Properties.IsLeftButtonPressed && node != null)
         {
             if (_animatingNodeIds.Contains(node.Id))
             {

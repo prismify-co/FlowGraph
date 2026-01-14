@@ -178,7 +178,18 @@ public class NodeVisualManager
 
         // Create the node visual using the renderer
         var control = renderer.CreateNodeVisual(node, context);
-        control.Tag = node;
+        
+        // Preserve any existing metadata (like ResizableVisual) when setting the node tag
+        if (control.Tag is Dictionary<string, object> existingTags)
+        {
+            // Renderer used ResizableVisual or similar - preserve metadata and add node
+            existingTags["Node"] = node;
+        }
+        else
+        {
+            // Simple tag - just set the node
+            control.Tag = node;
+        }
 
         // Transform position to screen coordinates
         var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
@@ -384,6 +395,7 @@ public class NodeVisualManager
     /// <param name="theme">Theme resources for styling.</param>
     public void UpdateNodeSize(Node node, ThemeResources theme)
     {
+        System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] Node={node.Id}, HasVisual={_nodeVisuals.ContainsKey(node.Id)}");
         if (_nodeVisuals.TryGetValue(node.Id, out var control))
         {
             var scale = _renderContext.Scale;
@@ -396,9 +408,36 @@ public class NodeVisualManager
             };
 
             var bounds = _model.GetNodeBounds(node);
+            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] Bounds={bounds.Width}x{bounds.Height}, Renderer={renderer.GetType().Name}");
             renderer.UpdateSize(control, node, context, bounds.Width, bounds.Height);
+            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] After UpdateSize: control.Width={control.Width}, control.Height={control.Height}");
+
+#if DEBUG
+            // Validate that composite renderers properly handle resize
+            ValidateResizeImplementation(renderer, control, node);
+#endif
         }
     }
+
+#if DEBUG
+    /// <summary>
+    /// Debug-only validation to detect renderers that may have incomplete UpdateSize implementations.
+    /// </summary>
+    private static void ValidateResizeImplementation(INodeRenderer renderer, Control control, Node node)
+    {
+        // If renderer declares it has composite visuals but doesn't use ResizableVisual,
+        // emit a debug warning (once per renderer type)
+        if (renderer.HasCompositeVisual && 
+            renderer is not IResizableNodeRenderer &&
+            !ResizableVisual.HasResizeMetadata(control))
+        {
+            var rendererType = renderer.GetType().Name;
+            System.Diagnostics.Debug.WriteLine(
+                $"[WARNING] {rendererType} has HasCompositeVisual=true but doesn't use ResizableVisual. " +
+                $"Child elements may not update correctly during resize. Node: {node.Id}");
+        }
+    }
+#endif
 
     #region Inline Editing
 

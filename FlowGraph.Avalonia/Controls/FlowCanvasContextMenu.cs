@@ -218,7 +218,9 @@ public class FlowCanvasContextMenu
         ContextMenu? menu = null;
 
         // Determine which menu to show based on target
-        if (target.Tag is Node node)
+        // Node may be stored directly in Tag or in a dictionary (from ResizableVisual)
+        var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(target.Tag);
+        if (node != null)
         {
             if (node.IsGroup)
             {

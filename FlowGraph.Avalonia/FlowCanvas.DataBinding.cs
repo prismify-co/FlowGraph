@@ -123,7 +123,6 @@ public partial class FlowCanvas
     }
 
     private static long _nodePropertyChangedCount = 0;
-    private static long _invalidateVisualCount = 0;
 
     private void OnNodePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -131,45 +130,35 @@ public partial class FlowCanvas
 
         _nodePropertyChangedCount++;
 
-        // In direct rendering mode, just invalidate the renderer for any visual change
-        if (_useDirectRendering && _directRenderer != null)
-        {
-            if (e.PropertyName is nameof(Node.Position) or nameof(Node.IsSelected)
-                or nameof(Node.Width) or nameof(Node.Height) or nameof(Node.IsCollapsed))
-            {
-                _invalidateVisualCount++;
-                _directRenderer.InvalidateVisual();
-            }
-
-            if (_nodePropertyChangedCount % 1000 == 0)
-            {
-                System.Diagnostics.Debug.WriteLine($"[DataBinding] NodePropertyChanged #{_nodePropertyChangedCount}, InvalidateVisual={_invalidateVisualCount}, prop={e.PropertyName}");
-            }
-            return;
-        }
-
+        // Use unified render service - handles both retained and direct rendering modes
         switch (e.PropertyName)
         {
             case nameof(Node.Position):
-                _graphRenderer.UpdateNodePosition(node);
-                _graphRenderer.UpdateResizeHandlePositions(node);
-                RenderEdges();
+                _renderService.UpdateNodePosition(node);
+                _renderService.UpdateResizeHandlePositions(node);
+                _renderService.RenderEdges();
                 break;
             case nameof(Node.IsSelected):
-                _graphRenderer.UpdateNodeSelection(node, _theme);
+                _renderService.UpdateNodeSelection(node);
                 UpdateResizeHandlesForNode(node);
                 break;
             case nameof(Node.Width):
             case nameof(Node.Height):
-                _graphRenderer.UpdateNodeSize(node, _theme);
-                _graphRenderer.UpdateNodePosition(node);
-                _graphRenderer.UpdateResizeHandlePositions(node);
-                RenderEdges();
+                _renderService.UpdateNodeSize(node);
+                _renderService.UpdateNodePosition(node);
+                _renderService.UpdateResizeHandlePositions(node);
+                _renderService.RenderEdges();
                 break;
             case nameof(Node.IsCollapsed):
                 // Update resize handles when collapse state changes
+                _renderService.Invalidate();
                 UpdateResizeHandlesForNode(node);
                 break;
+        }
+
+        if (_nodePropertyChangedCount % 1000 == 0)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DataBinding] NodePropertyChanged #{_nodePropertyChangedCount}, prop={e.PropertyName}");
         }
     }
 

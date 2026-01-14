@@ -48,9 +48,10 @@ public partial class FlowCanvas
                 var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
                 Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
 
-                if (rightClickHit?.Tag is Node node)
+                var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(rightClickHit?.Tag);
+                if (hitNode != null)
                 {
-                    HandleContextMenuRequest(e, rightClickHit, node);
+                    HandleContextMenuRequest(e, rightClickHit!, hitNode);
                 }
                 else if (rightClickHit?.Tag is Edge edge)
                 {
@@ -121,9 +122,9 @@ public partial class FlowCanvas
                 // Walk up tree to find node
                 var current = rawHit as Control;
                 int depth = 0;
-                while (current != null && hitElement?.Tag is not Node && depth < 20)
+                while (current != null && Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(hitElement?.Tag) == null && depth < 20)
                 {
-                    if (current.Tag is Node)
+                    if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(current.Tag) != null)
                     {
                         hitElement = current;
                         Debug.WriteLine($"[Input]   Found Node at depth {depth}: {current.GetType().Name}");
@@ -263,8 +264,11 @@ public partial class FlowCanvas
 
     private void OnNodePointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Control control && control.Tag is Node node)
+        if (sender is Control control)
         {
+            var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(control.Tag);
+            if (node == null) return;
+            
             var point = e.GetCurrentPoint(control);
 
             if (point.Properties.IsRightButtonPressed)
@@ -474,7 +478,8 @@ public partial class FlowCanvas
                 hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
             }
 
-            if (hitElement?.Tag is Node hitNode)
+            var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(hitElement?.Tag);
+            if (hitNode != null)
             {
                 // Only change selection if the clicked node is NOT already selected
                 if (!hitNode.IsSelected)
@@ -513,8 +518,13 @@ public partial class FlowCanvas
         if (element == null) return "null";
         var control = element as Control;
         if (control?.Tag == null) return "no-tag";
-        if (control.Tag is Node n) return $"Node({n.Id})";
+        
+        // Check for Node (direct or in dictionary)
+        var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(control.Tag);
+        if (node != null) return $"Node({node.Id})";
+        
         if (control.Tag is Edge e) return $"Edge({e.Id})";
+        if (control.Tag is Dictionary<string, object> dict) return $"Dict({dict.Count} keys)";
         return control.Tag.GetType().Name;
     }
 

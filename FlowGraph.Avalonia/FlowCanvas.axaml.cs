@@ -277,6 +277,13 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </summary>
     public bool IsDirectRenderingEnabled => _useDirectRendering;
 
+    /// <summary>
+    /// Gets the unified render service for programmatic rendering operations.
+    /// This service abstracts the difference between retained and direct rendering modes,
+    /// ensuring all operations work correctly regardless of which mode is active.
+    /// </summary>
+    public IGraphRenderService RenderService => _renderService;
+
     #endregion
 
     #region Events
@@ -419,6 +426,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private GridRenderer _gridRenderer = null!;
     private GraphRenderer _graphRenderer = null!;
     private DirectGraphRenderer? _directRenderer;
+    private IGraphRenderService _renderService = null!;
     private InputStateMachine _inputStateMachine = null!;
     private InputStateContext _inputContext = null!;
     private SelectionManager _selectionManager = null!;
@@ -470,6 +478,15 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _graphRenderer = new GraphRenderer(Settings);
         _graphRenderer.SetViewport(_viewport);
         _animationManager = new AnimationManager();
+
+        // Initialize unified render service that abstracts retained vs direct rendering
+        _renderService = new GraphRenderService(
+            retainedRenderer: _graphRenderer,
+            getDirectRenderer: () => _directRenderer,
+            getIsDirectRenderingMode: () => _useDirectRendering,
+            renderEdgesAction: RenderEdges,
+            refreshAction: Refresh,
+            getTheme: () => _theme);
 
         // Initialize input state machine
         _inputContext = new InputStateContext(Settings, _viewport, _graphRenderer);
@@ -861,14 +878,13 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
     private void OnNodeResizing(object? sender, NodeResizingEventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine($"[OnNodeResizing] Node={e.Node.Id}, NewSize={e.NewWidth}x{e.NewHeight}");
         e.Node.Width = e.NewWidth;
         e.Node.Height = e.NewHeight;
         e.Node.Position = e.NewPosition;
 
-        _graphRenderer.UpdateNodeSize(e.Node, _theme);
-        _graphRenderer.UpdateNodePosition(e.Node);
-        _graphRenderer.UpdateResizeHandlePositions(e.Node);
-        RenderEdges();
+        // Use the batched resize update - handles both modes efficiently
+        _renderService.UpdateNodeAfterResize(e.Node);
 
         NodeResizing?.Invoke(this, e);
     }

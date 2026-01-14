@@ -35,9 +35,11 @@ public class IdleState : InputStateBase
         if (point.Properties.IsLeftButtonPressed)
         {
             // Check what was clicked via source control's Tag
-            if (source?.Tag is Node node)
+            // Node may be stored directly or in a dictionary (from ResizableVisual)
+            var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
+            if (node != null)
             {
-                return HandleNodeClick(context, e, source, node, position);
+                return HandleNodeClick(context, e, source!, node, position);
             }
 
             if (source?.Tag is Edge edge)
