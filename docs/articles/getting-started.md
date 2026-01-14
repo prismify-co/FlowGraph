@@ -5,7 +5,7 @@ This guide will help you set up FlowGraph in your Avalonia application.
 ## Prerequisites
 
 - .NET 9.0 or later
-- An Avalonia 11.2+ application
+- An Avalonia 11.3+ application
 
 ## Installation
 

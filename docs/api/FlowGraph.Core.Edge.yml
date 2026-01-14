@@ -5,21 +5,29 @@ items:
   id: Edge
   parent: FlowGraph.Core
   children:
+  - FlowGraph.Core.Edge.#ctor
+  - FlowGraph.Core.Edge.#ctor(FlowGraph.Core.Models.EdgeDefinition,FlowGraph.Core.Models.IEdgeState)
   - FlowGraph.Core.Edge.AutoRoute
+  - FlowGraph.Core.Edge.Definition
+  - FlowGraph.Core.Edge.GetBounds
   - FlowGraph.Core.Edge.Id
   - FlowGraph.Core.Edge.IsSelected
+  - FlowGraph.Core.Edge.IsVisible
   - FlowGraph.Core.Edge.Label
   - FlowGraph.Core.Edge.MarkerEnd
   - FlowGraph.Core.Edge.MarkerStart
   - FlowGraph.Core.Edge.OnPropertyChanged(System.String)
   - FlowGraph.Core.Edge.PropertyChanged
-  - FlowGraph.Core.Edge.SetField``1(``0@,``0,System.String)
+  - FlowGraph.Core.Edge.Reconnect(System.String,System.String)
+  - FlowGraph.Core.Edge.ReconnectSource(System.String,System.String)
   - FlowGraph.Core.Edge.Source
   - FlowGraph.Core.Edge.SourcePort
+  - FlowGraph.Core.Edge.State
   - FlowGraph.Core.Edge.Target
   - FlowGraph.Core.Edge.TargetPort
   - FlowGraph.Core.Edge.Type
   - FlowGraph.Core.Edge.Waypoints
+  - FlowGraph.Core.Edge.ZIndex
   langs:
   - csharp
   - vb
@@ -30,22 +38,46 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Edge
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 8
+    startLine: 22
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: Represents a connection between two nodes.
+  summary: >-
+    Represents a connection between two nodes.
+
+    Uses a Definition (immutable) + State (mutable) composition pattern.
+
+    Implements <xref href="FlowGraph.Core.Elements.ICanvasElement" data-throw-if-not-resolved="false"></xref> for unified element handling.
+  remarks: >-
+    <p>
+
+    The edge's structural properties (Source, Target, ports, type, markers) are stored
+
+    in the <xref href="FlowGraph.Core.Edge.Definition" data-throw-if-not-resolved="false"></xref> record. Runtime state (selection, waypoints) is
+
+    stored in the <xref href="FlowGraph.Core.Edge.State" data-throw-if-not-resolved="false"></xref> object.
+
+    </p>
+
+    <p>
+
+    For backward compatibility, pass-through properties are provided that delegate
+
+    to either Definition or State as appropriate.
+
+    </p>
   example: []
   syntax:
-    content: 'public class Edge : INotifyPropertyChanged'
-    content.vb: Public Class Edge Implements INotifyPropertyChanged
+    content: 'public class Edge : ICanvasElement, INotifyPropertyChanged'
+    content.vb: Public Class Edge Implements ICanvasElement, INotifyPropertyChanged
   inheritance:
   - System.Object
   implements:
+  - FlowGraph.Core.Elements.ICanvasElement
   - System.ComponentModel.INotifyPropertyChanged
   inheritedMembers:
   - System.Object.Equals(System.Object)
@@ -55,6 +87,173 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - FlowGraph.Core.Edge.FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(System.String)
+- uid: FlowGraph.Core.Edge.PropertyChanged
+  commentId: E:FlowGraph.Core.Edge.PropertyChanged
+  id: PropertyChanged
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: PropertyChanged
+  nameWithType: Edge.PropertyChanged
+  fullName: FlowGraph.Core.Edge.PropertyChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PropertyChanged
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Occurs when a property value changes.
+  example: []
+  syntax:
+    content: public event PropertyChangedEventHandler? PropertyChanged
+    return:
+      type: System.ComponentModel.PropertyChangedEventHandler
+    content.vb: Public Event PropertyChanged As PropertyChangedEventHandler
+  implements:
+  - System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: FlowGraph.Core.Edge.#ctor(FlowGraph.Core.Models.EdgeDefinition,FlowGraph.Core.Models.IEdgeState)
+  commentId: M:FlowGraph.Core.Edge.#ctor(FlowGraph.Core.Models.EdgeDefinition,FlowGraph.Core.Models.IEdgeState)
+  id: '#ctor(FlowGraph.Core.Models.EdgeDefinition,FlowGraph.Core.Models.IEdgeState)'
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Edge(EdgeDefinition, IEdgeState?)
+  nameWithType: Edge.Edge(EdgeDefinition, IEdgeState?)
+  fullName: FlowGraph.Core.Edge.Edge(FlowGraph.Core.Models.EdgeDefinition, FlowGraph.Core.Models.IEdgeState?)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Creates an edge with the specified definition and optional state.
+  example: []
+  syntax:
+    content: public Edge(EdgeDefinition definition, IEdgeState? state = null)
+    parameters:
+    - id: definition
+      type: FlowGraph.Core.Models.EdgeDefinition
+      description: The immutable edge definition.
+    - id: state
+      type: FlowGraph.Core.Models.IEdgeState
+      description: The mutable edge state. If null, a new EdgeState is created.
+    content.vb: Public Sub New(definition As EdgeDefinition, state As IEdgeState = Nothing)
+  overload: FlowGraph.Core.Edge.#ctor*
+  nameWithType.vb: Edge.New(EdgeDefinition, IEdgeState)
+  fullName.vb: FlowGraph.Core.Edge.New(FlowGraph.Core.Models.EdgeDefinition, FlowGraph.Core.Models.IEdgeState)
+  name.vb: New(EdgeDefinition, IEdgeState)
+- uid: FlowGraph.Core.Edge.#ctor
+  commentId: M:FlowGraph.Core.Edge.#ctor
+  id: '#ctor'
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Edge()
+  nameWithType: Edge.Edge()
+  fullName: FlowGraph.Core.Edge.Edge()
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Creates an edge with default definition. For backward compatibility.
+  example: []
+  syntax:
+    content: public Edge()
+    content.vb: Public Sub New()
+  overload: FlowGraph.Core.Edge.#ctor*
+  nameWithType.vb: Edge.New()
+  fullName.vb: FlowGraph.Core.Edge.New()
+  name.vb: New()
+- uid: FlowGraph.Core.Edge.Definition
+  commentId: P:FlowGraph.Core.Edge.Definition
+  id: Definition
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Definition
+  nameWithType: Edge.Definition
+  fullName: FlowGraph.Core.Edge.Definition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Definition
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    The immutable definition of this edge (identity, connections, visual type).
+
+    Use <code>with</code> expressions to modify: <code>edge.Definition = edge.Definition with { Label = "x" };</code>
+  example: []
+  syntax:
+    content: public EdgeDefinition Definition { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Property Definition As EdgeDefinition
+  overload: FlowGraph.Core.Edge.Definition*
+- uid: FlowGraph.Core.Edge.State
+  commentId: P:FlowGraph.Core.Edge.State
+  id: State
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: State
+  nameWithType: Edge.State
+  fullName: FlowGraph.Core.Edge.State
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: State
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 92
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: The mutable runtime state of this edge (selection, waypoints).
+  example: []
+  syntax:
+    content: public IEdgeState State { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.IEdgeState
+    content.vb: Public Property State As IEdgeState
+  overload: FlowGraph.Core.Edge.State*
 - uid: FlowGraph.Core.Edge.Id
   commentId: P:FlowGraph.Core.Edge.Id
   id: Id
@@ -69,23 +268,25 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 16
+    startLine: 114
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: Unique identifier for the edge.
+  summary: Unique identifier for the edge. Immutable - to change, replace the Definition.
   example: []
   syntax:
-    content: public string Id { get; set; }
+    content: public string Id { get; }
     parameters: []
     return:
       type: System.String
-    content.vb: Public Property Id As String
+    content.vb: Public ReadOnly Property Id As String
   overload: FlowGraph.Core.Edge.Id*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Id
 - uid: FlowGraph.Core.Edge.Source
   commentId: P:FlowGraph.Core.Edge.Source
   id: Source
@@ -100,18 +301,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Source
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 21
+    startLine: 119
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The ID of the source node.
+  summary: 'The ID of the source node. To modify, use: <code>edge.Definition = edge.Definition with { Source = "x" };</code>'
   example: []
   syntax:
-    content: public required string Source { get; set; }
+    content: public string Source { get; set; }
     parameters: []
     return:
       type: System.String
@@ -131,18 +332,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Target
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 26
+    startLine: 128
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The ID of the target node.
+  summary: 'The ID of the target node. To modify, use: <code>edge.Definition = edge.Definition with { Target = "x" };</code>'
   example: []
   syntax:
-    content: public required string Target { get; set; }
+    content: public string Target { get; set; }
     parameters: []
     return:
       type: System.String
@@ -162,18 +363,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SourcePort
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 31
+    startLine: 137
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The ID of the source port on the source node.
+  summary: 'The ID of the source port. To modify, use: <code>edge.Definition = edge.Definition with { SourcePort = "x" };</code>'
   example: []
   syntax:
-    content: public required string SourcePort { get; set; }
+    content: public string SourcePort { get; set; }
     parameters: []
     return:
       type: System.String
@@ -193,18 +394,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TargetPort
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 36
+    startLine: 146
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The ID of the target port on the target node.
+  summary: 'The ID of the target port. To modify, use: <code>edge.Definition = edge.Definition with { TargetPort = "x" };</code>'
   example: []
   syntax:
-    content: public required string TargetPort { get; set; }
+    content: public string TargetPort { get; set; }
     parameters: []
     return:
       type: System.String
@@ -224,15 +425,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 41
+    startLine: 155
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The visual type of the edge (bezier, straight, step, etc.).
+  summary: 'The visual type of the edge. To modify, use: <code>edge.Definition = edge.Definition with { Type = EdgeType.Straight };</code>'
   example: []
   syntax:
     content: public EdgeType Type { get; set; }
@@ -255,15 +456,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerStart
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 46
+    startLine: 164
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The marker to display at the start of the edge.
+  summary: The marker at the start of the edge.
   example: []
   syntax:
     content: public EdgeMarker MarkerStart { get; set; }
@@ -286,15 +487,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerEnd
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 51
+    startLine: 173
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The marker to display at the end of the edge.
+  summary: The marker at the end of the edge.
   example: []
   syntax:
     content: public EdgeMarker MarkerEnd { get; set; }
@@ -317,15 +518,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 56
+    startLine: 182
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: Optional label to display on the edge.
+  summary: Optional label for the edge.
   example: []
   syntax:
     content: public string? Label { get; set; }
@@ -334,73 +535,6 @@ items:
       type: System.String
     content.vb: Public Property Label As String
   overload: FlowGraph.Core.Edge.Label*
-- uid: FlowGraph.Core.Edge.IsSelected
-  commentId: P:FlowGraph.Core.Edge.IsSelected
-  id: IsSelected
-  parent: FlowGraph.Core.Edge
-  langs:
-  - csharp
-  - vb
-  name: IsSelected
-  nameWithType: Edge.IsSelected
-  fullName: FlowGraph.Core.Edge.IsSelected
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/Edge.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsSelected
-    path: ../FlowGraph.Core/Edge.cs
-    startLine: 61
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: Whether this edge is currently selected.
-  example: []
-  syntax:
-    content: public bool IsSelected { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property IsSelected As Boolean
-  overload: FlowGraph.Core.Edge.IsSelected*
-- uid: FlowGraph.Core.Edge.Waypoints
-  commentId: P:FlowGraph.Core.Edge.Waypoints
-  id: Waypoints
-  parent: FlowGraph.Core.Edge
-  langs:
-  - csharp
-  - vb
-  name: Waypoints
-  nameWithType: Edge.Waypoints
-  fullName: FlowGraph.Core.Edge.Waypoints
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/Edge.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: Waypoints
-    path: ../FlowGraph.Core/Edge.cs
-    startLine: 72
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: >-
-    Optional waypoints for custom edge routing.
-
-    When set, the edge will pass through these intermediate points.
-
-    Does not include the start and end points (port positions).
-  example: []
-  syntax:
-    content: public List<Point>? Waypoints { get; set; }
-    parameters: []
-    return:
-      type: System.Collections.Generic.List{FlowGraph.Core.Point}
-    content.vb: Public Property Waypoints As List(Of Point)
-  overload: FlowGraph.Core.Edge.Waypoints*
 - uid: FlowGraph.Core.Edge.AutoRoute
   commentId: P:FlowGraph.Core.Edge.AutoRoute
   id: AutoRoute
@@ -415,15 +549,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AutoRoute
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 81
+    startLine: 191
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: Whether this edge should use automatic routing to avoid obstacles.
+  summary: Whether automatic routing is enabled.
   example: []
   syntax:
     content: public bool AutoRoute { get; set; }
@@ -432,37 +566,249 @@ items:
       type: System.Boolean
     content.vb: Public Property AutoRoute As Boolean
   overload: FlowGraph.Core.Edge.AutoRoute*
-- uid: FlowGraph.Core.Edge.PropertyChanged
-  commentId: E:FlowGraph.Core.Edge.PropertyChanged
-  id: PropertyChanged
+- uid: FlowGraph.Core.Edge.IsSelected
+  commentId: P:FlowGraph.Core.Edge.IsSelected
+  id: IsSelected
   parent: FlowGraph.Core.Edge
   langs:
   - csharp
   - vb
-  name: PropertyChanged
-  nameWithType: Edge.PropertyChanged
-  fullName: FlowGraph.Core.Edge.PropertyChanged
-  type: Event
+  name: IsSelected
+  nameWithType: Edge.IsSelected
+  fullName: FlowGraph.Core.Edge.IsSelected
+  type: Property
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: PropertyChanged
+    id: IsSelected
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 83
+    startLine: 204
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: Occurs when a property value changes.
+  summary: Whether this edge is currently selected.
   example: []
   syntax:
-    content: public event PropertyChangedEventHandler? PropertyChanged
+    content: public bool IsSelected { get; set; }
+    parameters: []
     return:
-      type: System.ComponentModel.PropertyChangedEventHandler
-    content.vb: Public Event PropertyChanged As PropertyChangedEventHandler
+      type: System.Boolean
+    content.vb: Public Property IsSelected As Boolean
+  overload: FlowGraph.Core.Edge.IsSelected*
   implements:
-  - System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  - FlowGraph.Core.Elements.ICanvasElement.IsSelected
+- uid: FlowGraph.Core.Edge.Waypoints
+  commentId: P:FlowGraph.Core.Edge.Waypoints
+  id: Waypoints
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Waypoints
+  nameWithType: Edge.Waypoints
+  fullName: FlowGraph.Core.Edge.Waypoints
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Waypoints
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 213
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Optional waypoints for custom edge routing.
+  example: []
+  syntax:
+    content: public List<Point>? Waypoints { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FlowGraph.Core.Point}
+    content.vb: Public Property Waypoints As List(Of Point)
+  overload: FlowGraph.Core.Edge.Waypoints*
+- uid: FlowGraph.Core.Edge.IsVisible
+  commentId: P:FlowGraph.Core.Edge.IsVisible
+  id: IsVisible
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: IsVisible
+  nameWithType: Edge.IsVisible
+  fullName: FlowGraph.Core.Edge.IsVisible
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsVisible
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 264
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Gets or sets whether this edge is visible in the canvas.
+
+    Delegates to State.IsVisible.
+  example: []
+  syntax:
+    content: public bool IsVisible { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsVisible As Boolean
+  overload: FlowGraph.Core.Edge.IsVisible*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.IsVisible
+- uid: FlowGraph.Core.Edge.ZIndex
+  commentId: P:FlowGraph.Core.Edge.ZIndex
+  id: ZIndex
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: ZIndex
+  nameWithType: Edge.ZIndex
+  fullName: FlowGraph.Core.Edge.ZIndex
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ZIndex
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 274
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Gets or sets the Z-index for rendering order.
+
+    Delegates to State.ZIndex. Default is CanvasElement.ZIndexEdges (200).
+  example: []
+  syntax:
+    content: public int ZIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ZIndex As Integer
+  overload: FlowGraph.Core.Edge.ZIndex*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.ZIndex
+- uid: FlowGraph.Core.Edge.GetBounds
+  commentId: M:FlowGraph.Core.Edge.GetBounds
+  id: GetBounds
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: GetBounds()
+  nameWithType: Edge.GetBounds()
+  fullName: FlowGraph.Core.Edge.GetBounds()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetBounds
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 284
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Gets the bounding rectangle of this edge.
+
+    For edges without waypoints, returns an empty rect at origin.
+  example: []
+  syntax:
+    content: public Rect GetBounds()
+    return:
+      type: FlowGraph.Core.Elements.Rect
+    content.vb: Public Function GetBounds() As Rect
+  overload: FlowGraph.Core.Edge.GetBounds*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.GetBounds
+- uid: FlowGraph.Core.Edge.Reconnect(System.String,System.String)
+  commentId: M:FlowGraph.Core.Edge.Reconnect(System.String,System.String)
+  id: Reconnect(System.String,System.String)
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Reconnect(string, string)
+  nameWithType: Edge.Reconnect(string, string)
+  fullName: FlowGraph.Core.Edge.Reconnect(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Reconnect
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 306
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Reconnects this edge to a different target node and port.
+  example: []
+  syntax:
+    content: public void Reconnect(string newTarget, string newTargetPort)
+    parameters:
+    - id: newTarget
+      type: System.String
+    - id: newTargetPort
+      type: System.String
+    content.vb: Public Sub Reconnect(newTarget As String, newTargetPort As String)
+  overload: FlowGraph.Core.Edge.Reconnect*
+  nameWithType.vb: Edge.Reconnect(String, String)
+  fullName.vb: FlowGraph.Core.Edge.Reconnect(String, String)
+  name.vb: Reconnect(String, String)
+- uid: FlowGraph.Core.Edge.ReconnectSource(System.String,System.String)
+  commentId: M:FlowGraph.Core.Edge.ReconnectSource(System.String,System.String)
+  id: ReconnectSource(System.String,System.String)
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: ReconnectSource(string, string)
+  nameWithType: Edge.ReconnectSource(string, string)
+  fullName: FlowGraph.Core.Edge.ReconnectSource(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReconnectSource
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 314
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Reconnects this edge from a different source node and port.
+  example: []
+  syntax:
+    content: public void ReconnectSource(string newSource, string newSourcePort)
+    parameters:
+    - id: newSource
+      type: System.String
+    - id: newSourcePort
+      type: System.String
+    content.vb: Public Sub ReconnectSource(newSource As String, newSourcePort As String)
+  overload: FlowGraph.Core.Edge.ReconnectSource*
+  nameWithType.vb: Edge.ReconnectSource(String, String)
+  fullName.vb: FlowGraph.Core.Edge.ReconnectSource(String, String)
+  name.vb: ReconnectSource(String, String)
 - uid: FlowGraph.Core.Edge.OnPropertyChanged(System.String)
   commentId: M:FlowGraph.Core.Edge.OnPropertyChanged(System.String)
   id: OnPropertyChanged(System.String)
@@ -477,65 +823,46 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnPropertyChanged
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 85
+    startLine: 342
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Raises the PropertyChanged event.
+  example: []
   syntax:
-    content: protected virtual void OnPropertyChanged(string? propertyName = null)
+    content: protected virtual void OnPropertyChanged(string? propertyName)
     parameters:
     - id: propertyName
       type: System.String
-    content.vb: Protected Overridable Sub OnPropertyChanged(propertyName As String = Nothing)
+    content.vb: Protected Overridable Sub OnPropertyChanged(propertyName As String)
   overload: FlowGraph.Core.Edge.OnPropertyChanged*
   nameWithType.vb: Edge.OnPropertyChanged(String)
   fullName.vb: FlowGraph.Core.Edge.OnPropertyChanged(String)
   name.vb: OnPropertyChanged(String)
-- uid: FlowGraph.Core.Edge.SetField``1(``0@,``0,System.String)
-  commentId: M:FlowGraph.Core.Edge.SetField``1(``0@,``0,System.String)
-  id: SetField``1(``0@,``0,System.String)
-  parent: FlowGraph.Core.Edge
-  langs:
-  - csharp
-  - vb
-  name: SetField<T>(ref T, T, string?)
-  nameWithType: Edge.SetField<T>(ref T, T, string?)
-  fullName: FlowGraph.Core.Edge.SetField<T>(ref T, T, string?)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Core/Edge.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: SetField
-    path: ../FlowGraph.Core/Edge.cs
-    startLine: 90
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  syntax:
-    content: protected bool SetField<T>(ref T field, T value, string? propertyName = null)
-    parameters:
-    - id: field
-      type: '{T}'
-    - id: value
-      type: '{T}'
-    - id: propertyName
-      type: System.String
-    typeParameters:
-    - id: T
-    return:
-      type: System.Boolean
-    content.vb: Protected Function SetField(Of T)(field As T, value As T, propertyName As String = Nothing) As Boolean
-  overload: FlowGraph.Core.Edge.SetField*
-  nameWithType.vb: Edge.SetField(Of T)(T, T, String)
-  fullName.vb: FlowGraph.Core.Edge.SetField(Of T)(T, T, String)
-  name.vb: SetField(Of T)(T, T, String)
 references:
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: FlowGraph.Core.Edge.Definition
+  commentId: P:FlowGraph.Core.Edge.Definition
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Definition
+  name: Definition
+  nameWithType: Edge.Definition
+  fullName: FlowGraph.Core.Edge.Definition
+- uid: FlowGraph.Core.Edge.State
+  commentId: P:FlowGraph.Core.Edge.State
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_State
+  name: State
+  nameWithType: Edge.State
+  fullName: FlowGraph.Core.Edge.State
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html
@@ -796,6 +1123,77 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: FlowGraph.Core.Edge.FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+  parent: FlowGraph.Core.Diagnostics.LoggingExtensions
+  definition: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  name: LogEdgeCreated(Edge, string)
+  nameWithType: LoggingExtensions.LogEdgeCreated(Edge, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge, string)
+  nameWithType.vb: LoggingExtensions.LogEdgeCreated(Edge, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge, String)
+  name.vb: LogEdgeCreated(Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+    name: LogEdgeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+    name: LogEdgeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
 - uid: System
   commentId: N:System
   isExternal: true
@@ -830,12 +1228,177 @@ references:
     name: ComponentModel
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+  isExternal: true
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  name: LogEdgeCreated(Edge, string)
+  nameWithType: LoggingExtensions.LogEdgeCreated(Edge, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge, string)
+  nameWithType.vb: LoggingExtensions.LogEdgeCreated(Edge, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge, String)
+  name.vb: LogEdgeCreated(Edge, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+    name: LogEdgeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogEdgeCreated(FlowGraph.Core.Edge,System.String)
+    name: LogEdgeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogEdgeCreated_FlowGraph_Core_Edge_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions
+  commentId: T:FlowGraph.Core.Diagnostics.LoggingExtensions
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html
+  name: LoggingExtensions
+  nameWithType: LoggingExtensions
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions
+- uid: FlowGraph.Core.Diagnostics
+  commentId: N:FlowGraph.Core.Diagnostics
+  href: FlowGraph.html
+  name: FlowGraph.Core.Diagnostics
+  nameWithType: FlowGraph.Core.Diagnostics
+  fullName: FlowGraph.Core.Diagnostics
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+- uid: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  commentId: E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  parent: System.ComponentModel.INotifyPropertyChanged
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged
+  name: PropertyChanged
+  nameWithType: INotifyPropertyChanged.PropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: System.ComponentModel.PropertyChangedEventHandler
+  commentId: T:System.ComponentModel.PropertyChangedEventHandler
+  parent: System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventhandler
+  name: PropertyChangedEventHandler
+  nameWithType: PropertyChangedEventHandler
+  fullName: System.ComponentModel.PropertyChangedEventHandler
+- uid: FlowGraph.Core.Edge.#ctor*
+  commentId: Overload:FlowGraph.Core.Edge.#ctor
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge__ctor_FlowGraph_Core_Models_EdgeDefinition_FlowGraph_Core_Models_IEdgeState_
+  name: Edge
+  nameWithType: Edge.Edge
+  fullName: FlowGraph.Core.Edge.Edge
+  nameWithType.vb: Edge.New
+  fullName.vb: FlowGraph.Core.Edge.New
+  name.vb: New
+- uid: FlowGraph.Core.Models.EdgeDefinition
+  commentId: T:FlowGraph.Core.Models.EdgeDefinition
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeDefinition.html
+  name: EdgeDefinition
+  nameWithType: EdgeDefinition
+  fullName: FlowGraph.Core.Models.EdgeDefinition
+- uid: FlowGraph.Core.Models.IEdgeState
+  commentId: T:FlowGraph.Core.Models.IEdgeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.IEdgeState.html
+  name: IEdgeState
+  nameWithType: IEdgeState
+  fullName: FlowGraph.Core.Models.IEdgeState
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: FlowGraph.Core.Edge.Definition*
+  commentId: Overload:FlowGraph.Core.Edge.Definition
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Definition
+  name: Definition
+  nameWithType: Edge.Definition
+  fullName: FlowGraph.Core.Edge.Definition
+- uid: FlowGraph.Core.Edge.State*
+  commentId: Overload:FlowGraph.Core.Edge.State
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_State
+  name: State
+  nameWithType: Edge.State
+  fullName: FlowGraph.Core.Edge.State
 - uid: FlowGraph.Core.Edge.Id*
   commentId: Overload:FlowGraph.Core.Edge.Id
   href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Id
   name: Id
   nameWithType: Edge.Id
   fullName: FlowGraph.Core.Edge.Id
+- uid: FlowGraph.Core.Elements.ICanvasElement.Id
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Id
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Id
+  name: Id
+  nameWithType: ICanvasElement.Id
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Id
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -909,12 +1472,12 @@ references:
   name: Label
   nameWithType: Edge.Label
   fullName: FlowGraph.Core.Edge.Label
-- uid: FlowGraph.Core.Edge.IsSelected*
-  commentId: Overload:FlowGraph.Core.Edge.IsSelected
-  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsSelected
-  name: IsSelected
-  nameWithType: Edge.IsSelected
-  fullName: FlowGraph.Core.Edge.IsSelected
+- uid: FlowGraph.Core.Edge.AutoRoute*
+  commentId: Overload:FlowGraph.Core.Edge.AutoRoute
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_AutoRoute
+  name: AutoRoute
+  nameWithType: Edge.AutoRoute
+  fullName: FlowGraph.Core.Edge.AutoRoute
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -926,6 +1489,19 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Edge.IsSelected*
+  commentId: Overload:FlowGraph.Core.Edge.IsSelected
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsSelected
+  name: IsSelected
+  nameWithType: Edge.IsSelected
+  fullName: FlowGraph.Core.Edge.IsSelected
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelected
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsSelected
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsSelected
+  name: IsSelected
+  nameWithType: ICanvasElement.IsSelected
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelected
 - uid: FlowGraph.Core.Edge.Waypoints*
   commentId: Overload:FlowGraph.Core.Edge.Waypoints
   href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Waypoints
@@ -1030,47 +1606,90 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-- uid: FlowGraph.Core.Edge.AutoRoute*
-  commentId: Overload:FlowGraph.Core.Edge.AutoRoute
-  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_AutoRoute
-  name: AutoRoute
-  nameWithType: Edge.AutoRoute
-  fullName: FlowGraph.Core.Edge.AutoRoute
-- uid: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-  commentId: E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-  parent: System.ComponentModel.INotifyPropertyChanged
+- uid: FlowGraph.Core.Edge.IsVisible*
+  commentId: Overload:FlowGraph.Core.Edge.IsVisible
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsVisible
+  name: IsVisible
+  nameWithType: Edge.IsVisible
+  fullName: FlowGraph.Core.Edge.IsVisible
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsVisible
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsVisible
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsVisible
+  name: IsVisible
+  nameWithType: ICanvasElement.IsVisible
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsVisible
+- uid: FlowGraph.Core.Edge.ZIndex*
+  commentId: Overload:FlowGraph.Core.Edge.ZIndex
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_ZIndex
+  name: ZIndex
+  nameWithType: Edge.ZIndex
+  fullName: FlowGraph.Core.Edge.ZIndex
+- uid: FlowGraph.Core.Elements.ICanvasElement.ZIndex
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.ZIndex
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_ZIndex
+  name: ZIndex
+  nameWithType: ICanvasElement.ZIndex
+  fullName: FlowGraph.Core.Elements.ICanvasElement.ZIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged
-  name: PropertyChanged
-  nameWithType: INotifyPropertyChanged.PropertyChanged
-  fullName: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-- uid: System.ComponentModel.PropertyChangedEventHandler
-  commentId: T:System.ComponentModel.PropertyChangedEventHandler
-  parent: System.ComponentModel
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventhandler
-  name: PropertyChangedEventHandler
-  nameWithType: PropertyChangedEventHandler
-  fullName: System.ComponentModel.PropertyChangedEventHandler
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Edge.GetBounds*
+  commentId: Overload:FlowGraph.Core.Edge.GetBounds
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_GetBounds
+  name: GetBounds
+  nameWithType: Edge.GetBounds
+  fullName: FlowGraph.Core.Edge.GetBounds
+- uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+  commentId: M:FlowGraph.Core.Elements.ICanvasElement.GetBounds
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  name: GetBounds()
+  nameWithType: ICanvasElement.GetBounds()
+  fullName: FlowGraph.Core.Elements.ICanvasElement.GetBounds()
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.Rect
+  commentId: T:FlowGraph.Core.Elements.Rect
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.Rect.html
+  name: Rect
+  nameWithType: Rect
+  fullName: FlowGraph.Core.Elements.Rect
+- uid: FlowGraph.Core.Edge.Reconnect*
+  commentId: Overload:FlowGraph.Core.Edge.Reconnect
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Reconnect_System_String_System_String_
+  name: Reconnect
+  nameWithType: Edge.Reconnect
+  fullName: FlowGraph.Core.Edge.Reconnect
+- uid: FlowGraph.Core.Edge.ReconnectSource*
+  commentId: Overload:FlowGraph.Core.Edge.ReconnectSource
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_ReconnectSource_System_String_System_String_
+  name: ReconnectSource
+  nameWithType: Edge.ReconnectSource
+  fullName: FlowGraph.Core.Edge.ReconnectSource
 - uid: FlowGraph.Core.Edge.OnPropertyChanged*
   commentId: Overload:FlowGraph.Core.Edge.OnPropertyChanged
   href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_OnPropertyChanged_System_String_
   name: OnPropertyChanged
   nameWithType: Edge.OnPropertyChanged
   fullName: FlowGraph.Core.Edge.OnPropertyChanged
-- uid: FlowGraph.Core.Edge.SetField*
-  commentId: Overload:FlowGraph.Core.Edge.SetField
-  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_SetField__1___0____0_System_String_
-  name: SetField
-  nameWithType: Edge.SetField
-  fullName: FlowGraph.Core.Edge.SetField
-- uid: '{T}'
-  commentId: '!:T'
-  definition: T
-  name: T
-  nameWithType: T
-  fullName: T
-- uid: T
-  name: T
-  nameWithType: T
-  fullName: T

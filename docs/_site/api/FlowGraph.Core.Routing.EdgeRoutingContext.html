@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Core_Routing_EdgeRoutingContext" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext" class="text-break">
-Class EdgeRoutingContext  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L20"><i class="bi bi-code-slash"></i></a>
+Class EdgeRoutingContext  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_DefaultNodeHeight" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeHeight">
   DefaultNodeHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Default node height when not specified.</p>
@@ -189,7 +189,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_DefaultNodeWidth" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeWidth">
   DefaultNodeWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Default node width when not specified.</p>
@@ -221,7 +221,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_Graph" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.Graph">
   Graph
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The graph being routed.</p>
@@ -253,10 +253,11 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_NodePadding" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.NodePadding">
   NodePadding
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Padding around nodes for routing.</p>
+  <div class="markdown level1 summary"><p>Padding around nodes for routing.
+Uses Options.NodePadding if not explicitly set.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -281,6 +282,77 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
 
 
+  <a id="FlowGraph_Core_Routing_EdgeRoutingContext_Options_" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.Options*"></a>
+
+  <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_Options" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.Options">
+  Options
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Routing options controlling behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRoutingOptions Options { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Routing.EdgeRoutingOptions.html">EdgeRoutingOptions</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Routing_EdgeRoutingContext_UserConstraints_" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints*"></a>
+
+  <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_UserConstraints" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints">
+  UserConstraints
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>User-defined waypoints that routers should respect in Guided mode.
+In Guided mode, the router should calculate a path that passes through
+these constraint points while avoiding obstacles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Point&gt;? UserConstraints { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="FlowGraph.Core.Point.html">Point</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Routing_EdgeRoutingContext_UserConstraints_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is typically populated from <a class="xref" href="FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_UserWaypoints">UserWaypoints</a>
+when the edge's <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a> is
+<a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided">Guided</a>.</p>
+</div>
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -289,7 +361,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_GetNodeBounds_FlowGraph_Core_Node_" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.GetNodeBounds(FlowGraph.Core.Node)">
   GetNodeBounds(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the bounding rectangle for a node.</p>
@@ -326,7 +398,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 
   <h3 id="FlowGraph_Core_Routing_EdgeRoutingContext_GetObstacles_System_String___" data-uid="FlowGraph.Core.Routing.EdgeRoutingContext.GetObstacles(System.String[])">
   GetObstacles(params string[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets all obstacle rectangles (nodes that edges should route around).</p>
@@ -364,7 +436,7 @@ Class EdgeRoutingContext  <a class="header-action link-secondary" title="View so
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/IEdgeRouter.cs/#L20" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/IEdgeRouter.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

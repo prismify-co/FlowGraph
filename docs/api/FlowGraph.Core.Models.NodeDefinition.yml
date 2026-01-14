@@ -1,0 +1,1212 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Models.NodeDefinition
+  commentId: T:FlowGraph.Core.Models.NodeDefinition
+  id: NodeDefinition
+  parent: FlowGraph.Core.Models
+  children:
+  - FlowGraph.Core.Models.NodeDefinition.AddInput(FlowGraph.Core.Models.PortDefinition)
+  - FlowGraph.Core.Models.NodeDefinition.AddOutput(FlowGraph.Core.Models.PortDefinition)
+  - FlowGraph.Core.Models.NodeDefinition.Data
+  - FlowGraph.Core.Models.NodeDefinition.Id
+  - FlowGraph.Core.Models.NodeDefinition.Inputs
+  - FlowGraph.Core.Models.NodeDefinition.IsConnectable
+  - FlowGraph.Core.Models.NodeDefinition.IsDeletable
+  - FlowGraph.Core.Models.NodeDefinition.IsDraggable
+  - FlowGraph.Core.Models.NodeDefinition.IsGroup
+  - FlowGraph.Core.Models.NodeDefinition.IsResizable
+  - FlowGraph.Core.Models.NodeDefinition.IsSelectable
+  - FlowGraph.Core.Models.NodeDefinition.Label
+  - FlowGraph.Core.Models.NodeDefinition.Outputs
+  - FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+  - FlowGraph.Core.Models.NodeDefinition.Type
+  - FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
+  langs:
+  - csharp
+  - vb
+  name: NodeDefinition
+  nameWithType: NodeDefinition
+  fullName: FlowGraph.Core.Models.NodeDefinition
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeDefinition
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Immutable definition of a node's identity and structure.
+
+    Contains all properties that define "what" a node is, not "where" it is or its runtime state.
+  remarks: >-
+    This is a sealed record for value equality and immutability.
+
+    Use <code>with</code> expressions to create modified copies:
+
+    <pre><code class="lang-csharp">var renamed = definition with { Label = "New Label" };</code></pre>
+  example: []
+  syntax:
+    content: 'public sealed record NodeDefinition : IEquatable<NodeDefinition>'
+    content.vb: Public NotInheritable Class NodeDefinition Implements IEquatable(Of NodeDefinition)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{FlowGraph.Core.Models.NodeDefinition}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Models.NodeDefinition.Id
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Id
+  id: Id
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: NodeDefinition.Id
+  fullName: FlowGraph.Core.Models.NodeDefinition.Id
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Id
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 20
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Unique identifier for the node. Required and immutable.
+  example: []
+  syntax:
+    content: public required string Id { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Id As String
+  overload: FlowGraph.Core.Models.NodeDefinition.Id*
+- uid: FlowGraph.Core.Models.NodeDefinition.Type
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Type
+  id: Type
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: NodeDefinition.Type
+  fullName: FlowGraph.Core.Models.NodeDefinition.Type
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Type
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 26
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    The type/category of the node (e.g., "process", "decision", "input").
+
+    Used for rendering and validation.
+  example: []
+  syntax:
+    content: public string Type { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Type As String
+  overload: FlowGraph.Core.Models.NodeDefinition.Type*
+- uid: FlowGraph.Core.Models.NodeDefinition.Label
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Label
+  id: Label
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: NodeDefinition.Label
+  fullName: FlowGraph.Core.Models.NodeDefinition.Label
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Label
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Optional display label for the node.
+  example: []
+  syntax:
+    content: public string? Label { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Label As String
+  overload: FlowGraph.Core.Models.NodeDefinition.Label*
+- uid: FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+  id: ParentGroupId
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: ParentGroupId
+  nameWithType: NodeDefinition.ParentGroupId
+  fullName: FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ParentGroupId
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The ID of the parent group node, if this node is part of a group.
+  example: []
+  syntax:
+    content: public string? ParentGroupId { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ParentGroupId As String
+  overload: FlowGraph.Core.Models.NodeDefinition.ParentGroupId*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsGroup
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsGroup
+  id: IsGroup
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsGroup
+  nameWithType: NodeDefinition.IsGroup
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsGroup
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsGroup
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node is a group container.
+  example: []
+  syntax:
+    content: public bool IsGroup { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsGroup As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsGroup*
+- uid: FlowGraph.Core.Models.NodeDefinition.Inputs
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Inputs
+  id: Inputs
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Inputs
+  nameWithType: NodeDefinition.Inputs
+  fullName: FlowGraph.Core.Models.NodeDefinition.Inputs
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Inputs
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 46
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Input ports for this node (immutable list).
+  example: []
+  syntax:
+    content: public ImmutableList<PortDefinition> Inputs { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Immutable.ImmutableList{FlowGraph.Core.Models.PortDefinition}
+    content.vb: Public Property Inputs As ImmutableList(Of PortDefinition)
+  overload: FlowGraph.Core.Models.NodeDefinition.Inputs*
+- uid: FlowGraph.Core.Models.NodeDefinition.Outputs
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Outputs
+  id: Outputs
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Outputs
+  nameWithType: NodeDefinition.Outputs
+  fullName: FlowGraph.Core.Models.NodeDefinition.Outputs
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Outputs
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Output ports for this node (immutable list).
+  example: []
+  syntax:
+    content: public ImmutableList<PortDefinition> Outputs { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Immutable.ImmutableList{FlowGraph.Core.Models.PortDefinition}
+    content.vb: Public Property Outputs As ImmutableList(Of PortDefinition)
+  overload: FlowGraph.Core.Models.NodeDefinition.Outputs*
+- uid: FlowGraph.Core.Models.NodeDefinition.Data
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.Data
+  id: Data
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: NodeDefinition.Data
+  fullName: FlowGraph.Core.Models.NodeDefinition.Data
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Data
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Custom user data associated with the node.
+
+    Consider using immutable types for full immutability.
+  example: []
+  syntax:
+    content: public object? Data { get; init; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: Public Property Data As Object
+  overload: FlowGraph.Core.Models.NodeDefinition.Data*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsSelectable
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsSelectable
+  id: IsSelectable
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsSelectable
+  nameWithType: NodeDefinition.IsSelectable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsSelectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSelectable
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 64
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node can be selected. Default is true.
+  example: []
+  syntax:
+    content: public bool IsSelectable { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSelectable As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsSelectable*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsDraggable
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsDraggable
+  id: IsDraggable
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsDraggable
+  nameWithType: NodeDefinition.IsDraggable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsDraggable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDraggable
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 69
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node can be dragged. Default is true.
+  example: []
+  syntax:
+    content: public bool IsDraggable { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDraggable As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsDraggable*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsDeletable
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsDeletable
+  id: IsDeletable
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsDeletable
+  nameWithType: NodeDefinition.IsDeletable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsDeletable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDeletable
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 74
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node can be deleted. Default is true.
+  example: []
+  syntax:
+    content: public bool IsDeletable { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDeletable As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsDeletable*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsConnectable
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsConnectable
+  id: IsConnectable
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsConnectable
+  nameWithType: NodeDefinition.IsConnectable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsConnectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsConnectable
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 79
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node can have new connections. Default is true.
+  example: []
+  syntax:
+    content: public bool IsConnectable { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsConnectable As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsConnectable*
+- uid: FlowGraph.Core.Models.NodeDefinition.IsResizable
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.IsResizable
+  id: IsResizable
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsResizable
+  nameWithType: NodeDefinition.IsResizable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsResizable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsResizable
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 84
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this node can be resized. Default is true.
+  example: []
+  syntax:
+    content: public bool IsResizable { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsResizable As Boolean
+  overload: FlowGraph.Core.Models.NodeDefinition.IsResizable*
+- uid: FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
+  commentId: M:FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
+  id: WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithPorts(IEnumerable<PortDefinition>?, IEnumerable<PortDefinition>?)
+  nameWithType: NodeDefinition.WithPorts(IEnumerable<PortDefinition>?, IEnumerable<PortDefinition>?)
+  fullName: FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable<FlowGraph.Core.Models.PortDefinition>?, System.Collections.Generic.IEnumerable<FlowGraph.Core.Models.PortDefinition>?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithPorts
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 91
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a NodeDefinition with the specified ports using a builder pattern.
+  example: []
+  syntax:
+    content: public NodeDefinition WithPorts(IEnumerable<PortDefinition>? inputs = null, IEnumerable<PortDefinition>? outputs = null)
+    parameters:
+    - id: inputs
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition}
+    - id: outputs
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition}
+    return:
+      type: FlowGraph.Core.Models.NodeDefinition
+    content.vb: Public Function WithPorts(inputs As IEnumerable(Of PortDefinition) = Nothing, outputs As IEnumerable(Of PortDefinition) = Nothing) As NodeDefinition
+  overload: FlowGraph.Core.Models.NodeDefinition.WithPorts*
+  nameWithType.vb: NodeDefinition.WithPorts(IEnumerable(Of PortDefinition), IEnumerable(Of PortDefinition))
+  fullName.vb: FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Models.PortDefinition), System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Models.PortDefinition))
+  name.vb: WithPorts(IEnumerable(Of PortDefinition), IEnumerable(Of PortDefinition))
+- uid: FlowGraph.Core.Models.NodeDefinition.AddInput(FlowGraph.Core.Models.PortDefinition)
+  commentId: M:FlowGraph.Core.Models.NodeDefinition.AddInput(FlowGraph.Core.Models.PortDefinition)
+  id: AddInput(FlowGraph.Core.Models.PortDefinition)
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: AddInput(PortDefinition)
+  nameWithType: NodeDefinition.AddInput(PortDefinition)
+  fullName: FlowGraph.Core.Models.NodeDefinition.AddInput(FlowGraph.Core.Models.PortDefinition)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddInput
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 105
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Adds an input port to the definition.
+  example: []
+  syntax:
+    content: public NodeDefinition AddInput(PortDefinition port)
+    parameters:
+    - id: port
+      type: FlowGraph.Core.Models.PortDefinition
+    return:
+      type: FlowGraph.Core.Models.NodeDefinition
+    content.vb: Public Function AddInput(port As PortDefinition) As NodeDefinition
+  overload: FlowGraph.Core.Models.NodeDefinition.AddInput*
+- uid: FlowGraph.Core.Models.NodeDefinition.AddOutput(FlowGraph.Core.Models.PortDefinition)
+  commentId: M:FlowGraph.Core.Models.NodeDefinition.AddOutput(FlowGraph.Core.Models.PortDefinition)
+  id: AddOutput(FlowGraph.Core.Models.PortDefinition)
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: AddOutput(PortDefinition)
+  nameWithType: NodeDefinition.AddOutput(PortDefinition)
+  fullName: FlowGraph.Core.Models.NodeDefinition.AddOutput(FlowGraph.Core.Models.PortDefinition)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddOutput
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Adds an output port to the definition.
+  example: []
+  syntax:
+    content: public NodeDefinition AddOutput(PortDefinition port)
+    parameters:
+    - id: port
+      type: FlowGraph.Core.Models.PortDefinition
+    return:
+      type: FlowGraph.Core.Models.NodeDefinition
+    content.vb: Public Function AddOutput(port As PortDefinition) As NodeDefinition
+  overload: FlowGraph.Core.Models.NodeDefinition.AddOutput*
+references:
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{FlowGraph.Core.Models.NodeDefinition}
+  commentId: T:System.IEquatable{FlowGraph.Core.Models.NodeDefinition}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<NodeDefinition>
+  nameWithType: IEquatable<NodeDefinition>
+  fullName: System.IEquatable<FlowGraph.Core.Models.NodeDefinition>
+  nameWithType.vb: IEquatable(Of NodeDefinition)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Models.NodeDefinition)
+  name.vb: IEquatable(Of NodeDefinition)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Models.NodeDefinition
+    name: NodeDefinition
+    href: FlowGraph.Core.Models.NodeDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.NodeDefinition
+    name: NodeDefinition
+    href: FlowGraph.Core.Models.NodeDefinition.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Models.NodeDefinition.Id*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Id
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Id
+  name: Id
+  nameWithType: NodeDefinition.Id
+  fullName: FlowGraph.Core.Models.NodeDefinition.Id
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Models.NodeDefinition.Type*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Type
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Type
+  name: Type
+  nameWithType: NodeDefinition.Type
+  fullName: FlowGraph.Core.Models.NodeDefinition.Type
+- uid: FlowGraph.Core.Models.NodeDefinition.Label*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Label
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Label
+  name: Label
+  nameWithType: NodeDefinition.Label
+  fullName: FlowGraph.Core.Models.NodeDefinition.Label
+- uid: FlowGraph.Core.Models.NodeDefinition.ParentGroupId*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_ParentGroupId
+  name: ParentGroupId
+  nameWithType: NodeDefinition.ParentGroupId
+  fullName: FlowGraph.Core.Models.NodeDefinition.ParentGroupId
+- uid: FlowGraph.Core.Models.NodeDefinition.IsGroup*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsGroup
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsGroup
+  name: IsGroup
+  nameWithType: NodeDefinition.IsGroup
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsGroup
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Models.NodeDefinition.Inputs*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Inputs
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Inputs
+  name: Inputs
+  nameWithType: NodeDefinition.Inputs
+  fullName: FlowGraph.Core.Models.NodeDefinition.Inputs
+- uid: System.Collections.Immutable.ImmutableList{FlowGraph.Core.Models.PortDefinition}
+  commentId: T:System.Collections.Immutable.ImmutableList{FlowGraph.Core.Models.PortDefinition}
+  parent: System.Collections.Immutable
+  definition: System.Collections.Immutable.ImmutableList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  name: ImmutableList<PortDefinition>
+  nameWithType: ImmutableList<PortDefinition>
+  fullName: System.Collections.Immutable.ImmutableList<FlowGraph.Core.Models.PortDefinition>
+  nameWithType.vb: ImmutableList(Of PortDefinition)
+  fullName.vb: System.Collections.Immutable.ImmutableList(Of FlowGraph.Core.Models.PortDefinition)
+  name.vb: ImmutableList(Of PortDefinition)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: <
+  - uid: FlowGraph.Core.Models.PortDefinition
+    name: PortDefinition
+    href: FlowGraph.Core.Models.PortDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.PortDefinition
+    name: PortDefinition
+    href: FlowGraph.Core.Models.PortDefinition.html
+  - name: )
+- uid: System.Collections.Immutable.ImmutableList`1
+  commentId: T:System.Collections.Immutable.ImmutableList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  name: ImmutableList<T>
+  nameWithType: ImmutableList<T>
+  fullName: System.Collections.Immutable.ImmutableList<T>
+  nameWithType.vb: ImmutableList(Of T)
+  fullName.vb: System.Collections.Immutable.ImmutableList(Of T)
+  name.vb: ImmutableList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Immutable
+  commentId: N:System.Collections.Immutable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Immutable
+  nameWithType: System.Collections.Immutable
+  fullName: System.Collections.Immutable
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+- uid: FlowGraph.Core.Models.NodeDefinition.Outputs*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Outputs
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Outputs
+  name: Outputs
+  nameWithType: NodeDefinition.Outputs
+  fullName: FlowGraph.Core.Models.NodeDefinition.Outputs
+- uid: FlowGraph.Core.Models.NodeDefinition.Data*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Data
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Data
+  name: Data
+  nameWithType: NodeDefinition.Data
+  fullName: FlowGraph.Core.Models.NodeDefinition.Data
+- uid: FlowGraph.Core.Models.NodeDefinition.IsSelectable*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsSelectable
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsSelectable
+  name: IsSelectable
+  nameWithType: NodeDefinition.IsSelectable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsSelectable
+- uid: FlowGraph.Core.Models.NodeDefinition.IsDraggable*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsDraggable
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsDraggable
+  name: IsDraggable
+  nameWithType: NodeDefinition.IsDraggable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsDraggable
+- uid: FlowGraph.Core.Models.NodeDefinition.IsDeletable*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsDeletable
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsDeletable
+  name: IsDeletable
+  nameWithType: NodeDefinition.IsDeletable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsDeletable
+- uid: FlowGraph.Core.Models.NodeDefinition.IsConnectable*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsConnectable
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsConnectable
+  name: IsConnectable
+  nameWithType: NodeDefinition.IsConnectable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsConnectable
+- uid: FlowGraph.Core.Models.NodeDefinition.IsResizable*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.IsResizable
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_IsResizable
+  name: IsResizable
+  nameWithType: NodeDefinition.IsResizable
+  fullName: FlowGraph.Core.Models.NodeDefinition.IsResizable
+- uid: FlowGraph.Core.Models.NodeDefinition.WithPorts*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.WithPorts
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_WithPorts_System_Collections_Generic_IEnumerable_FlowGraph_Core_Models_PortDefinition__System_Collections_Generic_IEnumerable_FlowGraph_Core_Models_PortDefinition__
+  name: WithPorts
+  nameWithType: NodeDefinition.WithPorts
+  fullName: FlowGraph.Core.Models.NodeDefinition.WithPorts
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<PortDefinition>
+  nameWithType: IEnumerable<PortDefinition>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Models.PortDefinition>
+  nameWithType.vb: IEnumerable(Of PortDefinition)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Models.PortDefinition)
+  name.vb: IEnumerable(Of PortDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Models.PortDefinition
+    name: PortDefinition
+    href: FlowGraph.Core.Models.PortDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.PortDefinition
+    name: PortDefinition
+    href: FlowGraph.Core.Models.PortDefinition.html
+  - name: )
+- uid: FlowGraph.Core.Models.NodeDefinition
+  commentId: T:FlowGraph.Core.Models.NodeDefinition
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.NodeDefinition.html
+  name: NodeDefinition
+  nameWithType: NodeDefinition
+  fullName: FlowGraph.Core.Models.NodeDefinition
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Models.NodeDefinition.AddInput*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.AddInput
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_AddInput_FlowGraph_Core_Models_PortDefinition_
+  name: AddInput
+  nameWithType: NodeDefinition.AddInput
+  fullName: FlowGraph.Core.Models.NodeDefinition.AddInput
+- uid: FlowGraph.Core.Models.PortDefinition
+  commentId: T:FlowGraph.Core.Models.PortDefinition
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.PortDefinition.html
+  name: PortDefinition
+  nameWithType: PortDefinition
+  fullName: FlowGraph.Core.Models.PortDefinition
+- uid: FlowGraph.Core.Models.NodeDefinition.AddOutput*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.AddOutput
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_AddOutput_FlowGraph_Core_Models_PortDefinition_
+  name: AddOutput
+  nameWithType: NodeDefinition.AddOutput
+  fullName: FlowGraph.Core.Models.NodeDefinition.AddOutput

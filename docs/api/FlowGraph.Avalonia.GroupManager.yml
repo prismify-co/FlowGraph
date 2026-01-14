@@ -5,6 +5,7 @@ items:
   id: GroupManager
   parent: FlowGraph.Avalonia
   children:
+  - FlowGraph.Avalonia.GroupManager.#ctor(FlowGraph.Avalonia.IGraphContext,FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.GroupManager.AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})
   - FlowGraph.Avalonia.GroupManager.AutoResizeGroup(System.String)
@@ -17,8 +18,8 @@ items:
   - FlowGraph.Avalonia.GroupManager.GetVisibleEdges
   - FlowGraph.Avalonia.GroupManager.GetVisibleNodes
   - FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged
-  - FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
   - FlowGraph.Avalonia.GroupManager.GroupPadding
+  - FlowGraph.Avalonia.GroupManager.GroupRerenderRequested
   - FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)
   - FlowGraph.Avalonia.GroupManager.HeaderHeight
   - FlowGraph.Avalonia.GroupManager.IsNodeVisible(System.String)
@@ -37,7 +38,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupManager
     path: ../FlowGraph.Avalonia/GroupManager.cs
@@ -74,7 +75,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupPadding
     path: ../FlowGraph.Avalonia/GroupManager.cs
@@ -105,7 +106,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HeaderHeight
     path: ../FlowGraph.Avalonia/GroupManager.cs
@@ -136,7 +137,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupCollapsedChanged
     path: ../FlowGraph.Avalonia/GroupManager.cs
@@ -165,7 +166,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodesAddedToGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
@@ -180,23 +181,23 @@ items:
     return:
       type: System.EventHandler{FlowGraph.Avalonia.NodesAddedToGroupEventArgs}
     content.vb: Public Event NodesAddedToGroup As EventHandler(Of NodesAddedToGroupEventArgs)
-- uid: FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
-  commentId: E:FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
-  id: GroupNeedsRerender
+- uid: FlowGraph.Avalonia.GroupManager.GroupRerenderRequested
+  commentId: E:FlowGraph.Avalonia.GroupManager.GroupRerenderRequested
+  id: GroupRerenderRequested
   parent: FlowGraph.Avalonia.GroupManager
   langs:
   - csharp
   - vb
-  name: GroupNeedsRerender
-  nameWithType: GroupManager.GroupNeedsRerender
-  fullName: FlowGraph.Avalonia.GroupManager.GroupNeedsRerender
+  name: GroupRerenderRequested
+  nameWithType: GroupManager.GroupRerenderRequested
+  fullName: FlowGraph.Avalonia.GroupManager.GroupRerenderRequested
   type: Event
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: GroupNeedsRerender
+    id: GroupRerenderRequested
     path: ../FlowGraph.Avalonia/GroupManager.cs
     startLine: 37
   assemblies:
@@ -205,10 +206,51 @@ items:
   summary: Event raised when a group needs to be re-rendered.
   example: []
   syntax:
-    content: public event EventHandler<string>? GroupNeedsRerender
+    content: public event EventHandler<string>? GroupRerenderRequested
     return:
       type: System.EventHandler{System.String}
-    content.vb: Public Event GroupNeedsRerender As EventHandler(Of String)
+    content.vb: Public Event GroupRerenderRequested As EventHandler(Of String)
+- uid: FlowGraph.Avalonia.GroupManager.#ctor(FlowGraph.Avalonia.IGraphContext,FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.GroupManager.#ctor(FlowGraph.Avalonia.IGraphContext,FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: '#ctor(FlowGraph.Avalonia.IGraphContext,FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)'
+  parent: FlowGraph.Avalonia.GroupManager
+  langs:
+  - csharp
+  - vb
+  name: GroupManager(IGraphContext, CommandHistory, FlowCanvasSettings)
+  nameWithType: GroupManager.GroupManager(IGraphContext, CommandHistory, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.GroupManager.GroupManager(FlowGraph.Avalonia.IGraphContext, FlowGraph.Core.Commands.CommandHistory, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/GroupManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/GroupManager.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Creates a new group manager.
+  example: []
+  syntax:
+    content: public GroupManager(IGraphContext context, CommandHistory commandHistory, FlowCanvasSettings settings)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.IGraphContext
+      description: The graph context providing access to the current graph.
+    - id: commandHistory
+      type: FlowGraph.Core.Commands.CommandHistory
+      description: The command history for undo/redo support.
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+      description: The canvas settings.
+    content.vb: Public Sub New(context As IGraphContext, commandHistory As CommandHistory, settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.GroupManager.#ctor*
+  nameWithType.vb: GroupManager.New(IGraphContext, CommandHistory, FlowCanvasSettings)
+  fullName.vb: FlowGraph.Avalonia.GroupManager.New(FlowGraph.Avalonia.IGraphContext, FlowGraph.Core.Commands.CommandHistory, FlowGraph.Avalonia.FlowCanvasSettings)
+  name.vb: New(IGraphContext, CommandHistory, FlowCanvasSettings)
 - uid: FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
   commentId: M:FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)
   id: '#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)'
@@ -223,16 +265,19 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 39
+    startLine: 56
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
   syntax:
-    content: public GroupManager(Func<Graph?> getGraph, CommandHistory commandHistory, FlowCanvasSettings settings)
+    content: >-
+      [Obsolete("Use the constructor that accepts IGraphContext instead.")]
+
+      public GroupManager(Func<Graph?> getGraph, CommandHistory commandHistory, FlowCanvasSettings settings)
     parameters:
     - id: getGraph
       type: System.Func{FlowGraph.Core.Graph}
@@ -240,8 +285,17 @@ items:
       type: FlowGraph.Core.Commands.CommandHistory
     - id: settings
       type: FlowGraph.Avalonia.FlowCanvasSettings
-    content.vb: Public Sub New(getGraph As Func(Of Graph), commandHistory As CommandHistory, settings As FlowCanvasSettings)
+    content.vb: >-
+      <Obsolete("Use the constructor that accepts IGraphContext instead.")>
+
+      Public Sub New(getGraph As Func(Of Graph), commandHistory As CommandHistory, settings As FlowCanvasSettings)
   overload: FlowGraph.Avalonia.GroupManager.#ctor*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use the constructor that accepts IGraphContext instead.
   nameWithType.vb: GroupManager.New(Func(Of Graph), CommandHistory, FlowCanvasSettings)
   fullName.vb: FlowGraph.Avalonia.GroupManager.New(System.Func(Of FlowGraph.Core.Graph), FlowGraph.Core.Commands.CommandHistory, FlowGraph.Avalonia.FlowCanvasSettings)
   name.vb: New(Func(Of Graph), CommandHistory, FlowCanvasSettings)
@@ -259,11 +313,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 52
+    startLine: 68
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -297,11 +351,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Ungroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 71
+    startLine: 87
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -331,11 +385,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ToggleCollapse
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 83
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -365,11 +419,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetCollapsed
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 103
+    startLine: 119
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -401,11 +455,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddNodesToGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 117
+    startLine: 133
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -437,11 +491,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemoveNodesFromGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 137
+    startLine: 153
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -471,11 +525,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AutoResizeGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 166
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -505,11 +559,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupAtPoint
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 202
+    startLine: 218
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -538,11 +592,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandleNodeDroppedOnGroup
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 228
+    startLine: 244
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -576,11 +630,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CollapseAll
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 257
+    startLine: 273
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -604,11 +658,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ExpandAll
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 271
+    startLine: 287
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -632,11 +686,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetAllGroups
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 285
+    startLine: 301
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -662,11 +716,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupChildren
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 294
+    startLine: 310
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -698,11 +752,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsNodeVisible
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 303
+    startLine: 319
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -734,11 +788,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetVisibleNodes
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 324
+    startLine: 340
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -764,11 +818,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/GroupManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetVisibleEdges
     path: ../FlowGraph.Avalonia/GroupManager.cs
-    startLine: 339
+    startLine: 355
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1194,13 +1248,64 @@ references:
   - name: )
 - uid: FlowGraph.Avalonia.GroupManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.GroupManager.#ctor
-  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager__ctor_System_Func_FlowGraph_Core_Graph__FlowGraph_Core_Commands_CommandHistory_FlowGraph_Avalonia_FlowCanvasSettings_
+  href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager__ctor_FlowGraph_Avalonia_IGraphContext_FlowGraph_Core_Commands_CommandHistory_FlowGraph_Avalonia_FlowCanvasSettings_
   name: GroupManager
   nameWithType: GroupManager.GroupManager
   fullName: FlowGraph.Avalonia.GroupManager.GroupManager
   nameWithType.vb: GroupManager.New
   fullName.vb: FlowGraph.Avalonia.GroupManager.New
   name.vb: New
+- uid: FlowGraph.Avalonia.IGraphContext
+  commentId: T:FlowGraph.Avalonia.IGraphContext
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.IGraphContext.html
+  name: IGraphContext
+  nameWithType: IGraphContext
+  fullName: FlowGraph.Avalonia.IGraphContext
+- uid: FlowGraph.Core.Commands.CommandHistory
+  commentId: T:FlowGraph.Core.Commands.CommandHistory
+  parent: FlowGraph.Core.Commands
+  href: FlowGraph.Core.Commands.CommandHistory.html
+  name: CommandHistory
+  nameWithType: CommandHistory
+  fullName: FlowGraph.Core.Commands.CommandHistory
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: FlowGraph.Core.Commands
+  commentId: N:FlowGraph.Core.Commands
+  href: FlowGraph.html
+  name: FlowGraph.Core.Commands
+  nameWithType: FlowGraph.Core.Commands
+  fullName: FlowGraph.Core.Commands
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Commands
+    name: Commands
+    href: FlowGraph.Core.Commands.html
 - uid: System.Func{FlowGraph.Core.Graph}
   commentId: T:System.Func{FlowGraph.Core.Graph}
   parent: System
@@ -1234,20 +1339,6 @@ references:
     name: Graph
     href: FlowGraph.Core.Graph.html
   - name: )
-- uid: FlowGraph.Core.Commands.CommandHistory
-  commentId: T:FlowGraph.Core.Commands.CommandHistory
-  parent: FlowGraph.Core.Commands
-  href: FlowGraph.Core.Commands.CommandHistory.html
-  name: CommandHistory
-  nameWithType: CommandHistory
-  fullName: FlowGraph.Core.Commands.CommandHistory
-- uid: FlowGraph.Avalonia.FlowCanvasSettings
-  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
-  parent: FlowGraph.Avalonia
-  href: FlowGraph.Avalonia.FlowCanvasSettings.html
-  name: FlowCanvasSettings
-  nameWithType: FlowCanvasSettings
-  fullName: FlowGraph.Avalonia.FlowCanvasSettings
 - uid: System.Func`1
   commentId: T:System.Func`1
   isExternal: true
@@ -1276,36 +1367,6 @@ references:
   - name: " "
   - name: TResult
   - name: )
-- uid: FlowGraph.Core.Commands
-  commentId: N:FlowGraph.Core.Commands
-  href: FlowGraph.html
-  name: FlowGraph.Core.Commands
-  nameWithType: FlowGraph.Core.Commands
-  fullName: FlowGraph.Core.Commands
-  spec.csharp:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Core
-    name: Core
-    href: FlowGraph.Core.html
-  - name: .
-  - uid: FlowGraph.Core.Commands
-    name: Commands
-    href: FlowGraph.Core.Commands.html
-  spec.vb:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Core
-    name: Core
-    href: FlowGraph.Core.html
-  - name: .
-  - uid: FlowGraph.Core.Commands
-    name: Commands
-    href: FlowGraph.Core.Commands.html
 - uid: FlowGraph.Avalonia.GroupManager.CreateGroup*
   commentId: Overload:FlowGraph.Avalonia.GroupManager.CreateGroup
   href: FlowGraph.Avalonia.GroupManager.html#FlowGraph_Avalonia_GroupManager_CreateGroup_System_Collections_Generic_IEnumerable_System_String__System_String_

@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Avalonia_Rendering_EdgePathHelper" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper" class="text-break">
-Class EdgePathHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class EdgePathHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class EdgePathHelper  <a class="header-action link-secondary" title="View source
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CalculateAngle_Avalonia_Point_Avalonia_Point_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateAngle(Avalonia.Point,Avalonia.Point)">
   CalculateAngle(Point, Point)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L496"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L543"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calculates the angle of a line at a given point (for arrow direction).</p>
@@ -192,11 +192,73 @@ Class EdgePathHelper  <a class="header-action link-secondary" title="View source
 
 
 
+  <a id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CalculateArrowAngle_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CalculateArrowAngle_Avalonia_Point_Avalonia_Point_System_Nullable_FlowGraph_Core_PortPosition__System_Double_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point,Avalonia.Point,System.Nullable{FlowGraph.Core.PortPosition},System.Double)">
+  CalculateArrowAngle(Point, Point, PortPosition?, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L570"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the arrow angle using a hybrid approach that combines port position (logical direction)
+with path geometry (visual direction) for consistent, accurate arrow rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double CalculateArrowAngle(Point tip, Point fromPoint, PortPosition? targetPortPosition = null, double angleThreshold = 0.7853981633974483)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>tip</code> <span class="xref">Point</span></dt>
+    <dd><p>The arrow tip point (target position).</p>
+</dd>
+    <dt><code>fromPoint</code> <span class="xref">Point</span></dt>
+    <dd><p>The point the edge comes from (preceding the tip).</p>
+</dd>
+    <dt><code>targetPortPosition</code> <a class="xref" href="FlowGraph.Core.PortPosition.html">PortPosition</a>?</dt>
+    <dd><p>Optional port position for logical direction hint.</p>
+</dd>
+    <dt><code>angleThreshold</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Angle tolerance in radians for preferring port direction (default: π/4 = 45°).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The angle in radians for the arrow direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CalculateArrowAngle_Avalonia_Point_Avalonia_Point_System_Nullable_FlowGraph_Core_PortPosition__System_Double__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>
+This method implements a hybrid approach:
+1. If port position is provided, get the expected angle from port side
+2. Calculate the actual segment angle from path geometry
+3. If segment angle is within threshold of expected, use port direction (cleaner)
+4. Otherwise, use actual segment direction (handles unusual routing)
+</p>
+<p>
+This ensures consistency between custom renderers and default rendering while
+handling edge cases like curved paths or unusual node arrangements.
+</p>
+</div>
+
+
+
+
   <a id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateArrowMarker_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateArrowMarker*"></a>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateArrowMarker_Avalonia_Point_System_Double_System_Double_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateArrowMarker(Avalonia.Point,System.Double,System.Double,System.Boolean)">
   CreateArrowMarker(Point, double, double, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L455"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L502"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates an arrow marker geometry at the specified point.</p>
@@ -243,7 +305,7 @@ Class EdgePathHelper  <a class="header-action link-secondary" title="View source
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateBezierPath_Avalonia_Point_Avalonia_Point_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateBezierPath(Avalonia.Point,Avalonia.Point,System.Boolean)">
   CreateBezierPath(Point, Point, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L289"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a bezier path geometry between two points.</p>
@@ -284,7 +346,7 @@ Class EdgePathHelper  <a class="header-action link-secondary" title="View source
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateMultiSegmentBezierPath_System_Collections_Generic_IReadOnlyList_Avalonia_Point__" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentBezierPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})">
   CreateMultiSegmentBezierPath(IReadOnlyList&lt;Point&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a multi-segment bezier path through waypoints.
@@ -322,7 +384,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateMultiSegmentSmoothPath_System_Collections_Generic_IReadOnlyList_Avalonia_Point__System_Double_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentSmoothPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point},System.Double)">
   CreateMultiSegmentSmoothPath(IReadOnlyList&lt;Point&gt;, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L190"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L190"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a multi-segment smooth step path with rounded corners through waypoints.</p>
@@ -361,7 +423,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateMultiSegmentStepPath_System_Collections_Generic_IReadOnlyList_Avalonia_Point__" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStepPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})">
   CreateMultiSegmentStepPath(IReadOnlyList&lt;Point&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L154"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a multi-segment step path through waypoints.</p>
@@ -398,7 +460,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateMultiSegmentStraightPath_System_Collections_Generic_IReadOnlyList_Avalonia_Point__" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStraightPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})">
   CreateMultiSegmentStraightPath(IReadOnlyList&lt;Point&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a multi-segment straight line path through waypoints.</p>
@@ -435,7 +497,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePath_Avalonia_Point_Avalonia_Point_FlowGraph_Core_EdgeType_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType)">
   CreatePath(Point, Point, EdgeType)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a path geometry between two points based on the edge type.</p>
@@ -476,7 +538,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePathWithWaypoints_Avalonia_Point_Avalonia_Point_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Point__FlowGraph_Core_EdgeType_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType)">
   CreatePathWithWaypoints(Point, Point, IReadOnlyList&lt;Point&gt;?, EdgeType)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a path geometry through waypoints based on the edge type.</p>
@@ -519,7 +581,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateSmoothStepPath_Avalonia_Point_Avalonia_Point_System_Double_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateSmoothStepPath(Avalonia.Point,Avalonia.Point,System.Double)">
   CreateSmoothStepPath(Point, Point, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L384"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L431"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a smooth step path with rounded corners between two points.</p>
@@ -560,7 +622,7 @@ Uses smooth curves between consecutive waypoints.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateStepPath_Avalonia_Point_Avalonia_Point_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateStepPath(Avalonia.Point,Avalonia.Point)">
   CreateStepPath(Point, Point)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L406"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a step (right-angle) path between two points.
@@ -600,7 +662,7 @@ The path goes horizontally from start, then vertically, then horizontally to end
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateStraightPath_Avalonia_Point_Avalonia_Point_" data-uid="FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateStraightPath(Avalonia.Point,Avalonia.Point)">
   CreateStraightPath(Point, Point)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L337"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L384"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a straight line path between two points.</p>
@@ -639,7 +701,7 @@ The path goes horizontally from start, then vertically, then horizontally to end
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/BezierHelper.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -177,7 +177,8 @@ canvas.Routing.RouteEdge(edgeId);
 </code></pre>
 <h2 id="edge-labels">Edge Labels</h2>
 <p>Add labels to edges:</p>
-<pre><code class="lang-csharp">var edge = new Edge
+<pre><code class="lang-csharp">// Simple label (centered on edge)
+var edge = new Edge
 {
     Source = node1.Id,
     Target = node2.Id,
@@ -186,6 +187,97 @@ canvas.Routing.RouteEdge(edgeId);
     Label = &quot;Connection&quot;
 };
 </code></pre>
+<h3 id="advanced-label-positioning">Advanced Label Positioning</h3>
+<p>Use <code>LabelInfo</code> for precise control over label placement:</p>
+<pre><code class="lang-csharp">using FlowGraph.Core.Models;
+
+// Label at the start of the edge (near source)
+var edgeWithStartLabel = new Edge(new EdgeDefinition
+{
+    Id = &quot;e1&quot;,
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    LabelInfo = new LabelInfo(&quot;Yes&quot;, LabelAnchor.Start, offsetY: -10)
+});
+
+// Label at the end of the edge (near target)
+var edgeWithEndLabel = new Edge(new EdgeDefinition
+{
+    Id = &quot;e2&quot;,
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    LabelInfo = new LabelInfo(&quot;No&quot;, LabelAnchor.End, offsetX: 5)
+});
+
+// Using the fluent builder method
+var edge = existingEdge.Definition.WithLabelInfo(&quot;Label&quot;, LabelAnchor.Center, offsetX: 0, offsetY: -15);
+</code></pre>
+<h3 id="label-anchor-positions">Label Anchor Positions</h3>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LabelAnchor.Start</code></td>
+<td>~25%</td>
+<td>Near the source node</td>
+</tr>
+<tr>
+<td><code>LabelAnchor.Center</code></td>
+<td>~50%</td>
+<td>At the midpoint (default)</td>
+</tr>
+<tr>
+<td><code>LabelAnchor.End</code></td>
+<td>~75%</td>
+<td>Near the target node</td>
+</tr>
+</tbody>
+</table>
+<h3 id="labelinfo-properties">LabelInfo Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Text</code></td>
+<td><code>string</code></td>
+<td>The label text content</td>
+</tr>
+<tr>
+<td><code>Anchor</code></td>
+<td><code>LabelAnchor</code></td>
+<td>Position along the edge path</td>
+</tr>
+<tr>
+<td><code>OffsetX</code></td>
+<td><code>double</code></td>
+<td>Horizontal offset in pixels (positive = right)</td>
+</tr>
+<tr>
+<td><code>OffsetY</code></td>
+<td><code>double</code></td>
+<td>Vertical offset in pixels (positive = down)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> When both <code>Label</code> and <code>LabelInfo</code> are set, <code>LabelInfo</code> takes precedence. Use <code>edge.Definition.EffectiveLabel</code> to get the resolved label text.</p>
+</blockquote>
 <h2 id="edge-reconnection">Edge Reconnection</h2>
 <p>Users can drag edge endpoints to reconnect them to different ports. This is enabled by default.</p>
 <pre><code class="lang-csharp">// Disable reconnection

@@ -96,17 +96,28 @@ Classes
 </h3>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.BulkObservableCollection-1.html">BulkObservableCollection&lt;T&gt;</a></dt>
-      <dd><p>An ObservableCollection that can suppress notifications during batch operations.</p>
+      <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1">ObservableCollection&lt;T&gt;</a> that can suppress notifications during batch operations.
+Use <a class="xref" href="FlowGraph.Core.BulkObservableCollection-1.html#FlowGraph_Core_BulkObservableCollection_1_AddRange_System_Collections_Generic_IEnumerable__0__">AddRange(IEnumerable&lt;T&gt;)</a> to add multiple items with a single notification.</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Edge.html">Edge</a></dt>
-      <dd><p>Represents a connection between two nodes.</p>
+      <dd><p>Represents a connection between two nodes.
+Uses a Definition (immutable) + State (mutable) composition pattern.
+Implements <a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a> for unified element handling.</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
-      <dd></dd>
+      <dd><p>Represents a flow graph containing nodes, edges, and other canvas elements.
+Provides methods for adding, removing, and querying graph elements.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.GraphDefaults.html">GraphDefaults</a></dt>
+      <dd><p>Default values used throughout the FlowGraph library.
+Centralizes constants to avoid duplication and ensure consistency.</p>
+</dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.GraphGroupExtensions.html">GraphGroupExtensions</a></dt>
@@ -115,12 +126,21 @@ Classes
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
-      <dd><p>A base class for objects of which the properties must be observable.</p>
+      <dd><p>Represents a node in the flow graph.
+Uses a Definition (immutable) + State (mutable) composition pattern.
+Implements <a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a> for unified element handling.</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
-      <dd></dd>
+      <dd><p>Represents a connection point on a node where edges can attach.
+Ports define the interface for data flow between nodes.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.PortPositionExtensions.html">PortPositionExtensions</a></dt>
+      <dd><p>Extension methods for <a class="xref" href="FlowGraph.Core.PortPosition.html">PortPosition</a>.</p>
+</dd>
     </dl>
     <h3 id="structs">
 Structs

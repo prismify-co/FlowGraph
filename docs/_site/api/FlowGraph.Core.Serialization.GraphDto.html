@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class GraphDto | FlowGraph ">
       
-      <meta name="description" content="Data transfer object for Graph serialization.">
+      <meta name="description" content="Data transfer object for Graph serialization. Version 2 uses polymorphic elements[] array for unified element storage. Version 1 compatibility maintained via separate Nodes/Edges/Shapes lists.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Core_Serialization_GraphDto" data-uid="FlowGraph.Core.Serialization.GraphDto" class="text-break">
-Class GraphDto  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L95"><i class="bi bi-code-slash"></i></a>
+Class GraphDto  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,9 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
   <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Data transfer object for Graph serialization.</p>
+  <div class="markdown summary"><p>Data transfer object for Graph serialization.
+Version 2 uses polymorphic elements[] array for unified element storage.
+Version 1 compatibility maintained via separate Nodes/Edges/Shapes lists.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -157,14 +159,15 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_Edges" data-uid="FlowGraph.Core.Serialization.GraphDto.Edges">
   Edges
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Legacy edges list (Version 1 format, maintained for backward compatibility).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;EdgeDto&gt; Edges { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;EdgeDto&gt;? Edges { get; set; }</code></pre>
   </div>
 
 
@@ -184,11 +187,44 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
 
 
+  <a id="FlowGraph_Core_Serialization_GraphDto_Elements_" data-uid="FlowGraph.Core.Serialization.GraphDto.Elements*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphDto_Elements" data-uid="FlowGraph.Core.Serialization.GraphDto.Elements">
+  Elements
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Polymorphic elements array (Version 2 format).
+Uses &quot;kind&quot; discriminator: &quot;node&quot;, &quot;edge&quot;, &quot;shape.rectangle&quot;, etc.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;ElementDto&gt;? Elements { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FlowGraph.Core.Serialization.ElementDto.html">ElementDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FlowGraph_Core_Serialization_GraphDto_Id_" data-uid="FlowGraph.Core.Serialization.GraphDto.Id*"></a>
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_Id" data-uid="FlowGraph.Core.Serialization.GraphDto.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -219,7 +255,7 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_Metadata" data-uid="FlowGraph.Core.Serialization.GraphDto.Metadata">
   Metadata
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -250,14 +286,16 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_Nodes" data-uid="FlowGraph.Core.Serialization.GraphDto.Nodes">
   Nodes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L120"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Legacy nodes list (Version 1 format, maintained for backward compatibility).
+When deserializing, if Elements is null but Nodes is not, treat as Version 1.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;NodeDto&gt; Nodes { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;NodeDto&gt;? Nodes { get; set; }</code></pre>
   </div>
 
 
@@ -277,6 +315,70 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
 
 
+  <a id="FlowGraph_Core_Serialization_GraphDto_Shapes_" data-uid="FlowGraph.Core.Serialization.GraphDto.Shapes*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphDto_Shapes" data-uid="FlowGraph.Core.Serialization.GraphDto.Shapes">
+  Shapes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Legacy shapes list (Version 1 format, maintained for backward compatibility).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;ShapeDto&gt;? Shapes { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FlowGraph.Core.Serialization.ShapeDto.html">ShapeDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Serialization_GraphDto_Version_" data-uid="FlowGraph.Core.Serialization.GraphDto.Version*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphDto_Version" data-uid="FlowGraph.Core.Serialization.GraphDto.Version">
+  Version
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Format version. Version 1 uses Nodes/Edges/Shapes lists, Version 2 uses Elements array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Version { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -285,7 +387,7 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_FromGraph_FlowGraph_Core_Graph_" data-uid="FlowGraph.Core.Serialization.GraphDto.FromGraph(FlowGraph.Core.Graph)">
   FromGraph(Graph)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -321,7 +423,7 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FlowGraph_Core_Serialization_GraphDto_ToGraph" data-uid="FlowGraph.Core.Serialization.GraphDto.ToGraph">
   ToGraph()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L168"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -352,7 +454,7 @@ Class GraphDto  <a class="header-action link-secondary" title="View source" href
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Serialization/GraphSerializer.cs/#L95" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Serialization/GraphSerializer.cs/#L101" class="edit-link">Edit this page</a>
         </div>
 
 

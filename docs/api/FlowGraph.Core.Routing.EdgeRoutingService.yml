@@ -5,14 +5,18 @@ items:
   id: EdgeRoutingService
   parent: FlowGraph.Core.Routing
   children:
+  - FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
   - FlowGraph.Core.Routing.EdgeRoutingService.DefaultNodeHeight
   - FlowGraph.Core.Routing.EdgeRoutingService.DefaultNodeWidth
   - FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter
   - FlowGraph.Core.Routing.EdgeRoutingService.DoesPathIntersectNodes(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point})
   - FlowGraph.Core.Routing.EdgeRoutingService.GetRouter(FlowGraph.Core.EdgeType)
   - FlowGraph.Core.Routing.EdgeRoutingService.GetRouterByAlgorithm(System.String,FlowGraph.Core.EdgeType)
+  - FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge(FlowGraph.Core.Edge)
   - FlowGraph.Core.Routing.EdgeRoutingService.IsRoutingEnabled
+  - FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
   - FlowGraph.Core.Routing.EdgeRoutingService.NodePadding
+  - FlowGraph.Core.Routing.EdgeRoutingService.Options
   - FlowGraph.Core.Routing.EdgeRoutingService.OrthogonalRouter
   - FlowGraph.Core.Routing.EdgeRoutingService.RouteAllEdges(FlowGraph.Core.Graph)
   - FlowGraph.Core.Routing.EdgeRoutingService.RouteEdge(FlowGraph.Core.Graph,FlowGraph.Core.Edge)
@@ -28,7 +32,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeRoutingService
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
@@ -65,11 +69,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsRoutingEnabled
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 14
+    startLine: 16
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -96,11 +100,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultNodeWidth
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 19
+    startLine: 21
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -127,11 +131,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultNodeHeight
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 24
+    startLine: 26
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -158,15 +162,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodePadding
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 29
+    startLine: 32
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Padding around nodes for routing.
+  summary: >-
+    Padding around nodes for routing.
+
+    Deprecated: Use Options.NodePadding instead.
   example: []
   syntax:
     content: public double NodePadding { get; set; }
@@ -175,6 +182,37 @@ items:
       type: System.Double
     content.vb: Public Property NodePadding As Double
   overload: FlowGraph.Core.Routing.EdgeRoutingService.NodePadding*
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.Options
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingService.Options
+  id: Options
+  parent: FlowGraph.Core.Routing.EdgeRoutingService
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: EdgeRoutingService.Options
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.Options
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/EdgeRoutingService.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Options
+    path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Routing options controlling corner radius, edge spacing, etc.
+  example: []
+  syntax:
+    content: public EdgeRoutingOptions Options { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.EdgeRoutingOptions
+    content.vb: Public Property Options As EdgeRoutingOptions
+  overload: FlowGraph.Core.Routing.EdgeRoutingService.Options*
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter
   commentId: P:FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter
   id: DirectRouter
@@ -189,11 +227,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DirectRouter
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 34
+    startLine: 46
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -206,6 +244,37 @@ items:
       type: FlowGraph.Core.Routing.IEdgeRouter
     content.vb: Public ReadOnly Property DirectRouter As IEdgeRouter
   overload: FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter*
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
+  id: BezierRouter
+  parent: FlowGraph.Core.Routing.EdgeRoutingService
+  langs:
+  - csharp
+  - vb
+  name: BezierRouter
+  nameWithType: EdgeRoutingService.BezierRouter
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/EdgeRoutingService.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BezierRouter
+    path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Gets the simple bezier router instance (no obstacle avoidance).
+  example: []
+  syntax:
+    content: public IEdgeRouter BezierRouter { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.IEdgeRouter
+    content.vb: Public ReadOnly Property BezierRouter As IEdgeRouter
+  overload: FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter*
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.OrthogonalRouter
   commentId: P:FlowGraph.Core.Routing.EdgeRoutingService.OrthogonalRouter
   id: OrthogonalRouter
@@ -220,11 +289,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OrthogonalRouter
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 39
+    startLine: 56
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -251,15 +320,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SmartBezierRouter
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 44
+    startLine: 61
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Gets the smart bezier router instance.
+  summary: Gets the smart bezier router instance (with obstacle avoidance).
   example: []
   syntax:
     content: public IEdgeRouter SmartBezierRouter { get; }
@@ -268,6 +337,37 @@ items:
       type: FlowGraph.Core.Routing.IEdgeRouter
     content.vb: Public ReadOnly Property SmartBezierRouter As IEdgeRouter
   overload: FlowGraph.Core.Routing.EdgeRoutingService.SmartBezierRouter*
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
+  id: ManualRouter
+  parent: FlowGraph.Core.Routing.EdgeRoutingService
+  langs:
+  - csharp
+  - vb
+  name: ManualRouter
+  nameWithType: EdgeRoutingService.ManualRouter
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/EdgeRoutingService.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ManualRouter
+    path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
+    startLine: 66
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Gets the manual router instance (user waypoints only).
+  example: []
+  syntax:
+    content: public IEdgeRouter ManualRouter { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.IEdgeRouter
+    content.vb: Public ReadOnly Property ManualRouter As IEdgeRouter
+  overload: FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter*
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouter(FlowGraph.Core.EdgeType)
   commentId: M:FlowGraph.Core.Routing.EdgeRoutingService.GetRouter(FlowGraph.Core.EdgeType)
   id: GetRouter(FlowGraph.Core.EdgeType)
@@ -282,11 +382,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetRouter
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 49
+    startLine: 71
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -301,6 +401,41 @@ items:
       type: FlowGraph.Core.Routing.IEdgeRouter
     content.vb: Public Function GetRouter(edgeType As EdgeType) As IEdgeRouter
   overload: FlowGraph.Core.Routing.EdgeRoutingService.GetRouter*
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge(FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge(FlowGraph.Core.Edge)
+  id: GetRouterForEdge(FlowGraph.Core.Edge)
+  parent: FlowGraph.Core.Routing.EdgeRoutingService
+  langs:
+  - csharp
+  - vb
+  name: GetRouterForEdge(Edge)
+  nameWithType: EdgeRoutingService.GetRouterForEdge(Edge)
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge(FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/EdgeRoutingService.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetRouterForEdge
+    path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
+    startLine: 86
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Gets the appropriate router for an edge, considering its routing mode.
+  example: []
+  syntax:
+    content: public IEdgeRouter GetRouterForEdge(Edge edge)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to get a router for.
+    return:
+      type: FlowGraph.Core.Routing.IEdgeRouter
+      description: The appropriate router based on the edge's routing mode and type.
+    content.vb: Public Function GetRouterForEdge(edge As Edge) As IEdgeRouter
+  overload: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge*
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterByAlgorithm(System.String,FlowGraph.Core.EdgeType)
   commentId: M:FlowGraph.Core.Routing.EdgeRoutingService.GetRouterByAlgorithm(System.String,FlowGraph.Core.EdgeType)
   id: GetRouterByAlgorithm(System.String,FlowGraph.Core.EdgeType)
@@ -315,11 +450,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetRouterByAlgorithm
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 64
+    startLine: 101
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -330,7 +465,7 @@ items:
     parameters:
     - id: algorithm
       type: System.String
-      description: The algorithm to use (Direct, Orthogonal, SmartBezier).
+      description: The algorithm to use (Direct, Orthogonal, SmartBezier, Manual).
     - id: fallbackEdgeType
       type: FlowGraph.Core.EdgeType
       description: Edge type to use for Auto selection.
@@ -355,15 +490,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdge
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 78
+    startLine: 117
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Routes an edge through a graph, returning waypoints.
+  summary: >-
+    Routes an edge through a graph, returning waypoints.
+
+    Respects the edge's <xref href="FlowGraph.Core.Models.EdgeRoutingMode" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: public IReadOnlyList<Point> RouteEdge(Graph graph, Edge edge)
@@ -390,11 +528,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdgeWithRouter
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 97
+    startLine: 143
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -430,15 +568,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteAllEdges
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 106
+    startLine: 153
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Routes all edges in a graph.
+  summary: >-
+    Routes all edges in a graph.
+
+    Respects each edge's <xref href="FlowGraph.Core.Models.EdgeRoutingMode" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: public Dictionary<string, IReadOnlyList<Point>> RouteAllEdges(Graph graph)
@@ -463,11 +604,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/EdgeRoutingService.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DoesPathIntersectNodes
     path: ../FlowGraph.Core/Routing/EdgeRoutingService.cs
-    startLine: 130
+    startLine: 168
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -803,6 +944,19 @@ references:
   name: NodePadding
   nameWithType: EdgeRoutingService.NodePadding
   fullName: FlowGraph.Core.Routing.EdgeRoutingService.NodePadding
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.Options*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.Options
+  href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_Options
+  name: Options
+  nameWithType: EdgeRoutingService.Options
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.Options
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions
+  commentId: T:FlowGraph.Core.Routing.EdgeRoutingOptions
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html
+  name: EdgeRoutingOptions
+  nameWithType: EdgeRoutingOptions
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.DirectRouter
   href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_DirectRouter
@@ -816,6 +970,12 @@ references:
   name: IEdgeRouter
   nameWithType: IEdgeRouter
   fullName: FlowGraph.Core.Routing.IEdgeRouter
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
+  href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_BezierRouter
+  name: BezierRouter
+  nameWithType: EdgeRoutingService.BezierRouter
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.BezierRouter
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.OrthogonalRouter*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.OrthogonalRouter
   href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_OrthogonalRouter
@@ -828,6 +988,12 @@ references:
   name: SmartBezierRouter
   nameWithType: EdgeRoutingService.SmartBezierRouter
   fullName: FlowGraph.Core.Routing.EdgeRoutingService.SmartBezierRouter
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
+  href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_ManualRouter
+  name: ManualRouter
+  nameWithType: EdgeRoutingService.ManualRouter
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.ManualRouter
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouter*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.GetRouter
   href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_GetRouter_FlowGraph_Core_EdgeType_
@@ -863,6 +1029,19 @@ references:
   - uid: FlowGraph.Core
     name: Core
     href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge
+  href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_GetRouterForEdge_FlowGraph_Core_Edge_
+  name: GetRouterForEdge
+  nameWithType: EdgeRoutingService.GetRouterForEdge
+  fullName: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterForEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.GetRouterByAlgorithm*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.GetRouterByAlgorithm
   href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_GetRouterByAlgorithm_System_String_FlowGraph_Core_EdgeType_
@@ -880,6 +1059,13 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: FlowGraph.Core.Models.EdgeRoutingMode
+  commentId: T:FlowGraph.Core.Models.EdgeRoutingMode
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html
+  name: EdgeRoutingMode
+  nameWithType: EdgeRoutingMode
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode
 - uid: FlowGraph.Core.Routing.EdgeRoutingService.RouteEdge*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingService.RouteEdge
   href: FlowGraph.Core.Routing.EdgeRoutingService.html#FlowGraph_Core_Routing_EdgeRoutingService_RouteEdge_FlowGraph_Core_Graph_FlowGraph_Core_Edge_
@@ -893,13 +1079,6 @@ references:
   name: Graph
   nameWithType: Graph
   fullName: FlowGraph.Core.Graph
-- uid: FlowGraph.Core.Edge
-  commentId: T:FlowGraph.Core.Edge
-  parent: FlowGraph.Core
-  href: FlowGraph.Core.Edge.html
-  name: Edge
-  nameWithType: Edge
-  fullName: FlowGraph.Core.Edge
 - uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
   commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
   parent: System.Collections.Generic
@@ -933,6 +1112,36 @@ references:
     name: Point
     href: FlowGraph.Core.Point.html
   - name: )
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
 - uid: System.Collections.Generic.IReadOnlyList`1
   commentId: T:System.Collections.Generic.IReadOnlyList`1
   isExternal: true

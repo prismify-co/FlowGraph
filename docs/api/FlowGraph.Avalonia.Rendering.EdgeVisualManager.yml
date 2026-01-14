@@ -5,7 +5,7 @@ items:
   id: EdgeVisualManager
   parent: FlowGraph.Avalonia.Rendering
   children:
-  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)
@@ -25,11 +25,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeVisualManager
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 15
+    startLine: 16
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -51,32 +51,32 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
-  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)
-  id: '#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)'
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)
+  id: '#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)'
   parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
   langs:
   - csharp
   - vb
-  name: EdgeVisualManager(RenderContext, NodeVisualManager)
-  nameWithType: EdgeVisualManager.EdgeVisualManager(RenderContext, NodeVisualManager)
-  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.EdgeVisualManager(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager)
+  name: EdgeVisualManager(RenderContext, NodeVisualManager, EdgeRendererRegistry?)
+  nameWithType: EdgeVisualManager.EdgeVisualManager(RenderContext, NodeVisualManager, EdgeRendererRegistry?)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.EdgeVisualManager(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager, FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry?)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 32
+    startLine: 38
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
   summary: Creates a new edge visual manager.
   example: []
   syntax:
-    content: public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager)
+    content: public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager, EdgeRendererRegistry? edgeRendererRegistry = null)
     parameters:
     - id: renderContext
       type: FlowGraph.Avalonia.Rendering.RenderContext
@@ -84,11 +84,14 @@ items:
     - id: nodeVisualManager
       type: FlowGraph.Avalonia.Rendering.NodeVisualManager
       description: Node visual manager for port position calculations.
-    content.vb: Public Sub New(renderContext As RenderContext, nodeVisualManager As NodeVisualManager)
+    - id: edgeRendererRegistry
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+      description: Optional registry for custom edge renderers.
+    content.vb: Public Sub New(renderContext As RenderContext, nodeVisualManager As NodeVisualManager, edgeRendererRegistry As EdgeRendererRegistry = Nothing)
   overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor*
-  nameWithType.vb: EdgeVisualManager.New(RenderContext, NodeVisualManager)
-  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.New(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager)
-  name.vb: New(RenderContext, NodeVisualManager)
+  nameWithType.vb: EdgeVisualManager.New(RenderContext, NodeVisualManager, EdgeRendererRegistry)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.New(FlowGraph.Avalonia.Rendering.RenderContext, FlowGraph.Avalonia.Rendering.NodeVisualManager, FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)
+  name.vb: New(RenderContext, NodeVisualManager, EdgeRendererRegistry)
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
   commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
   id: GetEdgeVisual(System.String)
@@ -103,11 +106,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeVisual
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 43
+    startLine: 50
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -141,11 +144,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeVisiblePath
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 53
+    startLine: 60
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -179,11 +182,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeMarkers
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 63
+    startLine: 70
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -217,11 +220,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeLabel
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 73
+    startLine: 80
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -255,11 +258,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeEndpointHandles
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 83
+    startLine: 90
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -293,11 +296,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Clear
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 92
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -324,11 +327,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderEdges
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 108
+    startLine: 116
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -368,11 +371,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderEdge
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 182
+    startLine: 190
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -412,11 +415,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateEdgeSelection
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 313
+    startLine: 335
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -703,7 +706,7 @@ references:
   fullName: System
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor
-  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeVisualManager_
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeVisualManager_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRendererRegistry_
   name: EdgeVisualManager
   nameWithType: EdgeVisualManager.EdgeVisualManager
   fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.EdgeVisualManager
@@ -724,6 +727,51 @@ references:
   name: NodeVisualManager
   nameWithType: NodeVisualManager
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry.html
+  name: EdgeRendererRegistry
+  nameWithType: EdgeRendererRegistry
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+    name: EdgeRenderers
+    href: FlowGraph.Avalonia.Rendering.EdgeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+    name: EdgeRenderers
+    href: FlowGraph.Avalonia.Rendering.EdgeRenderers.html
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual
   href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeVisual_System_String_

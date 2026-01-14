@@ -4,7 +4,7 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 
 [![NuGet](https://img.shields.io/nuget/v/FlowGraph.Avalonia.svg)](https://www.nuget.org/packages/FlowGraph.Avalonia/)
 [![.NET 9](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/)
-[![Avalonia](https://img.shields.io/badge/Avalonia-11.2-blue)](https://avaloniaui.net/)
+[![Avalonia](https://img.shields.io/badge/Avalonia-11.3-blue)](https://avaloniaui.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ![FlowGraph Demo](demo.png)
@@ -792,7 +792,7 @@ FlowGraph/
 ## Requirements
 
 - .NET 9.0 or later
-- Avalonia 11.2 or later
+- Avalonia 11.3 or later
 
 ## Contributing
 

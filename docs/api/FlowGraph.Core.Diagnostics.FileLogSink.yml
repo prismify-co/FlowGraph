@@ -1,0 +1,609 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Diagnostics.FileLogSink
+  commentId: T:FlowGraph.Core.Diagnostics.FileLogSink
+  id: FileLogSink
+  parent: FlowGraph.Core.Diagnostics
+  children:
+  - FlowGraph.Core.Diagnostics.FileLogSink.#ctor(System.String,System.Int32,System.Int32)
+  - FlowGraph.Core.Diagnostics.FileLogSink.Dispose
+  - FlowGraph.Core.Diagnostics.FileLogSink.Flush
+  - FlowGraph.Core.Diagnostics.FileLogSink.Name
+  - FlowGraph.Core.Diagnostics.FileLogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  langs:
+  - csharp
+  - vb
+  name: FileLogSink
+  nameWithType: FileLogSink
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FileLogSink
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 101
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Log sink that writes to a file with automatic rotation support.
+  example: []
+  syntax:
+    content: 'public sealed class FileLogSink : ILogSink, IDisposable'
+    content.vb: Public NotInheritable Class FileLogSink Implements ILogSink, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Core.Diagnostics.ILogSink
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.#ctor(System.String,System.Int32,System.Int32)
+  commentId: M:FlowGraph.Core.Diagnostics.FileLogSink.#ctor(System.String,System.Int32,System.Int32)
+  id: '#ctor(System.String,System.Int32,System.Int32)'
+  parent: FlowGraph.Core.Diagnostics.FileLogSink
+  langs:
+  - csharp
+  - vb
+  name: FileLogSink(string, int, int)
+  nameWithType: FileLogSink.FileLogSink(string, int, int)
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.FileLogSink(string, int, int)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Creates a new file log sink.
+  example: []
+  syntax:
+    content: public FileLogSink(string filePath, int maxFileSizeMB = 10, int maxFiles = 5)
+    parameters:
+    - id: filePath
+      type: System.String
+      description: Path to the log file.
+    - id: maxFileSizeMB
+      type: System.Int32
+      description: 'Maximum file size in MB before rotation (default: 10MB).'
+    - id: maxFiles
+      type: System.Int32
+      description: 'Maximum number of rotated files to keep (default: 5).'
+    content.vb: Public Sub New(filePath As String, maxFileSizeMB As Integer = 10, maxFiles As Integer = 5)
+  overload: FlowGraph.Core.Diagnostics.FileLogSink.#ctor*
+  nameWithType.vb: FileLogSink.New(String, Integer, Integer)
+  fullName.vb: FlowGraph.Core.Diagnostics.FileLogSink.New(String, Integer, Integer)
+  name.vb: New(String, Integer, Integer)
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Name
+  commentId: P:FlowGraph.Core.Diagnostics.FileLogSink.Name
+  id: Name
+  parent: FlowGraph.Core.Diagnostics.FileLogSink
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: FileLogSink.Name
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Name
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Name
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 133
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Gets the name of this sink for identification purposes.
+  example: []
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Name As String
+  overload: FlowGraph.Core.Diagnostics.FileLogSink.Name*
+  implements:
+  - FlowGraph.Core.Diagnostics.ILogSink.Name
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  commentId: M:FlowGraph.Core.Diagnostics.FileLogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  id: Write(FlowGraph.Core.Diagnostics.LogEntry)
+  parent: FlowGraph.Core.Diagnostics.FileLogSink
+  langs:
+  - csharp
+  - vb
+  name: Write(LogEntry)
+  nameWithType: FileLogSink.Write(LogEntry)
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Write
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 136
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Writes a log entry to this sink.
+  example: []
+  syntax:
+    content: public void Write(LogEntry entry)
+    parameters:
+    - id: entry
+      type: FlowGraph.Core.Diagnostics.LogEntry
+      description: The log entry to write.
+    content.vb: Public Sub Write(entry As LogEntry)
+  overload: FlowGraph.Core.Diagnostics.FileLogSink.Write*
+  implements:
+  - FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Flush
+  commentId: M:FlowGraph.Core.Diagnostics.FileLogSink.Flush
+  id: Flush
+  parent: FlowGraph.Core.Diagnostics.FileLogSink
+  langs:
+  - csharp
+  - vb
+  name: Flush()
+  nameWithType: FileLogSink.Flush()
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Flush()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Flush
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 156
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Flushes any buffered log entries.
+  example: []
+  syntax:
+    content: public void Flush()
+    content.vb: Public Sub Flush()
+  overload: FlowGraph.Core.Diagnostics.FileLogSink.Flush*
+  implements:
+  - FlowGraph.Core.Diagnostics.ILogSink.Flush
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Dispose
+  commentId: M:FlowGraph.Core.Diagnostics.FileLogSink.Dispose
+  id: Dispose
+  parent: FlowGraph.Core.Diagnostics.FileLogSink
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: FileLogSink.Dispose()
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Dispose()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Diagnostics/LogSinks.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Dispose
+    path: ../FlowGraph.Core/Diagnostics/LogSinks.cs
+    startLine: 165
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Diagnostics
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: FlowGraph.Core.Diagnostics.FileLogSink.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: FlowGraph.Core.Diagnostics
+  commentId: N:FlowGraph.Core.Diagnostics
+  href: FlowGraph.html
+  name: FlowGraph.Core.Diagnostics
+  nameWithType: FlowGraph.Core.Diagnostics
+  fullName: FlowGraph.Core.Diagnostics
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.Diagnostics.ILogSink
+  commentId: T:FlowGraph.Core.Diagnostics.ILogSink
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.ILogSink.html
+  name: ILogSink
+  nameWithType: ILogSink
+  fullName: FlowGraph.Core.Diagnostics.ILogSink
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.#ctor*
+  commentId: Overload:FlowGraph.Core.Diagnostics.FileLogSink.#ctor
+  href: FlowGraph.Core.Diagnostics.FileLogSink.html#FlowGraph_Core_Diagnostics_FileLogSink__ctor_System_String_System_Int32_System_Int32_
+  name: FileLogSink
+  nameWithType: FileLogSink.FileLogSink
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.FileLogSink
+  nameWithType.vb: FileLogSink.New
+  fullName.vb: FlowGraph.Core.Diagnostics.FileLogSink.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Name*
+  commentId: Overload:FlowGraph.Core.Diagnostics.FileLogSink.Name
+  href: FlowGraph.Core.Diagnostics.FileLogSink.html#FlowGraph_Core_Diagnostics_FileLogSink_Name
+  name: Name
+  nameWithType: FileLogSink.Name
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Name
+- uid: FlowGraph.Core.Diagnostics.ILogSink.Name
+  commentId: P:FlowGraph.Core.Diagnostics.ILogSink.Name
+  parent: FlowGraph.Core.Diagnostics.ILogSink
+  href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Name
+  name: Name
+  nameWithType: ILogSink.Name
+  fullName: FlowGraph.Core.Diagnostics.ILogSink.Name
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Write*
+  commentId: Overload:FlowGraph.Core.Diagnostics.FileLogSink.Write
+  href: FlowGraph.Core.Diagnostics.FileLogSink.html#FlowGraph_Core_Diagnostics_FileLogSink_Write_FlowGraph_Core_Diagnostics_LogEntry_
+  name: Write
+  nameWithType: FileLogSink.Write
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Write
+- uid: FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  commentId: M:FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  parent: FlowGraph.Core.Diagnostics.ILogSink
+  href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Write_FlowGraph_Core_Diagnostics_LogEntry_
+  name: Write(LogEntry)
+  nameWithType: ILogSink.Write(LogEntry)
+  fullName: FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+    name: Write
+    href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Write_FlowGraph_Core_Diagnostics_LogEntry_
+  - name: (
+  - uid: FlowGraph.Core.Diagnostics.LogEntry
+    name: LogEntry
+    href: FlowGraph.Core.Diagnostics.LogEntry.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.ILogSink.Write(FlowGraph.Core.Diagnostics.LogEntry)
+    name: Write
+    href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Write_FlowGraph_Core_Diagnostics_LogEntry_
+  - name: (
+  - uid: FlowGraph.Core.Diagnostics.LogEntry
+    name: LogEntry
+    href: FlowGraph.Core.Diagnostics.LogEntry.html
+  - name: )
+- uid: FlowGraph.Core.Diagnostics.LogEntry
+  commentId: T:FlowGraph.Core.Diagnostics.LogEntry
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LogEntry.html
+  name: LogEntry
+  nameWithType: LogEntry
+  fullName: FlowGraph.Core.Diagnostics.LogEntry
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Flush*
+  commentId: Overload:FlowGraph.Core.Diagnostics.FileLogSink.Flush
+  href: FlowGraph.Core.Diagnostics.FileLogSink.html#FlowGraph_Core_Diagnostics_FileLogSink_Flush
+  name: Flush
+  nameWithType: FileLogSink.Flush
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Flush
+- uid: FlowGraph.Core.Diagnostics.ILogSink.Flush
+  commentId: M:FlowGraph.Core.Diagnostics.ILogSink.Flush
+  parent: FlowGraph.Core.Diagnostics.ILogSink
+  href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Flush
+  name: Flush()
+  nameWithType: ILogSink.Flush()
+  fullName: FlowGraph.Core.Diagnostics.ILogSink.Flush()
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.ILogSink.Flush
+    name: Flush
+    href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Flush
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.ILogSink.Flush
+    name: Flush
+    href: FlowGraph.Core.Diagnostics.ILogSink.html#FlowGraph_Core_Diagnostics_ILogSink_Flush
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Diagnostics.FileLogSink.Dispose*
+  commentId: Overload:FlowGraph.Core.Diagnostics.FileLogSink.Dispose
+  href: FlowGraph.Core.Diagnostics.FileLogSink.html#FlowGraph_Core_Diagnostics_FileLogSink_Dispose
+  name: Dispose
+  nameWithType: FileLogSink.Dispose
+  fullName: FlowGraph.Core.Diagnostics.FileLogSink.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

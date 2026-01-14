@@ -11,6 +11,8 @@ items:
   - FlowGraph.Core.Routing.EdgeRoutingContext.GetObstacles(System.String[])
   - FlowGraph.Core.Routing.EdgeRoutingContext.Graph
   - FlowGraph.Core.Routing.EdgeRoutingContext.NodePadding
+  - FlowGraph.Core.Routing.EdgeRoutingContext.Options
+  - FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
   langs:
   - csharp
   - vb
@@ -21,7 +23,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeRoutingContext
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
@@ -58,7 +60,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Graph
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
@@ -75,6 +77,37 @@ items:
       type: FlowGraph.Core.Graph
     content.vb: Public Property Graph As Graph
   overload: FlowGraph.Core.Routing.EdgeRoutingContext.Graph*
+- uid: FlowGraph.Core.Routing.EdgeRoutingContext.Options
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingContext.Options
+  id: Options
+  parent: FlowGraph.Core.Routing.EdgeRoutingContext
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: EdgeRoutingContext.Options
+  fullName: FlowGraph.Core.Routing.EdgeRoutingContext.Options
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/IEdgeRouter.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Options
+    path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
+    startLine: 29
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Routing options controlling behavior.
+  example: []
+  syntax:
+    content: public EdgeRoutingOptions Options { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.EdgeRoutingOptions
+    content.vb: Public Property Options As EdgeRoutingOptions
+  overload: FlowGraph.Core.Routing.EdgeRoutingContext.Options*
 - uid: FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeWidth
   commentId: P:FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeWidth
   id: DefaultNodeWidth
@@ -89,11 +122,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultNodeWidth
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
-    startLine: 29
+    startLine: 34
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -120,11 +153,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultNodeHeight
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
-    startLine: 34
+    startLine: 39
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -151,15 +184,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodePadding
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
-    startLine: 39
+    startLine: 45
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Padding around nodes for routing.
+  summary: >-
+    Padding around nodes for routing.
+
+    Uses Options.NodePadding if not explicitly set.
   example: []
   syntax:
     content: public double NodePadding { get; init; }
@@ -168,6 +204,48 @@ items:
       type: System.Double
     content.vb: Public Property NodePadding As Double
   overload: FlowGraph.Core.Routing.EdgeRoutingContext.NodePadding*
+- uid: FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
+  id: UserConstraints
+  parent: FlowGraph.Core.Routing.EdgeRoutingContext
+  langs:
+  - csharp
+  - vb
+  name: UserConstraints
+  nameWithType: EdgeRoutingContext.UserConstraints
+  fullName: FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/IEdgeRouter.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UserConstraints
+    path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
+    startLine: 58
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: >-
+    User-defined waypoints that routers should respect in Guided mode.
+
+    In Guided mode, the router should calculate a path that passes through
+
+    these constraint points while avoiding obstacles.
+  remarks: >-
+    This is typically populated from <xref href="FlowGraph.Core.Models.IEdgeState.UserWaypoints" data-throw-if-not-resolved="false"></xref>
+
+    when the edge's <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> is 
+
+    <xref href="FlowGraph.Core.Models.EdgeRoutingMode.Guided" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Point>? UserConstraints { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+    content.vb: Public Property UserConstraints As IReadOnlyList(Of Point)
+  overload: FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints*
 - uid: FlowGraph.Core.Routing.EdgeRoutingContext.GetNodeBounds(FlowGraph.Core.Node)
   commentId: M:FlowGraph.Core.Routing.EdgeRoutingContext.GetNodeBounds(FlowGraph.Core.Node)
   id: GetNodeBounds(FlowGraph.Core.Node)
@@ -182,11 +260,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeBounds
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
-    startLine: 44
+    startLine: 63
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -215,11 +293,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/IEdgeRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetObstacles
     path: ../FlowGraph.Core/Routing/IEdgeRouter.cs
-    startLine: 59
+    startLine: 78
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -541,6 +619,19 @@ references:
   - uid: FlowGraph.Core
     name: Core
     href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Routing.EdgeRoutingContext.Options*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingContext.Options
+  href: FlowGraph.Core.Routing.EdgeRoutingContext.html#FlowGraph_Core_Routing_EdgeRoutingContext_Options
+  name: Options
+  nameWithType: EdgeRoutingContext.Options
+  fullName: FlowGraph.Core.Routing.EdgeRoutingContext.Options
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions
+  commentId: T:FlowGraph.Core.Routing.EdgeRoutingOptions
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html
+  name: EdgeRoutingOptions
+  nameWithType: EdgeRoutingOptions
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions
 - uid: FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeWidth*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingContext.DefaultNodeWidth
   href: FlowGraph.Core.Routing.EdgeRoutingContext.html#FlowGraph_Core_Routing_EdgeRoutingContext_DefaultNodeWidth
@@ -570,6 +661,166 @@ references:
   name: NodePadding
   nameWithType: EdgeRoutingContext.NodePadding
   fullName: FlowGraph.Core.Routing.EdgeRoutingContext.NodePadding
+- uid: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  commentId: P:FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  parent: FlowGraph.Core.Models.IEdgeState
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_UserWaypoints
+  name: UserWaypoints
+  nameWithType: IEdgeState.UserWaypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+- uid: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode
+  name: RoutingMode
+  nameWithType: EdgeDefinition.RoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided
+  name: Guided
+  nameWithType: EdgeRoutingMode.Guided
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+- uid: FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints*
+  commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
+  href: FlowGraph.Core.Routing.EdgeRoutingContext.html#FlowGraph_Core_Routing_EdgeRoutingContext_UserConstraints
+  name: UserConstraints
+  nameWithType: EdgeRoutingContext.UserConstraints
+  fullName: FlowGraph.Core.Routing.EdgeRoutingContext.UserConstraints
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Point>
+  nameWithType: IReadOnlyList<Point>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Point>
+  nameWithType.vb: IReadOnlyList(Of Point)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Point)
+  name.vb: IReadOnlyList(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Models.IEdgeState
+  commentId: T:FlowGraph.Core.Models.IEdgeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.IEdgeState.html
+  name: IEdgeState
+  nameWithType: IEdgeState
+  fullName: FlowGraph.Core.Models.IEdgeState
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
 - uid: FlowGraph.Core.Routing.EdgeRoutingContext.GetNodeBounds*
   commentId: Overload:FlowGraph.Core.Routing.EdgeRoutingContext.GetNodeBounds
   href: FlowGraph.Core.Routing.EdgeRoutingContext.html#FlowGraph_Core_Routing_EdgeRoutingContext_GetNodeBounds_FlowGraph_Core_Node_
@@ -680,40 +931,3 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

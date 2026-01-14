@@ -5,16 +5,21 @@ items:
   id: FlowCanvasSettings
   parent: FlowGraph.Avalonia
   children:
+  - FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings
   - FlowGraph.Avalonia.FlowCanvasSettings.AutoRouteEdges
   - FlowGraph.Avalonia.FlowCanvasSettings.ConnectionSnapDistance
   - FlowGraph.Avalonia.FlowCanvasSettings.DebugCoordinateTransforms
   - FlowGraph.Avalonia.FlowCanvasSettings.Default
   - FlowGraph.Avalonia.FlowCanvasSettings.DefaultEdgeType
   - FlowGraph.Avalonia.FlowCanvasSettings.DefaultRouterAlgorithm
+  - FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+  - FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+  - FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
   - FlowGraph.Avalonia.FlowCanvasSettings.DirectRenderingNodeThreshold
   - FlowGraph.Avalonia.FlowCanvasSettings.EdgeEndpointHandleSize
   - FlowGraph.Avalonia.FlowCanvasSettings.EdgeHitAreaWidth
   - FlowGraph.Avalonia.FlowCanvasSettings.EffectiveSnapGridSize
+  - FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
   - FlowGraph.Avalonia.FlowCanvasSettings.EnableEdgeLabelEditing
   - FlowGraph.Avalonia.FlowCanvasSettings.EnableGroupLabelEditing
   - FlowGraph.Avalonia.FlowCanvasSettings.EnableNodeLabelEditing
@@ -39,10 +44,12 @@ items:
   - FlowGraph.Avalonia.FlowCanvasSettings.RouteNewEdges
   - FlowGraph.Avalonia.FlowCanvasSettings.RouteOnlyAffectedEdges
   - FlowGraph.Avalonia.FlowCanvasSettings.RoutingNodePadding
+  - FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
   - FlowGraph.Avalonia.FlowCanvasSettings.SelectionMode
   - FlowGraph.Avalonia.FlowCanvasSettings.ShowBackground
   - FlowGraph.Avalonia.FlowCanvasSettings.ShowEdgeEndpointHandles
   - FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
+  - FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
   - FlowGraph.Avalonia.FlowCanvasSettings.SnapConnectionToNode
   - FlowGraph.Avalonia.FlowCanvasSettings.SnapGridSize
   - FlowGraph.Avalonia.FlowCanvasSettings.SnapToGrid
@@ -63,11 +70,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: FlowCanvasSettings
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 8
+    startLine: 12
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -100,11 +107,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeWidth
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 13
+    startLine: 17
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -131,11 +138,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeHeight
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -162,11 +169,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -179,6 +186,42 @@ items:
       type: System.Double
     content.vb: Public Property PortSize As Double
   overload: FlowGraph.Avalonia.FlowCanvasSettings.PortSize*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
+  id: ShowPorts
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: ShowPorts
+  nameWithType: FlowCanvasSettings.ShowPorts
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShowPorts
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Whether to show port indicators on nodes.
+
+    When false, ports still exist for edge routing but are not rendered visually.
+
+    Useful for diagrams where connection points should be invisible.
+  example: []
+  syntax:
+    content: public bool ShowPorts { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ShowPorts As Boolean
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts*
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
   commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
   id: ShowGrid
@@ -193,11 +236,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ShowGrid
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 29
+    startLine: 40
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -227,11 +270,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ShowBackground
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 35
+    startLine: 46
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -261,11 +304,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GridSpacing
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 40
+    startLine: 51
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -292,11 +335,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GridDotSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 45
+    startLine: 56
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -323,11 +366,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinZoom
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 50
+    startLine: 61
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -354,11 +397,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MaxZoom
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 55
+    startLine: 66
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -385,11 +428,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ZoomStep
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 60
+    startLine: 71
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -416,11 +459,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SnapToGrid
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 65
+    startLine: 76
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -447,11 +490,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SnapGridSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 71
+    startLine: 82
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -481,11 +524,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EffectiveSnapGridSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 76
+    startLine: 87
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -512,11 +555,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionMode
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 81
+    startLine: 92
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -543,11 +586,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PanOnDrag
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 88
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -579,11 +622,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DebugCoordinateTransforms
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 93
+    startLine: 104
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -596,6 +639,173 @@ items:
       type: System.Boolean
     content.vb: Public Property DebugCoordinateTransforms As Boolean
   overload: FlowGraph.Avalonia.FlowCanvasSettings.DebugCoordinateTransforms*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
+  id: EnableDiagnostics
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: EnableDiagnostics
+  nameWithType: FlowCanvasSettings.EnableDiagnostics
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EnableDiagnostics
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 112
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Gets or sets whether diagnostic logging is enabled.
+
+    When enabled, FlowGraph will emit detailed diagnostic information.
+  example: []
+  syntax:
+    content: public bool EnableDiagnostics { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableDiagnostics As Boolean
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
+  id: DiagnosticsMinimumLevel
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: DiagnosticsMinimumLevel
+  nameWithType: FlowCanvasSettings.DiagnosticsMinimumLevel
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DiagnosticsMinimumLevel
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 118
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Gets or sets the minimum log level for diagnostics.
+
+    Messages below this level are ignored.
+  example: []
+  syntax:
+    content: public LogLevel DiagnosticsMinimumLevel { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Diagnostics.LogLevel
+    content.vb: Public Property DiagnosticsMinimumLevel As LogLevel
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+  id: DiagnosticsCategories
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: DiagnosticsCategories
+  nameWithType: FlowCanvasSettings.DiagnosticsCategories
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DiagnosticsCategories
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 124
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Gets or sets the categories to include in diagnostics.
+
+    Use bitwise OR to combine categories.
+  example: []
+  syntax:
+    content: public LogCategory DiagnosticsCategories { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Diagnostics.LogCategory
+    content.vb: Public Property DiagnosticsCategories As LogCategory
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+  id: DiagnosticsLogFilePath
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: DiagnosticsLogFilePath
+  nameWithType: FlowCanvasSettings.DiagnosticsLogFilePath
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DiagnosticsLogFilePath
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 130
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Gets or sets the path for file-based diagnostic logging.
+
+    When set, diagnostic messages are also written to this file.
+  example: []
+  syntax:
+    content: public string? DiagnosticsLogFilePath { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DiagnosticsLogFilePath As String
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings
+  commentId: M:FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings
+  id: ApplyDiagnosticsSettings
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: ApplyDiagnosticsSettings()
+  nameWithType: FlowCanvasSettings.ApplyDiagnosticsSettings()
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ApplyDiagnosticsSettings
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 136
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Applies the diagnostics settings to the global FlowGraphLogger.
+
+    Call this after changing diagnostics settings.
+  example: []
+  syntax:
+    content: public void ApplyDiagnosticsSettings()
+    content.vb: Public Sub ApplyDiagnosticsSettings()
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings*
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.EdgeHitAreaWidth
   commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.EdgeHitAreaWidth
   id: EdgeHitAreaWidth
@@ -610,11 +820,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeHitAreaWidth
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 99
+    startLine: 165
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -644,11 +854,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupPadding
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 106
+    startLine: 172
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -675,11 +885,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderHeight
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 111
+    startLine: 177
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -706,11 +916,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBorderRadius
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 116
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -737,11 +947,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupUseDashedBorder
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 121
+    startLine: 187
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -768,11 +978,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBackgroundOpacity
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 127
+    startLine: 193
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -802,11 +1012,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UseProxyPortsOnCollapse
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 135
+    startLine: 201
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -840,11 +1050,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AutoRouteEdges
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 145
+    startLine: 211
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -874,11 +1084,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdgesOnDrag
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 152
+    startLine: 218
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -910,11 +1120,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RoutingNodePadding
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 158
+    startLine: 224
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -944,11 +1154,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteOnlyAffectedEdges
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 165
+    startLine: 231
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -980,11 +1190,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteNewEdges
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 171
+    startLine: 237
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1014,11 +1224,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultEdgeType
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 176
+    startLine: 242
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1045,11 +1255,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DefaultRouterAlgorithm
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 181
+    startLine: 247
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1062,6 +1272,45 @@ items:
       type: FlowGraph.Avalonia.RouterAlgorithm
     content.vb: Public Property DefaultRouterAlgorithm As RouterAlgorithm
   overload: FlowGraph.Avalonia.FlowCanvasSettings.DefaultRouterAlgorithm*
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
+  commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
+  id: RoutingOptions
+  parent: FlowGraph.Avalonia.FlowCanvasSettings
+  langs:
+  - csharp
+  - vb
+  name: RoutingOptions
+  nameWithType: FlowCanvasSettings.RoutingOptions
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/FlowCanvasSettings.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RoutingOptions
+    path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
+    startLine: 262
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Advanced routing options controlling corner radius, edge spacing, etc.
+  remarks: >-
+    <p>
+
+    These options provide fine-grained control over edge routing behavior:
+
+    <ul><li><xref href="FlowGraph.Core.Routing.EdgeRoutingOptions.CornerRadius" data-throw-if-not-resolved="false"></xref> - Rounding for SmoothStep edges</li><li><xref href="FlowGraph.Core.Routing.EdgeRoutingOptions.EndSegmentLength" data-throw-if-not-resolved="false"></xref> - Stem length from ports</li><li><xref href="FlowGraph.Core.Routing.EdgeRoutingOptions.EdgeSpacing" data-throw-if-not-resolved="false"></xref> - Gap between edges from same port</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public EdgeRoutingOptions RoutingOptions { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.EdgeRoutingOptions
+    content.vb: Public Property RoutingOptions As EdgeRoutingOptions
+  overload: FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions*
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.ViewportBounds
   commentId: P:FlowGraph.Avalonia.FlowCanvasSettings.ViewportBounds
   id: ViewportBounds
@@ -1076,11 +1325,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ViewportBounds
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 192
+    startLine: 273
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1112,11 +1361,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ViewportBoundsPadding
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 198
+    startLine: 279
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1146,11 +1395,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PanOnScroll
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 205
+    startLine: 286
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1182,11 +1431,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PanOnScrollSpeed
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 211
+    startLine: 292
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1216,11 +1465,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectionSnapDistance
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 221
+    startLine: 302
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1250,11 +1499,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SnapConnectionToNode
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 227
+    startLine: 308
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1284,11 +1533,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ShowEdgeEndpointHandles
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 232
+    startLine: 313
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1315,11 +1564,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeEndpointHandleSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 237
+    startLine: 318
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1346,11 +1595,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: StrictConnectionDirection
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 244
+    startLine: 325
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1382,11 +1631,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EnableNodeLabelEditing
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 254
+    startLine: 335
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1416,11 +1665,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EnableGroupLabelEditing
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 261
+    startLine: 342
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1452,11 +1701,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EnableEdgeLabelEditing
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 267
+    startLine: 348
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1486,11 +1735,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EnableVirtualization
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 279
+    startLine: 360
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1524,11 +1773,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: VirtualizationBuffer
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 286
+    startLine: 367
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1560,11 +1809,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderBatchSize
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 293
+    startLine: 374
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1596,11 +1845,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UseSimplifiedNodeRendering
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 300
+    startLine: 381
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1632,11 +1881,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DirectRenderingNodeThreshold
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 311
+    startLine: 392
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1672,11 +1921,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/FlowCanvasSettings.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Default
     path: ../FlowGraph.Avalonia/FlowCanvasSettings.cs
-    startLine: 318
+    startLine: 399
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -1978,12 +2227,12 @@ references:
   name: PortSize
   nameWithType: FlowCanvasSettings.PortSize
   fullName: FlowGraph.Avalonia.FlowCanvasSettings.PortSize
-- uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid*
-  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
-  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ShowGrid
-  name: ShowGrid
-  nameWithType: FlowCanvasSettings.ShowGrid
-  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ShowPorts
+  name: ShowPorts
+  nameWithType: FlowCanvasSettings.ShowPorts
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ShowPorts
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -1995,6 +2244,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ShowGrid
+  name: ShowGrid
+  nameWithType: FlowCanvasSettings.ShowGrid
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ShowGrid
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.ShowBackground*
   commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ShowBackground
   href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ShowBackground
@@ -2125,6 +2380,91 @@ references:
   name: DebugCoordinateTransforms
   nameWithType: FlowCanvasSettings.DebugCoordinateTransforms
   fullName: FlowGraph.Avalonia.FlowCanvasSettings.DebugCoordinateTransforms
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_EnableDiagnostics
+  name: EnableDiagnostics
+  nameWithType: FlowCanvasSettings.EnableDiagnostics
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.EnableDiagnostics
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_DiagnosticsMinimumLevel
+  name: DiagnosticsMinimumLevel
+  nameWithType: FlowCanvasSettings.DiagnosticsMinimumLevel
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsMinimumLevel
+- uid: FlowGraph.Core.Diagnostics.LogLevel
+  commentId: T:FlowGraph.Core.Diagnostics.LogLevel
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LogLevel.html
+  name: LogLevel
+  nameWithType: LogLevel
+  fullName: FlowGraph.Core.Diagnostics.LogLevel
+- uid: FlowGraph.Core.Diagnostics
+  commentId: N:FlowGraph.Core.Diagnostics
+  href: FlowGraph.html
+  name: FlowGraph.Core.Diagnostics
+  nameWithType: FlowGraph.Core.Diagnostics
+  fullName: FlowGraph.Core.Diagnostics
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_DiagnosticsCategories
+  name: DiagnosticsCategories
+  nameWithType: FlowCanvasSettings.DiagnosticsCategories
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsCategories
+- uid: FlowGraph.Core.Diagnostics.LogCategory
+  commentId: T:FlowGraph.Core.Diagnostics.LogCategory
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LogCategory.html
+  name: LogCategory
+  nameWithType: LogCategory
+  fullName: FlowGraph.Core.Diagnostics.LogCategory
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_DiagnosticsLogFilePath
+  name: DiagnosticsLogFilePath
+  nameWithType: FlowCanvasSettings.DiagnosticsLogFilePath
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.DiagnosticsLogFilePath
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ApplyDiagnosticsSettings
+  name: ApplyDiagnosticsSettings
+  nameWithType: FlowCanvasSettings.ApplyDiagnosticsSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.ApplyDiagnosticsSettings
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.EdgeHitAreaWidth*
   commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.EdgeHitAreaWidth
   href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_EdgeHitAreaWidth
@@ -2245,6 +2585,67 @@ references:
   name: RouterAlgorithm
   nameWithType: RouterAlgorithm
   fullName: FlowGraph.Avalonia.RouterAlgorithm
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions.CornerRadius
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingOptions.CornerRadius
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html#FlowGraph_Core_Routing_EdgeRoutingOptions_CornerRadius
+  name: CornerRadius
+  nameWithType: EdgeRoutingOptions.CornerRadius
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions.CornerRadius
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions.EndSegmentLength
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingOptions.EndSegmentLength
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html#FlowGraph_Core_Routing_EdgeRoutingOptions_EndSegmentLength
+  name: EndSegmentLength
+  nameWithType: EdgeRoutingOptions.EndSegmentLength
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions.EndSegmentLength
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions.EdgeSpacing
+  commentId: P:FlowGraph.Core.Routing.EdgeRoutingOptions.EdgeSpacing
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html#FlowGraph_Core_Routing_EdgeRoutingOptions_EdgeSpacing
+  name: EdgeSpacing
+  nameWithType: EdgeRoutingOptions.EdgeSpacing
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions.EdgeSpacing
+- uid: FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions*
+  commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_RoutingOptions
+  name: RoutingOptions
+  nameWithType: FlowCanvasSettings.RoutingOptions
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings.RoutingOptions
+- uid: FlowGraph.Core.Routing.EdgeRoutingOptions
+  commentId: T:FlowGraph.Core.Routing.EdgeRoutingOptions
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.EdgeRoutingOptions.html
+  name: EdgeRoutingOptions
+  nameWithType: EdgeRoutingOptions
+  fullName: FlowGraph.Core.Routing.EdgeRoutingOptions
+- uid: FlowGraph.Core.Routing
+  commentId: N:FlowGraph.Core.Routing
+  href: FlowGraph.html
+  name: FlowGraph.Core.Routing
+  nameWithType: FlowGraph.Core.Routing
+  fullName: FlowGraph.Core.Routing
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Routing
+    name: Routing
+    href: FlowGraph.Core.Routing.html
 - uid: FlowGraph.Avalonia.FlowCanvasSettings.ViewportBounds*
   commentId: Overload:FlowGraph.Avalonia.FlowCanvasSettings.ViewportBounds
   href: FlowGraph.Avalonia.FlowCanvasSettings.html#FlowGraph_Avalonia_FlowCanvasSettings_ViewportBounds

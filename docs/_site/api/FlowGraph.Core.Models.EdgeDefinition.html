@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class EdgeDefinition | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class EdgeDefinition | FlowGraph ">
+      
+      <meta name="description" content="Immutable definition of an edge&#39;s identity and connection structure. Contains all properties that define &amp;quot;what&amp;quot; an edge connects, not its runtime state.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Models_EdgeDefinition.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Models.EdgeDefinition%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Models.EdgeDefinition">
+
+
+
+  <h1 id="FlowGraph_Core_Models_EdgeDefinition" data-uid="FlowGraph.Core.Models.EdgeDefinition" class="text-break">
+Class EdgeDefinition  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Models.html">Models</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Immutable definition of an edge's identity and connection structure.
+Contains all properties that define &quot;what&quot; an edge connects, not its runtime state.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed record EdgeDefinition : IEquatable&lt;EdgeDefinition&gt;</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">EdgeDefinition</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="FlowGraph_Core_Models_EdgeDefinition_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>This is a sealed record for value equality and immutability.
+Use <code>with</code> expressions to create modified copies:</p>
+<pre><code class="lang-csharp">var reconnected = definition with { Target = "newNodeId" };</code></pre>
+</div>
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_AutoRoute_" data-uid="FlowGraph.Core.Models.EdgeDefinition.AutoRoute*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_AutoRoute" data-uid="FlowGraph.Core.Models.EdgeDefinition.AutoRoute">
+  AutoRoute
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this edge should use automatic routing to avoid obstacles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoRoute { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Models_EdgeDefinition_AutoRoute_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This property is maintained for backward compatibility.
+For new code, prefer using <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a> instead.
+When <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a> is explicitly set, it takes precedence.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_EffectiveLabel_" data-uid="FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_EffectiveLabel" data-uid="FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel">
+  EffectiveLabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the effective label text, preferring <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo">LabelInfo</a> over <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Label">Label</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? EffectiveLabel { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_EffectiveRoutingMode_" data-uid="FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_EffectiveRoutingMode" data-uid="FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode">
+  EffectiveRoutingMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the effective routing mode, considering both <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a>
+and legacy <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_AutoRoute">AutoRoute</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRoutingMode EffectiveRoutingMode { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html">EdgeRoutingMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Models_EdgeDefinition_EffectiveRoutingMode_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_AutoRoute">AutoRoute</a> is true and <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a> is Auto,
+obstacle avoidance is enabled. Otherwise, <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode">RoutingMode</a> determines behavior.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_Id_" data-uid="FlowGraph.Core.Models.EdgeDefinition.Id*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_Id" data-uid="FlowGraph.Core.Models.EdgeDefinition.Id">
+  Id
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Unique identifier for the edge. Required and immutable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string Id { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_Label_" data-uid="FlowGraph.Core.Models.EdgeDefinition.Label*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_Label" data-uid="FlowGraph.Core.Models.EdgeDefinition.Label">
+  Label
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional label to display on the edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? Label { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Models_EdgeDefinition_Label_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>For simple labels, use this property directly. For advanced positioning control,
+use <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo">LabelInfo</a> instead. If both are set, <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo">LabelInfo</a> takes precedence.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_LabelInfo_" data-uid="FlowGraph.Core.Models.EdgeDefinition.LabelInfo*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_LabelInfo" data-uid="FlowGraph.Core.Models.EdgeDefinition.LabelInfo">
+  LabelInfo
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Enhanced label with positioning information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LabelInfo? LabelInfo { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.LabelInfo.html">LabelInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Models_EdgeDefinition_LabelInfo_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>When set, this takes precedence over <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Label">Label</a>. Use <a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_EffectiveLabel">EffectiveLabel</a>
+to get the resolved label text regardless of which property was set.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_MarkerEnd_" data-uid="FlowGraph.Core.Models.EdgeDefinition.MarkerEnd*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_MarkerEnd" data-uid="FlowGraph.Core.Models.EdgeDefinition.MarkerEnd">
+  MarkerEnd
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The marker to display at the end of the edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeMarker MarkerEnd { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.EdgeMarker.html">EdgeMarker</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_MarkerStart_" data-uid="FlowGraph.Core.Models.EdgeDefinition.MarkerStart*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_MarkerStart" data-uid="FlowGraph.Core.Models.EdgeDefinition.MarkerStart">
+  MarkerStart
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The marker to display at the start of the edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeMarker MarkerStart { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.EdgeMarker.html">EdgeMarker</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_RoutingMode_" data-uid="FlowGraph.Core.Models.EdgeDefinition.RoutingMode*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_RoutingMode" data-uid="FlowGraph.Core.Models.EdgeDefinition.RoutingMode">
+  RoutingMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines how this edge's path is calculated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRoutingMode RoutingMode { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html">EdgeRoutingMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Models_EdgeDefinition_RoutingMode_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><ul><li><a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Auto">Auto</a> - Router fully controls path (default)</li><li><a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Manual">Manual</a> - Uses only user-defined waypoints</li><li><a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided">Guided</a> - Router path passes through user waypoints</li></ul>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_Source_" data-uid="FlowGraph.Core.Models.EdgeDefinition.Source*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_Source" data-uid="FlowGraph.Core.Models.EdgeDefinition.Source">
+  Source
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ID of the source node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string Source { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_SourcePort_" data-uid="FlowGraph.Core.Models.EdgeDefinition.SourcePort*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_SourcePort" data-uid="FlowGraph.Core.Models.EdgeDefinition.SourcePort">
+  SourcePort
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ID of the source port on the source node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string SourcePort { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_Target_" data-uid="FlowGraph.Core.Models.EdgeDefinition.Target*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_Target" data-uid="FlowGraph.Core.Models.EdgeDefinition.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ID of the target node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string Target { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_TargetPort_" data-uid="FlowGraph.Core.Models.EdgeDefinition.TargetPort*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_TargetPort" data-uid="FlowGraph.Core.Models.EdgeDefinition.TargetPort">
+  TargetPort
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ID of the target port on the target node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string TargetPort { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_Type_" data-uid="FlowGraph.Core.Models.EdgeDefinition.Type*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_Type" data-uid="FlowGraph.Core.Models.EdgeDefinition.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The visual type of the edge (bezier, straight, step, etc.).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeType Type { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.EdgeType.html">EdgeType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_ReconnectSource_" data-uid="FlowGraph.Core.Models.EdgeDefinition.ReconnectSource*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_ReconnectSource_System_String_System_String_" data-uid="FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(System.String,System.String)">
+  ReconnectSource(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with a different source node and port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition ReconnectSource(string newSource, string newSourcePort)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>newSource</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>newSourcePort</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_ReconnectTarget_" data-uid="FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_ReconnectTarget_System_String_System_String_" data-uid="FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(System.String,System.String)">
+  ReconnectTarget(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with a different target node and port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition ReconnectTarget(string newTarget, string newTargetPort)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>newTarget</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>newTargetPort</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_WithLabel_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabel*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_WithLabel_System_String_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabel(System.String)">
+  WithLabel(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with a different label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition WithLabel(string? label)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_WithLabelInfo_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_WithLabelInfo_FlowGraph_Core_Models_LabelInfo_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)">
+  WithLabelInfo(LabelInfo?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with enhanced label positioning.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition WithLabelInfo(LabelInfo? labelInfo)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>labelInfo</code> <a class="xref" href="FlowGraph.Core.Models.LabelInfo.html">LabelInfo</a></dt>
+    <dd><p>The label info with text and positioning.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_WithLabelInfo_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_WithLabelInfo_System_String_FlowGraph_Core_Models_LabelAnchor_System_Double_System_Double_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)">
+  WithLabelInfo(string, LabelAnchor, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with enhanced label positioning.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition WithLabelInfo(string text, LabelAnchor anchor = LabelAnchor.Center, double offsetX = 0, double offsetY = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The label text.</p>
+</dd>
+    <dt><code>anchor</code> <a class="xref" href="FlowGraph.Core.Models.LabelAnchor.html">LabelAnchor</a></dt>
+    <dd><p>Where along the edge to position the label.</p>
+</dd>
+    <dt><code>offsetX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Horizontal offset from anchor point.</p>
+</dd>
+    <dt><code>offsetY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Vertical offset from anchor point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_WithRoutingMode_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_WithRoutingMode_FlowGraph_Core_Models_EdgeRoutingMode_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)">
+  WithRoutingMode(EdgeRoutingMode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with a different routing mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition WithRoutingMode(EdgeRoutingMode mode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mode</code> <a class="xref" href="FlowGraph.Core.Models.EdgeRoutingMode.html">EdgeRoutingMode</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Models_EdgeDefinition_WithType_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithType*"></a>
+
+  <h3 id="FlowGraph_Core_Models_EdgeDefinition_WithType_FlowGraph_Core_EdgeType_" data-uid="FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)">
+  WithType(EdgeType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new definition with a different edge type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeDefinition WithType(EdgeType type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="FlowGraph.Core.EdgeType.html">EdgeType</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.EdgeDefinition.html">EdgeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Models/EdgeDefinition.cs/#L14" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

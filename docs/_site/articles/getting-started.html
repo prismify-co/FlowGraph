@@ -114,6 +114,8 @@
 <h3 id="3-create-a-graph">3. Create a Graph</h3>
 <p>In your ViewModel or code-behind:</p>
 <pre><code class="lang-csharp">using FlowGraph.Core;
+using FlowGraph.Core.Models;
+using System.Collections.Immutable;
 
 public class MainViewModel
 {
@@ -121,34 +123,64 @@ public class MainViewModel
 
     public MainViewModel()
     {
-        // Create nodes
-        var node1 = new Node
+        // Create nodes using Definition + State pattern
+        var node1Definition = new NodeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Type = &quot;default&quot;,
-            Position = new Point(100, 100),
             Label = &quot;Node 1&quot;,
-            Outputs = [new Port { Id = &quot;out&quot;, Type = &quot;data&quot; }]
+            Outputs = [new PortDefinition { Id = &quot;out&quot;, Type = &quot;data&quot; }]
         };
 
-        var node2 = new Node
+        var node1State = new NodeState { X = 100, Y = 100 };
+        var node1 = new Node(node1Definition, node1State);
+
+        var node2Definition = new NodeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Type = &quot;default&quot;,
-            Position = new Point(350, 100),
             Label = &quot;Node 2&quot;,
-            Inputs = [new Port { Id = &quot;in&quot;, Type = &quot;data&quot; }]
+            Inputs = [new PortDefinition { Id = &quot;in&quot;, Type = &quot;data&quot; }]
         };
+
+        var node2State = new NodeState { X = 350, Y = 100 };
+        var node2 = new Node(node2Definition, node2State);
 
         Graph.AddNode(node1);
         Graph.AddNode(node2);
 
         // Connect nodes
-        Graph.AddEdge(new Edge
+        var edgeDefinition = new EdgeDefinition
         {
+            Id = Guid.NewGuid().ToString(),
             Source = node1.Id,
             Target = node2.Id,
             SourcePort = &quot;out&quot;,
-            TargetPort = &quot;in&quot;
-        });
+            TargetPort = &quot;in&quot;,
+            Type = EdgeType.Bezier,
+            MarkerEnd = EdgeMarker.Arrow
+        };
+
+        Graph.AddEdge(new Edge(edgeDefinition, new EdgeState()));
+    }
+}
+
+// Backward-compatible shorthand using parameterless constructor
+public class LegacyViewModel
+{
+    public Graph Graph { get; } = new Graph();
+
+    public LegacyViewModel()
+    {
+        var node = new Node
+        {
+            Type = &quot;default&quot;,
+            Position = new Point(100, 100),
+            Label = &quot;My Node&quot;,
+            Outputs = [new Port { Id = &quot;out&quot;, Type = &quot;data&quot; }]
+        };
+
+        Graph.AddNode(node);
     }
 }
 </code></pre>

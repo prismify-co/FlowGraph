@@ -1,0 +1,996 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.LabelEditManager
+  commentId: T:FlowGraph.Avalonia.LabelEditManager
+  id: LabelEditManager
+  parent: FlowGraph.Avalonia
+  children:
+  - FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
+  - FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel(FlowGraph.Core.Edge)
+  - FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.LabelEditManager.EdgeLabelCommitted
+  - FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.LabelEditManager.NodeLabelCommitted
+  langs:
+  - csharp
+  - vb
+  name: LabelEditManager
+  nameWithType: LabelEditManager
+  fullName: FlowGraph.Avalonia.LabelEditManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LabelEditManager
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 12
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: >-
+    Manages inline label editing for nodes and edges.
+
+    Supports both visual tree mode and direct rendering mode.
+  example: []
+  syntax:
+    content: public class LabelEditManager
+    content.vb: Public Class LabelEditManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.LabelEditManager.NodeLabelCommitted
+  commentId: E:FlowGraph.Avalonia.LabelEditManager.NodeLabelCommitted
+  id: NodeLabelCommitted
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: NodeLabelCommitted
+  nameWithType: LabelEditManager.NodeLabelCommitted
+  fullName: FlowGraph.Avalonia.LabelEditManager.NodeLabelCommitted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeLabelCommitted
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 26
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when a node's label has been committed.
+  example: []
+  syntax:
+    content: public event EventHandler<NodeLabelCommittedEventArgs>? NodeLabelCommitted
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.NodeLabelCommittedEventArgs}
+    content.vb: Public Event NodeLabelCommitted As EventHandler(Of NodeLabelCommittedEventArgs)
+- uid: FlowGraph.Avalonia.LabelEditManager.EdgeLabelCommitted
+  commentId: E:FlowGraph.Avalonia.LabelEditManager.EdgeLabelCommitted
+  id: EdgeLabelCommitted
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: EdgeLabelCommitted
+  nameWithType: LabelEditManager.EdgeLabelCommitted
+  fullName: FlowGraph.Avalonia.LabelEditManager.EdgeLabelCommitted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeLabelCommitted
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when an edge's label has been committed.
+  example: []
+  syntax:
+    content: public event EventHandler<EdgeLabelCommittedEventArgs>? EdgeLabelCommitted
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.EdgeLabelCommittedEventArgs}
+    content.vb: Public Event EdgeLabelCommitted As EventHandler(Of EdgeLabelCommittedEventArgs)
+- uid: FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)'
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<GraphRenderer>, Func<DirectGraphRenderer?>, Func<bool>, Action)
+  nameWithType: LabelEditManager.LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<GraphRenderer>, Func<DirectGraphRenderer?>, Func<bool>, Action)
+  fullName: FlowGraph.Avalonia.LabelEditManager.LabelEditManager(System.Func<FlowGraph.Core.Graph?>, System.Func<Avalonia.Controls.Canvas?>, System.Func<FlowGraph.Avalonia.ViewportState>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources?>, System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>, System.Func<FlowGraph.Avalonia.Rendering.DirectGraphRenderer?>, System.Func<bool>, System.Action)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Creates a new label edit manager.
+  example: []
+  syntax:
+    content: public LabelEditManager(Func<Graph?> getGraph, Func<Canvas?> getMainCanvas, Func<ViewportState> getViewport, Func<ThemeResources?> getTheme, Func<GraphRenderer> getGraphRenderer, Func<DirectGraphRenderer?> getDirectRenderer, Func<bool> getIsDirectRendering, Action renderEdges)
+    parameters:
+    - id: getGraph
+      type: System.Func{FlowGraph.Core.Graph}
+    - id: getMainCanvas
+      type: System.Func{Avalonia.Controls.Canvas}
+    - id: getViewport
+      type: System.Func{FlowGraph.Avalonia.ViewportState}
+    - id: getTheme
+      type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+    - id: getGraphRenderer
+      type: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+    - id: getDirectRenderer
+      type: System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
+    - id: getIsDirectRendering
+      type: System.Func{System.Boolean}
+    - id: renderEdges
+      type: System.Action
+    content.vb: Public Sub New(getGraph As Func(Of Graph), getMainCanvas As Func(Of Canvas), getViewport As Func(Of ViewportState), getTheme As Func(Of ThemeResources), getGraphRenderer As Func(Of GraphRenderer), getDirectRenderer As Func(Of DirectGraphRenderer), getIsDirectRendering As Func(Of Boolean), renderEdges As Action)
+  overload: FlowGraph.Avalonia.LabelEditManager.#ctor*
+  nameWithType.vb: LabelEditManager.New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of GraphRenderer), Func(Of DirectGraphRenderer), Func(Of Boolean), Action)
+  fullName.vb: FlowGraph.Avalonia.LabelEditManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of Avalonia.Controls.Canvas), System.Func(Of FlowGraph.Avalonia.ViewportState), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer), System.Func(Of FlowGraph.Avalonia.Rendering.DirectGraphRenderer), System.Func(Of Boolean), System.Action)
+  name.vb: New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of GraphRenderer), Func(Of DirectGraphRenderer), Func(Of Boolean), Action)
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
+  id: BeginEditNodeLabel(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: BeginEditNodeLabel(Node)
+  nameWithType: LabelEditManager.BeginEditNodeLabel(Node)
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginEditNodeLabel
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Begins inline editing for a node's label.
+  example: []
+  syntax:
+    content: public bool BeginEditNodeLabel(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to edit.
+    return:
+      type: System.Boolean
+      description: True if editing started successfully.
+    content.vb: Public Function BeginEditNodeLabel(node As Node) As Boolean
+  overload: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel*
+- uid: FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel(FlowGraph.Core.Node)
+  id: EndEditNodeLabel(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: EndEditNodeLabel(Node)
+  nameWithType: LabelEditManager.EndEditNodeLabel(Node)
+  fullName: FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EndEditNodeLabel
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 82
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Ends inline editing for a node's label.
+  example: []
+  syntax:
+    content: public void EndEditNodeLabel(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node being edited.
+    content.vb: Public Sub EndEditNodeLabel(node As Node)
+  overload: FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel*
+- uid: FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel(FlowGraph.Core.Node)
+  id: IsEditingNodeLabel(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: IsEditingNodeLabel(Node)
+  nameWithType: LabelEditManager.IsEditingNodeLabel(Node)
+  fullName: FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEditingNodeLabel
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 103
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets whether a node is currently being edited.
+  example: []
+  syntax:
+    content: public bool IsEditingNodeLabel(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to check.
+    return:
+      type: System.Boolean
+      description: True if the node is in edit mode.
+    content.vb: Public Function IsEditingNodeLabel(node As Node) As Boolean
+  overload: FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel*
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel(FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel(FlowGraph.Core.Edge)
+  id: BeginEditEdgeLabel(FlowGraph.Core.Edge)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: BeginEditEdgeLabel(Edge)
+  nameWithType: LabelEditManager.BeginEditEdgeLabel(Edge)
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel(FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginEditEdgeLabel
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Begins inline editing for an edge's label.
+  example: []
+  syntax:
+    content: public bool BeginEditEdgeLabel(Edge edge)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to edit.
+    return:
+      type: System.Boolean
+      description: True if editing started successfully.
+    content.vb: Public Function BeginEditEdgeLabel(edge As Edge) As Boolean
+  overload: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel*
+references:
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.EventHandler{FlowGraph.Avalonia.NodeLabelCommittedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.NodeLabelCommittedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<NodeLabelCommittedEventArgs>
+  nameWithType: EventHandler<NodeLabelCommittedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.NodeLabelCommittedEventArgs>
+  nameWithType.vb: EventHandler(Of NodeLabelCommittedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.NodeLabelCommittedEventArgs)
+  name.vb: EventHandler(Of NodeLabelCommittedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.NodeLabelCommittedEventArgs
+    name: NodeLabelCommittedEventArgs
+    href: FlowGraph.Avalonia.NodeLabelCommittedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.NodeLabelCommittedEventArgs
+    name: NodeLabelCommittedEventArgs
+    href: FlowGraph.Avalonia.NodeLabelCommittedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: System.EventHandler{FlowGraph.Avalonia.EdgeLabelCommittedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.EdgeLabelCommittedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<EdgeLabelCommittedEventArgs>
+  nameWithType: EventHandler<EdgeLabelCommittedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.EdgeLabelCommittedEventArgs>
+  nameWithType.vb: EventHandler(Of EdgeLabelCommittedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.EdgeLabelCommittedEventArgs)
+  name.vb: EventHandler(Of EdgeLabelCommittedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.EdgeLabelCommittedEventArgs
+    name: EdgeLabelCommittedEventArgs
+    href: FlowGraph.Avalonia.EdgeLabelCommittedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.EdgeLabelCommittedEventArgs
+    name: EdgeLabelCommittedEventArgs
+    href: FlowGraph.Avalonia.EdgeLabelCommittedEventArgs.html
+  - name: )
+- uid: FlowGraph.Avalonia.LabelEditManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.#ctor
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_Avalonia_Controls_Canvas__System_Func_FlowGraph_Avalonia_ViewportState__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__System_Func_FlowGraph_Avalonia_Rendering_GraphRenderer__System_Func_FlowGraph_Avalonia_Rendering_DirectGraphRenderer__System_Func_System_Boolean__System_Action_
+  name: LabelEditManager
+  nameWithType: LabelEditManager.LabelEditManager
+  fullName: FlowGraph.Avalonia.LabelEditManager.LabelEditManager
+  nameWithType.vb: LabelEditManager.New
+  fullName.vb: FlowGraph.Avalonia.LabelEditManager.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Core.Graph}
+  commentId: T:System.Func{FlowGraph.Core.Graph}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Graph>
+  nameWithType: Func<Graph>
+  fullName: System.Func<FlowGraph.Core.Graph>
+  nameWithType.vb: Func(Of Graph)
+  fullName.vb: System.Func(Of FlowGraph.Core.Graph)
+  name.vb: Func(Of Graph)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: System.Func{Avalonia.Controls.Canvas}
+  commentId: T:System.Func{Avalonia.Controls.Canvas}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Canvas>
+  nameWithType: Func<Canvas>
+  fullName: System.Func<Avalonia.Controls.Canvas>
+  nameWithType.vb: Func(Of Canvas)
+  fullName.vb: System.Func(Of Avalonia.Controls.Canvas)
+  name.vb: Func(Of Canvas)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: Avalonia.Controls.Canvas
+    name: Canvas
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Avalonia.Controls.Canvas
+    name: Canvas
+    isExternal: true
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.ViewportState}
+  commentId: T:System.Func{FlowGraph.Avalonia.ViewportState}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<ViewportState>
+  nameWithType: Func<ViewportState>
+  fullName: System.Func<FlowGraph.Avalonia.ViewportState>
+  nameWithType.vb: Func(Of ViewportState)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.ViewportState)
+  name.vb: Func(Of ViewportState)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ViewportState
+    name: ViewportState
+    href: FlowGraph.Avalonia.ViewportState.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ViewportState
+    name: ViewportState
+    href: FlowGraph.Avalonia.ViewportState.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<ThemeResources>
+  nameWithType: Func<ThemeResources>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>
+  nameWithType.vb: Func(Of ThemeResources)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources)
+  name.vb: Func(Of ThemeResources)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<GraphRenderer>
+  nameWithType: Func<GraphRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>
+  nameWithType.vb: Func(Of GraphRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer)
+  name.vb: Func(Of GraphRenderer)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
+    name: GraphRenderer
+    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
+    name: GraphRenderer
+    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - name: )
+- uid: System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<DirectGraphRenderer>
+  nameWithType: Func<DirectGraphRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.DirectGraphRenderer>
+  nameWithType.vb: Func(Of DirectGraphRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.DirectGraphRenderer)
+  name.vb: Func(Of DirectGraphRenderer)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
+    name: DirectGraphRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
+    name: DirectGraphRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html
+  - name: )
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_BeginEditNodeLabel_FlowGraph_Core_Node_
+  name: BeginEditNodeLabel
+  nameWithType: LabelEditManager.BeginEditNodeLabel
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_EndEditNodeLabel_FlowGraph_Core_Node_
+  name: EndEditNodeLabel
+  nameWithType: LabelEditManager.EndEditNodeLabel
+  fullName: FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel
+- uid: FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_IsEditingNodeLabel_FlowGraph_Core_Node_
+  name: IsEditingNodeLabel
+  nameWithType: LabelEditManager.IsEditingNodeLabel
+  fullName: FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_BeginEditEdgeLabel_FlowGraph_Core_Edge_
+  name: BeginEditEdgeLabel
+  nameWithType: LabelEditManager.BeginEditEdgeLabel
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge

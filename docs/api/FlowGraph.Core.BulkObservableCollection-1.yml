@@ -17,20 +17,24 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BulkObservableCollection
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 8
+    startLine: 15
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: An ObservableCollection that can suppress notifications during batch operations.
+  summary: >-
+    An <xref href="System.Collections.ObjectModel.ObservableCollection%601" data-throw-if-not-resolved="false"></xref> that can suppress notifications during batch operations.
+
+    Use <xref href="FlowGraph.Core.BulkObservableCollection%601.AddRange(System.Collections.Generic.IEnumerable%7b%600%7d)" data-throw-if-not-resolved="false"></xref> to add multiple items with a single notification.
   example: []
   syntax:
     content: 'public class BulkObservableCollection<T> : ObservableCollection<T>, IList<T>, ICollection<T>, IReadOnlyList<T>, IReadOnlyCollection<T>, IEnumerable<T>, IList, ICollection, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged'
     typeParameters:
     - id: T
+      description: The type of elements in the collection.
     content.vb: Public Class BulkObservableCollection(Of T) Inherits ObservableCollection(Of T) Implements IList(Of T), ICollection(Of T), IReadOnlyList(Of T), IReadOnlyCollection(Of T), IEnumerable(Of T), IList, ICollection, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
   inheritance:
   - System.Object
@@ -95,24 +99,25 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddRange
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 16
+    startLine: 24
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
   summary: >-
     Adds a range of items without firing individual notifications.
 
-    A single Reset notification is fired after all items are added.
+    A single <xref href="System.Collections.Specialized.NotifyCollectionChangedAction.Reset" data-throw-if-not-resolved="false"></xref> notification is fired after all items are added.
   example: []
   syntax:
     content: public void AddRange(IEnumerable<T> items)
     parameters:
     - id: items
       type: System.Collections.Generic.IEnumerable{{T}}
+      description: The items to add.
     content.vb: Public Sub AddRange(items As IEnumerable(Of T))
   overload: FlowGraph.Core.BulkObservableCollection`1.AddRange*
   nameWithType.vb: BulkObservableCollection(Of T).AddRange(IEnumerable(Of T))
@@ -132,11 +137,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnCollectionChanged
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 33
+    startLine: 44
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -154,6 +159,72 @@ items:
   nameWithType.vb: BulkObservableCollection(Of T).OnCollectionChanged(NotifyCollectionChangedEventArgs)
   fullName.vb: FlowGraph.Core.BulkObservableCollection(Of T).OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
 references:
+- uid: System.Collections.ObjectModel.ObservableCollection`1
+  commentId: T:System.Collections.ObjectModel.ObservableCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  name: ObservableCollection<T>
+  nameWithType: ObservableCollection<T>
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>
+  nameWithType.vb: ObservableCollection(Of T)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T)
+  name.vb: ObservableCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.BulkObservableCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
+  commentId: M:FlowGraph.Core.BulkObservableCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
+  isExternal: true
+  href: FlowGraph.Core.BulkObservableCollection-1.html#FlowGraph_Core_BulkObservableCollection_1_AddRange_System_Collections_Generic_IEnumerable__0__
+  name: AddRange(IEnumerable<T>)
+  nameWithType: BulkObservableCollection<T>.AddRange(IEnumerable<T>)
+  fullName: FlowGraph.Core.BulkObservableCollection<T>.AddRange(System.Collections.Generic.IEnumerable<T>)
+  nameWithType.vb: BulkObservableCollection(Of T).AddRange(IEnumerable(Of T))
+  fullName.vb: FlowGraph.Core.BulkObservableCollection(Of T).AddRange(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: AddRange(IEnumerable(Of T))
+  spec.csharp:
+  - uid: FlowGraph.Core.BulkObservableCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
+    name: AddRange
+    href: FlowGraph.Core.BulkObservableCollection-1.html#FlowGraph_Core_BulkObservableCollection_1_AddRange_System_Collections_Generic_IEnumerable__0__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.BulkObservableCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
+    name: AddRange
+    href: FlowGraph.Core.BulkObservableCollection-1.html#FlowGraph_Core_BulkObservableCollection_1_AddRange_System_Collections_Generic_IEnumerable__0__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html
@@ -362,7 +433,7 @@ references:
   - name: T
   - name: )
 - uid: System.Collections.Generic.IEnumerable{{T}}
-  commentId: T:System.Collections.Generic.IEnumerable{`0}
+  commentId: T:System.Collections.Generic.IEnumerable{``0}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IEnumerable`1
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
@@ -1363,34 +1434,6 @@ references:
     name: ObjectModel
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel
-- uid: System.Collections.ObjectModel.ObservableCollection`1
-  commentId: T:System.Collections.ObjectModel.ObservableCollection`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
-  name: ObservableCollection<T>
-  nameWithType: ObservableCollection<T>
-  fullName: System.Collections.ObjectModel.ObservableCollection<T>
-  nameWithType.vb: ObservableCollection(Of T)
-  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T)
-  name.vb: ObservableCollection(Of T)
-  spec.csharp:
-  - uid: System.Collections.ObjectModel.ObservableCollection`1
-    name: ObservableCollection
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.ObjectModel.ObservableCollection`1
-    name: ObservableCollection
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: System.Collections.Generic.IList`1
   commentId: T:System.Collections.Generic.IList`1
   isExternal: true
@@ -2278,6 +2321,13 @@ references:
   fullName: System.Collections.ObjectModel.Collection<T>.Items
   nameWithType.vb: Collection(Of T).Items
   fullName.vb: System.Collections.ObjectModel.Collection(Of T).Items
+- uid: System.Collections.Specialized.NotifyCollectionChangedAction.Reset
+  commentId: F:System.Collections.Specialized.NotifyCollectionChangedAction.Reset
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction#system-collections-specialized-notifycollectionchangedaction-reset
+  name: Reset
+  nameWithType: NotifyCollectionChangedAction.Reset
+  fullName: System.Collections.Specialized.NotifyCollectionChangedAction.Reset
 - uid: FlowGraph.Core.BulkObservableCollection`1.AddRange*
   commentId: Overload:FlowGraph.Core.BulkObservableCollection`1.AddRange
   href: FlowGraph.Core.BulkObservableCollection-1.html#FlowGraph_Core_BulkObservableCollection_1_AddRange_System_Collections_Generic_IEnumerable__0__

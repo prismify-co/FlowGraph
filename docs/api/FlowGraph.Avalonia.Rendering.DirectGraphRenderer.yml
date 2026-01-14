@@ -30,6 +30,7 @@ items:
   - FlowGraph.Avalonia.Rendering.DirectGraphRenderer.SetHoveredEndpointHandle(System.String,System.Boolean)
   - FlowGraph.Avalonia.Rendering.DirectGraphRenderer.SetHoveredPort(System.String,System.String)
   - FlowGraph.Avalonia.Rendering.DirectGraphRenderer.Update(FlowGraph.Core.Graph,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   langs:
   - csharp
   - vb
@@ -40,7 +41,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DirectGraphRenderer
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
@@ -164,6 +165,7 @@ items:
   - Avalonia.Input.InputElement.HoldingEvent
   - Avalonia.Input.InputElement.DoubleTappedEvent
   - Avalonia.Input.InputElement.Focus(Avalonia.Input.NavigationMethod,Avalonia.Input.KeyModifiers)
+  - Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
   - Avalonia.Input.InputElement.OnKeyDown(Avalonia.Input.KeyEventArgs)
   - Avalonia.Input.InputElement.OnTextInput(Avalonia.Input.TextInputEventArgs)
   - Avalonia.Input.InputElement.OnPointerEntered(Avalonia.Input.PointerEventArgs)
@@ -380,11 +382,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 72
+    startLine: 74
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -415,11 +417,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 82
+    startLine: 84
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -453,11 +455,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Model
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 94
+    startLine: 96
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -473,6 +475,38 @@ items:
       type: FlowGraph.Avalonia.Rendering.GraphRenderModel
     content.vb: Public ReadOnly Property Model As GraphRenderModel
   overload: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.Model*
+- uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  id: UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSettings(FlowCanvasSettings)
+  nameWithType: DirectGraphRenderer.UpdateSettings(FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSettings
+    path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
+    startLine: 102
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the settings and propagates to the render model.
+  example: []
+  syntax:
+    content: public void UpdateSettings(FlowCanvasSettings settings)
+    parameters:
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+      description: The new settings.
+    content.vb: Public Sub UpdateSettings(settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings*
 - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.NodeRenderers
   commentId: P:FlowGraph.Avalonia.Rendering.DirectGraphRenderer.NodeRenderers
   id: NodeRenderers
@@ -487,11 +521,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeRenderers
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 99
+    startLine: 113
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -518,11 +552,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEditing
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 108
+    startLine: 126
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -549,11 +583,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EditingNodeId
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 113
+    startLine: 131
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -580,11 +614,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EditingEdgeId
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 118
+    startLine: 136
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -611,11 +645,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Update
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 126
+    startLine: 144
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -652,11 +686,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InvalidateIndex
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 145
+    startLine: 172
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -683,11 +717,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetHoveredPort
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 155
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -721,11 +755,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ClearHoveredPort
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 168
+    startLine: 195
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -749,11 +783,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetHoveredEndpointHandle
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 182
+    startLine: 209
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -787,11 +821,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ClearHoveredEndpointHandle
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 195
+    startLine: 222
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -815,11 +849,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginEditNode
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 210
+    startLine: 237
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -850,11 +884,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EndEditNode
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 219
+    startLine: 246
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -878,11 +912,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginEditEdge
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 229
+    startLine: 256
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -913,11 +947,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EndEditEdge
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 238
+    startLine: 265
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -941,11 +975,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Render
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 287
+    startLine: 343
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -974,11 +1008,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HitTestEdgeEndpointHandle
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 749
+    startLine: 857
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1013,11 +1047,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HitTestResizeHandle
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 791
+    startLine: 919
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1051,11 +1085,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HitTestNode
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 817
+    startLine: 962
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1089,11 +1123,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HitTestPort
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 856
+    startLine: 1028
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1127,11 +1161,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HitTestEdge
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 921
+    startLine: 1131
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1165,11 +1199,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortScreenPosition
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 950
+    startLine: 1193
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1205,11 +1239,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeEndpointScreenPosition
     path: ../FlowGraph.Avalonia/Rendering/DirectGraphRenderer.cs
-    startLine: 961
+    startLine: 1204
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -2082,6 +2116,31 @@ references:
   - name: " "
   - uid: Avalonia.Input.KeyModifiers
     name: KeyModifiers
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
+  commentId: M:Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
+  parent: Avalonia.Input.InputElement
+  isExternal: true
+  name: OnAccessKey(RoutedEventArgs)
+  nameWithType: InputElement.OnAccessKey(RoutedEventArgs)
+  fullName: Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
+  spec.csharp:
+  - uid: Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
+    name: OnAccessKey
+    isExternal: true
+  - name: (
+  - uid: Avalonia.Interactivity.RoutedEventArgs
+    name: RoutedEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Avalonia.Input.InputElement.OnAccessKey(Avalonia.Interactivity.RoutedEventArgs)
+    name: OnAccessKey
+    isExternal: true
+  - name: (
+  - uid: Avalonia.Interactivity.RoutedEventArgs
+    name: RoutedEventArgs
     isExternal: true
   - name: )
 - uid: Avalonia.Input.InputElement.OnKeyDown(Avalonia.Input.KeyEventArgs)
@@ -7413,6 +7472,12 @@ references:
   name: GraphRenderModel
   nameWithType: GraphRenderModel
   fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel
+- uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings
+  href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html#FlowGraph_Avalonia_Rendering_DirectGraphRenderer_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: UpdateSettings
+  nameWithType: DirectGraphRenderer.UpdateSettings
+  fullName: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.UpdateSettings
 - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.NodeRenderers*
   commentId: Overload:FlowGraph.Avalonia.Rendering.DirectGraphRenderer.NodeRenderers
   href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html#FlowGraph_Avalonia_Rendering_DirectGraphRenderer_NodeRenderers

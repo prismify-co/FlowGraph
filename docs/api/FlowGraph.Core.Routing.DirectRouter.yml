@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/DirectRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DirectRouter
     path: ../FlowGraph.Core/Routing/DirectRouter.cs
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/DirectRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Instance
     path: ../FlowGraph.Core/Routing/DirectRouter.cs
@@ -86,7 +86,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/DirectRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Route
     path: ../FlowGraph.Core/Routing/DirectRouter.cs
@@ -126,16 +126,21 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/DirectRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortPosition
     path: ../FlowGraph.Core/Routing/DirectRouter.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
+  summary: >-
+    Gets the position of a port on a node.
+
+    Distributes ports evenly along the node edge based on port index.
+  example: []
   syntax:
-    content: protected static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
+    content: public static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     parameters:
     - id: node
       type: FlowGraph.Core.Node
@@ -147,7 +152,7 @@ items:
       type: FlowGraph.Core.Routing.EdgeRoutingContext
     return:
       type: FlowGraph.Core.Point
-    content.vb: Protected Shared Function GetPortPosition(node As Node, portId As String, isOutput As Boolean, context As EdgeRoutingContext) As Point
+    content.vb: Public Shared Function GetPortPosition(node As Node, portId As String, isOutput As Boolean, context As EdgeRoutingContext) As Point
   overload: FlowGraph.Core.Routing.DirectRouter.GetPortPosition*
   nameWithType.vb: DirectRouter.GetPortPosition(Node, String, Boolean, EdgeRoutingContext)
   fullName.vb: FlowGraph.Core.Routing.DirectRouter.GetPortPosition(FlowGraph.Core.Node, String, Boolean, FlowGraph.Core.Routing.EdgeRoutingContext)

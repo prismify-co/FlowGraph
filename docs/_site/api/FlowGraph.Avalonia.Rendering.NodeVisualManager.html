@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Avalonia_Rendering_NodeVisualManager" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager" class="text-break">
-Class NodeVisualManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L16"><i class="bi bi-code-slash"></i></a>
+Class NodeVisualManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,9 +157,9 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
   <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager__ctor_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.#ctor*"></a>
 
-  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRendererRegistry_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)">
-  NodeVisualManager(RenderContext, NodeRendererRegistry?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRendererRegistry_FlowGraph_Avalonia_Rendering_PortRenderers_PortRendererRegistry_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry,FlowGraph.Avalonia.Rendering.PortRenderers.PortRendererRegistry)">
+  NodeVisualManager(RenderContext, NodeRendererRegistry?, PortRendererRegistry?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new node visual manager.</p>
@@ -167,7 +167,7 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public NodeVisualManager(RenderContext renderContext, NodeRendererRegistry? nodeRendererRegistry = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public NodeVisualManager(RenderContext renderContext, NodeRendererRegistry? nodeRendererRegistry = null, PortRendererRegistry? portRendererRegistry = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -177,6 +177,9 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 </dd>
     <dt><code>nodeRendererRegistry</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry.html">NodeRendererRegistry</a></dt>
     <dd><p>Registry for custom node renderers. If null, a default registry is created.</p>
+</dd>
+    <dt><code>portRendererRegistry</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.PortRenderers.PortRendererRegistry.html">PortRendererRegistry</a></dt>
+    <dd><p>Registry for custom port renderers. If null, a default registry is created.</p>
 </dd>
   </dl>
 
@@ -199,7 +202,7 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_Model" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.Model">
   Model
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the render model used for geometry calculations.</p>
@@ -231,7 +234,7 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_NodeRenderers" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.NodeRenderers">
   NodeRenderers
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the node renderer registry for registering custom node types.</p>
@@ -259,6 +262,38 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
 
 
+  <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager_PortRenderers_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.PortRenderers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_PortRenderers" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.PortRenderers">
+  PortRenderers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the port renderer registry for registering custom port types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PortRendererRegistry PortRenderers { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.PortRenderers.PortRendererRegistry.html">PortRendererRegistry</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -267,7 +302,7 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_BeginEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_System_String__System_Action_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)">
   BeginEditLabel(Node, ThemeResources, Action&lt;string&gt;, Action)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L331"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L413"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins inline editing for a node's label.</p>
@@ -315,7 +350,7 @@ Uses GraphRenderModel for all geometry calculations to ensure visual parity with
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_Clear" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear">
   Clear()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Clears all tracked node and port visuals.
@@ -343,7 +378,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_EndEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
   EndEditLabel(Node, ThemeResources)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L356"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L438"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Ends inline editing for a node's label.</p>
@@ -379,7 +414,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_GetNodeDimensions_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)">
   GetNodeDimensions(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L423"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L505"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the dimensions for a node using GraphRenderModel.</p>
@@ -418,7 +453,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_GetNodeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeVisual(System.String)">
   GetNodeVisual(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the visual control for a node.</p>
@@ -457,7 +492,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)">
   GetPortPosition(Node, Port, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L412"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L494"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the screen position of a port using GraphRenderModel.</p>
@@ -502,15 +537,15 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortVisual_System_String_System_String_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortVisual(System.String,System.String)">
   GetPortVisual(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the visual ellipse for a port.</p>
+  <div class="markdown level1 summary"><p>Gets the visual control for a port.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Ellipse? GetPortVisual(string nodeId, string portId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Control? GetPortVisual(string nodeId, string portId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -525,8 +560,8 @@ Note: This does not remove them from the canvas.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><span class="xref">Ellipse</span></dt>
-    <dd><p>The port's visual ellipse, or null if not found.</p>
+    <dt><span class="xref">Control</span></dt>
+    <dd><p>The port's visual control, or null if not found.</p>
 </dd>
   </dl>
 
@@ -544,7 +579,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortYCanvas_System_Double_System_Int32_System_Int32_System_Nullable_System_Double__" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})">
   GetPortYCanvas(double, int, int, double?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L437"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L519"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calculates the Y position for a port in canvas coordinates using GraphRenderModel.</p>
@@ -592,7 +627,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_IsEditingLabel_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)">
   IsEditingLabel(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L462"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets whether a node is currently in edit mode.</p>
@@ -631,7 +666,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_IsNodeVisible_FlowGraph_Core_Graph_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)">
   IsNodeVisible(Graph, Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L457"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L539"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a node is visible (not hidden by a collapsed ancestor group).
@@ -674,7 +709,7 @@ Delegates to GraphRenderModel.IsNodeVisible.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderNode_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNode(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})">
   RenderNode(Canvas, Node, ThemeResources, Action&lt;Control, Node&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L159"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renders a single node with its ports.</p>
@@ -722,7 +757,7 @@ Delegates to GraphRenderModel.IsNodeVisible.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderNodes_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})">
   RenderNodes(Canvas, Graph, ThemeResources, Action&lt;Control, Node&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L114"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renders all nodes in the graph to the canvas.
@@ -765,9 +800,9 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
   <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderPort_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort*"></a>
 
-  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderPort_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Int32_System_Int32_System_Boolean_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Shapes_Ellipse_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean__" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Int32,System.Int32,System.Boolean,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Shapes.Ellipse,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean})">
-  RenderPort(Canvas, Node, Port, int, int, bool, ThemeResources, Action&lt;Ellipse, Node, Port, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderPort_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Int32_System_Int32_System_Boolean_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean__" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Int32,System.Int32,System.Boolean,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean})">
+  RenderPort(Canvas, Node, Port, int, int, bool, ThemeResources, Action&lt;Control, Node, Port, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L231"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renders a single port using GraphRenderModel for positioning.</p>
@@ -775,7 +810,7 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Ellipse RenderPort(Canvas canvas, Node node, Port port, int index, int totalPorts, bool isOutput, ThemeResources theme, Action&lt;Ellipse, Node, Port, bool&gt;? onPortCreated = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Control RenderPort(Canvas canvas, Node node, Port port, int index, int totalPorts, bool isOutput, ThemeResources theme, Action&lt;Control, Node, Port, bool&gt;? onPortCreated = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -801,15 +836,15 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
     <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
     <dd><p>Theme resources for styling.</p>
 </dd>
-    <dt><code>onPortCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<span class="xref">Ellipse</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>, <a class="xref" href="FlowGraph.Core.Port.html">Port</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dt><code>onPortCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<span class="xref">Control</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>, <a class="xref" href="FlowGraph.Core.Port.html">Port</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
     <dd><p>Optional callback when the port visual is created.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><span class="xref">Ellipse</span></dt>
-    <dd><p>The created port visual ellipse.</p>
+    <dt><span class="xref">Control</span></dt>
+    <dd><p>The created port visual control.</p>
 </dd>
   </dl>
 
@@ -827,7 +862,7 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_SupportsEditing_System_String_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)">
   SupportsEditing(string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L479"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a node's renderer supports inline editing.</p>
@@ -862,11 +897,46 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
 
 
+  <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateAllNodePositions_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateAllNodePositions_FlowGraph_Core_Graph_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)">
+  UpdateAllNodePositions(Graph)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates all existing node visuals to their current screen positions.
+This is an optimized path for viewport changes (pan/zoom) that avoids
+recreating the visual tree. Only updates positions, not visual properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateAllNodePositions(Graph graph)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd><p>The graph containing the nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodePosition_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition*"></a>
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodePosition_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)">
   UpdateNodePosition(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L280"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the position of a node visual on the canvas.</p>
@@ -899,7 +969,7 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSelection_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
   UpdateNodeSelection(Node, ThemeResources)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L363"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the selection visual state of a node.</p>
@@ -935,7 +1005,7 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSize_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
   UpdateNodeSize(Node, ThemeResources)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L385"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the size of a node visual.</p>
@@ -971,7 +1041,7 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
   <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdatePortPositions_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)">
   UpdatePortPositions(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L321"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the positions of all ports for a node using GraphRenderModel.</p>
@@ -1000,11 +1070,44 @@ When virtualization is enabled, only nodes in the visible viewport are rendered.
 
 
 
+  <a id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateSettings_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_" data-uid="FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)">
+  UpdateSettings(FlowCanvasSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the settings used by this manager and its render model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateSettings(FlowCanvasSettings settings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd><p>The new settings to use.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L16" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/NodeVisualManager.cs/#L18" class="edit-link">Edit this page</a>
         </div>
 
 

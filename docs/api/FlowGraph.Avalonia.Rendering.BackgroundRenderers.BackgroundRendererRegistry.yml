@@ -1,0 +1,745 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  id: BackgroundRendererRegistry
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged(FlowGraph.Core.Graph)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  langs:
+  - csharp
+  - vb
+  name: BackgroundRendererRegistry
+  nameWithType: BackgroundRendererRegistry
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BackgroundRendererRegistry
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 27
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Manages registration and rendering of custom background renderers.
+  remarks: >-
+    <p>
+
+    Background renderers are rendered in registration order, allowing layered
+
+    backgrounds. The registry supports both multiple concurrent renderers and
+
+    a single-renderer mode for simpler use cases.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">var registry = new BackgroundRendererRegistry();
+
+
+    // Add multiple renderers (rendered in order)
+
+    registry.Add(new GradientBackgroundRenderer());
+
+    registry.Add(new LifelineRenderer());
+
+
+    // Or use single mode
+
+    registry.SetSingle(new SwimlaneBackgroundRenderer());</code></pre>
+  syntax:
+    content: public class BackgroundRendererRegistry
+    content.vb: Public Class BackgroundRendererRegistry
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+  commentId: P:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+  id: HasRenderers
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: HasRenderers
+  nameWithType: BackgroundRendererRegistry.HasRenderers
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasRenderers
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 37
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Gets whether there are any background renderers registered.
+  example: []
+  syntax:
+    content: public bool HasRenderers { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasRenderers As Boolean
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  id: Add(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: Add(IBackgroundRenderer)
+  nameWithType: BackgroundRendererRegistry.Add(IBackgroundRenderer)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Add
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: >-
+    Adds a background renderer to the registry.
+
+    Renderers are called in the order they were added.
+  example: []
+  syntax:
+    content: public void Add(IBackgroundRenderer renderer)
+    parameters:
+    - id: renderer
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+      description: The renderer to add.
+    content.vb: Public Sub Add(renderer As IBackgroundRenderer)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  id: Remove(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: Remove(IBackgroundRenderer)
+  nameWithType: BackgroundRendererRegistry.Remove(IBackgroundRenderer)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Remove
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 56
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Removes a background renderer from the registry.
+  example: []
+  syntax:
+    content: public bool Remove(IBackgroundRenderer renderer)
+    parameters:
+    - id: renderer
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+      description: The renderer to remove.
+    return:
+      type: System.Boolean
+      description: True if the renderer was found and removed.
+    content.vb: Public Function Remove(renderer As IBackgroundRenderer) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  id: SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: SetSingle(IBackgroundRenderer?)
+  nameWithType: BackgroundRendererRegistry.SetSingle(IBackgroundRenderer?)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetSingle
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 70
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Sets a single background renderer, replacing any existing renderers.
+  example: []
+  syntax:
+    content: public void SetSingle(IBackgroundRenderer? renderer)
+    parameters:
+    - id: renderer
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+      description: The renderer to use, or null to clear.
+    content.vb: Public Sub SetSingle(renderer As IBackgroundRenderer)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle*
+  nameWithType.vb: BackgroundRendererRegistry.SetSingle(IBackgroundRenderer)
+  fullName.vb: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle(FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer)
+  name.vb: SetSingle(IBackgroundRenderer)
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear
+  id: Clear
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: BackgroundRendererRegistry.Clear()
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clear
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 83
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Clears all registered background renderers.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  id: Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: Render(Canvas, BackgroundRenderContext)
+  nameWithType: BackgroundRendererRegistry.Render(Canvas, BackgroundRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render(Avalonia.Controls.Canvas, FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Render
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 118
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Renders all registered backgrounds.
+  example: []
+  syntax:
+    content: public void Render(Canvas canvas, BackgroundRenderContext context)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to render to.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+      description: The rendering context.
+    content.vb: Public Sub Render(canvas As Canvas, context As BackgroundRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged(FlowGraph.Core.Graph)
+  id: OnGraphChanged(FlowGraph.Core.Graph)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: OnGraphChanged(Graph?)
+  nameWithType: BackgroundRendererRegistry.OnGraphChanged(Graph?)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged(FlowGraph.Core.Graph?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnGraphChanged
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 139
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Notifies all renderers of a graph change.
+  example: []
+  syntax:
+    content: public void OnGraphChanged(Graph? graph)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The updated graph.
+    content.vb: Public Sub OnGraphChanged(graph As Graph)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged*
+  nameWithType.vb: BackgroundRendererRegistry.OnGraphChanged(Graph)
+  fullName.vb: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged(FlowGraph.Core.Graph)
+  name.vb: OnGraphChanged(Graph)
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  id: OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
+  langs:
+  - csharp
+  - vb
+  name: OnViewportChanged(BackgroundRenderContext)
+  nameWithType: BackgroundRendererRegistry.OnViewportChanged(BackgroundRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnViewportChanged
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/BackgroundRendererRegistry.cs
+    startLine: 158
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Notifies all renderers of a viewport change.
+  example: []
+  syntax:
+    content: public void OnViewportChanged(BackgroundRenderContext context)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+      description: The updated context.
+    content.vb: Public Sub OnViewportChanged(context As BackgroundRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged*
+references:
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+    name: BackgroundRenderers
+    href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+    name: BackgroundRenderers
+    href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_HasRenderers
+  name: HasRenderers
+  nameWithType: BackgroundRendererRegistry.HasRenderers
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.HasRenderers
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_Add_FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_
+  name: Add
+  nameWithType: BackgroundRendererRegistry.Add
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Add
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html
+  name: IBackgroundRenderer
+  nameWithType: IBackgroundRenderer
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_Remove_FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_
+  name: Remove
+  nameWithType: BackgroundRendererRegistry.Remove
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Remove
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_SetSingle_FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_
+  name: SetSingle
+  nameWithType: BackgroundRendererRegistry.SetSingle
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.SetSingle
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_Clear
+  name: Clear
+  nameWithType: BackgroundRendererRegistry.Clear
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Clear
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_Render_Avalonia_Controls_Canvas_FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderContext_
+  name: Render
+  nameWithType: BackgroundRendererRegistry.Render
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.Render
+- uid: Avalonia.Controls.Canvas
+  commentId: T:Avalonia.Controls.Canvas
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Canvas
+  nameWithType: Canvas
+  fullName: Avalonia.Controls.Canvas
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext.html
+  name: BackgroundRenderContext
+  nameWithType: BackgroundRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_OnGraphChanged_FlowGraph_Core_Graph_
+  name: OnGraphChanged
+  nameWithType: BackgroundRendererRegistry.OnGraphChanged
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnGraphChanged
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRendererRegistry_OnViewportChanged_FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderContext_
+  name: OnViewportChanged
+  nameWithType: BackgroundRendererRegistry.OnViewportChanged
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.OnViewportChanged

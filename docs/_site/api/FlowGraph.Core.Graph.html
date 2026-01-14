@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class Graph | FlowGraph ">
       
-      
+      <meta name="description" content="Represents a flow graph containing nodes, edges, and other canvas elements. Provides methods for adding, removing, and querying graph elements.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Core_Graph" data-uid="FlowGraph.Core.Graph" class="text-break">
-Class Graph  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L43"><i class="bi bi-code-slash"></i></a>
+Class Graph  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,9 @@ Class Graph  <a class="header-action link-secondary" title="View source" href="h
   <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Represents a flow graph containing nodes, edges, and other canvas elements.
+Provides methods for adding, removing, and querying graph elements.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -146,6 +148,12 @@ Class Graph  <a class="header-action link-secondary" title="View source" href="h
   <dl class="typelist extensionMethods">
     <dt>Extension Methods</dt>
     <dd>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_">LoggingExtensions.CreateDiagnosticSnapshot(Graph)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_">LoggingExtensions.LogGraphState(Graph, string, string)</a>
+  </div>
   <div>
       <a class="xref" href="FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_">GraphGroupExtensions.CalculateGroupBounds(Graph, string, double, double, double, double)</a>
   </div>
@@ -198,6 +206,49 @@ Class Graph  <a class="header-action link-secondary" title="View source" href="h
 
 
 
+  <h2 id="FlowGraph_Core_Graph_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+The Graph class supports the canvas-first architecture where any
+<a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a> can be added to the canvas, not just nodes and edges.
+</p>
+<p>
+For backward compatibility, the <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Nodes">Nodes</a> and <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Edges">Edges</a>
+collections continue to work as before. New code can use <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Elements">Elements</a>
+to access all elements uniformly.
+</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Core_Graph__ctor_" data-uid="FlowGraph.Core.Graph.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Graph__ctor" data-uid="FlowGraph.Core.Graph.#ctor">
+  Graph()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the Graph class.
+Sets up bidirectional sync between legacy collections (Nodes/Edges) and Elements.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Graph()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
   <h2 class="section" id="properties">Properties
@@ -208,14 +259,17 @@ Class Graph  <a class="header-action link-secondary" title="View source" href="h
 
   <h3 id="FlowGraph_Core_Graph_Edges" data-uid="FlowGraph.Core.Graph.Edges">
   Edges
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L200"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the collection of edge elements.
+This is a convenience accessor that returns edges from <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Elements">Elements</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BulkObservableCollection&lt;Edge&gt; Edges { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Elements.Edges for new code. This property is retained for backward compatibility.&quot;)]
+public BulkObservableCollection&lt;Edge&gt; Edges { get; }</code></pre>
   </div>
 
 
@@ -235,11 +289,48 @@ Class Graph  <a class="header-action link-secondary" title="View source" href="h
 
 
 
+  <a id="FlowGraph_Core_Graph_Elements_" data-uid="FlowGraph.Core.Graph.Elements*"></a>
+
+  <h3 id="FlowGraph_Core_Graph_Elements" data-uid="FlowGraph.Core.Graph.Elements">
+  Elements
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the collection of all canvas elements (nodes, edges, shapes, etc.).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ElementCollection Elements { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.ElementCollection.html">ElementCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Graph_Elements_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is the primary collection for the canvas-first architecture.
+Use typed accessors like <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Nodes">Nodes</a> and <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Edges">Edges</a> for
+graph-specific operations.</p>
+</div>
+
+
+
+
   <a id="FlowGraph_Core_Graph_IsBatchLoading_" data-uid="FlowGraph.Core.Graph.IsBatchLoading*"></a>
 
   <h3 id="FlowGraph_Core_Graph_IsBatchLoading" data-uid="FlowGraph.Core.Graph.IsBatchLoading">
   IsBatchLoading
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L207"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets whether the graph is currently in batch loading mode.
@@ -272,14 +363,17 @@ During batch loading, collection change notifications are suppressed.</p>
 
   <h3 id="FlowGraph_Core_Graph_Nodes" data-uid="FlowGraph.Core.Graph.Nodes">
   Nodes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L193"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the collection of node elements.
+This is a convenience accessor that returns nodes from <a class="xref" href="FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Elements">Elements</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BulkObservableCollection&lt;Node&gt; Nodes { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Elements.Nodes for new code. This property is retained for backward compatibility.&quot;)]
+public BulkObservableCollection&lt;Node&gt; Nodes { get; }</code></pre>
   </div>
 
 
@@ -307,10 +401,11 @@ During batch loading, collection change notifications are suppressed.</p>
 
   <h3 id="FlowGraph_Core_Graph_AddEdge_FlowGraph_Core_Edge_" data-uid="FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)">
   AddEdge(Edge)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L414"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds an edge to the graph.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -338,7 +433,7 @@ During batch loading, collection change notifications are suppressed.</p>
 
   <h3 id="FlowGraph_Core_Graph_AddEdges_System_Collections_Generic_IEnumerable_FlowGraph_Core_Edge__" data-uid="FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})">
   AddEdges(IEnumerable&lt;Edge&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L396"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds multiple edges at once with a single notification.</p>
@@ -366,14 +461,81 @@ During batch loading, collection change notifications are suppressed.</p>
 
 
 
+  <a id="FlowGraph_Core_Graph_AddElement_" data-uid="FlowGraph.Core.Graph.AddElement*"></a>
+
+  <h3 id="FlowGraph_Core_Graph_AddElement_FlowGraph_Core_Elements_ICanvasElement_" data-uid="FlowGraph.Core.Graph.AddElement(FlowGraph.Core.Elements.ICanvasElement)">
+  AddElement(ICanvasElement)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds any canvas element to the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddElement(ICanvasElement element)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>element</code> <a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a></dt>
+    <dd><p>The element to add.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Graph_AddElements_" data-uid="FlowGraph.Core.Graph.AddElements*"></a>
+
+  <h3 id="FlowGraph_Core_Graph_AddElements_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__" data-uid="FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})">
+  AddElements(IEnumerable&lt;ICanvasElement&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds multiple elements at once with a single notification.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddElements(IEnumerable&lt;ICanvasElement&gt; elements)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>elements</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a>&gt;</dt>
+    <dd><p>The elements to add.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="FlowGraph_Core_Graph_AddNode_" data-uid="FlowGraph.Core.Graph.AddNode*"></a>
 
   <h3 id="FlowGraph_Core_Graph_AddNode_FlowGraph_Core_Node_" data-uid="FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)">
   AddNode(Node)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L345"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds a node to the graph.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -401,7 +563,7 @@ During batch loading, collection change notifications are suppressed.</p>
 
   <h3 id="FlowGraph_Core_Graph_AddNodes_System_Collections_Generic_IEnumerable_FlowGraph_Core_Node__" data-uid="FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})">
   AddNodes(IEnumerable&lt;Node&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L327"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds multiple nodes at once with a single notification.</p>
@@ -433,11 +595,11 @@ During batch loading, collection change notifications are suppressed.</p>
 
   <h3 id="FlowGraph_Core_Graph_BeginBatchLoad" data-uid="FlowGraph.Core.Graph.BeginBatchLoad">
   BeginBatchLoad()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L219"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins batch loading mode. Collection change notifications are suppressed
-until EndBatchLoad is called. Use this when adding many nodes/edges at once.</p>
+until EndBatchLoad is called. Use this when adding many elements at once.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -461,7 +623,7 @@ until EndBatchLoad is called. Use this when adding many nodes/edges at once.</p>
 
   <h3 id="FlowGraph_Core_Graph_EndBatchLoad" data-uid="FlowGraph.Core.Graph.EndBatchLoad">
   EndBatchLoad()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L227"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Ends batch loading mode and raises BatchLoadCompleted event.</p>
@@ -488,10 +650,11 @@ until EndBatchLoad is called. Use this when adding many nodes/edges at once.</p>
 
   <h3 id="FlowGraph_Core_Graph_RemoveEdge_System_String_" data-uid="FlowGraph.Core.Graph.RemoveEdge(System.String)">
   RemoveEdge(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L445"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Removes an edge from the graph.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -515,14 +678,81 @@ until EndBatchLoad is called. Use this when adding many nodes/edges at once.</p>
 
 
 
+  <a id="FlowGraph_Core_Graph_RemoveElement_" data-uid="FlowGraph.Core.Graph.RemoveElement*"></a>
+
+  <h3 id="FlowGraph_Core_Graph_RemoveElement_FlowGraph_Core_Elements_ICanvasElement_" data-uid="FlowGraph.Core.Graph.RemoveElement(FlowGraph.Core.Elements.ICanvasElement)">
+  RemoveElement(ICanvasElement)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes any canvas element from the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveElement(ICanvasElement element)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>element</code> <a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a></dt>
+    <dd><p>The element to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Graph_RemoveElements_" data-uid="FlowGraph.Core.Graph.RemoveElements*"></a>
+
+  <h3 id="FlowGraph_Core_Graph_RemoveElements_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__" data-uid="FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})">
+  RemoveElements(IEnumerable&lt;ICanvasElement&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes multiple elements at once with a single notification.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveElements(IEnumerable&lt;ICanvasElement&gt; elements)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>elements</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a>&gt;</dt>
+    <dd><p>The elements to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="FlowGraph_Core_Graph_RemoveNode_" data-uid="FlowGraph.Core.Graph.RemoveNode*"></a>
 
   <h3 id="FlowGraph_Core_Graph_RemoveNode_System_String_" data-uid="FlowGraph.Core.Graph.RemoveNode(System.String)">
   RemoveNode(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L363"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Removes a node and all connected edges from the graph.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -553,7 +783,7 @@ until EndBatchLoad is called. Use this when adding many nodes/edges at once.</p>
 
   <h3 id="FlowGraph_Core_Graph_BatchLoadCompleted" data-uid="FlowGraph.Core.Graph.BatchLoadCompleted">
   BatchLoadCompleted
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L213"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Event raised when batch loading completes.
@@ -586,7 +816,7 @@ Subscribe to this to refresh UI after bulk operations.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Graph.cs/#L43" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Graph.cs/#L69" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -1,0 +1,956 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  id: ShapeVisualManager
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor(Avalonia.Controls.Canvas)
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual(System.String)
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape(System.String)
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext(FlowGraph.Avalonia.Rendering.RenderContext)
+  - FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection(System.String,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: ShapeVisualManager
+  nameWithType: ShapeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeVisualManager
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 23
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Manages the visual representation of shape elements on the canvas.
+  remarks: >-
+    <p>
+
+    ShapeVisualManager follows the same pattern as <xref href="FlowGraph.Avalonia.Rendering.NodeVisualManager" data-throw-if-not-resolved="false"></xref>
+
+    and <xref href="FlowGraph.Avalonia.Rendering.EdgeVisualManager" data-throw-if-not-resolved="false"></xref>, providing consistent management of
+
+    visual-to-model mappings for shape elements.
+
+    </p>
+
+    <p>
+
+    It handles:
+
+    - Creating visuals for shape elements
+
+    - Positioning visuals in canvas coordinates
+
+    - Updating visuals when properties change
+
+    - Removing visuals when shapes are removed
+
+    </p>
+  example: []
+  syntax:
+    content: public class ShapeVisualManager
+    content.vb: Public Class ShapeVisualManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor(Avalonia.Controls.Canvas)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor(Avalonia.Controls.Canvas)
+  id: '#ctor(Avalonia.Controls.Canvas)'
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: ShapeVisualManager(Canvas)
+  nameWithType: ShapeVisualManager.ShapeVisualManager(Canvas)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.ShapeVisualManager(Avalonia.Controls.Canvas)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Creates a new ShapeVisualManager for the specified canvas.
+  example: []
+  syntax:
+    content: public ShapeVisualManager(Canvas canvas)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to manage shape visuals on.
+    content.vb: Public Sub New(canvas As Canvas)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor*
+  nameWithType.vb: ShapeVisualManager.New(Canvas)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.New(Avalonia.Controls.Canvas)
+  name.vb: New(Canvas)
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext(FlowGraph.Avalonia.Rendering.RenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext(FlowGraph.Avalonia.Rendering.RenderContext)
+  id: SetRenderContext(FlowGraph.Avalonia.Rendering.RenderContext)
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: SetRenderContext(RenderContext)
+  nameWithType: ShapeVisualManager.SetRenderContext(RenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext(FlowGraph.Avalonia.Rendering.RenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetRenderContext
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Sets the render context for coordinate transformations and settings.
+  example: []
+  syntax:
+    content: public void SetRenderContext(RenderContext context)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.RenderContext
+      description: The render context to use.
+    content.vb: Public Sub SetRenderContext(context As RenderContext)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext*
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  id: AddOrUpdateShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: AddOrUpdateShape(ShapeElement)
+  nameWithType: ShapeVisualManager.AddOrUpdateShape(ShapeElement)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddOrUpdateShape
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 60
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Adds or updates a shape visual on the canvas.
+  example: []
+  syntax:
+    content: public void AddOrUpdateShape(ShapeElement shape)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+      description: The shape element to render.
+    content.vb: Public Sub AddOrUpdateShape(shape As ShapeElement)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape*
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection(System.String,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection(System.String,System.Boolean)
+  id: UpdateSelection(System.String,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateSelection(string, bool)
+  nameWithType: ShapeVisualManager.UpdateSelection(string, bool)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection(string, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSelection
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 110
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Updates the selection state of a shape visual.
+  example: []
+  syntax:
+    content: public void UpdateSelection(string shapeId, bool isSelected)
+    parameters:
+    - id: shapeId
+      type: System.String
+      description: The ID of the shape to update.
+    - id: isSelected
+      type: System.Boolean
+      description: Whether the shape is selected.
+    content.vb: Public Sub UpdateSelection(shapeId As String, isSelected As Boolean)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection*
+  nameWithType.vb: ShapeVisualManager.UpdateSelection(String, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection(String, Boolean)
+  name.vb: UpdateSelection(String, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape(System.String)
+  id: RemoveShape(System.String)
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveShape(string)
+  nameWithType: ShapeVisualManager.RemoveShape(string)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveShape
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 124
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Removes a shape visual from the canvas.
+  example: []
+  syntax:
+    content: public void RemoveShape(string shapeId)
+    parameters:
+    - id: shapeId
+      type: System.String
+      description: The ID of the shape to remove.
+    content.vb: Public Sub RemoveShape(shapeId As String)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape*
+  nameWithType.vb: ShapeVisualManager.RemoveShape(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape(String)
+  name.vb: RemoveShape(String)
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear
+  id: Clear
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: ShapeVisualManager.Clear()
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clear
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 137
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Removes all shape visuals from the canvas.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear*
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual(System.String)
+  id: GetVisual(System.String)
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetVisual(string)
+  nameWithType: ShapeVisualManager.GetVisual(string)
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetVisual
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 152
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Gets the visual for a shape by ID.
+  example: []
+  syntax:
+    content: public Control? GetVisual(string shapeId)
+    parameters:
+    - id: shapeId
+      type: System.String
+      description: The shape ID.
+    return:
+      type: Avalonia.Controls.Control
+      description: The visual control, or null if not found.
+    content.vb: Public Function GetVisual(shapeId As String) As Control
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual*
+  nameWithType.vb: ShapeVisualManager.GetVisual(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual(String)
+  name.vb: GetVisual(String)
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll
+  id: RefreshAll
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RefreshAll()
+  nameWithType: ShapeVisualManager.RefreshAll()
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RefreshAll
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 160
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Updates all shape visuals (e.g., after zoom change).
+  example: []
+  syntax:
+    content: public void RefreshAll()
+    content.vb: Public Sub RefreshAll()
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll*
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds
+  commentId: M:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds
+  id: GetShapeIds
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetShapeIds()
+  nameWithType: ShapeVisualManager.GetShapeIds()
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetShapeIds
+    path: ../FlowGraph.Avalonia/Rendering/ShapeRenderers/ShapeVisualManager.cs
+    startLine: 174
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  summary: Gets all tracked shape IDs.
+  example: []
+  syntax:
+    content: public IEnumerable<string> GetShapeIds()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public Function GetShapeIds() As IEnumerable(Of String)
+  overload: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds*
+references:
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeVisualManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html
+  name: NodeVisualManager
+  nameWithType: NodeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html
+  name: EdgeVisualManager
+  nameWithType: EdgeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.ShapeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+    name: ShapeRenderers
+    href: FlowGraph.Avalonia.Rendering.ShapeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+    name: ShapeRenderers
+    href: FlowGraph.Avalonia.Rendering.ShapeRenderers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.#ctor
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager__ctor_Avalonia_Controls_Canvas_
+  name: ShapeVisualManager
+  nameWithType: ShapeVisualManager.ShapeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.ShapeVisualManager
+  nameWithType.vb: ShapeVisualManager.New
+  fullName.vb: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.New
+  name.vb: New
+- uid: Avalonia.Controls.Canvas
+  commentId: T:Avalonia.Controls.Canvas
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Canvas
+  nameWithType: Canvas
+  fullName: Avalonia.Controls.Canvas
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_SetRenderContext_FlowGraph_Avalonia_Rendering_RenderContext_
+  name: SetRenderContext
+  nameWithType: ShapeVisualManager.SetRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.SetRenderContext
+- uid: FlowGraph.Avalonia.Rendering.RenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.RenderContext
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html
+  name: RenderContext
+  nameWithType: RenderContext
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_AddOrUpdateShape_FlowGraph_Core_Elements_Shapes_ShapeElement_
+  name: AddOrUpdateShape
+  nameWithType: ShapeVisualManager.AddOrUpdateShape
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.AddOrUpdateShape
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_UpdateSelection_System_String_System_Boolean_
+  name: UpdateSelection
+  nameWithType: ShapeVisualManager.UpdateSelection
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.UpdateSelection
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_RemoveShape_System_String_
+  name: RemoveShape
+  nameWithType: ShapeVisualManager.RemoveShape
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RemoveShape
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_Clear
+  name: Clear
+  nameWithType: ShapeVisualManager.Clear
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.Clear
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_GetVisual_System_String_
+  name: GetVisual
+  nameWithType: ShapeVisualManager.GetVisual
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetVisual
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_RefreshAll
+  name: RefreshAll
+  nameWithType: ShapeVisualManager.RefreshAll
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.RefreshAll
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html#FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_GetShapeIds
+  name: GetShapeIds
+  nameWithType: ShapeVisualManager.GetShapeIds
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.GetShapeIds
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

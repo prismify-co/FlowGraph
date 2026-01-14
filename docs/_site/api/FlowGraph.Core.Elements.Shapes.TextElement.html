@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TextElement | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TextElement | FlowGraph ">
+      
+      <meta name="description" content="A text shape element for displaying standalone text on the canvas.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Elements_Shapes_TextElement.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Elements.Shapes.TextElement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Elements.Shapes.TextElement">
+
+
+
+  <h1 id="FlowGraph_Core_Elements_Shapes_TextElement" data-uid="FlowGraph.Core.Elements.Shapes.TextElement" class="text-break">
+Class TextElement  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Elements.html">Elements</a>.<a class="xref" href="FlowGraph.Core.Elements.Shapes.html">Shapes</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A text shape element for displaying standalone text on the canvas.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TextElement : ShapeElement, ICanvasElement, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html">CanvasElement</a></div>
+      <div><a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html">ShapeElement</a></div>
+      <div><span class="xref">TextElement</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Fill">ShapeElement.Fill</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Stroke">ShapeElement.Stroke</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_StrokeWidth">ShapeElement.StrokeWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Opacity">ShapeElement.Opacity</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Rotation">ShapeElement.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Label">ShapeElement.Label</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexBackground">CanvasElement.ZIndexBackground</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexShapes">CanvasElement.ZIndexShapes</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexEdges">CanvasElement.ZIndexEdges</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexNodes">CanvasElement.ZIndexNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_PropertyChanged">CanvasElement.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Id">CanvasElement.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Position">CanvasElement.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Width">CanvasElement.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Height">CanvasElement.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelected">CanvasElement.IsSelected</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsVisible">CanvasElement.IsVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndex">CanvasElement.ZIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_GetBounds">CanvasElement.GetBounds()</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnBoundsChanged">CanvasElement.OnBoundsChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnPropertyChanged_System_String_">CanvasElement.OnPropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+  <h2 id="FlowGraph_Core_Elements_Shapes_TextElement_examples">Examples</h2>
+  <pre><code class="lang-csharp">// Create a diagram title
+var title = new TextElement("title-1")
+{
+    Position = new Point(50, 20),
+    Text = "System Architecture",
+    FontSize = 24,
+    FontWeight = FontWeight.Bold,
+    Fill = "#2c3e50"
+};
+
+// Create an annotation
+var note = new TextElement("note-1")
+{
+    Position = new Point(200, 300),
+    Text = "TODO: Add error handling",
+    FontSize = 12,
+    FontStyle = FontStyle.Italic,
+    Fill = "#e74c3c"
+};</code></pre>
+
+
+  <h2 id="FlowGraph_Core_Elements_Shapes_TextElement_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+TextElement is useful for:
+- Annotations and comments
+- Diagram titles and labels
+- Swimlane headers
+- Free-form notes
+</p>
+<p>
+Unlike node labels, TextElement exists independently and can be positioned
+anywhere on the canvas without being attached to a node.
+</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement__ctor_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement__ctor" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.#ctor">
+  TextElement()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new text element with a generated ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextElement()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement__ctor_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement__ctor_System_String_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.#ctor(System.String)">
+  TextElement(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new text element with the specified ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextElement(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier for this text element.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_FontFamily_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontFamily*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_FontFamily" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontFamily">
+  FontFamily
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font family name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FontFamily { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_FontSize_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontSize*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_FontSize" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontSize">
+  FontSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font size in points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FontSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_FontStyle_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontStyle*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_FontStyle" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontStyle">
+  FontStyle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font style (normal, italic, etc.).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontStyle FontStyle { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.FontStyle.html">FontStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_FontWeight_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontWeight*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_FontWeight" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.FontWeight">
+  FontWeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font weight.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontWeight FontWeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.FontWeight.html">FontWeight</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_MaxWidth_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.MaxWidth*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_MaxWidth" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.MaxWidth">
+  MaxWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum width for text wrapping.
+Null means no wrapping - text extends as needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? MaxWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_Text_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.Text*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_Text" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.Text">
+  Text
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the text content to display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Text { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_TextAlignment_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.TextAlignment*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_TextAlignment" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.TextAlignment">
+  TextAlignment
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the text alignment within the element bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextAlignment TextAlignment { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.TextAlignment.html">TextAlignment</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_TextElement_Type_" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.Type*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_TextElement_Type" data-uid="FlowGraph.Core.Elements.Shapes.TextElement.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type identifier for this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Type { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Elements_Shapes_TextElement_Type_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Used by renderer registries to select the appropriate renderer.
+For nodes, this typically comes from the node definition's Type property.
+For shapes, this identifies the shape type (line, rectangle, text, etc.).</p>
+</div>
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Elements/Shapes/TextElement.cs/#L42" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

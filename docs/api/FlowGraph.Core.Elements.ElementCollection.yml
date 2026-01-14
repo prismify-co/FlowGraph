@@ -1,0 +1,3607 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Elements.ElementCollection
+  commentId: T:FlowGraph.Core.Elements.ElementCollection
+  id: ElementCollection
+  parent: FlowGraph.Core.Elements
+  children:
+  - FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  - FlowGraph.Core.Elements.ElementCollection.ByZIndex
+  - FlowGraph.Core.Elements.ElementCollection.ClearItems
+  - FlowGraph.Core.Elements.ElementCollection.ContainsId(System.String)
+  - FlowGraph.Core.Elements.ElementCollection.EdgeCount
+  - FlowGraph.Core.Elements.ElementCollection.Edges
+  - FlowGraph.Core.Elements.ElementCollection.FindById(System.String)
+  - FlowGraph.Core.Elements.ElementCollection.FindById``1(System.String)
+  - FlowGraph.Core.Elements.ElementCollection.FindInBounds(FlowGraph.Core.Elements.Rect,System.Boolean)
+  - FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode(System.String)
+  - FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes(System.Collections.Generic.IEnumerable{System.String})
+  - FlowGraph.Core.Elements.ElementCollection.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Elements.ElementCollection.NodeCount
+  - FlowGraph.Core.Elements.ElementCollection.Nodes
+  - FlowGraph.Core.Elements.ElementCollection.OfElementType``1
+  - FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  - FlowGraph.Core.Elements.ElementCollection.RemoveItem(System.Int32)
+  - FlowGraph.Core.Elements.ElementCollection.RemoveRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  - FlowGraph.Core.Elements.ElementCollection.ReplaceAll(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  - FlowGraph.Core.Elements.ElementCollection.Selected
+  - FlowGraph.Core.Elements.ElementCollection.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Elements.ElementCollection.Visible
+  langs:
+  - csharp
+  - vb
+  name: ElementCollection
+  nameWithType: ElementCollection
+  fullName: FlowGraph.Core.Elements.ElementCollection
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ElementCollection
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 21
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: An observable collection of canvas elements with typed accessors and lookup methods.
+  remarks: >-
+    <p>
+
+    This collection is the core data structure for the canvas-first architecture.
+
+    It holds all elements (nodes, edges, shapes, etc.) and provides efficient
+
+    lookup and filtering methods.
+
+    </p>
+
+    <p>
+
+    Supports batch operations via <xref href="FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable%7bFlowGraph.Core.Elements.ICanvasElement%7d)" data-throw-if-not-resolved="false"></xref> for efficient bulk updates.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public class ElementCollection : ObservableCollection<ICanvasElement>, IList<ICanvasElement>, ICollection<ICanvasElement>, IReadOnlyList<ICanvasElement>, IReadOnlyCollection<ICanvasElement>, IEnumerable<ICanvasElement>, IList, ICollection, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged'
+    content.vb: Public Class ElementCollection Inherits ObservableCollection(Of ICanvasElement) Implements IList(Of ICanvasElement), ICollection(Of ICanvasElement), IReadOnlyList(Of ICanvasElement), IReadOnlyCollection(Of ICanvasElement), IEnumerable(Of ICanvasElement), IList, ICollection, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
+  inheritance:
+  - System.Object
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  implements:
+  - System.Collections.Generic.IList{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.Generic.ICollection{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.Generic.IReadOnlyCollection{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+  - System.Collections.IList
+  - System.Collections.ICollection
+  - System.Collections.IEnumerable
+  - System.Collections.Specialized.INotifyCollectionChanged
+  - System.ComponentModel.INotifyPropertyChanged
+  inheritedMembers:
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.BlockReentrancy
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CheckReentrancy
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.Move(System.Int32,System.Int32)
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.MoveItem(System.Int32,System.Int32)
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CollectionChanged
+  - System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.PropertyChanged
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Add(FlowGraph.Core.Elements.ICanvasElement)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Clear
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Contains(FlowGraph.Core.Elements.ICanvasElement)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.CopyTo(FlowGraph.Core.Elements.ICanvasElement[],System.Int32)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.GetEnumerator
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Insert(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Remove(FlowGraph.Core.Elements.ICanvasElement)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.RemoveAt(System.Int32)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Count
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Item(System.Int32)
+  - System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Items
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  id: AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: AddRange(IEnumerable<ICanvasElement>)
+  nameWithType: ElementCollection.AddRange(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddRange
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Adds a range of elements without firing individual notifications.
+
+    A single Reset notification is fired after all elements are added.
+  example: []
+  syntax:
+    content: public void AddRange(IEnumerable<ICanvasElement> elements)
+    parameters:
+    - id: elements
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+      description: The elements to add.
+    content.vb: Public Sub AddRange(elements As IEnumerable(Of ICanvasElement))
+  overload: FlowGraph.Core.Elements.ElementCollection.AddRange*
+  nameWithType.vb: ElementCollection.AddRange(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: AddRange(IEnumerable(Of ICanvasElement))
+- uid: FlowGraph.Core.Elements.ElementCollection.RemoveRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.RemoveRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  id: RemoveRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveRange(IEnumerable<ICanvasElement>)
+  nameWithType: ElementCollection.RemoveRange(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Elements.ElementCollection.RemoveRange(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveRange
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Removes a range of elements without firing individual notifications.
+
+    A single Reset notification is fired after all elements are removed.
+  example: []
+  syntax:
+    content: public void RemoveRange(IEnumerable<ICanvasElement> elements)
+    parameters:
+    - id: elements
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+      description: The elements to remove.
+    content.vb: Public Sub RemoveRange(elements As IEnumerable(Of ICanvasElement))
+  overload: FlowGraph.Core.Elements.ElementCollection.RemoveRange*
+  nameWithType.vb: ElementCollection.RemoveRange(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.RemoveRange(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: RemoveRange(IEnumerable(Of ICanvasElement))
+- uid: FlowGraph.Core.Elements.ElementCollection.ReplaceAll(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.ReplaceAll(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  id: ReplaceAll(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: ReplaceAll(IEnumerable<ICanvasElement>)
+  nameWithType: ElementCollection.ReplaceAll(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Elements.ElementCollection.ReplaceAll(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReplaceAll
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 90
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Clears all elements and adds the specified elements.
+  example: []
+  syntax:
+    content: public void ReplaceAll(IEnumerable<ICanvasElement> elements)
+    parameters:
+    - id: elements
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+      description: The elements to set.
+    content.vb: Public Sub ReplaceAll(elements As IEnumerable(Of ICanvasElement))
+  overload: FlowGraph.Core.Elements.ElementCollection.ReplaceAll*
+  nameWithType.vb: ElementCollection.ReplaceAll(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.ReplaceAll(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: ReplaceAll(IEnumerable(Of ICanvasElement))
+- uid: FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  id: OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  nameWithType: ElementCollection.OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  fullName: FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnCollectionChanged
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 118
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Raises the <xref href="System.Collections.ObjectModel.ObservableCollection%601.CollectionChanged" data-throw-if-not-resolved="false"></xref> event with the provided arguments.
+  example: []
+  syntax:
+    content: protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+    parameters:
+    - id: e
+      type: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+      description: Arguments of the event being raised.
+    content.vb: Protected Overrides Sub OnCollectionChanged(e As NotifyCollectionChangedEventArgs)
+  overridden: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  overload: FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged*
+- uid: FlowGraph.Core.Elements.ElementCollection.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  id: InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: InsertItem(int, ICanvasElement)
+  nameWithType: ElementCollection.InsertItem(int, ICanvasElement)
+  fullName: FlowGraph.Core.Elements.ElementCollection.InsertItem(int, FlowGraph.Core.Elements.ICanvasElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InsertItem
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 127
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Inserts an item into the collection at the specified index.
+  example: []
+  syntax:
+    content: protected override void InsertItem(int index, ICanvasElement item)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The zero-based index at which <code class="paramref">item</code> should be inserted.
+    - id: item
+      type: FlowGraph.Core.Elements.ICanvasElement
+      description: The object to insert.
+    content.vb: Protected Overrides Sub InsertItem(index As Integer, item As ICanvasElement)
+  overridden: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.InsertItem*
+  nameWithType.vb: ElementCollection.InsertItem(Integer, ICanvasElement)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.InsertItem(Integer, FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: InsertItem(Integer, ICanvasElement)
+- uid: FlowGraph.Core.Elements.ElementCollection.RemoveItem(System.Int32)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.RemoveItem(System.Int32)
+  id: RemoveItem(System.Int32)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveItem(int)
+  nameWithType: ElementCollection.RemoveItem(int)
+  fullName: FlowGraph.Core.Elements.ElementCollection.RemoveItem(int)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveItem
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 135
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Removes the item at the specified index of the collection.
+  example: []
+  syntax:
+    content: protected override void RemoveItem(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The zero-based index of the element to remove.
+    content.vb: Protected Overrides Sub RemoveItem(index As Integer)
+  overridden: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.RemoveItem(System.Int32)
+  overload: FlowGraph.Core.Elements.ElementCollection.RemoveItem*
+  nameWithType.vb: ElementCollection.RemoveItem(Integer)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.RemoveItem(Integer)
+  name.vb: RemoveItem(Integer)
+- uid: FlowGraph.Core.Elements.ElementCollection.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  id: SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: SetItem(int, ICanvasElement)
+  nameWithType: ElementCollection.SetItem(int, ICanvasElement)
+  fullName: FlowGraph.Core.Elements.ElementCollection.SetItem(int, FlowGraph.Core.Elements.ICanvasElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetItem
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 144
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Replaces the element at the specified index.
+  example: []
+  syntax:
+    content: protected override void SetItem(int index, ICanvasElement item)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The zero-based index of the element to replace.
+    - id: item
+      type: FlowGraph.Core.Elements.ICanvasElement
+      description: The new value for the element at the specified index.
+    content.vb: Protected Overrides Sub SetItem(index As Integer, item As ICanvasElement)
+  overridden: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.SetItem*
+  nameWithType.vb: ElementCollection.SetItem(Integer, ICanvasElement)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.SetItem(Integer, FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: SetItem(Integer, ICanvasElement)
+- uid: FlowGraph.Core.Elements.ElementCollection.ClearItems
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.ClearItems
+  id: ClearItems
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: ClearItems()
+  nameWithType: ElementCollection.ClearItems()
+  fullName: FlowGraph.Core.Elements.ElementCollection.ClearItems()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ClearItems
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 155
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Removes all items from the collection.
+  example: []
+  syntax:
+    content: protected override void ClearItems()
+    content.vb: Protected Overrides Sub ClearItems()
+  overridden: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.ClearItems
+  overload: FlowGraph.Core.Elements.ElementCollection.ClearItems*
+- uid: FlowGraph.Core.Elements.ElementCollection.Nodes
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.Nodes
+  id: Nodes
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: Nodes
+  nameWithType: ElementCollection.Nodes
+  fullName: FlowGraph.Core.Elements.ElementCollection.Nodes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Nodes
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 227
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Gets all node elements in the collection.
+
+    PERFORMANCE: Returns cached list for O(1) access instead of O(n) OfType filtering.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Node> Nodes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+    content.vb: Public ReadOnly Property Nodes As IReadOnlyList(Of Node)
+  overload: FlowGraph.Core.Elements.ElementCollection.Nodes*
+- uid: FlowGraph.Core.Elements.ElementCollection.NodeCount
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.NodeCount
+  id: NodeCount
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: NodeCount
+  nameWithType: ElementCollection.NodeCount
+  fullName: FlowGraph.Core.Elements.ElementCollection.NodeCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeCount
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 232
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets the count of nodes in the collection. O(1) operation.
+  example: []
+  syntax:
+    content: public int NodeCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property NodeCount As Integer
+  overload: FlowGraph.Core.Elements.ElementCollection.NodeCount*
+- uid: FlowGraph.Core.Elements.ElementCollection.Edges
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.Edges
+  id: Edges
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: Edges
+  nameWithType: ElementCollection.Edges
+  fullName: FlowGraph.Core.Elements.ElementCollection.Edges
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Edges
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 238
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Gets all edge elements in the collection.
+
+    PERFORMANCE: Returns cached list for O(1) access instead of O(n) OfType filtering.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Edge> Edges { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
+    content.vb: Public ReadOnly Property Edges As IReadOnlyList(Of Edge)
+  overload: FlowGraph.Core.Elements.ElementCollection.Edges*
+- uid: FlowGraph.Core.Elements.ElementCollection.EdgeCount
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.EdgeCount
+  id: EdgeCount
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: EdgeCount
+  nameWithType: ElementCollection.EdgeCount
+  fullName: FlowGraph.Core.Elements.ElementCollection.EdgeCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeCount
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 243
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets the count of edges in the collection. O(1) operation.
+  example: []
+  syntax:
+    content: public int EdgeCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property EdgeCount As Integer
+  overload: FlowGraph.Core.Elements.ElementCollection.EdgeCount*
+- uid: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode(System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode(System.String)
+  id: GetEdgesForNode(System.String)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEdgesForNode(string)
+  nameWithType: ElementCollection.GetEdgesForNode(string)
+  fullName: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgesForNode
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 251
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Gets all edges connected to a specific node (either as source or target).
+
+    PERFORMANCE: O(1) lookup using edge index instead of O(n) iteration.
+  example: []
+  syntax:
+    content: public IEnumerable<Edge> GetEdgesForNode(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The ID of the node to find edges for.
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+      description: Enumerable of edges connected to the node.
+    content.vb: Public Function GetEdgesForNode(nodeId As String) As IEnumerable(Of Edge)
+  overload: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode*
+  nameWithType.vb: ElementCollection.GetEdgesForNode(String)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode(String)
+  name.vb: GetEdgesForNode(String)
+- uid: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes(System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes(System.Collections.Generic.IEnumerable{System.String})
+  id: GetEdgesForNodes(System.Collections.Generic.IEnumerable{System.String})
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEdgesForNodes(IEnumerable<string>)
+  nameWithType: ElementCollection.GetEdgesForNodes(IEnumerable<string>)
+  fullName: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes(System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgesForNodes
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 271
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Gets all edges connected to any of the specified nodes.
+
+    PERFORMANCE: O(k) where k is number of connected edges, instead of O(n) iteration over all edges.
+  example: []
+  syntax:
+    content: public List<Edge> GetEdgesForNodes(IEnumerable<string> nodeIds)
+    parameters:
+    - id: nodeIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The IDs of nodes to find edges for.
+    return:
+      type: System.Collections.Generic.List{FlowGraph.Core.Edge}
+      description: List of distinct edges connected to any of the specified nodes.
+    content.vb: Public Function GetEdgesForNodes(nodeIds As IEnumerable(Of String)) As List(Of Edge)
+  overload: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes*
+  nameWithType.vb: ElementCollection.GetEdgesForNodes(IEnumerable(Of String))
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes(System.Collections.Generic.IEnumerable(Of String))
+  name.vb: GetEdgesForNodes(IEnumerable(Of String))
+- uid: FlowGraph.Core.Elements.ElementCollection.OfElementType``1
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.OfElementType``1
+  id: OfElementType``1
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: OfElementType<T>()
+  nameWithType: ElementCollection.OfElementType<T>()
+  fullName: FlowGraph.Core.Elements.ElementCollection.OfElementType<T>()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OfElementType
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 294
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets all elements of the specified type.
+  example: []
+  syntax:
+    content: 'public IEnumerable<T> OfElementType<T>() where T : ICanvasElement'
+    typeParameters:
+    - id: T
+      description: The element type to filter by.
+    return:
+      type: System.Collections.Generic.IEnumerable{{T}}
+    content.vb: Public Function OfElementType(Of T As ICanvasElement)() As IEnumerable(Of T)
+  overload: FlowGraph.Core.Elements.ElementCollection.OfElementType*
+  nameWithType.vb: ElementCollection.OfElementType(Of T)()
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.OfElementType(Of T)()
+  name.vb: OfElementType(Of T)()
+- uid: FlowGraph.Core.Elements.ElementCollection.FindById(System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.FindById(System.String)
+  id: FindById(System.String)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: FindById(string)
+  nameWithType: ElementCollection.FindById(string)
+  fullName: FlowGraph.Core.Elements.ElementCollection.FindById(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FindById
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 305
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Finds an element by its ID.
+  example: []
+  syntax:
+    content: public ICanvasElement? FindById(string id)
+    parameters:
+    - id: id
+      type: System.String
+      description: The element ID to search for.
+    return:
+      type: FlowGraph.Core.Elements.ICanvasElement
+      description: The element if found; otherwise, null.
+    content.vb: Public Function FindById(id As String) As ICanvasElement
+  overload: FlowGraph.Core.Elements.ElementCollection.FindById*
+  nameWithType.vb: ElementCollection.FindById(String)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.FindById(String)
+  name.vb: FindById(String)
+- uid: FlowGraph.Core.Elements.ElementCollection.FindById``1(System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.FindById``1(System.String)
+  id: FindById``1(System.String)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: FindById<T>(string)
+  nameWithType: ElementCollection.FindById<T>(string)
+  fullName: FlowGraph.Core.Elements.ElementCollection.FindById<T>(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FindById
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 316
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Finds an element by its ID and casts to the specified type.
+  example: []
+  syntax:
+    content: 'public T? FindById<T>(string id) where T : class, ICanvasElement'
+    parameters:
+    - id: id
+      type: System.String
+      description: The element ID to search for.
+    typeParameters:
+    - id: T
+      description: The expected element type.
+    return:
+      type: '{T}'
+      description: The element if found and of the correct type; otherwise, null.
+    content.vb: Public Function FindById(Of T As {Class, ICanvasElement})(id As String) As T
+  overload: FlowGraph.Core.Elements.ElementCollection.FindById*
+  nameWithType.vb: ElementCollection.FindById(Of T)(String)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.FindById(Of T)(String)
+  name.vb: FindById(Of T)(String)
+- uid: FlowGraph.Core.Elements.ElementCollection.ContainsId(System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.ContainsId(System.String)
+  id: ContainsId(System.String)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: ContainsId(string)
+  nameWithType: ElementCollection.ContainsId(string)
+  fullName: FlowGraph.Core.Elements.ElementCollection.ContainsId(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ContainsId
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 325
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Determines whether an element with the specified ID exists.
+  example: []
+  syntax:
+    content: public bool ContainsId(string id)
+    parameters:
+    - id: id
+      type: System.String
+      description: The element ID to check.
+    return:
+      type: System.Boolean
+    content.vb: Public Function ContainsId(id As String) As Boolean
+  overload: FlowGraph.Core.Elements.ElementCollection.ContainsId*
+  nameWithType.vb: ElementCollection.ContainsId(String)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.ContainsId(String)
+  name.vb: ContainsId(String)
+- uid: FlowGraph.Core.Elements.ElementCollection.Selected
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.Selected
+  id: Selected
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: Selected
+  nameWithType: ElementCollection.Selected
+  fullName: FlowGraph.Core.Elements.ElementCollection.Selected
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Selected
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 330
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets all selected elements.
+  example: []
+  syntax:
+    content: public IEnumerable<ICanvasElement> Selected { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+    content.vb: Public ReadOnly Property Selected As IEnumerable(Of ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.Selected*
+- uid: FlowGraph.Core.Elements.ElementCollection.Visible
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.Visible
+  id: Visible
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: Visible
+  nameWithType: ElementCollection.Visible
+  fullName: FlowGraph.Core.Elements.ElementCollection.Visible
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Visible
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 335
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets all visible elements.
+  example: []
+  syntax:
+    content: public IEnumerable<ICanvasElement> Visible { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+    content.vb: Public ReadOnly Property Visible As IEnumerable(Of ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.Visible*
+- uid: FlowGraph.Core.Elements.ElementCollection.ByZIndex
+  commentId: P:FlowGraph.Core.Elements.ElementCollection.ByZIndex
+  id: ByZIndex
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: ByZIndex
+  nameWithType: ElementCollection.ByZIndex
+  fullName: FlowGraph.Core.Elements.ElementCollection.ByZIndex
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ByZIndex
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 340
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets all elements sorted by Z-index (rendering order).
+  example: []
+  syntax:
+    content: public IEnumerable<ICanvasElement> ByZIndex { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+    content.vb: Public ReadOnly Property ByZIndex As IEnumerable(Of ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.ByZIndex*
+- uid: FlowGraph.Core.Elements.ElementCollection.FindInBounds(FlowGraph.Core.Elements.Rect,System.Boolean)
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.FindInBounds(FlowGraph.Core.Elements.Rect,System.Boolean)
+  id: FindInBounds(FlowGraph.Core.Elements.Rect,System.Boolean)
+  parent: FlowGraph.Core.Elements.ElementCollection
+  langs:
+  - csharp
+  - vb
+  name: FindInBounds(Rect, bool)
+  nameWithType: ElementCollection.FindInBounds(Rect, bool)
+  fullName: FlowGraph.Core.Elements.ElementCollection.FindInBounds(FlowGraph.Core.Elements.Rect, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementCollection.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FindInBounds
+    path: ../FlowGraph.Core/Elements/ElementCollection.cs
+    startLine: 347
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Finds all elements within the specified bounds.
+  example: []
+  syntax:
+    content: public IEnumerable<ICanvasElement> FindInBounds(Rect bounds, bool includePartial = false)
+    parameters:
+    - id: bounds
+      type: FlowGraph.Core.Elements.Rect
+      description: The bounds to search within.
+    - id: includePartial
+      type: System.Boolean
+      description: If true, includes elements that partially intersect the bounds.
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+    content.vb: Public Function FindInBounds(bounds As Rect, includePartial As Boolean = False) As IEnumerable(Of ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementCollection.FindInBounds*
+  nameWithType.vb: ElementCollection.FindInBounds(Rect, Boolean)
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.FindInBounds(FlowGraph.Core.Elements.Rect, Boolean)
+  name.vb: FindInBounds(Rect, Boolean)
+references:
+- uid: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  isExternal: true
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_AddRange_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: AddRange(IEnumerable<ICanvasElement>)
+  nameWithType: ElementCollection.AddRange(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  nameWithType.vb: ElementCollection.AddRange(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: AddRange(IEnumerable(Of ICanvasElement))
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+    name: AddRange
+    href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_AddRange_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.ElementCollection.AddRange(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+    name: AddRange
+    href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_AddRange_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  - name: )
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.ObjectModel
+  definition: System.Collections.ObjectModel.Collection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  name: Collection<ICanvasElement>
+  nameWithType: Collection<ICanvasElement>
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: Collection(Of ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: Collection(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1
+    name: Collection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1
+    name: Collection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.ObjectModel
+  definition: System.Collections.ObjectModel.ObservableCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  name: ObservableCollection<ICanvasElement>
+  nameWithType: ObservableCollection<ICanvasElement>
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: ObservableCollection(Of ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: ObservableCollection(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.Generic.IList{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.IList{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<ICanvasElement>
+  nameWithType: IList<ICanvasElement>
+  fullName: System.Collections.Generic.IList<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: IList(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.IList(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: IList(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.Generic.ICollection{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.ICollection{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<ICanvasElement>
+  nameWithType: ICollection<ICanvasElement>
+  fullName: System.Collections.Generic.ICollection<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: ICollection(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.ICollection(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: ICollection(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ICanvasElement>
+  nameWithType: IReadOnlyList<ICanvasElement>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: IReadOnlyList(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: IReadOnlyList(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<ICanvasElement>
+  nameWithType: IReadOnlyCollection<ICanvasElement>
+  fullName: System.Collections.Generic.IReadOnlyCollection<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: IReadOnlyCollection(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: IReadOnlyCollection(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ICanvasElement>
+  nameWithType: IEnumerable<ICanvasElement>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: IEnumerable(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: IEnumerable(Of ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.IList
+  commentId: T:System.Collections.IList
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  name: IList
+  nameWithType: IList
+  fullName: System.Collections.IList
+- uid: System.Collections.ICollection
+  commentId: T:System.Collections.ICollection
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.icollection
+  name: ICollection
+  nameWithType: ICollection
+  fullName: System.Collections.ICollection
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerable
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Collections.Specialized.INotifyCollectionChanged
+  commentId: T:System.Collections.Specialized.INotifyCollectionChanged
+  parent: System.Collections.Specialized
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.inotifycollectionchanged
+  name: INotifyCollectionChanged
+  nameWithType: INotifyCollectionChanged
+  fullName: System.Collections.Specialized.INotifyCollectionChanged
+- uid: System.ComponentModel.INotifyPropertyChanged
+  commentId: T:System.ComponentModel.INotifyPropertyChanged
+  parent: System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged
+  name: INotifyPropertyChanged
+  nameWithType: INotifyPropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.BlockReentrancy
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.BlockReentrancy
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.BlockReentrancy
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  name: BlockReentrancy()
+  nameWithType: ObservableCollection<ICanvasElement>.BlockReentrancy()
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.BlockReentrancy()
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).BlockReentrancy()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).BlockReentrancy()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.BlockReentrancy
+    name: BlockReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.BlockReentrancy
+    name: BlockReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CheckReentrancy
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CheckReentrancy
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  name: CheckReentrancy()
+  nameWithType: ObservableCollection<ICanvasElement>.CheckReentrancy()
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.CheckReentrancy()
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).CheckReentrancy()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).CheckReentrancy()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CheckReentrancy
+    name: CheckReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CheckReentrancy
+    name: CheckReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.Move(System.Int32,System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.Move(System.Int32,System.Int32)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.Move(System.Int32,System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  name: Move(int, int)
+  nameWithType: ObservableCollection<ICanvasElement>.Move(int, int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.Move(int, int)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).Move(Integer, Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).Move(Integer, Integer)
+  name.vb: Move(Integer, Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.Move(System.Int32,System.Int32)
+    name: Move
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.Move(System.Int32,System.Int32)
+    name: Move
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.MoveItem(System.Int32,System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.MoveItem(System.Int32,System.Int32)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.MoveItem(System.Int32,System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  name: MoveItem(int, int)
+  nameWithType: ObservableCollection<ICanvasElement>.MoveItem(int, int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.MoveItem(int, int)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).MoveItem(Integer, Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).MoveItem(Integer, Integer)
+  name.vb: MoveItem(Integer, Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.MoveItem(System.Int32,System.Int32)
+    name: MoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.MoveItem(System.Int32,System.Int32)
+    name: MoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  name: OnPropertyChanged(PropertyChangedEventArgs)
+  nameWithType: ObservableCollection<ICanvasElement>.OnPropertyChanged(PropertyChangedEventArgs)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).OnPropertyChanged(PropertyChangedEventArgs)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+    name: OnPropertyChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  - name: (
+  - uid: System.ComponentModel.PropertyChangedEventArgs
+    name: PropertyChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+    name: OnPropertyChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  - name: (
+  - uid: System.ComponentModel.PropertyChangedEventArgs
+    name: PropertyChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CollectionChanged
+  commentId: E:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.CollectionChanged
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.CollectionChanged
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.collectionchanged
+  name: CollectionChanged
+  nameWithType: ObservableCollection<ICanvasElement>.CollectionChanged
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.CollectionChanged
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).CollectionChanged
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).CollectionChanged
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.PropertyChanged
+  commentId: E:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.PropertyChanged
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.PropertyChanged
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.propertychanged
+  name: PropertyChanged
+  nameWithType: ObservableCollection<ICanvasElement>.PropertyChanged
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.PropertyChanged
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).PropertyChanged
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).PropertyChanged
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Add(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Add(FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Add(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  name: Add(ICanvasElement)
+  nameWithType: Collection<ICanvasElement>.Add(ICanvasElement)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Add(FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: Collection(Of ICanvasElement).Add(ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Add(FlowGraph.Core.Elements.ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Add(FlowGraph.Core.Elements.ICanvasElement)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Add(FlowGraph.Core.Elements.ICanvasElement)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Clear
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Clear
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Clear
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  name: Clear()
+  nameWithType: Collection<ICanvasElement>.Clear()
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Clear()
+  nameWithType.vb: Collection(Of ICanvasElement).Clear()
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Clear()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Contains(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Contains(FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Contains(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  name: Contains(ICanvasElement)
+  nameWithType: Collection<ICanvasElement>.Contains(ICanvasElement)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Contains(FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: Collection(Of ICanvasElement).Contains(ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Contains(FlowGraph.Core.Elements.ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Contains(FlowGraph.Core.Elements.ICanvasElement)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Contains(FlowGraph.Core.Elements.ICanvasElement)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.CopyTo(FlowGraph.Core.Elements.ICanvasElement[],System.Int32)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.CopyTo(FlowGraph.Core.Elements.ICanvasElement[],System.Int32)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.CopyTo(`0[],System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  name: CopyTo(ICanvasElement[], int)
+  nameWithType: Collection<ICanvasElement>.CopyTo(ICanvasElement[], int)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.CopyTo(FlowGraph.Core.Elements.ICanvasElement[], int)
+  nameWithType.vb: Collection(Of ICanvasElement).CopyTo(ICanvasElement(), Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).CopyTo(FlowGraph.Core.Elements.ICanvasElement(), Integer)
+  name.vb: CopyTo(ICanvasElement(), Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.CopyTo(FlowGraph.Core.Elements.ICanvasElement[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.CopyTo(FlowGraph.Core.Elements.ICanvasElement[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.GetEnumerator
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.GetEnumerator
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.GetEnumerator
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: Collection<ICanvasElement>.GetEnumerator()
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.GetEnumerator()
+  nameWithType.vb: Collection(Of ICanvasElement).GetEnumerator()
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.IndexOf(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  name: IndexOf(ICanvasElement)
+  nameWithType: Collection<ICanvasElement>.IndexOf(ICanvasElement)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: Collection(Of ICanvasElement).IndexOf(ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.IndexOf(FlowGraph.Core.Elements.ICanvasElement)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Insert(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Insert(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Insert(System.Int32,`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  name: Insert(int, ICanvasElement)
+  nameWithType: Collection<ICanvasElement>.Insert(int, ICanvasElement)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Insert(int, FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: Collection(Of ICanvasElement).Insert(Integer, ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Insert(Integer, FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: Insert(Integer, ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Insert(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Insert(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Remove(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Remove(FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Remove(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  name: Remove(ICanvasElement)
+  nameWithType: Collection<ICanvasElement>.Remove(ICanvasElement)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Remove(FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: Collection(Of ICanvasElement).Remove(ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Remove(FlowGraph.Core.Elements.ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Remove(FlowGraph.Core.Elements.ICanvasElement)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Remove(FlowGraph.Core.Elements.ICanvasElement)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  - name: (
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.RemoveAt(System.Int32)
+  commentId: M:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.RemoveAt(System.Int32)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.RemoveAt(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  name: RemoveAt(int)
+  nameWithType: Collection<ICanvasElement>.RemoveAt(int)
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.RemoveAt(int)
+  nameWithType.vb: Collection(Of ICanvasElement).RemoveAt(Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Count
+  commentId: P:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Count
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Count
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.count
+  name: Count
+  nameWithType: Collection<ICanvasElement>.Count
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Count
+  nameWithType.vb: Collection(Of ICanvasElement).Count
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Count
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Item(System.Int32)
+  commentId: P:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Item(System.Int32)
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Item(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: Collection<ICanvasElement>.this[int]
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.this[int]
+  nameWithType.vb: Collection(Of ICanvasElement).this[](Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Items
+  commentId: P:System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}.Items
+  parent: System.Collections.ObjectModel.Collection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.Collection`1.Items
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.items
+  name: Items
+  nameWithType: Collection<ICanvasElement>.Items
+  fullName: System.Collections.ObjectModel.Collection<FlowGraph.Core.Elements.ICanvasElement>.Items
+  nameWithType.vb: Collection(Of ICanvasElement).Items
+  fullName.vb: System.Collections.ObjectModel.Collection(Of FlowGraph.Core.Elements.ICanvasElement).Items
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.ObjectModel.Collection`1
+  commentId: T:System.Collections.ObjectModel.Collection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  name: Collection<T>
+  nameWithType: Collection<T>
+  fullName: System.Collections.ObjectModel.Collection<T>
+  nameWithType.vb: Collection(Of T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T)
+  name.vb: Collection(Of T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1
+    name: Collection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1
+    name: Collection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel
+  commentId: N:System.Collections.ObjectModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.ObjectModel
+  nameWithType: System.Collections.ObjectModel
+  fullName: System.Collections.ObjectModel
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.ObjectModel
+    name: ObjectModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.ObjectModel
+    name: ObjectModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel
+- uid: System.Collections.ObjectModel.ObservableCollection`1
+  commentId: T:System.Collections.ObjectModel.ObservableCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  name: ObservableCollection<T>
+  nameWithType: ObservableCollection<T>
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>
+  nameWithType.vb: ObservableCollection(Of T)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T)
+  name.vb: ObservableCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1
+    name: ObservableCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: System.Collections.Specialized
+  commentId: N:System.Collections.Specialized
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Specialized
+  nameWithType: System.Collections.Specialized
+  fullName: System.Collections.Specialized
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Specialized
+    name: Specialized
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Specialized
+    name: Specialized
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized
+- uid: System.ComponentModel
+  commentId: N:System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.ComponentModel
+  nameWithType: System.ComponentModel
+  fullName: System.ComponentModel
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+- uid: System.Collections.ObjectModel.ObservableCollection`1.BlockReentrancy
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.BlockReentrancy
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  name: BlockReentrancy()
+  nameWithType: ObservableCollection<T>.BlockReentrancy()
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.BlockReentrancy()
+  nameWithType.vb: ObservableCollection(Of T).BlockReentrancy()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).BlockReentrancy()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.BlockReentrancy
+    name: BlockReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.BlockReentrancy
+    name: BlockReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.blockreentrancy
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  name: CheckReentrancy()
+  nameWithType: ObservableCollection<T>.CheckReentrancy()
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.CheckReentrancy()
+  nameWithType.vb: ObservableCollection(Of T).CheckReentrancy()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).CheckReentrancy()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy
+    name: CheckReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy
+    name: CheckReentrancy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.checkreentrancy
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection`1.Move(System.Int32,System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.Move(System.Int32,System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  name: Move(int, int)
+  nameWithType: ObservableCollection<T>.Move(int, int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.Move(int, int)
+  nameWithType.vb: ObservableCollection(Of T).Move(Integer, Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).Move(Integer, Integer)
+  name.vb: Move(Integer, Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.Move(System.Int32,System.Int32)
+    name: Move
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.Move(System.Int32,System.Int32)
+    name: Move
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.move
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection`1.MoveItem(System.Int32,System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.MoveItem(System.Int32,System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  name: MoveItem(int, int)
+  nameWithType: ObservableCollection<T>.MoveItem(int, int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.MoveItem(int, int)
+  nameWithType.vb: ObservableCollection(Of T).MoveItem(Integer, Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).MoveItem(Integer, Integer)
+  name.vb: MoveItem(Integer, Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.MoveItem(System.Int32,System.Int32)
+    name: MoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.MoveItem(System.Int32,System.Int32)
+    name: MoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.moveitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  name: OnPropertyChanged(PropertyChangedEventArgs)
+  nameWithType: ObservableCollection<T>.OnPropertyChanged(PropertyChangedEventArgs)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  nameWithType.vb: ObservableCollection(Of T).OnPropertyChanged(PropertyChangedEventArgs)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+    name: OnPropertyChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  - name: (
+  - uid: System.ComponentModel.PropertyChangedEventArgs
+    name: PropertyChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
+    name: OnPropertyChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.onpropertychanged
+  - name: (
+  - uid: System.ComponentModel.PropertyChangedEventArgs
+    name: PropertyChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection`1.CollectionChanged
+  commentId: E:System.Collections.ObjectModel.ObservableCollection`1.CollectionChanged
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.collectionchanged
+  name: CollectionChanged
+  nameWithType: ObservableCollection<T>.CollectionChanged
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.CollectionChanged
+  nameWithType.vb: ObservableCollection(Of T).CollectionChanged
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).CollectionChanged
+- uid: System.Collections.ObjectModel.ObservableCollection`1.PropertyChanged
+  commentId: E:System.Collections.ObjectModel.ObservableCollection`1.PropertyChanged
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.propertychanged
+  name: PropertyChanged
+  nameWithType: ObservableCollection<T>.PropertyChanged
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.PropertyChanged
+  nameWithType.vb: ObservableCollection(Of T).PropertyChanged
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).PropertyChanged
+- uid: System.Collections.ObjectModel.Collection`1.Add(`0)
+  commentId: M:System.Collections.ObjectModel.Collection`1.Add(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  name: Add(T)
+  nameWithType: Collection<T>.Add(T)
+  fullName: System.Collections.ObjectModel.Collection<T>.Add(T)
+  nameWithType.vb: Collection(Of T).Add(T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Add(T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.Add(`0)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Add(`0)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.add
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Clear
+  commentId: M:System.Collections.ObjectModel.Collection`1.Clear
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  name: Clear()
+  nameWithType: Collection<T>.Clear()
+  fullName: System.Collections.ObjectModel.Collection<T>.Clear()
+  nameWithType.vb: Collection(Of T).Clear()
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Clear()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Contains(`0)
+  commentId: M:System.Collections.ObjectModel.Collection`1.Contains(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  name: Contains(T)
+  nameWithType: Collection<T>.Contains(T)
+  fullName: System.Collections.ObjectModel.Collection<T>.Contains(T)
+  nameWithType.vb: Collection(Of T).Contains(T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Contains(T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.CopyTo(`0[],System.Int32)
+  commentId: M:System.Collections.ObjectModel.Collection`1.CopyTo(`0[],System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  name: CopyTo(T[], int)
+  nameWithType: Collection<T>.CopyTo(T[], int)
+  fullName: System.Collections.ObjectModel.Collection<T>.CopyTo(T[], int)
+  nameWithType.vb: Collection(Of T).CopyTo(T(), Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).CopyTo(T(), Integer)
+  name.vb: CopyTo(T(), Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  - name: (
+  - name: T
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto
+  - name: (
+  - name: T
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.GetEnumerator
+  commentId: M:System.Collections.ObjectModel.Collection`1.GetEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: Collection<T>.GetEnumerator()
+  fullName: System.Collections.ObjectModel.Collection<T>.GetEnumerator()
+  nameWithType.vb: Collection(Of T).GetEnumerator()
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.IndexOf(`0)
+  commentId: M:System.Collections.ObjectModel.Collection`1.IndexOf(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  name: IndexOf(T)
+  nameWithType: Collection<T>.IndexOf(T)
+  fullName: System.Collections.ObjectModel.Collection<T>.IndexOf(T)
+  nameWithType.vb: Collection(Of T).IndexOf(T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).IndexOf(T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.IndexOf(`0)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.IndexOf(`0)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Insert(System.Int32,`0)
+  commentId: M:System.Collections.ObjectModel.Collection`1.Insert(System.Int32,`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  name: Insert(int, T)
+  nameWithType: Collection<T>.Insert(int, T)
+  fullName: System.Collections.ObjectModel.Collection<T>.Insert(int, T)
+  nameWithType.vb: Collection(Of T).Insert(Integer, T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Insert(Integer, T)
+  name.vb: Insert(Integer, T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.Insert(System.Int32,`0)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Insert(System.Int32,`0)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Remove(`0)
+  commentId: M:System.Collections.ObjectModel.Collection`1.Remove(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  name: Remove(T)
+  nameWithType: Collection<T>.Remove(T)
+  fullName: System.Collections.ObjectModel.Collection<T>.Remove(T)
+  nameWithType.vb: Collection(Of T).Remove(T)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Remove(T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.Remove(`0)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Remove(`0)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.RemoveAt(System.Int32)
+  commentId: M:System.Collections.ObjectModel.Collection`1.RemoveAt(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  name: RemoveAt(int)
+  nameWithType: Collection<T>.RemoveAt(int)
+  fullName: System.Collections.ObjectModel.Collection<T>.RemoveAt(int)
+  nameWithType.vb: Collection(Of T).RemoveAt(Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.Collection`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Count
+  commentId: P:System.Collections.ObjectModel.Collection`1.Count
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.count
+  name: Count
+  nameWithType: Collection<T>.Count
+  fullName: System.Collections.ObjectModel.Collection<T>.Count
+  nameWithType.vb: Collection(Of T).Count
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Count
+- uid: System.Collections.ObjectModel.Collection`1.Item(System.Int32)
+  commentId: P:System.Collections.ObjectModel.Collection`1.Item(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: Collection<T>.this[int]
+  fullName: System.Collections.ObjectModel.Collection<T>.this[int]
+  nameWithType.vb: Collection(Of T).this[](Integer)
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.Collection`1.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.Collection`1.Items
+  commentId: P:System.Collections.ObjectModel.Collection`1.Items
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.items
+  name: Items
+  nameWithType: Collection<T>.Items
+  fullName: System.Collections.ObjectModel.Collection<T>.Items
+  nameWithType.vb: Collection(Of T).Items
+  fullName.vb: System.Collections.ObjectModel.Collection(Of T).Items
+- uid: FlowGraph.Core.Elements.ElementCollection.AddRange*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.AddRange
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_AddRange_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: AddRange
+  nameWithType: ElementCollection.AddRange
+  fullName: FlowGraph.Core.Elements.ElementCollection.AddRange
+- uid: FlowGraph.Core.Elements.ElementCollection.RemoveRange*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.RemoveRange
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_RemoveRange_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: RemoveRange
+  nameWithType: ElementCollection.RemoveRange
+  fullName: FlowGraph.Core.Elements.ElementCollection.RemoveRange
+- uid: FlowGraph.Core.Elements.ElementCollection.ReplaceAll*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.ReplaceAll
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_ReplaceAll_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: ReplaceAll
+  nameWithType: ElementCollection.ReplaceAll
+  fullName: FlowGraph.Core.Elements.ElementCollection.ReplaceAll
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  name: OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  nameWithType: ObservableCollection<ICanvasElement>.OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: OnCollectionChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: OnCollectionChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_OnCollectionChanged_System_Collections_Specialized_NotifyCollectionChangedEventArgs_
+  name: OnCollectionChanged
+  nameWithType: ElementCollection.OnCollectionChanged
+  fullName: FlowGraph.Core.Elements.ElementCollection.OnCollectionChanged
+- uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+  commentId: T:System.Collections.Specialized.NotifyCollectionChangedEventArgs
+  parent: System.Collections.Specialized
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  name: NotifyCollectionChangedEventArgs
+  nameWithType: NotifyCollectionChangedEventArgs
+  fullName: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+- uid: System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  name: OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  nameWithType: ObservableCollection<T>.OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  nameWithType.vb: ObservableCollection(Of T).OnCollectionChanged(NotifyCollectionChangedEventArgs)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: OnCollectionChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: OnCollectionChanged
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.oncollectionchanged
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.InsertItem(System.Int32,`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  name: InsertItem(int, ICanvasElement)
+  nameWithType: ObservableCollection<ICanvasElement>.InsertItem(int, ICanvasElement)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.InsertItem(int, FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).InsertItem(Integer, ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).InsertItem(Integer, FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: InsertItem(Integer, ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: InsertItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.InsertItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: InsertItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.InsertItem*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.InsertItem
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_InsertItem_System_Int32_FlowGraph_Core_Elements_ICanvasElement_
+  name: InsertItem
+  nameWithType: ElementCollection.InsertItem
+  fullName: FlowGraph.Core.Elements.ElementCollection.InsertItem
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: System.Collections.ObjectModel.ObservableCollection`1.InsertItem(System.Int32,`0)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.InsertItem(System.Int32,`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  name: InsertItem(int, T)
+  nameWithType: ObservableCollection<T>.InsertItem(int, T)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.InsertItem(int, T)
+  nameWithType.vb: ObservableCollection(Of T).InsertItem(Integer, T)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).InsertItem(Integer, T)
+  name.vb: InsertItem(Integer, T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.InsertItem(System.Int32,`0)
+    name: InsertItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.InsertItem(System.Int32,`0)
+    name: InsertItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.insertitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.RemoveItem(System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.RemoveItem(System.Int32)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.RemoveItem(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  name: RemoveItem(int)
+  nameWithType: ObservableCollection<ICanvasElement>.RemoveItem(int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.RemoveItem(int)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).RemoveItem(Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).RemoveItem(Integer)
+  name.vb: RemoveItem(Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.RemoveItem(System.Int32)
+    name: RemoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.RemoveItem(System.Int32)
+    name: RemoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.RemoveItem*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.RemoveItem
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_RemoveItem_System_Int32_
+  name: RemoveItem
+  nameWithType: ElementCollection.RemoveItem
+  fullName: FlowGraph.Core.Elements.ElementCollection.RemoveItem
+- uid: System.Collections.ObjectModel.ObservableCollection`1.RemoveItem(System.Int32)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.RemoveItem(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  name: RemoveItem(int)
+  nameWithType: ObservableCollection<T>.RemoveItem(int)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.RemoveItem(int)
+  nameWithType.vb: ObservableCollection(Of T).RemoveItem(Integer)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).RemoveItem(Integer)
+  name.vb: RemoveItem(Integer)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.RemoveItem(System.Int32)
+    name: RemoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.RemoveItem(System.Int32)
+    name: RemoveItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.removeitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.SetItem(System.Int32,`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  name: SetItem(int, ICanvasElement)
+  nameWithType: ObservableCollection<ICanvasElement>.SetItem(int, ICanvasElement)
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.SetItem(int, FlowGraph.Core.Elements.ICanvasElement)
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).SetItem(Integer, ICanvasElement)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).SetItem(Integer, FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: SetItem(Integer, ICanvasElement)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: SetItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.SetItem(System.Int32,FlowGraph.Core.Elements.ICanvasElement)
+    name: SetItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.SetItem*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.SetItem
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_SetItem_System_Int32_FlowGraph_Core_Elements_ICanvasElement_
+  name: SetItem
+  nameWithType: ElementCollection.SetItem
+  fullName: FlowGraph.Core.Elements.ElementCollection.SetItem
+- uid: System.Collections.ObjectModel.ObservableCollection`1.SetItem(System.Int32,`0)
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.SetItem(System.Int32,`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  name: SetItem(int, T)
+  nameWithType: ObservableCollection<T>.SetItem(int, T)
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.SetItem(int, T)
+  nameWithType.vb: ObservableCollection(Of T).SetItem(Integer, T)
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).SetItem(Integer, T)
+  name.vb: SetItem(Integer, T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.SetItem(System.Int32,`0)
+    name: SetItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.SetItem(System.Int32,`0)
+    name: SetItem
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.setitem
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.ClearItems
+  commentId: M:System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.ClearItems
+  parent: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}
+  definition: System.Collections.ObjectModel.ObservableCollection`1.ClearItems
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  name: ClearItems()
+  nameWithType: ObservableCollection<ICanvasElement>.ClearItems()
+  fullName: System.Collections.ObjectModel.ObservableCollection<FlowGraph.Core.Elements.ICanvasElement>.ClearItems()
+  nameWithType.vb: ObservableCollection(Of ICanvasElement).ClearItems()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of FlowGraph.Core.Elements.ICanvasElement).ClearItems()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.ClearItems
+    name: ClearItems
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection{FlowGraph.Core.Elements.ICanvasElement}.ClearItems
+    name: ClearItems
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.ClearItems*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.ClearItems
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_ClearItems
+  name: ClearItems
+  nameWithType: ElementCollection.ClearItems
+  fullName: FlowGraph.Core.Elements.ElementCollection.ClearItems
+- uid: System.Collections.ObjectModel.ObservableCollection`1.ClearItems
+  commentId: M:System.Collections.ObjectModel.ObservableCollection`1.ClearItems
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  name: ClearItems()
+  nameWithType: ObservableCollection<T>.ClearItems()
+  fullName: System.Collections.ObjectModel.ObservableCollection<T>.ClearItems()
+  nameWithType.vb: ObservableCollection(Of T).ClearItems()
+  fullName.vb: System.Collections.ObjectModel.ObservableCollection(Of T).ClearItems()
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.ClearItems
+    name: ClearItems
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ObservableCollection`1.ClearItems
+    name: ClearItems
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.Nodes*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.Nodes
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_Nodes
+  name: Nodes
+  nameWithType: ElementCollection.Nodes
+  fullName: FlowGraph.Core.Elements.ElementCollection.Nodes
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Node>
+  nameWithType: IReadOnlyList<Node>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>
+  nameWithType.vb: IReadOnlyList(Of Node)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node)
+  name.vb: IReadOnlyList(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.NodeCount*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.NodeCount
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_NodeCount
+  name: NodeCount
+  nameWithType: ElementCollection.NodeCount
+  fullName: FlowGraph.Core.Elements.ElementCollection.NodeCount
+- uid: FlowGraph.Core.Elements.ElementCollection.Edges*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.Edges
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_Edges
+  name: Edges
+  nameWithType: ElementCollection.Edges
+  fullName: FlowGraph.Core.Elements.ElementCollection.Edges
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Edge>
+  nameWithType: IReadOnlyList<Edge>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>
+  nameWithType.vb: IReadOnlyList(Of Edge)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge)
+  name.vb: IReadOnlyList(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.EdgeCount*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.EdgeCount
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_EdgeCount
+  name: EdgeCount
+  nameWithType: ElementCollection.EdgeCount
+  fullName: FlowGraph.Core.Elements.ElementCollection.EdgeCount
+- uid: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_GetEdgesForNode_System_String_
+  name: GetEdgesForNode
+  nameWithType: ElementCollection.GetEdgesForNode
+  fullName: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Edge>
+  nameWithType: IEnumerable<Edge>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>
+  nameWithType.vb: IEnumerable(Of Edge)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge)
+  name.vb: IEnumerable(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_GetEdgesForNodes_System_Collections_Generic_IEnumerable_System_String__
+  name: GetEdgesForNodes
+  nameWithType: ElementCollection.GetEdgesForNodes
+  fullName: FlowGraph.Core.Elements.ElementCollection.GetEdgesForNodes
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.List{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<Edge>
+  nameWithType: List<Edge>
+  fullName: System.Collections.Generic.List<FlowGraph.Core.Edge>
+  nameWithType.vb: List(Of Edge)
+  fullName.vb: System.Collections.Generic.List(Of FlowGraph.Core.Edge)
+  name.vb: List(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.OfElementType*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.OfElementType
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_OfElementType__1
+  name: OfElementType
+  nameWithType: ElementCollection.OfElementType
+  fullName: FlowGraph.Core.Elements.ElementCollection.OfElementType
+- uid: System.Collections.Generic.IEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IEnumerable{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementCollection.FindById*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.FindById
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_FindById_System_String_
+  name: FindById
+  nameWithType: ElementCollection.FindById
+  fullName: FlowGraph.Core.Elements.ElementCollection.FindById
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FlowGraph.Core.Elements.ElementCollection.ContainsId*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.ContainsId
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_ContainsId_System_String_
+  name: ContainsId
+  nameWithType: ElementCollection.ContainsId
+  fullName: FlowGraph.Core.Elements.ElementCollection.ContainsId
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Elements.ElementCollection.Selected*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.Selected
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_Selected
+  name: Selected
+  nameWithType: ElementCollection.Selected
+  fullName: FlowGraph.Core.Elements.ElementCollection.Selected
+- uid: FlowGraph.Core.Elements.ElementCollection.Visible*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.Visible
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_Visible
+  name: Visible
+  nameWithType: ElementCollection.Visible
+  fullName: FlowGraph.Core.Elements.ElementCollection.Visible
+- uid: FlowGraph.Core.Elements.ElementCollection.ByZIndex*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.ByZIndex
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_ByZIndex
+  name: ByZIndex
+  nameWithType: ElementCollection.ByZIndex
+  fullName: FlowGraph.Core.Elements.ElementCollection.ByZIndex
+- uid: FlowGraph.Core.Elements.ElementCollection.FindInBounds*
+  commentId: Overload:FlowGraph.Core.Elements.ElementCollection.FindInBounds
+  href: FlowGraph.Core.Elements.ElementCollection.html#FlowGraph_Core_Elements_ElementCollection_FindInBounds_FlowGraph_Core_Elements_Rect_System_Boolean_
+  name: FindInBounds
+  nameWithType: ElementCollection.FindInBounds
+  fullName: FlowGraph.Core.Elements.ElementCollection.FindInBounds
+- uid: FlowGraph.Core.Elements.Rect
+  commentId: T:FlowGraph.Core.Elements.Rect
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.Rect.html
+  name: Rect
+  nameWithType: Rect
+  fullName: FlowGraph.Core.Elements.Rect
