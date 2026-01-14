@@ -62,12 +62,10 @@ public class ResizeHandleManager
         var scale = _renderContext.Scale;
         var handleSize = 8 * scale;
         var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
-        var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
-        var scaledWidth = nodeWidth * scale;
-        var scaledHeight = nodeHeight * scale;
+        var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
 
         System.Diagnostics.Debug.WriteLine($"[ResizeHandles] Node={node.Id}: NodeDimensions=({nodeWidth:F0}x{nodeHeight:F0}), node.Width={node.Width}, node.Height={node.Height}");
-        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Scale={scale:F2}, ScreenPos=({screenPos.X:F0},{screenPos.Y:F0}), ScaledSize=({scaledWidth:F0}x{scaledHeight:F0})");
+        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Scale={scale:F2}, CanvasPos=({canvasPos.X:F0},{canvasPos.Y:F0})");
         System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Settings: NodeWidth={_renderContext.Settings.NodeWidth}, NodeHeight={_renderContext.Settings.NodeHeight}");
 
         var handles = new List<Rectangle>();
@@ -86,7 +84,7 @@ public class ResizeHandleManager
         foreach (var position in positions)
         {
             var handle = CreateResizeHandle(handleSize, theme, node, position);
-            PositionResizeHandle(handle, screenPos, scaledWidth, scaledHeight, handleSize, position);
+            PositionResizeHandle(handle, canvasPos, nodeWidth, nodeHeight, handleSize, position);
 
             canvas.Children.Add(handle);
             handles.Add(handle);
@@ -142,15 +140,13 @@ public class ResizeHandleManager
         var scale = _renderContext.Scale;
         var handleSize = 8 * scale;
         var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
-        var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
-        var scaledWidth = nodeWidth * scale;
-        var scaledHeight = nodeHeight * scale;
+        var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
 
         foreach (var handle in handles)
         {
             if (handle.Tag is (Node _, ResizeHandlePosition position))
             {
-                PositionResizeHandle(handle, screenPos, scaledWidth, scaledHeight, handleSize, position);
+                PositionResizeHandle(handle, canvasPos, nodeWidth, nodeHeight, handleSize, position);
             }
         }
     }
@@ -186,9 +182,9 @@ public class ResizeHandleManager
     /// </summary>
     private void PositionResizeHandle(
         Rectangle handle,
-        AvaloniaPoint nodeScreenPos,
-        double scaledWidth,
-        double scaledHeight,
+        AvaloniaPoint nodeCanvasPos,
+        double nodeWidth,
+        double nodeHeight,
         double handleSize,
         ResizeHandlePosition position)
     {
@@ -196,14 +192,14 @@ public class ResizeHandleManager
 
         var (left, top) = position switch
         {
-            ResizeHandlePosition.TopLeft => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y - halfHandle),
-            ResizeHandlePosition.TopRight => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y - halfHandle),
-            ResizeHandlePosition.BottomLeft => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
-            ResizeHandlePosition.BottomRight => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
-            ResizeHandlePosition.Top => (nodeScreenPos.X + scaledWidth / 2 - halfHandle, nodeScreenPos.Y - halfHandle),
-            ResizeHandlePosition.Bottom => (nodeScreenPos.X + scaledWidth / 2 - halfHandle, nodeScreenPos.Y + scaledHeight - halfHandle),
-            ResizeHandlePosition.Left => (nodeScreenPos.X - halfHandle, nodeScreenPos.Y + scaledHeight / 2 - halfHandle),
-            ResizeHandlePosition.Right => (nodeScreenPos.X + scaledWidth - halfHandle, nodeScreenPos.Y + scaledHeight / 2 - halfHandle),
+            ResizeHandlePosition.TopLeft => (nodeCanvasPos.X - halfHandle, nodeCanvasPos.Y - halfHandle),
+            ResizeHandlePosition.TopRight => (nodeCanvasPos.X + nodeWidth - halfHandle, nodeCanvasPos.Y - halfHandle),
+            ResizeHandlePosition.BottomLeft => (nodeCanvasPos.X - halfHandle, nodeCanvasPos.Y + nodeHeight - halfHandle),
+            ResizeHandlePosition.BottomRight => (nodeCanvasPos.X + nodeWidth - halfHandle, nodeCanvasPos.Y + nodeHeight - halfHandle),
+            ResizeHandlePosition.Top => (nodeCanvasPos.X + nodeWidth / 2 - halfHandle, nodeCanvasPos.Y - halfHandle),
+            ResizeHandlePosition.Bottom => (nodeCanvasPos.X + nodeWidth / 2 - halfHandle, nodeCanvasPos.Y + nodeHeight - halfHandle),
+            ResizeHandlePosition.Left => (nodeCanvasPos.X - halfHandle, nodeCanvasPos.Y + nodeHeight / 2 - halfHandle),
+            ResizeHandlePosition.Right => (nodeCanvasPos.X + nodeWidth - halfHandle, nodeCanvasPos.Y + nodeHeight / 2 - halfHandle),
             _ => (0.0, 0.0)
         };
 
