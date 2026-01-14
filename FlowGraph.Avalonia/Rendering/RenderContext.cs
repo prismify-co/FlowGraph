@@ -122,22 +122,29 @@ public class RenderContext
 
     /// <summary>
     /// Transforms a canvas coordinate to screen coordinate.
-    /// PHASE 1: With MatrixTransform on MainCanvas, this is now a no-op.
-    /// The transform handles canvas→screen conversion automatically.
     /// </summary>
     /// <param name="canvasX">X coordinate in canvas space.</param>
     /// <param name="canvasY">Y coordinate in canvas space.</param>
     /// <returns>The corresponding screen coordinate.</returns>
     public AvaloniaPoint CanvasToScreen(double canvasX, double canvasY)
     {
-        // PHASE 1: MatrixTransform on MainCanvas handles the conversion
-        // Visual elements positioned in canvas coords are automatically transformed to screen
-        return new AvaloniaPoint(canvasX, canvasY);
-        
-        // OLD PHASE 0 CODE (manual transform):
-        // if (_viewport == null) return new AvaloniaPoint(canvasX, canvasY);
-        // var result = _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
-        // return result;
+        if (_viewport == null)
+        {
+            if (_settings.DebugCoordinateTransforms)
+            {
+                System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToScreen: NO VIEWPORT! Returning ({canvasX}, {canvasY})");
+            }
+            return new AvaloniaPoint(canvasX, canvasY);
+        }
+
+        var result = _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
+
+        if (_settings.DebugCoordinateTransforms)
+        {
+            System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToScreen: ({canvasX}, {canvasY}) -> ({result.X}, {result.Y}) [zoom={_viewport.Zoom}, offset=({_viewport.OffsetX}, {_viewport.OffsetY})]");
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -152,21 +159,18 @@ public class RenderContext
 
     /// <summary>
     /// Transforms a screen coordinate to canvas coordinate.
-    /// PHASE 1: With MatrixTransform, screen coords from GetPosition(_mainCanvas) are already in canvas space.
-    /// This is now a no-op - just returns the input coordinates.
     /// </summary>
     /// <param name="screenX">X coordinate in screen space.</param>
     /// <param name="screenY">Y coordinate in screen space.</param>
     /// <returns>The corresponding canvas coordinate.</returns>
     public AvaloniaPoint ScreenToCanvas(double screenX, double screenY)
     {
-        // PHASE 1: When we get position via GetPosition(_mainCanvas), it's already in canvas space
-        // The MatrixTransform handles the reverse conversion automatically
-        return new AvaloniaPoint(screenX, screenY);
-        
-        // OLD PHASE 0 CODE (manual transform):
-        // if (_viewport == null) return new AvaloniaPoint(screenX, screenY);
-        // return _viewport.ScreenToCanvas(new AvaloniaPoint(screenX, screenY));
+        if (_viewport == null)
+        {
+            return new AvaloniaPoint(screenX, screenY);
+        }
+
+        return _viewport.ScreenToCanvas(new AvaloniaPoint(screenX, screenY));
     }
 
     /// <summary>
