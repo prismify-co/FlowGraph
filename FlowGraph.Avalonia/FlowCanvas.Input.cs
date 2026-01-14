@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
 using System.Diagnostics;
 
@@ -119,20 +120,37 @@ public partial class FlowCanvas
             {
                 Debug.WriteLine($"[Input] VisualTreeHitTest hit: {rawHit.GetType().Name}, Tag={GetTagDescription(rawHit)}, IsHitTestVisible={(rawHit as Control)?.IsHitTestVisible}");
 
-                // Walk up tree to find node
+                // Walk up tree to find a valid target (node, edge, port, resize handle, etc.)
                 var current = rawHit as Control;
                 int depth = 0;
-                while (current != null && Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(hitElement?.Tag) == null && depth < 20)
+                bool foundValidTarget = false;
+                
+                while (current != null && depth < 20)
                 {
-                    if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(current.Tag) != null)
+                    var tag = current.Tag;
+                    
+                    // Check if this is a valid target
+                    if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
+                        tag is Edge || // Edge
+                        tag is (Node, Port, bool) || // Port
+                        tag is (Node, ResizeHandlePosition)) // Resize handle
                     {
                         hitElement = current;
-                        Debug.WriteLine($"[Input]   Found Node at depth {depth}: {current.GetType().Name}");
+                        foundValidTarget = true;
+                        Debug.WriteLine($"[Input]   Found valid target at depth {depth}: {current.GetType().Name}, Tag={GetTagDescription(current)}");
                         break;
                     }
+                    
                     Debug.WriteLine($"[Input]   Parent[{depth}]: {current.GetType().Name}, Tag={GetTagDescription(current)}");
                     current = current.Parent as Control;
                     depth++;
+                }
+                
+                // If we didn't find a valid target, treat as canvas click (set to null)
+                if (!foundValidTarget)
+                {
+                    Debug.WriteLine($"[Input]   No valid target found in tree, treating as canvas click");
+                    hitElement = null;
                 }
             }
         }
