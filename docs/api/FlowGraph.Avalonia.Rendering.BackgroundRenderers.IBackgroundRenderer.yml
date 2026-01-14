@@ -1,0 +1,329 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  id: IBackgroundRenderer
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup(Avalonia.Controls.Canvas)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  langs:
+  - csharp
+  - vb
+  name: IBackgroundRenderer
+  nameWithType: IBackgroundRenderer
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IBackgroundRenderer
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: >-
+    Interface for custom background renderers.
+
+    Implement this to render custom backgrounds behind the main graph content.
+  remarks: >-
+    <p>
+
+    Background renderers are called during the render cycle, after the grid
+
+    but before edges and nodes. They can render static backgrounds (gradients,
+
+    images) or graph-dependent visuals (swimlane lanes, sequence diagram lifelines).
+
+    </p>
+
+    <p>
+
+    Multiple background renderers can be registered and are rendered in order.
+
+    Each renderer receives the full graph context and can access node positions.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Register a background renderer
+
+    canvas.BackgroundRenderers.Add(new LifelineBackgroundRenderer());
+
+
+    // Or set as the single background
+
+    canvas.BackgroundRenderers.SetSingle(new SwimlaneBackgroundRenderer());</code></pre>
+  syntax:
+    content: public interface IBackgroundRenderer
+    content.vb: Public Interface IBackgroundRenderer
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  id: Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  langs:
+  - csharp
+  - vb
+  name: Render(Canvas, BackgroundRenderContext)
+  nameWithType: IBackgroundRenderer.Render(Canvas, BackgroundRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas, FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Render
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Renders background content onto the canvas.
+  example: []
+  syntax:
+    content: void Render(Canvas canvas, BackgroundRenderContext context)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to render to.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+      description: The background rendering context.
+    content.vb: Sub Render(canvas As Canvas, context As BackgroundRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph)
+  id: OnGraphChanged(FlowGraph.Core.Graph)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  langs:
+  - csharp
+  - vb
+  name: OnGraphChanged(Graph?)
+  nameWithType: IBackgroundRenderer.OnGraphChanged(Graph?)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnGraphChanged
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Called when the graph changes to update cached calculations.
+  example: []
+  syntax:
+    content: void OnGraphChanged(Graph? graph)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The updated graph.
+    content.vb: Sub OnGraphChanged(graph As Graph)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged*
+  nameWithType.vb: IBackgroundRenderer.OnGraphChanged(Graph)
+  fullName.vb: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph)
+  name.vb: OnGraphChanged(Graph)
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  id: OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  langs:
+  - csharp
+  - vb
+  name: OnViewportChanged(BackgroundRenderContext)
+  nameWithType: IBackgroundRenderer.OnViewportChanged(BackgroundRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnViewportChanged
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: Called when the viewport changes (pan/zoom).
+  example: []
+  syntax:
+    content: void OnViewportChanged(BackgroundRenderContext context)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+      description: The updated context.
+    content.vb: Sub OnViewportChanged(context As BackgroundRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged*
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup(Avalonia.Controls.Canvas)
+  commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup(Avalonia.Controls.Canvas)
+  id: Cleanup(Avalonia.Controls.Canvas)
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  langs:
+  - csharp
+  - vb
+  name: Cleanup(Canvas)
+  nameWithType: IBackgroundRenderer.Cleanup(Canvas)
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup(Avalonia.Controls.Canvas)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Cleanup
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: >-
+    Called when the renderer is being removed or replaced.
+
+    Implementations should remove any visuals they added to the canvas.
+  example: []
+  syntax:
+    content: void Cleanup(Canvas canvas)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas to clean up from.
+    content.vb: Sub Cleanup(canvas As Canvas)
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup*
+references:
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+    name: BackgroundRenderers
+    href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+    name: BackgroundRenderers
+    href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_Render_Avalonia_Controls_Canvas_FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderContext_
+  name: Render
+  nameWithType: IBackgroundRenderer.Render
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render
+- uid: Avalonia.Controls.Canvas
+  commentId: T:Avalonia.Controls.Canvas
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Canvas
+  nameWithType: Canvas
+  fullName: Avalonia.Controls.Canvas
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext.html
+  name: BackgroundRenderContext
+  nameWithType: BackgroundRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_OnGraphChanged_FlowGraph_Core_Graph_
+  name: OnGraphChanged
+  nameWithType: IBackgroundRenderer.OnGraphChanged
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_OnViewportChanged_FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderContext_
+  name: OnViewportChanged
+  nameWithType: IBackgroundRenderer.OnViewportChanged
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_Cleanup_Avalonia_Controls_Canvas_
+  name: Cleanup
+  nameWithType: IBackgroundRenderer.Cleanup
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup

@@ -1,3 +1,7 @@
+// CS0618: Suppress obsolete warnings - these tests verify backward-compatible
+// CollectionChanged events on the obsolete Graph.Nodes and Graph.Edges properties.
+#pragma warning disable CS0618
+
 namespace FlowGraph.Core.Tests;
 
 public class GraphTests
@@ -249,5 +253,136 @@ public class GraphTests
         });
 
         Assert.True(eventFired);
+    }
+
+    [Fact]
+    public void Edges_CollectionChanged_FiresBeforeCollectionIsUpdated()
+    {
+        // IMPORTANT: This test documents the behavior that CollectionChanged fires
+        // BEFORE the collection is actually modified. This is why FlowCanvas.DataBinding
+        // uses Dispatcher.UIThread.Post() to defer rendering - the collection must be
+        // fully updated before we can accurately iterate over it for rendering.
+        //
+        // This is a regression test to ensure we don't accidentally "fix" the collection
+        // behavior without also updating the UI code that depends on deferred rendering.
+        var graph = new Graph();
+        var node1 = new Node { Type = "Source" };
+        var node2 = new Node { Type = "Target" };
+        node1.Outputs.Add(new Port { Id = "out1", Type = "data" });
+        node2.Inputs.Add(new Port { Id = "in1", Type = "data" });
+        graph.AddNode(node1);
+        graph.AddNode(node2);
+
+        var countDuringAddEvent = -1;
+        var countDuringRemoveEvent = -1;
+
+        graph.Edges.CollectionChanged += (s, e) =>
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                countDuringAddEvent = graph.Elements.Edges.Count();
+            }
+            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                countDuringRemoveEvent = graph.Elements.Edges.Count();
+            }
+        };
+
+        var edge = new Edge
+        {
+            Source = node1.Id,
+            Target = node2.Id,
+            SourcePort = "out1",
+            TargetPort = "in1"
+        };
+
+        // Add edge - event fires before collection is updated
+        graph.AddEdge(edge);
+
+        // The count during the Add event is 0 (not yet added), but after AddEdge returns it's 1
+        Assert.Equal(0, countDuringAddEvent); // Event fires BEFORE add
+        Assert.Single(graph.Elements.Edges); // But collection IS updated after method returns
+
+        // Remove edge - event fires before collection is updated  
+        graph.RemoveEdge(edge.Id);
+
+        // The count during the Remove event is 1 (not yet removed), but after RemoveEdge returns it's 0
+        Assert.Equal(1, countDuringRemoveEvent); // Event fires BEFORE remove
+        Assert.Empty(graph.Elements.Edges); // But collection IS updated after method returns
+    }
+
+    [Fact]
+    public void Edges_CollectionChanged_NewItemsContainsAddedEdge()
+    {
+        // Even though the collection count is stale during the event,
+        // the NewItems in the event args should contain the edge being added.
+        // UI code can use this for incremental updates instead of full re-renders.
+        var graph = new Graph();
+        var node1 = new Node { Type = "Source" };
+        var node2 = new Node { Type = "Target" };
+        node1.Outputs.Add(new Port { Id = "out1", Type = "data" });
+        node2.Inputs.Add(new Port { Id = "in1", Type = "data" });
+        graph.AddNode(node1);
+        graph.AddNode(node2);
+
+        Edge? edgeFromEvent = null;
+
+        graph.Edges.CollectionChanged += (s, e) =>
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                edgeFromEvent = e.NewItems?[0] as Edge;
+            }
+        };
+
+        var edge = new Edge
+        {
+            Source = node1.Id,
+            Target = node2.Id,
+            SourcePort = "out1",
+            TargetPort = "in1"
+        };
+        graph.AddEdge(edge);
+
+        Assert.NotNull(edgeFromEvent);
+        Assert.Equal(edge.Id, edgeFromEvent!.Id);
+    }
+
+    [Fact]
+    public void Edges_CollectionChanged_OldItemsContainsRemovedEdge()
+    {
+        // Even though the collection count is stale during the event,
+        // the OldItems in the event args should contain the edge being removed.
+        var graph = new Graph();
+        var node1 = new Node { Type = "Source" };
+        var node2 = new Node { Type = "Target" };
+        node1.Outputs.Add(new Port { Id = "out1", Type = "data" });
+        node2.Inputs.Add(new Port { Id = "in1", Type = "data" });
+        graph.AddNode(node1);
+        graph.AddNode(node2);
+
+        var edge = new Edge
+        {
+            Source = node1.Id,
+            Target = node2.Id,
+            SourcePort = "out1",
+            TargetPort = "in1"
+        };
+        graph.AddEdge(edge);
+
+        Edge? edgeFromEvent = null;
+
+        graph.Edges.CollectionChanged += (s, e) =>
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                edgeFromEvent = e.OldItems?[0] as Edge;
+            }
+        };
+
+        graph.RemoveEdge(edge.Id);
+
+        Assert.NotNull(edgeFromEvent);
+        Assert.Equal(edge.Id, edgeFromEvent!.Id);
     }
 }

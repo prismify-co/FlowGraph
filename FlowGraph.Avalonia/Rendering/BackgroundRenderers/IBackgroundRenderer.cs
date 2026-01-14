@@ -49,6 +49,13 @@ public interface IBackgroundRenderer
   /// </summary>
   /// <param name="context">The updated context.</param>
   void OnViewportChanged(BackgroundRenderContext context) { }
+
+  /// <summary>
+  /// Called when the renderer is being removed or replaced.
+  /// Implementations should remove any visuals they added to the canvas.
+  /// </summary>
+  /// <param name="canvas">The canvas to clean up from.</param>
+  void Cleanup(Canvas canvas) { }
 }
 
 /// <summary>

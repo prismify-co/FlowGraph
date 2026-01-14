@@ -12,6 +12,9 @@ public class EdgeState : ObservableBase, IEdgeState
 {
   private bool _isSelected;
   private IReadOnlyList<Point>? _waypoints;
+  private IReadOnlyList<Point>? _userWaypoints;
+  private bool _isVisible = true;
+  private int _zIndex = Elements.CanvasElement.ZIndexEdges;
 
   /// <inheritdoc />
   public bool IsSelected
@@ -27,13 +30,37 @@ public class EdgeState : ObservableBase, IEdgeState
     set => SetField(ref _waypoints, value);
   }
 
+  /// <inheritdoc />
+  public IReadOnlyList<Point>? UserWaypoints
+  {
+    get => _userWaypoints;
+    set => SetField(ref _userWaypoints, value);
+  }
+
+  /// <inheritdoc />
+  public bool IsVisible
+  {
+    get => _isVisible;
+    set => SetField(ref _isVisible, value);
+  }
+
+  /// <inheritdoc />
+  public int ZIndex
+  {
+    get => _zIndex;
+    set => SetField(ref _zIndex, value);
+  }
+
   /// <summary>
   /// Creates a copy of this state.
   /// </summary>
   public EdgeState Clone() => new()
   {
     IsSelected = IsSelected,
-    Waypoints = Waypoints?.ToList()
+    Waypoints = Waypoints?.ToList(),
+    UserWaypoints = UserWaypoints?.ToList(),
+    IsVisible = IsVisible,
+    ZIndex = ZIndex
   };
 
   /// <summary>
@@ -43,6 +70,9 @@ public class EdgeState : ObservableBase, IEdgeState
   {
     IsSelected = other.IsSelected;
     Waypoints = other.Waypoints?.ToList();
+    UserWaypoints = other.UserWaypoints?.ToList();
+    IsVisible = other.IsVisible;
+    ZIndex = other.ZIndex;
   }
 
   /// <summary>
@@ -54,10 +84,26 @@ public class EdgeState : ObservableBase, IEdgeState
   }
 
   /// <summary>
-  /// Clears all waypoints.
+  /// Sets user waypoints from a list of points.
+  /// </summary>
+  public void SetUserWaypoints(IEnumerable<Point>? points)
+  {
+    UserWaypoints = points?.ToList();
+  }
+
+  /// <summary>
+  /// Clears all waypoints (both computed and user-defined).
   /// </summary>
   public void ClearWaypoints()
   {
     Waypoints = null;
+  }
+
+  /// <summary>
+  /// Clears user-defined waypoints.
+  /// </summary>
+  public void ClearUserWaypoints()
+  {
+    UserWaypoints = null;
   }
 }

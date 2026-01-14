@@ -338,14 +338,24 @@ public class Node : ICanvasElement
     #region ICanvasElement Implementation
 
     /// <summary>
-    /// Gets whether this node is visible. Nodes are always visible unless hidden by group collapse.
+    /// Gets or sets whether this node is visible in the canvas.
+    /// Delegates to State.IsVisible.
     /// </summary>
-    public bool IsVisible => true;
+    public bool IsVisible
+    {
+        get => State.IsVisible;
+        set => State.IsVisible = value;
+    }
 
     /// <summary>
-    /// Gets the Z-index for this node. Nodes render at Z-index 300 by default.
+    /// Gets or sets the Z-index for rendering order.
+    /// Delegates to State.ZIndex. Default is CanvasElement.ZIndexNodes (300).
     /// </summary>
-    public int ZIndex => CanvasElement.ZIndexNodes;
+    public int ZIndex
+    {
+        get => State.ZIndex;
+        set => State.ZIndex = value;
+    }
 
     /// <summary>
     /// Gets the bounding rectangle of this node in canvas coordinates.

@@ -1,0 +1,514 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Models.IEdgeState
+  commentId: T:FlowGraph.Core.Models.IEdgeState
+  id: IEdgeState
+  parent: FlowGraph.Core.Models
+  children:
+  - FlowGraph.Core.Models.IEdgeState.IsSelected
+  - FlowGraph.Core.Models.IEdgeState.IsVisible
+  - FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  - FlowGraph.Core.Models.IEdgeState.Waypoints
+  - FlowGraph.Core.Models.IEdgeState.ZIndex
+  langs:
+  - csharp
+  - vb
+  name: IEdgeState
+  nameWithType: IEdgeState
+  fullName: FlowGraph.Core.Models.IEdgeState
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IEdgeState
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Interface for the mutable runtime state of an edge.
+
+    Separates selection and routing state from the immutable definition.
+  remarks: >-
+    Implementations must raise <xref href="System.ComponentModel.INotifyPropertyChanged.PropertyChanged" data-throw-if-not-resolved="false"></xref> 
+
+    when any property changes to support data binding.
+
+
+    Default implementation: <xref href="FlowGraph.Core.Models.EdgeState" data-throw-if-not-resolved="false"></xref>
+
+    Avalonia-optimized: FlowGraph.Avalonia.Binding.ObservableEdgeState
+  example: []
+  syntax:
+    content: 'public interface IEdgeState : INotifyPropertyChanged'
+    content.vb: Public Interface IEdgeState Inherits INotifyPropertyChanged
+  inheritedMembers:
+  - System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: FlowGraph.Core.Models.IEdgeState.IsSelected
+  commentId: P:FlowGraph.Core.Models.IEdgeState.IsSelected
+  id: IsSelected
+  parent: FlowGraph.Core.Models.IEdgeState
+  langs:
+  - csharp
+  - vb
+  name: IsSelected
+  nameWithType: IEdgeState.IsSelected
+  fullName: FlowGraph.Core.Models.IEdgeState.IsSelected
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSelected
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 20
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this edge is currently selected.
+  example: []
+  syntax:
+    content: bool IsSelected { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsSelected As Boolean
+  overload: FlowGraph.Core.Models.IEdgeState.IsSelected*
+- uid: FlowGraph.Core.Models.IEdgeState.Waypoints
+  commentId: P:FlowGraph.Core.Models.IEdgeState.Waypoints
+  id: Waypoints
+  parent: FlowGraph.Core.Models.IEdgeState
+  langs:
+  - csharp
+  - vb
+  name: Waypoints
+  nameWithType: IEdgeState.Waypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.Waypoints
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Waypoints
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Computed waypoints for edge rendering (set by router).
+
+    When set, the edge will pass through these intermediate points.
+
+    Does not include the start and end points (port positions).
+  remarks: >-
+    This property is typically set by the routing system, not directly by users.
+
+    For manual waypoint editing, use <xref href="FlowGraph.Core.Models.IEdgeState.UserWaypoints" data-throw-if-not-resolved="false"></xref> instead.
+  example: []
+  syntax:
+    content: IReadOnlyList<Point>? Waypoints { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+    content.vb: Property Waypoints As IReadOnlyList(Of Point)
+  overload: FlowGraph.Core.Models.IEdgeState.Waypoints*
+- uid: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  commentId: P:FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  id: UserWaypoints
+  parent: FlowGraph.Core.Models.IEdgeState
+  langs:
+  - csharp
+  - vb
+  name: UserWaypoints
+  nameWithType: IEdgeState.UserWaypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UserWaypoints
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    User-defined waypoints for Manual/Guided routing modes.
+
+    These are constraint points that the user explicitly placed.
+  remarks: >-
+    <p>
+
+    In <xref href="FlowGraph.Core.Models.EdgeRoutingMode.Manual" data-throw-if-not-resolved="false"></xref> mode, the edge passes directly
+
+    through these points without auto-routing.
+
+    </p>
+
+    <p>
+
+    In <xref href="FlowGraph.Core.Models.EdgeRoutingMode.Guided" data-throw-if-not-resolved="false"></xref> mode, the router will calculate
+
+    a path that passes through these points while avoiding obstacles.
+
+    </p>
+
+    <p>
+
+    In <xref href="FlowGraph.Core.Models.EdgeRoutingMode.Auto" data-throw-if-not-resolved="false"></xref> mode, this property is ignored.
+
+    </p>
+  example: []
+  syntax:
+    content: IReadOnlyList<Point>? UserWaypoints { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+    content.vb: Property UserWaypoints As IReadOnlyList(Of Point)
+  overload: FlowGraph.Core.Models.IEdgeState.UserWaypoints*
+- uid: FlowGraph.Core.Models.IEdgeState.IsVisible
+  commentId: P:FlowGraph.Core.Models.IEdgeState.IsVisible
+  id: IsVisible
+  parent: FlowGraph.Core.Models.IEdgeState
+  langs:
+  - csharp
+  - vb
+  name: IsVisible
+  nameWithType: IEdgeState.IsVisible
+  fullName: FlowGraph.Core.Models.IEdgeState.IsVisible
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsVisible
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 56
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Whether this edge is visible in the canvas.
+
+    Invisible edges are not rendered but remain in the graph.
+  example: []
+  syntax:
+    content: bool IsVisible { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsVisible As Boolean
+  overload: FlowGraph.Core.Models.IEdgeState.IsVisible*
+- uid: FlowGraph.Core.Models.IEdgeState.ZIndex
+  commentId: P:FlowGraph.Core.Models.IEdgeState.ZIndex
+  id: ZIndex
+  parent: FlowGraph.Core.Models.IEdgeState
+  langs:
+  - csharp
+  - vb
+  name: ZIndex
+  nameWithType: IEdgeState.ZIndex
+  fullName: FlowGraph.Core.Models.IEdgeState.ZIndex
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/IEdgeState.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ZIndex
+    path: ../FlowGraph.Core/Models/IEdgeState.cs
+    startLine: 62
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Z-index for rendering order. Higher values render on top.
+
+    Default is CanvasElement.ZIndexEdges (200).
+  example: []
+  syntax:
+    content: int ZIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property ZIndex As Integer
+  overload: FlowGraph.Core.Models.IEdgeState.ZIndex*
+references:
+- uid: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  commentId: E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  parent: System.ComponentModel.INotifyPropertyChanged
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged
+  name: PropertyChanged
+  nameWithType: INotifyPropertyChanged.PropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: FlowGraph.Core.Models.EdgeState
+  commentId: T:FlowGraph.Core.Models.EdgeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeState.html
+  name: EdgeState
+  nameWithType: EdgeState
+  fullName: FlowGraph.Core.Models.EdgeState
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: System.ComponentModel.INotifyPropertyChanged
+  commentId: T:System.ComponentModel.INotifyPropertyChanged
+  parent: System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged
+  name: INotifyPropertyChanged
+  nameWithType: INotifyPropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged
+- uid: System.ComponentModel
+  commentId: N:System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.ComponentModel
+  nameWithType: System.ComponentModel
+  fullName: System.ComponentModel
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+- uid: FlowGraph.Core.Models.IEdgeState.IsSelected*
+  commentId: Overload:FlowGraph.Core.Models.IEdgeState.IsSelected
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_IsSelected
+  name: IsSelected
+  nameWithType: IEdgeState.IsSelected
+  fullName: FlowGraph.Core.Models.IEdgeState.IsSelected
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  commentId: P:FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  parent: FlowGraph.Core.Models.IEdgeState
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_UserWaypoints
+  name: UserWaypoints
+  nameWithType: IEdgeState.UserWaypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+- uid: FlowGraph.Core.Models.IEdgeState.Waypoints*
+  commentId: Overload:FlowGraph.Core.Models.IEdgeState.Waypoints
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_Waypoints
+  name: Waypoints
+  nameWithType: IEdgeState.Waypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.Waypoints
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Point>
+  nameWithType: IReadOnlyList<Point>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Point>
+  nameWithType.vb: IReadOnlyList(Of Point)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Point)
+  name.vb: IReadOnlyList(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Models.IEdgeState
+  commentId: T:FlowGraph.Core.Models.IEdgeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.IEdgeState.html
+  name: IEdgeState
+  nameWithType: IEdgeState
+  fullName: FlowGraph.Core.Models.IEdgeState
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Manual
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Manual
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Manual
+  name: Manual
+  nameWithType: EdgeRoutingMode.Manual
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Manual
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided
+  name: Guided
+  nameWithType: EdgeRoutingMode.Guided
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Auto
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Auto
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Auto
+  name: Auto
+  nameWithType: EdgeRoutingMode.Auto
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Auto
+- uid: FlowGraph.Core.Models.IEdgeState.UserWaypoints*
+  commentId: Overload:FlowGraph.Core.Models.IEdgeState.UserWaypoints
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_UserWaypoints
+  name: UserWaypoints
+  nameWithType: IEdgeState.UserWaypoints
+  fullName: FlowGraph.Core.Models.IEdgeState.UserWaypoints
+- uid: FlowGraph.Core.Models.IEdgeState.IsVisible*
+  commentId: Overload:FlowGraph.Core.Models.IEdgeState.IsVisible
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_IsVisible
+  name: IsVisible
+  nameWithType: IEdgeState.IsVisible
+  fullName: FlowGraph.Core.Models.IEdgeState.IsVisible
+- uid: FlowGraph.Core.Models.IEdgeState.ZIndex*
+  commentId: Overload:FlowGraph.Core.Models.IEdgeState.ZIndex
+  href: FlowGraph.Core.Models.IEdgeState.html#FlowGraph_Core_Models_IEdgeState_ZIndex
+  name: ZIndex
+  nameWithType: IEdgeState.ZIndex
+  fullName: FlowGraph.Core.Models.IEdgeState.ZIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

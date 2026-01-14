@@ -259,14 +259,24 @@ public class Edge : ICanvasElement
     }
 
     /// <summary>
-    /// Gets whether this edge is visible. Edges are always visible.
+    /// Gets or sets whether this edge is visible in the canvas.
+    /// Delegates to State.IsVisible.
     /// </summary>
-    public bool IsVisible => true;
+    public bool IsVisible
+    {
+        get => State.IsVisible;
+        set => State.IsVisible = value;
+    }
 
     /// <summary>
-    /// Gets the Z-index for this edge. Edges render at Z-index 200 by default.
+    /// Gets or sets the Z-index for rendering order.
+    /// Delegates to State.ZIndex. Default is CanvasElement.ZIndexEdges (200).
     /// </summary>
-    public int ZIndex => CanvasElement.ZIndexEdges;
+    public int ZIndex
+    {
+        get => State.ZIndex;
+        set => State.ZIndex = value;
+    }
 
     /// <summary>
     /// Gets the bounding rectangle of this edge.

@@ -175,7 +175,8 @@ public class IdleState : InputStateBase
             if (!ctrlHeld && !node.IsSelected)
             {
                 Debug.WriteLine($"[IdleState.HandleNodeClick] Selecting node {node.Id}, deselecting others");
-                foreach (var n in graph.Elements.Nodes.Where(n => n.Id != node.Id))
+                // OPTIMIZED: Only deselect nodes that are actually selected (not all 5000 nodes!)
+                foreach (var n in graph.Elements.Nodes.Where(n => n.IsSelected && n.Id != node.Id))
                     n.IsSelected = false;
                 node.IsSelected = true;
             }
@@ -245,9 +246,10 @@ public class IdleState : InputStateBase
 
         if (!ctrlHeld)
         {
-            foreach (var n in graph.Elements.Nodes)
+            // OPTIMIZED: Only deselect items that are actually selected
+            foreach (var n in graph.Elements.Nodes.Where(n => n.IsSelected))
                 n.IsSelected = false;
-            foreach (var ed in graph.Elements.Edges.Where(ed => ed.Id != edge.Id))
+            foreach (var ed in graph.Elements.Edges.Where(ed => ed.IsSelected && ed.Id != edge.Id))
                 ed.IsSelected = false;
         }
 

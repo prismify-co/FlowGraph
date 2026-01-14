@@ -5,9 +5,10 @@ items:
   id: GraphRenderModel
   parent: FlowGraph.Avalonia.Rendering
   children:
-  - FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Graph)
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Node,FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeMidpoint(Avalonia.Point,Avalonia.Point)
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupCollapseButtonBounds(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.GetGroupLabelPosition(FlowGraph.Core.Node)
@@ -35,9 +36,11 @@ items:
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupHeight
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.MinGroupWidth
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeCornerRadius
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.PortHitPadding
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.ResizeHandleSize
   - FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+  - FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   langs:
   - csharp
   - vb
@@ -48,11 +51,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphRenderModel
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 42
+    startLine: 43
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -123,11 +126,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderHeight
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 47
+    startLine: 49
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -150,11 +153,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinGroupWidth
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 48
+    startLine: 50
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -177,11 +180,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinGroupHeight
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 49
+    startLine: 51
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -204,11 +207,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupCollapseButtonSize
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 50
+    startLine: 52
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -231,11 +234,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBorderRadius
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 51
+    startLine: 53
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -258,11 +261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupDashedStrokeThickness
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 52
+    startLine: 54
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -285,11 +288,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderMarginX
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 53
+    startLine: 55
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -312,11 +315,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderMarginY
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 54
+    startLine: 56
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -339,11 +342,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeCornerRadius
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 55
+    startLine: 57
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -366,11 +369,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ResizeHandleSize
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 56
+    startLine: 58
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -393,11 +396,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortHitPadding
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 57
+    startLine: 59
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -406,38 +409,40 @@ items:
     return:
       type: System.Double
     content.vb: Public Const PortHitPadding As Double = 4
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
-  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
-  id: '#ctor(FlowGraph.Avalonia.FlowCanvasSettings)'
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)
+  id: '#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)'
   parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
   langs:
   - csharp
   - vb
-  name: GraphRenderModel(FlowCanvasSettings)
-  nameWithType: GraphRenderModel.GraphRenderModel(FlowCanvasSettings)
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GraphRenderModel(FlowGraph.Avalonia.FlowCanvasSettings)
+  name: GraphRenderModel(FlowCanvasSettings, NodeRendererRegistry?)
+  nameWithType: GraphRenderModel.GraphRenderModel(FlowCanvasSettings, NodeRendererRegistry?)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GraphRenderModel(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry?)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 59
+    startLine: 61
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
   syntax:
-    content: public GraphRenderModel(FlowCanvasSettings settings)
+    content: public GraphRenderModel(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers = null)
     parameters:
     - id: settings
       type: FlowGraph.Avalonia.FlowCanvasSettings
-    content.vb: Public Sub New(settings As FlowCanvasSettings)
+    - id: nodeRenderers
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
+    content.vb: Public Sub New(settings As FlowCanvasSettings, nodeRenderers As NodeRendererRegistry = Nothing)
   overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor*
-  nameWithType.vb: GraphRenderModel.New(FlowCanvasSettings)
-  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.New(FlowGraph.Avalonia.FlowCanvasSettings)
-  name.vb: New(FlowCanvasSettings)
+  nameWithType.vb: GraphRenderModel.New(FlowCanvasSettings, NodeRendererRegistry)
+  fullName.vb: FlowGraph.Avalonia.Rendering.GraphRenderModel.New(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)
+  name.vb: New(FlowCanvasSettings, NodeRendererRegistry)
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
   commentId: P:FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
   id: Settings
@@ -452,11 +457,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 67
+    startLine: 70
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -469,6 +474,69 @@ items:
       type: FlowGraph.Avalonia.FlowCanvasSettings
     content.vb: Public ReadOnly Property Settings As FlowCanvasSettings
   overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
+  commentId: P:FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
+  id: NodeRenderers
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: NodeRenderers
+  nameWithType: GraphRenderModel.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeRenderers
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 75
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets or sets the node renderer registry for custom node type dimensions.
+  example: []
+  syntax:
+    content: public NodeRendererRegistry? NodeRenderers { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
+    content.vb: Public Property NodeRenderers As NodeRendererRegistry
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  id: UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: UpdateSettings(FlowCanvasSettings)
+  nameWithType: GraphRenderModel.UpdateSettings(FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSettings
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 85
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the settings used by this model.
+  example: []
+  syntax:
+    content: public void UpdateSettings(FlowCanvasSettings settings)
+    parameters:
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+      description: The new settings to use.
+    content.vb: Public Sub UpdateSettings(settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings*
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
   commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds(FlowGraph.Core.Node)
   id: GetNodeBounds(FlowGraph.Core.Node)
@@ -483,11 +551,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeBounds
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 74
+    startLine: 95
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -516,15 +584,18 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeWidth
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 84
+    startLine: 106
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets the width of a node in canvas coordinates.
+  summary: >-
+    Gets the width of a node in canvas coordinates.
+
+    Considers custom renderer dimensions when available.
   example: []
   syntax:
     content: public double GetNodeWidth(Node node)
@@ -549,15 +620,18 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeHeight
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 94
+    startLine: 131
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets the height of a node in canvas coordinates.
+  summary: >-
+    Gets the height of a node in canvas coordinates.
+
+    Considers custom renderer dimensions when available.
   example: []
   syntax:
     content: public double GetNodeHeight(Node node)
@@ -582,11 +656,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeCornerRadius
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 104
+    startLine: 155
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -615,11 +689,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortPosition
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 117
+    startLine: 168
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -658,11 +732,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortPositionByIndex
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 134
+    startLine: 185
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -700,11 +774,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortHitRadius
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 192
+    startLine: 243
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -730,11 +804,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeEndpoints
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 204
+    startLine: 255
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -751,6 +825,46 @@ items:
       type: System.ValueTuple{Avalonia.Point,Avalonia.Point}
     content.vb: Public Function GetEdgeEndpoints(edge As Edge, graph As Graph) As (start As Point, [end] As Point)
   overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints*
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Node,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Node,FlowGraph.Core.Node)
+  id: GetEdgeEndpoints(FlowGraph.Core.Edge,FlowGraph.Core.Node,FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeEndpoints(Edge, Node, Node)
+  nameWithType: GraphRenderModel.GetEdgeEndpoints(Edge, Node, Node)
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints(FlowGraph.Core.Edge, FlowGraph.Core.Node, FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeEndpoints
+    path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
+    startLine: 270
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Calculates the start and end points for an edge in canvas coordinates.
+
+    OPTIMIZED: Use this overload when you already have the source/target nodes looked up.
+  example: []
+  syntax:
+    content: public (Point start, Point end) GetEdgeEndpoints(Edge edge, Node sourceNode, Node targetNode)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+    - id: sourceNode
+      type: FlowGraph.Core.Node
+    - id: targetNode
+      type: FlowGraph.Core.Node
+    return:
+      type: System.ValueTuple{Avalonia.Point,Avalonia.Point}
+    content.vb: Public Function GetEdgeEndpoints(edge As Edge, sourceNode As Node, targetNode As Node) As (start As Point, [end] As Point)
+  overload: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetEdgeEndpoints*
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
   commentId: M:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
   id: GetBezierControlPoints(Avalonia.Point,Avalonia.Point)
@@ -765,11 +879,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBezierControlPoints
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 226
+    startLine: 286
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -800,11 +914,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeMidpoint
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 241
+    startLine: 301
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -835,11 +949,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupCollapseButtonBounds
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 253
+    startLine: 313
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -868,11 +982,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupLabelPosition
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 266
+    startLine: 326
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -901,11 +1015,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetResizeHandlePositions
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 281
+    startLine: 341
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -934,11 +1048,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetResizeHandleBounds
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 300
+    startLine: 360
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -967,11 +1081,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsNodeVisible
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 313
+    startLine: 373
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1002,11 +1116,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsInVisibleBounds
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 329
+    startLine: 389
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1037,11 +1151,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEdgeInVisibleBounds
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 346
+    startLine: 406
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1074,11 +1188,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsPointInPort
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 377
+    startLine: 437
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1109,11 +1223,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsPointNearEdge
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 388
+    startLine: 448
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1151,11 +1265,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsPointInResizeHandle
     path: ../FlowGraph.Avalonia/Rendering/GraphRenderModel.cs
-    startLine: 433
+    startLine: 493
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1453,7 +1567,7 @@ references:
   name.vb: Double
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.#ctor
-  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel__ctor_FlowGraph_Avalonia_FlowCanvasSettings_
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel__ctor_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRendererRegistry_
   name: GraphRenderModel
   nameWithType: GraphRenderModel.GraphRenderModel
   fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.GraphRenderModel
@@ -1467,6 +1581,13 @@ references:
   name: FlowCanvasSettings
   nameWithType: FlowCanvasSettings
   fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry.html
+  name: NodeRendererRegistry
+  nameWithType: NodeRendererRegistry
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
 - uid: FlowGraph.Avalonia
   commentId: N:FlowGraph.Avalonia
   href: FlowGraph.html
@@ -1489,12 +1610,62 @@ references:
   - uid: FlowGraph.Avalonia
     name: Avalonia
     href: FlowGraph.Avalonia.html
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.NodeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings*
   commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
   href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_Settings
   name: Settings
   nameWithType: GraphRenderModel.Settings
   fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.Settings
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_NodeRenderers
+  name: NodeRenderers
+  nameWithType: GraphRenderModel.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.NodeRenderers
+- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings
+  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: UpdateSettings
+  nameWithType: GraphRenderModel.UpdateSettings
+  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel.UpdateSettings
 - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds*
   commentId: Overload:FlowGraph.Avalonia.Rendering.GraphRenderModel.GetNodeBounds
   href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html#FlowGraph_Avalonia_Rendering_GraphRenderModel_GetNodeBounds_FlowGraph_Core_Node_

@@ -5,17 +5,23 @@ items:
   id: Graph
   parent: FlowGraph.Core
   children:
+  - FlowGraph.Core.Graph.#ctor
   - FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
   - FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  - FlowGraph.Core.Graph.AddElement(FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
   - FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
   - FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
   - FlowGraph.Core.Graph.BatchLoadCompleted
   - FlowGraph.Core.Graph.BeginBatchLoad
   - FlowGraph.Core.Graph.Edges
+  - FlowGraph.Core.Graph.Elements
   - FlowGraph.Core.Graph.EndBatchLoad
   - FlowGraph.Core.Graph.IsBatchLoading
   - FlowGraph.Core.Graph.Nodes
   - FlowGraph.Core.Graph.RemoveEdge(System.String)
+  - FlowGraph.Core.Graph.RemoveElement(FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
   - FlowGraph.Core.Graph.RemoveNode(System.String)
   langs:
   - csharp
@@ -27,14 +33,37 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Graph
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 42
+    startLine: 68
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Represents a flow graph containing nodes, edges, and other canvas elements.
+
+    Provides methods for adding, removing, and querying graph elements.
+  remarks: >-
+    <p>
+
+    The Graph class supports the canvas-first architecture where any
+
+    <xref href="FlowGraph.Core.Elements.ICanvasElement" data-throw-if-not-resolved="false"></xref> can be added to the canvas, not just nodes and edges.
+
+    </p>
+
+    <p>
+
+    For backward compatibility, the <xref href="FlowGraph.Core.Graph.Nodes" data-throw-if-not-resolved="false"></xref> and <xref href="FlowGraph.Core.Graph.Edges" data-throw-if-not-resolved="false"></xref>
+
+    collections continue to work as before. New code can use <xref href="FlowGraph.Core.Graph.Elements" data-throw-if-not-resolved="false"></xref>
+
+    to access all elements uniformly.
+
+    </p>
+  example: []
   syntax:
     content: public class Graph
     content.vb: Public Class Graph
@@ -49,6 +78,8 @@ items:
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
   extensionMethods:
+  - FlowGraph.Core.Graph.FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot
+  - FlowGraph.Core.Graph.FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(System.String,System.String)
   - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(System.String,System.Double,System.Double,System.Double,System.Double)
   - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Node)
   - FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(System.String)
@@ -65,6 +96,77 @@ items:
   - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.Save(System.String)
   - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.SaveAsync(System.String)
   - FlowGraph.Core.Graph.FlowGraph.Core.Serialization.GraphSerializationExtensions.ToJson(System.Boolean)
+- uid: FlowGraph.Core.Graph.#ctor
+  commentId: M:FlowGraph.Core.Graph.#ctor
+  id: '#ctor'
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: Graph()
+  nameWithType: Graph.Graph()
+  fullName: FlowGraph.Core.Graph.Graph()
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 77
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Initializes a new instance of the Graph class.
+
+    Sets up bidirectional sync between legacy collections (Nodes/Edges) and Elements.
+  example: []
+  syntax:
+    content: public Graph()
+    content.vb: Public Sub New()
+  overload: FlowGraph.Core.Graph.#ctor*
+  nameWithType.vb: Graph.New()
+  fullName.vb: FlowGraph.Core.Graph.New()
+  name.vb: New()
+- uid: FlowGraph.Core.Graph.Elements
+  commentId: P:FlowGraph.Core.Graph.Elements
+  id: Elements
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: Elements
+  nameWithType: Graph.Elements
+  fullName: FlowGraph.Core.Graph.Elements
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Elements
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 186
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Gets the collection of all canvas elements (nodes, edges, shapes, etc.).
+  remarks: >-
+    This is the primary collection for the canvas-first architecture.
+
+    Use typed accessors like <xref href="FlowGraph.Core.Graph.Nodes" data-throw-if-not-resolved="false"></xref> and <xref href="FlowGraph.Core.Graph.Edges" data-throw-if-not-resolved="false"></xref> for 
+
+    graph-specific operations.
+  example: []
+  syntax:
+    content: public ElementCollection Elements { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Elements.ElementCollection
+    content.vb: Public ReadOnly Property Elements As ElementCollection
+  overload: FlowGraph.Core.Graph.Elements*
 - uid: FlowGraph.Core.Graph.Nodes
   commentId: P:FlowGraph.Core.Graph.Nodes
   id: Nodes
@@ -79,21 +181,38 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Nodes
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 46
+    startLine: 192
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Gets the collection of node elements.
+
+    This is a convenience accessor that returns nodes from <xref href="FlowGraph.Core.Graph.Elements" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
-    content: public BulkObservableCollection<Node> Nodes { get; }
+    content: >-
+      [Obsolete("Use Elements.Nodes for new code. This property is retained for backward compatibility.")]
+
+      public BulkObservableCollection<Node> Nodes { get; }
     parameters: []
     return:
       type: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Node}
-    content.vb: Public ReadOnly Property Nodes As BulkObservableCollection(Of Node)
+    content.vb: >-
+      <Obsolete("Use Elements.Nodes for new code. This property is retained for backward compatibility.")>
+
+      Public ReadOnly Property Nodes As BulkObservableCollection(Of Node)
   overload: FlowGraph.Core.Graph.Nodes*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Elements.Nodes for new code. This property is retained for backward compatibility.
 - uid: FlowGraph.Core.Graph.Edges
   commentId: P:FlowGraph.Core.Graph.Edges
   id: Edges
@@ -108,21 +227,38 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Edges
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 47
+    startLine: 199
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Gets the collection of edge elements.
+
+    This is a convenience accessor that returns edges from <xref href="FlowGraph.Core.Graph.Elements" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
-    content: public BulkObservableCollection<Edge> Edges { get; }
+    content: >-
+      [Obsolete("Use Elements.Edges for new code. This property is retained for backward compatibility.")]
+
+      public BulkObservableCollection<Edge> Edges { get; }
     parameters: []
     return:
       type: FlowGraph.Core.BulkObservableCollection{FlowGraph.Core.Edge}
-    content.vb: Public ReadOnly Property Edges As BulkObservableCollection(Of Edge)
+    content.vb: >-
+      <Obsolete("Use Elements.Edges for new code. This property is retained for backward compatibility.")>
+
+      Public ReadOnly Property Edges As BulkObservableCollection(Of Edge)
   overload: FlowGraph.Core.Graph.Edges*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Elements.Edges for new code. This property is retained for backward compatibility.
 - uid: FlowGraph.Core.Graph.IsBatchLoading
   commentId: P:FlowGraph.Core.Graph.IsBatchLoading
   id: IsBatchLoading
@@ -137,11 +273,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsBatchLoading
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 53
+    startLine: 206
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -171,11 +307,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BatchLoadCompleted
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 59
+    startLine: 212
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -203,18 +339,18 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginBatchLoad
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 65
+    startLine: 218
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
   summary: >-
     Begins batch loading mode. Collection change notifications are suppressed
 
-    until EndBatchLoad is called. Use this when adding many nodes/edges at once.
+    until EndBatchLoad is called. Use this when adding many elements at once.
   example: []
   syntax:
     content: public void BeginBatchLoad()
@@ -234,11 +370,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EndBatchLoad
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 73
+    startLine: 226
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -248,6 +384,140 @@ items:
     content: public void EndBatchLoad()
     content.vb: Public Sub EndBatchLoad()
   overload: FlowGraph.Core.Graph.EndBatchLoad*
+- uid: FlowGraph.Core.Graph.AddElement(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Graph.AddElement(FlowGraph.Core.Elements.ICanvasElement)
+  id: AddElement(FlowGraph.Core.Elements.ICanvasElement)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddElement(ICanvasElement)
+  nameWithType: Graph.AddElement(ICanvasElement)
+  fullName: FlowGraph.Core.Graph.AddElement(FlowGraph.Core.Elements.ICanvasElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddElement
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 238
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Adds any canvas element to the graph.
+  example: []
+  syntax:
+    content: public void AddElement(ICanvasElement element)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+      description: The element to add.
+    content.vb: Public Sub AddElement(element As ICanvasElement)
+  overload: FlowGraph.Core.Graph.AddElement*
+- uid: FlowGraph.Core.Graph.RemoveElement(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Graph.RemoveElement(FlowGraph.Core.Elements.ICanvasElement)
+  id: RemoveElement(FlowGraph.Core.Elements.ICanvasElement)
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: RemoveElement(ICanvasElement)
+  nameWithType: Graph.RemoveElement(ICanvasElement)
+  fullName: FlowGraph.Core.Graph.RemoveElement(FlowGraph.Core.Elements.ICanvasElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveElement
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 254
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Removes any canvas element from the graph.
+  example: []
+  syntax:
+    content: public void RemoveElement(ICanvasElement element)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+      description: The element to remove.
+    content.vb: Public Sub RemoveElement(element As ICanvasElement)
+  overload: FlowGraph.Core.Graph.RemoveElement*
+- uid: FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  id: AddElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddElements(IEnumerable<ICanvasElement>)
+  nameWithType: Graph.AddElements(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddElements
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 270
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Adds multiple elements at once with a single notification.
+  example: []
+  syntax:
+    content: public void AddElements(IEnumerable<ICanvasElement> elements)
+    parameters:
+    - id: elements
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+      description: The elements to add.
+    content.vb: Public Sub AddElements(elements As IEnumerable(Of ICanvasElement))
+  overload: FlowGraph.Core.Graph.AddElements*
+  nameWithType.vb: Graph.AddElements(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Graph.AddElements(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: AddElements(IEnumerable(Of ICanvasElement))
+- uid: FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  commentId: M:FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  id: RemoveElements(System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement})
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: RemoveElements(IEnumerable<ICanvasElement>)
+  nameWithType: Graph.RemoveElements(IEnumerable<ICanvasElement>)
+  fullName: FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveElements
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 294
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Removes multiple elements at once with a single notification.
+  example: []
+  syntax:
+    content: public void RemoveElements(IEnumerable<ICanvasElement> elements)
+    parameters:
+    - id: elements
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+      description: The elements to remove.
+    content.vb: Public Sub RemoveElements(elements As IEnumerable(Of ICanvasElement))
+  overload: FlowGraph.Core.Graph.RemoveElements*
+  nameWithType.vb: Graph.RemoveElements(IEnumerable(Of ICanvasElement))
+  fullName.vb: FlowGraph.Core.Graph.RemoveElements(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement))
+  name.vb: RemoveElements(IEnumerable(Of ICanvasElement))
 - uid: FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
   commentId: M:FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
   id: AddNodes(System.Collections.Generic.IEnumerable{FlowGraph.Core.Node})
@@ -262,11 +532,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddNodes
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 82
+    startLine: 326
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -282,40 +552,6 @@ items:
   nameWithType.vb: Graph.AddNodes(IEnumerable(Of Node))
   fullName.vb: FlowGraph.Core.Graph.AddNodes(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node))
   name.vb: AddNodes(IEnumerable(Of Node))
-- uid: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
-  commentId: M:FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
-  id: AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
-  parent: FlowGraph.Core.Graph
-  langs:
-  - csharp
-  - vb
-  name: AddEdges(IEnumerable<Edge>)
-  nameWithType: Graph.AddEdges(IEnumerable<Edge>)
-  fullName: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Core/Graph.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: AddEdges
-    path: ../FlowGraph.Core/Graph.cs
-    startLine: 90
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: Adds multiple edges at once with a single notification.
-  example: []
-  syntax:
-    content: public void AddEdges(IEnumerable<Edge> edges)
-    parameters:
-    - id: edges
-      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
-    content.vb: Public Sub AddEdges(edges As IEnumerable(Of Edge))
-  overload: FlowGraph.Core.Graph.AddEdges*
-  nameWithType.vb: Graph.AddEdges(IEnumerable(Of Edge))
-  fullName.vb: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge))
-  name.vb: AddEdges(IEnumerable(Of Edge))
 - uid: FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
   commentId: M:FlowGraph.Core.Graph.AddNode(FlowGraph.Core.Node)
   id: AddNode(FlowGraph.Core.Node)
@@ -330,14 +566,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddNode
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 95
+    startLine: 344
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Adds a node to the graph.
+  example: []
   syntax:
     content: public void AddNode(Node node)
     parameters:
@@ -359,14 +597,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemoveNode
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 101
+    startLine: 362
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Removes a node and all connected edges from the graph.
+  example: []
   syntax:
     content: public void RemoveNode(string nodeId)
     parameters:
@@ -377,6 +617,40 @@ items:
   nameWithType.vb: Graph.RemoveNode(String)
   fullName.vb: FlowGraph.Core.Graph.RemoveNode(String)
   name.vb: RemoveNode(String)
+- uid: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  commentId: M:FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  id: AddEdges(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  parent: FlowGraph.Core.Graph
+  langs:
+  - csharp
+  - vb
+  name: AddEdges(IEnumerable<Edge>)
+  nameWithType: Graph.AddEdges(IEnumerable<Edge>)
+  fullName: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Graph.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddEdges
+    path: ../FlowGraph.Core/Graph.cs
+    startLine: 395
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Adds multiple edges at once with a single notification.
+  example: []
+  syntax:
+    content: public void AddEdges(IEnumerable<Edge> edges)
+    parameters:
+    - id: edges
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+    content.vb: Public Sub AddEdges(edges As IEnumerable(Of Edge))
+  overload: FlowGraph.Core.Graph.AddEdges*
+  nameWithType.vb: Graph.AddEdges(IEnumerable(Of Edge))
+  fullName.vb: FlowGraph.Core.Graph.AddEdges(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge))
+  name.vb: AddEdges(IEnumerable(Of Edge))
 - uid: FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
   commentId: M:FlowGraph.Core.Graph.AddEdge(FlowGraph.Core.Edge)
   id: AddEdge(FlowGraph.Core.Edge)
@@ -391,14 +665,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddEdge
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 115
+    startLine: 413
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Adds an edge to the graph.
+  example: []
   syntax:
     content: public void AddEdge(Edge edge)
     parameters:
@@ -420,14 +696,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Graph.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemoveEdge
     path: ../FlowGraph.Core/Graph.cs
-    startLine: 134
+    startLine: 444
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Removes an edge from the graph.
+  example: []
   syntax:
     content: public void RemoveEdge(string edgeId)
     parameters:
@@ -439,6 +717,31 @@ items:
   fullName.vb: FlowGraph.Core.Graph.RemoveEdge(String)
   name.vb: RemoveEdge(String)
 references:
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: FlowGraph.Core.Graph.Nodes
+  commentId: P:FlowGraph.Core.Graph.Nodes
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Nodes
+  name: Nodes
+  nameWithType: Graph.Nodes
+  fullName: FlowGraph.Core.Graph.Nodes
+- uid: FlowGraph.Core.Graph.Edges
+  commentId: P:FlowGraph.Core.Graph.Edges
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Edges
+  name: Edges
+  nameWithType: Graph.Edges
+  fullName: FlowGraph.Core.Graph.Edges
+- uid: FlowGraph.Core.Graph.Elements
+  commentId: P:FlowGraph.Core.Graph.Elements
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Elements
+  name: Elements
+  nameWithType: Graph.Elements
+  fullName: FlowGraph.Core.Graph.Elements
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html
@@ -690,6 +993,85 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.Diagnostics.LoggingExtensions
+  definition: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  name: CreateDiagnosticSnapshot(Graph)
+  nameWithType: LoggingExtensions.CreateDiagnosticSnapshot(Graph)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+    name: CreateDiagnosticSnapshot
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+    name: CreateDiagnosticSnapshot
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Graph.FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(System.String,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+  parent: FlowGraph.Core.Diagnostics.LoggingExtensions
+  definition: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  name: LogGraphState(Graph, string, string)
+  nameWithType: LoggingExtensions.LogGraphState(Graph, string, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph, string, string)
+  nameWithType.vb: LoggingExtensions.LogGraphState(Graph, String, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph, String, String)
+  name.vb: LogGraphState(Graph, String, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+    name: LogGraphState
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+    name: LogGraphState
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
 - uid: FlowGraph.Core.Graph.FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(System.String,System.Double,System.Double,System.Double,System.Double)
   commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
@@ -1370,6 +1752,36 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
 - uid: System
   commentId: N:System
   isExternal: true
@@ -1377,6 +1789,89 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  name: CreateDiagnosticSnapshot(Graph)
+  nameWithType: LoggingExtensions.CreateDiagnosticSnapshot(Graph)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+    name: CreateDiagnosticSnapshot
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.CreateDiagnosticSnapshot(FlowGraph.Core.Graph)
+    name: CreateDiagnosticSnapshot
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_CreateDiagnosticSnapshot_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions
+  commentId: T:FlowGraph.Core.Diagnostics.LoggingExtensions
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html
+  name: LoggingExtensions
+  nameWithType: LoggingExtensions
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+  isExternal: true
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  name: LogGraphState(Graph, string, string)
+  nameWithType: LoggingExtensions.LogGraphState(Graph, string, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph, string, string)
+  nameWithType.vb: LoggingExtensions.LogGraphState(Graph, String, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph, String, String)
+  name.vb: LogGraphState(Graph, String, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+    name: LogGraphState
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogGraphState(FlowGraph.Core.Graph,System.String,System.String)
+    name: LogGraphState
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogGraphState_FlowGraph_Core_Graph_System_String_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
   commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
   isExternal: true
@@ -2049,6 +2544,36 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: FlowGraph.Core.Diagnostics
+  commentId: N:FlowGraph.Core.Diagnostics
+  href: FlowGraph.html
+  name: FlowGraph.Core.Diagnostics
+  nameWithType: FlowGraph.Core.Diagnostics
+  fullName: FlowGraph.Core.Diagnostics
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
 - uid: FlowGraph.Core.Serialization
   commentId: N:FlowGraph.Core.Serialization
   href: FlowGraph.html
@@ -2079,6 +2604,28 @@ references:
   - uid: FlowGraph.Core.Serialization
     name: Serialization
     href: FlowGraph.Core.Serialization.html
+- uid: FlowGraph.Core.Graph.#ctor*
+  commentId: Overload:FlowGraph.Core.Graph.#ctor
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph__ctor
+  name: Graph
+  nameWithType: Graph.Graph
+  fullName: FlowGraph.Core.Graph.Graph
+  nameWithType.vb: Graph.New
+  fullName.vb: FlowGraph.Core.Graph.New
+  name.vb: New
+- uid: FlowGraph.Core.Graph.Elements*
+  commentId: Overload:FlowGraph.Core.Graph.Elements
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Elements
+  name: Elements
+  nameWithType: Graph.Elements
+  fullName: FlowGraph.Core.Graph.Elements
+- uid: FlowGraph.Core.Elements.ElementCollection
+  commentId: T:FlowGraph.Core.Elements.ElementCollection
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ElementCollection.html
+  name: ElementCollection
+  nameWithType: ElementCollection
+  fullName: FlowGraph.Core.Elements.ElementCollection
 - uid: FlowGraph.Core.Graph.Nodes*
   commentId: Overload:FlowGraph.Core.Graph.Nodes
   href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_Nodes
@@ -2215,32 +2762,44 @@ references:
   name: EndBatchLoad
   nameWithType: Graph.EndBatchLoad
   fullName: FlowGraph.Core.Graph.EndBatchLoad
-- uid: FlowGraph.Core.Graph.AddNodes*
-  commentId: Overload:FlowGraph.Core.Graph.AddNodes
-  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNodes_System_Collections_Generic_IEnumerable_FlowGraph_Core_Node__
-  name: AddNodes
-  nameWithType: Graph.AddNodes
-  fullName: FlowGraph.Core.Graph.AddNodes
-- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
-  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+- uid: FlowGraph.Core.Graph.AddElement*
+  commentId: Overload:FlowGraph.Core.Graph.AddElement
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddElement_FlowGraph_Core_Elements_ICanvasElement_
+  name: AddElement
+  nameWithType: Graph.AddElement
+  fullName: FlowGraph.Core.Graph.AddElement
+- uid: FlowGraph.Core.Graph.RemoveElement*
+  commentId: Overload:FlowGraph.Core.Graph.RemoveElement
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveElement_FlowGraph_Core_Elements_ICanvasElement_
+  name: RemoveElement
+  nameWithType: Graph.RemoveElement
+  fullName: FlowGraph.Core.Graph.RemoveElement
+- uid: FlowGraph.Core.Graph.AddElements*
+  commentId: Overload:FlowGraph.Core.Graph.AddElements
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddElements_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: AddElements
+  nameWithType: Graph.AddElements
+  fullName: FlowGraph.Core.Graph.AddElements
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.ICanvasElement}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IEnumerable`1
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: IEnumerable<Node>
-  nameWithType: IEnumerable<Node>
-  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>
-  nameWithType.vb: IEnumerable(Of Node)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node)
-  name.vb: IEnumerable(Of Node)
+  name: IEnumerable<ICanvasElement>
+  nameWithType: IEnumerable<ICanvasElement>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.ICanvasElement>
+  nameWithType.vb: IEnumerable(Of ICanvasElement)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: IEnumerable(Of ICanvasElement)
   spec.csharp:
   - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
   - name: <
-  - uid: FlowGraph.Core.Node
-    name: Node
-    href: FlowGraph.Core.Node.html
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
   - name: '>'
   spec.vb:
   - uid: System.Collections.Generic.IEnumerable`1
@@ -2250,9 +2809,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: FlowGraph.Core.Node
-    name: Node
-    href: FlowGraph.Core.Node.html
+  - uid: FlowGraph.Core.Elements.ICanvasElement
+    name: ICanvasElement
+    href: FlowGraph.Core.Elements.ICanvasElement.html
   - name: )
 - uid: System.Collections.Generic.IEnumerable`1
   commentId: T:System.Collections.Generic.IEnumerable`1
@@ -2319,6 +2878,81 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Graph.RemoveElements*
+  commentId: Overload:FlowGraph.Core.Graph.RemoveElements
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveElements_System_Collections_Generic_IEnumerable_FlowGraph_Core_Elements_ICanvasElement__
+  name: RemoveElements
+  nameWithType: Graph.RemoveElements
+  fullName: FlowGraph.Core.Graph.RemoveElements
+- uid: FlowGraph.Core.Graph.AddNodes*
+  commentId: Overload:FlowGraph.Core.Graph.AddNodes
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNodes_System_Collections_Generic_IEnumerable_FlowGraph_Core_Node__
+  name: AddNodes
+  nameWithType: Graph.AddNodes
+  fullName: FlowGraph.Core.Graph.AddNodes
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Node>
+  nameWithType: IEnumerable<Node>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Node>
+  nameWithType.vb: IEnumerable(Of Node)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Node)
+  name.vb: IEnumerable(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Graph.AddNode*
+  commentId: Overload:FlowGraph.Core.Graph.AddNode
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNode_FlowGraph_Core_Node_
+  name: AddNode
+  nameWithType: Graph.AddNode
+  fullName: FlowGraph.Core.Graph.AddNode
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core.Graph.RemoveNode*
+  commentId: Overload:FlowGraph.Core.Graph.RemoveNode
+  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveNode_System_String_
+  name: RemoveNode
+  nameWithType: Graph.RemoveNode
+  fullName: FlowGraph.Core.Graph.RemoveNode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: FlowGraph.Core.Graph.AddEdges*
   commentId: Overload:FlowGraph.Core.Graph.AddEdges
   href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddEdges_System_Collections_Generic_IEnumerable_FlowGraph_Core_Edge__
@@ -2358,36 +2992,6 @@ references:
     name: Edge
     href: FlowGraph.Core.Edge.html
   - name: )
-- uid: FlowGraph.Core.Graph.AddNode*
-  commentId: Overload:FlowGraph.Core.Graph.AddNode
-  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddNode_FlowGraph_Core_Node_
-  name: AddNode
-  nameWithType: Graph.AddNode
-  fullName: FlowGraph.Core.Graph.AddNode
-- uid: FlowGraph.Core.Node
-  commentId: T:FlowGraph.Core.Node
-  parent: FlowGraph.Core
-  href: FlowGraph.Core.Node.html
-  name: Node
-  nameWithType: Node
-  fullName: FlowGraph.Core.Node
-- uid: FlowGraph.Core.Graph.RemoveNode*
-  commentId: Overload:FlowGraph.Core.Graph.RemoveNode
-  href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_RemoveNode_System_String_
-  name: RemoveNode
-  nameWithType: Graph.RemoveNode
-  fullName: FlowGraph.Core.Graph.RemoveNode
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String
 - uid: FlowGraph.Core.Graph.AddEdge*
   commentId: Overload:FlowGraph.Core.Graph.AddEdge
   href: FlowGraph.Core.Graph.html#FlowGraph_Core_Graph_AddEdge_FlowGraph_Core_Edge_

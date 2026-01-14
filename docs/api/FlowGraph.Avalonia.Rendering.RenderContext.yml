@@ -16,6 +16,7 @@ items:
   - FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
   - FlowGraph.Avalonia.Rendering.RenderContext.SetViewport(FlowGraph.Avalonia.ViewportState)
   - FlowGraph.Avalonia.Rendering.RenderContext.Settings
+  - FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.RenderContext.Viewport
   langs:
   - csharp
@@ -27,7 +28,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderContext
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
@@ -67,7 +68,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
@@ -102,7 +103,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
@@ -119,6 +120,38 @@ items:
       type: FlowGraph.Avalonia.FlowCanvasSettings
     content.vb: Public ReadOnly Property Settings As FlowCanvasSettings
   overload: FlowGraph.Avalonia.Rendering.RenderContext.Settings*
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  id: UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: UpdateSettings(FlowCanvasSettings)
+  nameWithType: RenderContext.UpdateSettings(FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSettings
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the settings. Call this when FlowCanvasSettings property changes.
+  example: []
+  syntax:
+    content: public void UpdateSettings(FlowCanvasSettings settings)
+    parameters:
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+      description: The new settings to use.
+    content.vb: Public Sub UpdateSettings(settings As FlowCanvasSettings)
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings*
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.Viewport
   commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.Viewport
   id: Viewport
@@ -133,11 +166,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Viewport
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 32
+    startLine: 41
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -164,11 +197,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Scale
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 37
+    startLine: 46
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -195,11 +228,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetViewport
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 43
+    startLine: 52
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -230,11 +263,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetVisibleBoundsWithBuffer
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 53
+    startLine: 62
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -247,7 +280,7 @@ items:
     content: public Rect GetVisibleBoundsWithBuffer()
     return:
       type: Avalonia.Rect
-      description: The visible rect with buffer, or an infinite rect if no viewport is set.
+      description: The visible rect with buffer, or an infinite rect if no viewport is set or view size is 0.
     content.vb: Public Function GetVisibleBoundsWithBuffer() As Rect
   overload: FlowGraph.Avalonia.Rendering.RenderContext.GetVisibleBoundsWithBuffer*
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.IsInVisibleBounds(System.Double,System.Double,System.Double,System.Double)
@@ -264,11 +297,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsInVisibleBounds
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 79
+    startLine: 97
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -311,11 +344,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CanvasToScreen
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 96
+    startLine: 128
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -352,11 +385,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CanvasToScreen
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 122
+    startLine: 154
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -387,11 +420,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScreenToCanvas
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 133
+    startLine: 165
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -428,11 +461,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScreenToCanvas
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 148
+    startLine: 180
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -463,11 +496,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScaleValue
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 158
+    startLine: 190
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -799,6 +832,12 @@ references:
   name: Settings
   nameWithType: RenderContext.Settings
   fullName: FlowGraph.Avalonia.Rendering.RenderContext.Settings
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: UpdateSettings
+  nameWithType: RenderContext.UpdateSettings
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.Viewport*
   commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.Viewport
   href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_Viewport

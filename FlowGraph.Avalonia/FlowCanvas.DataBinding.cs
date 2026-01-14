@@ -44,13 +44,12 @@ public partial class FlowCanvas
         _directRenderer?.UpdateSettings(newSettings);
 
         // Re-render with new settings
+        _graphNeedsRender = true;
         RenderAll();
     }
 
     private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
     {
-        System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] oldGraph null: {oldGraph == null}, newGraph null: {newGraph == null}, newGraph nodes: {newGraph?.Elements.Nodes.Count() ?? 0}\n");
-
         if (oldGraph != null)
         {
             oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
@@ -66,7 +65,7 @@ public partial class FlowCanvas
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
-            System.IO.File.AppendAllText(@"C:\temp\flowgraph_debug.log", $"[{DateTime.Now:HH:mm:ss.fff}] [HandleGraphChanged] Calling CenterOnGraph and ApplyViewportTransforms\n");
+            _graphNeedsRender = true;
             CenterOnGraph();
             ApplyViewportTransforms();
         }
@@ -123,9 +122,14 @@ public partial class FlowCanvas
         }
     }
 
+    private static long _nodePropertyChangedCount = 0;
+    private static long _invalidateVisualCount = 0;
+
     private void OnNodePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not Node node) return;
+
+        _nodePropertyChangedCount++;
 
         // In direct rendering mode, just invalidate the renderer for any visual change
         if (_useDirectRendering && _directRenderer != null)
@@ -133,7 +137,13 @@ public partial class FlowCanvas
             if (e.PropertyName is nameof(Node.Position) or nameof(Node.IsSelected)
                 or nameof(Node.Width) or nameof(Node.Height) or nameof(Node.IsCollapsed))
             {
+                _invalidateVisualCount++;
                 _directRenderer.InvalidateVisual();
+            }
+
+            if (_nodePropertyChangedCount % 1000 == 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DataBinding] NodePropertyChanged #{_nodePropertyChangedCount}, InvalidateVisual={_invalidateVisualCount}, prop={e.PropertyName}");
             }
             return;
         }
@@ -244,6 +254,7 @@ public partial class FlowCanvas
             }
         }
 
+        _graphNeedsRender = true;
         RenderElements();
     }
 
@@ -281,7 +292,11 @@ public partial class FlowCanvas
             }
         }
 
-        RenderEdges();
+        _graphNeedsRender = true;
+        // Defer rendering to next UI tick to ensure collection is fully updated.
+        // The CollectionChanged event fires BEFORE the collection modification is complete,
+        // so iterating over the collection immediately would see stale data.
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(RenderEdges, global::Avalonia.Threading.DispatcherPriority.Render);
     }
 
     #endregion

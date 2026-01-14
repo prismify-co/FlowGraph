@@ -196,21 +196,19 @@ public class EdgeVisualManager
         if (sourceNode == null || targetNode == null)
             return null;
 
-        var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
-        var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
-
-        if (sourcePortIndex < 0) sourcePortIndex = 0;
-        if (targetPortIndex < 0) targetPortIndex = 0;
+        // Find the actual port objects to get their positions
+        var sourcePort = sourceNode.Outputs.FirstOrDefault(p => p.Id == edge.SourcePort);
+        var targetPort = targetNode.Inputs.FirstOrDefault(p => p.Id == edge.TargetPort);
 
         // Get node dimensions for proper port positioning
         var (sourceWidth, sourceHeight) = _nodeVisualManager.GetNodeDimensions(sourceNode);
-        var (_, targetHeight) = _nodeVisualManager.GetNodeDimensions(targetNode);
+        var (targetWidth, targetHeight) = _nodeVisualManager.GetNodeDimensions(targetNode);
 
-        // Get canvas coordinates
-        var sourceY = _nodeVisualManager.GetPortYCanvas(sourceNode.Position.Y, sourcePortIndex, Math.Max(1, sourceNode.Outputs.Count), sourceHeight);
-        var targetY = _nodeVisualManager.GetPortYCanvas(targetNode.Position.Y, targetPortIndex, Math.Max(1, targetNode.Inputs.Count), targetHeight);
-        var sourceX = sourceNode.Position.X + sourceWidth;
-        var targetX = targetNode.Position.X;
+        // Calculate port positions based on Port.Position property
+        var (sourceX, sourceY) = GetPortCanvasPosition(
+            sourceNode, sourcePort, sourceWidth, sourceHeight, isOutput: true);
+        var (targetX, targetY) = GetPortCanvasPosition(
+            targetNode, targetPort, targetWidth, targetHeight, isOutput: false);
 
         // Transform to screen coordinates
         var startPoint = _renderContext.CanvasToScreen(sourceX, sourceY);
@@ -227,10 +225,13 @@ public class EdgeVisualManager
 
         // Create path based on edge type - use waypoints if available
         PathGeometry pathGeometry;
-        if (edge.Waypoints != null && edge.Waypoints.Count > 0)
+        var waypoints = edge.Waypoints;  // Get once to avoid multiple ToList() calls
+        IReadOnlyList<Core.Point>? transformedWaypoints = null;
+
+        if (waypoints != null && waypoints.Count > 0)
         {
             // Transform waypoints to screen coordinates
-            var transformedWaypoints = edge.Waypoints
+            transformedWaypoints = waypoints
                 .Select(wp => new Core.Point(
                     _renderContext.CanvasToScreen(wp.X, wp.Y).X,
                     _renderContext.CanvasToScreen(wp.X, wp.Y).Y))
@@ -283,8 +284,10 @@ public class EdgeVisualManager
         // Render end marker (arrow)
         if (edge.MarkerEnd != EdgeMarker.None)
         {
-            var lastFromPoint = GetLastFromPoint(startPoint, endPoint, edge.Waypoints);
-            var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, scale);
+            var lastFromPoint = GetLastFromPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
+            // Use port position if available, otherwise default to Left for input ports
+            var targetPortPosition = targetPort?.Position ?? PortPosition.Left;
+            var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, scale, targetPortPosition);
             if (markerPath != null)
             {
                 markers.Add(markerPath);
@@ -294,8 +297,10 @@ public class EdgeVisualManager
         // Render start marker
         if (edge.MarkerStart != EdgeMarker.None)
         {
-            var firstToPoint = GetFirstToPoint(startPoint, endPoint, edge.Waypoints);
-            var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, scale);
+            var firstToPoint = GetFirstToPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
+            // Use port position if available, otherwise default to Right for output ports
+            var sourcePortPosition = sourcePort?.Position ?? PortPosition.Right;
+            var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, scale, sourcePortPosition);
             if (markerPath != null)
             {
                 markers.Add(markerPath);
@@ -312,7 +317,8 @@ public class EdgeVisualManager
         var effectiveLabel = edge.Definition.EffectiveLabel;
         if (!string.IsNullOrEmpty(effectiveLabel))
         {
-            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, edge, theme, scale);
+            // Pass transformed waypoints for accurate label positioning along the routed path
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, transformedWaypoints, edge, theme, scale);
             if (labelVisual != null)
             {
                 _edgeLabels[edge.Id] = labelVisual;
@@ -374,6 +380,15 @@ public class EdgeVisualManager
         AvaloniaPoint endPoint,
         double scale)
     {
+        IReadOnlyList<AvaloniaPoint>? transformedWaypoints = null;
+        var waypoints = edge.Waypoints; // cloned list via Edge.State
+        if (waypoints != null && waypoints.Count > 0)
+        {
+            transformedWaypoints = waypoints
+                .Select(wp => _renderContext.CanvasToScreen(wp.X, wp.Y))
+                .ToList();
+        }
+
         var context = new EdgeRenderers.EdgeRenderContext
         {
             Theme = theme,
@@ -383,6 +398,7 @@ public class EdgeVisualManager
             TargetNode = targetNode,
             StartPoint = startPoint,
             EndPoint = endPoint,
+            Waypoints = transformedWaypoints,
             Graph = graph
         };
 
@@ -433,34 +449,123 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Gets the "from" point for calculating the end marker angle.
+    /// For bezier curves, calculates the approach direction based on control points.
     /// </summary>
-    private AvaloniaPoint GetLastFromPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints)
+    private AvaloniaPoint GetLastFromPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints, EdgeType edgeType = EdgeType.Bezier)
     {
-        if (waypoints == null || waypoints.Count == 0)
-            return start;
+        if (waypoints != null && waypoints.Count > 0)
+        {
+            var lastWaypoint = waypoints[^1];
+            return _renderContext.CanvasToScreen(lastWaypoint.X, lastWaypoint.Y);
+        }
 
-        var lastWaypoint = waypoints[^1];
-        return _renderContext.CanvasToScreen(lastWaypoint.X, lastWaypoint.Y);
+        // For bezier curves, calculate the approach direction from the second control point
+        if (edgeType == EdgeType.Bezier)
+        {
+            return CalculateBezierApproachPoint(start, end, isEndPoint: true);
+        }
+
+        return start;
     }
 
     /// <summary>
     /// Gets the "to" point for calculating the start marker angle.
+    /// For bezier curves, calculates the departure direction based on control points.
     /// </summary>
-    private AvaloniaPoint GetFirstToPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints)
+    private AvaloniaPoint GetFirstToPoint(AvaloniaPoint start, AvaloniaPoint end, List<Core.Point>? waypoints, EdgeType edgeType = EdgeType.Bezier)
     {
-        if (waypoints == null || waypoints.Count == 0)
-            return end;
+        if (waypoints != null && waypoints.Count > 0)
+        {
+            var firstWaypoint = waypoints[0];
+            return _renderContext.CanvasToScreen(firstWaypoint.X, firstWaypoint.Y);
+        }
 
-        var firstWaypoint = waypoints[0];
-        return _renderContext.CanvasToScreen(firstWaypoint.X, firstWaypoint.Y);
+        // For bezier curves, calculate the departure direction from the first control point
+        if (edgeType == EdgeType.Bezier)
+        {
+            return CalculateBezierApproachPoint(start, end, isEndPoint: false);
+        }
+
+        return end;
+    }
+
+    /// <summary>
+    /// Calculates a point representing the bezier curve's approach/departure direction.
+    /// This mimics the control point calculation from EdgePathHelper.CreateBezierPath.
+    /// </summary>
+    private static AvaloniaPoint CalculateBezierApproachPoint(AvaloniaPoint start, AvaloniaPoint end, bool isEndPoint)
+    {
+        var dx = end.X - start.X;
+        var dy = end.Y - start.Y;
+        var controlPointOffset = Math.Abs(dx) / 2;
+        controlPointOffset = Math.Max(controlPointOffset, 50);
+
+        // Mirror the control point logic from EdgePathHelper.CalculateDirectionAwareControlPoints
+        if (dx > Math.Abs(dy) * 0.5)
+        {
+            // Standard left-to-right bezier - horizontal approach
+            return isEndPoint
+                ? new AvaloniaPoint(end.X - controlPointOffset, end.Y)
+                : new AvaloniaPoint(start.X + controlPointOffset, start.Y);
+        }
+
+        if (dx < -Math.Abs(dy) * 0.5)
+        {
+            // Right-to-left (backwards) - horizontal approach
+            return isEndPoint
+                ? new AvaloniaPoint(end.X - controlPointOffset, end.Y)
+                : new AvaloniaPoint(start.X + controlPointOffset, start.Y);
+        }
+
+        // Mostly vertical edges
+        if (Math.Abs(dx) < 10)
+        {
+            // Pure vertical
+            var verticalDist = Math.Abs(dy) / 3;
+            return isEndPoint
+                ? new AvaloniaPoint(end.X, end.Y - (dy > 0 ? verticalDist : -verticalDist))
+                : new AvaloniaPoint(start.X, start.Y + (dy > 0 ? verticalDist : -verticalDist));
+        }
+
+        if (dx >= 0)
+        {
+            // Going down-right - slight horizontal offset
+            var hOffset = Math.Min(controlPointOffset * 0.3, Math.Abs(dx) * 0.5);
+            return isEndPoint
+                ? new AvaloniaPoint(end.X - hOffset, end.Y - controlPointOffset * 0.4)
+                : new AvaloniaPoint(start.X + hOffset, start.Y + controlPointOffset * 0.4);
+        }
+        else
+        {
+            // Going down-left
+            return isEndPoint
+                ? new AvaloniaPoint(end.X - controlPointOffset * 0.3, end.Y - Math.Abs(dy) * 0.3)
+                : new AvaloniaPoint(start.X + controlPointOffset * 0.3, start.Y + Math.Abs(dy) * 0.3);
+        }
     }
 
     /// <summary>
     /// Renders a marker (arrow) at an edge endpoint.
     /// </summary>
-    private AvaloniaPath RenderEdgeMarker(Canvas canvas, AvaloniaPoint point, AvaloniaPoint fromPoint, EdgeMarker marker, IBrush stroke, double scale)
+    /// <param name="canvas">The canvas to render on.</param>
+    /// <param name="point">The marker tip position.</param>
+    /// <param name="fromPoint">The point the edge comes from (for angle calculation).</param>
+    /// <param name="marker">The marker type.</param>
+    /// <param name="stroke">The stroke brush.</param>
+    /// <param name="scale">The render scale.</param>
+    /// <param name="portPosition">Optional port position for accurate arrow direction.</param>
+    /// <returns>The rendered marker path.</returns>
+    private AvaloniaPath RenderEdgeMarker(
+        Canvas canvas,
+        AvaloniaPoint point,
+        AvaloniaPoint fromPoint,
+        EdgeMarker marker,
+        IBrush stroke,
+        double scale,
+        PortPosition? portPosition = null)
     {
-        var angle = EdgePathHelper.CalculateAngle(fromPoint, point);
+        // Use the hybrid angle calculation for consistent arrow direction
+        var angle = EdgePathHelper.CalculateArrowAngle(point, fromPoint, portPosition);
         var markerSize = 10 * scale;
         var isClosed = marker == EdgeMarker.ArrowClosed;
 
@@ -481,8 +586,10 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Renders a label on an edge with support for anchor positioning and offsets.
+    /// Automatically positions labels based on edge direction to avoid overlap with the edge line.
+    /// Supports perpendicular offsets that rotate with the edge direction (like GoJS segmentOffset).
     /// </summary>
-    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, Edge edge, ThemeResources theme, double scale)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme, double scale)
     {
         var labelInfo = edge.Definition.LabelInfo;
         var labelText = labelInfo?.Text ?? edge.Label;
@@ -502,14 +609,10 @@ public class EdgeVisualManager
             };
         }
 
-        // Interpolate position along the edge
-        var posX = start.X + (end.X - start.X) * t;
-        var posY = start.Y + (end.Y - start.Y) * t;
+        // Calculate position along the actual path (including waypoints) and get edge angle
+        var (posX, posY, edgeDirection, edgeAngle) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, scale);
 
-        // Apply offsets (default -10 Y offset if no LabelInfo specified)
-        var offsetX = labelInfo?.OffsetX ?? 0;
-        var offsetY = labelInfo?.OffsetY ?? -10;
-
+        // Create the text block first to measure it (if needed)
         var textBlock = new TextBlock
         {
             Text = labelText,
@@ -521,11 +624,263 @@ public class EdgeVisualManager
             Cursor = new Cursor(StandardCursorType.Hand)
         };
 
-        Canvas.SetLeft(textBlock, posX + offsetX * scale);
-        Canvas.SetTop(textBlock, posY + offsetY * scale);
+        // Get user-specified offsets if any
+        var userOffsetX = labelInfo?.OffsetX ?? 0;
+        var userOffsetY = labelInfo?.OffsetY ?? 0;
+        var perpOffset = labelInfo?.PerpendicularOffset ?? 0;
+        var hasUserOffset = labelInfo != null && (labelInfo.OffsetX != 0 || labelInfo.OffsetY != 0);
+        var hasPerpOffset = labelInfo != null && labelInfo.PerpendicularOffset != 0;
+
+        // Calculate smart offset based on edge direction (only if no user override and no perpendicular offset)
+        double autoOffsetX = 0;
+        double autoOffsetY = 0;
+
+        if (!hasUserOffset && !hasPerpOffset)
+        {
+            // Position label based on edge direction to avoid overlap
+            switch (edgeDirection)
+            {
+                case EdgeDirection.Horizontal:
+                    // Horizontal edge: place label above
+                    autoOffsetY = -16;
+                    break;
+
+                case EdgeDirection.Vertical:
+                    // Vertical edge: place label to the right
+                    autoOffsetX = 8;
+                    autoOffsetY = -8;  // Slight vertical offset for centering
+                    break;
+
+                case EdgeDirection.DiagonalDownRight:
+                case EdgeDirection.DiagonalUpRight:
+                    // Diagonal going right: place label above-right
+                    autoOffsetX = 4;
+                    autoOffsetY = -16;
+                    break;
+
+                case EdgeDirection.DiagonalDownLeft:
+                case EdgeDirection.DiagonalUpLeft:
+                    // Diagonal going left: place label above-left
+                    autoOffsetX = -4;
+                    autoOffsetY = -16;
+                    break;
+            }
+        }
+
+        // Calculate perpendicular offset (rotates with edge direction)
+        // Perpendicular to edge means: if edge angle is θ, perpendicular is θ + 90°
+        // Positive perpOffset moves to the "right" of the edge direction
+        double perpOffsetX = 0;
+        double perpOffsetY = 0;
+        if (hasPerpOffset)
+        {
+            // Calculate perpendicular direction (90° clockwise from edge direction)
+            // Edge direction vector: (cos(θ), sin(θ))
+            // Perpendicular (right side): (sin(θ), -cos(θ)) but in screen coords Y is inverted
+            // So right side is: (-sin(θ), cos(θ)) in math coords = (sin(θ), cos(θ)) in screen
+            perpOffsetX = Math.Sin(edgeAngle) * perpOffset;
+            perpOffsetY = -Math.Cos(edgeAngle) * perpOffset;  // Negative because screen Y is inverted
+        }
+
+        var finalOffsetX = (userOffsetX + autoOffsetX) * scale + perpOffsetX * scale;
+        var finalOffsetY = (userOffsetY + autoOffsetY) * scale + perpOffsetY * scale;
+
+        Canvas.SetLeft(textBlock, posX + finalOffsetX);
+        Canvas.SetTop(textBlock, posY + finalOffsetY);
 
         canvas.Children.Add(textBlock);
         return textBlock;
+    }
+
+    /// <summary>
+    /// Edge direction categories for smart label placement.
+    /// </summary>
+    private enum EdgeDirection
+    {
+        Horizontal,          // Mostly left-right
+        Vertical,            // Mostly up-down
+        DiagonalDownRight,   // Going down and right
+        DiagonalDownLeft,    // Going down and left
+        DiagonalUpRight,     // Going up and right
+        DiagonalUpLeft       // Going up and left
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints,
+    /// and returns the direction of the edge segment at that point along with the angle.
+    /// </summary>
+    private static (double X, double Y, EdgeDirection Direction, double Angle) CalculateLabelPositionOnPathWithDirectionAndAngle(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        // If no waypoints, use simple interpolation between start and end
+        if (waypoints == null || waypoints.Count == 0)
+        {
+            var direction = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
+            var angle = Math.Atan2(end.Y - start.Y, end.X - start.X);
+            return (
+                start.X + (end.X - start.X) * t,
+                start.Y + (end.Y - start.Y) * t,
+                direction,
+                angle
+            );
+        }
+
+        // Build the complete path: start -> waypoints (already in screen coords) -> end
+        var allPoints = new List<AvaloniaPoint> { start };
+        foreach (var wp in waypoints)
+        {
+            allPoints.Add(new AvaloniaPoint(wp.X, wp.Y));
+        }
+        allPoints.Add(end);
+
+        // Calculate total path length
+        double totalLength = 0;
+        var segmentLengths = new List<double>();
+        for (int i = 0; i < allPoints.Count - 1; i++)
+        {
+            var dx = allPoints[i + 1].X - allPoints[i].X;
+            var dy = allPoints[i + 1].Y - allPoints[i].Y;
+            var segmentLength = Math.Sqrt(dx * dx + dy * dy);
+            segmentLengths.Add(segmentLength);
+            totalLength += segmentLength;
+        }
+
+        // Find the position at t along the total path
+        var targetDistance = totalLength * t;
+        double accumulatedDistance = 0;
+
+        for (int i = 0; i < segmentLengths.Count; i++)
+        {
+            if (accumulatedDistance + segmentLengths[i] >= targetDistance)
+            {
+                // The point is on this segment
+                var segmentT = (targetDistance - accumulatedDistance) / segmentLengths[i];
+                var p1 = allPoints[i];
+                var p2 = allPoints[i + 1];
+                var direction = DetermineEdgeDirection(p1.X, p1.Y, p2.X, p2.Y);
+                var angle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+                return (
+                    p1.X + (p2.X - p1.X) * segmentT,
+                    p1.Y + (p2.Y - p1.Y) * segmentT,
+                    direction,
+                    angle
+                );
+            }
+            accumulatedDistance += segmentLengths[i];
+        }
+
+        // Fallback to end point
+        var fallbackDirection = DetermineEdgeDirection(start.X, start.Y, end.X, end.Y);
+        var fallbackAngle = Math.Atan2(end.Y - start.Y, end.X - start.X);
+        return (end.X, end.Y, fallbackDirection, fallbackAngle);
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints,
+    /// and returns the direction of the edge segment at that point.
+    /// </summary>
+    private static (double X, double Y, EdgeDirection Direction) CalculateLabelPositionOnPathWithDirection(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        var (x, y, direction, _) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, scale);
+        return (x, y, direction);
+    }
+
+    /// <summary>
+    /// Determines the direction category of an edge segment.
+    /// </summary>
+    private static EdgeDirection DetermineEdgeDirection(double x1, double y1, double x2, double y2)
+    {
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        var absDx = Math.Abs(dx);
+        var absDy = Math.Abs(dy);
+
+        // If mostly horizontal (|dx| > 2 * |dy|)
+        if (absDx > absDy * 2)
+            return EdgeDirection.Horizontal;
+
+        // If mostly vertical (|dy| > 2 * |dx|)
+        if (absDy > absDx * 2)
+            return EdgeDirection.Vertical;
+
+        // Diagonal - determine quadrant
+        if (dx > 0 && dy > 0)
+            return EdgeDirection.DiagonalDownRight;
+        if (dx > 0 && dy < 0)
+            return EdgeDirection.DiagonalUpRight;
+        if (dx < 0 && dy > 0)
+            return EdgeDirection.DiagonalDownLeft;
+
+        return EdgeDirection.DiagonalUpLeft;
+    }
+
+    /// <summary>
+    /// Calculates the label position along the actual edge path, including waypoints.
+    /// </summary>
+    private static (double X, double Y) CalculateLabelPositionOnPath(
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<Core.Point>? waypoints,
+        double t,
+        double scale)
+    {
+        var (x, y, _) = CalculateLabelPositionOnPathWithDirection(start, end, waypoints, t, scale);
+        return (x, y);
+    }
+
+    /// <summary>
+    /// Calculates the canvas position for a port based on its Position property.
+    /// </summary>
+    /// <param name="node">The node containing the port.</param>
+    /// <param name="port">The port (can be null for default behavior).</param>
+    /// <param name="nodeWidth">Width of the node.</param>
+    /// <param name="nodeHeight">Height of the node.</param>
+    /// <param name="isOutput">True if this is an output port, false for input.</param>
+    /// <returns>Canvas coordinates (X, Y) for the port connection point.</returns>
+    private (double X, double Y) GetPortCanvasPosition(
+        Node node, Port? port, double nodeWidth, double nodeHeight, bool isOutput)
+    {
+        var nodeX = node.Position.X;
+        var nodeY = node.Position.Y;
+
+        var ports = isOutput ? node.Outputs : node.Inputs;
+        var position = port?.Position ?? (isOutput ? PortPosition.Right : PortPosition.Left);
+
+        // Distribute ports along the edge like GraphRenderModel does.
+        var totalPorts = Math.Max(1, ports.Count);
+        var portIndex = 0;
+        if (port != null)
+        {
+            var idx = ports.IndexOf(port);
+            if (idx >= 0) portIndex = idx;
+        }
+
+        static double Along(double start, double length, int index, int total)
+        {
+            if (total <= 1) return start + length / 2;
+            var spacing = length / (total + 1);
+            return start + spacing * (index + 1);
+        }
+
+        return position switch
+        {
+            PortPosition.Right => (nodeX + nodeWidth, Along(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Left => (nodeX, Along(nodeY, nodeHeight, portIndex, totalPorts)),
+            PortPosition.Top => (Along(nodeX, nodeWidth, portIndex, totalPorts), nodeY),
+            PortPosition.Bottom => (Along(nodeX, nodeWidth, portIndex, totalPorts), nodeY + nodeHeight),
+            _ => isOutput
+                ? (nodeX + nodeWidth, Along(nodeY, nodeHeight, portIndex, totalPorts))
+                : (nodeX, Along(nodeY, nodeHeight, portIndex, totalPorts))
+        };
     }
 
     /// <summary>

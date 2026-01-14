@@ -95,6 +95,25 @@
 Classes
 </h3>
     <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer.html">ColorDisplayNodeRenderer</a></dt>
+      <dd><p>Renders a color display output node.
+Shows a large color swatch with the received color value.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer.html">ColorPickerNodeRenderer</a></dt>
+      <dd><p>Renders a color picker input node.
+Uses Avalonia's built-in ColorView for full color selection with hex input fallback.
+The selected color is persisted in Node.Data as a uint (ARGB).</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.html">DataNodeRendererBase</a></dt>
+      <dd><p>Base class for data-bound node renderers.
+Provides common functionality for interactive nodes.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html">DefaultNodeRenderer</a></dt>
       <dd><p>Default node renderer that creates a standard bordered box with text.
 Supports inline label editing via IEditableNodeRenderer.</p>
@@ -103,6 +122,20 @@ Supports inline label editing via IEditableNodeRenderer.</p>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext.html">DirectNodeRenderContext</a></dt>
       <dd><p>Context passed to <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_IDirectNodeRenderer_DrawNode_Avalonia_Media_DrawingContext_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_DirectNodeRenderContext_">DrawNode(DrawingContext, Node, DirectNodeRenderContext)</a> with pre-calculated values.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer.html">DisplayNodeRenderer</a></dt>
+      <dd><p>Renders a display/output node.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData.html">DropdownData</a></dt>
+      <dd></dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer.html">DropdownNodeRenderer</a></dt>
+      <dd><p>Renders a dropdown node. Value persisted in Node.Data as DropdownData.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -117,6 +150,12 @@ Uses a translucent background similar to React Flow's grouping style.
 Supports inline label editing via IEditableNodeRenderer.</p>
 <p>IMPORTANT: This renderer uses constants from GraphRenderModel to ensure
 100% visual parity with DirectGraphRenderer.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html">HeaderedNodeRendererBase</a></dt>
+      <dd><p>Base class for nodes with a header section and content area (React Flow style).
+Structure: Outer border (rounded) -&gt; Header (semi-transparent) + Body (solid white)</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -137,15 +176,46 @@ Register custom renderers to handle specific node types.</p>
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer.html">NumberInputNodeRenderer</a></dt>
+      <dd><p>Renders a numeric input node. Value persisted in Node.Data as double.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer.html">OutputDisplayNodeRenderer</a></dt>
+      <dd><p>Renders an output display node using the white headered base with large content area.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.OutputNodeRenderer.html">OutputNodeRenderer</a></dt>
       <dd><p>Renderer for output nodes with a distinctive red/coral color scheme.
 Displays a target/circle icon and supports inline label editing.</p>
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData.html">RadioButtonData</a></dt>
+      <dd></dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer.html">RadioButtonNodeRenderer</a></dt>
+      <dd><p>Renders a radio button group node using the white headered base.
+Value persisted in Node.Data as RadioButtonData.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.SimplifiedNodeRenderer.html">SimplifiedNodeRenderer</a></dt>
       <dd><p>A simplified node renderer optimized for large graphs.
 Uses minimal visual elements for better performance with 500+ nodes.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer.html">SliderNodeRenderer</a></dt>
+      <dd><p>Renders a slider input node. Value persisted in Node.Data as double.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html">StyledHeaderedNodeRendererBase</a></dt>
+      <dd><p>Headered node with accent-colored header (pink/rose tint).
+The header has a glassy semi-transparent pink background and pink text.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -171,9 +241,37 @@ protected override Geometry? IconGeometry =&gt;
 </example>
 </dd>
     </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer.html">TextInputNodeRenderer</a></dt>
+      <dd><p>Renders a text input node. Value persisted in Node.Data as string.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer.html">ToggleNodeRenderer</a></dt>
+      <dd><p>Renders a checkbox/toggle node. Value persisted in Node.Data as bool.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase.html">WhiteHeaderedNodeRendererBase</a></dt>
+      <dd><p>Headered node with neutral gray header (subtle gray tint).
+The header has a glassy semi-transparent gray background and gray text.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer.html">ZoomSliderNodeRenderer</a></dt>
+      <dd><p>Renders a zoom slider node using the white headered base.
+Value persisted in Node.Data as double.</p>
+</dd>
+    </dl>
     <h3 id="interfaces">
 Interfaces
 </h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer.html">IDataNodeRenderer</a></dt>
+      <dd><p>Extended node renderer that supports data binding to port values.
+Implement this for nodes with interactive controls (sliders, color pickers, etc.).</p>
+</dd>
+    </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html">IDirectNodeRenderer</a></dt>
       <dd><p>Interface for custom node renderers that support direct DrawingContext rendering.

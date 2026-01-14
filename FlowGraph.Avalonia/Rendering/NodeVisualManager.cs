@@ -40,7 +40,7 @@ public class NodeVisualManager
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
         _portRendererRegistry = portRendererRegistry ?? new PortRendererRegistry();
-        _model = new GraphRenderModel(renderContext.Settings);
+        _model = new GraphRenderModel(renderContext.Settings, _nodeRendererRegistry);
     }
 
     /// <summary>
@@ -98,6 +98,9 @@ public class NodeVisualManager
         _portVisuals.Clear();
     }
 
+    // Cache for O(1) parent lookups in GetGroupDepth
+    private Dictionary<string, Node>? _nodeByIdCache;
+
     /// <summary>
     /// Renders all nodes in the graph to the canvas.
     /// Groups are rendered first (behind), then regular nodes.
@@ -114,6 +117,9 @@ public class NodeVisualManager
         ThemeResources theme,
         Action<Control, Node>? onNodeCreated = null)
     {
+        // Build node lookup cache for O(1) parent lookups in GetGroupDepth
+        _nodeByIdCache = graph.Elements.Nodes.ToDictionary(n => n.Id);
+
         // Render groups first (they should be behind their children)
         // Order by hierarchy depth - outermost groups first
         var groups = graph.Elements.Nodes
@@ -193,15 +199,18 @@ public class NodeVisualManager
 
         onNodeCreated?.Invoke(control, node);
 
-        // Render ports using model for positioning
-        for (int i = 0; i < node.Inputs.Count; i++)
+        // Render ports using model for positioning (unless ShowPorts is disabled)
+        if (_renderContext.Settings.ShowPorts)
         {
-            RenderPort(canvas, node, node.Inputs[i], i, node.Inputs.Count, false, theme);
-        }
+            for (int i = 0; i < node.Inputs.Count; i++)
+            {
+                RenderPort(canvas, node, node.Inputs[i], i, node.Inputs.Count, false, theme);
+            }
 
-        for (int i = 0; i < node.Outputs.Count; i++)
-        {
-            RenderPort(canvas, node, node.Outputs[i], i, node.Outputs.Count, true, theme);
+            for (int i = 0; i < node.Outputs.Count; i++)
+            {
+                RenderPort(canvas, node, node.Outputs[i], i, node.Outputs.Count, true, theme);
+            }
         }
 
         return control;
@@ -278,6 +287,31 @@ public class NodeVisualManager
         }
 
         UpdatePortPositions(node);
+    }
+
+    /// <summary>
+    /// Updates all existing node visuals to their current screen positions.
+    /// This is an optimized path for viewport changes (pan/zoom) that avoids
+    /// recreating the visual tree. Only updates positions, not visual properties.
+    /// </summary>
+    /// <param name="graph">The graph containing the nodes.</param>
+    public void UpdateAllNodePositions(Graph graph)
+    {
+        foreach (var node in graph.Elements.Nodes)
+        {
+            if (_nodeVisuals.TryGetValue(node.Id, out var control))
+            {
+                var screenPos = _renderContext.CanvasToScreen(node.Position.X, node.Position.Y);
+                Canvas.SetLeft(control, screenPos.X);
+                Canvas.SetTop(control, screenPos.Y);
+            }
+        }
+        
+        // Update all port positions
+        foreach (var node in graph.Elements.Nodes)
+        {
+            UpdatePortPositions(node);
+        }
     }
 
     /// <summary>
@@ -509,16 +543,27 @@ public class NodeVisualManager
 
     /// <summary>
     /// Gets the nesting depth of a group (0 = top level).
+    /// Uses cached dictionary for O(1) parent lookup instead of O(n) FirstOrDefault.
     /// </summary>
-    private static int GetGroupDepth(Graph graph, Node node)
+    private int GetGroupDepth(Graph graph, Node node)
     {
         int depth = 0;
-        var current = node;
-        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            current = graph.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
-            if (current == null) break;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeByIdCache != null && _nodeByIdCache.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = graph.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return depth;
     }

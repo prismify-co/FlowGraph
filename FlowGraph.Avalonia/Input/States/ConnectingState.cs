@@ -221,6 +221,7 @@ public class ConnectingState : InputStateBase
 
     /// <summary>
     /// Finds the nearest compatible port within snap distance.
+    /// OPTIMIZED: Uses early exit based on canvas distance to avoid checking all 5000 nodes.
     /// </summary>
     private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint screenPoint)
     {
@@ -232,6 +233,11 @@ public class ConnectingState : InputStateBase
 
         var snapDistance = settings.ConnectionSnapDistance;
         var canvasPoint = context.ScreenToCanvas(screenPoint);
+        var zoom = context.Viewport.Zoom;
+        
+        // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
+        // Add some padding to account for node width
+        var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
 
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
@@ -240,6 +246,19 @@ public class ConnectingState : InputStateBase
         {
             // Skip the source node and non-connectable nodes
             if (node.Id == _sourceNode.Id || !node.IsConnectable || node.IsGroup)
+                continue;
+
+            // OPTIMIZATION: Early rejection based on canvas distance
+            // If node center is too far from cursor in canvas coords, skip entirely
+            var nodeWidth = node.Width ?? settings.NodeWidth;
+            var nodeHeight = node.Height ?? settings.NodeHeight;
+            var nodeCenterX = node.Position.X + nodeWidth / 2;
+            var nodeCenterY = node.Position.Y + nodeHeight / 2;
+            var canvasDx = nodeCenterX - canvasPoint.X;
+            var canvasDy = nodeCenterY - canvasPoint.Y;
+            var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
+            
+            if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
                 continue;
 
             // Check ports on the opposite side (if from output, look at inputs)

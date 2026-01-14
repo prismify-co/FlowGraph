@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class SmartBezierRouter | FlowGraph ">
       
-      <meta name="description" content="Routes edges around obstacles using smooth curves. Generates waypoints that can be used to create multi-segment bezier curves.">
+      <meta name="description" content="Routes edges around obstacles using smooth curves with obstacle avoidance. Generates waypoints that can be used to create multi-segment bezier curves.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Core_Routing_SmartBezierRouter" data-uid="FlowGraph.Core.Routing.SmartBezierRouter" class="text-break">
-Class SmartBezierRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L7"><i class="bi bi-code-slash"></i></a>
+Class SmartBezierRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,7 @@ Class SmartBezierRouter  <a class="header-action link-secondary" title="View sou
   <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Routes edges around obstacles using smooth curves.
+  <div class="markdown summary"><p>Routes edges around obstacles using smooth curves with obstacle avoidance.
 Generates waypoints that can be used to create multi-segment bezier curves.</p>
 </div>
   <div class="markdown conceptual"></div>
@@ -154,17 +154,58 @@ Generates waypoints that can be used to create multi-segment bezier curves.</p>
 
 
 
+  <h2 id="FlowGraph_Core_Routing_SmartBezierRouter_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+SmartBezierRouter extends basic bezier routing with obstacle avoidance:
+<ul><li>Detects nodes blocking the direct path</li><li>Routes around obstacles going above or below based on available space</li><li>Maintains smooth curves through waypoints</li></ul>
+
+<p>
+For simple bezier curves without obstacle avoidance, use <a class="xref" href="FlowGraph.Core.Routing.BezierRouter.html">BezierRouter</a>.
+</p>
+</div>
 
 
   <h2 class="section" id="properties">Properties
 </h2>
 
 
+  <a id="FlowGraph_Core_Routing_SmartBezierRouter_Instance_" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.Instance*"></a>
+
+  <h3 id="FlowGraph_Core_Routing_SmartBezierRouter_Instance" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Singleton instance with default settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SmartBezierRouter Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Routing.SmartBezierRouter.html">SmartBezierRouter</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FlowGraph_Core_Routing_SmartBezierRouter_Margin_" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.Margin*"></a>
 
   <h3 id="FlowGraph_Core_Routing_SmartBezierRouter_Margin" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.Margin">
   Margin
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Minimum distance to maintain from obstacles.</p>
@@ -196,10 +237,10 @@ Generates waypoints that can be used to create multi-segment bezier curves.</p>
 
   <h3 id="FlowGraph_Core_Routing_SmartBezierRouter_MinPortOffset" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.MinPortOffset">
   MinPortOffset
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Minimum horizontal offset from port before routing.</p>
+  <div class="markdown level1 summary"><p>Minimum horizontal offset from port before routing can turn.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -232,7 +273,7 @@ Generates waypoints that can be used to create multi-segment bezier curves.</p>
 
   <h3 id="FlowGraph_Core_Routing_SmartBezierRouter_Route_FlowGraph_Core_Routing_EdgeRoutingContext_FlowGraph_Core_Edge_" data-uid="FlowGraph.Core.Routing.SmartBezierRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)">
   Route(EdgeRoutingContext, Edge)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calculates waypoints for an edge to route around obstacles.</p>
@@ -274,7 +315,7 @@ Generates waypoints that can be used to create multi-segment bezier curves.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L7" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Routing/SmartBezierRouter.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

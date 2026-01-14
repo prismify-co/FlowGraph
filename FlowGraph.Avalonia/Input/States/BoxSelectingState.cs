@@ -128,11 +128,15 @@ public class BoxSelectingState : InputStateBase
 
             if (addToSelection)
             {
-                if (shouldSelect) node.IsSelected = true;
+                // OPTIMIZED: Only change if needed (avoids property change notifications)
+                if (shouldSelect && !node.IsSelected)
+                    node.IsSelected = true;
             }
             else
             {
-                node.IsSelected = shouldSelect;
+                // OPTIMIZED: Only change if different (avoids property change notifications)
+                if (node.IsSelected != shouldSelect)
+                    node.IsSelected = shouldSelect;
             }
         }
 

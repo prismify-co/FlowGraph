@@ -25,6 +25,11 @@ public class EdgeRoutingContext
     public required Graph Graph { get; init; }
 
     /// <summary>
+    /// Routing options controlling behavior.
+    /// </summary>
+    public EdgeRoutingOptions Options { get; init; } = EdgeRoutingOptions.Default;
+
+    /// <summary>
     /// Default node width when not specified.
     /// </summary>
     public double DefaultNodeWidth { get; init; } = 150;
@@ -36,8 +41,22 @@ public class EdgeRoutingContext
 
     /// <summary>
     /// Padding around nodes for routing.
+    /// Uses Options.NodePadding if not explicitly set.
     /// </summary>
-    public double NodePadding { get; init; } = 10;
+    public double NodePadding { get => _nodePadding ?? Options.NodePadding; init => _nodePadding = value; }
+    private double? _nodePadding;
+
+    /// <summary>
+    /// User-defined waypoints that routers should respect in Guided mode.
+    /// In Guided mode, the router should calculate a path that passes through
+    /// these constraint points while avoiding obstacles.
+    /// </summary>
+    /// <remarks>
+    /// This is typically populated from <see cref="Models.IEdgeState.UserWaypoints"/>
+    /// when the edge's <see cref="Models.EdgeDefinition.RoutingMode"/> is 
+    /// <see cref="Models.EdgeRoutingMode.Guided"/>.
+    /// </remarks>
+    public IReadOnlyList<Point>? UserConstraints { get; init; }
 
     /// <summary>
     /// Gets the bounding rectangle for a node.

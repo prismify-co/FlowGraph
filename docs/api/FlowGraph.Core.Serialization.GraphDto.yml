@@ -6,11 +6,14 @@ items:
   parent: FlowGraph.Core.Serialization
   children:
   - FlowGraph.Core.Serialization.GraphDto.Edges
+  - FlowGraph.Core.Serialization.GraphDto.Elements
   - FlowGraph.Core.Serialization.GraphDto.FromGraph(FlowGraph.Core.Graph)
   - FlowGraph.Core.Serialization.GraphDto.Id
   - FlowGraph.Core.Serialization.GraphDto.Metadata
   - FlowGraph.Core.Serialization.GraphDto.Nodes
+  - FlowGraph.Core.Serialization.GraphDto.Shapes
   - FlowGraph.Core.Serialization.GraphDto.ToGraph
+  - FlowGraph.Core.Serialization.GraphDto.Version
   langs:
   - csharp
   - vb
@@ -21,15 +24,20 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphDto
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 94
+    startLine: 100
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
-  summary: Data transfer object for Graph serialization.
+  summary: >-
+    Data transfer object for Graph serialization.
+
+    Version 2 uses polymorphic elements[] array for unified element storage.
+
+    Version 1 compatibility maintained via separate Nodes/Edges/Shapes lists.
   example: []
   syntax:
     content: public class GraphDto
@@ -44,6 +52,37 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: FlowGraph.Core.Serialization.GraphDto.Version
+  commentId: P:FlowGraph.Core.Serialization.GraphDto.Version
+  id: Version
+  parent: FlowGraph.Core.Serialization.GraphDto
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: GraphDto.Version
+  fullName: FlowGraph.Core.Serialization.GraphDto.Version
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/GraphSerializer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Version
+    path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
+    startLine: 105
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization
+  summary: Format version. Version 1 uses Nodes/Edges/Shapes lists, Version 2 uses Elements array.
+  example: []
+  syntax:
+    content: public int Version { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Version As Integer
+  overload: FlowGraph.Core.Serialization.GraphDto.Version*
 - uid: FlowGraph.Core.Serialization.GraphDto.Id
   commentId: P:FlowGraph.Core.Serialization.GraphDto.Id
   id: Id
@@ -58,11 +97,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 96
+    startLine: 107
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -73,6 +112,40 @@ items:
       type: System.String
     content.vb: Public Property Id As String
   overload: FlowGraph.Core.Serialization.GraphDto.Id*
+- uid: FlowGraph.Core.Serialization.GraphDto.Elements
+  commentId: P:FlowGraph.Core.Serialization.GraphDto.Elements
+  id: Elements
+  parent: FlowGraph.Core.Serialization.GraphDto
+  langs:
+  - csharp
+  - vb
+  name: Elements
+  nameWithType: GraphDto.Elements
+  fullName: FlowGraph.Core.Serialization.GraphDto.Elements
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/GraphSerializer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Elements
+    path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
+    startLine: 113
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization
+  summary: >-
+    Polymorphic elements array (Version 2 format).
+
+    Uses "kind" discriminator: "node", "edge", "shape.rectangle", etc.
+  example: []
+  syntax:
+    content: public List<ElementDto>? Elements { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FlowGraph.Core.Serialization.ElementDto}
+    content.vb: Public Property Elements As List(Of ElementDto)
+  overload: FlowGraph.Core.Serialization.GraphDto.Elements*
 - uid: FlowGraph.Core.Serialization.GraphDto.Nodes
   commentId: P:FlowGraph.Core.Serialization.GraphDto.Nodes
   id: Nodes
@@ -87,16 +160,21 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Nodes
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 97
+    startLine: 119
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
+  summary: >-
+    Legacy nodes list (Version 1 format, maintained for backward compatibility).
+
+    When deserializing, if Elements is null but Nodes is not, treat as Version 1.
+  example: []
   syntax:
-    content: public List<NodeDto> Nodes { get; set; }
+    content: public List<NodeDto>? Nodes { get; set; }
     parameters: []
     return:
       type: System.Collections.Generic.List{FlowGraph.Core.Serialization.NodeDto}
@@ -116,21 +194,54 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Edges
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 98
+    startLine: 124
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
+  summary: Legacy edges list (Version 1 format, maintained for backward compatibility).
+  example: []
   syntax:
-    content: public List<EdgeDto> Edges { get; set; }
+    content: public List<EdgeDto>? Edges { get; set; }
     parameters: []
     return:
       type: System.Collections.Generic.List{FlowGraph.Core.Serialization.EdgeDto}
     content.vb: Public Property Edges As List(Of EdgeDto)
   overload: FlowGraph.Core.Serialization.GraphDto.Edges*
+- uid: FlowGraph.Core.Serialization.GraphDto.Shapes
+  commentId: P:FlowGraph.Core.Serialization.GraphDto.Shapes
+  id: Shapes
+  parent: FlowGraph.Core.Serialization.GraphDto
+  langs:
+  - csharp
+  - vb
+  name: Shapes
+  nameWithType: GraphDto.Shapes
+  fullName: FlowGraph.Core.Serialization.GraphDto.Shapes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/GraphSerializer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Shapes
+    path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
+    startLine: 129
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization
+  summary: Legacy shapes list (Version 1 format, maintained for backward compatibility).
+  example: []
+  syntax:
+    content: public List<ShapeDto>? Shapes { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FlowGraph.Core.Serialization.ShapeDto}
+    content.vb: Public Property Shapes As List(Of ShapeDto)
+  overload: FlowGraph.Core.Serialization.GraphDto.Shapes*
 - uid: FlowGraph.Core.Serialization.GraphDto.Metadata
   commentId: P:FlowGraph.Core.Serialization.GraphDto.Metadata
   id: Metadata
@@ -145,11 +256,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Metadata
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 99
+    startLine: 131
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -174,11 +285,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: FromGraph
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 101
+    startLine: 133
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -205,11 +316,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ToGraph
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 110
+    startLine: 167
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -487,6 +598,23 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: FlowGraph.Core.Serialization.GraphDto.Version*
+  commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Version
+  href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Version
+  name: Version
+  nameWithType: GraphDto.Version
+  fullName: FlowGraph.Core.Serialization.GraphDto.Version
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: FlowGraph.Core.Serialization.GraphDto.Id*
   commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Id
   href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Id
@@ -504,32 +632,32 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: FlowGraph.Core.Serialization.GraphDto.Nodes*
-  commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Nodes
-  href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Nodes
-  name: Nodes
-  nameWithType: GraphDto.Nodes
-  fullName: FlowGraph.Core.Serialization.GraphDto.Nodes
-- uid: System.Collections.Generic.List{FlowGraph.Core.Serialization.NodeDto}
-  commentId: T:System.Collections.Generic.List{FlowGraph.Core.Serialization.NodeDto}
+- uid: FlowGraph.Core.Serialization.GraphDto.Elements*
+  commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Elements
+  href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Elements
+  name: Elements
+  nameWithType: GraphDto.Elements
+  fullName: FlowGraph.Core.Serialization.GraphDto.Elements
+- uid: System.Collections.Generic.List{FlowGraph.Core.Serialization.ElementDto}
+  commentId: T:System.Collections.Generic.List{FlowGraph.Core.Serialization.ElementDto}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.List`1
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  name: List<NodeDto>
-  nameWithType: List<NodeDto>
-  fullName: System.Collections.Generic.List<FlowGraph.Core.Serialization.NodeDto>
-  nameWithType.vb: List(Of NodeDto)
-  fullName.vb: System.Collections.Generic.List(Of FlowGraph.Core.Serialization.NodeDto)
-  name.vb: List(Of NodeDto)
+  name: List<ElementDto>
+  nameWithType: List<ElementDto>
+  fullName: System.Collections.Generic.List<FlowGraph.Core.Serialization.ElementDto>
+  nameWithType.vb: List(Of ElementDto)
+  fullName.vb: System.Collections.Generic.List(Of FlowGraph.Core.Serialization.ElementDto)
+  name.vb: List(Of ElementDto)
   spec.csharp:
   - uid: System.Collections.Generic.List`1
     name: List
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
   - name: <
-  - uid: FlowGraph.Core.Serialization.NodeDto
-    name: NodeDto
-    href: FlowGraph.Core.Serialization.NodeDto.html
+  - uid: FlowGraph.Core.Serialization.ElementDto
+    name: ElementDto
+    href: FlowGraph.Core.Serialization.ElementDto.html
   - name: '>'
   spec.vb:
   - uid: System.Collections.Generic.List`1
@@ -539,9 +667,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: FlowGraph.Core.Serialization.NodeDto
-    name: NodeDto
-    href: FlowGraph.Core.Serialization.NodeDto.html
+  - uid: FlowGraph.Core.Serialization.ElementDto
+    name: ElementDto
+    href: FlowGraph.Core.Serialization.ElementDto.html
   - name: )
 - uid: System.Collections.Generic.List`1
   commentId: T:System.Collections.Generic.List`1
@@ -608,6 +736,45 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Serialization.GraphDto.Nodes*
+  commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Nodes
+  href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Nodes
+  name: Nodes
+  nameWithType: GraphDto.Nodes
+  fullName: FlowGraph.Core.Serialization.GraphDto.Nodes
+- uid: System.Collections.Generic.List{FlowGraph.Core.Serialization.NodeDto}
+  commentId: T:System.Collections.Generic.List{FlowGraph.Core.Serialization.NodeDto}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<NodeDto>
+  nameWithType: List<NodeDto>
+  fullName: System.Collections.Generic.List<FlowGraph.Core.Serialization.NodeDto>
+  nameWithType.vb: List(Of NodeDto)
+  fullName.vb: System.Collections.Generic.List(Of FlowGraph.Core.Serialization.NodeDto)
+  name.vb: List(Of NodeDto)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FlowGraph.Core.Serialization.NodeDto
+    name: NodeDto
+    href: FlowGraph.Core.Serialization.NodeDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Serialization.NodeDto
+    name: NodeDto
+    href: FlowGraph.Core.Serialization.NodeDto.html
+  - name: )
 - uid: FlowGraph.Core.Serialization.GraphDto.Edges*
   commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Edges
   href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Edges
@@ -646,6 +813,45 @@ references:
   - uid: FlowGraph.Core.Serialization.EdgeDto
     name: EdgeDto
     href: FlowGraph.Core.Serialization.EdgeDto.html
+  - name: )
+- uid: FlowGraph.Core.Serialization.GraphDto.Shapes*
+  commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Shapes
+  href: FlowGraph.Core.Serialization.GraphDto.html#FlowGraph_Core_Serialization_GraphDto_Shapes
+  name: Shapes
+  nameWithType: GraphDto.Shapes
+  fullName: FlowGraph.Core.Serialization.GraphDto.Shapes
+- uid: System.Collections.Generic.List{FlowGraph.Core.Serialization.ShapeDto}
+  commentId: T:System.Collections.Generic.List{FlowGraph.Core.Serialization.ShapeDto}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ShapeDto>
+  nameWithType: List<ShapeDto>
+  fullName: System.Collections.Generic.List<FlowGraph.Core.Serialization.ShapeDto>
+  nameWithType.vb: List(Of ShapeDto)
+  fullName.vb: System.Collections.Generic.List(Of FlowGraph.Core.Serialization.ShapeDto)
+  name.vb: List(Of ShapeDto)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FlowGraph.Core.Serialization.ShapeDto
+    name: ShapeDto
+    href: FlowGraph.Core.Serialization.ShapeDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Serialization.ShapeDto
+    name: ShapeDto
+    href: FlowGraph.Core.Serialization.ShapeDto.html
   - name: )
 - uid: FlowGraph.Core.Serialization.GraphDto.Metadata*
   commentId: Overload:FlowGraph.Core.Serialization.GraphDto.Metadata

@@ -15,7 +15,7 @@ public static class EdgePathHelper
     /// Default corner radius for smooth step edges.
     /// </summary>
     private const double DefaultCornerRadius = 10;
-    
+
     /// <summary>
     /// Creates a path geometry between two points based on the edge type.
     /// </summary>
@@ -34,9 +34,9 @@ public static class EdgePathHelper
     /// Creates a path geometry through waypoints based on the edge type.
     /// </summary>
     public static PathGeometry CreatePathWithWaypoints(
-        AvaloniaPoint start, 
-        AvaloniaPoint end, 
-        IReadOnlyList<CorePoint>? waypoints, 
+        AvaloniaPoint start,
+        AvaloniaPoint end,
+        IReadOnlyList<CorePoint>? waypoints,
         EdgeType edgeType)
     {
         if (waypoints == null || waypoints.Count == 0)
@@ -174,7 +174,7 @@ public static class EdgePathHelper
             {
                 pathFigure.Segments.Add(new LineSegment { Point = new AvaloniaPoint(midX, start.Y) });
             }
-            
+
             pathFigure.Segments.Add(new LineSegment { Point = new AvaloniaPoint(midX, end.Y) });
             pathFigure.Segments.Add(new LineSegment { Point = end });
         }
@@ -205,7 +205,7 @@ public static class EdgePathHelper
 
         // Build path with rounded corners at each waypoint
         var current = points[0];
-        
+
         for (int i = 1; i < points.Count; i++)
         {
             var next = points[i];
@@ -219,9 +219,9 @@ public static class EdgePathHelper
             else
             {
                 var afterNext = points[i + 1];
-                
+
                 // Calculate corner based on direction change
-                var radius = Math.Min(cornerRadius, 
+                var radius = Math.Min(cornerRadius,
                     Math.Min(Distance(current, next) / 2, Distance(next, afterNext) / 2));
 
                 if (radius > 1)
@@ -233,7 +233,7 @@ public static class EdgePathHelper
                     // Arc around the corner
                     var afterCorner = MoveTowards(next, afterNext, radius);
                     var sweepDir = GetSweepDirection(current, next, afterNext);
-                    
+
                     pathFigure.Segments.Add(new ArcSegment
                     {
                         Point = afterCorner,
@@ -268,7 +268,7 @@ public static class EdgePathHelper
     {
         var totalDist = Distance(from, to);
         if (totalDist < 0.0001) return from;
-        
+
         var ratio = distance / totalDist;
         return new AvaloniaPoint(
             from.X + (to.X - from.X) * ratio,
@@ -278,7 +278,7 @@ public static class EdgePathHelper
     private static SweepDirection GetSweepDirection(AvaloniaPoint prev, AvaloniaPoint current, AvaloniaPoint next)
     {
         // Cross product to determine turn direction
-        var cross = (current.X - prev.X) * (next.Y - current.Y) - 
+        var cross = (current.X - prev.X) * (next.Y - current.Y) -
                    (current.Y - prev.Y) * (next.X - current.X);
         return cross > 0 ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
     }
@@ -298,23 +298,8 @@ public static class EdgePathHelper
         var controlPointOffset = Math.Abs(end.X - start.X) / 2;
         controlPointOffset = Math.Max(controlPointOffset, 50);
 
-        AvaloniaPoint control1, control2;
-        
-        if (horizontalBias)
-        {
-            control1 = new AvaloniaPoint(start.X + controlPointOffset, start.Y);
-            control2 = new AvaloniaPoint(end.X - controlPointOffset, end.Y);
-        }
-        else
-        {
-            var goingRight = end.X > start.X;
-            control1 = new AvaloniaPoint(
-                goingRight ? start.X + controlPointOffset : start.X - controlPointOffset,
-                start.Y);
-            control2 = new AvaloniaPoint(
-                goingRight ? end.X - controlPointOffset : end.X + controlPointOffset,
-                end.Y);
-        }
+        // Calculate direction-aware control points
+        var (control1, control2) = CalculateDirectionAwareControlPoints(start, end, controlPointOffset);
 
         var bezierSegment = new BezierSegment
         {
@@ -329,6 +314,68 @@ public static class EdgePathHelper
         pathGeometry.Figures!.Add(pathFigure);
 
         return pathGeometry;
+    }
+
+    /// <summary>
+    /// Calculates bezier control points based on edge direction.
+    /// For left-to-right edges, uses horizontal control points.
+    /// For vertical/backward edges, uses more appropriate control point placement.
+    /// </summary>
+    private static (AvaloniaPoint c1, AvaloniaPoint c2) CalculateDirectionAwareControlPoints(
+        AvaloniaPoint start, AvaloniaPoint end, double offset)
+    {
+        var dx = end.X - start.X;
+        var dy = end.Y - start.Y;
+
+        // If edge goes mostly left-to-right, use horizontal control points
+        if (dx > Math.Abs(dy) * 0.5)
+        {
+            // Standard left-to-right bezier
+            return (
+                new AvaloniaPoint(start.X + offset, start.Y),
+                new AvaloniaPoint(end.X - offset, end.Y)
+            );
+        }
+
+        // If edge goes mostly right-to-left (backwards), curve around
+        if (dx < -Math.Abs(dy) * 0.5)
+        {
+            // Both control points go outward to create a looping curve
+            return (
+                new AvaloniaPoint(start.X + offset, start.Y),
+                new AvaloniaPoint(end.X - offset, end.Y)
+            );
+        }
+
+        // For mostly vertical edges
+        // Check if it's a pure vertical edge (same X coordinate)
+        if (Math.Abs(dx) < 10)
+        {
+            // Pure vertical - keep control points on the same X line
+            var verticalDist = Math.Abs(dy) / 3;
+            return (
+                new AvaloniaPoint(start.X, start.Y + (dy > 0 ? verticalDist : -verticalDist)),
+                new AvaloniaPoint(end.X, end.Y - (dy > 0 ? verticalDist : -verticalDist))
+            );
+        }
+
+        if (dx >= 0)
+        {
+            // Going down-right - slight horizontal offset
+            var hOffset = Math.Min(offset * 0.3, Math.Abs(dx) * 0.5);
+            return (
+                new AvaloniaPoint(start.X + hOffset, start.Y + offset * 0.4),
+                new AvaloniaPoint(end.X - hOffset, end.Y - offset * 0.4)
+            );
+        }
+        else
+        {
+            // Going down-left - create a smooth arc that doesn't swing too wide
+            return (
+                new AvaloniaPoint(start.X + offset * 0.3, start.Y + Math.Abs(dy) * 0.3),
+                new AvaloniaPoint(end.X - offset * 0.3, end.Y - Math.Abs(dy) * 0.3)
+            );
+        }
     }
 
     /// <summary>
@@ -392,7 +439,7 @@ public static class EdgePathHelper
 
         var midX = (start.X + end.X) / 2;
         var deltaY = end.Y - start.Y;
-        
+
         // Clamp corner radius to not exceed half the available space
         var maxRadiusX = Math.Abs(midX - start.X);
         var maxRadiusY = Math.Abs(deltaY) / 2;
@@ -456,12 +503,12 @@ public static class EdgePathHelper
     {
         // Arrow points back from the tip
         var arrowAngle = Math.PI / 6; // 30 degrees spread
-        
+
         var p1 = new AvaloniaPoint(
             point.X - size * Math.Cos(angle - arrowAngle),
             point.Y - size * Math.Sin(angle - arrowAngle)
         );
-        
+
         var p2 = new AvaloniaPoint(
             point.X - size * Math.Cos(angle + arrowAngle),
             point.Y - size * Math.Sin(angle + arrowAngle)
@@ -496,6 +543,59 @@ public static class EdgePathHelper
     public static double CalculateAngle(AvaloniaPoint from, AvaloniaPoint to)
     {
         return Math.Atan2(to.Y - from.Y, to.X - from.X);
+    }
+
+    /// <summary>
+    /// Calculates the arrow angle using a hybrid approach that combines port position (logical direction)
+    /// with path geometry (visual direction) for consistent, accurate arrow rendering.
+    /// </summary>
+    /// <param name="tip">The arrow tip point (target position).</param>
+    /// <param name="fromPoint">The point the edge comes from (preceding the tip).</param>
+    /// <param name="targetPortPosition">Optional port position for logical direction hint.</param>
+    /// <param name="angleThreshold">Angle tolerance in radians for preferring port direction (default: π/4 = 45°).</param>
+    /// <returns>The angle in radians for the arrow direction.</returns>
+    /// <remarks>
+    /// <para>
+    /// This method implements a hybrid approach:
+    /// 1. If port position is provided, get the expected angle from port side
+    /// 2. Calculate the actual segment angle from path geometry
+    /// 3. If segment angle is within threshold of expected, use port direction (cleaner)
+    /// 4. Otherwise, use actual segment direction (handles unusual routing)
+    /// </para>
+    /// <para>
+    /// This ensures consistency between custom renderers and default rendering while
+    /// handling edge cases like curved paths or unusual node arrangements.
+    /// </para>
+    /// </remarks>
+    public static double CalculateArrowAngle(
+        AvaloniaPoint tip,
+        AvaloniaPoint fromPoint,
+        PortPosition? targetPortPosition = null,
+        double angleThreshold = Math.PI / 4)
+    {
+        // Calculate the actual segment angle from path geometry
+        var segmentAngle = CalculateAngle(fromPoint, tip);
+
+        // If no port position hint, just use segment angle
+        if (targetPortPosition == null)
+            return segmentAngle;
+
+        // Get the expected angle from port position
+        var expectedAngle = targetPortPosition.Value.ToIncomingArrowAngle();
+
+        // Compare angles: if segment is close to expected, prefer the cleaner port direction
+        var angleDiff = NormalizeAngle(segmentAngle - expectedAngle);
+        return Math.Abs(angleDiff) <= angleThreshold ? expectedAngle : segmentAngle;
+    }
+
+    /// <summary>
+    /// Normalizes an angle to the range [-π, π].
+    /// </summary>
+    private static double NormalizeAngle(double angle)
+    {
+        while (angle > Math.PI) angle -= 2 * Math.PI;
+        while (angle < -Math.PI) angle += 2 * Math.PI;
+        return angle;
     }
 }
 

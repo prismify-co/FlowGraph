@@ -27,7 +27,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphGroupExtensions
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -65,7 +65,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupChildren
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupChildrenRecursive
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetParentGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -179,7 +179,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetAncestorGroups
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDescendantOf
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -256,7 +256,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroups
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetTopLevelNodes
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -324,11 +324,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CalculateGroupBounds
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 82
+    startLine: 88
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -339,16 +339,22 @@ items:
     parameters:
     - id: graph
       type: FlowGraph.Core.Graph
+      description: The graph containing the group.
     - id: groupId
       type: System.String
+      description: The group ID.
     - id: padding
       type: System.Double
+      description: Padding around children. Defaults to <xref href="FlowGraph.Core.GraphDefaults.GroupPadding" data-throw-if-not-resolved="false"></xref>.
     - id: headerHeight
       type: System.Double
+      description: Height of group header. Defaults to <xref href="FlowGraph.Core.GraphDefaults.GroupHeaderHeight" data-throw-if-not-resolved="false"></xref>.
     - id: defaultNodeWidth
       type: System.Double
+      description: Default node width. Defaults to <xref href="FlowGraph.Core.GraphDefaults.NodeWidth" data-throw-if-not-resolved="false"></xref>.
     - id: defaultNodeHeight
       type: System.Double
+      description: Default node height. Defaults to <xref href="FlowGraph.Core.GraphDefaults.NodeHeight" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.ValueTuple{FlowGraph.Core.Point,System.Double,System.Double}
     content.vb: Public Shared Function CalculateGroupBounds(graph As Graph, groupId As String, padding As Double = 20, headerHeight As Double = 30, defaultNodeWidth As Double = 150, defaultNodeHeight As Double = 80) As (topLeft As Point, width As Double, height As Double)
@@ -371,11 +377,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEdgeInternalToGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 123
+    startLine: 129
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -412,11 +418,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEdgeCrossingGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 142
+    startLine: 148
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -453,11 +459,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgesCrossingGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 161
+    startLine: 167
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -492,11 +498,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgesInternalToGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 169
+    startLine: 175
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -952,6 +958,30 @@ references:
   name: GetTopLevelNodes
   nameWithType: GraphGroupExtensions.GetTopLevelNodes
   fullName: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes
+- uid: FlowGraph.Core.GraphDefaults.GroupPadding
+  commentId: F:FlowGraph.Core.GraphDefaults.GroupPadding
+  href: FlowGraph.Core.GraphDefaults.html#FlowGraph_Core_GraphDefaults_GroupPadding
+  name: GroupPadding
+  nameWithType: GraphDefaults.GroupPadding
+  fullName: FlowGraph.Core.GraphDefaults.GroupPadding
+- uid: FlowGraph.Core.GraphDefaults.GroupHeaderHeight
+  commentId: F:FlowGraph.Core.GraphDefaults.GroupHeaderHeight
+  href: FlowGraph.Core.GraphDefaults.html#FlowGraph_Core_GraphDefaults_GroupHeaderHeight
+  name: GroupHeaderHeight
+  nameWithType: GraphDefaults.GroupHeaderHeight
+  fullName: FlowGraph.Core.GraphDefaults.GroupHeaderHeight
+- uid: FlowGraph.Core.GraphDefaults.NodeWidth
+  commentId: F:FlowGraph.Core.GraphDefaults.NodeWidth
+  href: FlowGraph.Core.GraphDefaults.html#FlowGraph_Core_GraphDefaults_NodeWidth
+  name: NodeWidth
+  nameWithType: GraphDefaults.NodeWidth
+  fullName: FlowGraph.Core.GraphDefaults.NodeWidth
+- uid: FlowGraph.Core.GraphDefaults.NodeHeight
+  commentId: F:FlowGraph.Core.GraphDefaults.NodeHeight
+  href: FlowGraph.Core.GraphDefaults.html#FlowGraph_Core_GraphDefaults_NodeHeight
+  name: NodeHeight
+  nameWithType: GraphDefaults.NodeHeight
+  fullName: FlowGraph.Core.GraphDefaults.NodeHeight
 - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds*
   commentId: Overload:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds
   href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_

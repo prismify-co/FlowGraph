@@ -1,0 +1,1154 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.DataFlow.GraphExecutor
+  commentId: T:FlowGraph.Core.DataFlow.GraphExecutor
+  id: GraphExecutor
+  parent: FlowGraph.Core.DataFlow
+  children:
+  - FlowGraph.Core.DataFlow.GraphExecutor.#ctor(FlowGraph.Core.Graph)
+  - FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate
+  - FlowGraph.Core.DataFlow.GraphExecutor.Dispose
+  - FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate
+  - FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll
+  - FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom(System.String)
+  - FlowGraph.Core.DataFlow.GraphExecutor.ExecutionCompleted
+  - FlowGraph.Core.DataFlow.GraphExecutor.ExecutionStarted
+  - FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(System.String)
+  - FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor``1(System.String)
+  - FlowGraph.Core.DataFlow.GraphExecutor.NodeProcessed
+  - FlowGraph.Core.DataFlow.GraphExecutor.Processors
+  - FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort(System.String,System.String)
+  - FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor(FlowGraph.Core.DataFlow.INodeProcessor)
+  - FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor(System.String)
+  langs:
+  - csharp
+  - vb
+  name: GraphExecutor
+  nameWithType: GraphExecutor
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GraphExecutor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: >-
+    Executes a graph by propagating data through connected nodes.
+
+    Uses topological sorting for correct execution order.
+
+    Optimized for incremental updates - only re-executes affected nodes.
+
+    Thread-safe for concurrent access from multiple threads.
+  example: []
+  syntax:
+    content: 'public sealed class GraphExecutor : IDisposable'
+    content.vb: Public NotInheritable Class GraphExecutor Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.#ctor(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.#ctor(FlowGraph.Core.Graph)
+  id: '#ctor(FlowGraph.Core.Graph)'
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: GraphExecutor(Graph)
+  nameWithType: GraphExecutor.GraphExecutor(Graph)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.GraphExecutor(FlowGraph.Core.Graph)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Creates a new graph executor.
+  example: []
+  syntax:
+    content: public GraphExecutor(Graph graph)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The graph to execute.
+    content.vb: Public Sub New(graph As Graph)
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.#ctor*
+  nameWithType.vb: GraphExecutor.New(Graph)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.New(FlowGraph.Core.Graph)
+  name.vb: New(Graph)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecutionStarted
+  commentId: E:FlowGraph.Core.DataFlow.GraphExecutor.ExecutionStarted
+  id: ExecutionStarted
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: ExecutionStarted
+  nameWithType: GraphExecutor.ExecutionStarted
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecutionStarted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ExecutionStarted
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Event raised when execution starts.
+  example: []
+  syntax:
+    content: public event EventHandler? ExecutionStarted
+    return:
+      type: System.EventHandler
+    content.vb: Public Event ExecutionStarted As EventHandler
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecutionCompleted
+  commentId: E:FlowGraph.Core.DataFlow.GraphExecutor.ExecutionCompleted
+  id: ExecutionCompleted
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: ExecutionCompleted
+  nameWithType: GraphExecutor.ExecutionCompleted
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecutionCompleted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ExecutionCompleted
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Event raised when execution completes.
+  example: []
+  syntax:
+    content: public event EventHandler? ExecutionCompleted
+    return:
+      type: System.EventHandler
+    content.vb: Public Event ExecutionCompleted As EventHandler
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.NodeProcessed
+  commentId: E:FlowGraph.Core.DataFlow.GraphExecutor.NodeProcessed
+  id: NodeProcessed
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: NodeProcessed
+  nameWithType: GraphExecutor.NodeProcessed
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.NodeProcessed
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeProcessed
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Event raised when a node is processed.
+  example: []
+  syntax:
+    content: public event EventHandler<NodeProcessedEventArgs>? NodeProcessed
+    return:
+      type: System.EventHandler{FlowGraph.Core.DataFlow.NodeProcessedEventArgs}
+    content.vb: Public Event NodeProcessed As EventHandler(Of NodeProcessedEventArgs)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.Processors
+  commentId: P:FlowGraph.Core.DataFlow.GraphExecutor.Processors
+  id: Processors
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: Processors
+  nameWithType: GraphExecutor.Processors
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.Processors
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Processors
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets all registered processors.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<string, INodeProcessor> Processors { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.DataFlow.INodeProcessor}
+    content.vb: Public ReadOnly Property Processors As IReadOnlyDictionary(Of String, INodeProcessor)
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.Processors*
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor(FlowGraph.Core.DataFlow.INodeProcessor)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor(FlowGraph.Core.DataFlow.INodeProcessor)
+  id: RegisterProcessor(FlowGraph.Core.DataFlow.INodeProcessor)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: RegisterProcessor(INodeProcessor)
+  nameWithType: GraphExecutor.RegisterProcessor(INodeProcessor)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor(FlowGraph.Core.DataFlow.INodeProcessor)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RegisterProcessor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 63
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Registers a processor for a node.
+  example: []
+  syntax:
+    content: public void RegisterProcessor(INodeProcessor processor)
+    parameters:
+    - id: processor
+      type: FlowGraph.Core.DataFlow.INodeProcessor
+      description: The processor to register.
+    content.vb: Public Sub RegisterProcessor(processor As INodeProcessor)
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor*
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor(System.String)
+  id: UnregisterProcessor(System.String)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: UnregisterProcessor(string)
+  nameWithType: GraphExecutor.UnregisterProcessor(string)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UnregisterProcessor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 93
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Unregisters a processor.
+  example: []
+  syntax:
+    content: public bool UnregisterProcessor(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The node ID to unregister.
+    return:
+      type: System.Boolean
+      description: True if the processor was found and removed.
+    content.vb: Public Function UnregisterProcessor(nodeId As String) As Boolean
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor*
+  nameWithType.vb: GraphExecutor.UnregisterProcessor(String)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor(String)
+  name.vb: UnregisterProcessor(String)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(System.String)
+  id: GetProcessor(System.String)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: GetProcessor(string)
+  nameWithType: GraphExecutor.GetProcessor(string)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetProcessor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 122
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets a processor by node ID.
+  example: []
+  syntax:
+    content: public INodeProcessor? GetProcessor(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The node ID.
+    return:
+      type: FlowGraph.Core.DataFlow.INodeProcessor
+      description: The processor, or null if not found.
+    content.vb: Public Function GetProcessor(nodeId As String) As INodeProcessor
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor*
+  nameWithType.vb: GraphExecutor.GetProcessor(String)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(String)
+  name.vb: GetProcessor(String)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor``1(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor``1(System.String)
+  id: GetProcessor``1(System.String)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: GetProcessor<T>(string)
+  nameWithType: GraphExecutor.GetProcessor<T>(string)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor<T>(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetProcessor
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 141
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets a typed processor by node ID.
+  example: []
+  syntax:
+    content: 'public T? GetProcessor<T>(string nodeId) where T : class, INodeProcessor'
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The node ID.
+    typeParameters:
+    - id: T
+      description: The processor type.
+    return:
+      type: '{T}'
+      description: The processor, or null if not found or wrong type.
+    content.vb: Public Function GetProcessor(Of T As {Class, INodeProcessor})(nodeId As String) As T
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor*
+  nameWithType.vb: GraphExecutor.GetProcessor(Of T)(String)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor(Of T)(String)
+  name.vb: GetProcessor(Of T)(String)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate
+  id: BeginBatchUpdate
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: BeginBatchUpdate()
+  nameWithType: GraphExecutor.BeginBatchUpdate()
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginBatchUpdate
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 150
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: >-
+    Begins a batch update. Changes won't propagate until EndBatchUpdate is called.
+
+    Use this when making multiple changes to prevent intermediate executions.
+  example: []
+  syntax:
+    content: public void BeginBatchUpdate()
+    content.vb: Public Sub BeginBatchUpdate()
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate*
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate
+  id: EndBatchUpdate
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: EndBatchUpdate()
+  nameWithType: GraphExecutor.EndBatchUpdate()
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EndBatchUpdate
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 158
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Ends batch update and executes all dirty nodes.
+  example: []
+  syntax:
+    content: public void EndBatchUpdate()
+    content.vb: Public Sub EndBatchUpdate()
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate*
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll
+  id: ExecuteAll
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAll()
+  nameWithType: GraphExecutor.ExecuteAll()
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ExecuteAll
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 167
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Executes the entire graph in topological order.
+  example: []
+  syntax:
+    content: public void ExecuteAll()
+    content.vb: Public Sub ExecuteAll()
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll*
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom(System.String)
+  id: ExecuteFrom(System.String)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: ExecuteFrom(string)
+  nameWithType: GraphExecutor.ExecuteFrom(string)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ExecuteFrom
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 207
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: >-
+    Executes only nodes affected by a change to the specified node.
+
+    More efficient than ExecuteAll when only one input changed.
+  example: []
+  syntax:
+    content: public void ExecuteFrom(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The node that changed.
+    content.vb: Public Sub ExecuteFrom(nodeId As String)
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom*
+  nameWithType.vb: GraphExecutor.ExecuteFrom(String)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom(String)
+  name.vb: ExecuteFrom(String)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort(System.String,System.String)
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort(System.String,System.String)
+  id: PropagateFromPort(System.String,System.String)
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: PropagateFromPort(string, string)
+  nameWithType: GraphExecutor.PropagateFromPort(string, string)
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PropagateFromPort
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 251
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Propagates the current value from a source port to all connected target ports.
+  example: []
+  syntax:
+    content: public void PropagateFromPort(string sourceNodeId, string sourcePortId)
+    parameters:
+    - id: sourceNodeId
+      type: System.String
+      description: The source node ID.
+    - id: sourcePortId
+      type: System.String
+      description: The source port ID.
+    content.vb: Public Sub PropagateFromPort(sourceNodeId As String, sourcePortId As String)
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort*
+  nameWithType.vb: GraphExecutor.PropagateFromPort(String, String)
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort(String, String)
+  name.vb: PropagateFromPort(String, String)
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.Dispose
+  commentId: M:FlowGraph.Core.DataFlow.GraphExecutor.Dispose
+  id: Dispose
+  parent: FlowGraph.Core.DataFlow.GraphExecutor
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GraphExecutor.Dispose()
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.Dispose()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/GraphExecutor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Dispose
+    path: ../FlowGraph.Core/DataFlow/GraphExecutor.cs
+    startLine: 521
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: FlowGraph.Core.DataFlow.GraphExecutor.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: FlowGraph.Core.DataFlow
+  commentId: N:FlowGraph.Core.DataFlow
+  href: FlowGraph.html
+  name: FlowGraph.Core.DataFlow
+  nameWithType: FlowGraph.Core.DataFlow
+  fullName: FlowGraph.Core.DataFlow
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.DataFlow
+    name: DataFlow
+    href: FlowGraph.Core.DataFlow.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.DataFlow
+    name: DataFlow
+    href: FlowGraph.Core.DataFlow.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.#ctor*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.#ctor
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor__ctor_FlowGraph_Core_Graph_
+  name: GraphExecutor
+  nameWithType: GraphExecutor.GraphExecutor
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.GraphExecutor
+  nameWithType.vb: GraphExecutor.New
+  fullName.vb: FlowGraph.Core.DataFlow.GraphExecutor.New
+  name.vb: New
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: System.EventHandler{FlowGraph.Core.DataFlow.NodeProcessedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Core.DataFlow.NodeProcessedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<NodeProcessedEventArgs>
+  nameWithType: EventHandler<NodeProcessedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Core.DataFlow.NodeProcessedEventArgs>
+  nameWithType.vb: EventHandler(Of NodeProcessedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Core.DataFlow.NodeProcessedEventArgs)
+  name.vb: EventHandler(Of NodeProcessedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Core.DataFlow.NodeProcessedEventArgs
+    name: NodeProcessedEventArgs
+    href: FlowGraph.Core.DataFlow.NodeProcessedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.DataFlow.NodeProcessedEventArgs
+    name: NodeProcessedEventArgs
+    href: FlowGraph.Core.DataFlow.NodeProcessedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.Processors*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.Processors
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_Processors
+  name: Processors
+  nameWithType: GraphExecutor.Processors
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.Processors
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.DataFlow.INodeProcessor}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.DataFlow.INodeProcessor}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, INodeProcessor>
+  nameWithType: IReadOnlyDictionary<string, INodeProcessor>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, FlowGraph.Core.DataFlow.INodeProcessor>
+  nameWithType.vb: IReadOnlyDictionary(Of String, INodeProcessor)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, FlowGraph.Core.DataFlow.INodeProcessor)
+  name.vb: IReadOnlyDictionary(Of String, INodeProcessor)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.DataFlow.INodeProcessor
+    name: INodeProcessor
+    href: FlowGraph.Core.DataFlow.INodeProcessor.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.DataFlow.INodeProcessor
+    name: INodeProcessor
+    href: FlowGraph.Core.DataFlow.INodeProcessor.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_RegisterProcessor_FlowGraph_Core_DataFlow_INodeProcessor_
+  name: RegisterProcessor
+  nameWithType: GraphExecutor.RegisterProcessor
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.RegisterProcessor
+- uid: FlowGraph.Core.DataFlow.INodeProcessor
+  commentId: T:FlowGraph.Core.DataFlow.INodeProcessor
+  parent: FlowGraph.Core.DataFlow
+  href: FlowGraph.Core.DataFlow.INodeProcessor.html
+  name: INodeProcessor
+  nameWithType: INodeProcessor
+  fullName: FlowGraph.Core.DataFlow.INodeProcessor
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_UnregisterProcessor_System_String_
+  name: UnregisterProcessor
+  nameWithType: GraphExecutor.UnregisterProcessor
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.UnregisterProcessor
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_GetProcessor_System_String_
+  name: GetProcessor
+  nameWithType: GraphExecutor.GetProcessor
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.GetProcessor
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_BeginBatchUpdate
+  name: BeginBatchUpdate
+  nameWithType: GraphExecutor.BeginBatchUpdate
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.BeginBatchUpdate
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_EndBatchUpdate
+  name: EndBatchUpdate
+  nameWithType: GraphExecutor.EndBatchUpdate
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.EndBatchUpdate
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_ExecuteAll
+  name: ExecuteAll
+  nameWithType: GraphExecutor.ExecuteAll
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteAll
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_ExecuteFrom_System_String_
+  name: ExecuteFrom
+  nameWithType: GraphExecutor.ExecuteFrom
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.ExecuteFrom
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_PropagateFromPort_System_String_System_String_
+  name: PropagateFromPort
+  nameWithType: GraphExecutor.PropagateFromPort
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.PropagateFromPort
+- uid: FlowGraph.Core.DataFlow.GraphExecutor.Dispose*
+  commentId: Overload:FlowGraph.Core.DataFlow.GraphExecutor.Dispose
+  href: FlowGraph.Core.DataFlow.GraphExecutor.html#FlowGraph_Core_DataFlow_GraphExecutor_Dispose
+  name: Dispose
+  nameWithType: GraphExecutor.Dispose
+  fullName: FlowGraph.Core.DataFlow.GraphExecutor.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

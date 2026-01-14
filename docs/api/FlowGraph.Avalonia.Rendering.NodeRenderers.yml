@@ -4,19 +4,37 @@ items:
   commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
   id: FlowGraph.Avalonia.Rendering.NodeRenderers
   children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.GroupCollapseEventArgs
   - FlowGraph.Avalonia.Rendering.NodeRenderers.GroupNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.InputNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
   - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.OutputNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer
   - FlowGraph.Avalonia.Rendering.NodeRenderers.SimplifiedNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
   - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer
   langs:
   - csharp
   - vb
@@ -27,6 +45,18 @@ items:
   assemblies:
   - FlowGraph.Avalonia
 references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer.html
+  name: ColorPickerNodeRenderer
+  nameWithType: ColorPickerNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorPickerNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer.html
+  name: ColorDisplayNodeRenderer
+  nameWithType: ColorDisplayNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ColorDisplayNodeRenderer
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
   commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -46,6 +76,40 @@ references:
   name: GroupCollapseEventArgs
   nameWithType: GroupCollapseEventArgs
   fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.GroupCollapseEventArgs
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html
+  name: HeaderedNodeRendererBase
+  nameWithType: HeaderedNodeRendererBase
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html
+  name: StyledHeaderedNodeRendererBase
+  nameWithType: StyledHeaderedNodeRendererBase
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase.html
+  name: WhiteHeaderedNodeRendererBase
+  nameWithType: WhiteHeaderedNodeRendererBase
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.WhiteHeaderedNodeRendererBase
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer.html
+  name: IDataNodeRenderer
+  nameWithType: IDataNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.html
+  name: DataNodeRendererBase
+  nameWithType: DataNodeRendererBase
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
   commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer
   href: FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.html
@@ -86,6 +150,72 @@ references:
   name: InputNodeRenderer
   nameWithType: InputNodeRenderer
   fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.InputNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer.html
+  name: SliderNodeRenderer
+  nameWithType: SliderNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.SliderNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer.html
+  name: NumberInputNodeRenderer
+  nameWithType: NumberInputNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer.html
+  name: TextInputNodeRenderer
+  nameWithType: TextInputNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.TextInputNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer.html
+  name: ToggleNodeRenderer
+  nameWithType: ToggleNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ToggleNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer.html
+  name: DropdownNodeRenderer
+  nameWithType: DropdownNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData.html
+  name: DropdownData
+  nameWithType: DropdownData
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DropdownData
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer.html
+  name: DisplayNodeRenderer
+  nameWithType: DisplayNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DisplayNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer.html
+  name: RadioButtonNodeRenderer
+  nameWithType: RadioButtonNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData.html
+  name: RadioButtonData
+  nameWithType: RadioButtonData
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonData
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer.html
+  name: ZoomSliderNodeRenderer
+  nameWithType: ZoomSliderNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ZoomSliderNodeRenderer
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer.html
+  name: OutputDisplayNodeRenderer
+  nameWithType: OutputDisplayNodeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.OutputDisplayNodeRenderer
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
   commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers

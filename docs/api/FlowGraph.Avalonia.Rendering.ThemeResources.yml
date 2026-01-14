@@ -39,10 +39,14 @@ items:
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortBorder
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortHover
+  - FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortInvalidConnection
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection
   - FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxFill
   - FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke
+  - FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(System.String)
+  - FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource``1(System.String)
   langs:
   - csharp
   - vb
@@ -53,7 +57,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ThemeResources
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -112,7 +116,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -144,7 +148,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetResource
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -170,6 +174,44 @@ items:
   nameWithType.vb: ThemeResources.GetResource(Of T)(String, T)
   fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.GetResource(Of T)(String, T)
   name.vb: GetResource(Of T)(String, T)
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource``1(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource``1(System.String)
+  id: TryGetResource``1(System.String)
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: TryGetResource<T>(string)
+  nameWithType: ThemeResources.TryGetResource<T>(string)
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource<T>(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TryGetResource
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Tries to get a resource, returning null if not found.
+  example: []
+  syntax:
+    content: 'public T? TryGetResource<T>(string key) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Function TryGetResource(Of T As Class)(key As String) As T
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource*
+  nameWithType.vb: ThemeResources.TryGetResource(Of T)(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource(Of T)(String)
+  name.vb: TryGetResource(Of T)(String)
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush(System.String,System.String)
   commentId: M:FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush(System.String,System.String)
   id: GetBrush(System.String,System.String)
@@ -184,11 +226,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBrush
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 61
+    startLine: 73
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -208,6 +250,42 @@ items:
   nameWithType.vb: ThemeResources.GetBrush(String, String)
   fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush(String, String)
   name.vb: GetBrush(String, String)
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(System.String)
+  id: TryGetBrush(System.String)
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: TryGetBrush(string)
+  nameWithType: ThemeResources.TryGetBrush(string)
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TryGetBrush
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 81
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Tries to get a brush resource, returning null if not found.
+  example: []
+  syntax:
+    content: public IBrush? TryGetBrush(string key)
+    parameters:
+    - id: key
+      type: System.String
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public Function TryGetBrush(key As String) As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush*
+  nameWithType.vb: ThemeResources.TryGetBrush(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(String)
+  name.vb: TryGetBrush(String)
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.Background
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.Background
   id: Background
@@ -222,11 +300,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Background
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 68
+    startLine: 88
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -251,11 +329,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GridColor
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 71
+    startLine: 91
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -280,11 +358,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 78
+    startLine: 98
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -309,11 +387,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 81
+    startLine: 101
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -338,11 +416,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeSelectedBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 83
+    startLine: 103
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -367,11 +445,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 85
+    startLine: 105
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -396,11 +474,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 92
+    startLine: 112
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -425,11 +503,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 95
+    startLine: 115
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -454,11 +532,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 97
+    startLine: 117
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -483,11 +561,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeIcon
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 100
+    startLine: 120
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -512,11 +590,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 106
+    startLine: 126
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -541,11 +619,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 109
+    startLine: 129
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -570,11 +648,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 111
+    startLine: 131
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -599,11 +677,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeIcon
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 114
+    startLine: 134
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -628,11 +706,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 120
+    startLine: 140
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -657,11 +735,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeSelectedStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 122
+    startLine: 142
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -686,11 +764,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 128
+    startLine: 148
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -715,11 +793,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 130
+    startLine: 150
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -744,11 +822,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortHover
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 133
+    startLine: 153
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -759,6 +837,68 @@ items:
       type: Avalonia.Media.IBrush
     content.vb: Public ReadOnly Property PortHover As IBrush
   overload: FlowGraph.Avalonia.Rendering.ThemeResources.PortHover*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+  id: PortHoverBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: PortHoverBackground
+  nameWithType: ThemeResources.PortHoverBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PortHoverBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 158
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Background color for hovered ports. Falls back to PortHover if not set.
+  example: []
+  syntax:
+    content: public IBrush? PortHoverBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property PortHoverBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
+  id: PortHoverBorder
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: PortHoverBorder
+  nameWithType: ThemeResources.PortHoverBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PortHoverBorder
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 163
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Border color for hovered ports. Falls back to PortHover if not set.
+  example: []
+  syntax:
+    content: public IBrush? PortHoverBorder { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property PortHoverBorder As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder*
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection
   id: PortValidConnection
@@ -773,11 +913,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortValidConnection
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 135
+    startLine: 165
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -802,11 +942,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortInvalidConnection
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 137
+    startLine: 167
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -831,11 +971,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 143
+    startLine: 173
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -860,11 +1000,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 146
+    startLine: 176
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -889,11 +1029,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupLabelText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 149
+    startLine: 179
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -918,11 +1058,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 152
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -947,11 +1087,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 156
+    startLine: 186
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -976,11 +1116,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderHover
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 157
+    startLine: 187
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1005,11 +1145,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBodyBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 158
+    startLine: 188
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1034,11 +1174,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionBoxFill
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 164
+    startLine: 194
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1063,11 +1203,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionBoxStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 166
+    startLine: 196
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1092,11 +1232,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 172
+    startLine: 202
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1121,11 +1261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapViewportFill
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 175
+    startLine: 205
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1150,11 +1290,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapViewportStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 177
+    startLine: 207
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1179,11 +1319,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsLightTheme
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 187
+    startLine: 217
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1213,11 +1353,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InvalidateThemeCache
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 204
+    startLine: 234
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1547,6 +1687,12 @@ references:
   name: T
   nameWithType: T
   fullName: T
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_TryGetResource__1_System_String_
+  name: TryGetResource
+  nameWithType: ThemeResources.TryGetResource
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_GetBrush_System_String_System_String_
@@ -1582,6 +1728,12 @@ references:
   - uid: Avalonia.Media
     name: Media
     isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_TryGetBrush_System_String_
+  name: TryGetBrush
+  nameWithType: ThemeResources.TryGetBrush
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.Background*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.Background
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_Background
@@ -1696,6 +1848,18 @@ references:
   name: PortHover
   nameWithType: ThemeResources.PortHover
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.PortHover
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_PortHoverBackground
+  name: PortHoverBackground
+  nameWithType: ThemeResources.PortHoverBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_PortHoverBorder
+  name: PortHoverBorder
+  nameWithType: ThemeResources.PortHoverBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.PortHoverBorder
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_PortValidConnection

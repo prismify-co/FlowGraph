@@ -281,6 +281,11 @@ public class ReconnectingState : InputStateBase
             return null;
 
         var snapDistance = settings.ConnectionSnapDistance;
+        var canvasPoint = context.ScreenToCanvas(screenPoint);
+        var zoom = context.Viewport.Zoom;
+        
+        // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
+        var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
 
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
@@ -293,6 +298,18 @@ public class ReconnectingState : InputStateBase
 
             // Skip the fixed node (can't connect to same node)
             if (node.Id == _fixedNode.Id)
+                continue;
+
+            // OPTIMIZATION: Early rejection based on canvas distance
+            var nodeWidth = node.Width ?? settings.NodeWidth;
+            var nodeHeight = node.Height ?? settings.NodeHeight;
+            var nodeCenterX = node.Position.X + nodeWidth / 2;
+            var nodeCenterY = node.Position.Y + nodeHeight / 2;
+            var canvasDx = nodeCenterX - canvasPoint.X;
+            var canvasDy = nodeCenterY - canvasPoint.Y;
+            var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
+            
+            if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
                 continue;
 
             // Look at the correct port type based on which end we're dragging

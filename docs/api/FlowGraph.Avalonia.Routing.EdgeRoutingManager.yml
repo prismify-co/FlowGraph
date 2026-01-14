@@ -5,6 +5,7 @@ items:
   id: EdgeRoutingManager
   parent: FlowGraph.Avalonia.Routing
   children:
+  - FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(FlowGraph.Avalonia.IFlowCanvasContext,System.Action)
   - FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
   - FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearAllRoutes(System.Boolean)
   - FlowGraph.Avalonia.Routing.EdgeRoutingManager.ClearRoutesForNodes(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
@@ -31,7 +32,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeRoutingManager
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
@@ -68,11 +69,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgesRouted
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 18
+    startLine: 25
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -83,6 +84,44 @@ items:
     return:
       type: System.EventHandler
     content.vb: Public Event EdgesRouted As EventHandler
+- uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(FlowGraph.Avalonia.IFlowCanvasContext,System.Action)
+  commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(FlowGraph.Avalonia.IFlowCanvasContext,System.Action)
+  id: '#ctor(FlowGraph.Avalonia.IFlowCanvasContext,System.Action)'
+  parent: FlowGraph.Avalonia.Routing.EdgeRoutingManager
+  langs:
+  - csharp
+  - vb
+  name: EdgeRoutingManager(IFlowCanvasContext, Action)
+  nameWithType: EdgeRoutingManager.EdgeRoutingManager(IFlowCanvasContext, Action)
+  fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgeRoutingManager(FlowGraph.Avalonia.IFlowCanvasContext, System.Action)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Routing
+  summary: Creates a new edge routing manager.
+  example: []
+  syntax:
+    content: public EdgeRoutingManager(IFlowCanvasContext context, Action refreshEdges)
+    parameters:
+    - id: context
+      type: FlowGraph.Avalonia.IFlowCanvasContext
+      description: The context providing access to the graph and settings.
+    - id: refreshEdges
+      type: System.Action
+      description: Action to call when edges need re-rendering.
+    content.vb: Public Sub New(context As IFlowCanvasContext, refreshEdges As Action)
+  overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor*
+  nameWithType.vb: EdgeRoutingManager.New(IFlowCanvasContext, Action)
+  fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.New(FlowGraph.Avalonia.IFlowCanvasContext, System.Action)
+  name.vb: New(IFlowCanvasContext, Action)
 - uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
   commentId: M:FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)
   id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.FlowCanvasSettings},System.Action)'
@@ -97,16 +136,19 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 20
+    startLine: 42
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
   syntax:
-    content: public EdgeRoutingManager(Func<Graph?> getGraph, Func<FlowCanvasSettings> getSettings, Action refreshEdges)
+    content: >-
+      [Obsolete("Use the constructor that accepts IFlowCanvasContext instead.")]
+
+      public EdgeRoutingManager(Func<Graph?> getGraph, Func<FlowCanvasSettings> getSettings, Action refreshEdges)
     parameters:
     - id: getGraph
       type: System.Func{FlowGraph.Core.Graph}
@@ -114,8 +156,17 @@ items:
       type: System.Func{FlowGraph.Avalonia.FlowCanvasSettings}
     - id: refreshEdges
       type: System.Action
-    content.vb: Public Sub New(getGraph As Func(Of Graph), getSettings As Func(Of FlowCanvasSettings), refreshEdges As Action)
+    content.vb: >-
+      <Obsolete("Use the constructor that accepts IFlowCanvasContext instead.")>
+
+      Public Sub New(getGraph As Func(Of Graph), getSettings As Func(Of FlowCanvasSettings), refreshEdges As Action)
   overload: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use the constructor that accepts IFlowCanvasContext instead.
   nameWithType.vb: EdgeRoutingManager.New(Func(Of Graph), Func(Of FlowCanvasSettings), Action)
   fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of FlowGraph.Avalonia.FlowCanvasSettings), System.Action)
   name.vb: New(Func(Of Graph), Func(Of FlowCanvasSettings), Action)
@@ -133,11 +184,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEnabled
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 34
+    startLine: 54
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -164,11 +215,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteOnDrag
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 39
+    startLine: 59
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -195,11 +246,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteNewEdges
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 44
+    startLine: 64
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -226,11 +277,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RoutingService
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 49
+    startLine: 69
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -257,11 +308,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteAllEdges
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 82
+    startLine: 102
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -292,15 +343,18 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdgesForNodes
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 104
+    startLine: 129
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
-  summary: Routes edges connected to specific nodes.
+  summary: >-
+    Routes edges connected to specific nodes.
+
+    OPTIMIZED: Uses GetEdgesForNodes index for O(k) lookup instead of O(n) iteration.
   example: []
   syntax:
     content: public void RouteEdgesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
@@ -330,11 +384,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdge
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 134
+    startLine: 157
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -368,11 +422,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdgeWithAlgorithm
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 157
+    startLine: 180
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -409,11 +463,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteEdgesForNode
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 187
+    startLine: 210
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -447,11 +501,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RouteNewEdge
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 198
+    startLine: 221
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -488,11 +542,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ClearAllRoutes
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 231
+    startLine: 254
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -523,15 +577,18 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ClearRoutesForNodes
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 253
+    startLine: 277
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
-  summary: Clears waypoints from edges connected to specific nodes.
+  summary: >-
+    Clears waypoints from edges connected to specific nodes.
+
+    OPTIMIZED: Uses GetEdgesForNodes index for O(k) lookup instead of O(n) iteration.
   example: []
   syntax:
     content: public void ClearRoutesForNodes(IEnumerable<string> nodeIds, bool forceRefresh = true)
@@ -561,15 +618,18 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnNodesDragging
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 278
+    startLine: 305
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
-  summary: Called when nodes are being dragged. Re-routes edges if configured to do so.
+  summary: >-
+    Called when nodes are being dragged. Re-routes edges if configured to do so.
+
+    OPTIMIZED: Uses throttling and edge caching to avoid O(n) iteration on every mouse move.
   example: []
   syntax:
     content: public void OnNodesDragging(IEnumerable<string> draggedNodeIds)
@@ -596,11 +656,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnNodesDragCompleted
     path: ../FlowGraph.Avalonia/Routing/EdgeRoutingManager.cs
-    startLine: 297
+    startLine: 378
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Routing
@@ -895,13 +955,50 @@ references:
   fullName: System.EventHandler
 - uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.#ctor
-  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_FlowGraph_Avalonia_FlowCanvasSettings__System_Action_
+  href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager__ctor_FlowGraph_Avalonia_IFlowCanvasContext_System_Action_
   name: EdgeRoutingManager
   nameWithType: EdgeRoutingManager.EdgeRoutingManager
   fullName: FlowGraph.Avalonia.Routing.EdgeRoutingManager.EdgeRoutingManager
   nameWithType.vb: EdgeRoutingManager.New
   fullName.vb: FlowGraph.Avalonia.Routing.EdgeRoutingManager.New
   name.vb: New
+- uid: FlowGraph.Avalonia.IFlowCanvasContext
+  commentId: T:FlowGraph.Avalonia.IFlowCanvasContext
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.IFlowCanvasContext.html
+  name: IFlowCanvasContext
+  nameWithType: IFlowCanvasContext
+  fullName: FlowGraph.Avalonia.IFlowCanvasContext
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
 - uid: System.Func{FlowGraph.Core.Graph}
   commentId: T:System.Func{FlowGraph.Core.Graph}
   parent: System
@@ -968,14 +1065,6 @@ references:
     name: FlowCanvasSettings
     href: FlowGraph.Avalonia.FlowCanvasSettings.html
   - name: )
-- uid: System.Action
-  commentId: T:System.Action
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action
-  name: Action
-  nameWithType: Action
-  fullName: System.Action
 - uid: System.Func`1
   commentId: T:System.Func`1
   isExternal: true
@@ -1236,28 +1325,6 @@ references:
   name: RouterAlgorithm
   nameWithType: RouterAlgorithm
   fullName: FlowGraph.Avalonia.RouterAlgorithm
-- uid: FlowGraph.Avalonia
-  commentId: N:FlowGraph.Avalonia
-  href: FlowGraph.html
-  name: FlowGraph.Avalonia
-  nameWithType: FlowGraph.Avalonia
-  fullName: FlowGraph.Avalonia
-  spec.csharp:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Avalonia
-    name: Avalonia
-    href: FlowGraph.Avalonia.html
-  spec.vb:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Avalonia
-    name: Avalonia
-    href: FlowGraph.Avalonia.html
 - uid: FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode*
   commentId: Overload:FlowGraph.Avalonia.Routing.EdgeRoutingManager.RouteEdgesForNode
   href: FlowGraph.Avalonia.Routing.EdgeRoutingManager.html#FlowGraph_Avalonia_Routing_EdgeRoutingManager_RouteEdgesForNode_System_String_System_Boolean_

@@ -1,4 +1,5 @@
 using Avalonia;
+using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -43,6 +44,7 @@ namespace FlowGraph.Avalonia.Rendering;
 public class GraphRenderModel
 {
     private FlowCanvasSettings _settings;
+    private NodeRendererRegistry? _nodeRenderers;
 
     // Constants that must match across all renderers
     public const double GroupHeaderHeight = 28;
@@ -57,15 +59,25 @@ public class GraphRenderModel
     public const double ResizeHandleSize = 8;
     public const double PortHitPadding = 4;
 
-    public GraphRenderModel(FlowCanvasSettings settings)
+    public GraphRenderModel(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers = null)
     {
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        _nodeRenderers = nodeRenderers;
     }
 
     /// <summary>
     /// Gets the settings used by this model.
     /// </summary>
     public FlowCanvasSettings Settings => _settings;
+
+    /// <summary>
+    /// Gets or sets the node renderer registry for custom node type dimensions.
+    /// </summary>
+    public NodeRendererRegistry? NodeRenderers
+    {
+        get => _nodeRenderers;
+        set => _nodeRenderers = value;
+    }
 
     /// <summary>
     /// Updates the settings used by this model.
@@ -90,22 +102,52 @@ public class GraphRenderModel
 
     /// <summary>
     /// Gets the width of a node in canvas coordinates.
+    /// Considers custom renderer dimensions when available.
     /// </summary>
     public double GetNodeWidth(Node node)
     {
         if (node.IsGroup)
             return node.Width ?? MinGroupWidth;
-        return node.Width ?? _settings.NodeWidth;
+
+        // First check if node has explicit width set
+        if (node.Width.HasValue)
+            return node.Width.Value;
+
+        // Then check if custom renderer provides a width
+        if (_nodeRenderers != null && !string.IsNullOrEmpty(node.Type))
+        {
+            var renderer = _nodeRenderers.GetRenderer(node.Type);
+            var rendererWidth = renderer.GetWidth(node, _settings);
+            if (rendererWidth.HasValue)
+                return rendererWidth.Value;
+        }
+
+        return _settings.NodeWidth;
     }
 
     /// <summary>
     /// Gets the height of a node in canvas coordinates.
+    /// Considers custom renderer dimensions when available.
     /// </summary>
     public double GetNodeHeight(Node node)
     {
         if (node.IsGroup)
             return node.IsCollapsed ? GroupHeaderHeight : (node.Height ?? MinGroupHeight);
-        return node.Height ?? _settings.NodeHeight;
+
+        // First check if node has explicit height set
+        if (node.Height.HasValue)
+            return node.Height.Value;
+
+        // Then check if custom renderer provides a height
+        if (_nodeRenderers != null && !string.IsNullOrEmpty(node.Type))
+        {
+            var renderer = _nodeRenderers.GetRenderer(node.Type);
+            var rendererHeight = renderer.GetHeight(node, _settings);
+            if (rendererHeight.HasValue)
+                return rendererHeight.Value;
+        }
+
+        return _settings.NodeHeight;
     }
 
     /// <summary>
@@ -219,6 +261,15 @@ public class GraphRenderModel
         if (sourceNode == null || targetNode == null)
             return (default, default);
 
+        return GetEdgeEndpoints(edge, sourceNode, targetNode);
+    }
+
+    /// <summary>
+    /// Calculates the start and end points for an edge in canvas coordinates.
+    /// OPTIMIZED: Use this overload when you already have the source/target nodes looked up.
+    /// </summary>
+    public (AvaloniaPoint start, AvaloniaPoint end) GetEdgeEndpoints(Edge edge, Node sourceNode, Node targetNode)
+    {
         var sourcePortIndex = sourceNode.Outputs.FindIndex(p => p.Id == edge.SourcePort);
         var targetPortIndex = targetNode.Inputs.FindIndex(p => p.Id == edge.TargetPort);
         if (sourcePortIndex < 0) sourcePortIndex = 0;

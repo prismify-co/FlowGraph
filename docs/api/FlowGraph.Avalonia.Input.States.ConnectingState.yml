@@ -5,7 +5,7 @@ items:
   id: ConnectingState
   parent: FlowGraph.Avalonia.Input.States
   children:
-  - FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Shapes.Ellipse,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Control,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Input.States.ConnectingState.CreateTempLine(Avalonia.Controls.Canvas)
   - FlowGraph.Avalonia.Input.States.ConnectingState.Enter(FlowGraph.Avalonia.Input.InputStateContext)
   - FlowGraph.Avalonia.Input.States.ConnectingState.Exit(FlowGraph.Avalonia.Input.InputStateContext)
@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectingState
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -72,7 +72,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Name
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsModal
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -122,21 +122,21 @@ items:
     content.vb: Public Overrides ReadOnly Property IsModal As Boolean
   overridden: FlowGraph.Avalonia.Input.InputStateBase.IsModal
   overload: FlowGraph.Avalonia.Input.States.ConnectingState.IsModal*
-- uid: FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Shapes.Ellipse,FlowGraph.Avalonia.Rendering.ThemeResources)
-  commentId: M:FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Shapes.Ellipse,FlowGraph.Avalonia.Rendering.ThemeResources)
-  id: '#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Shapes.Ellipse,FlowGraph.Avalonia.Rendering.ThemeResources)'
+- uid: FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Control,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Input.States.ConnectingState.#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Control,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: '#ctor(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean,Avalonia.Point,Avalonia.Controls.Control,FlowGraph.Avalonia.Rendering.ThemeResources)'
   parent: FlowGraph.Avalonia.Input.States.ConnectingState
   langs:
   - csharp
   - vb
-  name: ConnectingState(Node, Port, bool, Point, Ellipse?, ThemeResources)
-  nameWithType: ConnectingState.ConnectingState(Node, Port, bool, Point, Ellipse?, ThemeResources)
-  fullName: FlowGraph.Avalonia.Input.States.ConnectingState.ConnectingState(FlowGraph.Core.Node, FlowGraph.Core.Port, bool, Avalonia.Point, Avalonia.Controls.Shapes.Ellipse?, FlowGraph.Avalonia.Rendering.ThemeResources)
+  name: ConnectingState(Node, Port, bool, Point, Control?, ThemeResources)
+  nameWithType: ConnectingState.ConnectingState(Node, Port, bool, Point, Control?, ThemeResources)
+  fullName: FlowGraph.Avalonia.Input.States.ConnectingState.ConnectingState(FlowGraph.Core.Node, FlowGraph.Core.Port, bool, Avalonia.Point, Avalonia.Controls.Control?, FlowGraph.Avalonia.Rendering.ThemeResources)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -145,7 +145,7 @@ items:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input.States
   syntax:
-    content: public ConnectingState(Node sourceNode, Port sourcePort, bool fromOutput, Point startPosition, Ellipse? portVisual, ThemeResources theme)
+    content: public ConnectingState(Node sourceNode, Port sourcePort, bool fromOutput, Point startPosition, Control? portVisual, ThemeResources theme)
     parameters:
     - id: sourceNode
       type: FlowGraph.Core.Node
@@ -156,14 +156,14 @@ items:
     - id: startPosition
       type: Avalonia.Point
     - id: portVisual
-      type: Avalonia.Controls.Shapes.Ellipse
+      type: Avalonia.Controls.Control
     - id: theme
       type: FlowGraph.Avalonia.Rendering.ThemeResources
-    content.vb: Public Sub New(sourceNode As Node, sourcePort As Port, fromOutput As Boolean, startPosition As Point, portVisual As Ellipse, theme As ThemeResources)
+    content.vb: Public Sub New(sourceNode As Node, sourcePort As Port, fromOutput As Boolean, startPosition As Point, portVisual As Control, theme As ThemeResources)
   overload: FlowGraph.Avalonia.Input.States.ConnectingState.#ctor*
-  nameWithType.vb: ConnectingState.New(Node, Port, Boolean, Point, Ellipse, ThemeResources)
-  fullName.vb: FlowGraph.Avalonia.Input.States.ConnectingState.New(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean, Avalonia.Point, Avalonia.Controls.Shapes.Ellipse, FlowGraph.Avalonia.Rendering.ThemeResources)
-  name.vb: New(Node, Port, Boolean, Point, Ellipse, ThemeResources)
+  nameWithType.vb: ConnectingState.New(Node, Port, Boolean, Point, Control, ThemeResources)
+  fullName.vb: FlowGraph.Avalonia.Input.States.ConnectingState.New(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean, Avalonia.Point, Avalonia.Controls.Control, FlowGraph.Avalonia.Rendering.ThemeResources)
+  name.vb: New(Node, Port, Boolean, Point, Control, ThemeResources)
 - uid: FlowGraph.Avalonia.Input.States.ConnectingState.CreateTempLine(Avalonia.Controls.Canvas)
   commentId: M:FlowGraph.Avalonia.Input.States.ConnectingState.CreateTempLine(Avalonia.Controls.Canvas)
   id: CreateTempLine(Avalonia.Controls.Canvas)
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateTempLine
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -207,7 +207,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Enter
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -239,7 +239,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Exit
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -271,7 +271,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandlePointerMoved
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -307,7 +307,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandlePointerReleased
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -343,7 +343,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ConnectingState.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandleKeyDown
     path: ../FlowGraph.Avalonia/Input/States/ConnectingState.cs
@@ -1028,7 +1028,7 @@ references:
   name.vb: Boolean
 - uid: FlowGraph.Avalonia.Input.States.ConnectingState.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Input.States.ConnectingState.#ctor
-  href: FlowGraph.Avalonia.Input.States.ConnectingState.html#FlowGraph_Avalonia_Input_States_ConnectingState__ctor_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_Avalonia_Point_Avalonia_Controls_Shapes_Ellipse_FlowGraph_Avalonia_Rendering_ThemeResources_
+  href: FlowGraph.Avalonia.Input.States.ConnectingState.html#FlowGraph_Avalonia_Input_States_ConnectingState__ctor_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_Avalonia_Point_Avalonia_Controls_Control_FlowGraph_Avalonia_Rendering_ThemeResources_
   name: ConnectingState
   nameWithType: ConnectingState.ConnectingState
   fullName: FlowGraph.Avalonia.Input.States.ConnectingState.ConnectingState
@@ -1056,13 +1056,13 @@ references:
   name: Point
   nameWithType: Point
   fullName: Avalonia.Point
-- uid: Avalonia.Controls.Shapes.Ellipse
-  commentId: T:Avalonia.Controls.Shapes.Ellipse
-  parent: Avalonia.Controls.Shapes
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
   isExternal: true
-  name: Ellipse
-  nameWithType: Ellipse
-  fullName: Avalonia.Controls.Shapes.Ellipse
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources
   commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
   parent: FlowGraph.Avalonia.Rendering
@@ -1098,12 +1098,12 @@ references:
   name: Avalonia
   nameWithType: Avalonia
   fullName: Avalonia
-- uid: Avalonia.Controls.Shapes
-  commentId: N:Avalonia.Controls.Shapes
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
   isExternal: true
-  name: Avalonia.Controls.Shapes
-  nameWithType: Avalonia.Controls.Shapes
-  fullName: Avalonia.Controls.Shapes
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
   spec.csharp:
   - uid: Avalonia
     name: Avalonia
@@ -1112,10 +1112,6 @@ references:
   - uid: Avalonia.Controls
     name: Controls
     isExternal: true
-  - name: .
-  - uid: Avalonia.Controls.Shapes
-    name: Shapes
-    isExternal: true
   spec.vb:
   - uid: Avalonia
     name: Avalonia
@@ -1123,10 +1119,6 @@ references:
   - name: .
   - uid: Avalonia.Controls
     name: Controls
-    isExternal: true
-  - name: .
-  - uid: Avalonia.Controls.Shapes
-    name: Shapes
     isExternal: true
 - uid: FlowGraph.Avalonia.Rendering
   commentId: N:FlowGraph.Avalonia.Rendering
@@ -1171,28 +1163,6 @@ references:
   name: Canvas
   nameWithType: Canvas
   fullName: Avalonia.Controls.Canvas
-- uid: Avalonia.Controls
-  commentId: N:Avalonia.Controls
-  isExternal: true
-  name: Avalonia.Controls
-  nameWithType: Avalonia.Controls
-  fullName: Avalonia.Controls
-  spec.csharp:
-  - uid: Avalonia
-    name: Avalonia
-    isExternal: true
-  - name: .
-  - uid: Avalonia.Controls
-    name: Controls
-    isExternal: true
-  spec.vb:
-  - uid: Avalonia
-    name: Avalonia
-    isExternal: true
-  - name: .
-  - uid: Avalonia.Controls
-    name: Controls
-    isExternal: true
 - uid: FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
   commentId: M:FlowGraph.Avalonia.Input.InputStateBase.Enter(FlowGraph.Avalonia.Input.InputStateContext)
   parent: FlowGraph.Avalonia.Input.InputStateBase

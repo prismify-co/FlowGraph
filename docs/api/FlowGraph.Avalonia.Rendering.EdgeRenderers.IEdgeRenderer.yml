@@ -1,0 +1,320 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  id: IEdgeRenderer
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  - FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  - FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection(FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult,FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  langs:
+  - csharp
+  - vb
+  name: IEdgeRenderer
+  nameWithType: IEdgeRenderer
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IEdgeRenderer
+    path: ../FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  summary: >-
+    Interface for custom edge renderers.
+
+    Implement this interface to create custom visual representations for edge types.
+  remarks: >-
+    <p>
+
+    Edge renderers control the visual appearance of connections between nodes.
+
+    Unlike the default edge rendering (bezier curves), custom renderers can create
+
+    any visual representation: orthogonal lines, curved paths, animated connections,
+
+    or complex visuals like sequence diagram lifelines.
+
+    </p>
+
+    <p>
+
+    Edge renderers are registered by edge type string (e.g., "sequence-message", 
+
+    "swimlane-flow") using <xref href="FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Register a custom edge renderer
+
+    canvas.EdgeRenderers.Register("sequence-message", new SequenceMessageEdgeRenderer());
+
+
+    // Create an edge with custom type
+
+    var edge = new Edge(...) { Type = EdgeType.Custom };
+
+    edge.Definition = edge.Definition with { CustomType = "sequence-message" };</code></pre>
+  syntax:
+    content: public interface IEdgeRenderer
+    content.vb: Public Interface IEdgeRenderer
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  id: Render(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  langs:
+  - csharp
+  - vb
+  name: Render(Edge, EdgeRenderContext)
+  nameWithType: IEdgeRenderer.Render(Edge, EdgeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render(FlowGraph.Core.Edge, FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Render
+    path: ../FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  summary: Creates the visual representation for an edge.
+  example: []
+  syntax:
+    content: EdgeRenderResult Render(Edge edge, EdgeRenderContext context)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to render.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+      description: The rendering context with coordinates, theme, and scale.
+    return:
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult
+      description: The rendered edge elements (path, labels, markers).
+    content.vb: Function Render(edge As Edge, context As EdgeRenderContext) As EdgeRenderResult
+  overload: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render*
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection(FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult,FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection(FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult,FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  id: UpdateSelection(FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult,FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateSelection(EdgeRenderResult, Edge, EdgeRenderContext)
+  nameWithType: IEdgeRenderer.UpdateSelection(EdgeRenderResult, Edge, EdgeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection(FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult, FlowGraph.Core.Edge, FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSelection
+    path: ../FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  summary: Updates the visual state when selection changes.
+  example: []
+  syntax:
+    content: void UpdateSelection(EdgeRenderResult result, Edge edge, EdgeRenderContext context)
+    parameters:
+    - id: result
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult
+      description: The render result containing visual elements.
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge data.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+      description: The rendering context.
+    content.vb: Sub UpdateSelection(result As EdgeRenderResult, edge As Edge, context As EdgeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection*
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  id: GetHitTestGeometry(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetHitTestGeometry(Edge, EdgeRenderContext)
+  nameWithType: IEdgeRenderer.GetHitTestGeometry(Edge, EdgeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry(FlowGraph.Core.Edge, FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetHitTestGeometry
+    path: ../FlowGraph.Avalonia/Rendering/EdgeRenderers/IEdgeRenderer.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  summary: >-
+    Gets the hit test geometry for click detection.
+
+    Return a wider path than the visible path for easier clicking.
+  example: []
+  syntax:
+    content: Geometry? GetHitTestGeometry(Edge edge, EdgeRenderContext context)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to get hit area for.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+      description: The rendering context.
+    return:
+      type: Avalonia.Media.Geometry
+      description: A geometry for hit testing, or null to use default.
+    content.vb: Function GetHitTestGeometry(edge As Edge, context As EdgeRenderContext) As Geometry
+  overload: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry*
+references:
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry.html
+  name: EdgeRendererRegistry
+  nameWithType: EdgeRendererRegistry
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+    name: EdgeRenderers
+    href: FlowGraph.Avalonia.Rendering.EdgeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.EdgeRenderers
+    name: EdgeRenderers
+    href: FlowGraph.Avalonia.Rendering.EdgeRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.html#FlowGraph_Avalonia_Rendering_EdgeRenderers_IEdgeRenderer_Render_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRenderContext_
+  name: Render
+  nameWithType: IEdgeRenderer.Render
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.Render
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext.html
+  name: EdgeRenderContext
+  nameWithType: EdgeRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderContext
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult
+  commentId: T:FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult
+  parent: FlowGraph.Avalonia.Rendering.EdgeRenderers
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult.html
+  name: EdgeRenderResult
+  nameWithType: EdgeRenderResult
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRenderResult
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.html#FlowGraph_Avalonia_Rendering_EdgeRenderers_IEdgeRenderer_UpdateSelection_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRenderResult_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRenderContext_
+  name: UpdateSelection
+  nameWithType: IEdgeRenderer.UpdateSelection
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.UpdateSelection
+- uid: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry
+  href: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.html#FlowGraph_Avalonia_Rendering_EdgeRenderers_IEdgeRenderer_GetHitTestGeometry_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRenderContext_
+  name: GetHitTestGeometry
+  nameWithType: IEdgeRenderer.GetHitTestGeometry
+  fullName: FlowGraph.Avalonia.Rendering.EdgeRenderers.IEdgeRenderer.GetHitTestGeometry
+- uid: Avalonia.Media.Geometry
+  commentId: T:Avalonia.Media.Geometry
+  parent: Avalonia.Media
+  isExternal: true
+  name: Geometry
+  nameWithType: Geometry
+  fullName: Avalonia.Media.Geometry
+- uid: Avalonia.Media
+  commentId: N:Avalonia.Media
+  isExternal: true
+  name: Avalonia.Media
+  nameWithType: Avalonia.Media
+  fullName: Avalonia.Media
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Media
+    name: Media
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Media
+    name: Media
+    isExternal: true

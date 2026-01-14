@@ -1,0 +1,1061 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Elements.ElementHitInfo
+  commentId: T:FlowGraph.Core.Elements.ElementHitInfo
+  id: ElementHitInfo
+  parent: FlowGraph.Core.Elements
+  children:
+  - FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  - FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Node,System.String,System.Boolean)
+  - FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+  - FlowGraph.Core.Elements.ElementHitInfo.AsNode
+  - FlowGraph.Core.Elements.ElementHitInfo.AsShape
+  - FlowGraph.Core.Elements.ElementHitInfo.Element
+  - FlowGraph.Core.Elements.ElementHitInfo.FromElement(FlowGraph.Core.Elements.ICanvasElement)
+  - FlowGraph.Core.Elements.ElementHitInfo.FromHandle(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  - FlowGraph.Core.Elements.ElementHitInfo.FromPort(FlowGraph.Core.Node,System.String,System.Boolean)
+  - FlowGraph.Core.Elements.ElementHitInfo.Handle
+  - FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+  - FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+  - FlowGraph.Core.Elements.ElementHitInfo.IsPort
+  - FlowGraph.Core.Elements.ElementHitInfo.PortId
+  - FlowGraph.Core.Elements.ElementHitInfo.ToString
+  langs:
+  - csharp
+  - vb
+  name: ElementHitInfo
+  nameWithType: ElementHitInfo
+  fullName: FlowGraph.Core.Elements.ElementHitInfo
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ElementHitInfo
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 20
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Unified hit test result for all canvas elements.
+
+    Used for standardized tagging of controls and hit test payloads across both
+
+    visual-tree and direct-rendering modes.
+  remarks: >-
+    <p>
+
+    This replaces disparate tagging approaches:
+
+    - Control.Tag = Node
+
+    - Control.Tag = Edge
+
+    - Control.Tag = (Node, Port, bool)
+
+    </p>
+
+    <p>
+
+    With a single unified payload that supports all element types and handles.
+
+    </p>
+  example: []
+  syntax:
+    content: public sealed class ElementHitInfo
+    content.vb: Public NotInheritable Class ElementHitInfo
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement)
+  id: '#ctor(FlowGraph.Core.Elements.ICanvasElement)'
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: ElementHitInfo(ICanvasElement)
+  nameWithType: ElementHitInfo.ElementHitInfo(ICanvasElement)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ElementHitInfo(FlowGraph.Core.Elements.ICanvasElement)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 25
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates a hit info for a simple element (node, edge, shape).
+  example: []
+  syntax:
+    content: public ElementHitInfo(ICanvasElement element)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+    content.vb: Public Sub New(element As ICanvasElement)
+  overload: FlowGraph.Core.Elements.ElementHitInfo.#ctor*
+  nameWithType.vb: ElementHitInfo.New(ICanvasElement)
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.New(FlowGraph.Core.Elements.ICanvasElement)
+  name.vb: New(ICanvasElement)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  id: '#ctor(FlowGraph.Core.Elements.ICanvasElement,System.String)'
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: ElementHitInfo(ICanvasElement, string)
+  nameWithType: ElementHitInfo.ElementHitInfo(ICanvasElement, string)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ElementHitInfo(FlowGraph.Core.Elements.ICanvasElement, string)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates a hit info for an element with a handle (e.g., resize handle).
+  example: []
+  syntax:
+    content: public ElementHitInfo(ICanvasElement element, string handle)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+    - id: handle
+      type: System.String
+    content.vb: Public Sub New(element As ICanvasElement, handle As String)
+  overload: FlowGraph.Core.Elements.ElementHitInfo.#ctor*
+  nameWithType.vb: ElementHitInfo.New(ICanvasElement, String)
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.New(FlowGraph.Core.Elements.ICanvasElement, String)
+  name.vb: New(ICanvasElement, String)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Node,System.String,System.Boolean)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.#ctor(FlowGraph.Core.Node,System.String,System.Boolean)
+  id: '#ctor(FlowGraph.Core.Node,System.String,System.Boolean)'
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: ElementHitInfo(Node, string, bool)
+  nameWithType: ElementHitInfo.ElementHitInfo(Node, string, bool)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ElementHitInfo(FlowGraph.Core.Node, string, bool)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates a hit info for a node port.
+  example: []
+  syntax:
+    content: public ElementHitInfo(Node node, string portId, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: portId
+      type: System.String
+    - id: isOutput
+      type: System.Boolean
+    content.vb: Public Sub New(node As Node, portId As String, isOutput As Boolean)
+  overload: FlowGraph.Core.Elements.ElementHitInfo.#ctor*
+  nameWithType.vb: ElementHitInfo.New(Node, String, Boolean)
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.New(FlowGraph.Core.Node, String, Boolean)
+  name.vb: New(Node, String, Boolean)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.Element
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.Element
+  id: Element
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: Element
+  nameWithType: ElementHitInfo.Element
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.Element
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Element
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: The canvas element that was hit.
+  example: []
+  syntax:
+    content: public ICanvasElement Element { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Elements.ICanvasElement
+    content.vb: Public ReadOnly Property Element As ICanvasElement
+  overload: FlowGraph.Core.Elements.ElementHitInfo.Element*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.Handle
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.Handle
+  id: Handle
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: Handle
+  nameWithType: ElementHitInfo.Handle
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.Handle
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Handle
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 58
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Optional handle identifier (e.g., "resize", "rotate").
+
+    Null if the main element was hit.
+  example: []
+  syntax:
+    content: public string? Handle { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Handle As String
+  overload: FlowGraph.Core.Elements.ElementHitInfo.Handle*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.PortId
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.PortId
+  id: PortId
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: PortId
+  nameWithType: ElementHitInfo.PortId
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.PortId
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PortId
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 64
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: >-
+    Optional port identifier for node port hits.
+
+    Null if not a port hit.
+  example: []
+  syntax:
+    content: public string? PortId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property PortId As String
+  overload: FlowGraph.Core.Elements.ElementHitInfo.PortId*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+  id: IsOutputPort
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: IsOutputPort
+  nameWithType: ElementHitInfo.IsOutputPort
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsOutputPort
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 69
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: For port hits, indicates whether this is an output port (true) or input port (false).
+  example: []
+  syntax:
+    content: public bool IsOutputPort { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsOutputPort As Boolean
+  overload: FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsPort
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.IsPort
+  id: IsPort
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: IsPort
+  nameWithType: ElementHitInfo.IsPort
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsPort
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsPort
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 74
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: 'Convenience property: true if this is a port hit.'
+  example: []
+  syntax:
+    content: public bool IsPort { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsPort As Boolean
+  overload: FlowGraph.Core.Elements.ElementHitInfo.IsPort*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+  id: IsHandle
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: IsHandle
+  nameWithType: ElementHitInfo.IsHandle
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsHandle
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 79
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: 'Convenience property: true if this is a handle hit.'
+  example: []
+  syntax:
+    content: public bool IsHandle { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsHandle As Boolean
+  overload: FlowGraph.Core.Elements.ElementHitInfo.IsHandle*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsNode
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.AsNode
+  id: AsNode
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: AsNode
+  nameWithType: ElementHitInfo.AsNode
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsNode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AsNode
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 84
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: 'Convenience property: gets the element as a Node if applicable.'
+  example: []
+  syntax:
+    content: public Node? AsNode { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Node
+    content.vb: Public ReadOnly Property AsNode As Node
+  overload: FlowGraph.Core.Elements.ElementHitInfo.AsNode*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+  id: AsEdge
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: AsEdge
+  nameWithType: ElementHitInfo.AsEdge
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AsEdge
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 89
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: 'Convenience property: gets the element as an Edge if applicable.'
+  example: []
+  syntax:
+    content: public Edge? AsEdge { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Edge
+    content.vb: Public ReadOnly Property AsEdge As Edge
+  overload: FlowGraph.Core.Elements.ElementHitInfo.AsEdge*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsShape
+  commentId: P:FlowGraph.Core.Elements.ElementHitInfo.AsShape
+  id: AsShape
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: AsShape
+  nameWithType: ElementHitInfo.AsShape
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsShape
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AsShape
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 94
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: 'Convenience property: gets the element as a ShapeElement if applicable.'
+  example: []
+  syntax:
+    content: public ShapeElement? AsShape { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    content.vb: Public ReadOnly Property AsShape As ShapeElement
+  overload: FlowGraph.Core.Elements.ElementHitInfo.AsShape*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromElement(FlowGraph.Core.Elements.ICanvasElement)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.FromElement(FlowGraph.Core.Elements.ICanvasElement)
+  id: FromElement(FlowGraph.Core.Elements.ICanvasElement)
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: FromElement(ICanvasElement)
+  nameWithType: ElementHitInfo.FromElement(ICanvasElement)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromElement(FlowGraph.Core.Elements.ICanvasElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromElement
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 99
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates an ElementHitInfo for a regular element hit.
+  example: []
+  syntax:
+    content: public static ElementHitInfo FromElement(ICanvasElement element)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+    return:
+      type: FlowGraph.Core.Elements.ElementHitInfo
+    content.vb: Public Shared Function FromElement(element As ICanvasElement) As ElementHitInfo
+  overload: FlowGraph.Core.Elements.ElementHitInfo.FromElement*
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromHandle(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.FromHandle(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  id: FromHandle(FlowGraph.Core.Elements.ICanvasElement,System.String)
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: FromHandle(ICanvasElement, string)
+  nameWithType: ElementHitInfo.FromHandle(ICanvasElement, string)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromHandle(FlowGraph.Core.Elements.ICanvasElement, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromHandle
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates an ElementHitInfo for an element handle hit.
+  example: []
+  syntax:
+    content: public static ElementHitInfo FromHandle(ICanvasElement element, string handle)
+    parameters:
+    - id: element
+      type: FlowGraph.Core.Elements.ICanvasElement
+    - id: handle
+      type: System.String
+    return:
+      type: FlowGraph.Core.Elements.ElementHitInfo
+    content.vb: Public Shared Function FromHandle(element As ICanvasElement, handle As String) As ElementHitInfo
+  overload: FlowGraph.Core.Elements.ElementHitInfo.FromHandle*
+  nameWithType.vb: ElementHitInfo.FromHandle(ICanvasElement, String)
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.FromHandle(FlowGraph.Core.Elements.ICanvasElement, String)
+  name.vb: FromHandle(ICanvasElement, String)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromPort(FlowGraph.Core.Node,System.String,System.Boolean)
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.FromPort(FlowGraph.Core.Node,System.String,System.Boolean)
+  id: FromPort(FlowGraph.Core.Node,System.String,System.Boolean)
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: FromPort(Node, string, bool)
+  nameWithType: ElementHitInfo.FromPort(Node, string, bool)
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromPort(FlowGraph.Core.Node, string, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromPort
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 109
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Creates an ElementHitInfo for a node port hit.
+  example: []
+  syntax:
+    content: public static ElementHitInfo FromPort(Node node, string portId, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: portId
+      type: System.String
+    - id: isOutput
+      type: System.Boolean
+    return:
+      type: FlowGraph.Core.Elements.ElementHitInfo
+    content.vb: Public Shared Function FromPort(node As Node, portId As String, isOutput As Boolean) As ElementHitInfo
+  overload: FlowGraph.Core.Elements.ElementHitInfo.FromPort*
+  nameWithType.vb: ElementHitInfo.FromPort(Node, String, Boolean)
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.FromPort(FlowGraph.Core.Node, String, Boolean)
+  name.vb: FromPort(Node, String, Boolean)
+- uid: FlowGraph.Core.Elements.ElementHitInfo.ToString
+  commentId: M:FlowGraph.Core.Elements.ElementHitInfo.ToString
+  id: ToString
+  parent: FlowGraph.Core.Elements.ElementHitInfo
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: ElementHitInfo.ToString()
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ToString()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ElementHitInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToString
+    path: ../FlowGraph.Core/Elements/ElementHitInfo.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: FlowGraph.Core.Elements.ElementHitInfo.ToString*
+references:
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Elements.ElementHitInfo.#ctor*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.#ctor
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo__ctor_FlowGraph_Core_Elements_ICanvasElement_
+  name: ElementHitInfo
+  nameWithType: ElementHitInfo.ElementHitInfo
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ElementHitInfo
+  nameWithType.vb: ElementHitInfo.New
+  fullName.vb: FlowGraph.Core.Elements.ElementHitInfo.New
+  name.vb: New
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Elements.ElementHitInfo.Element*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.Element
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_Element
+  name: Element
+  nameWithType: ElementHitInfo.Element
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.Element
+- uid: FlowGraph.Core.Elements.ElementHitInfo.Handle*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.Handle
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_Handle
+  name: Handle
+  nameWithType: ElementHitInfo.Handle
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.Handle
+- uid: FlowGraph.Core.Elements.ElementHitInfo.PortId*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.PortId
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_PortId
+  name: PortId
+  nameWithType: ElementHitInfo.PortId
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.PortId
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_IsOutputPort
+  name: IsOutputPort
+  nameWithType: ElementHitInfo.IsOutputPort
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsOutputPort
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsPort*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.IsPort
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_IsPort
+  name: IsPort
+  nameWithType: ElementHitInfo.IsPort
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsPort
+- uid: FlowGraph.Core.Elements.ElementHitInfo.IsHandle*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_IsHandle
+  name: IsHandle
+  nameWithType: ElementHitInfo.IsHandle
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.IsHandle
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsNode*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.AsNode
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_AsNode
+  name: AsNode
+  nameWithType: ElementHitInfo.AsNode
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsNode
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsEdge*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_AsEdge
+  name: AsEdge
+  nameWithType: ElementHitInfo.AsEdge
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core.Elements.ElementHitInfo.AsShape*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.AsShape
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_AsShape
+  name: AsShape
+  nameWithType: ElementHitInfo.AsShape
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.AsShape
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromElement*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.FromElement
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_FromElement_FlowGraph_Core_Elements_ICanvasElement_
+  name: FromElement
+  nameWithType: ElementHitInfo.FromElement
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromElement
+- uid: FlowGraph.Core.Elements.ElementHitInfo
+  commentId: T:FlowGraph.Core.Elements.ElementHitInfo
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ElementHitInfo.html
+  name: ElementHitInfo
+  nameWithType: ElementHitInfo
+  fullName: FlowGraph.Core.Elements.ElementHitInfo
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromHandle*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.FromHandle
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_FromHandle_FlowGraph_Core_Elements_ICanvasElement_System_String_
+  name: FromHandle
+  nameWithType: ElementHitInfo.FromHandle
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromHandle
+- uid: FlowGraph.Core.Elements.ElementHitInfo.FromPort*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.FromPort
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_FromPort_FlowGraph_Core_Node_System_String_System_Boolean_
+  name: FromPort
+  nameWithType: ElementHitInfo.FromPort
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.FromPort
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.ElementHitInfo.ToString*
+  commentId: Overload:FlowGraph.Core.Elements.ElementHitInfo.ToString
+  href: FlowGraph.Core.Elements.ElementHitInfo.html#FlowGraph_Core_Elements_ElementHitInfo_ToString
+  name: ToString
+  nameWithType: ElementHitInfo.ToString
+  fullName: FlowGraph.Core.Elements.ElementHitInfo.ToString

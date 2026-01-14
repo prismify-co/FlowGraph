@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class FlowGraphLogger | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class FlowGraphLogger | FlowGraph ">
+      
+      <meta name="description" content="Central static logger for FlowGraph diagnostics. Thread-safe and designed for high-performance logging with minimal overhead when disabled.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Diagnostics_FlowGraphLogger.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Diagnostics.FlowGraphLogger%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger">
+
+
+
+  <h1 id="FlowGraph_Core_Diagnostics_FlowGraphLogger" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger" class="text-break">
+Class FlowGraphLogger  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Diagnostics.html">Diagnostics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Central static logger for FlowGraph diagnostics.
+Thread-safe and designed for high-performance logging with minimal overhead when disabled.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class FlowGraphLogger</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">FlowGraphLogger</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_EnabledCategories_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.EnabledCategories*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_EnabledCategories" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.EnabledCategories">
+  EnabledCategories
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the enabled categories. Only messages matching these categories are logged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LogCategory EnabledCategories { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_IsEnabled_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.IsEnabled*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_IsEnabled" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.IsEnabled">
+  IsEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether logging is enabled globally.
+When disabled, all logging calls are no-ops with minimal overhead.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_MinimumLevel_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.MinimumLevel*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_MinimumLevel" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.MinimumLevel">
+  MinimumLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum log level. Messages below this level are ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LogLevel MinimumLevel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Sink_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Sink*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Sink" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Sink">
+  Sink
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current log sink.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ILogSink Sink { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Diagnostics.ILogSink.html">ILogSink</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_BackgroundRenderer_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.BackgroundRenderer*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_BackgroundRenderer_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.BackgroundRenderer(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  BackgroundRenderer(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L351"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a background renderer message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BackgroundRenderer(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_BeginScope_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.BeginScope*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_BeginScope_System_String_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.BeginScope(System.String)">
+  BeginScope(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a correlation scope for tracking related log entries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDisposable BeginScope(string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Configure_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Configure*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Configure_System_Action_FlowGraph_Core_Diagnostics_LoggerConfiguration__" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Configure(System.Action{FlowGraph.Core.Diagnostics.LoggerConfiguration})">
+  Configure(Action&lt;LoggerConfiguration&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Configures the logger with the specified settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Configure(Action&lt;LoggerConfiguration&gt; configure)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>configure</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FlowGraph.Core.Diagnostics.LoggerConfiguration.html">LoggerConfiguration</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_CustomRenderer_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.CustomRenderer*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_CustomRenderer_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.CustomRenderer(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  CustomRenderer(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L339"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a custom renderer message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CustomRenderer(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Debug_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Debug*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Debug_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Debug(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.String,System.String,System.Int32)">
+  Debug(LogCategory, string, string?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a debug message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Debug(LogCategory category, string message, string? source = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_DisableAll_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.DisableAll*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_DisableAll" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.DisableAll">
+  DisableAll()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disables all logging.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DisableAll()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Edges_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Edges*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Edges_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Edges(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Edges(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs an edge-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Edges(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_EnableAll_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.EnableAll*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_EnableAll_FlowGraph_Core_Diagnostics_LogLevel_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.EnableAll(FlowGraph.Core.Diagnostics.LogLevel)">
+  EnableAll(LogLevel)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Enables all logging at the specified level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnableAll(LogLevel minimumLevel = LogLevel.Debug)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>minimumLevel</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Error_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Error*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Error_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_Exception_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Error(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.Exception,System.String,System.String,System.Int32)">
+  Error(LogCategory, string, string?, Exception?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L234"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs an error message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Error(LogCategory category, string message, string? source = null, Exception? exception = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>exception</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Info_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Info*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Info_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Info(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.String,System.String,System.Int32)">
+  Info(LogCategory, string, string?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs an informational message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Info(LogCategory category, string message, string? source = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Input_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Input*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Input_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Input(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Input(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs an input-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Input(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_IsLevelEnabled_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.IsLevelEnabled*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_IsLevelEnabled_FlowGraph_Core_Diagnostics_LogLevel_FlowGraph_Core_Diagnostics_LogCategory_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.IsLevelEnabled(FlowGraph.Core.Diagnostics.LogLevel,FlowGraph.Core.Diagnostics.LogCategory)">
+  IsLevelEnabled(LogLevel, LogCategory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a message at the given level and category would be logged.
+Use this to avoid expensive message formatting when logging is disabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsLevelEnabled(LogLevel level, LogCategory category)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Layout_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Layout*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Layout_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Layout(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Layout(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L363"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a layout-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Layout(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Log_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Log*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Log_FlowGraph_Core_Diagnostics_LogLevel_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_Object_System_String_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Log(FlowGraph.Core.Diagnostics.LogLevel,FlowGraph.Core.Diagnostics.LogCategory,System.String,System.Object,System.String,System.String,System.String,System.Int32)">
+  Log(LogLevel, LogCategory, string, object, string?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a message with structured properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Log(LogLevel level, LogCategory category, string message, object properties, string? source = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Log_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Log*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Log_FlowGraph_Core_Diagnostics_LogLevel_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_Exception_System_Collections_Generic_Dictionary_System_String_System_Object__System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Log(FlowGraph.Core.Diagnostics.LogLevel,FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.Exception,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.String,System.Int32)">
+  Log(LogLevel, LogCategory, string, string?, Exception?, Dictionary&lt;string, object?&gt;?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a message at the specified level and category.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Log(LogLevel level, LogCategory category, string message, string? source = null, Exception? exception = null, Dictionary&lt;string, object?&gt;? properties = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>exception</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Nodes_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Nodes*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Nodes_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Nodes(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Nodes(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a node-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Nodes(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Rendering_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Rendering*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Rendering_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Rendering(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Rendering(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a rendering-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Rendering(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_SetSink_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.SetSink*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_SetSink_FlowGraph_Core_Diagnostics_ILogSink_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.SetSink(FlowGraph.Core.Diagnostics.ILogSink)">
+  SetSink(ILogSink)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the log sink directly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetSink(ILogSink sink)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sink</code> <a class="xref" href="FlowGraph.Core.Diagnostics.ILogSink.html">ILogSink</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_TimeScope_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.TimeScope*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_TimeScope_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.TimeScope(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.String,System.String,System.Int32)">
+  TimeScope(LogCategory, string, string?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a timing scope that logs entry and exit with elapsed time.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDisposable TimeScope(LogCategory category, string operationName, string? source = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>operationName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Trace_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Trace*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Trace_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Trace(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.String,System.String,System.Int32)">
+  Trace(LogCategory, string, string?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a trace message for fine-grained debugging.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Conditional(&quot;DEBUG&quot;)]
+public static void Trace(LogCategory category, string message, string? source = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Viewport_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Viewport*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Viewport_FlowGraph_Core_Diagnostics_LogLevel_System_String_System_String_System_Object_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Viewport(FlowGraph.Core.Diagnostics.LogLevel,System.String,System.String,System.Object)">
+  Viewport(LogLevel, string, string?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a viewport-related message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Viewport(LogLevel level, string message, string? source = null, object? properties = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>level</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogLevel.html">LogLevel</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Warn_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Warn*"></a>
+
+  <h3 id="FlowGraph_Core_Diagnostics_FlowGraphLogger_Warn_FlowGraph_Core_Diagnostics_LogCategory_System_String_System_String_System_Exception_System_String_System_String_System_Int32_" data-uid="FlowGraph.Core.Diagnostics.FlowGraphLogger.Warn(FlowGraph.Core.Diagnostics.LogCategory,System.String,System.String,System.Exception,System.String,System.String,System.Int32)">
+  Warn(LogCategory, string, string?, Exception?, string?, string?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Logs a warning message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Warn(LogCategory category, string message, string? source = null, Exception? exception = null, string? memberName = null, string? filePath = null, int lineNumber = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>category</code> <a class="xref" href="FlowGraph.Core.Diagnostics.LogCategory.html">LogCategory</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>exception</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+    <dt><code>memberName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>lineNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Core/Diagnostics/FlowGraphLogger.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

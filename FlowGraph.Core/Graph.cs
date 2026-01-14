@@ -69,6 +69,112 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
 public class Graph
 {
     private bool _isBatchLoading;
+    private bool _isSyncing; // Prevent infinite recursion during sync
+
+    /// <summary>
+    /// Initializes a new instance of the Graph class.
+    /// Sets up bidirectional sync between legacy collections (Nodes/Edges) and Elements.
+    /// </summary>
+    public Graph()
+    {
+        // Sync legacy Nodes collection → Elements (for backward compat when code uses Nodes.Add directly)
+        Nodes.CollectionChanged += (_, e) =>
+        {
+            if (_isSyncing) return;
+            _isSyncing = true;
+            try
+            {
+                SyncNodesToElements(e);
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
+        };
+
+        // Sync legacy Edges collection → Elements (for backward compat when code uses Edges.Add directly)
+        Edges.CollectionChanged += (_, e) =>
+        {
+            if (_isSyncing) return;
+            _isSyncing = true;
+            try
+            {
+                SyncEdgesToElements(e);
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
+        };
+    }
+
+    private void SyncNodesToElements(NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+        {
+            foreach (Node node in e.NewItems)
+            {
+                if (!Elements.Contains(node))
+                    Elements.Add(node);
+            }
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
+        {
+            foreach (Node node in e.OldItems)
+            {
+                Elements.Remove(node);
+            }
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            // For Reset (e.g. after AddRange), sync the full state
+            var elementsNodes = Elements.Nodes.ToList();
+            foreach (var node in elementsNodes)
+            {
+                if (!Nodes.Contains(node))
+                    Elements.Remove(node);
+            }
+            foreach (var node in Nodes)
+            {
+                if (!Elements.Contains(node))
+                    Elements.Add(node);
+            }
+        }
+    }
+
+    private void SyncEdgesToElements(NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+        {
+            foreach (Edge edge in e.NewItems)
+            {
+                if (!Elements.Contains(edge))
+                    Elements.Add(edge);
+            }
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
+        {
+            foreach (Edge edge in e.OldItems)
+            {
+                Elements.Remove(edge);
+            }
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            // For Reset (e.g. after AddRange), sync the full state
+            var elementsEdges = Elements.Edges.ToList();
+            foreach (var edge in elementsEdges)
+            {
+                if (!Edges.Contains(edge))
+                    Elements.Remove(edge);
+            }
+            foreach (var edge in Edges)
+            {
+                if (!Elements.Contains(edge))
+                    Elements.Add(edge);
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the collection of all canvas elements (nodes, edges, shapes, etc.).
@@ -166,11 +272,49 @@ public class Graph
     {
         ArgumentNullException.ThrowIfNull(elements);
         var elementList = elements.ToList();
-        Elements.AddRange(elementList);
+        
+        _isSyncing = true;
+        try
+        {
+            Elements.AddRange(elementList);
 
-        // Sync with legacy collections for backward compat
-        Nodes.AddRange(elementList.OfType<Node>());
-        Edges.AddRange(elementList.OfType<Edge>());
+            // Sync with legacy collections for backward compat
+            Nodes.AddRange(elementList.OfType<Node>());
+            Edges.AddRange(elementList.OfType<Edge>());
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
+    }
+
+    /// <summary>
+    /// Removes multiple elements at once with a single notification.
+    /// </summary>
+    /// <param name="elements">The elements to remove.</param>
+    public void RemoveElements(IEnumerable<ICanvasElement> elements)
+    {
+        ArgumentNullException.ThrowIfNull(elements);
+        var elementList = elements.ToList();
+        
+        _isSyncing = true;
+        try
+        {
+            Elements.RemoveRange(elementList);
+
+            // Sync with legacy collections for backward compat
+            var nodes = elementList.OfType<Node>().ToList();
+            var edges = elementList.OfType<Edge>().ToList();
+
+            foreach (var node in nodes)
+                Nodes.Remove(node);
+            foreach (var edge in edges)
+                Edges.Remove(edge);
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
     }
 
     #endregion
@@ -183,8 +327,16 @@ public class Graph
     public void AddNodes(IEnumerable<Node> nodes)
     {
         var nodeList = nodes.ToList();
-        Nodes.AddRange(nodeList);
-        Elements.AddRange(nodeList);
+        _isSyncing = true;
+        try
+        {
+            Nodes.AddRange(nodeList);
+            Elements.AddRange(nodeList);
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
     }
 
     /// <summary>
@@ -193,8 +345,16 @@ public class Graph
     public void AddNode(Node node)
     {
         ArgumentNullException.ThrowIfNull(node);
-        Nodes.Add(node);
-        Elements.Add(node);
+        _isSyncing = true;
+        try
+        {
+            Nodes.Add(node);
+            Elements.Add(node);
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
     }
 
     /// <summary>
@@ -205,16 +365,24 @@ public class Graph
         var node = Nodes.FirstOrDefault(n => n.Id == nodeId);
         if (node != null)
         {
-            // Remove connected edges first
-            var edgesToRemove = Edges.Where(e => e.Source == nodeId || e.Target == nodeId).ToList();
-            foreach (var edge in edgesToRemove)
+            _isSyncing = true;
+            try
             {
-                Edges.Remove(edge);
-                Elements.Remove(edge);
-            }
+                // Remove connected edges first
+                var edgesToRemove = Edges.Where(e => e.Source == nodeId || e.Target == nodeId).ToList();
+                foreach (var edge in edgesToRemove)
+                {
+                    Edges.Remove(edge);
+                    Elements.Remove(edge);
+                }
 
-            Nodes.Remove(node);
-            Elements.Remove(node);
+                Nodes.Remove(node);
+                Elements.Remove(node);
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
         }
     }
 
@@ -228,8 +396,16 @@ public class Graph
     public void AddEdges(IEnumerable<Edge> edges)
     {
         var edgeList = edges.ToList();
-        Edges.AddRange(edgeList);
-        Elements.AddRange(edgeList);
+        _isSyncing = true;
+        try
+        {
+            Edges.AddRange(edgeList);
+            Elements.AddRange(edgeList);
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
     }
 
     /// <summary>
@@ -251,8 +427,16 @@ public class Graph
             }
         }
 
-        Edges.Add(edge);
-        Elements.Add(edge);
+        _isSyncing = true;
+        try
+        {
+            Edges.Add(edge);
+            Elements.Add(edge);
+        }
+        finally
+        {
+            _isSyncing = false;
+        }
     }
 
     /// <summary>
@@ -263,8 +447,16 @@ public class Graph
         var edge = Edges.FirstOrDefault(e => e.Id == edgeId);
         if (edge != null)
         {
-            Edges.Remove(edge);
-            Elements.Remove(edge);
+            _isSyncing = true;
+            try
+            {
+                Edges.Remove(edge);
+                Elements.Remove(edge);
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
         }
     }
 

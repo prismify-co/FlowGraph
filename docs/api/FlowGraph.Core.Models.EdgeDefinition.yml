@@ -1,0 +1,1358 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Models.EdgeDefinition
+  commentId: T:FlowGraph.Core.Models.EdgeDefinition
+  id: EdgeDefinition
+  parent: FlowGraph.Core.Models
+  children:
+  - FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  - FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  - FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+  - FlowGraph.Core.Models.EdgeDefinition.Id
+  - FlowGraph.Core.Models.EdgeDefinition.Label
+  - FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  - FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+  - FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+  - FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(System.String,System.String)
+  - FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(System.String,System.String)
+  - FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  - FlowGraph.Core.Models.EdgeDefinition.Source
+  - FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  - FlowGraph.Core.Models.EdgeDefinition.Target
+  - FlowGraph.Core.Models.EdgeDefinition.TargetPort
+  - FlowGraph.Core.Models.EdgeDefinition.Type
+  - FlowGraph.Core.Models.EdgeDefinition.WithLabel(System.String)
+  - FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
+  - FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)
+  - FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  - FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)
+  langs:
+  - csharp
+  - vb
+  name: EdgeDefinition
+  nameWithType: EdgeDefinition
+  fullName: FlowGraph.Core.Models.EdgeDefinition
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeDefinition
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 13
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Immutable definition of an edge's identity and connection structure.
+
+    Contains all properties that define "what" an edge connects, not its runtime state.
+  remarks: >-
+    This is a sealed record for value equality and immutability.
+
+    Use <code>with</code> expressions to create modified copies:
+
+    <pre><code class="lang-csharp">var reconnected = definition with { Target = "newNodeId" };</code></pre>
+  example: []
+  syntax:
+    content: 'public sealed record EdgeDefinition : IEquatable<EdgeDefinition>'
+    content.vb: Public NotInheritable Class EdgeDefinition Implements IEquatable(Of EdgeDefinition)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{FlowGraph.Core.Models.EdgeDefinition}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Models.EdgeDefinition.Id
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Id
+  id: Id
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: EdgeDefinition.Id
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Id
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Id
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 18
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Unique identifier for the edge. Required and immutable.
+  example: []
+  syntax:
+    content: public required string Id { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Id As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.Id*
+- uid: FlowGraph.Core.Models.EdgeDefinition.Source
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Source
+  id: Source
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Source
+  nameWithType: EdgeDefinition.Source
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Source
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Source
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 23
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The ID of the source node.
+  example: []
+  syntax:
+    content: public required string Source { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Source As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.Source*
+- uid: FlowGraph.Core.Models.EdgeDefinition.Target
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Target
+  id: Target
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Target
+  nameWithType: EdgeDefinition.Target
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Target
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Target
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The ID of the target node.
+  example: []
+  syntax:
+    content: public required string Target { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Target As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.Target*
+- uid: FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  id: SourcePort
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: SourcePort
+  nameWithType: EdgeDefinition.SourcePort
+  fullName: FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SourcePort
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The ID of the source port on the source node.
+  example: []
+  syntax:
+    content: public required string SourcePort { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SourcePort As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.SourcePort*
+- uid: FlowGraph.Core.Models.EdgeDefinition.TargetPort
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.TargetPort
+  id: TargetPort
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: TargetPort
+  nameWithType: EdgeDefinition.TargetPort
+  fullName: FlowGraph.Core.Models.EdgeDefinition.TargetPort
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TargetPort
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The ID of the target port on the target node.
+  example: []
+  syntax:
+    content: public required string TargetPort { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TargetPort As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.TargetPort*
+- uid: FlowGraph.Core.Models.EdgeDefinition.Type
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Type
+  id: Type
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: EdgeDefinition.Type
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Type
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Type
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 43
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The visual type of the edge (bezier, straight, step, etc.).
+  example: []
+  syntax:
+    content: public EdgeType Type { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.EdgeType
+    content.vb: Public Property Type As EdgeType
+  overload: FlowGraph.Core.Models.EdgeDefinition.Type*
+- uid: FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+  id: MarkerStart
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: MarkerStart
+  nameWithType: EdgeDefinition.MarkerStart
+  fullName: FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MarkerStart
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 48
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The marker to display at the start of the edge.
+  example: []
+  syntax:
+    content: public EdgeMarker MarkerStart { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.EdgeMarker
+    content.vb: Public Property MarkerStart As EdgeMarker
+  overload: FlowGraph.Core.Models.EdgeDefinition.MarkerStart*
+- uid: FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+  id: MarkerEnd
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: MarkerEnd
+  nameWithType: EdgeDefinition.MarkerEnd
+  fullName: FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MarkerEnd
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The marker to display at the end of the edge.
+  example: []
+  syntax:
+    content: public EdgeMarker MarkerEnd { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.EdgeMarker
+    content.vb: Public Property MarkerEnd As EdgeMarker
+  overload: FlowGraph.Core.Models.EdgeDefinition.MarkerEnd*
+- uid: FlowGraph.Core.Models.EdgeDefinition.Label
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Label
+  id: Label
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: EdgeDefinition.Label
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Label
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Label
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 62
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Optional label to display on the edge.
+  remarks: >-
+    For simple labels, use this property directly. For advanced positioning control,
+
+    use <xref href="FlowGraph.Core.Models.EdgeDefinition.LabelInfo" data-throw-if-not-resolved="false"></xref> instead. If both are set, <xref href="FlowGraph.Core.Models.EdgeDefinition.LabelInfo" data-throw-if-not-resolved="false"></xref> takes precedence.
+  example: []
+  syntax:
+    content: public string? Label { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Label As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.Label*
+- uid: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  id: LabelInfo
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: LabelInfo
+  nameWithType: EdgeDefinition.LabelInfo
+  fullName: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LabelInfo
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 71
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Enhanced label with positioning information.
+  remarks: >-
+    When set, this takes precedence over <xref href="FlowGraph.Core.Models.EdgeDefinition.Label" data-throw-if-not-resolved="false"></xref>. Use <xref href="FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel" data-throw-if-not-resolved="false"></xref>
+
+    to get the resolved label text regardless of which property was set.
+  example: []
+  syntax:
+    content: public LabelInfo? LabelInfo { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.LabelInfo
+    content.vb: Public Property LabelInfo As LabelInfo
+  overload: FlowGraph.Core.Models.EdgeDefinition.LabelInfo*
+- uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  id: EffectiveLabel
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: EffectiveLabel
+  nameWithType: EdgeDefinition.EffectiveLabel
+  fullName: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EffectiveLabel
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 76
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Gets the effective label text, preferring <xref href="FlowGraph.Core.Models.EdgeDefinition.LabelInfo" data-throw-if-not-resolved="false"></xref> over <xref href="FlowGraph.Core.Models.EdgeDefinition.Label" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public string? EffectiveLabel { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property EffectiveLabel As String
+  overload: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel*
+- uid: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  id: AutoRoute
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: AutoRoute
+  nameWithType: EdgeDefinition.AutoRoute
+  fullName: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AutoRoute
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 86
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this edge should use automatic routing to avoid obstacles.
+  remarks: >-
+    This property is maintained for backward compatibility.
+
+    For new code, prefer using <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> instead.
+
+    When <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> is explicitly set, it takes precedence.
+  example: []
+  syntax:
+    content: public bool AutoRoute { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AutoRoute As Boolean
+  overload: FlowGraph.Core.Models.EdgeDefinition.AutoRoute*
+- uid: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  id: RoutingMode
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: RoutingMode
+  nameWithType: EdgeDefinition.RoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RoutingMode
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 98
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Determines how this edge's path is calculated.
+  remarks: <ul><li><xref href="FlowGraph.Core.Models.EdgeRoutingMode.Auto" data-throw-if-not-resolved="false"></xref> - Router fully controls path (default)</li><li><xref href="FlowGraph.Core.Models.EdgeRoutingMode.Manual" data-throw-if-not-resolved="false"></xref> - Uses only user-defined waypoints</li><li><xref href="FlowGraph.Core.Models.EdgeRoutingMode.Guided" data-throw-if-not-resolved="false"></xref> - Router path passes through user waypoints</li></ul>
+  example: []
+  syntax:
+    content: public EdgeRoutingMode RoutingMode { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeRoutingMode
+    content.vb: Public Property RoutingMode As EdgeRoutingMode
+  overload: FlowGraph.Core.Models.EdgeDefinition.RoutingMode*
+- uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+  id: EffectiveRoutingMode
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: EffectiveRoutingMode
+  nameWithType: EdgeDefinition.EffectiveRoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EffectiveRoutingMode
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 108
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Gets the effective routing mode, considering both <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> 
+
+    and legacy <xref href="FlowGraph.Core.Models.EdgeDefinition.AutoRoute" data-throw-if-not-resolved="false"></xref> property.
+  remarks: >-
+    If <xref href="FlowGraph.Core.Models.EdgeDefinition.AutoRoute" data-throw-if-not-resolved="false"></xref> is true and <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> is Auto,
+
+    obstacle avoidance is enabled. Otherwise, <xref href="FlowGraph.Core.Models.EdgeDefinition.RoutingMode" data-throw-if-not-resolved="false"></xref> determines behavior.
+  example: []
+  syntax:
+    content: public EdgeRoutingMode EffectiveRoutingMode { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeRoutingMode
+    content.vb: Public ReadOnly Property EffectiveRoutingMode As EdgeRoutingMode
+  overload: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode*
+- uid: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(System.String,System.String)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(System.String,System.String)
+  id: ReconnectTarget(System.String,System.String)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: ReconnectTarget(string, string)
+  nameWithType: EdgeDefinition.ReconnectTarget(string, string)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReconnectTarget
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 115
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different target node and port.
+  example: []
+  syntax:
+    content: public EdgeDefinition ReconnectTarget(string newTarget, string newTargetPort)
+    parameters:
+    - id: newTarget
+      type: System.String
+    - id: newTargetPort
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function ReconnectTarget(newTarget As String, newTargetPort As String) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget*
+  nameWithType.vb: EdgeDefinition.ReconnectTarget(String, String)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget(String, String)
+  name.vb: ReconnectTarget(String, String)
+- uid: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(System.String,System.String)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(System.String,System.String)
+  id: ReconnectSource(System.String,System.String)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: ReconnectSource(string, string)
+  nameWithType: EdgeDefinition.ReconnectSource(string, string)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReconnectSource
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 121
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different source node and port.
+  example: []
+  syntax:
+    content: public EdgeDefinition ReconnectSource(string newSource, string newSourcePort)
+    parameters:
+    - id: newSource
+      type: System.String
+    - id: newSourcePort
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function ReconnectSource(newSource As String, newSourcePort As String) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource*
+  nameWithType.vb: EdgeDefinition.ReconnectSource(String, String)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource(String, String)
+  name.vb: ReconnectSource(String, String)
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithLabel(System.String)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithLabel(System.String)
+  id: WithLabel(System.String)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithLabel(string?)
+  nameWithType: EdgeDefinition.WithLabel(string?)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithLabel(string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithLabel
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 127
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different label.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithLabel(string? label)
+    parameters:
+    - id: label
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithLabel(label As String) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithLabel*
+  nameWithType.vb: EdgeDefinition.WithLabel(String)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.WithLabel(String)
+  name.vb: WithLabel(String)
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
+  id: WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithLabelInfo(LabelInfo?)
+  nameWithType: EdgeDefinition.WithLabelInfo(LabelInfo?)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithLabelInfo
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with enhanced label positioning.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithLabelInfo(LabelInfo? labelInfo)
+    parameters:
+    - id: labelInfo
+      type: FlowGraph.Core.Models.LabelInfo
+      description: The label info with text and positioning.
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithLabelInfo(labelInfo As LabelInfo) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo*
+  nameWithType.vb: EdgeDefinition.WithLabelInfo(LabelInfo)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
+  name.vb: WithLabelInfo(LabelInfo)
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)
+  id: WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithLabelInfo(string, LabelAnchor, double, double)
+  nameWithType: EdgeDefinition.WithLabelInfo(string, LabelAnchor, double, double)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(string, FlowGraph.Core.Models.LabelAnchor, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithLabelInfo
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 144
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with enhanced label positioning.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithLabelInfo(string text, LabelAnchor anchor = LabelAnchor.Center, double offsetX = 0, double offsetY = 0)
+    parameters:
+    - id: text
+      type: System.String
+      description: The label text.
+    - id: anchor
+      type: FlowGraph.Core.Models.LabelAnchor
+      description: Where along the edge to position the label.
+    - id: offsetX
+      type: System.Double
+      description: Horizontal offset from anchor point.
+    - id: offsetY
+      type: System.Double
+      description: Vertical offset from anchor point.
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithLabelInfo(text As String, anchor As LabelAnchor = LabelAnchor.Center, offsetX As Double = 0, offsetY As Double = 0) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo*
+  nameWithType.vb: EdgeDefinition.WithLabelInfo(String, LabelAnchor, Double, Double)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(String, FlowGraph.Core.Models.LabelAnchor, Double, Double)
+  name.vb: WithLabelInfo(String, LabelAnchor, Double, Double)
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)
+  id: WithType(FlowGraph.Core.EdgeType)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithType(EdgeType)
+  nameWithType: EdgeDefinition.WithType(EdgeType)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithType
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 150
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different edge type.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithType(EdgeType type)
+    parameters:
+    - id: type
+      type: FlowGraph.Core.EdgeType
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithType(type As EdgeType) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithType*
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  id: WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithRoutingMode(EdgeRoutingMode)
+  nameWithType: EdgeDefinition.WithRoutingMode(EdgeRoutingMode)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithRoutingMode
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 156
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different routing mode.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithRoutingMode(EdgeRoutingMode mode)
+    parameters:
+    - id: mode
+      type: FlowGraph.Core.Models.EdgeRoutingMode
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithRoutingMode(mode As EdgeRoutingMode) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode*
+references:
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{FlowGraph.Core.Models.EdgeDefinition}
+  commentId: T:System.IEquatable{FlowGraph.Core.Models.EdgeDefinition}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<EdgeDefinition>
+  nameWithType: IEquatable<EdgeDefinition>
+  fullName: System.IEquatable<FlowGraph.Core.Models.EdgeDefinition>
+  nameWithType.vb: IEquatable(Of EdgeDefinition)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Models.EdgeDefinition)
+  name.vb: IEquatable(Of EdgeDefinition)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Models.EdgeDefinition
+    name: EdgeDefinition
+    href: FlowGraph.Core.Models.EdgeDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.EdgeDefinition
+    name: EdgeDefinition
+    href: FlowGraph.Core.Models.EdgeDefinition.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Models.EdgeDefinition.Id*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Id
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Id
+  name: Id
+  nameWithType: EdgeDefinition.Id
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Id
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Models.EdgeDefinition.Source*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Source
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Source
+  name: Source
+  nameWithType: EdgeDefinition.Source
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Source
+- uid: FlowGraph.Core.Models.EdgeDefinition.Target*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Target
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Target
+  name: Target
+  nameWithType: EdgeDefinition.Target
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Target
+- uid: FlowGraph.Core.Models.EdgeDefinition.SourcePort*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_SourcePort
+  name: SourcePort
+  nameWithType: EdgeDefinition.SourcePort
+  fullName: FlowGraph.Core.Models.EdgeDefinition.SourcePort
+- uid: FlowGraph.Core.Models.EdgeDefinition.TargetPort*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.TargetPort
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_TargetPort
+  name: TargetPort
+  nameWithType: EdgeDefinition.TargetPort
+  fullName: FlowGraph.Core.Models.EdgeDefinition.TargetPort
+- uid: FlowGraph.Core.Models.EdgeDefinition.Type*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Type
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Type
+  name: Type
+  nameWithType: EdgeDefinition.Type
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Type
+- uid: FlowGraph.Core.EdgeType
+  commentId: T:FlowGraph.Core.EdgeType
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.EdgeType.html
+  name: EdgeType
+  nameWithType: EdgeType
+  fullName: FlowGraph.Core.EdgeType
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Models.EdgeDefinition.MarkerStart*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_MarkerStart
+  name: MarkerStart
+  nameWithType: EdgeDefinition.MarkerStart
+  fullName: FlowGraph.Core.Models.EdgeDefinition.MarkerStart
+- uid: FlowGraph.Core.EdgeMarker
+  commentId: T:FlowGraph.Core.EdgeMarker
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.EdgeMarker.html
+  name: EdgeMarker
+  nameWithType: EdgeMarker
+  fullName: FlowGraph.Core.EdgeMarker
+- uid: FlowGraph.Core.Models.EdgeDefinition.MarkerEnd*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_MarkerEnd
+  name: MarkerEnd
+  nameWithType: EdgeDefinition.MarkerEnd
+  fullName: FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
+- uid: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo
+  name: LabelInfo
+  nameWithType: EdgeDefinition.LabelInfo
+  fullName: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+- uid: FlowGraph.Core.Models.EdgeDefinition.Label*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Label
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Label
+  name: Label
+  nameWithType: EdgeDefinition.Label
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Label
+- uid: FlowGraph.Core.Models.EdgeDefinition.Label
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Label
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Label
+  name: Label
+  nameWithType: EdgeDefinition.Label
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Label
+- uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_EffectiveLabel
+  name: EffectiveLabel
+  nameWithType: EdgeDefinition.EffectiveLabel
+  fullName: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+- uid: FlowGraph.Core.Models.EdgeDefinition.LabelInfo*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo
+  name: LabelInfo
+  nameWithType: EdgeDefinition.LabelInfo
+  fullName: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+- uid: FlowGraph.Core.Models.LabelInfo
+  commentId: T:FlowGraph.Core.Models.LabelInfo
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.LabelInfo.html
+  name: LabelInfo
+  nameWithType: LabelInfo
+  fullName: FlowGraph.Core.Models.LabelInfo
+- uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_EffectiveLabel
+  name: EffectiveLabel
+  nameWithType: EdgeDefinition.EffectiveLabel
+  fullName: FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
+- uid: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode
+  name: RoutingMode
+  nameWithType: EdgeDefinition.RoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+- uid: FlowGraph.Core.Models.EdgeDefinition.AutoRoute*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_AutoRoute
+  name: AutoRoute
+  nameWithType: EdgeDefinition.AutoRoute
+  fullName: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Auto
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Auto
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Auto
+  name: Auto
+  nameWithType: EdgeRoutingMode.Auto
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Auto
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Manual
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Manual
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Manual
+  name: Manual
+  nameWithType: EdgeRoutingMode.Manual
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Manual
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided
+  name: Guided
+  nameWithType: EdgeRoutingMode.Guided
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+- uid: FlowGraph.Core.Models.EdgeDefinition.RoutingMode*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_RoutingMode
+  name: RoutingMode
+  nameWithType: EdgeDefinition.RoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.RoutingMode
+- uid: FlowGraph.Core.Models.EdgeRoutingMode
+  commentId: T:FlowGraph.Core.Models.EdgeRoutingMode
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html
+  name: EdgeRoutingMode
+  nameWithType: EdgeRoutingMode
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode
+- uid: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_AutoRoute
+  name: AutoRoute
+  nameWithType: EdgeDefinition.AutoRoute
+  fullName: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
+- uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_EffectiveRoutingMode
+  name: EffectiveRoutingMode
+  nameWithType: EdgeDefinition.EffectiveRoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
+- uid: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_ReconnectTarget_System_String_System_String_
+  name: ReconnectTarget
+  nameWithType: EdgeDefinition.ReconnectTarget
+  fullName: FlowGraph.Core.Models.EdgeDefinition.ReconnectTarget
+- uid: FlowGraph.Core.Models.EdgeDefinition
+  commentId: T:FlowGraph.Core.Models.EdgeDefinition
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeDefinition.html
+  name: EdgeDefinition
+  nameWithType: EdgeDefinition
+  fullName: FlowGraph.Core.Models.EdgeDefinition
+- uid: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.ReconnectSource
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_ReconnectSource_System_String_System_String_
+  name: ReconnectSource
+  nameWithType: EdgeDefinition.ReconnectSource
+  fullName: FlowGraph.Core.Models.EdgeDefinition.ReconnectSource
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithLabel*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.WithLabel
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_WithLabel_System_String_
+  name: WithLabel
+  nameWithType: EdgeDefinition.WithLabel
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithLabel
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_WithLabelInfo_FlowGraph_Core_Models_LabelInfo_
+  name: WithLabelInfo
+  nameWithType: EdgeDefinition.WithLabelInfo
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo
+- uid: FlowGraph.Core.Models.LabelAnchor
+  commentId: T:FlowGraph.Core.Models.LabelAnchor
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.LabelAnchor.html
+  name: LabelAnchor
+  nameWithType: LabelAnchor
+  fullName: FlowGraph.Core.Models.LabelAnchor
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithType*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.WithType
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_WithType_FlowGraph_Core_EdgeType_
+  name: WithType
+  nameWithType: EdgeDefinition.WithType
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithType
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_WithRoutingMode_FlowGraph_Core_Models_EdgeRoutingMode_
+  name: WithRoutingMode
+  nameWithType: EdgeDefinition.WithRoutingMode
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode

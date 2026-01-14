@@ -30,6 +30,7 @@ public class BackgroundRendererRegistry
   private readonly List<IBackgroundRenderer> _renderers = new();
   private IBackgroundRenderer? _singleRenderer;
   private bool _useSingleMode;
+  private Canvas? _lastCanvas;
 
   /// <summary>
   /// Gets whether there are any background renderers registered.
@@ -55,7 +56,12 @@ public class BackgroundRendererRegistry
   /// <returns>True if the renderer was found and removed.</returns>
   public bool Remove(IBackgroundRenderer renderer)
   {
-    return _renderers.Remove(renderer);
+    var removed = _renderers.Remove(renderer);
+    if (removed && _lastCanvas != null)
+    {
+      renderer.Cleanup(_lastCanvas);
+    }
+    return removed;
   }
 
   /// <summary>
@@ -64,6 +70,9 @@ public class BackgroundRendererRegistry
   /// <param name="renderer">The renderer to use, or null to clear.</param>
   public void SetSingle(IBackgroundRenderer? renderer)
   {
+    // Cleanup old renderers before replacing
+    CleanupAllRenderers();
+
     _useSingleMode = true;
     _singleRenderer = renderer;
     _renderers.Clear();
@@ -74,9 +83,32 @@ public class BackgroundRendererRegistry
   /// </summary>
   public void Clear()
   {
+    // Cleanup all renderers before clearing
+    CleanupAllRenderers();
+
     _renderers.Clear();
     _singleRenderer = null;
     _useSingleMode = false;
+  }
+
+  /// <summary>
+  /// Cleans up all currently registered renderers.
+  /// </summary>
+  private void CleanupAllRenderers()
+  {
+    if (_lastCanvas == null) return;
+
+    if (_useSingleMode)
+    {
+      _singleRenderer?.Cleanup(_lastCanvas);
+    }
+    else
+    {
+      foreach (var renderer in _renderers)
+      {
+        renderer.Cleanup(_lastCanvas);
+      }
+    }
   }
 
   /// <summary>
@@ -86,6 +118,8 @@ public class BackgroundRendererRegistry
   /// <param name="context">The rendering context.</param>
   public void Render(Canvas canvas, BackgroundRenderContext context)
   {
+    _lastCanvas = canvas;
+
     if (_useSingleMode)
     {
       _singleRenderer?.Render(canvas, context);

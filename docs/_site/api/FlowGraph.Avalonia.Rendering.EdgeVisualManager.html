@@ -89,7 +89,7 @@
 
 
   <h1 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager" class="text-break">
-Class EdgeVisualManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L16"><i class="bi bi-code-slash"></i></a>
+Class EdgeVisualManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -156,9 +156,9 @@ Responsible for creating, updating, and removing edge UI elements.</p>
 
   <a id="FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor*"></a>
 
-  <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeVisualManager_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager)">
-  EdgeVisualManager(RenderContext, NodeVisualManager)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager__ctor_FlowGraph_Avalonia_Rendering_RenderContext_FlowGraph_Avalonia_Rendering_NodeVisualManager_FlowGraph_Avalonia_Rendering_EdgeRenderers_EdgeRendererRegistry_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)">
+  EdgeVisualManager(RenderContext, NodeVisualManager, EdgeRendererRegistry?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new edge visual manager.</p>
@@ -166,7 +166,7 @@ Responsible for creating, updating, and removing edge UI elements.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager)</code></pre>
+    <pre><code class="lang-csharp hljs">public EdgeVisualManager(RenderContext renderContext, NodeVisualManager nodeVisualManager, EdgeRendererRegistry? edgeRendererRegistry = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -176,6 +176,9 @@ Responsible for creating, updating, and removing edge UI elements.</p>
 </dd>
     <dt><code>nodeVisualManager</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeVisualManager.html">NodeVisualManager</a></dt>
     <dd><p>Node visual manager for port position calculations.</p>
+</dd>
+    <dt><code>edgeRendererRegistry</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry.html">EdgeRendererRegistry</a></dt>
+    <dd><p>Optional registry for custom edge renderers.</p>
 </dd>
   </dl>
 
@@ -198,7 +201,7 @@ Responsible for creating, updating, and removing edge UI elements.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_Clear" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear">
   Clear()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Clears all tracked edge visuals.
@@ -226,7 +229,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeEndpointHandles_System_String_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)">
   GetEdgeEndpointHandles(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the endpoint handles for an edge.</p>
@@ -265,7 +268,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeLabel_System_String_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)">
   GetEdgeLabel(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the label for an edge.</p>
@@ -304,7 +307,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeMarkers_System_String_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)">
   GetEdgeMarkers(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the markers (arrows) for an edge.</p>
@@ -343,7 +346,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeVisiblePath_System_String_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(System.String)">
   GetEdgeVisiblePath(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the visible path for an edge.</p>
@@ -382,7 +385,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)">
   GetEdgeVisual(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the hit area path for an edge.</p>
@@ -421,7 +424,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdge_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)">
   RenderEdge(Canvas, Edge, Graph, ThemeResources)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L191"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renders a single edge with its markers and optional label.</p>
@@ -469,7 +472,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdges_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_Avalonia_Controls_Shapes_Path_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)">
   RenderEdges(Canvas, Graph, ThemeResources, Path?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L117"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renders all edges in the graph to the canvas.</p>
@@ -511,7 +514,7 @@ Note: This does not remove them from the canvas.</p>
 
   <h3 id="FlowGraph_Avalonia_Rendering_EdgeVisualManager_UpdateEdgeSelection_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)">
   UpdateEdgeSelection(Edge, ThemeResources)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L314"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L336"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the selection visual state of an edge.</p>
@@ -547,7 +550,7 @@ Note: This does not remove them from the canvas.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/prismify-co/FlowGraph/blob/master/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L16" class="edit-link">Edit this page</a>
+          <a href="https://github.com/prismify-co/FlowGraph/blob/develop/FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs/#L17" class="edit-link">Edit this page</a>
         </div>
 
 

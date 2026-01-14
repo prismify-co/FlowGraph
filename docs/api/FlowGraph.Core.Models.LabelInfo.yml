@@ -1,0 +1,828 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Models.LabelInfo
+  commentId: T:FlowGraph.Core.Models.LabelInfo
+  id: LabelInfo
+  parent: FlowGraph.Core.Models
+  children:
+  - FlowGraph.Core.Models.LabelInfo.#ctor(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double,System.Double)
+  - FlowGraph.Core.Models.LabelInfo.Anchor
+  - FlowGraph.Core.Models.LabelInfo.OffsetX
+  - FlowGraph.Core.Models.LabelInfo.OffsetY
+  - FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+  - FlowGraph.Core.Models.LabelInfo.Text
+  - FlowGraph.Core.Models.LabelInfo.ToString
+  - FlowGraph.Core.Models.LabelInfo.op_Implicit(System.String)~FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: LabelInfo
+  nameWithType: LabelInfo
+  fullName: FlowGraph.Core.Models.LabelInfo
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LabelInfo
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 68
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Provides enhanced label positioning for edges with anchor points and offsets.
+  remarks: >-
+    <p>
+
+    <xref href="FlowGraph.Core.Models.LabelInfo" data-throw-if-not-resolved="false"></xref> extends the basic <xref href="FlowGraph.Core.Models.EdgeDefinition.Label" data-throw-if-not-resolved="false"></xref> string 
+
+    by adding precise positioning control. When both <xref href="FlowGraph.Core.Models.EdgeDefinition.Label" data-throw-if-not-resolved="false"></xref> 
+
+    and <xref href="FlowGraph.Core.Models.EdgeDefinition.LabelInfo" data-throw-if-not-resolved="false"></xref> are present, <xref href="FlowGraph.Core.Models.EdgeDefinition.LabelInfo" data-throw-if-not-resolved="false"></xref> 
+
+    takes precedence.
+
+    </p>
+
+    <p>
+
+    This design allows backward compatibility with existing code that uses the simple Label 
+
+    property while enabling advanced positioning for new scenarios.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Simple centered label
+
+    var label = new LabelInfo("Connection");
+
+
+    // Label near the start with offset
+
+    var startLabel = new LabelInfo("Out", LabelAnchor.Start, OffsetY: -15);
+
+
+    // Label near the end, shifted right
+
+    var endLabel = new LabelInfo("In", LabelAnchor.End, OffsetX: 10);
+
+
+    // Use with edge definition
+
+    var edge = new EdgeDefinition
+
+    {
+        Id = "e1",
+        Source = "node1",
+        Target = "node2",
+        SourcePort = "out",
+        TargetPort = "in",
+        LabelInfo = new LabelInfo("Yes", LabelAnchor.Start, OffsetY: -10)
+    };</code></pre>
+  syntax:
+    content: 'public sealed record LabelInfo : IEquatable<LabelInfo>'
+    content.vb: Public NotInheritable Class LabelInfo Implements IEquatable(Of LabelInfo)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{FlowGraph.Core.Models.LabelInfo}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: FlowGraph.Core.Models.LabelInfo.Text
+  commentId: P:FlowGraph.Core.Models.LabelInfo.Text
+  id: Text
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: LabelInfo.Text
+  fullName: FlowGraph.Core.Models.LabelInfo.Text
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Text
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 73
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The text content of the label.
+  example: []
+  syntax:
+    content: public string Text { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: FlowGraph.Core.Models.LabelInfo.Text*
+- uid: FlowGraph.Core.Models.LabelInfo.Anchor
+  commentId: P:FlowGraph.Core.Models.LabelInfo.Anchor
+  id: Anchor
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: Anchor
+  nameWithType: LabelInfo.Anchor
+  fullName: FlowGraph.Core.Models.LabelInfo.Anchor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Anchor
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 85
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Where along the edge to anchor the label.
+  remarks: '<ul><li><xref href="FlowGraph.Core.Models.LabelAnchor.Start" data-throw-if-not-resolved="false"></xref>: ~25% along the edge path</li><li><xref href="FlowGraph.Core.Models.LabelAnchor.Center" data-throw-if-not-resolved="false"></xref>: ~50% along the edge path (default)</li><li><xref href="FlowGraph.Core.Models.LabelAnchor.End" data-throw-if-not-resolved="false"></xref>: ~75% along the edge path</li></ul>'
+  example: []
+  syntax:
+    content: public LabelAnchor Anchor { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.LabelAnchor
+    content.vb: Public Property Anchor As LabelAnchor
+  overload: FlowGraph.Core.Models.LabelInfo.Anchor*
+- uid: FlowGraph.Core.Models.LabelInfo.OffsetX
+  commentId: P:FlowGraph.Core.Models.LabelInfo.OffsetX
+  id: OffsetX
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: LabelInfo.OffsetX
+  fullName: FlowGraph.Core.Models.LabelInfo.OffsetX
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetX
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 90
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Horizontal offset in pixels from the anchor point. Positive values move right.
+  example: []
+  syntax:
+    content: public double OffsetX { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property OffsetX As Double
+  overload: FlowGraph.Core.Models.LabelInfo.OffsetX*
+- uid: FlowGraph.Core.Models.LabelInfo.OffsetY
+  commentId: P:FlowGraph.Core.Models.LabelInfo.OffsetY
+  id: OffsetY
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: LabelInfo.OffsetY
+  fullName: FlowGraph.Core.Models.LabelInfo.OffsetY
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetY
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 95
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Vertical offset in pixels from the anchor point. Positive values move down.
+  example: []
+  syntax:
+    content: public double OffsetY { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property OffsetY As Double
+  overload: FlowGraph.Core.Models.LabelInfo.OffsetY*
+- uid: FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+  commentId: P:FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+  id: PerpendicularOffset
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: PerpendicularOffset
+  nameWithType: LabelInfo.PerpendicularOffset
+  fullName: FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PerpendicularOffset
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 123
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Perpendicular offset from the edge path, in pixels.
+
+    Positive values offset to the "right" of the edge direction (as viewed from source to target).
+
+    Negative values offset to the "left" of the edge direction.
+  remarks: >-
+    <p>
+
+    This offset is applied perpendicular to the edge direction at the anchor point,
+
+    similar to GoJS's segmentOffset behavior. The offset rotates with the edge,
+
+    so a positive value always moves the label to the right side of the edge
+
+    when viewed from source to target.
+
+    </p>
+
+    <p>
+
+    Use this to separate labels on adjacent parallel edges or to consistently
+
+    position labels on one side of edges regardless of their direction.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Label 10px to the right of a horizontal edge (appears below)
+
+    var rightLabel = new LabelInfo("0.85", perpOffset: 10);
+
+
+    // Label 10px to the left of the edge (appears above)
+
+    var leftLabel = new LabelInfo("0.65", perpOffset: -10);</code></pre>
+  syntax:
+    content: public double PerpendicularOffset { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property PerpendicularOffset As Double
+  overload: FlowGraph.Core.Models.LabelInfo.PerpendicularOffset*
+- uid: FlowGraph.Core.Models.LabelInfo.#ctor(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Models.LabelInfo.#ctor(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double,System.Double)
+  id: '#ctor(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double,System.Double)'
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: LabelInfo(string, LabelAnchor, double, double, double)
+  nameWithType: LabelInfo.LabelInfo(string, LabelAnchor, double, double, double)
+  fullName: FlowGraph.Core.Models.LabelInfo.LabelInfo(string, FlowGraph.Core.Models.LabelAnchor, double, double, double)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 133
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new label info with the specified text and positioning.
+  example: []
+  syntax:
+    content: public LabelInfo(string text, LabelAnchor anchor = LabelAnchor.Center, double offsetX = 0, double offsetY = 0, double perpOffset = 0)
+    parameters:
+    - id: text
+      type: System.String
+      description: The label text.
+    - id: anchor
+      type: FlowGraph.Core.Models.LabelAnchor
+      description: Where along the edge to position the label. Defaults to center.
+    - id: offsetX
+      type: System.Double
+      description: Horizontal offset from anchor point. Defaults to 0.
+    - id: offsetY
+      type: System.Double
+      description: Vertical offset from anchor point. Defaults to 0.
+    - id: perpOffset
+      type: System.Double
+      description: Perpendicular offset from edge path. Positive = right of edge direction. Defaults to 0.
+    content.vb: Public Sub New(text As String, anchor As LabelAnchor = LabelAnchor.Center, offsetX As Double = 0, offsetY As Double = 0, perpOffset As Double = 0)
+  overload: FlowGraph.Core.Models.LabelInfo.#ctor*
+  nameWithType.vb: LabelInfo.New(String, LabelAnchor, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.Models.LabelInfo.New(String, FlowGraph.Core.Models.LabelAnchor, Double, Double, Double)
+  name.vb: New(String, LabelAnchor, Double, Double, Double)
+- uid: FlowGraph.Core.Models.LabelInfo.op_Implicit(System.String)~FlowGraph.Core.Models.LabelInfo
+  commentId: M:FlowGraph.Core.Models.LabelInfo.op_Implicit(System.String)~FlowGraph.Core.Models.LabelInfo
+  id: op_Implicit(System.String)~FlowGraph.Core.Models.LabelInfo
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: implicit operator LabelInfo(string)
+  nameWithType: LabelInfo.implicit operator LabelInfo(string)
+  fullName: FlowGraph.Core.Models.LabelInfo.implicit operator FlowGraph.Core.Models.LabelInfo(string)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Implicit
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 145
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a LabelInfo from a simple string label (centered, no offset).
+  example: []
+  syntax:
+    content: public static implicit operator LabelInfo(string text)
+    parameters:
+    - id: text
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.LabelInfo
+    content.vb: Public Shared Widening Operator CType(text As String) As LabelInfo
+  overload: FlowGraph.Core.Models.LabelInfo.op_Implicit*
+  nameWithType.vb: LabelInfo.CType(String)
+  fullName.vb: FlowGraph.Core.Models.LabelInfo.CType(String)
+  name.vb: CType(String)
+- uid: FlowGraph.Core.Models.LabelInfo.ToString
+  commentId: M:FlowGraph.Core.Models.LabelInfo.ToString
+  id: ToString
+  parent: FlowGraph.Core.Models.LabelInfo
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: LabelInfo.ToString()
+  fullName: FlowGraph.Core.Models.LabelInfo.ToString()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/LabelInfo.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToString
+    path: ../FlowGraph.Core/Models/LabelInfo.cs
+    startLine: 150
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a simple centered label from this info (extracts just the text).
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: FlowGraph.Core.Models.LabelInfo.ToString*
+references:
+- uid: FlowGraph.Core.Models.LabelInfo
+  commentId: T:FlowGraph.Core.Models.LabelInfo
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.LabelInfo.html
+  name: LabelInfo
+  nameWithType: LabelInfo
+  fullName: FlowGraph.Core.Models.LabelInfo
+- uid: FlowGraph.Core.Models.EdgeDefinition.Label
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Label
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Label
+  name: Label
+  nameWithType: EdgeDefinition.Label
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Label
+- uid: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_LabelInfo
+  name: LabelInfo
+  nameWithType: EdgeDefinition.LabelInfo
+  fullName: FlowGraph.Core.Models.EdgeDefinition.LabelInfo
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{FlowGraph.Core.Models.LabelInfo}
+  commentId: T:System.IEquatable{FlowGraph.Core.Models.LabelInfo}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<LabelInfo>
+  nameWithType: IEquatable<LabelInfo>
+  fullName: System.IEquatable<FlowGraph.Core.Models.LabelInfo>
+  nameWithType.vb: IEquatable(Of LabelInfo)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Models.LabelInfo)
+  name.vb: IEquatable(Of LabelInfo)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Models.LabelInfo
+    name: LabelInfo
+    href: FlowGraph.Core.Models.LabelInfo.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.LabelInfo
+    name: LabelInfo
+    href: FlowGraph.Core.Models.LabelInfo.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Models.LabelInfo.Text*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.Text
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_Text
+  name: Text
+  nameWithType: LabelInfo.Text
+  fullName: FlowGraph.Core.Models.LabelInfo.Text
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Models.LabelAnchor.Start
+  commentId: F:FlowGraph.Core.Models.LabelAnchor.Start
+  href: FlowGraph.Core.Models.LabelAnchor.html#FlowGraph_Core_Models_LabelAnchor_Start
+  name: Start
+  nameWithType: LabelAnchor.Start
+  fullName: FlowGraph.Core.Models.LabelAnchor.Start
+- uid: FlowGraph.Core.Models.LabelAnchor.Center
+  commentId: F:FlowGraph.Core.Models.LabelAnchor.Center
+  href: FlowGraph.Core.Models.LabelAnchor.html#FlowGraph_Core_Models_LabelAnchor_Center
+  name: Center
+  nameWithType: LabelAnchor.Center
+  fullName: FlowGraph.Core.Models.LabelAnchor.Center
+- uid: FlowGraph.Core.Models.LabelAnchor.End
+  commentId: F:FlowGraph.Core.Models.LabelAnchor.End
+  href: FlowGraph.Core.Models.LabelAnchor.html#FlowGraph_Core_Models_LabelAnchor_End
+  name: End
+  nameWithType: LabelAnchor.End
+  fullName: FlowGraph.Core.Models.LabelAnchor.End
+- uid: FlowGraph.Core.Models.LabelInfo.Anchor*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.Anchor
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_Anchor
+  name: Anchor
+  nameWithType: LabelInfo.Anchor
+  fullName: FlowGraph.Core.Models.LabelInfo.Anchor
+- uid: FlowGraph.Core.Models.LabelAnchor
+  commentId: T:FlowGraph.Core.Models.LabelAnchor
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.LabelAnchor.html
+  name: LabelAnchor
+  nameWithType: LabelAnchor
+  fullName: FlowGraph.Core.Models.LabelAnchor
+- uid: FlowGraph.Core.Models.LabelInfo.OffsetX*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.OffsetX
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_OffsetX
+  name: OffsetX
+  nameWithType: LabelInfo.OffsetX
+  fullName: FlowGraph.Core.Models.LabelInfo.OffsetX
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Models.LabelInfo.OffsetY*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.OffsetY
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_OffsetY
+  name: OffsetY
+  nameWithType: LabelInfo.OffsetY
+  fullName: FlowGraph.Core.Models.LabelInfo.OffsetY
+- uid: FlowGraph.Core.Models.LabelInfo.PerpendicularOffset*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_PerpendicularOffset
+  name: PerpendicularOffset
+  nameWithType: LabelInfo.PerpendicularOffset
+  fullName: FlowGraph.Core.Models.LabelInfo.PerpendicularOffset
+- uid: FlowGraph.Core.Models.LabelInfo.#ctor*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.#ctor
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo__ctor_System_String_FlowGraph_Core_Models_LabelAnchor_System_Double_System_Double_System_Double_
+  name: LabelInfo
+  nameWithType: LabelInfo.LabelInfo
+  fullName: FlowGraph.Core.Models.LabelInfo.LabelInfo
+  nameWithType.vb: LabelInfo.New
+  fullName.vb: FlowGraph.Core.Models.LabelInfo.New
+  name.vb: New
+- uid: FlowGraph.Core.Models.LabelInfo.op_Implicit*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.op_Implicit
+  name: implicit operator
+  nameWithType: LabelInfo.implicit operator
+  fullName: FlowGraph.Core.Models.LabelInfo.implicit operator
+  nameWithType.vb: LabelInfo.CType
+  fullName.vb: FlowGraph.Core.Models.LabelInfo.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Models.LabelInfo.ToString*
+  commentId: Overload:FlowGraph.Core.Models.LabelInfo.ToString
+  href: FlowGraph.Core.Models.LabelInfo.html#FlowGraph_Core_Models_LabelInfo_ToString
+  name: ToString
+  nameWithType: LabelInfo.ToString
+  fullName: FlowGraph.Core.Models.LabelInfo.ToString

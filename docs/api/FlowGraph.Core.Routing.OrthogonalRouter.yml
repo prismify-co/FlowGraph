@@ -18,11 +18,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/OrthogonalRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OrthogonalRouter
     path: ../FlowGraph.Core/Routing/OrthogonalRouter.cs
-    startLine: 6
+    startLine: 10
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -30,6 +30,10 @@ items:
     Routes edges using orthogonal (right-angle) paths that avoid obstacles.
 
     Uses A* pathfinding on a visibility graph.
+  remarks: >-
+    Supports <xref href="FlowGraph.Core.Models.EdgeRoutingMode.Guided" data-throw-if-not-resolved="false"></xref> mode where the router
+
+    calculates paths that pass through user-defined waypoints while avoiding obstacles.
   example: []
   syntax:
     content: 'public class OrthogonalRouter : IEdgeRouter'
@@ -60,11 +64,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/OrthogonalRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Margin
     path: ../FlowGraph.Core/Routing/OrthogonalRouter.cs
-    startLine: 11
+    startLine: 15
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -91,11 +95,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/OrthogonalRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PreferredOffset
     path: ../FlowGraph.Core/Routing/OrthogonalRouter.cs
-    startLine: 16
+    startLine: 20
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -122,11 +126,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/OrthogonalRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Route
     path: ../FlowGraph.Core/Routing/OrthogonalRouter.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -149,6 +153,12 @@ items:
   implements:
   - FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
 references:
+- uid: FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  commentId: F:FlowGraph.Core.Models.EdgeRoutingMode.Guided
+  href: FlowGraph.Core.Models.EdgeRoutingMode.html#FlowGraph_Core_Models_EdgeRoutingMode_Guided
+  name: Guided
+  nameWithType: EdgeRoutingMode.Guided
+  fullName: FlowGraph.Core.Models.EdgeRoutingMode.Guided
 - uid: FlowGraph.Core.Routing
   commentId: N:FlowGraph.Core.Routing
   href: FlowGraph.html

@@ -89,17 +89,27 @@ public partial class FlowCanvas
         }
     }
 
+    private static int _renderAllCount = 0;
+    private static long _totalRenderMs = 0;
+
     private void RenderAll()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         FlowGraphLogger.Debug(LogCategory.Rendering, "RenderAll called", "FlowCanvas.RenderAll");
 
-        // Clear grid canvas once at the start of rendering
-        _gridCanvas?.Children.Clear();
+        // OPTIMIZATION: Don't clear grid canvas every frame - the grid control handles its own updates
+        // _gridCanvas?.Children.Clear();  // Removed: causes unnecessary layout invalidation
 
         RenderGrid();
         RenderCustomBackgrounds();
-        RenderShapes();
+        // Note: Shapes are now rendered within RenderElements() for proper Z-order
         RenderElements();
+
+        sw.Stop();
+        _renderAllCount++;
+        _totalRenderMs += sw.ElapsedMilliseconds;
+        // Log every call to see render frequency
+        Debug.WriteLine($"[RenderAll] #{_renderAllCount} took {sw.ElapsedMilliseconds}ms (total={_totalRenderMs}ms)");
     }
 
     private void RenderGrid()
@@ -233,46 +243,86 @@ public partial class FlowCanvas
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
         var totalNodes = Graph.Elements.Nodes.Count();
         var totalEdges = Graph.Elements.Edges.Count();
+        var totalShapes = Graph.Elements.OfElementType<ShapeElement>().Count();
 
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
+        _shapeVisualManager?.Clear();
 
         var clearTime = sw?.ElapsedMilliseconds ?? 0;
 
-        // Render order for proper z-index:
-        // 1. Groups (bottom) - rendered first in RenderNodes
-        // 2. Edges (middle) - rendered after groups, before regular nodes  
-        // 3. Regular nodes (top) - rendered last in RenderNodes
-        // 4. Ports are rendered with their nodes
+        // Element-first rendering orchestrator:
+        // Iterate all elements by ZIndex and dispatch to appropriate renderer.
+        // This ensures consistent Z-order across nodes, edges, and shapes.
+        //
+        // Note: Edges are collected and batch-rendered for routing efficiency.
+        // Shapes and nodes are rendered immediately in Z-order.
 
-        // Render groups first (they go behind everything)
-        RenderGroupNodes();
-        var groupTime = sw?.ElapsedMilliseconds ?? 0;
+        var edgesToRender = new List<Edge>();
+        int nodeCount_rendered = 0, shapeCount_rendered = 0;
 
-        // Render edges (on top of groups)
-        RenderEdges();
-        var edgeTime = sw?.ElapsedMilliseconds ?? 0;
+        // Setup shape render context
+        if (_shapeVisualManager != null)
+        {
+            var renderContext = new Rendering.RenderContext(Settings);
+            renderContext.SetViewport(_viewport);
+            _shapeVisualManager.SetRenderContext(renderContext);
+        }
 
-        // Render regular nodes and ports (on top of edges)
-        RenderRegularNodes();
-        var nodeTime = sw?.ElapsedMilliseconds ?? 0;
+        foreach (var element in Graph.Elements.ByZIndex)
+        {
+            if (!element.IsVisible) continue;
+
+            if (element is Node node)
+            {
+                // Skip nodes hidden by group collapse
+                if (!_graphRenderer.IsNodeVisible(Graph, node)) continue;
+
+                _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
+                nodeCount_rendered++;
+            }
+            else if (element is Edge edge)
+            {
+                // Collect edges for batch rendering (routing algorithm needs all edges)
+                edgesToRender.Add(edge);
+            }
+            else if (element is ShapeElement shape)
+            {
+                // Render shape immediately at its Z-index position
+                _shapeVisualManager?.AddOrUpdateShape(shape);
+                shapeCount_rendered++;
+            }
+        }
+
+        // Batch-render all edges for routing efficiency
+        // Edges are inserted at appropriate Z-index by the edge renderer
+        if (edgesToRender.Any())
+        {
+            _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+            ApplyEdgeOpacityOverrides();
+        }
 
         if (DebugRenderingPerformance && sw != null)
         {
             sw.Stop();
-            var renderedNodes = _mainCanvas.Children.OfType<Control>().Count(c => c.Tag is Node);
+            var renderedVisuals = _mainCanvas.Children.Count;
             LogDebug($"[RenderGraph] Total: {sw.ElapsedMilliseconds}ms | " +
-                $"Clear: {clearTime}ms, Groups: {groupTime - clearTime}ms, " +
-                $"Edges: {edgeTime - groupTime}ms, Nodes: {nodeTime - edgeTime}ms | " +
-                $"Graph: {totalNodes}n/{totalEdges}e, Rendered: ~{renderedNodes} visuals");
+                $"Clear: {clearTime}ms, Render: {sw.ElapsedMilliseconds - clearTime}ms | " +
+                $"Graph: {totalNodes}n/{totalEdges}e/{totalShapes}s, Rendered: {nodeCount_rendered}n/{edgesToRender.Count}e/{shapeCount_rendered}s, Visuals: {renderedVisuals}");
         }
     }
+
+    // Cache for O(1) parent lookups in GetGroupDepth (avoids O(n) FirstOrDefault per group)
+    private Dictionary<string, Node>? _nodeByIdCache;
 
     private void RenderGroupNodes()
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
+
+        // Build node lookup cache for O(1) parent lookups
+        _nodeByIdCache = Graph.Elements.Nodes.ToDictionary(n => n.Id);
 
         // Render groups ordered by depth (outermost first)
         var groups = Graph.Elements.Nodes
@@ -350,15 +400,29 @@ public partial class FlowCanvas
         }
     }
 
+    /// <summary>
+    /// Gets the nesting depth of a group (0 = top level).
+    /// Uses cached dictionary for O(1) parent lookup instead of O(n) FirstOrDefault.
+    /// </summary>
     private int GetGroupDepth(Node node)
     {
         int depth = 0;
-        var current = node;
-        while (!string.IsNullOrEmpty(current.ParentGroupId))
+        var currentParentId = node.ParentGroupId;
+        while (!string.IsNullOrEmpty(currentParentId))
         {
             depth++;
-            current = Graph?.Elements.Nodes.FirstOrDefault(n => n.Id == current.ParentGroupId);
-            if (current == null) break;
+            // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
+            if (_nodeByIdCache != null && _nodeByIdCache.TryGetValue(currentParentId, out var parent))
+            {
+                currentParentId = parent.ParentGroupId;
+            }
+            else
+            {
+                // Fallback to slow path if cache not available
+                var parentNode = Graph?.Elements.Nodes.FirstOrDefault(n => n.Id == currentParentId);
+                if (parentNode == null) break;
+                currentParentId = parentNode.ParentGroupId;
+            }
         }
         return depth;
     }
@@ -367,12 +431,20 @@ public partial class FlowCanvas
     {
         if (_mainCanvas == null || Graph == null || _theme == null) return;
 
-        // Skip if using direct rendering - edges are drawn by DirectGraphRenderer
-        if (_useDirectRendering) return;
+        // In direct rendering mode, force a full update to ensure edges are redrawn
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            // Use Update() instead of just InvalidateVisual() to ensure the graph state is current
+            _directRenderer.Update(Graph, _viewport, _theme);
+            return;
+        }
 
         var sw = DebugRenderingPerformance ? Stopwatch.StartNew() : null;
 
         _graphRenderer.RenderEdges(_mainCanvas, Graph, _theme);
+
+        // Force visual update after edge rendering
+        _mainCanvas.InvalidateVisual();
 
         var renderTime = sw?.ElapsedMilliseconds ?? 0;
 

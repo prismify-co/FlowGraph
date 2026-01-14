@@ -5,6 +5,7 @@ items:
   id: SmartBezierRouter
   parent: FlowGraph.Core.Routing
   children:
+  - FlowGraph.Core.Routing.SmartBezierRouter.Instance
   - FlowGraph.Core.Routing.SmartBezierRouter.Margin
   - FlowGraph.Core.Routing.SmartBezierRouter.MinPortOffset
   - FlowGraph.Core.Routing.SmartBezierRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
@@ -18,18 +19,32 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/SmartBezierRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SmartBezierRouter
     path: ../FlowGraph.Core/Routing/SmartBezierRouter.cs
-    startLine: 6
+    startLine: 19
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
   summary: >-
-    Routes edges around obstacles using smooth curves.
+    Routes edges around obstacles using smooth curves with obstacle avoidance.
 
     Generates waypoints that can be used to create multi-segment bezier curves.
+  remarks: >-
+    <p>
+
+    SmartBezierRouter extends basic bezier routing with obstacle avoidance:
+
+    <ul><li>Detects nodes blocking the direct path</li><li>Routes around obstacles going above or below based on available space</li><li>Maintains smooth curves through waypoints</li></ul>
+
+    </p>
+
+    <p>
+
+    For simple bezier curves without obstacle avoidance, use <xref href="FlowGraph.Core.Routing.BezierRouter" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
   example: []
   syntax:
     content: 'public class SmartBezierRouter : IEdgeRouter'
@@ -46,6 +61,37 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: FlowGraph.Core.Routing.SmartBezierRouter.Instance
+  commentId: P:FlowGraph.Core.Routing.SmartBezierRouter.Instance
+  id: Instance
+  parent: FlowGraph.Core.Routing.SmartBezierRouter
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: SmartBezierRouter.Instance
+  fullName: FlowGraph.Core.Routing.SmartBezierRouter.Instance
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Routing/SmartBezierRouter.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Instance
+    path: ../FlowGraph.Core/Routing/SmartBezierRouter.cs
+    startLine: 24
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Routing
+  summary: Singleton instance with default settings.
+  example: []
+  syntax:
+    content: public static SmartBezierRouter Instance { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Routing.SmartBezierRouter
+    content.vb: Public Shared ReadOnly Property Instance As SmartBezierRouter
+  overload: FlowGraph.Core.Routing.SmartBezierRouter.Instance*
 - uid: FlowGraph.Core.Routing.SmartBezierRouter.Margin
   commentId: P:FlowGraph.Core.Routing.SmartBezierRouter.Margin
   id: Margin
@@ -60,11 +106,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/SmartBezierRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Margin
     path: ../FlowGraph.Core/Routing/SmartBezierRouter.cs
-    startLine: 11
+    startLine: 29
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -91,15 +137,15 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/SmartBezierRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinPortOffset
     path: ../FlowGraph.Core/Routing/SmartBezierRouter.cs
-    startLine: 16
+    startLine: 34
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
-  summary: Minimum horizontal offset from port before routing.
+  summary: Minimum horizontal offset from port before routing can turn.
   example: []
   syntax:
     content: public double MinPortOffset { get; set; }
@@ -122,11 +168,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Routing/SmartBezierRouter.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Route
     path: ../FlowGraph.Core/Routing/SmartBezierRouter.cs
-    startLine: 18
+    startLine: 37
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Routing
@@ -149,6 +195,13 @@ items:
   implements:
   - FlowGraph.Core.Routing.IEdgeRouter.Route(FlowGraph.Core.Routing.EdgeRoutingContext,FlowGraph.Core.Edge)
 references:
+- uid: FlowGraph.Core.Routing.BezierRouter
+  commentId: T:FlowGraph.Core.Routing.BezierRouter
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.BezierRouter.html
+  name: BezierRouter
+  nameWithType: BezierRouter
+  fullName: FlowGraph.Core.Routing.BezierRouter
 - uid: FlowGraph.Core.Routing
   commentId: N:FlowGraph.Core.Routing
   href: FlowGraph.html
@@ -423,6 +476,19 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: FlowGraph.Core.Routing.SmartBezierRouter.Instance*
+  commentId: Overload:FlowGraph.Core.Routing.SmartBezierRouter.Instance
+  href: FlowGraph.Core.Routing.SmartBezierRouter.html#FlowGraph_Core_Routing_SmartBezierRouter_Instance
+  name: Instance
+  nameWithType: SmartBezierRouter.Instance
+  fullName: FlowGraph.Core.Routing.SmartBezierRouter.Instance
+- uid: FlowGraph.Core.Routing.SmartBezierRouter
+  commentId: T:FlowGraph.Core.Routing.SmartBezierRouter
+  parent: FlowGraph.Core.Routing
+  href: FlowGraph.Core.Routing.SmartBezierRouter.html
+  name: SmartBezierRouter
+  nameWithType: SmartBezierRouter
+  fullName: FlowGraph.Core.Routing.SmartBezierRouter
 - uid: FlowGraph.Core.Routing.SmartBezierRouter.Margin*
   commentId: Overload:FlowGraph.Core.Routing.SmartBezierRouter.Margin
   href: FlowGraph.Core.Routing.SmartBezierRouter.html#FlowGraph_Core_Routing_SmartBezierRouter_Margin

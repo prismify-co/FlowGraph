@@ -6,6 +6,7 @@ items:
   parent: FlowGraph.Avalonia.Rendering
   children:
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateAngle(Avalonia.Point,Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point,Avalonia.Point,System.Nullable{FlowGraph.Core.PortPosition},System.Double)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateArrowMarker(Avalonia.Point,System.Double,System.Double,System.Boolean)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateBezierPath(Avalonia.Point,Avalonia.Point,System.Boolean)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentBezierPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
@@ -27,7 +28,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgePathHelper
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -64,7 +65,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreatePath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -101,7 +102,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreatePathWithWaypoints
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -143,7 +144,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentStraightPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -179,7 +180,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentBezierPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -218,7 +219,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -254,7 +255,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentSmoothPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -292,7 +293,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateBezierPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -332,11 +333,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateStraightPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 336
+    startLine: 383
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -367,11 +368,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 358
+    startLine: 405
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -405,11 +406,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateSmoothStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 383
+    startLine: 430
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -445,11 +446,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateArrowMarker
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 454
+    startLine: 501
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -491,11 +492,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CalculateAngle
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 495
+    startLine: 542
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -512,6 +513,78 @@ items:
       type: System.Double
     content.vb: Public Shared Function CalculateAngle(from As Point, [to] As Point) As Double
   overload: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateAngle*
+- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point,Avalonia.Point,System.Nullable{FlowGraph.Core.PortPosition},System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point,Avalonia.Point,System.Nullable{FlowGraph.Core.PortPosition},System.Double)
+  id: CalculateArrowAngle(Avalonia.Point,Avalonia.Point,System.Nullable{FlowGraph.Core.PortPosition},System.Double)
+  parent: FlowGraph.Avalonia.Rendering.EdgePathHelper
+  langs:
+  - csharp
+  - vb
+  name: CalculateArrowAngle(Point, Point, PortPosition?, double)
+  nameWithType: EdgePathHelper.CalculateArrowAngle(Point, Point, PortPosition?, double)
+  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point, Avalonia.Point, FlowGraph.Core.PortPosition?, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CalculateArrowAngle
+    path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
+    startLine: 569
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Calculates the arrow angle using a hybrid approach that combines port position (logical direction)
+
+    with path geometry (visual direction) for consistent, accurate arrow rendering.
+  remarks: >-
+    <p>
+
+    This method implements a hybrid approach:
+
+    1. If port position is provided, get the expected angle from port side
+
+    2. Calculate the actual segment angle from path geometry
+
+    3. If segment angle is within threshold of expected, use port direction (cleaner)
+
+    4. Otherwise, use actual segment direction (handles unusual routing)
+
+    </p>
+
+    <p>
+
+    This ensures consistency between custom renderers and default rendering while
+
+    handling edge cases like curved paths or unusual node arrangements.
+
+    </p>
+  example: []
+  syntax:
+    content: public static double CalculateArrowAngle(Point tip, Point fromPoint, PortPosition? targetPortPosition = null, double angleThreshold = 0.7853981633974483)
+    parameters:
+    - id: tip
+      type: Avalonia.Point
+      description: The arrow tip point (target position).
+    - id: fromPoint
+      type: Avalonia.Point
+      description: The point the edge comes from (preceding the tip).
+    - id: targetPortPosition
+      type: System.Nullable{FlowGraph.Core.PortPosition}
+      description: Optional port position for logical direction hint.
+    - id: angleThreshold
+      type: System.Double
+      description: 'Angle tolerance in radians for preferring port direction (default: π/4 = 45°).'
+    return:
+      type: System.Double
+      description: The angle in radians for the arrow direction.
+    content.vb: Public Shared Function CalculateArrowAngle(tip As Point, fromPoint As Point, targetPortPosition As PortPosition? = Nothing, angleThreshold As Double = 0.7853981633974483) As Double
+  overload: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle*
+  nameWithType.vb: EdgePathHelper.CalculateArrowAngle(Point, Point, PortPosition?, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle(Avalonia.Point, Avalonia.Point, FlowGraph.Core.PortPosition?, Double)
+  name.vb: CalculateArrowAngle(Point, Point, PortPosition?, Double)
 references:
 - uid: FlowGraph.Avalonia.Rendering
   commentId: N:FlowGraph.Avalonia.Rendering
@@ -1076,3 +1149,55 @@ references:
   name: CalculateAngle
   nameWithType: EdgePathHelper.CalculateAngle
   fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateAngle
+- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle
+  href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CalculateArrowAngle_Avalonia_Point_Avalonia_Point_System_Nullable_FlowGraph_Core_PortPosition__System_Double_
+  name: CalculateArrowAngle
+  nameWithType: EdgePathHelper.CalculateArrowAngle
+  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CalculateArrowAngle
+- uid: System.Nullable{FlowGraph.Core.PortPosition}
+  commentId: T:System.Nullable{FlowGraph.Core.PortPosition}
+  parent: System
+  definition: System.Nullable`1
+  href: FlowGraph.Core.PortPosition.html
+  name: PortPosition?
+  nameWithType: PortPosition?
+  fullName: FlowGraph.Core.PortPosition?
+  spec.csharp:
+  - uid: FlowGraph.Core.PortPosition
+    name: PortPosition
+    href: FlowGraph.Core.PortPosition.html
+  - name: '?'
+  spec.vb:
+  - uid: FlowGraph.Core.PortPosition
+    name: PortPosition
+    href: FlowGraph.Core.PortPosition.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

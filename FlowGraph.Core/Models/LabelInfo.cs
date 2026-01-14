@@ -96,18 +96,48 @@ public sealed record LabelInfo
   public double OffsetY { get; init; }
 
   /// <summary>
+  /// Perpendicular offset from the edge path, in pixels.
+  /// Positive values offset to the "right" of the edge direction (as viewed from source to target).
+  /// Negative values offset to the "left" of the edge direction.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// This offset is applied perpendicular to the edge direction at the anchor point,
+  /// similar to GoJS's segmentOffset behavior. The offset rotates with the edge,
+  /// so a positive value always moves the label to the right side of the edge
+  /// when viewed from source to target.
+  /// </para>
+  /// <para>
+  /// Use this to separate labels on adjacent parallel edges or to consistently
+  /// position labels on one side of edges regardless of their direction.
+  /// </para>
+  /// </remarks>
+  /// <example>
+  /// <code>
+  /// // Label 10px to the right of a horizontal edge (appears below)
+  /// var rightLabel = new LabelInfo("0.85", perpOffset: 10);
+  /// 
+  /// // Label 10px to the left of the edge (appears above)
+  /// var leftLabel = new LabelInfo("0.65", perpOffset: -10);
+  /// </code>
+  /// </example>
+  public double PerpendicularOffset { get; init; }
+
+  /// <summary>
   /// Creates a new label info with the specified text and positioning.
   /// </summary>
   /// <param name="text">The label text.</param>
   /// <param name="anchor">Where along the edge to position the label. Defaults to center.</param>
   /// <param name="offsetX">Horizontal offset from anchor point. Defaults to 0.</param>
   /// <param name="offsetY">Vertical offset from anchor point. Defaults to 0.</param>
-  public LabelInfo(string text, LabelAnchor anchor = LabelAnchor.Center, double offsetX = 0, double offsetY = 0)
+  /// <param name="perpOffset">Perpendicular offset from edge path. Positive = right of edge direction. Defaults to 0.</param>
+  public LabelInfo(string text, LabelAnchor anchor = LabelAnchor.Center, double offsetX = 0, double offsetY = 0, double perpOffset = 0)
   {
     Text = text ?? throw new ArgumentNullException(nameof(text));
     Anchor = anchor;
     OffsetX = offsetX;
     OffsetY = offsetY;
+    PerpendicularOffset = perpOffset;
   }
 
   /// <summary>

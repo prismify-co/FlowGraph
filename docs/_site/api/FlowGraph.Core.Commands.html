@@ -117,7 +117,8 @@ Used when an action was performed through UI and we just need to track it for un
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Commands.CommandHistory.html">CommandHistory</a></dt>
-      <dd><p>Manages command history for undo/redo functionality.</p>
+      <dd><p>Manages command history for undo/redo functionality.
+Uses a bounded deque structure for O(1) trimming operations.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -133,6 +134,12 @@ Used when an action was performed through UI and we just need to track it for un
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Commands.GroupNodesCommand.html">GroupNodesCommand</a></dt>
       <dd><p>Command to group selected nodes into a new group.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Commands.MoveElementsCommand.html">MoveElementsCommand</a></dt>
+      <dd><p>Command to move one or more elements (nodes, shapes) to new positions.
+Works with any ICanvasElement that has a settable Position property.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -156,6 +163,12 @@ Used when an action was performed through UI and we just need to track it for un
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Commands.RemoveElementsCommand.html">RemoveElementsCommand</a></dt>
+      <dd><p>Command to remove one or more elements from the graph.
+Supports nodes, edges, and shapes. For nodes, automatically removes connected edges.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Commands.RemoveNodeCommand.html">RemoveNodeCommand</a></dt>
       <dd><p>Command to remove a node and its connected edges from the graph.</p>
 </dd>
@@ -168,6 +181,17 @@ Used when an action was performed through UI and we just need to track it for un
     <dl class="jumplist">
       <dt><a class="xref" href="FlowGraph.Core.Commands.RemoveNodesFromGroupCommand.html">RemoveNodesFromGroupCommand</a></dt>
       <dd><p>Command to remove nodes from their parent group.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Commands.ResizeElementsCommand.html">ResizeElementsCommand</a></dt>
+      <dd><p>Command to resize one or more elements (nodes, shapes).
+Works with any ICanvasElement that has settable Width/Height properties.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Commands.ResizeElementsCommand.SizeSnapshot.html">ResizeElementsCommand.SizeSnapshot</a></dt>
+      <dd><p>Snapshot of an element's size and position for resize operations.</p>
 </dd>
     </dl>
     <dl class="jumplist">

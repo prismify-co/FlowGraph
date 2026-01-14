@@ -1,21 +1,40 @@
 namespace FlowGraph.Core.Routing;
 
 /// <summary>
-/// Routes edges around obstacles using smooth curves.
+/// Routes edges around obstacles using smooth curves with obstacle avoidance.
 /// Generates waypoints that can be used to create multi-segment bezier curves.
 /// </summary>
+/// <remarks>
+/// <para>
+/// SmartBezierRouter extends basic bezier routing with obstacle avoidance:
+/// <list type="bullet">
+/// <item>Detects nodes blocking the direct path</item>
+/// <item>Routes around obstacles going above or below based on available space</item>
+/// <item>Maintains smooth curves through waypoints</item>
+/// </list>
+/// </para>
+/// <para>
+/// For simple bezier curves without obstacle avoidance, use <see cref="BezierRouter"/>.
+/// </para>
+/// </remarks>
 public class SmartBezierRouter : IEdgeRouter
 {
+    /// <summary>
+    /// Singleton instance with default settings.
+    /// </summary>
+    public static SmartBezierRouter Instance { get; } = new();
+
     /// <summary>
     /// Minimum distance to maintain from obstacles.
     /// </summary>
     public double Margin { get; set; } = 20;
 
     /// <summary>
-    /// Minimum horizontal offset from port before routing.
+    /// Minimum horizontal offset from port before routing can turn.
     /// </summary>
     public double MinPortOffset { get; set; } = 50;
 
+    /// <inheritdoc />
     public IReadOnlyList<Point> Route(EdgeRoutingContext context, Edge edge)
     {
         var sourceNode = context.Graph.Elements.Nodes.FirstOrDefault(n => n.Id == edge.Source);
@@ -30,37 +49,117 @@ public class SmartBezierRouter : IEdgeRouter
         // Get obstacles (excluding source and target nodes)
         var obstacles = context.GetObstacles(edge.Source, edge.Target).ToList();
 
-        // If no obstacles or direct path is clear, use simple bezier
-        if (obstacles.Count == 0 || IsDirectPathClear(start, end, obstacles))
+        // Check for user constraints (Guided mode)
+        var userConstraints = context.UserConstraints ?? edge.State.UserWaypoints;
+        if (userConstraints != null && userConstraints.Count > 0)
         {
-            return [start, end];
+            return RouteWithConstraints(start, end, userConstraints, obstacles);
         }
+
+        // If no obstacles, return direct path
+        if (obstacles.Count == 0)
+            return [start, end];
+
+        // Check if direct bezier path is clear
+        if (IsDirectPathClear(start, end, obstacles))
+            return [start, end];
 
         // Find path around obstacles
         return FindSmartPath(start, end, obstacles, context);
     }
 
+    /// <summary>
+    /// Routes through user constraint points while avoiding obstacles.
+    /// Used for Guided routing mode.
+    /// </summary>
+    private List<Point> RouteWithConstraints(Point start, Point end, IReadOnlyList<Point> constraints, List<Rect> obstacles)
+    {
+        var fullPath = new List<Point>();
+
+        // Route segment by segment: start -> constraint1 -> constraint2 -> ... -> end
+        var waypoints = new List<Point> { start };
+        waypoints.AddRange(constraints);
+        waypoints.Add(end);
+
+        for (int i = 0; i < waypoints.Count - 1; i++)
+        {
+            var segmentStart = waypoints[i];
+            var segmentEnd = waypoints[i + 1];
+
+            List<Point> segment;
+            if (obstacles.Count == 0 || IsDirectPathClear(segmentStart, segmentEnd, obstacles))
+            {
+                // Direct segment is clear
+                segment = [segmentStart, segmentEnd];
+            }
+            else
+            {
+                // Need to route around obstacles for this segment
+                segment = FindSmartPathSegment(segmentStart, segmentEnd, obstacles);
+            }
+
+            // Add segment to full path (skip first point of subsequent segments to avoid duplicates)
+            if (fullPath.Count == 0)
+            {
+                fullPath.AddRange(segment);
+            }
+            else if (segment.Count > 1)
+            {
+                fullPath.AddRange(segment.Skip(1));
+            }
+        }
+
+        return fullPath;
+    }
+
+    /// <summary>
+    /// Finds a path for a single segment, routing around obstacles if needed.
+    /// </summary>
+    private List<Point> FindSmartPathSegment(Point start, Point end, List<Rect> obstacles)
+    {
+        var path = new List<Point> { start };
+
+        var blockingObstacles = FindBlockingObstacles(start, end, obstacles);
+        if (blockingObstacles.Count == 0)
+        {
+            path.Add(end);
+            return path;
+        }
+
+        var blockingBounds = GetCombinedBounds(blockingObstacles);
+
+        // Simple routing around blocking obstacles
+        var goAbove = start.Y <= blockingBounds.Top || end.Y <= blockingBounds.Top;
+        var routeY = goAbove ? blockingBounds.Top - Margin : blockingBounds.Bottom + Margin;
+
+        path.Add(new Point(start.X, routeY));
+        path.Add(new Point(end.X, routeY));
+        path.Add(end);
+
+        return path;
+    }
+
     private bool IsDirectPathClear(Point start, Point end, List<Rect> obstacles)
     {
-        // For bezier curves, check the bounding box of the curve
-        var minX = Math.Min(start.X, end.X);
-        var maxX = Math.Max(start.X, end.X);
-        var minY = Math.Min(start.Y, end.Y);
-        var maxY = Math.Max(start.Y, end.Y);
-
-        // Bezier control points extend horizontally
         var controlOffset = Math.Max(MinPortOffset, Math.Abs(end.X - start.X) / 2);
+        var (c1, c2) = BezierRouter.CalculateControlPoints(start, end, controlOffset);
+
+        // Calculate bezier bounding box including control points
+        var minX = Math.Min(Math.Min(start.X, end.X), Math.Min(c1.X, c2.X));
+        var maxX = Math.Max(Math.Max(start.X, end.X), Math.Max(c1.X, c2.X));
+        var minY = Math.Min(Math.Min(start.Y, end.Y), Math.Min(c1.Y, c2.Y));
+        var maxY = Math.Max(Math.Max(start.Y, end.Y), Math.Max(c1.Y, c2.Y));
+
         var bezierBounds = new Rect(
-            minX,
-            minY - 20,  // Some vertical margin for curve
-            maxX - minX + controlOffset * 2,
+            minX - Margin,
+            minY - 20,
+            maxX - minX + Margin * 2,
             maxY - minY + 40);
 
         foreach (var obs in obstacles)
         {
             if (obs.Intersects(bezierBounds))
             {
-                // More detailed check - sample the bezier curve
                 if (BezierIntersectsObstacle(start, end, controlOffset, obs))
                     return false;
             }
@@ -71,8 +170,7 @@ public class SmartBezierRouter : IEdgeRouter
 
     private bool BezierIntersectsObstacle(Point start, Point end, double controlOffset, Rect obstacle)
     {
-        var c1 = new Point(start.X + controlOffset, start.Y);
-        var c2 = new Point(end.X - controlOffset, end.Y);
+        var (c1, c2) = BezierRouter.CalculateControlPoints(start, end, controlOffset);
 
         // Sample the bezier curve at intervals
         const int samples = 20;
@@ -83,7 +181,7 @@ public class SmartBezierRouter : IEdgeRouter
             var t = (double)i / samples;
             var point = EvaluateBezier(start, c1, c2, end, t);
 
-            if (obstacle.IntersectsLine(prevPoint, point))
+            if (obstacle.IntersectsLine(prevPoint, point) || obstacle.Contains(point))
                 return true;
 
             prevPoint = point;
@@ -92,7 +190,7 @@ public class SmartBezierRouter : IEdgeRouter
         return false;
     }
 
-    private Point EvaluateBezier(Point p0, Point p1, Point p2, Point p3, double t)
+    private static Point EvaluateBezier(Point p0, Point p1, Point p2, Point p3, double t)
     {
         var u = 1 - t;
         var tt = t * t;
@@ -109,25 +207,30 @@ public class SmartBezierRouter : IEdgeRouter
     {
         var path = new List<Point> { start };
 
-        // Determine if we need to go around obstacles
         var blockingObstacles = FindBlockingObstacles(start, end, obstacles);
-
         if (blockingObstacles.Count == 0)
         {
             path.Add(end);
             return path;
         }
 
-        // Calculate combined bounding box of blocking obstacles
-        var combinedBounds = GetCombinedBounds(blockingObstacles);
+        var blockingBounds = GetCombinedBounds(blockingObstacles);
 
-        // Determine routing direction (go above or below)
-        var goAbove = ShouldRouteAbove(start, end, combinedBounds);
+        // Check if edge is to the right of all obstacles
+        var minEdgeX = Math.Min(start.X, end.X);
+        if (minEdgeX >= blockingBounds.Right - Margin)
+        {
+            var routeX = Math.Max(start.X, end.X) + MinPortOffset;
+            path.Add(new Point(routeX, start.Y));
+            path.Add(new Point(routeX, end.Y));
+            path.Add(end);
+            return path;
+        }
 
-        // Create waypoints to route around
-        var waypoints = CreateWaypoints(start, end, combinedBounds, goAbove);
+        var allObstaclesBounds = GetCombinedBounds(obstacles);
+        var goAbove = ShouldRouteAbove(start, end, blockingBounds, allObstaclesBounds);
+        var waypoints = CreateWaypoints(start, end, allObstaclesBounds, goAbove);
         path.AddRange(waypoints);
-
         path.Add(end);
         return path;
     }
@@ -146,7 +249,7 @@ public class SmartBezierRouter : IEdgeRouter
         return blocking;
     }
 
-    private Rect GetCombinedBounds(List<Rect> obstacles)
+    private static Rect GetCombinedBounds(List<Rect> obstacles)
     {
         var minX = obstacles.Min(o => o.Left);
         var minY = obstacles.Min(o => o.Top);
@@ -156,50 +259,30 @@ public class SmartBezierRouter : IEdgeRouter
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }
 
-    private bool ShouldRouteAbove(Point start, Point end, Rect combinedBounds)
+    private bool ShouldRouteAbove(Point start, Point end, Rect blockingBounds, Rect allObstaclesBounds)
     {
-        // Calculate distances to go above vs below
-        var midY = (start.Y + end.Y) / 2;
-        var distanceToTop = Math.Abs(midY - combinedBounds.Top);
-        var distanceToBottom = Math.Abs(combinedBounds.Bottom - midY);
+        var startAboveBlocking = start.Y <= blockingBounds.Top;
+        var endAboveBlocking = end.Y <= blockingBounds.Top;
 
-        // Also consider if we're starting above or below
-        var startAbove = start.Y < combinedBounds.Center.Y;
-        var endAbove = end.Y < combinedBounds.Center.Y;
-
-        if (startAbove && endAbove)
+        if ((startAboveBlocking || endAboveBlocking) && allObstaclesBounds.Top >= Margin * 2)
             return true;
-        if (!startAbove && !endAbove)
-            return false;
 
-        return distanceToTop <= distanceToBottom;
+        return allObstaclesBounds.Top >= Margin * 2;
     }
 
     private List<Point> CreateWaypoints(Point start, Point end, Rect bounds, bool goAbove)
     {
         var waypoints = new List<Point>();
-
-        // Calculate the Y level to route at
-        var routeY = goAbove
-            ? bounds.Top - Margin
-            : bounds.Bottom + Margin;
-
-        // Create intermediate points
+        var routeY = goAbove ? bounds.Top - Margin : bounds.Bottom + Margin;
         var exitX = start.X + MinPortOffset;
         var entryX = end.X - MinPortOffset;
 
-        // If we're routing backwards (end is to the left of start)
         if (end.X < start.X)
         {
-            exitX = start.X + MinPortOffset;
-            entryX = end.X - MinPortOffset;
-
-            // Need to go further out to avoid crossing
-            exitX = Math.Max(exitX, bounds.Right + Margin);
-            entryX = Math.Min(entryX, bounds.Left - Margin);
+            exitX = Math.Max(start.X + MinPortOffset, bounds.Right + Margin);
+            entryX = Math.Min(end.X - MinPortOffset, bounds.Left - Margin);
         }
 
-        // First waypoint - exit horizontally from start
         if (Math.Abs(start.Y - routeY) > Margin)
         {
             waypoints.Add(new Point(exitX, start.Y));
@@ -210,39 +293,17 @@ public class SmartBezierRouter : IEdgeRouter
             waypoints.Add(new Point(exitX, routeY));
         }
 
-        // Add horizontal routing segment if needed
         if (Math.Abs(exitX - entryX) > Margin)
-        {
             waypoints.Add(new Point(entryX, routeY));
-        }
 
-        // Final waypoint - enter horizontally to end
         if (Math.Abs(routeY - end.Y) > Margin)
-        {
             waypoints.Add(new Point(entryX, end.Y));
-        }
 
         return waypoints;
     }
 
     private static Point GetPortPosition(Node node, string? portId, bool isOutput, EdgeRoutingContext context)
     {
-        var nodeWidth = node.Width ?? context.DefaultNodeWidth;
-        var nodeHeight = node.Height ?? context.DefaultNodeHeight;
-
-        var ports = isOutput ? node.Outputs : node.Inputs;
-        var portIndex = 0;
-        if (!string.IsNullOrEmpty(portId))
-        {
-            var idx = ports.FindIndex(p => p.Id == portId);
-            if (idx >= 0) portIndex = idx;
-        }
-
-        var totalPorts = Math.Max(1, ports.Count);
-        var spacing = nodeHeight / (totalPorts + 1);
-        var portY = node.Position.Y + spacing * (portIndex + 1);
-        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
-
-        return new Point(portX, portY);
+        return DirectRouter.GetPortPosition(node, portId, isOutput, context);
     }
 }

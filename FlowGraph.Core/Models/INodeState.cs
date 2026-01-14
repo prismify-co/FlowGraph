@@ -60,5 +60,17 @@ public interface INodeState : INotifyPropertyChanged
   /// </summary>
   bool IsCollapsed { get; set; }
 
+  /// <summary>
+  /// Whether this node is visible in the canvas.
+  /// Invisible nodes are not rendered but remain in the graph.
+  /// </summary>
+  bool IsVisible { get; set; }
+
+  /// <summary>
+  /// Z-index for rendering order. Higher values render on top.
+  /// Default is CanvasElement.ZIndexNodes (300).
+  /// </summary>
+  int ZIndex { get; set; }
+
   #endregion
 }

@@ -95,12 +95,13 @@ internal class GridDrawingControl : Control
             InvalidateGeometryCache();
         }
 
-        // Check if we need to regenerate geometry
+        // Check if we need to regenerate geometry (zoom or size change)
         if (NeedsGeometryUpdate(viewport))
         {
             InvalidateGeometryCache();
         }
 
+        // Grid must be redrawn when viewport changes (dots move in screen space)
         InvalidateVisual();
     }
 

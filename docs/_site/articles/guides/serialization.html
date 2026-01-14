@@ -99,15 +99,89 @@ Graph graph = GraphSerializer.Deserialize(json);
 </code></pre>
 <h2 id="file-operations">File Operations</h2>
 <p>Extension methods for file I/O:</p>
-<pre><code class="lang-csharp">// Save to file
+<pre><code class="lang-csharp">// Synchronous operations
 graph.SaveToFile(&quot;my-graph.json&quot;);
-
-// Load from file
 var graph = GraphExtensions.LoadFromFile(&quot;my-graph.json&quot;);
+
+// Async operations (recommended for large graphs)
+await graph.SaveToFileAsync(&quot;my-graph.json&quot;);
+var graph = await GraphExtensions.LoadFromFileAsync(&quot;my-graph.json&quot;);
+</code></pre>
+<h2 id="batch-loading">Batch Loading</h2>
+<p>For better performance when loading large graphs, use batch loading to suppress change notifications:</p>
+<pre><code class="lang-csharp">// Using batch load mode
+graph.BeginBatchLoad();
+try
+{
+    // Add many nodes and edges
+    foreach (var nodeData in largeDataSet)
+    {
+        graph.AddNode(CreateNode(nodeData));
+    }
+
+    foreach (var edgeData in edgeDataSet)
+    {
+        graph.AddEdge(CreateEdge(edgeData));
+    }
+}
+finally
+{
+    graph.EndBatchLoad(); // Raises single notification
+}
+
+// Or use bulk operations
+graph.AddNodes(nodeCollection); // Single notification for all nodes
+graph.AddEdges(edgeCollection); // Single notification for all edges
+
+// Subscribe to completion event
+graph.BatchLoadCompleted += (s, e) =&gt;
+{
+    Console.WriteLine(&quot;Graph loaded, UI will refresh&quot;);
+};
 </code></pre>
 <h2 id="cloning">Cloning</h2>
 <p>Create a deep copy of a graph:</p>
 <pre><code class="lang-csharp">var copy = graph.Clone();
+</code></pre>
+<h2 id="definition--state-pattern">Definition + State Pattern</h2>
+<p>FlowGraph uses an immutable Definition + mutable State pattern:</p>
+<pre><code class="lang-csharp">using FlowGraph.Core.Models;
+
+// Node Definition (immutable) - structural properties
+var definition = new NodeDefinition
+{
+    Id = Guid.NewGuid().ToString(),
+    Type = &quot;process&quot;,
+    Label = &quot;My Node&quot;,
+    Inputs = [new PortDefinition { Id = &quot;in&quot;, Type = &quot;data&quot; }],
+    Outputs = [new PortDefinition { Id = &quot;out&quot;, Type = &quot;data&quot; }],
+    IsSelectable = true,
+    IsDraggable = true,
+    Data = customData
+};
+
+// Node State (mutable) - runtime properties
+var state = new NodeState
+{
+    X = 100,
+    Y = 100,
+    Width = 150,
+    Height = 80,
+    IsSelected = false
+};
+
+var node = new Node(definition, state);
+
+// Modify definition immutably
+node.Definition = node.Definition with { Label = &quot;Updated&quot; };
+
+// Modify state directly
+node.State.X = 200;
+node.State.IsSelected = true;
+
+// Backward-compatible pass-through properties still work
+node.Label = &quot;Another Update&quot;; // Updates Definition internally
+node.Position = new Point(300, 300); // Updates State
 </code></pre>
 <h2 id="json-format">JSON Format</h2>
 <p>The serialized format includes all graph data:</p>
@@ -120,12 +194,13 @@ var graph = GraphExtensions.LoadFromFile(&quot;my-graph.json&quot;);
       &quot;position&quot;: { &quot;x&quot;: 100, &quot;y&quot;: 100 },
       &quot;width&quot;: 150,
       &quot;height&quot;: 80,
-      &quot;inputs&quot;: [
-        { &quot;id&quot;: &quot;in&quot;, &quot;type&quot;: &quot;data&quot;, &quot;label&quot;: &quot;Input&quot; }
-      ],
-      &quot;outputs&quot;: [
-        { &quot;id&quot;: &quot;out&quot;, &quot;type&quot;: &quot;data&quot;, &quot;label&quot;: &quot;Output&quot; }
-      ],
+      &quot;inputs&quot;: [{ &quot;id&quot;: &quot;in&quot;, &quot;type&quot;: &quot;data&quot;, &quot;label&quot;: &quot;Input&quot; }],
+      &quot;outputs&quot;: [{ &quot;id&quot;: &quot;out&quot;, &quot;type&quot;: &quot;data&quot;, &quot;label&quot;: &quot;Output&quot; }],
+      &quot;isSelectable&quot;: true,
+      &quot;isDraggable&quot;: true,
+      &quot;isDeletable&quot;: true,
+      &quot;isConnectable&quot;: true,
+      &quot;isResizable&quot;: true,
       &quot;data&quot;: { &quot;customProperty&quot;: &quot;value&quot; }
     }
   ],
@@ -137,33 +212,57 @@ var graph = GraphExtensions.LoadFromFile(&quot;my-graph.json&quot;);
       &quot;sourcePort&quot;: &quot;out&quot;,
       &quot;targetPort&quot;: &quot;in&quot;,
       &quot;type&quot;: &quot;bezier&quot;,
-      &quot;label&quot;: &quot;Connection&quot;
+      &quot;markerEnd&quot;: &quot;arrow&quot;,
+      &quot;label&quot;: &quot;Connection&quot;,
+      &quot;autoRoute&quot;: false
     }
   ]
 }
 </code></pre>
 <h2 id="custom-data">Custom Data</h2>
 <p>Nodes support arbitrary data through the <code>Data</code> property:</p>
-<pre><code class="lang-csharp">var node = new Node
+<pre><code class="lang-csharp">var node = new Node(
+    new NodeDefinition
+    {
+        Id = &quot;node1&quot;,
+        Type = &quot;custom&quot;,
+        Data = new Dictionary&lt;string, object&gt;
+        {
+            { &quot;value&quot;, 42 },
+            { &quot;name&quot;, &quot;Example&quot; }
+        }
+    },
+    new NodeState { X = 100, Y = 100 }
+);
+
+// Backward-compatible approach
+var legacyNode = new Node
 {
     Type = &quot;custom&quot;,
     Position = new Point(100, 100),
-    Data = new Dictionary&lt;string, object&gt;
-    {
-        { &quot;value&quot;, 42 },
-        { &quot;name&quot;, &quot;Example&quot; }
-    }
+    Data = new { value = 42, name = &quot;Example&quot; }
 };
 </code></pre>
 <p>Custom data is preserved during serialization.</p>
-<h2 id="async-operations">Async Operations</h2>
-<p>For large graphs, use async methods:</p>
-<pre><code class="lang-csharp">// Async save
-await graph.SaveToFileAsync(&quot;large-graph.json&quot;);
-
-// Async load
-var graph = await GraphExtensions.LoadFromFileAsync(&quot;large-graph.json&quot;);
+<h2 id="port-definitions">Port Definitions</h2>
+<p>Ports now support additional properties:</p>
+<pre><code class="lang-csharp">var port = new PortDefinition
+{
+    Id = &quot;data_in&quot;,
+    Type = &quot;data&quot;,
+    Label = &quot;Data Input&quot;,
+    Position = PortPosition.Left,
+    MaxConnections = 1, // Limit connections
+    IsRequired = true // Mark as required
+};
 </code></pre>
+<h2 id="performance-tips">Performance Tips</h2>
+<ul>
+<li>Use <code>BeginBatchLoad()</code> / <code>EndBatchLoad()</code> for large graphs</li>
+<li>Use <code>AddNodes()</code> / <code>AddEdges()</code> instead of individual adds</li>
+<li>Use async methods for file operations</li>
+<li>Consider virtualization for 100+ nodes (see <a href="performance.html">Performance Guide</a>)</li>
+</ul>
 
 </article>
 

@@ -1,0 +1,384 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  id: IPortRenderer
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
+  langs:
+  - csharp
+  - vb
+  name: IPortRenderer
+  nameWithType: IPortRenderer
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IPortRenderer
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Interface for custom port renderers.
+
+    Implement this interface to create custom visual representations for port types.
+  example: []
+  syntax:
+    content: public interface IPortRenderer
+    content.vb: Public Interface IPortRenderer
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  id: CreatePortVisual(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: CreatePortVisual(Port, Node, PortRenderContext)
+  nameWithType: IPortRenderer.CreatePortVisual(Port, Node, PortRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual(FlowGraph.Core.Port, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreatePortVisual
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 18
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Creates the visual representation for a port.
+  example: []
+  syntax:
+    content: Control CreatePortVisual(Port port, Node node, PortRenderContext context)
+    parameters:
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data to render.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+      description: The rendering context with theme, scale, and settings.
+    return:
+      type: Avalonia.Controls.Control
+      description: A Control representing the port visual.
+    content.vb: Function CreatePortVisual(port As Port, node As Node, context As PortRenderContext) As Control
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
+  id: UpdateState(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateState(Control, Port, Node, PortRenderContext, PortVisualState)
+  nameWithType: IPortRenderer.UpdateState(Control, Port, Node, PortRenderContext, PortVisualState)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext, FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateState
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 28
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Updates the visual state when the port state changes (hover, connected, etc.).
+  example: []
+  syntax:
+    content: void UpdateState(Control visual, Port port, Node node, PortRenderContext context, PortVisualState state)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The port's visual control.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+      description: The rendering context.
+    - id: state
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+      description: The current port state.
+    content.vb: Sub UpdateState(visual As Control, port As Port, node As Node, context As PortRenderContext, state As PortVisualState)
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  id: GetSize(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetSize(Port, Node, FlowCanvasSettings)
+  nameWithType: IPortRenderer.GetSize(Port, Node, FlowCanvasSettings)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize(FlowGraph.Core.Port, FlowGraph.Core.Node, FlowGraph.Avalonia.FlowCanvasSettings)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetSize
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Gets the size of the port visual in pixels (before scaling).
+
+    Return null to use the default port size from settings.
+  example: []
+  syntax:
+    content: double? GetSize(Port port, Node node, FlowCanvasSettings settings)
+    parameters:
+    - id: port
+      type: FlowGraph.Core.Port
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: settings
+      type: FlowGraph.Avalonia.FlowCanvasSettings
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Function GetSize(port As Port, node As Node, settings As FlowCanvasSettings) As Double?
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize*
+references:
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.PortRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.PortRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.PortRenderers
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.PortRenderers
+    name: PortRenderers
+    href: FlowGraph.Avalonia.Rendering.PortRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.PortRenderers
+    name: PortRenderers
+    href: FlowGraph.Avalonia.Rendering.PortRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_CreatePortVisual_FlowGraph_Core_Port_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_
+  name: CreatePortVisual
+  nameWithType: IPortRenderer.CreatePortVisual
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual
+- uid: FlowGraph.Core.Port
+  commentId: T:FlowGraph.Core.Port
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Port.html
+  name: Port
+  nameWithType: Port
+  fullName: FlowGraph.Core.Port
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+  commentId: T:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.html
+  name: PortRenderContext
+  nameWithType: PortRenderContext
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_UpdateState_Avalonia_Controls_Control_FlowGraph_Core_Port_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_
+  name: UpdateState
+  nameWithType: IPortRenderer.UpdateState
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  commentId: T:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html
+  name: PortVisualState
+  nameWithType: PortVisualState
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_GetSize_FlowGraph_Core_Port_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_
+  name: GetSize
+  nameWithType: IPortRenderer.GetSize
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize
+- uid: FlowGraph.Avalonia.FlowCanvasSettings
+  commentId: T:FlowGraph.Avalonia.FlowCanvasSettings
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.FlowCanvasSettings.html
+  name: FlowCanvasSettings
+  nameWithType: FlowCanvasSettings
+  fullName: FlowGraph.Avalonia.FlowCanvasSettings
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

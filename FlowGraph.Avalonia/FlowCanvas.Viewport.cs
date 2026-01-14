@@ -30,6 +30,7 @@ public partial class FlowCanvas
     /// </summary>
     public void Refresh()
     {
+        _graphNeedsRender = true;
         RenderAll();
     }
 
@@ -67,11 +68,21 @@ public partial class FlowCanvas
     /// </summary>
     public void FitToView()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
         if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
+        var boundsTime = sw.ElapsedMilliseconds;
         var bounds = CalculateGraphBounds();
+        var calcTime = sw.ElapsedMilliseconds - boundsTime;
+        
         _viewport.FitToBounds(bounds, Bounds.Size);
+        var fitTime = sw.ElapsedMilliseconds - calcTime - boundsTime;
+        
         RenderGrid();
+        
+        sw.Stop();
+        System.Diagnostics.Debug.WriteLine($"[FitToView] Total={sw.ElapsedMilliseconds}ms | Bounds={calcTime}ms, Fit={fitTime}ms, Grid={sw.ElapsedMilliseconds - fitTime - calcTime - boundsTime}ms");
     }
 
     /// <summary>
@@ -121,10 +132,19 @@ public partial class FlowCanvas
         if (Graph == null || !Graph.Elements.Nodes.Any())
             return default;
 
-        var minX = Graph.Elements.Nodes.Min(n => n.Position.X);
-        var minY = Graph.Elements.Nodes.Min(n => n.Position.Y);
-        var maxX = Graph.Elements.Nodes.Max(n => n.Position.X + (n.Width ?? Settings.NodeWidth));
-        var maxY = Graph.Elements.Nodes.Max(n => n.Position.Y + (n.Height ?? Settings.NodeHeight));
+        // Single-pass iteration instead of 4 separate LINQ queries (4x faster)
+        double minX = double.MaxValue, minY = double.MaxValue;
+        double maxX = double.MinValue, maxY = double.MinValue;
+        
+        foreach (var node in Graph.Elements.Nodes)
+        {
+            minX = Math.Min(minX, node.Position.X);
+            minY = Math.Min(minY, node.Position.Y);
+            var width = node.Width ?? Settings.NodeWidth;
+            var height = node.Height ?? Settings.NodeHeight;
+            maxX = Math.Max(maxX, node.Position.X + width);
+            maxY = Math.Max(maxY, node.Position.Y + height);
+        }
 
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }

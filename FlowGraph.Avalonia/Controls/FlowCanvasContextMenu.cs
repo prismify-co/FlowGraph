@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using FlowGraph.Core;
 using CorePoint = FlowGraph.Core.Point;
 
@@ -259,9 +260,24 @@ public class FlowCanvasContextMenu
 
     private void OnCut() => _canvas.Cut();
     private void OnCopy() => _canvas.Copy();
-    private void OnPaste() => _canvas.Paste();
-    private void OnDuplicate() => _canvas.Duplicate();
-    private void OnDelete() => _canvas.Selection.DeleteSelected();
+    private void OnPaste()
+    {
+        _canvas.Paste();
+        // Schedule a deferred refresh to ensure the visual updates after the context menu fully closes
+        Dispatcher.UIThread.Post(() => _canvas.Refresh(), DispatcherPriority.Render);
+    }
+    private void OnDuplicate()
+    {
+        _canvas.Duplicate();
+        // Schedule a deferred refresh to ensure the visual updates after the context menu fully closes
+        Dispatcher.UIThread.Post(() => _canvas.Refresh(), DispatcherPriority.Render);
+    }
+    private void OnDelete()
+    {
+        _canvas.Selection.DeleteSelected();
+        // Schedule a deferred refresh to ensure the visual updates after the context menu fully closes
+        Dispatcher.UIThread.Post(() => _canvas.Refresh(), DispatcherPriority.Render);
+    }
     private void OnSelectAll() => _canvas.Selection.SelectAll();
     private void OnFitToView() => _canvas.FitToView();
     private void OnResetZoom() => _canvas.ResetZoom();
@@ -358,10 +374,16 @@ public class FlowCanvasContextMenu
         // Use command for undo support
         _canvas.CommandHistory.Execute(new FlowGraph.Core.Commands.AddNodeCommand(graph, newNode));
 
-        // Select the new node
-        foreach (var n in graph.Elements.Nodes)
+        // Select the new node - OPTIMIZED: only deselect selected nodes
+        foreach (var n in graph.Elements.Nodes.Where(n => n.IsSelected))
             n.IsSelected = false;
         newNode.IsSelected = true;
+
+        // Schedule a deferred refresh to ensure the visual updates after the context menu fully closes
+        Dispatcher.UIThread.Post(() =>
+        {
+            _canvas.Refresh();
+        }, DispatcherPriority.Render);
     }
 
     private void OnDeleteEdge()

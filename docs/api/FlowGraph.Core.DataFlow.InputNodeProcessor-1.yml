@@ -1,0 +1,1117 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  commentId: T:FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  id: InputNodeProcessor`1
+  parent: FlowGraph.Core.DataFlow
+  children:
+  - FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor(FlowGraph.Core.Node,System.String,`0)
+  - FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute
+  - FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort
+  - FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process
+  - FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value
+  langs:
+  - csharp
+  - vb
+  name: InputNodeProcessor<T>
+  nameWithType: InputNodeProcessor<T>
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InputNodeProcessor
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 176
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: >-
+    A simple processor for nodes that only output values (no processing needed).
+
+    Use this for input nodes like color pickers, sliders, text inputs, etc.
+  example: []
+  syntax:
+    content: 'public class InputNodeProcessor<T> : NodeProcessor, INodeProcessor'
+    typeParameters:
+    - id: T
+      description: The type of value this node outputs.
+    content.vb: Public Class InputNodeProcessor(Of T) Inherits NodeProcessor Implements INodeProcessor
+  inheritance:
+  - System.Object
+  - FlowGraph.Core.DataFlow.NodeProcessor
+  implements:
+  - FlowGraph.Core.DataFlow.INodeProcessor
+  inheritedMembers:
+  - FlowGraph.Core.DataFlow.NodeProcessor.Node
+  - FlowGraph.Core.DataFlow.NodeProcessor.InputValues
+  - FlowGraph.Core.DataFlow.NodeProcessor.OutputValues
+  - FlowGraph.Core.DataFlow.NodeProcessor.IsValid
+  - FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,{T})
+  - FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,{T})
+  - FlowGraph.Core.DataFlow.NodeProcessor.GetInput``1(System.String)
+  - FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,{T})
+  - FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort``1(System.String)
+  - FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort``1(System.String)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: InputNodeProcessor(Of T)
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T)
+  name.vb: InputNodeProcessor(Of T)
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor(FlowGraph.Core.Node,System.String,`0)
+  commentId: M:FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor(FlowGraph.Core.Node,System.String,`0)
+  id: '#ctor(FlowGraph.Core.Node,System.String,`0)'
+  parent: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  langs:
+  - csharp
+  - vb
+  name: InputNodeProcessor(Node, string, T?)
+  nameWithType: InputNodeProcessor<T>.InputNodeProcessor(Node, string, T?)
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.InputNodeProcessor(FlowGraph.Core.Node, string, T?)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 186
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Creates a new input node processor.
+  example: []
+  syntax:
+    content: public InputNodeProcessor(Node node, string outputPortId = "out", T? initialValue = default)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node.
+    - id: outputPortId
+      type: System.String
+      description: The output port ID.
+    - id: initialValue
+      type: '{T}'
+      description: The initial value.
+    content.vb: Public Sub New(node As Node, outputPortId As String = "out", initialValue As T = Nothing)
+  overload: FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor*
+  nameWithType.vb: InputNodeProcessor(Of T).New(Node, String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).New(FlowGraph.Core.Node, String, T)
+  name.vb: New(Node, String, T)
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value
+  commentId: P:FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value
+  id: Value
+  parent: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: InputNodeProcessor<T>.Value
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.Value
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Value
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 195
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets or sets the output value.
+  example: []
+  syntax:
+    content: public T? Value { get; set; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public Property Value As T
+  overload: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value*
+  nameWithType.vb: InputNodeProcessor(Of T).Value
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).Value
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort
+  commentId: P:FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort
+  id: OutputPort
+  parent: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  langs:
+  - csharp
+  - vb
+  name: OutputPort
+  nameWithType: InputNodeProcessor<T>.OutputPort
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.OutputPort
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OutputPort
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 204
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets the output port.
+  example: []
+  syntax:
+    content: public ReactivePort<T> OutputPort { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.DataFlow.ReactivePort{{T}}
+    content.vb: Public ReadOnly Property OutputPort As ReactivePort(Of T)
+  overload: FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort*
+  nameWithType.vb: InputNodeProcessor(Of T).OutputPort
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).OutputPort
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute
+  commentId: P:FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute
+  id: AutoExecute
+  parent: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  langs:
+  - csharp
+  - vb
+  name: AutoExecute
+  nameWithType: InputNodeProcessor<T>.AutoExecute
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.AutoExecute
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AutoExecute
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 207
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: Gets whether this processor should auto-execute when inputs change.
+  example: []
+  syntax:
+    content: public override bool AutoExecute { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property AutoExecute As Boolean
+  overridden: FlowGraph.Core.DataFlow.NodeProcessor.AutoExecute
+  overload: FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute*
+  nameWithType.vb: InputNodeProcessor(Of T).AutoExecute
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).AutoExecute
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process
+  commentId: M:FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process
+  id: Process
+  parent: FlowGraph.Core.DataFlow.InputNodeProcessor`1
+  langs:
+  - csharp
+  - vb
+  name: Process()
+  nameWithType: InputNodeProcessor<T>.Process()
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.Process()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/DataFlow/INodeProcessor.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Process
+    path: ../FlowGraph.Core/DataFlow/INodeProcessor.cs
+    startLine: 210
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.DataFlow
+  summary: >-
+    Processes inputs and updates outputs.
+
+    Called automatically when any input changes (if auto-execute is enabled).
+  example: []
+  syntax:
+    content: public override void Process()
+    content.vb: Public Overrides Sub Process()
+  overridden: FlowGraph.Core.DataFlow.NodeProcessor.Process
+  overload: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process*
+  nameWithType.vb: InputNodeProcessor(Of T).Process()
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).Process()
+references:
+- uid: FlowGraph.Core.DataFlow
+  commentId: N:FlowGraph.Core.DataFlow
+  href: FlowGraph.html
+  name: FlowGraph.Core.DataFlow
+  nameWithType: FlowGraph.Core.DataFlow
+  fullName: FlowGraph.Core.DataFlow
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.DataFlow
+    name: DataFlow
+    href: FlowGraph.Core.DataFlow.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.DataFlow
+    name: DataFlow
+    href: FlowGraph.Core.DataFlow.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.DataFlow.NodeProcessor
+  commentId: T:FlowGraph.Core.DataFlow.NodeProcessor
+  parent: FlowGraph.Core.DataFlow
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html
+  name: NodeProcessor
+  nameWithType: NodeProcessor
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor
+- uid: FlowGraph.Core.DataFlow.INodeProcessor
+  commentId: T:FlowGraph.Core.DataFlow.INodeProcessor
+  parent: FlowGraph.Core.DataFlow
+  href: FlowGraph.Core.DataFlow.INodeProcessor.html
+  name: INodeProcessor
+  nameWithType: INodeProcessor
+  fullName: FlowGraph.Core.DataFlow.INodeProcessor
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.Node
+  commentId: P:FlowGraph.Core.DataFlow.NodeProcessor.Node
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_Node
+  name: Node
+  nameWithType: NodeProcessor.Node
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.Node
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.InputValues
+  commentId: P:FlowGraph.Core.DataFlow.NodeProcessor.InputValues
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_InputValues
+  name: InputValues
+  nameWithType: NodeProcessor.InputValues
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.InputValues
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.OutputValues
+  commentId: P:FlowGraph.Core.DataFlow.NodeProcessor.OutputValues
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_OutputValues
+  name: OutputValues
+  nameWithType: NodeProcessor.OutputValues
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.OutputValues
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.IsValid
+  commentId: P:FlowGraph.Core.DataFlow.NodeProcessor.IsValid
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_IsValid
+  name: IsValid
+  nameWithType: NodeProcessor.IsValid
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.IsValid
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,{T})
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  definition: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  name: RegisterInput<T>(string, T)
+  nameWithType: NodeProcessor.RegisterInput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput<T>(string, T)
+  nameWithType.vb: NodeProcessor.RegisterInput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput(Of T)(String, T)
+  name.vb: RegisterInput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+    name: RegisterInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+    name: RegisterInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,{T})
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  definition: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  name: RegisterOutput<T>(string, T)
+  nameWithType: NodeProcessor.RegisterOutput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput<T>(string, T)
+  nameWithType.vb: NodeProcessor.RegisterOutput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput(Of T)(String, T)
+  name.vb: RegisterOutput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+    name: RegisterOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+    name: RegisterOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInput``1(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.GetInput``1(System.String)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInput__1_System_String_
+  name: GetInput<T>(string)
+  nameWithType: NodeProcessor.GetInput<T>(string)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.GetInput<T>(string)
+  nameWithType.vb: NodeProcessor.GetInput(Of T)(String)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.GetInput(Of T)(String)
+  name.vb: GetInput(Of T)(String)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInput``1(System.String)
+    name: GetInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInput__1_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInput``1(System.String)
+    name: GetInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInput__1_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,{T})
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  definition: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  name: SetOutput<T>(string, T)
+  nameWithType: NodeProcessor.SetOutput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput<T>(string, T)
+  nameWithType.vb: NodeProcessor.SetOutput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput(Of T)(String, T)
+  name.vb: SetOutput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+    name: SetOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+    name: SetOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort``1(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort``1(System.String)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInputPort__1_System_String_
+  name: GetInputPort<T>(string)
+  nameWithType: NodeProcessor.GetInputPort<T>(string)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort<T>(string)
+  nameWithType.vb: NodeProcessor.GetInputPort(Of T)(String)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort(Of T)(String)
+  name.vb: GetInputPort(Of T)(String)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort``1(System.String)
+    name: GetInputPort
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInputPort__1_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetInputPort``1(System.String)
+    name: GetInputPort
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInputPort__1_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort``1(System.String)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort``1(System.String)
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetOutputPort__1_System_String_
+  name: GetOutputPort<T>(string)
+  nameWithType: NodeProcessor.GetOutputPort<T>(string)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort<T>(string)
+  nameWithType.vb: NodeProcessor.GetOutputPort(Of T)(String)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort(Of T)(String)
+  name.vb: GetOutputPort(Of T)(String)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort``1(System.String)
+    name: GetOutputPort
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetOutputPort__1_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.GetOutputPort``1(System.String)
+    name: GetOutputPort
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetOutputPort__1_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  name: RegisterInput<T>(string, T)
+  nameWithType: NodeProcessor.RegisterInput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput<T>(string, T)
+  nameWithType.vb: NodeProcessor.RegisterInput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput(Of T)(String, T)
+  name.vb: RegisterInput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+    name: RegisterInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterInput``1(System.String,``0)
+    name: RegisterInput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  name: RegisterOutput<T>(string, T)
+  nameWithType: NodeProcessor.RegisterOutput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput<T>(string, T)
+  nameWithType.vb: NodeProcessor.RegisterOutput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput(Of T)(String, T)
+  name.vb: RegisterOutput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+    name: RegisterOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.RegisterOutput``1(System.String,``0)
+    name: RegisterOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+  isExternal: true
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  name: SetOutput<T>(string, T)
+  nameWithType: NodeProcessor.SetOutput<T>(string, T)
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput<T>(string, T)
+  nameWithType.vb: NodeProcessor.SetOutput(Of T)(String, T)
+  fullName.vb: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput(Of T)(String, T)
+  name.vb: SetOutput(Of T)(String, T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+    name: SetOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.SetOutput``1(System.String,``0)
+    name: SetOutput
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor*
+  commentId: Overload:FlowGraph.Core.DataFlow.InputNodeProcessor`1.#ctor
+  href: FlowGraph.Core.DataFlow.InputNodeProcessor-1.html#FlowGraph_Core_DataFlow_InputNodeProcessor_1__ctor_FlowGraph_Core_Node_System_String__0_
+  name: InputNodeProcessor
+  nameWithType: InputNodeProcessor<T>.InputNodeProcessor
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.InputNodeProcessor
+  nameWithType.vb: InputNodeProcessor(Of T).New
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).New
+  name.vb: New
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value*
+  commentId: Overload:FlowGraph.Core.DataFlow.InputNodeProcessor`1.Value
+  href: FlowGraph.Core.DataFlow.InputNodeProcessor-1.html#FlowGraph_Core_DataFlow_InputNodeProcessor_1_Value
+  name: Value
+  nameWithType: InputNodeProcessor<T>.Value
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.Value
+  nameWithType.vb: InputNodeProcessor(Of T).Value
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).Value
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort*
+  commentId: Overload:FlowGraph.Core.DataFlow.InputNodeProcessor`1.OutputPort
+  href: FlowGraph.Core.DataFlow.InputNodeProcessor-1.html#FlowGraph_Core_DataFlow_InputNodeProcessor_1_OutputPort
+  name: OutputPort
+  nameWithType: InputNodeProcessor<T>.OutputPort
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.OutputPort
+  nameWithType.vb: InputNodeProcessor(Of T).OutputPort
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).OutputPort
+- uid: FlowGraph.Core.DataFlow.ReactivePort{{T}}
+  commentId: T:FlowGraph.Core.DataFlow.ReactivePort{``0}
+  parent: FlowGraph.Core.DataFlow
+  definition: FlowGraph.Core.DataFlow.ReactivePort`1
+  href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  name: ReactivePort<T>
+  nameWithType: ReactivePort<T>
+  fullName: FlowGraph.Core.DataFlow.ReactivePort<T>
+  nameWithType.vb: ReactivePort(Of T)
+  fullName.vb: FlowGraph.Core.DataFlow.ReactivePort(Of T)
+  name.vb: ReactivePort(Of T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.ReactivePort`1
+    name: ReactivePort
+    href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.ReactivePort`1
+    name: ReactivePort
+    href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.ReactivePort`1
+  commentId: T:FlowGraph.Core.DataFlow.ReactivePort`1
+  parent: FlowGraph.Core.DataFlow
+  href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  name: ReactivePort<T>
+  nameWithType: ReactivePort<T>
+  fullName: FlowGraph.Core.DataFlow.ReactivePort<T>
+  nameWithType.vb: ReactivePort(Of T)
+  fullName.vb: FlowGraph.Core.DataFlow.ReactivePort(Of T)
+  name.vb: ReactivePort(Of T)
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.ReactivePort`1
+    name: ReactivePort
+    href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.ReactivePort`1
+    name: ReactivePort
+    href: FlowGraph.Core.DataFlow.ReactivePort-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.AutoExecute
+  commentId: P:FlowGraph.Core.DataFlow.NodeProcessor.AutoExecute
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_AutoExecute
+  name: AutoExecute
+  nameWithType: NodeProcessor.AutoExecute
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.AutoExecute
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute*
+  commentId: Overload:FlowGraph.Core.DataFlow.InputNodeProcessor`1.AutoExecute
+  href: FlowGraph.Core.DataFlow.InputNodeProcessor-1.html#FlowGraph_Core_DataFlow_InputNodeProcessor_1_AutoExecute
+  name: AutoExecute
+  nameWithType: InputNodeProcessor<T>.AutoExecute
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.AutoExecute
+  nameWithType.vb: InputNodeProcessor(Of T).AutoExecute
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).AutoExecute
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.DataFlow.NodeProcessor.Process
+  commentId: M:FlowGraph.Core.DataFlow.NodeProcessor.Process
+  parent: FlowGraph.Core.DataFlow.NodeProcessor
+  href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_Process
+  name: Process()
+  nameWithType: NodeProcessor.Process()
+  fullName: FlowGraph.Core.DataFlow.NodeProcessor.Process()
+  spec.csharp:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.Process
+    name: Process
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_Process
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.DataFlow.NodeProcessor.Process
+    name: Process
+    href: FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_Process
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process*
+  commentId: Overload:FlowGraph.Core.DataFlow.InputNodeProcessor`1.Process
+  href: FlowGraph.Core.DataFlow.InputNodeProcessor-1.html#FlowGraph_Core_DataFlow_InputNodeProcessor_1_Process
+  name: Process
+  nameWithType: InputNodeProcessor<T>.Process
+  fullName: FlowGraph.Core.DataFlow.InputNodeProcessor<T>.Process
+  nameWithType.vb: InputNodeProcessor(Of T).Process
+  fullName.vb: FlowGraph.Core.DataFlow.InputNodeProcessor(Of T).Process

@@ -5,7 +5,12 @@ items:
   id: Node
   parent: FlowGraph.Core
   children:
+  - FlowGraph.Core.Node.#ctor
+  - FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
+  - FlowGraph.Core.Node.CreateStateSnapshot
   - FlowGraph.Core.Node.Data
+  - FlowGraph.Core.Node.Definition
+  - FlowGraph.Core.Node.GetBounds
   - FlowGraph.Core.Node.Height
   - FlowGraph.Core.Node.Id
   - FlowGraph.Core.Node.Inputs
@@ -18,12 +23,21 @@ items:
   - FlowGraph.Core.Node.IsResizable
   - FlowGraph.Core.Node.IsSelectable
   - FlowGraph.Core.Node.IsSelected
+  - FlowGraph.Core.Node.IsVisible
   - FlowGraph.Core.Node.Label
+  - FlowGraph.Core.Node.Move(System.Double,System.Double)
+  - FlowGraph.Core.Node.OnPropertyChanged(System.String)
   - FlowGraph.Core.Node.Outputs
   - FlowGraph.Core.Node.ParentGroupId
   - FlowGraph.Core.Node.Position
+  - FlowGraph.Core.Node.PropertyChanged
+  - FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)
+  - FlowGraph.Core.Node.SetPosition(System.Double,System.Double)
+  - FlowGraph.Core.Node.SetSize(System.Nullable{System.Double},System.Nullable{System.Double})
+  - FlowGraph.Core.Node.State
   - FlowGraph.Core.Node.Type
   - FlowGraph.Core.Node.Width
+  - FlowGraph.Core.Node.ZIndex
   langs:
   - csharp
   - vb
@@ -33,43 +47,49 @@ items:
   type: Class
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Node
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 6
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 23
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: A base class for objects of which the properties must be observable.
+  summary: >-
+    Represents a node in the flow graph.
+
+    Uses a Definition (immutable) + State (mutable) composition pattern.
+
+    Implements <xref href="FlowGraph.Core.Elements.ICanvasElement" data-throw-if-not-resolved="false"></xref> for unified element handling.
+  remarks: >-
+    <p>
+
+    The node's structural properties (Id, Type, Label, Ports, capability flags) are stored
+
+    in the <xref href="FlowGraph.Core.Node.Definition" data-throw-if-not-resolved="false"></xref> record. Runtime state (position, size, selection) is
+
+    stored in the <xref href="FlowGraph.Core.Node.State" data-throw-if-not-resolved="false"></xref> object.
+
+    </p>
+
+    <p>
+
+    For backward compatibility, pass-through properties are provided that delegate
+
+    to either Definition or State as appropriate.
+
+    </p>
   example: []
   syntax:
-    content: 'public class Node : ObservableObject, INotifyPropertyChanged, INotifyPropertyChanging'
-    content.vb: Public Class Node Inherits ObservableObject Implements INotifyPropertyChanged, INotifyPropertyChanging
+    content: 'public class Node : ICanvasElement, INotifyPropertyChanged'
+    content.vb: Public Class Node Implements ICanvasElement, INotifyPropertyChanged
   inheritance:
   - System.Object
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject
   implements:
+  - FlowGraph.Core.Elements.ICanvasElement
   - System.ComponentModel.INotifyPropertyChanged
-  - System.ComponentModel.INotifyPropertyChanging
   inheritedMembers:
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T}@,{T},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T}@,{T},System.Collections.Generic.IEqualityComparer{{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T},{T},System.Action{{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T},{T},System.Collections.Generic.IEqualityComparer{{T}},System.Action{{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2({T},{T},{TModel},System.Action{{TModel},{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2({T},{T},System.Collections.Generic.IEqualityComparer{{T}},{TModel},System.Action{{TModel},{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{{T}}@,System.Threading.Tasks.Task{{T}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{{T}}@,System.Threading.Tasks.Task{{T}},System.Action{System.Threading.Tasks.Task{{T}}},System.String)
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanged
-  - CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanging
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
@@ -77,6 +97,174 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - FlowGraph.Core.Node.FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(System.String)
+  - FlowGraph.Core.Node.FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(System.Double,System.Double,System.String)
+- uid: FlowGraph.Core.Node.PropertyChanged
+  commentId: E:FlowGraph.Core.Node.PropertyChanged
+  id: PropertyChanged
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: PropertyChanged
+  nameWithType: Node.PropertyChanged
+  fullName: FlowGraph.Core.Node.PropertyChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PropertyChanged
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Occurs when a property value changes.
+  example: []
+  syntax:
+    content: public event PropertyChangedEventHandler? PropertyChanged
+    return:
+      type: System.ComponentModel.PropertyChangedEventHandler
+    content.vb: Public Event PropertyChanged As PropertyChangedEventHandler
+  implements:
+  - System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
+  commentId: M:FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
+  id: '#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)'
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Node(NodeDefinition, INodeState?)
+  nameWithType: Node.Node(NodeDefinition, INodeState?)
+  fullName: FlowGraph.Core.Node.Node(FlowGraph.Core.Models.NodeDefinition, FlowGraph.Core.Models.INodeState?)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 40
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Creates a node with the specified definition and optional state.
+  example: []
+  syntax:
+    content: public Node(NodeDefinition definition, INodeState? state = null)
+    parameters:
+    - id: definition
+      type: FlowGraph.Core.Models.NodeDefinition
+      description: The immutable node definition.
+    - id: state
+      type: FlowGraph.Core.Models.INodeState
+      description: The mutable node state. If null, a new NodeState is created.
+    content.vb: Public Sub New(definition As NodeDefinition, state As INodeState = Nothing)
+  overload: FlowGraph.Core.Node.#ctor*
+  nameWithType.vb: Node.New(NodeDefinition, INodeState)
+  fullName.vb: FlowGraph.Core.Node.New(FlowGraph.Core.Models.NodeDefinition, FlowGraph.Core.Models.INodeState)
+  name.vb: New(NodeDefinition, INodeState)
+- uid: FlowGraph.Core.Node.#ctor
+  commentId: M:FlowGraph.Core.Node.#ctor
+  id: '#ctor'
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Node()
+  nameWithType: Node.Node()
+  fullName: FlowGraph.Core.Node.Node()
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Creates a node with default definition. For backward compatibility.
+  example: []
+  syntax:
+    content: public Node()
+    content.vb: Public Sub New()
+  overload: FlowGraph.Core.Node.#ctor*
+  nameWithType.vb: Node.New()
+  fullName.vb: FlowGraph.Core.Node.New()
+  name.vb: New()
+- uid: FlowGraph.Core.Node.Definition
+  commentId: P:FlowGraph.Core.Node.Definition
+  id: Definition
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Definition
+  nameWithType: Node.Definition
+  fullName: FlowGraph.Core.Node.Definition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Definition
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 67
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    The immutable definition of this node (identity, type, ports, capabilities).
+
+    Use <code>with</code> expressions to modify: <code>node.Definition = node.Definition with { Label = "x" };</code>
+  example: []
+  syntax:
+    content: public NodeDefinition Definition { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.NodeDefinition
+    content.vb: Public Property Definition As NodeDefinition
+  overload: FlowGraph.Core.Node.Definition*
+- uid: FlowGraph.Core.Node.State
+  commentId: P:FlowGraph.Core.Node.State
+  id: State
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: State
+  nameWithType: Node.State
+  fullName: FlowGraph.Core.Node.State
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: State
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 105
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: The mutable runtime state of this node (position, size, selection).
+  example: []
+  syntax:
+    content: public INodeState State { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.INodeState
+    content.vb: Public Property State As INodeState
+  overload: FlowGraph.Core.Node.State*
 - uid: FlowGraph.Core.Node.Id
   commentId: P:FlowGraph.Core.Node.Id
   id: Id
@@ -91,21 +279,151 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Node.cs
-    startLine: 6
+    startLine: 131
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Unique identifier for the node. Immutable - to change, replace the Definition.
+  example: []
   syntax:
-    content: public string Id { get; set; }
+    content: public string Id { get; }
     parameters: []
     return:
       type: System.String
-    content.vb: Public Property Id As String
+    content.vb: Public ReadOnly Property Id As String
   overload: FlowGraph.Core.Node.Id*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Id
+- uid: FlowGraph.Core.Node.Type
+  commentId: P:FlowGraph.Core.Node.Type
+  id: Type
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: Node.Type
+  fullName: FlowGraph.Core.Node.Type
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Type
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 136
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: The type/category of the node (e.g., "process", "decision", "input").
+  example: []
+  syntax:
+    content: public string Type { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Type As String
+  overload: FlowGraph.Core.Node.Type*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Type
+- uid: FlowGraph.Core.Node.Label
+  commentId: P:FlowGraph.Core.Node.Label
+  id: Label
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: Node.Label
+  fullName: FlowGraph.Core.Node.Label
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Label
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 145
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Optional display label for the node.
+  example: []
+  syntax:
+    content: public string? Label { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Label As String
+  overload: FlowGraph.Core.Node.Label*
+- uid: FlowGraph.Core.Node.ParentGroupId
+  commentId: P:FlowGraph.Core.Node.ParentGroupId
+  id: ParentGroupId
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: ParentGroupId
+  nameWithType: Node.ParentGroupId
+  fullName: FlowGraph.Core.Node.ParentGroupId
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ParentGroupId
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 154
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: The ID of the parent group node, if this node is part of a group.
+  example: []
+  syntax:
+    content: public string? ParentGroupId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ParentGroupId As String
+  overload: FlowGraph.Core.Node.ParentGroupId*
+- uid: FlowGraph.Core.Node.IsGroup
+  commentId: P:FlowGraph.Core.Node.IsGroup
+  id: IsGroup
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsGroup
+  nameWithType: Node.IsGroup
+  fullName: FlowGraph.Core.Node.IsGroup
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsGroup
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 163
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node is a group container.
+  example: []
+  syntax:
+    content: public bool IsGroup { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsGroup As Boolean
+  overload: FlowGraph.Core.Node.IsGroup*
 - uid: FlowGraph.Core.Node.Data
   commentId: P:FlowGraph.Core.Node.Data
   id: Data
@@ -120,14 +438,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Data
     path: ../FlowGraph.Core/Node.cs
-    startLine: 85
+    startLine: 172
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Custom user data associated with the node.
+  example: []
   syntax:
     content: public object? Data { get; set; }
     parameters: []
@@ -135,6 +455,161 @@ items:
       type: System.Object
     content.vb: Public Property Data As Object
   overload: FlowGraph.Core.Node.Data*
+- uid: FlowGraph.Core.Node.IsSelectable
+  commentId: P:FlowGraph.Core.Node.IsSelectable
+  id: IsSelectable
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsSelectable
+  nameWithType: Node.IsSelectable
+  fullName: FlowGraph.Core.Node.IsSelectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSelectable
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 185
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node can be selected. Default is true.
+  example: []
+  syntax:
+    content: public bool IsSelectable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSelectable As Boolean
+  overload: FlowGraph.Core.Node.IsSelectable*
+- uid: FlowGraph.Core.Node.IsDraggable
+  commentId: P:FlowGraph.Core.Node.IsDraggable
+  id: IsDraggable
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsDraggable
+  nameWithType: Node.IsDraggable
+  fullName: FlowGraph.Core.Node.IsDraggable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDraggable
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 194
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node can be dragged. Default is true.
+  example: []
+  syntax:
+    content: public bool IsDraggable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDraggable As Boolean
+  overload: FlowGraph.Core.Node.IsDraggable*
+- uid: FlowGraph.Core.Node.IsDeletable
+  commentId: P:FlowGraph.Core.Node.IsDeletable
+  id: IsDeletable
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsDeletable
+  nameWithType: Node.IsDeletable
+  fullName: FlowGraph.Core.Node.IsDeletable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDeletable
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 203
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node can be deleted. Default is true.
+  example: []
+  syntax:
+    content: public bool IsDeletable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDeletable As Boolean
+  overload: FlowGraph.Core.Node.IsDeletable*
+- uid: FlowGraph.Core.Node.IsConnectable
+  commentId: P:FlowGraph.Core.Node.IsConnectable
+  id: IsConnectable
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsConnectable
+  nameWithType: Node.IsConnectable
+  fullName: FlowGraph.Core.Node.IsConnectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsConnectable
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 212
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node can have new connections. Default is true.
+  example: []
+  syntax:
+    content: public bool IsConnectable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsConnectable As Boolean
+  overload: FlowGraph.Core.Node.IsConnectable*
+- uid: FlowGraph.Core.Node.IsResizable
+  commentId: P:FlowGraph.Core.Node.IsResizable
+  id: IsResizable
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsResizable
+  nameWithType: Node.IsResizable
+  fullName: FlowGraph.Core.Node.IsResizable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsResizable
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 221
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this node can be resized. Default is true.
+  example: []
+  syntax:
+    content: public bool IsResizable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsResizable As Boolean
+  overload: FlowGraph.Core.Node.IsResizable*
 - uid: FlowGraph.Core.Node.Inputs
   commentId: P:FlowGraph.Core.Node.Inputs
   id: Inputs
@@ -149,14 +624,19 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Inputs
     path: ../FlowGraph.Core/Node.cs
-    startLine: 86
+    startLine: 235
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Input ports for this node.
+
+    For full immutability, use Definition.Inputs directly.
+  example: []
   syntax:
     content: public List<Port> Inputs { get; set; }
     parameters: []
@@ -178,14 +658,19 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Outputs
     path: ../FlowGraph.Core/Node.cs
-    startLine: 87
+    startLine: 252
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Output ports for this node.
+
+    For full immutability, use Definition.Outputs directly.
+  example: []
   syntax:
     content: public List<Port> Outputs { get; set; }
     parameters: []
@@ -193,46 +678,6 @@ items:
       type: System.Collections.Generic.List{FlowGraph.Core.Port}
     content.vb: Public Property Outputs As List(Of Port)
   overload: FlowGraph.Core.Node.Outputs*
-- uid: FlowGraph.Core.Node.Type
-  commentId: P:FlowGraph.Core.Node.Type
-  id: Type
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: Type
-  nameWithType: Node.Type
-  fullName: FlowGraph.Core.Node.Type
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: Type
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 9
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public string Type { get; set; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property Type As String
-  overload: FlowGraph.Core.Node.Type*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
 - uid: FlowGraph.Core.Node.Position
   commentId: P:FlowGraph.Core.Node.Position
   id: Position
@@ -246,33 +691,26 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Position
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 31
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 272
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: The position of the node in canvas space.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public Point Position { get; set; }
+    content: public Point Position { get; set; }
     parameters: []
     return:
       type: FlowGraph.Core.Point
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property Position As Point
+    content.vb: Public Property Position As Point
   overload: FlowGraph.Core.Node.Position*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Position
 - uid: FlowGraph.Core.Node.Width
   commentId: P:FlowGraph.Core.Node.Width
   id: Width
@@ -286,33 +724,26 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Width
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 52
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 289
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: The width of the node. Null means auto-sized.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public double? Width { get; set; }
+    content: public double? Width { get; set; }
     parameters: []
     return:
       type: System.Nullable{System.Double}
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property Width As Double?
+    content.vb: Public Property Width As Double?
   overload: FlowGraph.Core.Node.Width*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Width
 - uid: FlowGraph.Core.Node.Height
   commentId: P:FlowGraph.Core.Node.Height
   id: Height
@@ -326,33 +757,26 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Height
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 73
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 298
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: The height of the node. Null means auto-sized.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public double? Height { get; set; }
+    content: public double? Height { get; set; }
     parameters: []
     return:
       type: System.Nullable{System.Double}
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property Height As Double?
+    content.vb: Public Property Height As Double?
   overload: FlowGraph.Core.Node.Height*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.Height
 - uid: FlowGraph.Core.Node.IsSelected
   commentId: P:FlowGraph.Core.Node.IsSelected
   id: IsSelected
@@ -366,33 +790,26 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelected
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 94
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 311
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Whether this node is currently selected.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsSelected { get; set; }
+    content: public bool IsSelected { get; set; }
     parameters: []
     return:
       type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsSelected As Boolean
+    content.vb: Public Property IsSelected As Boolean
   overload: FlowGraph.Core.Node.IsSelected*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.IsSelected
 - uid: FlowGraph.Core.Node.IsDragging
   commentId: P:FlowGraph.Core.Node.IsDragging
   id: IsDragging
@@ -406,331 +823,24 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDragging
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 115
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 320
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Whether this node is currently being dragged.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsDragging { get; set; }
+    content: public bool IsDragging { get; set; }
     parameters: []
     return:
       type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsDragging As Boolean
+    content.vb: Public Property IsDragging As Boolean
   overload: FlowGraph.Core.Node.IsDragging*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsResizable
-  commentId: P:FlowGraph.Core.Node.IsResizable
-  id: IsResizable
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsResizable
-  nameWithType: Node.IsResizable
-  fullName: FlowGraph.Core.Node.IsResizable
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsResizable
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 136
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsResizable { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsResizable As Boolean
-  overload: FlowGraph.Core.Node.IsResizable*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsSelectable
-  commentId: P:FlowGraph.Core.Node.IsSelectable
-  id: IsSelectable
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsSelectable
-  nameWithType: Node.IsSelectable
-  fullName: FlowGraph.Core.Node.IsSelectable
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsSelectable
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 157
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: >-
-    Whether this node can be selected. Default is true.
-
-    When false, clicking on the node will not select it.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsSelectable { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsSelectable As Boolean
-  overload: FlowGraph.Core.Node.IsSelectable*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsDraggable
-  commentId: P:FlowGraph.Core.Node.IsDraggable
-  id: IsDraggable
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsDraggable
-  nameWithType: Node.IsDraggable
-  fullName: FlowGraph.Core.Node.IsDraggable
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsDraggable
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 178
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: >-
-    Whether this node can be dragged. Default is true.
-
-    When false, the node cannot be moved by dragging.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsDraggable { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsDraggable As Boolean
-  overload: FlowGraph.Core.Node.IsDraggable*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsDeletable
-  commentId: P:FlowGraph.Core.Node.IsDeletable
-  id: IsDeletable
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsDeletable
-  nameWithType: Node.IsDeletable
-  fullName: FlowGraph.Core.Node.IsDeletable
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsDeletable
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 199
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: >-
-    Whether this node can be deleted. Default is true.
-
-    When false, the node cannot be deleted via keyboard or context menu.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsDeletable { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsDeletable As Boolean
-  overload: FlowGraph.Core.Node.IsDeletable*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsConnectable
-  commentId: P:FlowGraph.Core.Node.IsConnectable
-  id: IsConnectable
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsConnectable
-  nameWithType: Node.IsConnectable
-  fullName: FlowGraph.Core.Node.IsConnectable
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsConnectable
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 220
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: >-
-    Whether this node can have new connections. Default is true.
-
-    When false, new edges cannot be created from/to this node's ports.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsConnectable { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsConnectable As Boolean
-  overload: FlowGraph.Core.Node.IsConnectable*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.ParentGroupId
-  commentId: P:FlowGraph.Core.Node.ParentGroupId
-  id: ParentGroupId
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: ParentGroupId
-  nameWithType: Node.ParentGroupId
-  fullName: FlowGraph.Core.Node.ParentGroupId
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: ParentGroupId
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 241
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: The ID of the parent group node, if this node is part of a group.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public string? ParentGroupId { get; set; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property ParentGroupId As String
-  overload: FlowGraph.Core.Node.ParentGroupId*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.IsGroup
-  commentId: P:FlowGraph.Core.Node.IsGroup
-  id: IsGroup
-  parent: FlowGraph.Core.Node
-  langs:
-  - csharp
-  - vb
-  name: IsGroup
-  nameWithType: Node.IsGroup
-  fullName: FlowGraph.Core.Node.IsGroup
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsGroup
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 262
-  assemblies:
-  - FlowGraph.Core
-  namespace: FlowGraph.Core
-  summary: Whether this node is a group container.
-  example: []
-  syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsGroup { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsGroup As Boolean
-  overload: FlowGraph.Core.Node.IsGroup*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
 - uid: FlowGraph.Core.Node.IsCollapsed
   commentId: P:FlowGraph.Core.Node.IsCollapsed
   id: IsCollapsed
@@ -744,76 +854,351 @@ items:
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsCollapsed
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 283
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 329
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
   summary: Whether the group is collapsed (only applicable when IsGroup is true).
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public bool IsCollapsed { get; set; }
+    content: public bool IsCollapsed { get; set; }
     parameters: []
     return:
       type: System.Boolean
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
-
-      Public Property IsCollapsed As Boolean
+    content.vb: Public Property IsCollapsed As Boolean
   overload: FlowGraph.Core.Node.IsCollapsed*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
-- uid: FlowGraph.Core.Node.Label
-  commentId: P:FlowGraph.Core.Node.Label
-  id: Label
+- uid: FlowGraph.Core.Node.IsVisible
+  commentId: P:FlowGraph.Core.Node.IsVisible
+  id: IsVisible
   parent: FlowGraph.Core.Node
   langs:
   - csharp
   - vb
-  name: Label
-  nameWithType: Node.Label
-  fullName: FlowGraph.Core.Node.Label
+  name: IsVisible
+  nameWithType: Node.IsVisible
+  fullName: FlowGraph.Core.Node.IsVisible
   type: Property
   source:
     remote:
-      path: FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-      branch: master
+      path: FlowGraph.Core/Node.cs
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: Label
-    path: ../FlowGraph.Core/obj/Release/net9.0/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/FlowGraph.Core.Node.g.cs
-    startLine: 304
+    id: IsVisible
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 343
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
-  summary: The label/title for this node (useful for groups).
+  summary: >-
+    Gets or sets whether this node is visible in the canvas.
+
+    Delegates to State.IsVisible.
   example: []
   syntax:
-    content: >-
-      [ExcludeFromCodeCoverage]
-
-      public string? Label { get; set; }
+    content: public bool IsVisible { get; set; }
     parameters: []
     return:
-      type: System.String
-    content.vb: >-
-      <ExcludeFromCodeCoverage>
+      type: System.Boolean
+    content.vb: Public Property IsVisible As Boolean
+  overload: FlowGraph.Core.Node.IsVisible*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.IsVisible
+- uid: FlowGraph.Core.Node.ZIndex
+  commentId: P:FlowGraph.Core.Node.ZIndex
+  id: ZIndex
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: ZIndex
+  nameWithType: Node.ZIndex
+  fullName: FlowGraph.Core.Node.ZIndex
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ZIndex
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 353
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Gets or sets the Z-index for rendering order.
 
-      Public Property Label As String
-  overload: FlowGraph.Core.Node.Label*
-  attributes:
-  - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
-    ctor: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor
-    arguments: []
+    Delegates to State.ZIndex. Default is CanvasElement.ZIndexNodes (300).
+  example: []
+  syntax:
+    content: public int ZIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ZIndex As Integer
+  overload: FlowGraph.Core.Node.ZIndex*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.ZIndex
+- uid: FlowGraph.Core.Node.GetBounds
+  commentId: M:FlowGraph.Core.Node.GetBounds
+  id: GetBounds
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: GetBounds()
+  nameWithType: Node.GetBounds()
+  fullName: FlowGraph.Core.Node.GetBounds()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetBounds
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 362
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Gets the bounding rectangle of this node in canvas coordinates.
+  example: []
+  syntax:
+    content: public Rect GetBounds()
+    return:
+      type: FlowGraph.Core.Elements.Rect
+    content.vb: Public Function GetBounds() As Rect
+  overload: FlowGraph.Core.Node.GetBounds*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.GetBounds
+- uid: FlowGraph.Core.Node.Move(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Node.Move(System.Double,System.Double)
+  id: Move(System.Double,System.Double)
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: Move(double, double)
+  nameWithType: Node.Move(double, double)
+  fullName: FlowGraph.Core.Node.Move(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Move
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 378
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Moves the node by the specified delta.
+  example: []
+  syntax:
+    content: public void Move(double deltaX, double deltaY)
+    parameters:
+    - id: deltaX
+      type: System.Double
+    - id: deltaY
+      type: System.Double
+    content.vb: Public Sub Move(deltaX As Double, deltaY As Double)
+  overload: FlowGraph.Core.Node.Move*
+  nameWithType.vb: Node.Move(Double, Double)
+  fullName.vb: FlowGraph.Core.Node.Move(Double, Double)
+  name.vb: Move(Double, Double)
+- uid: FlowGraph.Core.Node.SetPosition(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Node.SetPosition(System.Double,System.Double)
+  id: SetPosition(System.Double,System.Double)
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: SetPosition(double, double)
+  nameWithType: Node.SetPosition(double, double)
+  fullName: FlowGraph.Core.Node.SetPosition(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetPosition
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 387
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Sets the node's position.
+  example: []
+  syntax:
+    content: public void SetPosition(double x, double y)
+    parameters:
+    - id: x
+      type: System.Double
+    - id: y
+      type: System.Double
+    content.vb: Public Sub SetPosition(x As Double, y As Double)
+  overload: FlowGraph.Core.Node.SetPosition*
+  nameWithType.vb: Node.SetPosition(Double, Double)
+  fullName.vb: FlowGraph.Core.Node.SetPosition(Double, Double)
+  name.vb: SetPosition(Double, Double)
+- uid: FlowGraph.Core.Node.SetSize(System.Nullable{System.Double},System.Nullable{System.Double})
+  commentId: M:FlowGraph.Core.Node.SetSize(System.Nullable{System.Double},System.Nullable{System.Double})
+  id: SetSize(System.Nullable{System.Double},System.Nullable{System.Double})
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: SetSize(double?, double?)
+  nameWithType: Node.SetSize(double?, double?)
+  fullName: FlowGraph.Core.Node.SetSize(double?, double?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SetSize
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 396
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Sets the node's size.
+  example: []
+  syntax:
+    content: public void SetSize(double? width, double? height)
+    parameters:
+    - id: width
+      type: System.Nullable{System.Double}
+    - id: height
+      type: System.Nullable{System.Double}
+    content.vb: Public Sub SetSize(width As Double?, height As Double?)
+  overload: FlowGraph.Core.Node.SetSize*
+  nameWithType.vb: Node.SetSize(Double?, Double?)
+  fullName.vb: FlowGraph.Core.Node.SetSize(Double?, Double?)
+  name.vb: SetSize(Double?, Double?)
+- uid: FlowGraph.Core.Node.CreateStateSnapshot
+  commentId: M:FlowGraph.Core.Node.CreateStateSnapshot
+  id: CreateStateSnapshot
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: CreateStateSnapshot()
+  nameWithType: Node.CreateStateSnapshot()
+  fullName: FlowGraph.Core.Node.CreateStateSnapshot()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CreateStateSnapshot
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 405
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Creates a snapshot of the current state.
+  example: []
+  syntax:
+    content: public NodeState CreateStateSnapshot()
+    return:
+      type: FlowGraph.Core.Models.NodeState
+    content.vb: Public Function CreateStateSnapshot() As NodeState
+  overload: FlowGraph.Core.Node.CreateStateSnapshot*
+- uid: FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)
+  commentId: M:FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)
+  id: RestoreState(FlowGraph.Core.Models.INodeState)
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: RestoreState(INodeState)
+  nameWithType: Node.RestoreState(INodeState)
+  fullName: FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RestoreState
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 422
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Restores state from a snapshot.
+  example: []
+  syntax:
+    content: public void RestoreState(INodeState snapshot)
+    parameters:
+    - id: snapshot
+      type: FlowGraph.Core.Models.INodeState
+    content.vb: Public Sub RestoreState(snapshot As INodeState)
+  overload: FlowGraph.Core.Node.RestoreState*
+- uid: FlowGraph.Core.Node.OnPropertyChanged(System.String)
+  commentId: M:FlowGraph.Core.Node.OnPropertyChanged(System.String)
+  id: OnPropertyChanged(System.String)
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: OnPropertyChanged(string?)
+  nameWithType: Node.OnPropertyChanged(string?)
+  fullName: FlowGraph.Core.Node.OnPropertyChanged(string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: develop
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnPropertyChanged
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 460
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Raises the PropertyChanged event.
+  example: []
+  syntax:
+    content: protected virtual void OnPropertyChanged(string? propertyName)
+    parameters:
+    - id: propertyName
+      type: System.String
+    content.vb: Protected Overridable Sub OnPropertyChanged(propertyName As String)
+  overload: FlowGraph.Core.Node.OnPropertyChanged*
+  nameWithType.vb: Node.OnPropertyChanged(String)
+  fullName.vb: FlowGraph.Core.Node.OnPropertyChanged(String)
+  name.vb: OnPropertyChanged(String)
 references:
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: FlowGraph.Core.Node.Definition
+  commentId: P:FlowGraph.Core.Node.Definition
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Definition
+  name: Definition
+  nameWithType: Node.Definition
+  fullName: FlowGraph.Core.Node.Definition
+- uid: FlowGraph.Core.Node.State
+  commentId: P:FlowGraph.Core.Node.State
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_State
+  name: State
+  nameWithType: Node.State
+  fullName: FlowGraph.Core.Node.State
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html
@@ -847,14 +1232,6 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  commentId: T:CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  parent: CommunityToolkit.Mvvm.ComponentModel
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject
-  name: ObservableObject
-  nameWithType: ObservableObject
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
 - uid: System.ComponentModel.INotifyPropertyChanged
   commentId: T:System.ComponentModel.INotifyPropertyChanged
   parent: System.ComponentModel
@@ -863,998 +1240,6 @@ references:
   name: INotifyPropertyChanged
   nameWithType: INotifyPropertyChanged
   fullName: System.ComponentModel.INotifyPropertyChanged
-- uid: System.ComponentModel.INotifyPropertyChanging
-  commentId: T:System.ComponentModel.INotifyPropertyChanging
-  parent: System.ComponentModel
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging
-  name: INotifyPropertyChanging
-  nameWithType: INotifyPropertyChanging
-  fullName: System.ComponentModel.INotifyPropertyChanging
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-componentmodel-propertychangedeventargs)
-  name: OnPropertyChanged(PropertyChangedEventArgs)
-  nameWithType: ObservableObject.OnPropertyChanged(PropertyChangedEventArgs)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-    name: OnPropertyChanged
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-componentmodel-propertychangedeventargs)
-  - name: (
-  - uid: System.ComponentModel.PropertyChangedEventArgs
-    name: PropertyChangedEventArgs
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)
-    name: OnPropertyChanged
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-componentmodel-propertychangedeventargs)
-  - name: (
-  - uid: System.ComponentModel.PropertyChangedEventArgs
-    name: PropertyChangedEventArgs
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventargs
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-componentmodel-propertychangingeventargs)
-  name: OnPropertyChanging(PropertyChangingEventArgs)
-  nameWithType: ObservableObject.OnPropertyChanging(PropertyChangingEventArgs)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-    name: OnPropertyChanging
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-componentmodel-propertychangingeventargs)
-  - name: (
-  - uid: System.ComponentModel.PropertyChangingEventArgs
-    name: PropertyChangingEventArgs
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangingeventargs
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.ComponentModel.PropertyChangingEventArgs)
-    name: OnPropertyChanging
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-componentmodel-propertychangingeventargs)
-  - name: (
-  - uid: System.ComponentModel.PropertyChangingEventArgs
-    name: PropertyChangingEventArgs
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangingeventargs
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-string)
-  name: OnPropertyChanged(string)
-  nameWithType: ObservableObject.OnPropertyChanged(string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(string)
-  nameWithType.vb: ObservableObject.OnPropertyChanged(String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(String)
-  name.vb: OnPropertyChanged(String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.String)
-    name: OnPropertyChanged
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-string)
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanged(System.String)
-    name: OnPropertyChanged
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanged#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanged(system-string)
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-string)
-  name: OnPropertyChanging(string)
-  nameWithType: ObservableObject.OnPropertyChanging(string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(string)
-  nameWithType.vb: ObservableObject.OnPropertyChanging(String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(String)
-  name.vb: OnPropertyChanging(String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.String)
-    name: OnPropertyChanging
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-string)
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.OnPropertyChanging(System.String)
-    name: OnPropertyChanging
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.onpropertychanging#communitytoolkit-mvvm-componentmodel-observableobject-onpropertychanging(system-string)
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T}@,{T},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
-  name: SetProperty<T>(ref T, T, string)
-  nameWithType: ObservableObject.SetProperty<T>(ref T, T, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(ref T, T, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, String)
-  name.vb: SetProperty(Of T)(T, T, String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T}@,{T},System.Collections.Generic.IEqualityComparer{{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
-  name: SetProperty<T>(ref T, T, IEqualityComparer<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(ref T, T, IEqualityComparer<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(ref T, T, System.Collections.Generic.IEqualityComparer<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, IEqualityComparer(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, IEqualityComparer(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T},{T},System.Action{{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  name: SetProperty<T>(T, T, Action<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(T, T, Action<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(T, T, System.Action<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, Action(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Action(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, Action(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1({T},{T},System.Collections.Generic.IEqualityComparer{{T}},System.Action{{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  name: SetProperty<T>(T, T, IEqualityComparer<T>, Action<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(T, T, IEqualityComparer<T>, Action<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(T, T, System.Collections.Generic.IEqualityComparer<T>, System.Action<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, IEqualityComparer(Of T), Action(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), System.Action(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, IEqualityComparer(Of T), Action(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2({T},{T},{TModel},System.Action{{TModel},{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  name: SetProperty<TModel, T>(T, T, TModel, Action<TModel, T>, string)
-  nameWithType: ObservableObject.SetProperty<TModel, T>(T, T, TModel, Action<TModel, T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<TModel, T>(T, T, TModel, System.Action<TModel, T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of TModel, T)(T, T, TModel, Action(Of TModel, T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of TModel, T)(T, T, TModel, System.Action(Of TModel, T), String)
-  name.vb: SetProperty(Of TModel, T)(T, T, TModel, Action(Of TModel, T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2({T},{T},System.Collections.Generic.IEqualityComparer{{T}},{TModel},System.Action{{TModel},{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  name: SetProperty<TModel, T>(T, T, IEqualityComparer<T>, TModel, Action<TModel, T>, string)
-  nameWithType: ObservableObject.SetProperty<TModel, T>(T, T, IEqualityComparer<T>, TModel, Action<TModel, T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<TModel, T>(T, T, System.Collections.Generic.IEqualityComparer<T>, TModel, System.Action<TModel, T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of TModel, T)(T, T, IEqualityComparer(Of T), TModel, Action(Of TModel, T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of TModel, T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), TModel, System.Action(Of TModel, T), String)
-  name.vb: SetProperty(Of TModel, T)(T, T, IEqualityComparer(Of T), TModel, Action(Of TModel, T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-string)
-  name: SetPropertyAndNotifyOnCompletion(ref TaskNotifier, Task, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion(ref ObservableObject.TaskNotifier, Task, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier, System.Threading.Tasks.Task, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(ObservableObject.TaskNotifier, Task, String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier, System.Threading.Tasks.Task, String)
-  name.vb: SetPropertyAndNotifyOnCompletion(TaskNotifier, Task, String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-string)
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-string)
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-action((system-threading-tasks-task))-system-string)
-  name: SetPropertyAndNotifyOnCompletion(ref TaskNotifier, Task, Action<Task>, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion(ref ObservableObject.TaskNotifier, Task, Action<Task>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier, System.Threading.Tasks.Task, System.Action<System.Threading.Tasks.Task>, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(ObservableObject.TaskNotifier, Task, Action(Of Task), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier, System.Threading.Tasks.Task, System.Action(Of System.Threading.Tasks.Task), String)
-  name.vb: SetPropertyAndNotifyOnCompletion(TaskNotifier, Task, Action(Of Task), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-action((system-threading-tasks-task))-system-string)
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier@,System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier@-system-threading-tasks-task-system-action((system-threading-tasks-task))-system-string)
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Threading.Tasks.Task
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{{T}}@,System.Threading.Tasks.Task{{T}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  name: SetPropertyAndNotifyOnCompletion<T>(ref TaskNotifier<T>, Task<T>, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref ObservableObject.TaskNotifier<T>, Task<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier<T>, System.Threading.Tasks.Task<T>, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(ObservableObject.TaskNotifier(Of T), Task(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier(Of T), System.Threading.Tasks.Task(Of T), String)
-  name.vb: SetPropertyAndNotifyOnCompletion(Of T)(TaskNotifier(Of T), Task(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{{T}}@,System.Threading.Tasks.Task{{T}},System.Action{System.Threading.Tasks.Task{{T}}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  definition: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  name: SetPropertyAndNotifyOnCompletion<T>(ref TaskNotifier<T>, Task<T>, Action<Task<T>>, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref ObservableObject.TaskNotifier<T>, Task<T>, Action<Task<T>>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier<T>, System.Threading.Tasks.Task<T>, System.Action<System.Threading.Tasks.Task<T>>, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(ObservableObject.TaskNotifier(Of T), Task(Of T), Action(Of Task(Of T)), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier(Of T), System.Threading.Tasks.Task(Of T), System.Action(Of System.Threading.Tasks.Task(Of T)), String)
-  name.vb: SetPropertyAndNotifyOnCompletion(Of T)(TaskNotifier(Of T), Task(Of T), Action(Of Task(Of T)), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanged
-  commentId: E:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanged
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.propertychanged
-  name: PropertyChanged
-  nameWithType: ObservableObject.PropertyChanged
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanged
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanging
-  commentId: E:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanging
-  parent: CommunityToolkit.Mvvm.ComponentModel.ObservableObject
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.propertychanging
-  name: PropertyChanging
-  nameWithType: ObservableObject.PropertyChanging
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.PropertyChanging
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -2074,6 +1459,142 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: FlowGraph.Core.Node.FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+  parent: FlowGraph.Core.Diagnostics.LoggingExtensions
+  definition: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
+  name: LogNodeCreated(Node, string)
+  nameWithType: LoggingExtensions.LogNodeCreated(Node, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node, string)
+  nameWithType.vb: LoggingExtensions.LogNodeCreated(Node, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node, String)
+  name.vb: LogNodeCreated(Node, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+    name: LogNodeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+    name: LogNodeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Node.FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(System.Double,System.Double,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+  parent: FlowGraph.Core.Diagnostics.LoggingExtensions
+  definition: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
+  name: LogNodeMoved(Node, double, double, string)
+  nameWithType: LoggingExtensions.LogNodeMoved(Node, double, double, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node, double, double, string)
+  nameWithType.vb: LoggingExtensions.LogNodeMoved(Node, Double, Double, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node, Double, Double, String)
+  name.vb: LogNodeMoved(Node, Double, Double, String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+    name: LogNodeMoved
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+    name: LogNodeMoved
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
 - uid: System
   commentId: N:System
   isExternal: true
@@ -2081,43 +1602,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: CommunityToolkit.Mvvm.ComponentModel
-  commentId: N:CommunityToolkit.Mvvm.ComponentModel
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit
-  name: CommunityToolkit.Mvvm.ComponentModel
-  nameWithType: CommunityToolkit.Mvvm.ComponentModel
-  fullName: CommunityToolkit.Mvvm.ComponentModel
-  spec.csharp:
-  - uid: CommunityToolkit
-    name: CommunityToolkit
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit
-  - name: .
-  - uid: CommunityToolkit.Mvvm
-    name: Mvvm
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm
-  - name: .
-  - uid: CommunityToolkit.Mvvm.ComponentModel
-    name: ComponentModel
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel
-  spec.vb:
-  - uid: CommunityToolkit
-    name: CommunityToolkit
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit
-  - name: .
-  - uid: CommunityToolkit.Mvvm
-    name: Mvvm
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm
-  - name: .
-  - uid: CommunityToolkit.Mvvm.ComponentModel
-    name: ComponentModel
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel
 - uid: System.ComponentModel
   commentId: N:System.ComponentModel
   isExternal: true
@@ -2145,31 +1629,24 @@ references:
     name: ComponentModel
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.componentmodel
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
-  name: SetProperty<T>(ref T, T, string)
-  nameWithType: ObservableObject.SetProperty<T>(ref T, T, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(ref T, T, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, String)
-  name.vb: SetProperty(Of T)(T, T, String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
+  name: LogNodeCreated(Node, string)
+  nameWithType: LoggingExtensions.LogNodeCreated(Node, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node, string)
+  nameWithType.vb: LoggingExtensions.LogNodeCreated(Node, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node, String)
+  name.vb: LogNodeCreated(Node, String)
   spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
-  - name: <
-  - name: T
-  - name: '>'
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+    name: LogNodeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
   - name: (
-  - name: ref
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
   - name: ','
   - name: " "
   - uid: System.String
@@ -2178,20 +1655,13 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-string)
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeCreated(FlowGraph.Core.Node,System.String)
+    name: LogNodeCreated
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_
   - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
   - name: ','
   - name: " "
   - uid: System.String
@@ -2199,40 +1669,43 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions
+  commentId: T:FlowGraph.Core.Diagnostics.LoggingExtensions
+  parent: FlowGraph.Core.Diagnostics
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html
+  name: LoggingExtensions
+  nameWithType: LoggingExtensions
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions
+- uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+  commentId: M:FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
-  name: SetProperty<T>(ref T, T, IEqualityComparer<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(ref T, T, IEqualityComparer<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(ref T, T, System.Collections.Generic.IEqualityComparer<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, IEqualityComparer(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, IEqualityComparer(Of T), String)
+  href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
+  name: LogNodeMoved(Node, double, double, string)
+  nameWithType: LoggingExtensions.LogNodeMoved(Node, double, double, string)
+  fullName: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node, double, double, string)
+  nameWithType.vb: LoggingExtensions.LogNodeMoved(Node, Double, Double, String)
+  fullName.vb: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node, Double, Double, String)
+  name.vb: LogNodeMoved(Node, Double, Double, String)
   spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+    name: LogNodeMoved
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
   - name: (
-  - name: ref
-  - name: " "
-  - name: T
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
   - name: ','
   - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
+  - uid: System.Double
+    name: double
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
   - name: ','
   - name: " "
   - uid: System.String
@@ -2241,31 +1714,25 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0@,``0,System.Collections.Generic.IEqualityComparer{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0@-0-system-collections-generic-iequalitycomparer((-0))-system-string)
+  - uid: FlowGraph.Core.Diagnostics.LoggingExtensions.LogNodeMoved(FlowGraph.Core.Node,System.Double,System.Double,System.String)
+    name: LogNodeMoved
+    href: FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_
   - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
   - name: ','
   - name: " "
-  - name: T
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
   - name: ','
   - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
+  - uid: System.Double
+    name: Double
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
+    href: https://learn.microsoft.com/dotnet/api/system.double
   - name: ','
   - name: " "
   - uid: System.String
@@ -2273,574 +1740,130 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  name: SetProperty<T>(T, T, Action<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(T, T, Action<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(T, T, System.Action<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, Action(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Action(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, Action(Of T), String)
+- uid: FlowGraph.Core.Diagnostics
+  commentId: N:FlowGraph.Core.Diagnostics
+  href: FlowGraph.html
+  name: FlowGraph.Core.Diagnostics
+  nameWithType: FlowGraph.Core.Diagnostics
+  fullName: FlowGraph.Core.Diagnostics
   spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
   spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-action((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Diagnostics
+    name: Diagnostics
+    href: FlowGraph.Core.Diagnostics.html
+- uid: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  commentId: E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+  parent: System.ComponentModel.INotifyPropertyChanged
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  name: SetProperty<T>(T, T, IEqualityComparer<T>, Action<T>, string)
-  nameWithType: ObservableObject.SetProperty<T>(T, T, IEqualityComparer<T>, Action<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<T>(T, T, System.Collections.Generic.IEqualityComparer<T>, System.Action<T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of T)(T, T, IEqualityComparer(Of T), Action(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), System.Action(Of T), String)
-  name.vb: SetProperty(Of T)(T, T, IEqualityComparer(Of T), Action(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.Action{``0},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-1(-0-0-system-collections-generic-iequalitycomparer((-0))-system-action((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged
+  name: PropertyChanged
+  nameWithType: INotifyPropertyChanged.PropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: System.ComponentModel.PropertyChangedEventHandler
+  commentId: T:System.ComponentModel.PropertyChangedEventHandler
+  parent: System.ComponentModel
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  name: SetProperty<TModel, T>(T, T, TModel, Action<TModel, T>, string)
-  nameWithType: ObservableObject.SetProperty<TModel, T>(T, T, TModel, Action<TModel, T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<TModel, T>(T, T, TModel, System.Action<TModel, T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of TModel, T)(T, T, TModel, Action(Of TModel, T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of TModel, T)(T, T, TModel, System.Action(Of TModel, T), String)
-  name.vb: SetProperty(Of TModel, T)(T, T, TModel, Action(Of TModel, T), String)
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventhandler
+  name: PropertyChangedEventHandler
+  nameWithType: PropertyChangedEventHandler
+  fullName: System.ComponentModel.PropertyChangedEventHandler
+- uid: FlowGraph.Core.Node.#ctor*
+  commentId: Overload:FlowGraph.Core.Node.#ctor
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node__ctor_FlowGraph_Core_Models_NodeDefinition_FlowGraph_Core_Models_INodeState_
+  name: Node
+  nameWithType: Node.Node
+  fullName: FlowGraph.Core.Node.Node
+  nameWithType.vb: Node.New
+  fullName.vb: FlowGraph.Core.Node.New
+  name.vb: New
+- uid: FlowGraph.Core.Models.NodeDefinition
+  commentId: T:FlowGraph.Core.Models.NodeDefinition
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.NodeDefinition.html
+  name: NodeDefinition
+  nameWithType: NodeDefinition
+  fullName: FlowGraph.Core.Models.NodeDefinition
+- uid: FlowGraph.Core.Models.INodeState
+  commentId: T:FlowGraph.Core.Models.INodeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.INodeState.html
+  name: INodeState
+  nameWithType: INodeState
+  fullName: FlowGraph.Core.Models.INodeState
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
   spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
   spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-0-system-action((-0-1))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  name: SetProperty<TModel, T>(T, T, IEqualityComparer<T>, TModel, Action<TModel, T>, string)
-  nameWithType: ObservableObject.SetProperty<TModel, T>(T, T, IEqualityComparer<T>, TModel, Action<TModel, T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty<TModel, T>(T, T, System.Collections.Generic.IEqualityComparer<T>, TModel, System.Action<TModel, T>, string)
-  nameWithType.vb: ObservableObject.SetProperty(Of TModel, T)(T, T, IEqualityComparer(Of T), TModel, Action(Of TModel, T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty(Of TModel, T)(T, T, System.Collections.Generic.IEqualityComparer(Of T), TModel, System.Action(Of TModel, T), String)
-  name.vb: SetProperty(Of TModel, T)(T, T, IEqualityComparer(Of T), TModel, Action(Of TModel, T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: <
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetProperty``2(``1,``1,System.Collections.Generic.IEqualityComparer{``1},``0,System.Action{``0,``1},System.String)
-    name: SetProperty
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setproperty#communitytoolkit-mvvm-componentmodel-observableobject-setproperty-2(-1-1-system-collections-generic-iequalitycomparer((-1))-0-system-action((-0-1))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: T
-  - name: ','
-  - name: " "
-  - name: T
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Generic.IEqualityComparer`1
-    name: IEqualityComparer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - uid: System.Action`2
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TModel
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  name: SetPropertyAndNotifyOnCompletion<T>(ref TaskNotifier<T>, Task<T>, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref ObservableObject.TaskNotifier<T>, Task<T>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier<T>, System.Threading.Tasks.Task<T>, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(ObservableObject.TaskNotifier(Of T), Task(Of T), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier(Of T), System.Threading.Tasks.Task(Of T), String)
-  name.vb: SetPropertyAndNotifyOnCompletion(Of T)(TaskNotifier(Of T), Task(Of T), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-  commentId: M:CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  name: SetPropertyAndNotifyOnCompletion<T>(ref TaskNotifier<T>, Task<T>, Action<Task<T>>, string)
-  nameWithType: ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref ObservableObject.TaskNotifier<T>, Task<T>, Action<Task<T>>, string)
-  fullName: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion<T>(ref CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier<T>, System.Threading.Tasks.Task<T>, System.Action<System.Threading.Tasks.Task<T>>, string)
-  nameWithType.vb: ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(ObservableObject.TaskNotifier(Of T), Task(Of T), Action(Of Task(Of T)), String)
-  fullName.vb: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion(Of T)(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier(Of T), System.Threading.Tasks.Task(Of T), System.Action(Of System.Threading.Tasks.Task(Of T)), String)
-  name.vb: SetPropertyAndNotifyOnCompletion(Of T)(TaskNotifier(Of T), Task(Of T), Action(Of Task(Of T)), String)
-  spec.csharp:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: ref
-  - name: " "
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.SetPropertyAndNotifyOnCompletion``1(CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier{``0}@,System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}},System.String)
-    name: SetPropertyAndNotifyOnCompletion
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.setpropertyandnotifyoncompletion#communitytoolkit-mvvm-componentmodel-observableobject-setpropertyandnotifyoncompletion-1(communitytoolkit-mvvm-componentmodel-observableobject-tasknotifier((-0))@-system-threading-tasks-task((-0))-system-action((system-threading-tasks-task((-0))))-system-string)
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - uid: CommunityToolkit.Mvvm.ComponentModel.ObservableObject.TaskNotifier`1
-    name: TaskNotifier
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/communitytoolkit.mvvm.componentmodel.observableobject.tasknotifier-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: FlowGraph.Core.Node.Definition*
+  commentId: Overload:FlowGraph.Core.Node.Definition
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Definition
+  name: Definition
+  nameWithType: Node.Definition
+  fullName: FlowGraph.Core.Node.Definition
+- uid: FlowGraph.Core.Node.State*
+  commentId: Overload:FlowGraph.Core.Node.State
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_State
+  name: State
+  nameWithType: Node.State
+  fullName: FlowGraph.Core.Node.State
 - uid: FlowGraph.Core.Node.Id*
   commentId: Overload:FlowGraph.Core.Node.Id
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Id
   name: Id
   nameWithType: Node.Id
   fullName: FlowGraph.Core.Node.Id
+- uid: FlowGraph.Core.Elements.ICanvasElement.Id
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Id
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Id
+  name: Id
+  nameWithType: ICanvasElement.Id
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Id
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -2852,12 +1875,84 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: FlowGraph.Core.Node.Type*
+  commentId: Overload:FlowGraph.Core.Node.Type
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Type
+  name: Type
+  nameWithType: Node.Type
+  fullName: FlowGraph.Core.Node.Type
+- uid: FlowGraph.Core.Elements.ICanvasElement.Type
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Type
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Type
+  name: Type
+  nameWithType: ICanvasElement.Type
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Type
+- uid: FlowGraph.Core.Node.Label*
+  commentId: Overload:FlowGraph.Core.Node.Label
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Label
+  name: Label
+  nameWithType: Node.Label
+  fullName: FlowGraph.Core.Node.Label
+- uid: FlowGraph.Core.Node.ParentGroupId*
+  commentId: Overload:FlowGraph.Core.Node.ParentGroupId
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_ParentGroupId
+  name: ParentGroupId
+  nameWithType: Node.ParentGroupId
+  fullName: FlowGraph.Core.Node.ParentGroupId
+- uid: FlowGraph.Core.Node.IsGroup*
+  commentId: Overload:FlowGraph.Core.Node.IsGroup
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsGroup
+  name: IsGroup
+  nameWithType: Node.IsGroup
+  fullName: FlowGraph.Core.Node.IsGroup
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: FlowGraph.Core.Node.Data*
   commentId: Overload:FlowGraph.Core.Node.Data
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Data
   name: Data
   nameWithType: Node.Data
   fullName: FlowGraph.Core.Node.Data
+- uid: FlowGraph.Core.Node.IsSelectable*
+  commentId: Overload:FlowGraph.Core.Node.IsSelectable
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsSelectable
+  name: IsSelectable
+  nameWithType: Node.IsSelectable
+  fullName: FlowGraph.Core.Node.IsSelectable
+- uid: FlowGraph.Core.Node.IsDraggable*
+  commentId: Overload:FlowGraph.Core.Node.IsDraggable
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDraggable
+  name: IsDraggable
+  nameWithType: Node.IsDraggable
+  fullName: FlowGraph.Core.Node.IsDraggable
+- uid: FlowGraph.Core.Node.IsDeletable*
+  commentId: Overload:FlowGraph.Core.Node.IsDeletable
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDeletable
+  name: IsDeletable
+  nameWithType: Node.IsDeletable
+  fullName: FlowGraph.Core.Node.IsDeletable
+- uid: FlowGraph.Core.Node.IsConnectable*
+  commentId: Overload:FlowGraph.Core.Node.IsConnectable
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsConnectable
+  name: IsConnectable
+  nameWithType: Node.IsConnectable
+  fullName: FlowGraph.Core.Node.IsConnectable
+- uid: FlowGraph.Core.Node.IsResizable*
+  commentId: Overload:FlowGraph.Core.Node.IsResizable
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsResizable
+  name: IsResizable
+  nameWithType: Node.IsResizable
+  fullName: FlowGraph.Core.Node.IsResizable
 - uid: FlowGraph.Core.Node.Inputs*
   commentId: Overload:FlowGraph.Core.Node.Inputs
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Inputs
@@ -2968,18 +2063,19 @@ references:
   name: Outputs
   nameWithType: Node.Outputs
   fullName: FlowGraph.Core.Node.Outputs
-- uid: FlowGraph.Core.Node.Type*
-  commentId: Overload:FlowGraph.Core.Node.Type
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Type
-  name: Type
-  nameWithType: Node.Type
-  fullName: FlowGraph.Core.Node.Type
 - uid: FlowGraph.Core.Node.Position*
   commentId: Overload:FlowGraph.Core.Node.Position
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Position
   name: Position
   nameWithType: Node.Position
   fullName: FlowGraph.Core.Node.Position
+- uid: FlowGraph.Core.Elements.ICanvasElement.Position
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Position
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Position
+  name: Position
+  nameWithType: ICanvasElement.Position
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Position
 - uid: FlowGraph.Core.Point
   commentId: T:FlowGraph.Core.Point
   parent: FlowGraph.Core
@@ -2993,6 +2089,13 @@ references:
   name: Width
   nameWithType: Node.Width
   fullName: FlowGraph.Core.Node.Width
+- uid: FlowGraph.Core.Elements.ICanvasElement.Width
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Width
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Width
+  name: Width
+  nameWithType: ICanvasElement.Width
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Width
 - uid: System.Nullable{System.Double}
   commentId: T:System.Nullable{System.Double}
   parent: System
@@ -3050,80 +2153,158 @@ references:
   name: Height
   nameWithType: Node.Height
   fullName: FlowGraph.Core.Node.Height
+- uid: FlowGraph.Core.Elements.ICanvasElement.Height
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.Height
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_Height
+  name: Height
+  nameWithType: ICanvasElement.Height
+  fullName: FlowGraph.Core.Elements.ICanvasElement.Height
 - uid: FlowGraph.Core.Node.IsSelected*
   commentId: Overload:FlowGraph.Core.Node.IsSelected
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsSelected
   name: IsSelected
   nameWithType: Node.IsSelected
   fullName: FlowGraph.Core.Node.IsSelected
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelected
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsSelected
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsSelected
+  name: IsSelected
+  nameWithType: ICanvasElement.IsSelected
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelected
 - uid: FlowGraph.Core.Node.IsDragging*
   commentId: Overload:FlowGraph.Core.Node.IsDragging
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDragging
   name: IsDragging
   nameWithType: Node.IsDragging
   fullName: FlowGraph.Core.Node.IsDragging
-- uid: FlowGraph.Core.Node.IsResizable*
-  commentId: Overload:FlowGraph.Core.Node.IsResizable
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsResizable
-  name: IsResizable
-  nameWithType: Node.IsResizable
-  fullName: FlowGraph.Core.Node.IsResizable
-- uid: FlowGraph.Core.Node.IsSelectable*
-  commentId: Overload:FlowGraph.Core.Node.IsSelectable
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsSelectable
-  name: IsSelectable
-  nameWithType: Node.IsSelectable
-  fullName: FlowGraph.Core.Node.IsSelectable
-- uid: FlowGraph.Core.Node.IsDraggable*
-  commentId: Overload:FlowGraph.Core.Node.IsDraggable
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDraggable
-  name: IsDraggable
-  nameWithType: Node.IsDraggable
-  fullName: FlowGraph.Core.Node.IsDraggable
-- uid: FlowGraph.Core.Node.IsDeletable*
-  commentId: Overload:FlowGraph.Core.Node.IsDeletable
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDeletable
-  name: IsDeletable
-  nameWithType: Node.IsDeletable
-  fullName: FlowGraph.Core.Node.IsDeletable
-- uid: FlowGraph.Core.Node.IsConnectable*
-  commentId: Overload:FlowGraph.Core.Node.IsConnectable
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsConnectable
-  name: IsConnectable
-  nameWithType: Node.IsConnectable
-  fullName: FlowGraph.Core.Node.IsConnectable
-- uid: FlowGraph.Core.Node.ParentGroupId*
-  commentId: Overload:FlowGraph.Core.Node.ParentGroupId
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_ParentGroupId
-  name: ParentGroupId
-  nameWithType: Node.ParentGroupId
-  fullName: FlowGraph.Core.Node.ParentGroupId
-- uid: FlowGraph.Core.Node.IsGroup*
-  commentId: Overload:FlowGraph.Core.Node.IsGroup
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsGroup
-  name: IsGroup
-  nameWithType: Node.IsGroup
-  fullName: FlowGraph.Core.Node.IsGroup
 - uid: FlowGraph.Core.Node.IsCollapsed*
   commentId: Overload:FlowGraph.Core.Node.IsCollapsed
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsCollapsed
   name: IsCollapsed
   nameWithType: Node.IsCollapsed
   fullName: FlowGraph.Core.Node.IsCollapsed
-- uid: FlowGraph.Core.Node.Label*
-  commentId: Overload:FlowGraph.Core.Node.Label
-  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Label
-  name: Label
-  nameWithType: Node.Label
-  fullName: FlowGraph.Core.Node.Label
+- uid: FlowGraph.Core.Node.IsVisible*
+  commentId: Overload:FlowGraph.Core.Node.IsVisible
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsVisible
+  name: IsVisible
+  nameWithType: Node.IsVisible
+  fullName: FlowGraph.Core.Node.IsVisible
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsVisible
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsVisible
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsVisible
+  name: IsVisible
+  nameWithType: ICanvasElement.IsVisible
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsVisible
+- uid: FlowGraph.Core.Node.ZIndex*
+  commentId: Overload:FlowGraph.Core.Node.ZIndex
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_ZIndex
+  name: ZIndex
+  nameWithType: Node.ZIndex
+  fullName: FlowGraph.Core.Node.ZIndex
+- uid: FlowGraph.Core.Elements.ICanvasElement.ZIndex
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.ZIndex
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_ZIndex
+  name: ZIndex
+  nameWithType: ICanvasElement.ZIndex
+  fullName: FlowGraph.Core.Elements.ICanvasElement.ZIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Node.GetBounds*
+  commentId: Overload:FlowGraph.Core.Node.GetBounds
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_GetBounds
+  name: GetBounds
+  nameWithType: Node.GetBounds
+  fullName: FlowGraph.Core.Node.GetBounds
+- uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+  commentId: M:FlowGraph.Core.Elements.ICanvasElement.GetBounds
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  name: GetBounds()
+  nameWithType: ICanvasElement.GetBounds()
+  fullName: FlowGraph.Core.Elements.ICanvasElement.GetBounds()
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.ICanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_GetBounds
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.Rect
+  commentId: T:FlowGraph.Core.Elements.Rect
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.Rect.html
+  name: Rect
+  nameWithType: Rect
+  fullName: FlowGraph.Core.Elements.Rect
+- uid: FlowGraph.Core.Node.Move*
+  commentId: Overload:FlowGraph.Core.Node.Move
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Move_System_Double_System_Double_
+  name: Move
+  nameWithType: Node.Move
+  fullName: FlowGraph.Core.Node.Move
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Node.SetPosition*
+  commentId: Overload:FlowGraph.Core.Node.SetPosition
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_SetPosition_System_Double_System_Double_
+  name: SetPosition
+  nameWithType: Node.SetPosition
+  fullName: FlowGraph.Core.Node.SetPosition
+- uid: FlowGraph.Core.Node.SetSize*
+  commentId: Overload:FlowGraph.Core.Node.SetSize
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_SetSize_System_Nullable_System_Double__System_Nullable_System_Double__
+  name: SetSize
+  nameWithType: Node.SetSize
+  fullName: FlowGraph.Core.Node.SetSize
+- uid: FlowGraph.Core.Node.CreateStateSnapshot*
+  commentId: Overload:FlowGraph.Core.Node.CreateStateSnapshot
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_CreateStateSnapshot
+  name: CreateStateSnapshot
+  nameWithType: Node.CreateStateSnapshot
+  fullName: FlowGraph.Core.Node.CreateStateSnapshot
+- uid: FlowGraph.Core.Models.NodeState
+  commentId: T:FlowGraph.Core.Models.NodeState
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.NodeState.html
+  name: NodeState
+  nameWithType: NodeState
+  fullName: FlowGraph.Core.Models.NodeState
+- uid: FlowGraph.Core.Node.RestoreState*
+  commentId: Overload:FlowGraph.Core.Node.RestoreState
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_RestoreState_FlowGraph_Core_Models_INodeState_
+  name: RestoreState
+  nameWithType: Node.RestoreState
+  fullName: FlowGraph.Core.Node.RestoreState
+- uid: FlowGraph.Core.Node.OnPropertyChanged*
+  commentId: Overload:FlowGraph.Core.Node.OnPropertyChanged
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_OnPropertyChanged_System_String_
+  name: OnPropertyChanged
+  nameWithType: Node.OnPropertyChanged
+  fullName: FlowGraph.Core.Node.OnPropertyChanged

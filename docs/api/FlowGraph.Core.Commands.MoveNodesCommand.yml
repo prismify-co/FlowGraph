@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MoveNodesCommand
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
@@ -59,7 +59,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Description
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
@@ -132,11 +132,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
-    startLine: 26
+    startLine: 28
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Commands
@@ -153,6 +153,13 @@ items:
       type: System.Collections.Generic.Dictionary{System.String,FlowGraph.Core.Point}
     content.vb: Public Sub New(graph As Graph, oldPositions As Dictionary(Of String, Point), newPositions As Dictionary(Of String, Point))
   overload: FlowGraph.Core.Commands.MoveNodesCommand.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when graph is null.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when position dictionaries are empty or have mismatched keys.
   nameWithType.vb: MoveNodesCommand.New(Graph, Dictionary(Of String, Point), Dictionary(Of String, Point))
   fullName.vb: FlowGraph.Core.Commands.MoveNodesCommand.New(FlowGraph.Core.Graph, System.Collections.Generic.Dictionary(Of String, FlowGraph.Core.Point), System.Collections.Generic.Dictionary(Of String, FlowGraph.Core.Point))
   name.vb: New(Graph, Dictionary(Of String, Point), Dictionary(Of String, Point))
@@ -170,11 +177,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Execute
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
-    startLine: 40
+    startLine: 52
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Commands
@@ -200,11 +207,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Commands/MoveNodesCommand.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Undo
     path: ../FlowGraph.Core/Commands/MoveNodesCommand.cs
-    startLine: 52
+    startLine: 64
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Commands
@@ -567,6 +574,20 @@ references:
   - uid: FlowGraph.Core
     name: Core
     href: FlowGraph.Core.html
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
 - uid: System.Collections.Generic.Dictionary{System.String,FlowGraph.Core.Point}
   commentId: T:System.Collections.Generic.Dictionary{System.String,FlowGraph.Core.Point}
   parent: System.Collections.Generic

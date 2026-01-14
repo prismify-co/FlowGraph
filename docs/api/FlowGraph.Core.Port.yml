@@ -19,14 +19,19 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Port.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Port
     path: ../FlowGraph.Core/Port.cs
-    startLine: 28
+    startLine: 98
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    Represents a connection point on a node where edges can attach.
+
+    Ports define the interface for data flow between nodes.
+  example: []
   syntax:
     content: 'public record Port : IEquatable<Port>'
     content.vb: Public Class Port Implements IEquatable(Of Port)
@@ -56,14 +61,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Port.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Port.cs
-    startLine: 30
+    startLine: 103
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Unique identifier for the port within its node.
+  example: []
   syntax:
     content: public required string Id { get; init; }
     parameters: []
@@ -85,14 +92,19 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Port.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Port.cs
-    startLine: 31
+    startLine: 109
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: >-
+    The data type that this port accepts or produces.
+
+    Used for connection validation.
+  example: []
   syntax:
     content: public required string Type { get; init; }
     parameters: []
@@ -114,14 +126,16 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Port.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Port.cs
-    startLine: 32
+    startLine: 114
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
+  summary: Optional display label for the port.
+  example: []
   syntax:
     content: public string? Label { get; init; }
     parameters: []
@@ -143,11 +157,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Port.cs
-      branch: master
+      branch: develop
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Position
     path: ../FlowGraph.Core/Port.cs
-    startLine: 38
+    startLine: 120
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core

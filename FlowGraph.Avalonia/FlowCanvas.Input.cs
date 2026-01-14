@@ -146,12 +146,29 @@ public partial class FlowCanvas
         Focus();
     }
 
+    private static int _pointerMoveCount = 0;
+    private static long _totalPointerMoveMs = 0;
+    private long _lastHoverHitTestTicks = 0;
+    private const long HoverThrottleMs = 50; // Throttle hover hit testing to 20 FPS (50ms intervals)
+
     private void OnRootPanelPointerMoved(object? sender, PointerEventArgs e)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         _inputContext.Graph = Graph;
 
-        // Track hover states and cursor in direct rendering mode
-        if (_useDirectRendering && _directRenderer != null && _rootPanel != null)
+        // OPTIMIZATION: Skip expensive hover hit testing during states that don't need it
+        // (Panning, Dragging, BoxSelecting, Connecting, Reconnecting, Resizing, Animating)
+        var currentState = _inputStateMachine.CurrentStateName;
+        var needsHoverDetection = currentState == "Idle";
+
+        // OPTIMIZATION: Throttle hover hit testing to reduce CPU load on large graphs
+        // Hover feedback at 20 FPS is plenty responsive for cursor changes
+        var currentTicks = Environment.TickCount64;
+        var timeSinceLastHoverTest = currentTicks - _lastHoverHitTestTicks;
+        var shouldDoHoverTest = needsHoverDetection && timeSinceLastHoverTest >= HoverThrottleMs;
+
+        // Track hover states and cursor in direct rendering mode (only when idle and throttled)
+        if (shouldDoHoverTest && _useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
             var screenPos = e.GetPosition(_rootPanel);
 
@@ -202,9 +219,21 @@ public partial class FlowCanvas
                     }
                 }
             }
+            
+            // Update throttle timestamp after hover test
+            _lastHoverHitTestTicks = currentTicks;
         }
 
         _inputStateMachine.HandlePointerMoved(e);
+        
+        sw.Stop();
+        _pointerMoveCount++;
+        _totalPointerMoveMs += sw.ElapsedMilliseconds;
+        if (_pointerMoveCount % 100 == 0)
+        {
+            Debug.WriteLine($"[Input] PointerMoved: last100avg={_totalPointerMoveMs}ms total, count={_pointerMoveCount}");
+            _totalPointerMoveMs = 0;
+        }
     }
 
     /// <summary>
@@ -410,7 +439,8 @@ public partial class FlowCanvas
             // This preserves multi-selection for grouping etc.
             if (!node.IsSelected && Graph != null)
             {
-                foreach (var n in Graph.Elements.Nodes)
+                // OPTIMIZED: Only deselect nodes that are actually selected
+                foreach (var n in Graph.Elements.Nodes.Where(n => n.IsSelected))
                     n.IsSelected = false;
                 node.IsSelected = true;
             }
@@ -421,9 +451,10 @@ public partial class FlowCanvas
             // Only change selection if the clicked edge is NOT already selected
             if (!edge.IsSelected && Graph != null)
             {
-                foreach (var n in Graph.Elements.Nodes)
+                // OPTIMIZED: Only deselect items that are actually selected
+                foreach (var n in Graph.Elements.Nodes.Where(n => n.IsSelected))
                     n.IsSelected = false;
-                foreach (var ed in Graph.Elements.Edges)
+                foreach (var ed in Graph.Elements.Edges.Where(ed => ed.IsSelected))
                     ed.IsSelected = false;
                 edge.IsSelected = true;
             }
@@ -448,7 +479,8 @@ public partial class FlowCanvas
                 // Only change selection if the clicked node is NOT already selected
                 if (!hitNode.IsSelected)
                 {
-                    foreach (var n in Graph?.Elements.Nodes ?? [])
+                    // OPTIMIZED: Only deselect nodes that are actually selected
+                    foreach (var n in (Graph?.Elements.Nodes ?? []).Where(n => n.IsSelected))
                         n.IsSelected = false;
                     hitNode.IsSelected = true;
                 }
@@ -459,7 +491,8 @@ public partial class FlowCanvas
                 // Only change selection if the clicked edge is NOT already selected
                 if (!hitEdge.IsSelected)
                 {
-                    foreach (var ed in Graph?.Elements.Edges ?? [])
+                    // OPTIMIZED: Only deselect edges that are actually selected
+                    foreach (var ed in (Graph?.Elements.Edges ?? []).Where(ed => ed.IsSelected))
                         ed.IsSelected = false;
                     hitEdge.IsSelected = true;
                 }

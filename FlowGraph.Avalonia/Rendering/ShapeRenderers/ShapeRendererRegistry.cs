@@ -13,7 +13,7 @@ namespace FlowGraph.Avalonia.Rendering.ShapeRenderers;
 /// extensibility model for all element types.
 /// </para>
 /// <para>
-/// Shape types are identified by their <see cref="ShapeElement.Type"/> property
+/// Shape types are identified by their <see cref="Core.Elements.CanvasElement.Type"/> property
 /// (e.g., "rectangle", "line", "text", "ellipse").
 /// </para>
 /// </remarks>
