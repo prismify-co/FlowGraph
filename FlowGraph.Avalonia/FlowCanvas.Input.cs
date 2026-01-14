@@ -46,10 +46,9 @@ public partial class FlowCanvas
             // In direct rendering mode, do hit testing first to find what was clicked
             if (_useDirectRendering && _directRenderer != null)
             {
-                var canvasPos = _rootPanel != null && _mainCanvas != null 
-                    ? e.GetPosition(_mainCanvas) 
-                    : screenPos;
-                var rightClickHit = PerformDirectRenderingHitTest(canvasPos.X, canvasPos.Y);
+                // DirectRenderer expects screen coordinates (relative to _rootPanel)
+                // It calls ScreenToCanvas internally
+                var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
                 Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
 
                 var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(rightClickHit?.Tag);
@@ -84,11 +83,10 @@ public partial class FlowCanvas
         // In direct rendering mode, use coordinate-based hit testing
         if (_useDirectRendering && _directRenderer != null)
         {
-            var canvasPos = _rootPanel != null && _mainCanvas != null 
-                ? e.GetPosition(_mainCanvas) 
-                : screenPos;
+            // DirectRenderer expects screen coordinates (relative to _rootPanel)
+            // It calls ScreenToCanvas internally
             var hitSw = Stopwatch.StartNew();
-            hitElement = PerformDirectRenderingHitTest(canvasPos.X, canvasPos.Y);
+            hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
             hitSw.Stop();
             Debug.WriteLine($"[Input] DirectHitTest took {hitSw.ElapsedMilliseconds}ms, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
         }

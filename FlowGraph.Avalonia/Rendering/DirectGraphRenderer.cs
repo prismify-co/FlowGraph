@@ -854,6 +854,8 @@ public class DirectGraphRenderer : Control
     /// <summary>
     /// Performs hit testing to find an edge endpoint handle at the given screen coordinates.
     /// </summary>
+    /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
     /// <returns>Tuple of (edge, isSource) or null if no handle hit.</returns>
     public (Edge edge, bool isSource)? HitTestEdgeEndpointHandle(double screenX, double screenY)
     {
@@ -917,6 +919,9 @@ public class DirectGraphRenderer : Control
     /// <summary>
     /// Performs hit testing to find a resize handle at the given screen coordinates.
     /// </summary>
+    /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <returns>Tuple of (node, position) or null if no handle hit.</returns>
     public (Node node, ResizeHandlePosition position)? HitTestResizeHandle(double screenX, double screenY)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -960,6 +965,9 @@ public class DirectGraphRenderer : Control
     /// <summary>
     /// Performs hit testing to find a node at the given screen coordinates.
     /// </summary>
+    /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <returns>The hit node, or null if no node was hit.</returns>
     public Node? HitTestNode(double screenX, double screenY)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -1026,6 +1034,9 @@ public class DirectGraphRenderer : Control
     /// <summary>
     /// Performs hit testing to find a port at the given screen coordinates.
     /// </summary>
+    /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <returns>Tuple of (node, port, isOutput) or null if no port hit.</returns>
     public (Node node, Port port, bool isOutput)? HitTestPort(double screenX, double screenY)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -1129,6 +1140,9 @@ public class DirectGraphRenderer : Control
     /// <summary>
     /// Performs hit testing to find an edge at the given screen coordinates.
     /// </summary>
+    /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+    /// <returns>The hit edge, or null if no edge was hit.</returns>
     public Edge? HitTestEdge(double screenX, double screenY)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
