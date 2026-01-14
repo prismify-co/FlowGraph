@@ -122,6 +122,18 @@ public class RenderContext
 
     /// <summary>
     /// Transforms a canvas coordinate to screen coordinate.
+    /// 
+    /// <para><b>USAGE GUIDANCE:</b></para>
+    /// <list type="bullet">
+    /// <item><b>DO NOT USE</b> when positioning visual elements with Canvas.SetLeft/SetTop - 
+    /// elements on MainCanvas should be positioned in canvas coordinates, the MatrixTransform handles viewport conversion</item>
+    /// <item><b>DO USE</b> when rendering with DrawingContext (backgrounds, direct rendering) - 
+    /// DrawingContext needs screen coordinates</item>
+    /// <item><b>DO USE</b> for calculations that need to know screen-space dimensions (hit areas, label placement)</item>
+    /// </list>
+    /// 
+    /// <para><b>CORRECT:</b> <c>drawingContext.DrawRectangle(brush, pen, CanvasToScreen(rect))</c></para>
+    /// <para><b>INCORRECT:</b> <c>Canvas.SetLeft(element, CanvasToScreen(x, y).X)</c> - causes double transform!</para>
     /// </summary>
     /// <param name="canvasX">X coordinate in canvas space.</param>
     /// <param name="canvasY">Y coordinate in canvas space.</param>
@@ -159,6 +171,16 @@ public class RenderContext
 
     /// <summary>
     /// Transforms a screen coordinate to canvas coordinate.
+    /// 
+    /// <para><b>USAGE GUIDANCE:</b></para>
+    /// <list type="bullet">
+    /// <item><b>PREFER</b> using <c>e.GetPosition(_mainCanvas)</c> for hit testing - gives canvas coords directly</item>
+    /// <item><b>DO USE</b> when you have screen coordinates (from GetPosition(_rootPanel)) and need canvas coords</item>
+    /// <item><b>DO USE</b> for inverse calculations from CanvasToScreen operations</item>
+    /// </list>
+    /// 
+    /// <para><b>CORRECT:</b> <c>var canvasPos = e.GetPosition(_mainCanvas)</c> (no conversion needed)</para>
+    /// <para><b>ALSO CORRECT:</b> <c>var canvasPos = ScreenToCanvas(e.GetPosition(_rootPanel))</c></para>
     /// </summary>
     /// <param name="screenX">X coordinate in screen space.</param>
     /// <param name="screenY">Y coordinate in screen space.</param>

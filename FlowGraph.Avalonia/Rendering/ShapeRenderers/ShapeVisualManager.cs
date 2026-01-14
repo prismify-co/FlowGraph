@@ -183,20 +183,11 @@ public class ShapeVisualManager
 
   private void UpdatePosition(Control visual, ShapeElement shape)
   {
-    // Use RenderContext.CanvasToScreen for consistent coordinate transformation with nodes
-    if (_renderContext != null)
-    {
-      var screenPos = _renderContext.CanvasToScreen(shape.Position.X, shape.Position.Y);
-      Canvas.SetLeft(visual, screenPos.X);
-      Canvas.SetTop(visual, screenPos.Y);
-    }
-    else
-    {
-      // Fallback if no render context
-      Canvas.SetLeft(visual, shape.Position.X);
-      Canvas.SetTop(visual, shape.Position.Y);
-    }
-    
+    // PHASE 1: Position in canvas coordinates directly
+    // The MatrixTransform on MainCanvas handles the viewport transformation
+    // Do NOT call CanvasToScreen - that would cause double transformation
+    Canvas.SetLeft(visual, shape.Position.X);
+    Canvas.SetTop(visual, shape.Position.Y);
     visual.ZIndex = shape.ZIndex;
   }
 }
