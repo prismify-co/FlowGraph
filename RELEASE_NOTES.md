@@ -1,3 +1,40 @@
+## FlowGraph v0.4.2
+
+### Performance Improvements
+
+- **Critical Hit Testing Optimization** - Eliminated 56 million comparisons in edge hit testing that caused 1-second delays on interactions
+- **O(1) Group Depth Lookups** - Replaced recursive traversal with dictionary-based lookups for `GetGroupDepth()`
+- **Spatial Grid Edge Generation** - Optimized stress test edge generation using spatial partitioning
+- **LOD Rendering** - Added level-of-detail rendering for improved performance at different zoom levels
+
+### New Features
+
+- **Edge Routing Enhancements**
+  - New `EdgeRoutingMode` enum for manual waypoint editing support (Normal, Manual, Guided)
+  - Constraint support for `SmartBezierRouter` Guided mode
+  - Direction-aware edge label placement with perpendicular offsets
+  - Direction-aware bezier curves based on port position
+
+- **Port Visibility Control** - New `ShowPorts` setting to control port rendering
+- **PortPosition Extensions** - Helper methods for arrow direction calculation
+
+### Bug Fixes
+
+- Fixed edge rendering delay when adding/removing connections via mouse
+- Fixed resize handles not respecting custom renderer dimensions
+- Fixed shape panning issues and restored light theme support
+- Edge changes now properly trigger redraw in direct rendering mode
+
+### Internal Improvements
+
+- Bidirectional sync between legacy Nodes/Edges and Elements collections
+- Polymorphic `elements[]` serialization format for unified element handling
+- Element-based commands (`MoveElementsCommand`, `RemoveElementsCommand`, `ResizeElementsCommand`)
+- Unified Z-order rendering orchestrator
+- Updated all NuGet packages to latest versions (Avalonia 11.3.11, SkiaSharp 3.119.1)
+
+---
+
 ## FlowGraph v0.4.1
 
 ### Bug Fixes
