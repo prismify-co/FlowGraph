@@ -10,6 +10,7 @@
 ### New Features
 
 - **Edge Routing Enhancements**
+
   - New `EdgeRoutingMode` enum for manual waypoint editing support (Normal, Manual, Guided)
   - Constraint support for `SmartBezierRouter` Guided mode
   - Direction-aware edge label placement with perpendicular offsets
