@@ -253,6 +253,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _mainCanvas.Children.Add(_directRenderer);
             _directRenderer.Width = _mainCanvas.Bounds.Width;
             _directRenderer.Height = _mainCanvas.Bounds.Height;
+            
+            // Update input context to trigger redraws on viewport changes
+            _inputContext.DirectRenderer = _directRenderer;
         }
     }
 
@@ -267,6 +270,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         {
             _mainCanvas.Children.Remove(_directRenderer);
         }
+
+        // Clear DirectRenderer from input context
+        _inputContext.DirectRenderer = null;
 
         // Force full re-render with normal mode
         RenderElements();

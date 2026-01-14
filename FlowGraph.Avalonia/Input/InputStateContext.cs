@@ -49,6 +49,7 @@ public class InputStateContext
     public Panel? RootPanel { get; set; }
     public Canvas? MainCanvas { get; set; }
     public MatrixTransform? ViewportTransform { get; set; }
+    public Rendering.DirectGraphRenderer? DirectRenderer { get; set; }
     public Graph? Graph { get; set; }
     public Rendering.ThemeResources? Theme { get; set; }
 
@@ -175,12 +176,19 @@ public class InputStateContext
     /// <summary>
     /// Applies the current viewport state to the MainCanvas transform.
     /// This enables O(1) pan/zoom updates instead of O(n) re-rendering.
+    /// For DirectRendering mode, triggers a redraw since it bypasses the visual tree.
     /// </summary>
     public void ApplyViewportTransform()
     {
         if (ViewportTransform != null)
         {
             _viewport.ApplyToTransforms(ViewportTransform);
+        }
+
+        // DirectRendering mode bypasses visual tree, so we need to trigger a redraw
+        if (DirectRenderer != null)
+        {
+            DirectRenderer.InvalidateVisual();
         }
     }
 
