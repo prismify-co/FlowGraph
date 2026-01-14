@@ -46,7 +46,10 @@ public partial class FlowCanvas
             // In direct rendering mode, do hit testing first to find what was clicked
             if (_useDirectRendering && _directRenderer != null)
             {
-                var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+                var canvasPos = _rootPanel != null && _mainCanvas != null 
+                    ? e.GetPosition(_mainCanvas) 
+                    : screenPos;
+                var rightClickHit = PerformDirectRenderingHitTest(canvasPos.X, canvasPos.Y);
                 Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
 
                 var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(rightClickHit?.Tag);
@@ -81,8 +84,11 @@ public partial class FlowCanvas
         // In direct rendering mode, use coordinate-based hit testing
         if (_useDirectRendering && _directRenderer != null)
         {
+            var canvasPos = _rootPanel != null && _mainCanvas != null 
+                ? e.GetPosition(_mainCanvas) 
+                : screenPos;
             var hitSw = Stopwatch.StartNew();
-            hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+            hitElement = PerformDirectRenderingHitTest(canvasPos.X, canvasPos.Y);
             hitSw.Stop();
             Debug.WriteLine($"[Input] DirectHitTest took {hitSw.ElapsedMilliseconds}ms, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
         }
@@ -195,9 +201,10 @@ public partial class FlowCanvas
         if (shouldDoHoverTest && _useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
             var screenPos = e.GetPosition(_rootPanel);
+            var canvasPos = _mainCanvas != null ? e.GetPosition(_mainCanvas) : screenPos;
 
             // Check resize handles first (highest priority for cursor)
-            var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
+            var resizeHit = _directRenderer.HitTestResizeHandle(canvasPos.X, canvasPos.Y);
             if (resizeHit.HasValue)
             {
                 _rootPanel.Cursor = GetResizeCursor(resizeHit.Value.position);
@@ -207,7 +214,7 @@ public partial class FlowCanvas
             else
             {
                 // Check port hover
-                var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
+                var portHit = _directRenderer.HitTestPort(canvasPos.X, canvasPos.Y);
                 if (portHit.HasValue)
                 {
                     _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -219,7 +226,7 @@ public partial class FlowCanvas
                     _directRenderer.ClearHoveredPort();
 
                     // Check edge endpoint handle hover
-                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
+                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(canvasPos.X, canvasPos.Y);
                     if (endpointHit.HasValue)
                     {
                         _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -230,7 +237,7 @@ public partial class FlowCanvas
                         _directRenderer.ClearHoveredEndpointHandle();
 
                         // Check if hovering a node
-                        var nodeHit = _directRenderer.HitTestNode(screenPos.X, screenPos.Y);
+                        var nodeHit = _directRenderer.HitTestNode(canvasPos.X, canvasPos.Y);
                         if (nodeHit != null)
                         {
                             _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -494,11 +501,17 @@ public partial class FlowCanvas
 
             if (_useDirectRendering && _directRenderer != null)
             {
-                hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+                var canvasPosForHit = _rootPanel != null && _mainCanvas != null 
+                    ? e.GetPosition(_mainCanvas) 
+                    : screenPos;
+                hitElement = PerformDirectRenderingHitTest(canvasPosForHit.X, canvasPosForHit.Y);
             }
             else
             {
-                hitElement = _mainCanvas?.InputHitTest(screenPos) as Control;
+                var canvasPosForHit = _rootPanel != null && _mainCanvas != null 
+                    ? e.GetPosition(_mainCanvas) 
+                    : screenPos;
+                hitElement = _mainCanvas?.InputHitTest(canvasPosForHit) as Control;
             }
 
             var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(hitElement?.Tag);
