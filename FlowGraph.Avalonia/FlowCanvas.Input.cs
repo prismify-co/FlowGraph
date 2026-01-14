@@ -88,7 +88,12 @@ public partial class FlowCanvas
         }
         else
         {
-            var rawHit = _mainCanvas?.InputHitTest(screenPos);
+            // Get position relative to the canvas (not rootPanel) for hit testing
+            var canvasPos = _rootPanel != null && _mainCanvas != null 
+                ? e.GetPosition(_mainCanvas) 
+                : screenPos;
+            
+            var rawHit = _mainCanvas?.InputHitTest(canvasPos);
             hitElement = rawHit as Control;
 
             // Debug: log what we actually hit
