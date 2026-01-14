@@ -210,9 +210,9 @@ public class EdgeVisualManager
         var (targetX, targetY) = GetPortCanvasPosition(
             targetNode, targetPort, targetWidth, targetHeight, isOutput: false);
 
-        // Transform to screen coordinates
-        var startPoint = _renderContext.CanvasToScreen(sourceX, sourceY);
-        var endPoint = _renderContext.CanvasToScreen(targetX, targetY);
+        // Use canvas coordinates directly (MainCanvas transform handles viewport mapping)
+        var startPoint = new AvaloniaPoint(sourceX, sourceY);
+        var endPoint = new AvaloniaPoint(targetX, targetY);
 
         var scale = _renderContext.Scale;
 
@@ -230,12 +230,8 @@ public class EdgeVisualManager
 
         if (waypoints != null && waypoints.Count > 0)
         {
-            // Transform waypoints to screen coordinates
-            transformedWaypoints = waypoints
-                .Select(wp => new Core.Point(
-                    _renderContext.CanvasToScreen(wp.X, wp.Y).X,
-                    _renderContext.CanvasToScreen(wp.X, wp.Y).Y))
-                .ToList();
+            // Waypoints are already in canvas coordinates
+            transformedWaypoints = waypoints;
 
             pathGeometry = EdgePathHelper.CreatePathWithWaypoints(
                 startPoint,
@@ -384,8 +380,9 @@ public class EdgeVisualManager
         var waypoints = edge.Waypoints; // cloned list via Edge.State
         if (waypoints != null && waypoints.Count > 0)
         {
+            // Convert Core.Point waypoints to AvaloniaPoint (already in canvas coords)
             transformedWaypoints = waypoints
-                .Select(wp => _renderContext.CanvasToScreen(wp.X, wp.Y))
+                .Select(wp => new AvaloniaPoint(wp.X, wp.Y))
                 .ToList();
         }
 
@@ -456,7 +453,8 @@ public class EdgeVisualManager
         if (waypoints != null && waypoints.Count > 0)
         {
             var lastWaypoint = waypoints[^1];
-            return _renderContext.CanvasToScreen(lastWaypoint.X, lastWaypoint.Y);
+            // Waypoints are already in canvas coordinates
+            return new AvaloniaPoint(lastWaypoint.X, lastWaypoint.Y);
         }
 
         // For bezier curves, calculate the approach direction from the second control point
@@ -477,7 +475,8 @@ public class EdgeVisualManager
         if (waypoints != null && waypoints.Count > 0)
         {
             var firstWaypoint = waypoints[0];
-            return _renderContext.CanvasToScreen(firstWaypoint.X, firstWaypoint.Y);
+            // Waypoints are already in canvas coordinates
+            return new AvaloniaPoint(firstWaypoint.X, firstWaypoint.Y);
         }
 
         // For bezier curves, calculate the departure direction from the first control point
