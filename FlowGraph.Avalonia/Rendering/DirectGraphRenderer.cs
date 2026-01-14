@@ -1236,17 +1236,14 @@ public class DirectGraphRenderer : Control
 
     private AvaloniaPoint ScreenToCanvas(double screenX, double screenY)
     {
-        // PHASE 1: With MatrixTransform on MainCanvas, screen coordinates passed here
-        // are already relative to the canvas (via GetPosition(_mainCanvas)).
-        // The transform handles zoom/pan, so we don't need manual conversion.
-        // Just return the coordinates as-is.
-        return new AvaloniaPoint(screenX, screenY);
-        
-        // OLD PHASE 0 CODE (manual transform):
-        // if (_viewport == null) return new AvaloniaPoint(screenX, screenY);
-        // return new AvaloniaPoint(
-        //     (screenX - _viewport.OffsetX) / _viewport.Zoom,
-        //     (screenY - _viewport.OffsetY) / _viewport.Zoom);
+        // PHASE 1: DirectRenderer does its own hit testing (bypasses visual tree).
+        // Screen coords come from GetPosition(_rootPanel) - we need to convert to canvas space
+        // using the viewport transform to match against node bounds.
+        // The MatrixTransform only affects visual tree rendering, not DirectRenderer hit testing.
+        if (_viewport == null) return new AvaloniaPoint(screenX, screenY);
+        return new AvaloniaPoint(
+            (screenX - _viewport.OffsetX) / _viewport.Zoom,
+            (screenY - _viewport.OffsetY) / _viewport.Zoom);
     }
 
     private AvaloniaPoint CanvasToScreen(AvaloniaPoint canvasPoint, double zoom, double offsetX, double offsetY)
