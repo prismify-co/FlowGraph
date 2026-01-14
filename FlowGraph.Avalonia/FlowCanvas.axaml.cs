@@ -336,6 +336,41 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </summary>
     public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
 
+    /// <summary>
+    /// Event raised when an edge is clicked.
+    /// </summary>
+    public event EventHandler<EdgeClickedEventArgs>? EdgeClicked;
+
+    /// <summary>
+    /// Event raised when a connection is successfully completed.
+    /// </summary>
+    public event EventHandler<ConnectionCompletedEventArgs>? ConnectionCompleted;
+
+    /// <summary>
+    /// Event raised when a node is resized.
+    /// </summary>
+    public event EventHandler<NodeResizedEventArgs>? NodeResized;
+
+    /// <summary>
+    /// Event raised when a node is being resized (in progress).
+    /// </summary>
+    public event EventHandler<NodeResizingEventArgs>? NodeResizing;
+
+    /// <summary>
+    /// Event raised when nodes have been dragged to a new position.
+    /// </summary>
+    public event EventHandler<NodesDraggedEventArgs>? NodesDragged;
+
+    /// <summary>
+    /// Event raised when an edge is reconnected to a different port.
+    /// </summary>
+    public event EventHandler<EdgeReconnectedEventArgs>? EdgeReconnected;
+
+    /// <summary>
+    /// Event raised when an edge is disconnected.
+    /// </summary>
+    public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
+
     #endregion
 
     #region Public Methods - Label Editing
@@ -796,12 +831,15 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
             CommandHistory.Execute(new AddEdgeCommand(Graph, newEdge));
             _edgeRoutingManager.RouteNewEdge(newEdge);
+
+            ConnectionCompleted?.Invoke(this, e);
         }
     }
 
     private void OnEdgeClicked(object? sender, EdgeClickedEventArgs e)
     {
         _selectionManager.HandleEdgeClicked(e.Edge, e.WasCtrlHeld);
+        EdgeClicked?.Invoke(this, e);
     }
 
     private void OnNodesDragging(object? sender, NodesDraggingEventArgs e)
@@ -817,6 +855,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
         var command = new MoveNodesCommand(Graph, e.OldPositions, e.NewPositions);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
+
+        NodesDragged?.Invoke(this, e);
     }
 
     private void OnNodeResizing(object? sender, NodeResizingEventArgs e)
@@ -829,6 +869,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _graphRenderer.UpdateNodePosition(e.Node);
         _graphRenderer.UpdateResizeHandlePositions(e.Node);
         RenderEdges();
+
+        NodeResizing?.Invoke(this, e);
     }
 
     private void OnNodeResized(object? sender, NodeResizedEventArgs e)
@@ -839,6 +881,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             e.OldWidth, e.OldHeight, e.NewWidth, e.NewHeight,
             e.OldPosition, e.NewPosition);
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
+
+        NodeResized?.Invoke(this, e);
     }
 
     private void OnEdgeReconnected(object? sender, EdgeReconnectedEventArgs e)
@@ -852,12 +896,16 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         };
 
         CommandHistory.Execute(new CompositeCommand("Reconnect edge", commands));
+
+        EdgeReconnected?.Invoke(this, e);
     }
 
     private void OnEdgeDisconnected(object? sender, EdgeDisconnectedEventArgs e)
     {
         if (Graph == null) return;
         CommandHistory.Execute(new RemoveEdgeCommand(Graph, e.Edge));
+
+        EdgeDisconnected?.Invoke(this, e);
     }
 
     #endregion

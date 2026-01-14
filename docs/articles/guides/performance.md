@@ -48,11 +48,11 @@ canvas.Settings.VirtualizationBuffer = 200; // Canvas units
 
 Virtualization is the single most impactful optimization. It ensures only visible elements consume rendering resources.
 
-| Graph Size | Recommendation | Why |
-|------------|----------------|-----|
-| < 100 nodes | Optional | Overhead may not be worth it |
-| 100-500 nodes | Recommended | Noticeable improvement |
-| 500+ nodes | Essential | Critical for smooth interactions |
+| Graph Size    | Recommendation | Why                              |
+| ------------- | -------------- | -------------------------------- |
+| < 100 nodes   | Optional       | Overhead may not be worth it     |
+| 100-500 nodes | Recommended    | Noticeable improvement           |
+| 500+ nodes    | Essential      | Critical for smooth interactions |
 
 > **Pro tip:** Set `VirtualizationBuffer` based on your node sizes. Larger nodes need larger buffers to avoid pop-in during fast panning.
 
@@ -100,15 +100,15 @@ canvas.DisableDirectRendering();
 
 ### What You Keep vs. What Changes
 
-| Feature | Standard Mode | Direct Rendering |
-|---------|--------------|------------------|
-| Pan/Zoom | ✅ Full | ✅ Full |
-| Node dragging | ✅ Full | ✅ Full |
-| Edge connections | ✅ Full | ✅ Full |
-| Selection | ✅ Full | ✅ Full |
-| Hover effects | ✅ Animated | ⚡ Simplified |
-| Custom controls in nodes | ✅ Full | ❌ Not supported |
-| Animations | ✅ Full | ⚡ Basic |
+| Feature                  | Standard Mode | Direct Rendering |
+| ------------------------ | ------------- | ---------------- |
+| Pan/Zoom                 | ✅ Full       | ✅ Full          |
+| Node dragging            | ✅ Full       | ✅ Full          |
+| Edge connections         | ✅ Full       | ✅ Full          |
+| Selection                | ✅ Full       | ✅ Full          |
+| Hover effects            | ✅ Animated   | ⚡ Simplified    |
+| Custom controls in nodes | ✅ Full       | ❌ Not supported |
+| Animations               | ✅ Full       | ⚡ Basic         |
 
 > **When to use:** Enable direct rendering when you need smooth interactions with 500+ nodes and don't require embedded controls (buttons, text inputs) inside nodes. Most workflow and diagram applications work perfectly in this mode.
 
@@ -173,12 +173,12 @@ canvas.Settings.EdgeRoutingAlgorithm = RouterAlgorithm.SmartBezier; // Obstacle 
 
 ### Routing Algorithm Comparison
 
-| Algorithm | Speed | Visual Quality | Node Avoidance |
-|-----------|-------|----------------|----------------|
-| Direct | ⚡⚡⚡ Fastest | Basic | No |
-| Bezier | ⚡⚡ Fast | Good | No |
-| Orthogonal | ⚡ Medium | Clean | Yes |
-| SmartBezier | Slower | Best | Yes |
+| Algorithm   | Speed          | Visual Quality | Node Avoidance |
+| ----------- | -------------- | -------------- | -------------- |
+| Direct      | ⚡⚡⚡ Fastest | Basic          | No             |
+| Bezier      | ⚡⚡ Fast      | Good           | No             |
+| Orthogonal  | ⚡ Medium      | Clean          | Yes            |
+| SmartBezier | Slower         | Best           | Yes            |
 
 > **Recommendation:** Use `SmartBezier` for graphs under 200 edges where visual clarity matters. Use `Bezier` or `Direct` for larger graphs.
 
@@ -367,14 +367,14 @@ Store large payloads outside the graph:
 
 ```csharp
 // ❌ Avoid: Large data in node
-node.Data = new { 
+node.Data = new {
     Image = LoadBitmap(),      // Large!
     Document = LoadXml(),      // Large!
     Metadata = complexObject   // Serialization overhead
 };
 
 // ✅ Better: Reference by ID
-node.Data = new NodeData { 
+node.Data = new NodeData {
     ImageId = "img-123",
     DocumentId = "doc-456"
 };
@@ -452,21 +452,21 @@ foreach (var node in graph.Nodes)
 
 FlowGraph scales from small diagrams to enterprise-grade graphs with thousands of nodes. The key is matching your configuration to your graph size.
 
-| Graph Size | Virtualization | Simplified Rendering | Direct Rendering | Edge Routing |
-| ---------- | -------------- | -------------------- | ---------------- | ------------ |
+| Graph Size | Virtualization | Simplified Rendering | Direct Rendering | Edge Routing       |
+| ---------- | -------------- | -------------------- | ---------------- | ------------------ |
 | < 100      | Optional       | No                   | No               | Full (SmartBezier) |
-| 100-500    | Yes            | Optional             | Optional         | Full (Bezier) |
-| 500-2000   | Yes            | Recommended          | Recommended      | Selective |
-| 2000+      | Yes            | Yes                  | Yes              | On-Demand |
+| 100-500    | Yes            | Optional             | Optional         | Full (Bezier)      |
+| 500-2000   | Yes            | Recommended          | Recommended      | Selective          |
+| 2000+      | Yes            | Yes                  | Yes              | On-Demand          |
 
 > **Remember:** These are recommendations, not limitations. FlowGraph's architecture supports all configurations—you choose the balance of features and performance that fits your application.
 
 ### Common Scenarios
 
-| Use Case | Recommended Config | Why |
-|----------|-------------------|-----|
-| Node-based editor (Blender-style) | Balanced | Need interactive nodes with controls |
-| Workflow designer | Balanced | Moderate size, full features |
-| Network topology viewer | High Performance | Large graphs, read-mostly |
-| Data lineage visualization | High Performance | Thousands of nodes, minimal editing |
-| Mind mapping | Balanced | Interactive, moderate size |
+| Use Case                          | Recommended Config | Why                                  |
+| --------------------------------- | ------------------ | ------------------------------------ |
+| Node-based editor (Blender-style) | Balanced           | Need interactive nodes with controls |
+| Workflow designer                 | Balanced           | Moderate size, full features         |
+| Network topology viewer           | High Performance   | Large graphs, read-mostly            |
+| Data lineage visualization        | High Performance   | Thousands of nodes, minimal editing  |
+| Mind mapping                      | Balanced           | Interactive, moderate size           |
