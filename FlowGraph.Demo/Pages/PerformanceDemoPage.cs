@@ -151,15 +151,9 @@ public class PerformanceDemoPage : IDemoPage
         _canvas.DebugRenderingPerformance = true;
         _lastRenderDebug = null;
 
-        // For large graphs, enable direct rendering (GPU-accelerated, bypasses visual tree)
-        if (nodeCount >= 500)
-        {
-            _canvas.EnableDirectRendering();
-        }
-        else
-        {
-            _canvas.DisableDirectRendering();
-        }
+        // Always enable direct rendering for stress tests (fixes panning and viewport culling)
+        // Visual tree mode has issues with empty canvas hit testing and performance
+        _canvas.EnableDirectRendering();
 
         // Clear all existing elements using bulk removal (single notification instead of N notifications)
         var existingElements = _graph.Elements.ToList();
@@ -294,6 +288,11 @@ public class PerformanceDemoPage : IDemoPage
 
         var collectionAddTime = sw.ElapsedMilliseconds;
         sw.Restart();
+        
+        // Debug: Log graph layout stats
+        Debug.WriteLine($"[StressTest] Generated graph: {nodeCount} nodes, {edgesList.Count} edges");
+        Debug.WriteLine($"[StressTest] Canvas bounds: X=[{minX:F0} to {maxX:F0}] Y=[{minY:F0} to {maxY:F0}] = {maxX - minX:F0}x{maxY - minY:F0}");
+        Debug.WriteLine($"[StressTest] View size: {_canvas.Bounds.Width:F0}x{_canvas.Bounds.Height:F0}");
 
         // Fit to view using pre-calculated bounds (no need to iterate nodes again)
         _canvas.FitToView();
@@ -313,16 +312,15 @@ public class PerformanceDemoPage : IDemoPage
         // Disable debug output after test
         _canvas.DebugRenderingPerformance = false;
 
-        var directMode = nodeCount >= 500 ? " [Direct]" : "";
         var total = dataGenTime + edgeGenTime + collectionAddTime + fitTime + renderTime;
 
         // Show detailed timing in status
-        var status = $"{nodeCount}n/{edgesList.Count}e{directMode} - D:{dataGenTime}ms E:{edgeGenTime}ms C:{collectionAddTime}ms F:{fitTime}ms R:{renderTime}ms = {total}ms";
+        var status = $"{nodeCount}n/{edgesList.Count}e - D:{dataGenTime}ms E:{edgeGenTime}ms C:{collectionAddTime}ms F:{fitTime}ms R:{renderTime}ms = {total}ms";
         SetStatus(status);
 
         // Show in Output window (View > Output in VS, select "Debug" from dropdown)
         Debug.WriteLine($"\n=== STRESS TEST RESULTS ===");
-        Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgesList.Count}, DirectRendering: {nodeCount >= 500}");
+        Debug.WriteLine($"Nodes: {nodeCount}, Edges: {edgesList.Count}, DirectRendering: True");
         Debug.WriteLine($"Data Gen:       {dataGenTime}ms");
         Debug.WriteLine($"Edge Gen:       {edgeGenTime}ms");
         Debug.WriteLine($"Collection Add: {collectionAddTime}ms");

@@ -247,12 +247,24 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _directRenderer.UpdateSettings(Settings);
         }
 
-        if (_mainCanvas != null && !_mainCanvas.Children.Contains(_directRenderer))
+        // CRITICAL: Add DirectGraphRenderer to _rootPanel, NOT _mainCanvas!
+        // DirectGraphRenderer does its own zoom/pan transforms internally,
+        // so it must NOT be affected by the MatrixTransform on _mainCanvas.
+        // This ensures:
+        // 1. Rendering is in screen coordinates (no double transform)
+        // 2. Hit testing receives screen coordinates directly
+        if (_rootPanel != null && !_rootPanel.Children.Contains(_directRenderer))
         {
-            _mainCanvas.Children.Clear();
-            _mainCanvas.Children.Add(_directRenderer);
-            _directRenderer.Width = _mainCanvas.Bounds.Width;
-            _directRenderer.Height = _mainCanvas.Bounds.Height;
+            // Clear visual tree mode elements from MainCanvas
+            if (_mainCanvas != null)
+            {
+                _mainCanvas.Children.Clear();
+            }
+            
+            // Add DirectGraphRenderer to RootPanel (after GridCanvas, MainCanvas)
+            _rootPanel.Children.Add(_directRenderer);
+            _directRenderer.Width = _rootPanel.Bounds.Width;
+            _directRenderer.Height = _rootPanel.Bounds.Height;
             
             // Update input context to trigger redraws on viewport changes
             _inputContext.DirectRenderer = _directRenderer;
@@ -266,9 +278,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         _useDirectRendering = false;
 
-        if (_mainCanvas != null && _directRenderer != null)
+        // Remove DirectGraphRenderer from RootPanel (where we added it)
+        if (_rootPanel != null && _directRenderer != null)
         {
-            _mainCanvas.Children.Remove(_directRenderer);
+            _rootPanel.Children.Remove(_directRenderer);
         }
 
         // Clear DirectRenderer from input context

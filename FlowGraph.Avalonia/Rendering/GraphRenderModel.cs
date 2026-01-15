@@ -448,6 +448,26 @@ public class GraphRenderModel
     /// </summary>
     public bool IsPointNearEdge(AvaloniaPoint point, AvaloniaPoint start, AvaloniaPoint end, double threshold)
     {
+        // QUICK BOUNDING BOX REJECTION: Skip expensive bezier calculation if point is far from edge bounds
+        // For cubic bezier with horizontal control points placed BETWEEN start and end,
+        // the curve stays within the X range of [min(start.X, end.X), max(start.X, end.X)].
+        // The Y range can extend beyond start.Y/end.Y due to the curve's arc, but only slightly
+        // for horizontal control points. We use a small Y expansion for safety.
+        var minX = Math.Min(start.X, end.X) - threshold;
+        var maxX = Math.Max(start.X, end.X) + threshold;
+        
+        // For Y bounds, the bezier can bulge vertically when control points are offset horizontally.
+        // The maximum Y deviation is approximately 0.25 * |end.Y - start.Y| for our control point setup.
+        var ySpan = Math.Abs(end.Y - start.Y);
+        var yBulge = ySpan * 0.25; // Conservative estimate for bezier Y bulge
+        var minY = Math.Min(start.Y, end.Y) - threshold - yBulge;
+        var maxY = Math.Max(start.Y, end.Y) + threshold + yBulge;
+        
+        if (point.X < minX || point.X > maxX || point.Y < minY || point.Y > maxY)
+        {
+            return false; // Point is outside the edge's bounding box
+        }
+        
         var (cp1, cp2) = GetBezierControlPoints(start, end);
         return DistanceToBezierSquared(point, start, cp1, cp2, end) <= threshold * threshold;
     }

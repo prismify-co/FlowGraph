@@ -198,11 +198,13 @@ public partial class FlowCanvas
         // Track hover states and cursor in direct rendering mode (only when idle and throttled)
         if (shouldDoHoverTest && _useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
+            // CRITICAL: Use screenPos (relative to _rootPanel), NOT canvasPos!
+            // DirectRenderer methods expect screen coordinates and call ScreenToCanvas internally.
+            // Using canvasPos would cause double-transformation at non-1.0 zoom levels.
             var screenPos = e.GetPosition(_rootPanel);
-            var canvasPos = _mainCanvas != null ? e.GetPosition(_mainCanvas) : screenPos;
 
             // Check resize handles first (highest priority for cursor)
-            var resizeHit = _directRenderer.HitTestResizeHandle(canvasPos.X, canvasPos.Y);
+            var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
             if (resizeHit.HasValue)
             {
                 _rootPanel.Cursor = GetResizeCursor(resizeHit.Value.position);
@@ -212,7 +214,7 @@ public partial class FlowCanvas
             else
             {
                 // Check port hover
-                var portHit = _directRenderer.HitTestPort(canvasPos.X, canvasPos.Y);
+                var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
                 if (portHit.HasValue)
                 {
                     _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -224,7 +226,7 @@ public partial class FlowCanvas
                     _directRenderer.ClearHoveredPort();
 
                     // Check edge endpoint handle hover
-                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(canvasPos.X, canvasPos.Y);
+                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
                     if (endpointHit.HasValue)
                     {
                         _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -235,7 +237,7 @@ public partial class FlowCanvas
                         _directRenderer.ClearHoveredEndpointHandle();
 
                         // Check if hovering a node
-                        var nodeHit = _directRenderer.HitTestNode(canvasPos.X, canvasPos.Y);
+                        var nodeHit = _directRenderer.HitTestNode(screenPos.X, screenPos.Y);
                         if (nodeHit != null)
                         {
                             _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -499,10 +501,9 @@ public partial class FlowCanvas
 
             if (_useDirectRendering && _directRenderer != null)
             {
-                var canvasPosForHit = _rootPanel != null && _mainCanvas != null 
-                    ? e.GetPosition(_mainCanvas) 
-                    : screenPos;
-                hitElement = PerformDirectRenderingHitTest(canvasPosForHit.X, canvasPosForHit.Y);
+                // CRITICAL: Use screenPos, not canvasPos!
+                // DirectRenderer methods expect screen coordinates and call ScreenToCanvas internally.
+                hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
             }
             else
             {

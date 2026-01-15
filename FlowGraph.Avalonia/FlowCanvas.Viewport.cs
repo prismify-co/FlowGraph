@@ -73,11 +73,16 @@ public partial class FlowCanvas
         if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var boundsTime = sw.ElapsedMilliseconds;
-        var bounds = CalculateGraphBounds();
+        var graphBounds = CalculateGraphBounds();
         var calcTime = sw.ElapsedMilliseconds - boundsTime;
         
-        _viewport.FitToBounds(bounds, Bounds.Size);
+        var viewSize = Bounds.Size;
+        System.Diagnostics.Debug.WriteLine($"[FitToView] GraphBounds=({graphBounds.X:F0},{graphBounds.Y:F0},{graphBounds.Width:F0}x{graphBounds.Height:F0}) ViewSize=({viewSize.Width:F0}x{viewSize.Height:F0})");
+        
+        _viewport.FitToBounds(graphBounds, viewSize);
         var fitTime = sw.ElapsedMilliseconds - calcTime - boundsTime;
+        
+        System.Diagnostics.Debug.WriteLine($"[FitToView] After fit: Zoom={_viewport.Zoom:F3} Offset=({_viewport.OffsetX:F1},{_viewport.OffsetY:F1})");
         
         RenderGrid();
         

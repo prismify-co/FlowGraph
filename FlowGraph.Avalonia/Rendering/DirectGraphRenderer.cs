@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.Rendering;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
@@ -24,8 +25,13 @@ namespace FlowGraph.Avalonia.Rendering;
 /// Edge endpoint handles are rendered when <see cref="FlowCanvasSettings.ShowEdgeEndpointHandles"/> is true
 /// and an edge is selected, allowing reconnection/disconnection.
 /// </para>
+/// <para>
+/// <b>Transform Mode:</b> This renderer uses <see cref="LayerTransformMode.SelfTransformed"/> mode.
+/// It performs its own coordinate transforms internally and MUST be placed in an untransformed
+/// container (e.g., RootPanel, not MainCanvas) to avoid double-transformation.
+/// </para>
 /// </remarks>
-public class DirectGraphRenderer : Control
+public class DirectGraphRenderer : Control, IRenderLayer
 {
     private FlowCanvasSettings _settings;
     private readonly GraphRenderModel _model;
@@ -67,6 +73,47 @@ public class DirectGraphRenderer : Control
     // Inline editing state
     private string? _editingNodeId;
     private string? _editingEdgeId;
+
+    #region IRenderLayer Implementation
+
+    /// <inheritdoc />
+    public string LayerId => "direct-renderer";
+
+    /// <inheritdoc />
+    public string DisplayName => "Direct Graph Renderer";
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// Note: This is separate from <see cref="Visual.ZIndex"/> which controls the
+    /// Avalonia visual tree ordering. This property is for the <see cref="IRenderLayer"/>
+    /// abstraction and represents the logical layer order.
+    /// </remarks>
+    int IRenderLayer.ZIndex => 200; // Same level as nodes
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// DirectGraphRenderer uses <see cref="LayerTransformMode.SelfTransformed"/> because it
+    /// performs its own coordinate transforms internally via <see cref="ScreenToCanvas"/>.
+    /// It MUST be placed outside any transformed container (e.g., as a child of RootPanel,
+    /// not MainCanvas) to avoid double-transformation bugs.
+    /// </remarks>
+    public LayerTransformMode TransformMode => LayerTransformMode.SelfTransformed;
+
+    /// <inheritdoc />
+    bool IRenderLayer.IsVisible
+    {
+        get => IsVisible;
+        set => IsVisible = value;
+    }
+
+    /// <inheritdoc />
+    bool IRenderLayer.IsHitTestVisible
+    {
+        get => IsHitTestVisible;
+        set => IsHitTestVisible = value;
+    }
+
+    #endregion
 
     /// <summary>
     /// Creates a new DirectGraphRenderer with the specified settings.
@@ -350,11 +397,30 @@ public class DirectGraphRenderer : Control
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
 
+        // For viewport culling, we need the render area size (0,0,width,height)
+        // not the control's position in its parent
+        var viewBounds = new Rect(0, 0, bounds.Width, bounds.Height);
+
         var nodeCount = _graph.Elements.NodeCount;
 
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
+        
+        _debugFrameCount++;
+        var logThisFrame = _debugFrameCount % 60 == 1; // Log every 60 frames (roughly every second)
+        
+        if (logThisFrame)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Frame={_debugFrameCount} Viewport: Offset=({offsetX:F1},{offsetY:F1}) Zoom={zoom:F2} Nodes={nodeCount} viewBounds=(0,0,{viewBounds.Width:F0}x{viewBounds.Height:F0})");
+            
+            // Calculate what canvas area is visible
+            var visibleCanvasMinX = (0 - offsetX) / zoom;
+            var visibleCanvasMaxX = (viewBounds.Width - offsetX) / zoom;
+            var visibleCanvasMinY = (0 - offsetY) / zoom;
+            var visibleCanvasMaxY = (viewBounds.Height - offsetY) / zoom;
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Visible canvas area: X=[{visibleCanvasMinX:F0} to {visibleCanvasMaxX:F0}] Y=[{visibleCanvasMinY:F0} to {visibleCanvasMaxY:F0}]");
+        }
 
         // Level-of-Detail thresholds
         var showPorts = _settings.ShowPorts && zoom >= 0.4;  // Skip ports when zoomed out or disabled
@@ -365,6 +431,7 @@ public class DirectGraphRenderer : Control
         var visibleNodeIds = new HashSet<string>();
 
         // Draw groups first (behind everything)
+        var groupsDrawn = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
             if (!node.IsGroup) continue;
@@ -372,26 +439,60 @@ public class DirectGraphRenderer : Control
             if (node.IsCollapsed) continue; // Don't draw collapsed groups' background
 
             DrawGroup(context, node, zoom, offsetX, offsetY);
+            groupsDrawn++;
         }
 
         // Collect visible regular nodes for edge culling
+        var visibleNodeCullStats_Total = 0;
+        var visibleNodeCullStats_SkippedGroup = 0;
+        var visibleNodeCullStats_SkippedVisibility = 0;
+        var visibleNodeCullStats_SkippedBounds = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
-            if (node.IsGroup) continue;
-            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
-            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) continue;
+            visibleNodeCullStats_Total++;
+            if (node.IsGroup) { visibleNodeCullStats_SkippedGroup++; continue; }
+            if (!IsNodeVisibleFast(node)) { visibleNodeCullStats_SkippedVisibility++; continue; } // Use O(1) lookup instead of O(n)
+            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, viewBounds)) { visibleNodeCullStats_SkippedBounds++; continue; }
 
             visibleNodeIds.Add(node.Id);
         }
+        
+        if (logThisFrame)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] VisibleNodes: {visibleNodeIds.Count} of {visibleNodeCullStats_Total} (groups={visibleNodeCullStats_SkippedGroup}, visibility={visibleNodeCullStats_SkippedVisibility}, bounds={visibleNodeCullStats_SkippedBounds})");
+        }
 
         // Draw edges (behind nodes) - ONLY edges with at least one visible endpoint
+        var edgesDrawn = 0;
+        var edgesSkipped_BothOutside = 0;
+        var edgesMissingSource = 0;
+        var edgesMissingTarget = 0;
         foreach (var edge in _graph.Elements.Edges)
         {
             // Early culling: skip edges with both endpoints outside viewport
-            if (!visibleNodeIds.Contains(edge.Source) && !visibleNodeIds.Contains(edge.Target))
+            var sourceVisible = visibleNodeIds.Contains(edge.Source);
+            var targetVisible = visibleNodeIds.Contains(edge.Target);
+            
+            if (!sourceVisible && !targetVisible)
+            {
+                edgesSkipped_BothOutside++;
                 continue;
+            }
+            
+            // Track edges where one endpoint's node is missing
+            if (_nodeById != null)
+            {
+                if (!_nodeById.ContainsKey(edge.Source)) edgesMissingSource++;
+                if (!_nodeById.ContainsKey(edge.Target)) edgesMissingTarget++;
+            }
 
-            DrawEdge(context, edge, zoom, offsetX, offsetY, bounds, useSimplifiedNodes);
+            DrawEdge(context, edge, zoom, offsetX, offsetY, viewBounds, useSimplifiedNodes);
+            edgesDrawn++;
+        }
+        
+        if (logThisFrame)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Edges: drew={edgesDrawn}, skippedBothOutside={edgesSkipped_BothOutside}, missingSource={edgesMissingSource}, missingTarget={edgesMissingTarget}");
         }
 
         // Draw regular nodes
@@ -403,7 +504,7 @@ public class DirectGraphRenderer : Control
         {
             if (node.IsGroup) { nodesSkippedGroup++; continue; }
             if (!IsNodeVisibleFast(node)) { nodesSkippedVisibility++; continue; } // Use O(1) lookup instead of O(n)
-            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, bounds)) { nodesSkippedBounds++; continue; }
+            if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, viewBounds)) { nodesSkippedBounds++; continue; }
 
             DrawNode(context, node, zoom, offsetX, offsetY, showLabels, showPorts, useSimplifiedNodes);
             nodesDrawn++;
@@ -430,13 +531,21 @@ public class DirectGraphRenderer : Control
         }
 
         // Draw edge endpoint handles for selected edges (on top of everything)
+        var edgeHandlesDrawn = 0;
         if (_settings.ShowEdgeEndpointHandles)
         {
             foreach (var edge in _graph.Elements.Edges)
             {
                 if (!edge.IsSelected) continue;
                 DrawEdgeEndpointHandles(context, edge, zoom, offsetX, offsetY);
+                edgeHandlesDrawn++;
             }
+        }
+        
+        if (logThisFrame)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Drew: nodes={nodesDrawn}, groups={groupsDrawn}, edges=?, handles={handlesDrawn}, edgeHandles={edgeHandlesDrawn}");
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Skipped: groups={nodesSkippedGroup}, visibility={nodesSkippedVisibility}, bounds={nodesSkippedBounds}");
         }
     }
 
@@ -864,7 +973,8 @@ public class DirectGraphRenderer : Control
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
         var handleRadius = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
-        var viewBounds = Bounds;
+        // Use actual view dimensions, not Bounds which includes parent-relative position
+        var viewBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
@@ -928,7 +1038,8 @@ public class DirectGraphRenderer : Control
         if (_graph == null || _viewport == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
-        var viewBounds = Bounds;
+        // Use actual view dimensions, not Bounds which includes parent-relative position
+        var viewBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
@@ -985,18 +1096,88 @@ public class DirectGraphRenderer : Control
         if (_nodeIndex == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
+        
+        // Use actual view dimensions, not Bounds which includes parent-relative position
+        var viewBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
+        var zoom = _viewport.Zoom;
+        var offsetX = _viewport.OffsetX;
+        var offsetY = _viewport.OffsetY;
 
         // Check regular nodes first (they're on top)
         var regularCheckStart = sw.ElapsedMilliseconds;
+        int nodesChecked = 0;
+        int nodesSkippedViewport = 0;
         for (int i = _nodeIndex.Count - 1; i >= 0; i--)
         {
             var (node, nx, ny, nw, nh) = _nodeIndex[i];
+            
+            // VIEWPORT CULLING: Skip nodes outside visible area
+            // This prevents clicking on off-screen nodes from blocking canvas interactions
+            var screenX1 = nx * zoom + offsetX;
+            var screenY1 = ny * zoom + offsetY;
+            var screenW = nw * zoom;
+            var screenH = nh * zoom;
+            
+            if (screenX1 + screenW < 0 || screenX1 > viewBounds.Width ||
+                screenY1 + screenH < 0 || screenY1 > viewBounds.Height)
+            {
+                nodesSkippedViewport++;
+                continue;
+            }
+            
+            nodesChecked++;
             var bounds = new Rect(nx, ny, nw, nh);
 
             if (bounds.Contains(canvasPoint))
             {
+                // AT LOW ZOOM: Check if the screen-pixel size is too small for accurate clicking
+                // When nodes appear tiny (< 60px), require clicks closer to center
+                const double MinClickableScreenSize = 60.0; // Below this, restrict clickable area
+                const double MinCenterProximity = 0.4;      // At tiny sizes, only inner 40% is clickable
+                
+                var smallestScreenDim = Math.Min(screenW, screenH);
+                
+                // Calculate how far from center (as percentage of dimensions, 0=center, 1=edge)
+                var centerX = nx + nw / 2;
+                var centerY = ny + nh / 2;
+                var distFromCenterX = Math.Abs(canvasPoint.X - centerX) / (nw / 2);
+                var distFromCenterY = Math.Abs(canvasPoint.Y - centerY) / (nh / 2);
+                
+                // Scale clickable area based on screen pixel size
+                // >= 60px screen size: full bounds clickable (maxDist = 1.0)
+                // < 60px: linearly reduce from 1.0 to 0.4 as size approaches 0
+                // This prevents accidental clicks on tiny nodes that appear as dots
+                double maxDistFromCenter;
+                if (smallestScreenDim >= MinClickableScreenSize)
+                {
+                    maxDistFromCenter = 1.0; // Full bounds clickable
+                }
+                else
+                {
+                    // Linear interpolation: at 60px=1.0, at 0px=0.4
+                    var t = smallestScreenDim / MinClickableScreenSize; // 0 to 1
+                    maxDistFromCenter = MinCenterProximity + t * (1.0 - MinCenterProximity);
+                }
+                
+                if (distFromCenterX > maxDistFromCenter || distFromCenterY > maxDistFromCenter)
+                {
+                    // Click is too close to edge for this screen size - don't count as hit
+                    System.Diagnostics.Debug.WriteLine($"[HitTest] Node {node.Id} skipped: click at edge ({distFromCenterX:P0},{distFromCenterY:P0}) > maxDist {maxDistFromCenter:P0} (screenSize={smallestScreenDim:F0}px)");
+                    continue;
+                }
+                
                 sw.Stop();
-                System.Diagnostics.Debug.WriteLine($"[HitTest] Regular node check: {sw.ElapsedMilliseconds}ms (rebuild:{rebuildTime}ms)");
+                // Log where the node is on screen for debugging
+                System.Diagnostics.Debug.WriteLine($"[HitTest] Regular node found in {sw.ElapsedMilliseconds}ms (rebuild:{rebuildTime}ms, checked:{nodesChecked}, skippedViewport:{nodesSkippedViewport})");
+                
+                // Calculate screen distance from screen center
+                var screenCenterX = screenX1 + screenW / 2;
+                var screenCenterY = screenY1 + screenH / 2;
+                var screenDistX = Math.Abs(screenX - screenCenterX);
+                var screenDistY = Math.Abs(screenY - screenCenterY);
+                
+                System.Diagnostics.Debug.WriteLine($"[HitTest]   Node {node.Id}: canvasClick=({canvasPoint.X:F0},{canvasPoint.Y:F0}) nodeBounds=({nx:F0},{ny:F0},{nw:F0}x{nh:F0}) screenBounds=({screenX1:F0},{screenY1:F0},{screenW:F0}x{screenH:F0})");
+                System.Diagnostics.Debug.WriteLine($"[HitTest]   DistFromCenter: X={distFromCenterX:P0} Y={distFromCenterY:P0} | ScreenDist: ({screenDistX:F0},{screenDistY:F0}) px from center");
                 return node;
             }
         }
@@ -1046,7 +1227,8 @@ public class DirectGraphRenderer : Control
         if (_nodeIndex == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
-        var viewBounds = Bounds;
+        // Use actual view dimensions, not Bounds which includes parent-relative position
+        var viewBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
@@ -1149,8 +1331,15 @@ public class DirectGraphRenderer : Control
         if (_graph == null || _viewport == null) return null;
 
         var canvasPoint = ScreenToCanvas(screenX, screenY);
-        var hitDistance = _settings.EdgeHitAreaWidth / _viewport.Zoom;
-        var viewBounds = Bounds;
+        // Edge hit distance: When zoomed OUT, cap at base value for tight screen pixels.
+        // When zoomed IN, scale to maintain consistent screen pixel distance.
+        // At zoom 0.30: Min(50, 15) = 15 canvas units = 4.5 screen pixels (tight!)
+        // At zoom 1.0:  Min(15, 15) = 15 canvas units = 15 screen pixels (normal)
+        // At zoom 2.0:  Min(7.5, 15) = 7.5 canvas units = 15 screen pixels (scaled correctly)
+        // This prevents edges from being "sticky" when zoomed out.
+        var hitDistance = Math.Min(_settings.EdgeHitAreaWidth / _viewport.Zoom, (double)_settings.EdgeHitAreaWidth);
+        // Use actual view dimensions, not Bounds which includes parent-relative position
+        var viewBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
@@ -1192,7 +1381,13 @@ public class DirectGraphRenderer : Control
             if (_model.IsPointNearEdge(canvasPoint, start, end, hitDistance))
             {
                 sw.Stop();
+                // Log detailed info about the hit for debugging
+                var screenStart = CanvasToScreen(start, zoom, offsetX, offsetY);
+                var screenEnd = CanvasToScreen(end, zoom, offsetX, offsetY);
                 System.Diagnostics.Debug.WriteLine($"[HitTestEdge] Hit in {sw.ElapsedMilliseconds}ms | EdgesChecked:{edgesChecked}, SkippedViewport:{edgesSkippedViewport}");
+                System.Diagnostics.Debug.WriteLine($"[HitTestEdge]   ScreenClick=({screenX:F0},{screenY:F0}) CanvasClick=({canvasPoint.X:F0},{canvasPoint.Y:F0}) HitDist={hitDistance:F1}");
+                System.Diagnostics.Debug.WriteLine($"[HitTestEdge]   EdgeStart: canvas=({start.X:F0},{start.Y:F0}) screen=({screenStart.X:F0},{screenStart.Y:F0})");
+                System.Diagnostics.Debug.WriteLine($"[HitTestEdge]   EdgeEnd: canvas=({end.X:F0},{end.Y:F0}) screen=({screenEnd.X:F0},{screenEnd.Y:F0})");
                 return edge;
             }
         }
@@ -1262,16 +1457,32 @@ public class DirectGraphRenderer : Control
             canvasRect.Height * zoom);
     }
 
+    // Debug counter for tracking culling decisions
+    private static int _debugFrameCount = 0;
+    private static bool _debugVerbose = false; // Set to true for per-node logging
+
     private bool IsInVisibleBounds(Node node, double zoom, double offsetX, double offsetY, Rect viewBounds)
     {
         var canvasBounds = _model.GetNodeBounds(node);
         var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
         var buffer = _settings.PortSize * zoom;
 
-        return screenBounds.X + screenBounds.Width + buffer >= 0 &&
-               screenBounds.X - buffer <= viewBounds.Width &&
-               screenBounds.Y + screenBounds.Height + buffer >= 0 &&
-               screenBounds.Y - buffer <= viewBounds.Height;
+        var check1 = screenBounds.X + screenBounds.Width + buffer >= 0;  // right edge visible
+        var check2 = screenBounds.X - buffer <= viewBounds.Width;         // left edge visible
+        var check3 = screenBounds.Y + screenBounds.Height + buffer >= 0; // bottom edge visible
+        var check4 = screenBounds.Y - buffer <= viewBounds.Height;        // top edge visible
+        var isVisible = check1 && check2 && check3 && check4;
+
+        // Log culling decisions for first few nodes in verbose mode
+        if (_debugVerbose && !isVisible)
+        {
+            System.Diagnostics.Debug.WriteLine($"[CULL] {node.Id}: canvas=({canvasBounds.X:F0},{canvasBounds.Y:F0},{canvasBounds.Width:F0}x{canvasBounds.Height:F0}) " +
+                $"screen=({screenBounds.X:F0},{screenBounds.Y:F0},{screenBounds.Width:F0}x{screenBounds.Height:F0}) " +
+                $"viewBounds=(0,0,{viewBounds.Width:F0}x{viewBounds.Height:F0}) " +
+                $"checks=({check1},{check2},{check3},{check4})");
+        }
+
+        return isVisible;
     }
 
     #endregion

@@ -180,6 +180,8 @@ public class InputStateContext
     /// </summary>
     public void ApplyViewportTransform()
     {
+        System.Diagnostics.Debug.WriteLine($"[ApplyViewportTransform] Called: Offset=({_viewport.OffsetX:F1},{_viewport.OffsetY:F1}) Zoom={_viewport.Zoom:F2} DirectRenderer={(DirectRenderer != null ? "YES" : "NO")}");
+        
         if (ViewportTransform != null)
         {
             _viewport.ApplyToTransforms(ViewportTransform);
@@ -189,6 +191,7 @@ public class InputStateContext
         if (DirectRenderer != null)
         {
             DirectRenderer.InvalidateVisual();
+            System.Diagnostics.Debug.WriteLine($"[ApplyViewportTransform] DirectRenderer.InvalidateVisual() called");
         }
     }
 

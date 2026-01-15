@@ -1,12 +1,17 @@
 using Avalonia;
 using Avalonia.Media;
+using FlowGraph.Core.Rendering;
+using CorePoint = FlowGraph.Core.Point;
+using CoreRect = FlowGraph.Core.Elements.Rect;
+using CoreSize = FlowGraph.Core.Elements.Size;
 
 namespace FlowGraph.Avalonia;
 
 /// <summary>
 /// Manages the viewport state including pan offset and zoom level.
+/// Implements <see cref="IViewportState"/> for backend-agnostic viewport control.
 /// </summary>
-public class ViewportState
+public class ViewportState : IViewportState
 {
     private FlowCanvasSettings _settings;
 
@@ -44,6 +49,9 @@ public class ViewportState
     /// </summary>
     public Size ViewSize { get; private set; }
 
+    /// <inheritdoc />
+    CoreSize IReadOnlyViewportState.ViewSize => new(ViewSize.Width, ViewSize.Height);
+
     /// <summary>
     /// Event raised when the viewport changes.
     /// </summary>
@@ -71,6 +79,13 @@ public class ViewportState
         var bottomRight = ScreenToCanvas(new Point(ViewSize.Width, ViewSize.Height));
 
         return new Rect(topLeft, bottomRight);
+    }
+
+    /// <inheritdoc />
+    CoreRect IReadOnlyViewportState.GetVisibleCanvasRect()
+    {
+        var rect = GetVisibleRect();
+        return new CoreRect(rect.X, rect.Y, rect.Width, rect.Height);
     }
 
     /// <summary>
@@ -197,6 +212,15 @@ public class ViewportState
         );
     }
 
+    /// <inheritdoc />
+    CorePoint ICoordinateTransformer.ScreenToCanvas(double screenX, double screenY)
+    {
+        return new CorePoint(
+            (screenX - OffsetX) / Zoom,
+            (screenY - OffsetY) / Zoom
+        );
+    }
+
     /// <summary>
     /// Transforms a canvas point to screen coordinates.
     /// </summary>
@@ -206,6 +230,27 @@ public class ViewportState
             canvasPoint.X * Zoom + OffsetX,
             canvasPoint.Y * Zoom + OffsetY
         );
+    }
+
+    /// <inheritdoc />
+    CorePoint ICoordinateTransformer.CanvasToScreen(double canvasX, double canvasY)
+    {
+        return new CorePoint(
+            canvasX * Zoom + OffsetX,
+            canvasY * Zoom + OffsetY
+        );
+    }
+
+    /// <inheritdoc />
+    public CorePoint ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
+    {
+        return new CorePoint(screenDeltaX / Zoom, screenDeltaY / Zoom);
+    }
+
+    /// <inheritdoc />
+    public CorePoint CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
+    {
+        return new CorePoint(canvasDeltaX * Zoom, canvasDeltaY * Zoom);
     }
 
     /// <summary>
@@ -263,6 +308,41 @@ public class ViewportState
     {
         ViewportChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    #region IViewportState explicit implementations
+
+    /// <inheritdoc />
+    void IViewportState.SetZoom(double zoom, CorePoint? zoomCenter)
+    {
+        Point? avaloniaCenter = zoomCenter.HasValue 
+            ? new Point(zoomCenter.Value.X, zoomCenter.Value.Y) 
+            : null;
+        SetZoom(zoom, avaloniaCenter);
+    }
+
+    /// <inheritdoc />
+    void IViewportState.CenterOn(CorePoint canvasPoint)
+    {
+        CenterOn(new Point(canvasPoint.X, canvasPoint.Y));
+    }
+
+    /// <inheritdoc />
+    void IViewportState.FitToBounds(CoreRect canvasBounds, double padding)
+    {
+        var bounds = new Rect(canvasBounds.X, canvasBounds.Y, canvasBounds.Width, canvasBounds.Height);
+        FitToBounds(bounds, ViewSize, padding);
+    }
+
+    /// <inheritdoc />
+    public void Reset()
+    {
+        Zoom = 1.0;
+        OffsetX = 0;
+        OffsetY = 0;
+        OnViewportChanged();
+    }
+
+    #endregion
 
     /// <summary>
     /// Clamps the viewport offset to stay within configured bounds.

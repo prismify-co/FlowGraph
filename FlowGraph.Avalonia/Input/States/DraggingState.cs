@@ -18,11 +18,14 @@ public class DraggingState : InputStateBase
     private readonly FlowCanvasSettings _settings;
     private readonly List<string> _draggedNodeIds;
     private readonly List<Node> _draggedNodes;
+    private readonly double _effectiveDragThreshold;
     private bool _dragStartRaised;
     private bool _dragThresholdMet;
 
-    // Minimum distance (in screen pixels) before drag actually starts
-    private const double DragThreshold = 4.0;
+    // Base minimum distance (in screen pixels) before drag actually starts
+    private const double BaseDragThreshold = 4.0;
+    // At low zoom, increase drag threshold to prevent accidental drags when clicking tiny nodes
+    private const double MaxDragThreshold = 15.0;
 
     public override string Name => "Dragging";
 
@@ -30,6 +33,10 @@ public class DraggingState : InputStateBase
     {
         _dragStartScreen = screenPosition;
         _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
+        
+        // Scale drag threshold inversely with zoom: at zoom 0.30, threshold = min(4/0.30, 15) = 13.3 pixels
+        // This prevents accidental drags when clicking on tiny zoomed-out nodes
+        _effectiveDragThreshold = Math.Min(BaseDragThreshold / viewport.Zoom, MaxDragThreshold);
         _startPositions = new Dictionary<string, Core.Point>();
         _nodeById = new Dictionary<string, Node>();
         _settings = settings;
@@ -92,7 +99,7 @@ public class DraggingState : InputStateBase
             var distY = currentScreen.Y - _dragStartScreen.Y;
             var distance = Math.Sqrt(distX * distX + distY * distY);
 
-            if (distance < DragThreshold)
+            if (distance < _effectiveDragThreshold)
             {
                 // Haven't moved enough yet - don't start dragging
                 return StateTransitionResult.Stay();

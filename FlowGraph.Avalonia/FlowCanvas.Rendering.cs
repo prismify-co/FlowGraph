@@ -232,10 +232,10 @@ public partial class FlowCanvas
         }
 
         // Use direct rendering mode if enabled (bypasses visual tree for performance)
-        if (_useDirectRendering && _directRenderer != null)
+        if (_useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
-            _directRenderer.Width = _mainCanvas.Bounds.Width;
-            _directRenderer.Height = _mainCanvas.Bounds.Height;
+            _directRenderer.Width = _rootPanel.Bounds.Width;
+            _directRenderer.Height = _rootPanel.Bounds.Height;
             _directRenderer.Update(Graph, _viewport, _theme);
             return;
         }
