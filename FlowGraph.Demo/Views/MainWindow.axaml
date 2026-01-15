@@ -1,7 +1,8 @@
-<Window xmlns="https://github.com/avaloniaui"
+<shad:Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:FlowGraph.Demo.ViewModels"
         xmlns:lucide="clr-namespace:LucideAvalonia;assembly=LucideAvalonia"
+        xmlns:shad="clr-namespace:ShadUI;assembly=ShadUI"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
@@ -11,77 +12,98 @@
         Title="FlowGraph Demo"
         Width="1200" Height="800">
 
-    <Window.Styles>
-        <!-- Sidebar nav button -->
-        <Style Selector="Button.nav-btn">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-            <Setter Property="Padding" Value="12,10"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Margin" Value="0,2"/>
-        </Style>
-        <Style Selector="Button.nav-btn:pointerover">
-            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListLowBrush}"/>
-        </Style>
-        <Style Selector="Button.nav-btn.selected">
-            <Setter Property="Background" Value="#6366F1"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-    </Window.Styles>
-
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="220,*">
-        <!-- Sidebar -->
-        <Border Grid.Column="0" 
-                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
-                BorderThickness="0,0,1,0">
-            <DockPanel>
-                <!-- Header -->
-                <StackPanel DockPanel.Dock="Top" Margin="16,20,16,16">
+    <Grid ColumnDefinitions="Auto,*">
+        <!-- ShadUI Sidebar -->
+        <shad:Sidebar x:Name="MainSidebar" 
+                      Grid.Column="0" 
+                      Expanded="True"
+                      Width="220">
+            
+            <!-- Header -->
+            <shad:Sidebar.Header>
+                <StackPanel Margin="8,12">
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <lucide:Lucide Icon="Workflow" StrokeThickness="1.5" Width="24" Height="24" Foreground="#6366F1"/>
+                        <lucide:Lucide Icon="Workflow" StrokeThickness="1.5" Width="24" Height="24" Foreground="{DynamicResource PrimaryBrush}"/>
                         <TextBlock Text="FlowGraph" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <TextBlock Text="Demo Application" FontSize="12" Opacity="0.5" Margin="34,4,0,0"/>
+                    <TextBlock Text="Demo Application" FontSize="12" Foreground="{DynamicResource MutedForegroundBrush}" Margin="34,4,0,0"/>
                 </StackPanel>
+            </shad:Sidebar.Header>
+            
+            <!-- Navigation Items -->
+            <StackPanel Spacing="4">
+                <shad:SidebarItemLabel Text="PAGES" Expanded="{Binding #MainSidebar.Expanded}"/>
                 
-                <!-- Navigation -->
-                <StackPanel Margin="8,8">
-                    <TextBlock Text="PAGES" FontSize="10" FontWeight="SemiBold" Opacity="0.5" Margin="8,8,0,8"/>
-                    
-                    <Button x:Name="NavInteractive" Classes="nav-btn selected" Click="OnNavInteractiveClick">
+                <shad:SidebarItem x:Name="NavInteractive"
+                                  Content="Interactive 3D"
+                                  Route="interactive"
+                                  IsChecked="True"
+                                  Expanded="{Binding #MainSidebar.Expanded}"
+                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
+                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
+                                  Click="OnNavInteractiveClick">
+                    <shad:SidebarItem.Icon>
+                        <lucide:Lucide Icon="Boxes" StrokeThickness="1.5" Width="18" Height="18"/>
+                    </shad:SidebarItem.Icon>
+                </shad:SidebarItem>
+                
+                <shad:SidebarItem x:Name="NavShapes"
+                                  Content="Shapes &amp; Z-Index"
+                                  Route="shapes"
+                                  Expanded="{Binding #MainSidebar.Expanded}"
+                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
+                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
+                                  Click="OnNavShapesClick">
+                    <shad:SidebarItem.Icon>
+                        <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="18" Height="18"/>
+                    </shad:SidebarItem.Icon>
+                </shad:SidebarItem>
+                
+                <shad:SidebarItem x:Name="NavPerformance"
+                                  Content="Performance Test"
+                                  Route="performance"
+                                  Expanded="{Binding #MainSidebar.Expanded}"
+                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
+                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
+                                  Click="OnNavPerformanceClick">
+                    <shad:SidebarItem.Icon>
+                        <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="18" Height="18"/>
+                    </shad:SidebarItem.Icon>
+                </shad:SidebarItem>
+            </StackPanel>
+            
+            <!-- Footer with collapse toggle -->
+            <shad:Sidebar.Footer>
+                <StackPanel Margin="8">
+                    <Button x:Name="CollapseButton" 
+                            Click="OnToggleSidebar"
+                            Background="Transparent"
+                            Padding="8"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            CornerRadius="6">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <lucide:Lucide Icon="Boxes" StrokeThickness="1.5" Width="16" Height="16"/>
-                            <TextBlock Text="Interactive 3D" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    
-                    <Button x:Name="NavShapes" Classes="nav-btn" Click="OnNavShapesClick">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="16" Height="16"/>
-                            <TextBlock Text="Shapes &amp; Z-Index" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    
-                    <Button x:Name="NavPerformance" Classes="nav-btn" Click="OnNavPerformanceClick">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="16" Height="16"/>
-                            <TextBlock Text="Performance Test" VerticalAlignment="Center"/>
+                            <lucide:Lucide Icon="PanelLeftClose" StrokeThickness="1.5" Width="18" Height="18"/>
+                            <TextBlock Text="Collapse" VerticalAlignment="Center" IsVisible="{Binding #MainSidebar.Expanded}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
-            </DockPanel>
-        </Border>
+            </shad:Sidebar.Footer>
+        </shad:Sidebar>
         
         <!-- Main Content Area -->
-        <ContentControl x:Name="PageContent" Grid.Column="1"/>
+        <Border Grid.Column="1" 
+                Background="{DynamicResource BackgroundBrush}"
+                Padding="16">
+            <shad:Card>
+                <ContentControl x:Name="PageContent"/>
+            </shad:Card>
+        </Border>
     </Grid>
 
-</Window>
+</shad:Window>
 

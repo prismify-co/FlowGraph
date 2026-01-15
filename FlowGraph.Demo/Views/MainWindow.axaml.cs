@@ -4,11 +4,10 @@ using FlowGraph.Demo.Pages;
 
 namespace FlowGraph.Demo.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ShadUI.Window
 {
     private readonly IDemoPage[] _pages;
     private IDemoPage? _currentPage;
-    private Button? _selectedNavButton;
 
     public MainWindow()
     {
@@ -23,21 +22,13 @@ public partial class MainWindow : Window
         };
 
         // Show first page on load
-        this.Loaded += (_, _) => NavigateTo(_pages[0], NavInteractive);
+        this.Loaded += (_, _) => NavigateTo(_pages[0]);
     }
 
-    private void NavigateTo(IDemoPage page, Button navButton)
+    private void NavigateTo(IDemoPage page)
     {
         // Notify current page it's being navigated away from
         _currentPage?.OnNavigatingFrom();
-
-        // Update nav button styles
-        if (_selectedNavButton != null)
-        {
-            _selectedNavButton.Classes.Remove("selected");
-        }
-        navButton.Classes.Add("selected");
-        _selectedNavButton = navButton;
 
         // Set new content
         _currentPage = page;
@@ -46,16 +37,21 @@ public partial class MainWindow : Window
 
     private void OnNavInteractiveClick(object? sender, RoutedEventArgs e)
     {
-        NavigateTo(_pages[0], NavInteractive);
+        NavigateTo(_pages[0]);
     }
 
     private void OnNavShapesClick(object? sender, RoutedEventArgs e)
     {
-        NavigateTo(_pages[1], NavShapes);
+        NavigateTo(_pages[1]);
     }
 
     private void OnNavPerformanceClick(object? sender, RoutedEventArgs e)
     {
-        NavigateTo(_pages[2], NavPerformance);
+        NavigateTo(_pages[2]);
+    }
+
+    private void OnToggleSidebar(object? sender, RoutedEventArgs e)
+    {
+        MainSidebar.Expanded = !MainSidebar.Expanded;
     }
 }
