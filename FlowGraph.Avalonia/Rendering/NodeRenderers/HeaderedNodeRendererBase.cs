@@ -11,6 +11,8 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// <summary>
 /// Base class for nodes with a header section and content area (React Flow style).
 /// Structure: Outer border (rounded) -> Header (semi-transparent) + Body (solid white)
+/// Uses true container resize (like React Flow, Rete.js, Node-RED) - content stays fixed size,
+/// container grows/shrinks to provide more/less space.
 /// </summary>
 public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
 {
@@ -19,6 +21,7 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     protected const string HeaderLabelTag = "HeaderLabel";
     protected const string BodyPanelTag = "BodyPanel";
     protected const string ContentPanelTag = "ContentPanel";
+    protected const string MainPanelTag = "MainPanel";
 
     /// <summary>
     /// Horizontal padding for content inside the header and body.
@@ -90,10 +93,11 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         var baseHeight = node.Height ?? GetHeight(node, context.Settings) ?? context.Settings.NodeHeight;
 
         // Main vertical layout - holds header and body
+        // Uses DockPanel for header at top, body fills remaining space
         var mainPanel = new DockPanel
         {
-            Width = baseWidth - 4, // Account for border
-            LastChildFill = true
+            LastChildFill = true,
+            Tag = MainPanelTag
         };
 
         // Header panel - glassy semi-transparent background with bottom border separator
@@ -110,13 +114,14 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
                 FontWeight = FontWeight.Medium,
                 FontSize = HeaderFontSize,
                 Foreground = new SolidColorBrush(HeaderTextColor),
+                TextTrimming = TextTrimming.CharacterEllipsis, // Trim long labels
                 Tag = HeaderLabelTag
             }
         };
         DockPanel.SetDock(headerPanel, Dock.Top);
         mainPanel.Children.Add(headerPanel);
 
-        // Body panel - solid white background
+        // Body panel - solid white background, fills remaining space
         var bodyPanel = new Border
         {
             Background = new SolidColorBrush(BodyBackgroundColor),
@@ -129,6 +134,8 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         // Outer border - wraps entire node with rounded corners and shadow
         var outerBorder = new Border
         {
+            Width = baseWidth * scale,
+            Height = baseHeight * scale,
             Background = Brushes.Transparent,
             BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : new SolidColorBrush(NodeBorderColor),
             BorderThickness = new Thickness(node.IsSelected ? SelectedBorderThickness : BorderThickness),
@@ -143,30 +150,15 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
                 Color = Color.FromArgb(30, 0, 0, 0)
             }),
             Tag = OuterBorderTag,
+            Cursor = new Cursor(StandardCursorType.Hand),
             Child = mainPanel
         };
 
-        // Size container
-        var sizeContainer = new Border
-        {
-            Width = baseWidth * scale,
-            Height = baseHeight * scale,
-            Background = Brushes.Transparent,
-            Cursor = new Cursor(StandardCursorType.Hand),
-            Tag = node
-        };
-
-        // Use Viewbox for uniform scaling
-        var viewbox = new Viewbox
-        {
-            Stretch = Stretch.Uniform,
-            Child = outerBorder,
-            Margin = new Thickness(1 * scale)
-        };
-
-        sizeContainer.Child = viewbox;
-
-        return sizeContainer;
+        // Use ResizableVisual for proper resize tracking
+        // Store node reference in tag dictionary for event handling
+        return ResizableVisual.Create(outerBorder)
+            .WithNode(node)
+            .Build();
     }
 
     /// <summary>
@@ -182,10 +174,8 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     /// <inheritdoc />
     public override void UpdateSelection(Control visual, Node node, NodeRenderContext context)
     {
-        if (visual is not Border sizeContainer) return;
-
         // Find the outer border and update its border brush
-        var outerBorder = FindByTag<Border>(sizeContainer, OuterBorderTag);
+        var outerBorder = FindByTag<Border>(visual, OuterBorderTag) ?? (visual as Border);
         if (outerBorder != null)
         {
             outerBorder.BorderBrush = node.IsSelected
@@ -198,17 +188,15 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     /// <inheritdoc />
     public override void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
     {
-        if (visual is Border border)
-        {
-            border.Width = width * context.Scale;
-            border.Height = height * context.Scale;
+        var scaledWidth = width * context.Scale;
+        var scaledHeight = height * context.Scale;
 
-            // Update inner panel width
-            var outerBorder = FindByTag<Border>(border, OuterBorderTag);
-            if (outerBorder?.Child is DockPanel dockPanel)
-            {
-                dockPanel.Width = width - 4;
-            }
+        // Update the outer border (root container) size
+        var outerBorder = FindByTag<Border>(visual, OuterBorderTag) ?? (visual as Border);
+        if (outerBorder != null)
+        {
+            outerBorder.Width = scaledWidth;
+            outerBorder.Height = scaledHeight;
         }
     }
 }

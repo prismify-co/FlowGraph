@@ -118,6 +118,19 @@ public class ResizableVisual
     }
 
     /// <summary>
+    /// Associates a Node with this visual for event handling.
+    /// The node will be stored in the tag dictionary and can be retrieved via GetNodeFromTag.
+    /// </summary>
+    /// <param name="node">The node to associate with this visual.</param>
+    public ResizableVisual WithNode(FlowGraph.Core.Node node)
+    {
+        _node = node;
+        return this;
+    }
+
+    private FlowGraph.Core.Node? _node;
+
+    /// <summary>
     /// Builds and returns the root control with resize metadata attached.
     /// </summary>
     public Control Build()
@@ -127,22 +140,30 @@ public class ResizableVisual
         if (_root.Tag is Dictionary<string, object> existingTags)
         {
             existingTags[MetadataKey] = _metadata;
+            if (_node != null)
+                existingTags["Node"] = _node;
         }
         else if (_root.Tag != null)
         {
             // Preserve existing tag
-            _root.Tag = new Dictionary<string, object>
+            var dict = new Dictionary<string, object>
             {
                 ["OriginalTag"] = _root.Tag,
                 [MetadataKey] = _metadata
             };
+            if (_node != null)
+                dict["Node"] = _node;
+            _root.Tag = dict;
         }
         else
         {
-            _root.Tag = new Dictionary<string, object>
+            var dict = new Dictionary<string, object>
             {
                 [MetadataKey] = _metadata
             };
+            if (_node != null)
+                dict["Node"] = _node;
+            _root.Tag = dict;
         }
 
         return _root;
@@ -224,7 +245,7 @@ public class ResizableVisual
         {
             return node;
         }
-        
+
         if (tag is Dictionary<string, object> dict)
         {
             if (dict.TryGetValue("Node", out var nodeObj) && nodeObj is FlowGraph.Core.Node dictNode)
@@ -237,7 +258,7 @@ public class ResizableVisual
                 return origNode;
             }
         }
-        
+
         return null;
     }
 
