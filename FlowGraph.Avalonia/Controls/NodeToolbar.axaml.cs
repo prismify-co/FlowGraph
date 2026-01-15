@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -130,11 +131,12 @@ public partial class NodeToolbar : UserControl
 
     private void InitializeComponent()
     {
-        // Create a container border for styling
+        // Create a container border for styling - use theme when attached
+        var theme = new ThemeResources(this);
         _container = new Border
         {
-            Background = new SolidColorBrush(Color.FromArgb(240, 45, 45, 48)),
-            BorderBrush = new SolidColorBrush(Color.FromRgb(70, 70, 74)),
+            Background = theme.ToolbarBackground,
+            BorderBrush = theme.ToolbarBorder,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(6),
             Padding = new Thickness(6),

@@ -223,6 +223,22 @@ public class ThemeResources
 
     #endregion
 
+    #region Toolbar
+
+    /// <summary>
+    /// Background for toolbars and floating UI elements.
+    /// </summary>
+    public IBrush ToolbarBackground => GetBrush("FlowCanvasToolbarBackground",
+        IsLightTheme ? "#F0FFFFFF" : "#F02D2D30");
+
+    /// <summary>
+    /// Border for toolbars and floating UI elements.
+    /// </summary>
+    public IBrush ToolbarBorder => GetBrush("FlowCanvasToolbarBorder",
+        IsLightTheme ? "#D0D0D0" : "#46464A");
+
+    #endregion
+
     #region Headered Nodes (React Flow style)
 
     /// <summary>
