@@ -279,6 +279,76 @@ public class PerformanceDemoPage : IDemoPage
             }
         }
 
+        // Post-process: Connect orphan nodes to ensure full graph coverage
+        var connectedAsSource = new HashSet<string>(edgesList.Select(e => e.Source));
+        var connectedAsTarget = new HashSet<string>(edgesList.Select(e => e.Target));
+        
+        // Find orphan nodes (nodes with no incoming AND no outgoing edges)
+        var orphanNodes = nodesList
+            .Where(n => !connectedAsSource.Contains(n.Id) && !connectedAsTarget.Contains(n.Id))
+            .ToList();
+        
+        foreach (var orphan in orphanNodes)
+        {
+            // Find nearest compatible node to connect to
+            Node? bestTarget = null;
+            double bestDist = double.MaxValue;
+            
+            if (orphan.Outputs.Count > 0)
+            {
+                // Orphan has outputs - find nearest node with inputs
+                foreach (var candidate in nodesList.Where(n => n.Id != orphan.Id && n.Inputs.Count > 0))
+                {
+                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) + 
+                               Math.Abs(candidate.Position.Y - orphan.Position.Y);
+                    if (dist < bestDist)
+                    {
+                        bestDist = dist;
+                        bestTarget = candidate;
+                    }
+                }
+                
+                if (bestTarget != null)
+                {
+                    edgesList.Add(new Edge
+                    {
+                        Source = orphan.Id,
+                        Target = bestTarget.Id,
+                        SourcePort = "out",
+                        TargetPort = "in",
+                        Type = EdgeType.Bezier
+                    });
+                }
+            }
+            else if (orphan.Inputs.Count > 0)
+            {
+                // Orphan has inputs only - find nearest node with outputs
+                foreach (var candidate in nodesList.Where(n => n.Id != orphan.Id && n.Outputs.Count > 0))
+                {
+                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) + 
+                               Math.Abs(candidate.Position.Y - orphan.Position.Y);
+                    if (dist < bestDist)
+                    {
+                        bestDist = dist;
+                        bestTarget = candidate;
+                    }
+                }
+                
+                if (bestTarget != null)
+                {
+                    edgesList.Add(new Edge
+                    {
+                        Source = bestTarget.Id,
+                        Target = orphan.Id,
+                        SourcePort = "out",
+                        TargetPort = "in",
+                        Type = EdgeType.Bezier
+                    });
+                }
+            }
+            // Note: Nodes with neither inputs nor outputs remain orphans (by design)
+        }
+
         var edgeGenTime = sw.ElapsedMilliseconds;
         sw.Restart();
 
