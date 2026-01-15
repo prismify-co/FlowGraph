@@ -752,10 +752,12 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
         else if (offsetChanged)
         {
-            // Pan-only change - just update the transform (O(1) operation)
+            // Pan-only change - update transform and grid
             _lastOffsetX = _viewport.OffsetX;
             _lastOffsetY = _viewport.OffsetY;
-            // Note: Grid background may need updating for pan, but it's on a separate canvas
+            
+            // Grid background is on separate untransformed canvas, must re-render
+            RenderGrid();
         }
     }
 
