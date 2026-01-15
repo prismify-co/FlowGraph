@@ -98,6 +98,49 @@ public class NodeVisualManager
         _portVisuals.Clear();
     }
 
+    /// <summary>
+    /// Removes a node visual and its port visuals from the canvas and tracking.
+    /// </summary>
+    /// <param name="canvas">The canvas containing the visual.</param>
+    /// <param name="node">The node to remove.</param>
+    /// <returns>True if the visual was found and removed.</returns>
+    public bool RemoveNodeVisual(Canvas canvas, Node node)
+    {
+        if (!_nodeVisuals.TryGetValue(node.Id, out var visual))
+            return false;
+
+        // Remove the node visual from canvas
+        canvas.Children.Remove(visual);
+        _nodeVisuals.Remove(node.Id);
+
+        // Remove port visuals
+        foreach (var port in node.Inputs)
+        {
+            if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
+            {
+                canvas.Children.Remove(portVisual);
+                _portVisuals.Remove((node.Id, port.Id));
+            }
+        }
+        foreach (var port in node.Outputs)
+        {
+            if (_portVisuals.TryGetValue((node.Id, port.Id), out var portVisual))
+            {
+                canvas.Children.Remove(portVisual);
+                _portVisuals.Remove((node.Id, port.Id));
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Checks if a node visual exists in tracking.
+    /// </summary>
+    /// <param name="nodeId">The node ID to check.</param>
+    /// <returns>True if the node visual exists.</returns>
+    public bool HasNodeVisual(string nodeId) => _nodeVisuals.ContainsKey(nodeId);
+
     // Cache for O(1) parent lookups in GetGroupDepth
     private Dictionary<string, Node>? _nodeByIdCache;
 

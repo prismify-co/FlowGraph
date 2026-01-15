@@ -181,6 +181,36 @@ public class GraphRenderer
 
     #endregion
 
+    #region Incremental Visual Management
+
+    /// <summary>
+    /// Removes a single node visual and its ports from the canvas.
+    /// </summary>
+    /// <param name="canvas">The canvas containing the visual.</param>
+    /// <param name="node">The node to remove.</param>
+    /// <returns>True if the visual was found and removed.</returns>
+    public bool RemoveNodeVisual(Canvas canvas, Node node) => _nodeVisualManager.RemoveNodeVisual(canvas, node);
+
+    /// <summary>
+    /// Removes a single edge visual from the canvas.
+    /// </summary>
+    /// <param name="canvas">The canvas containing the visual.</param>
+    /// <param name="edge">The edge to remove.</param>
+    /// <returns>True if the visual was found and removed.</returns>
+    public bool RemoveEdgeVisual(Canvas canvas, Edge edge) => _edgeVisualManager.RemoveEdgeVisual(canvas, edge);
+
+    /// <summary>
+    /// Checks if a node visual exists.
+    /// </summary>
+    public bool HasNodeVisual(string nodeId) => _nodeVisualManager.HasNodeVisual(nodeId);
+
+    /// <summary>
+    /// Checks if an edge visual exists.
+    /// </summary>
+    public bool HasEdgeVisual(string edgeId) => _edgeVisualManager.HasEdgeVisual(edgeId);
+
+    #endregion
+
     #region Node Rendering (Delegated)
 
     /// <summary>
@@ -334,6 +364,12 @@ public class GraphRenderer
     /// Updates the position of resize handles for a node.
     /// </summary>
     public void UpdateResizeHandlePositions(Node node) => _resizeHandleManager.UpdateResizeHandlePositions(node);
+
+    /// <summary>
+    /// Updates size and position of all tracked resize handles.
+    /// Called on zoom changes to recalculate InverseScale-based sizing.
+    /// </summary>
+    public void UpdateAllResizeHandles() => _resizeHandleManager.UpdateAllResizeHandles();
 
     #endregion
 

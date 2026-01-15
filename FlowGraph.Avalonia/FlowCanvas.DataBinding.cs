@@ -254,13 +254,57 @@ public partial class FlowCanvas
             }
             
             System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribed to {nodeCount} nodes PropertyChanged");
+            
+            // Reset requires full re-render
+            _graphNeedsRender = true;
+            RenderElements();
+            return;
         }
 
         // Invalidate direct renderer's spatial index when nodes change
         _directRenderer?.InvalidateIndex();
 
-        _graphNeedsRender = true;
-        RenderElements();
+        // Incremental updates for Add/Remove operations
+        if (_mainCanvas != null && _theme != null && Graph != null)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add when e.NewItems != null:
+                    // Add new node visuals
+                    foreach (Node node in e.NewItems)
+                    {
+                        if (!_graphRenderer.HasNodeVisual(node.Id))
+                        {
+                            _graphRenderer.RenderNode(_mainCanvas, node, _theme, null);
+                        }
+                    }
+                    // Re-render edges (new nodes might have connections)
+                    RenderEdges();
+                    break;
+
+                case NotifyCollectionChangedAction.Remove when e.OldItems != null:
+                    // Remove node visuals
+                    foreach (Node node in e.OldItems)
+                    {
+                        _graphRenderer.RemoveNodeVisual(_mainCanvas, node);
+                        _graphRenderer.RemoveResizeHandles(_mainCanvas, node.Id);
+                    }
+                    // Re-render edges (removed nodes had connections)
+                    RenderEdges();
+                    break;
+
+                default:
+                    // For other actions (Replace, Move), fall back to full re-render
+                    _graphNeedsRender = true;
+                    RenderElements();
+                    break;
+            }
+        }
+        else
+        {
+            _graphNeedsRender = true;
+            RenderElements();
+        }
     }
 
     private void OnEdgesChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -298,10 +342,49 @@ public partial class FlowCanvas
             {
                 edge.PropertyChanged += OnEdgePropertyChanged;
             }
+            
+            // Reset requires full edge re-render
+            _graphNeedsRender = true;
+            RenderEdges();
+            return;
         }
 
-        _graphNeedsRender = true;
-        RenderEdges();
+        // Incremental updates for Add/Remove operations
+        if (_mainCanvas != null && _theme != null && Graph != null)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add when e.NewItems != null:
+                    // Add new edge visuals
+                    foreach (Edge edge in e.NewItems)
+                    {
+                        if (!_graphRenderer.HasEdgeVisual(edge.Id))
+                        {
+                            _graphRenderer.RenderEdge(_mainCanvas, edge, Graph, _theme);
+                        }
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove when e.OldItems != null:
+                    // Remove edge visuals
+                    foreach (Edge edge in e.OldItems)
+                    {
+                        _graphRenderer.RemoveEdgeVisual(_mainCanvas, edge);
+                    }
+                    break;
+
+                default:
+                    // For other actions, fall back to full edge re-render
+                    _graphNeedsRender = true;
+                    RenderEdges();
+                    break;
+            }
+        }
+        else
+        {
+            _graphNeedsRender = true;
+            RenderEdges();
+        }
     }
 
     #endregion

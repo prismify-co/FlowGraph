@@ -131,6 +131,34 @@ public class ResizeHandleManager
     }
 
     /// <summary>
+    /// Updates size and position of all tracked resize handles.
+    /// Called on zoom changes to recalculate InverseScale-based sizing.
+    /// </summary>
+    public void UpdateAllResizeHandles()
+    {
+        // Use InverseScale for constant screen size
+        var inverseScale = _renderContext.InverseScale;
+        var handleSize = 8 * inverseScale;
+
+        foreach (var (nodeId, handles) in _resizeHandles)
+        {
+            foreach (var handle in handles)
+            {
+                if (handle.Tag is (Node node, ResizeHandlePosition position))
+                {
+                    var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
+                    var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
+
+                    // Update handle size (changed with zoom)
+                    handle.Width = handleSize;
+                    handle.Height = handleSize;
+                    PositionResizeHandle(handle, canvasPos, nodeWidth, nodeHeight, handleSize, position);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Updates the position of resize handles for a node.
     /// </summary>
     /// <param name="node">The node whose handles need updating.</param>

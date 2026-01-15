@@ -108,6 +108,73 @@ public class EdgeVisualManager
     }
 
     /// <summary>
+    /// Removes an edge visual and all its components from the canvas and tracking.
+    /// </summary>
+    /// <param name="canvas">The canvas containing the visual.</param>
+    /// <param name="edge">The edge to remove.</param>
+    /// <returns>True if the visual was found and removed.</returns>
+    public bool RemoveEdgeVisual(Canvas canvas, Edge edge)
+    {
+        bool removed = false;
+
+        // Remove hit area path
+        if (_edgeVisuals.TryGetValue(edge.Id, out var hitPath))
+        {
+            canvas.Children.Remove(hitPath);
+            _edgeVisuals.Remove(edge.Id);
+            removed = true;
+        }
+
+        // Remove visible path
+        if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
+        {
+            canvas.Children.Remove(visiblePath);
+            _edgeVisiblePaths.Remove(edge.Id);
+            removed = true;
+        }
+
+        // Remove markers (arrows)
+        if (_edgeMarkers.TryGetValue(edge.Id, out var markers))
+        {
+            foreach (var marker in markers)
+            {
+                canvas.Children.Remove(marker);
+            }
+            _edgeMarkers.Remove(edge.Id);
+            removed = true;
+        }
+
+        // Remove label
+        if (_edgeLabels.TryGetValue(edge.Id, out var label))
+        {
+            canvas.Children.Remove(label);
+            _edgeLabels.Remove(edge.Id);
+            removed = true;
+        }
+
+        // Remove endpoint handles
+        if (_edgeEndpointHandles.TryGetValue(edge.Id, out var handles))
+        {
+            canvas.Children.Remove(handles.source);
+            canvas.Children.Remove(handles.target);
+            _edgeEndpointHandles.Remove(edge.Id);
+            removed = true;
+        }
+
+        // Remove custom render results
+        _customRenderResults.Remove(edge.Id);
+
+        return removed;
+    }
+
+    /// <summary>
+    /// Checks if an edge visual exists in tracking.
+    /// </summary>
+    /// <param name="edgeId">The edge ID to check.</param>
+    /// <returns>True if the edge visual exists.</returns>
+    public bool HasEdgeVisual(string edgeId) => _edgeVisuals.ContainsKey(edgeId);
+
+    /// <summary>
     /// Renders all edges in the graph to the canvas.
     /// </summary>
     /// <param name="canvas">The canvas to render to.</param>

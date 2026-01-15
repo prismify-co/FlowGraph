@@ -710,28 +710,33 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         var offsetChanged = Math.Abs(_lastOffsetX - _viewport.OffsetX) > 0.1 || 
                             Math.Abs(_lastOffsetY - _viewport.OffsetY) > 0.1;
         
-        // Phase 1: Transform-based pan/zoom for O(1) updates
+        // Phase 2: Transform-based pan/zoom with retained mode
         // Apply the viewport transform to MainCanvas for instant pan/zoom
         if (_viewportTransform != null)
         {
             _viewport.ApplyToTransforms(_viewportTransform);
         }
         
-        // For zoom changes, we still need to re-render edges and other elements
-        // that aren't transformed (like the grid background)
+        // For zoom changes, only update elements that use InverseScale
+        // (resize handles must stay constant screen size)
+        // The MatrixTransform handles scaling for all other elements
         if (zoomChanged)
         {
             _fullRenderCount++;
             if (_fullRenderCount % 50 == 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[Viewport] Render #{_fullRenderCount} (zoom changed, needsRender={_graphNeedsRender})");
+                System.Diagnostics.Debug.WriteLine($"[Viewport] Zoom #{_fullRenderCount} (retained mode, updating handles only)");
             }
             
             _lastZoom = _viewport.Zoom;
             _lastOffsetX = _viewport.OffsetX;
             _lastOffsetY = _viewport.OffsetY;
-            _graphNeedsRender = false;
-            RenderAll();
+            
+            // Update resize handles (they use InverseScale for constant screen size)
+            _graphRenderer.UpdateAllResizeHandles();
+            
+            // Update grid background (separate canvas, not transformed)
+            RenderGrid();
         }
         else if (offsetChanged)
         {
