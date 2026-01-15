@@ -183,44 +183,41 @@ public class EdgeVisualManager
     /// <param name="excludePath">Optional path to exclude from cleanup.</param>
     public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, AvaloniaPath? excludePath = null)
     {
-        // Clear edge visuals dictionaries
-        _edgeVisuals.Clear();
-        _edgeVisiblePaths.Clear();
-        _edgeMarkers.Clear();
-        _edgeLabels.Clear();
-
-        // Remove existing edge endpoint handles
+        // Remove previously tracked edge visuals from canvas
+        // This is safer than pattern matching - we only remove what we created
+        foreach (var (_, hitPath) in _edgeVisuals)
+        {
+            if (hitPath != excludePath)
+                canvas.Children.Remove(hitPath);
+        }
+        foreach (var (_, visiblePath) in _edgeVisiblePaths)
+        {
+            if (visiblePath != excludePath)
+                canvas.Children.Remove(visiblePath);
+        }
+        foreach (var (_, markers) in _edgeMarkers)
+        {
+            foreach (var marker in markers)
+            {
+                canvas.Children.Remove(marker);
+            }
+        }
+        foreach (var (_, label) in _edgeLabels)
+        {
+            canvas.Children.Remove(label);
+        }
         foreach (var (_, handles) in _edgeEndpointHandles)
         {
             canvas.Children.Remove(handles.source);
             canvas.Children.Remove(handles.target);
         }
+
+        // Clear edge visuals dictionaries after removing from canvas
+        _edgeVisuals.Clear();
+        _edgeVisiblePaths.Clear();
+        _edgeMarkers.Clear();
+        _edgeLabels.Clear();
         _edgeEndpointHandles.Clear();
-
-        // Remove existing edges, markers, labels, and hit areas
-        var elementsToRemove = canvas.Children
-            .Where(c =>
-                (c is AvaloniaPath p && p != excludePath && p.Tag is string tag && (tag == "edge" || tag == "marker")) ||
-                (c is AvaloniaPath p2 && p2 != excludePath && p2.Tag is Edge) ||
-                (c is AvaloniaPath p3 && p3 != excludePath && !p3.IsHitTestVisible && p3.Tag == null) ||
-                (c is TextBlock tb && tb.Tag is Edge) ||  // Edge labels now have Edge as tag
-                (c is TextBlock tb2 && tb2.Tag is string tbTag && tbTag == "edgeLabel") ||  // Backward compat
-                (c is Ellipse el && el.Tag is (Edge, bool)))
-            .ToList();
-
-        foreach (var element in elementsToRemove)
-        {
-            canvas.Children.Remove(element);
-        }
-
-        // Also remove old edges without tags (backward compatibility)
-        var oldEdges = canvas.Children.OfType<AvaloniaPath>()
-            .Where(p => p != excludePath && p.Tag == null && p.IsHitTestVisible)
-            .ToList();
-        foreach (var edge in oldEdges)
-        {
-            canvas.Children.Remove(edge);
-        }
 
         // Render new edges - only if both endpoints are visible (by group collapse)
         // and at least one endpoint is in the visible viewport (virtualization)
