@@ -6,6 +6,7 @@ namespace FlowGraph.Avalonia;
 
 /// <summary>
 /// Renders the background grid for the canvas using efficient drawing.
+/// Uses transform-based panning for O(1) pan performance.
 /// </summary>
 public class GridRenderer
 {
@@ -56,32 +57,41 @@ public class GridRenderer
 
 /// <summary>
 /// A control that efficiently renders the grid using DrawingContext.
+/// Uses transform-based panning: dots are rendered with padding, then translated.
+/// Only re-renders when zoom changes or pan exceeds the padding bounds.
 /// </summary>
 internal class GridDrawingControl : Control
 {
     private FlowCanvasSettings _settings;
     private ViewportState? _viewport;
     private IBrush? _gridBrush;
-    private Pen? _gridPen;
 
-    // Cached geometry for performance
-    private StreamGeometry? _cachedGeometry;
-    private double _cachedZoom;
-    private double _cachedOffsetX;
-    private double _cachedOffsetY;
-    private Size _cachedSize;
+    // Transform for O(1) pan
+    private readonly TranslateTransform _panTransform;
+
+    // Base offset used when dots were last rendered
+    private double _baseOffsetX;
+    private double _baseOffsetY;
+    private double _baseZoom;
+    private Size _baseSize;
+
+    // Padding (in screen pixels) - render extra dots beyond viewport for smooth panning
+    private const double PanPadding = 200;
 
     public GridDrawingControl(FlowCanvasSettings settings)
     {
         _settings = settings;
         IsHitTestVisible = false;
+
+        // Set up the pan transform
+        _panTransform = new TranslateTransform();
+        RenderTransform = _panTransform;
     }
 
     public void UpdateSettings(FlowCanvasSettings settings)
     {
         _settings = settings;
-        InvalidateGeometryCache();
-        InvalidateVisual();
+        ForceFullRender();
     }
 
     public void UpdateGrid(ViewportState viewport, IBrush gridBrush)
@@ -91,33 +101,66 @@ internal class GridDrawingControl : Control
         if (_gridBrush != gridBrush)
         {
             _gridBrush = gridBrush;
-            _gridPen = new Pen(gridBrush, 1);
-            InvalidateGeometryCache();
+            ForceFullRender();
+            return;
         }
 
-        // Check if we need to regenerate geometry (zoom or size change)
-        if (NeedsGeometryUpdate(viewport))
+        // Check if we need a full re-render or can just update the transform
+        if (NeedsFullRender(viewport))
         {
-            InvalidateGeometryCache();
+            // Full re-render needed (zoom changed or pan exceeded padding)
+            ForceFullRender();
         }
+        else
+        {
+            // O(1) pan: just update the transform offset
+            var deltaX = viewport.OffsetX - _baseOffsetX;
+            var deltaY = viewport.OffsetY - _baseOffsetY;
+            _panTransform.X = deltaX;
+            _panTransform.Y = deltaY;
+        }
+    }
 
-        // Grid must be redrawn when viewport changes (dots move in screen space)
+    private bool NeedsFullRender(ViewportState viewport)
+    {
+        // Always need full render on first draw
+        if (_baseZoom == 0)
+            return true;
+
+        // Zoom changed - dot positions and sizes change
+        if (Math.Abs(_baseZoom - viewport.Zoom) > 0.001)
+            return true;
+
+        // Size changed significantly
+        if (Math.Abs(_baseSize.Width - Bounds.Width) > 1 ||
+            Math.Abs(_baseSize.Height - Bounds.Height) > 1)
+            return true;
+
+        // Pan exceeded padding bounds - need to render more dots
+        var deltaX = Math.Abs(viewport.OffsetX - _baseOffsetX);
+        var deltaY = Math.Abs(viewport.OffsetY - _baseOffsetY);
+        if (deltaX > PanPadding || deltaY > PanPadding)
+            return true;
+
+        return false;
+    }
+
+    private void ForceFullRender()
+    {
+        // Reset transform
+        _panTransform.X = 0;
+        _panTransform.Y = 0;
+
+        // Store current offset as base
+        if (_viewport != null)
+        {
+            _baseOffsetX = _viewport.OffsetX;
+            _baseOffsetY = _viewport.OffsetY;
+            _baseZoom = _viewport.Zoom;
+        }
+        _baseSize = Bounds.Size;
+
         InvalidateVisual();
-    }
-
-    private bool NeedsGeometryUpdate(ViewportState viewport)
-    {
-        // Regenerate if zoom or size changed significantly
-        // Small pan movements don't need full regeneration due to tiling
-        return _cachedGeometry == null ||
-               Math.Abs(_cachedZoom - viewport.Zoom) > 0.001 ||
-               Math.Abs(_cachedSize.Width - Bounds.Width) > 1 ||
-               Math.Abs(_cachedSize.Height - Bounds.Height) > 1;
-    }
-
-    private void InvalidateGeometryCache()
-    {
-        _cachedGeometry = null;
     }
 
     public override void Render(DrawingContext context)
@@ -131,8 +174,10 @@ internal class GridDrawingControl : Control
 
         var spacing = _settings.GridSpacing;
         var zoom = _viewport.Zoom;
-        var offsetX = _viewport.OffsetX;
-        var offsetY = _viewport.OffsetY;
+
+        // Use base offset for rendering (transform handles the delta)
+        var offsetX = _baseOffsetX;
+        var offsetY = _baseOffsetY;
 
         // Calculate effective spacing in screen coordinates
         var screenSpacing = spacing * zoom;
@@ -150,13 +195,17 @@ internal class GridDrawingControl : Control
         var dotRadius = Math.Max(_settings.GridDotSize * zoom / 2, 0.5);
 
         // Calculate visible grid range in canvas coordinates
-        var startX = Math.Floor(-offsetX / zoom / spacing) * spacing;
-        var startY = Math.Floor(-offsetY / zoom / spacing) * spacing;
-        var endX = Math.Ceiling((bounds.Width - offsetX) / zoom / spacing) * spacing;
-        var endY = Math.Ceiling((bounds.Height - offsetY) / zoom / spacing) * spacing;
+        // Add padding for smooth pan without re-render
+        var paddedWidth = bounds.Width + PanPadding * 2;
+        var paddedHeight = bounds.Height + PanPadding * 2;
+
+        var startX = Math.Floor((-offsetX - PanPadding) / zoom / spacing) * spacing;
+        var startY = Math.Floor((-offsetY - PanPadding) / zoom / spacing) * spacing;
+        var endX = Math.Ceiling((paddedWidth - offsetX - PanPadding) / zoom / spacing) * spacing;
+        var endY = Math.Ceiling((paddedHeight - offsetY - PanPadding) / zoom / spacing) * spacing;
 
         // Limit the number of dots to prevent performance issues
-        var maxDotsPerAxis = 200;
+        var maxDotsPerAxis = 250; // Slightly higher to account for padding
         var xCount = (int)((endX - startX) / spacing);
         var yCount = (int)((endY - startY) / spacing);
 
@@ -166,8 +215,8 @@ internal class GridDrawingControl : Control
             var factor = Math.Max(xCount, yCount) / (double)maxDotsPerAxis;
             spacing *= Math.Ceiling(factor);
             screenSpacing = spacing * zoom;
-            startX = Math.Floor(-offsetX / zoom / spacing) * spacing;
-            startY = Math.Floor(-offsetY / zoom / spacing) * spacing;
+            startX = Math.Floor((-offsetX - PanPadding) / zoom / spacing) * spacing;
+            startY = Math.Floor((-offsetY - PanPadding) / zoom / spacing) * spacing;
         }
 
         // Draw dots using DrawingContext (much faster than UI elements)
@@ -175,24 +224,18 @@ internal class GridDrawingControl : Control
         {
             for (var y = startY; y <= endY; y += spacing)
             {
-                // Transform to screen coordinates
+                // Transform to screen coordinates using base offset
                 var screenX = x * zoom + offsetX;
                 var screenY = y * zoom + offsetY;
 
-                // Skip dots outside visible bounds
-                if (screenX < -dotRadius || screenX > bounds.Width + dotRadius ||
-                    screenY < -dotRadius || screenY > bounds.Height + dotRadius)
+                // Skip dots way outside visible bounds (with padding margin)
+                if (screenX < -PanPadding - dotRadius || screenX > bounds.Width + PanPadding + dotRadius ||
+                    screenY < -PanPadding - dotRadius || screenY > bounds.Height + PanPadding + dotRadius)
                     continue;
 
                 // Draw the dot
                 context.DrawEllipse(_gridBrush, null, new Point(screenX, screenY), dotRadius, dotRadius);
             }
         }
-
-        // Cache state for comparison
-        _cachedZoom = zoom;
-        _cachedOffsetX = offsetX;
-        _cachedOffsetY = offsetY;
-        _cachedSize = bounds.Size;
     }
 }
