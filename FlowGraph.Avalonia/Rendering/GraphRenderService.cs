@@ -81,9 +81,12 @@ public class GraphRenderService : IGraphRenderService
   /// <inheritdoc />
   public void UpdateNodeSelection(Node node)
   {
+    System.Diagnostics.Debug.WriteLine($"[GraphRenderService.UpdateNodeSelection] Node={node.Id}, IsDirectRenderingMode={IsDirectRenderingMode}");
+    
     if (IsDirectRenderingMode)
     {
       // Direct rendering: trigger a full re-render
+      System.Diagnostics.Debug.WriteLine($"[GraphRenderService.UpdateNodeSelection] Calling _refreshAction()");
       _refreshAction();
     }
     else

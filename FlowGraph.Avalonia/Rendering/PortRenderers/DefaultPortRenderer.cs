@@ -21,12 +21,13 @@ public class DefaultPortRenderer : IPortRenderer
   public virtual Control CreatePortVisual(Port port, Node node, PortRenderContext context)
   {
     var size = GetSize(port, node, context.Settings) ?? context.Settings.PortSize;
-    var scaledSize = size * context.Scale;
+    // In transform-based rendering, use logical (unscaled) dimensions
+    // MatrixTransform handles all zoom scaling
 
     var ellipse = new Ellipse
     {
-      Width = scaledSize,
-      Height = scaledSize,
+      Width = size,
+      Height = size,
       Fill = context.Theme.PortBackground,
       Stroke = context.Theme.PortBorder,
       StrokeThickness = 2,

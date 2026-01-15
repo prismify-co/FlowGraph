@@ -22,31 +22,29 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     public virtual Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
         var theme = context.Theme;
-        var scale = context.Scale;
         var settings = context.Settings;
 
+        // In transform-based rendering, use logical (unscaled) dimensions
+        // The MatrixTransform on MainCanvas handles zoom
         var width = node.Width ?? GetWidth(node, settings) ?? settings.NodeWidth;
         var height = node.Height ?? GetHeight(node, settings) ?? settings.NodeHeight;
-
-        var scaledWidth = width * scale;
-        var scaledHeight = height * scale;
 
         var nodeBackground = theme.NodeBackground;
         var nodeBorder = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
 
         var border = new Border
         {
-            Width = scaledWidth,
-            Height = scaledHeight,
+            Width = width,
+            Height = height,
             Background = nodeBackground,
             BorderBrush = nodeBorder,
             BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(8 * scale),
+            CornerRadius = new CornerRadius(8),
             BoxShadow = new BoxShadows(new BoxShadow
             {
-                OffsetX = 2 * scale,
-                OffsetY = 2 * scale,
-                Blur = 8 * scale,
+                OffsetX = 2,
+                OffsetY = 2,
+                Blur = 8,
                 Color = Color.FromArgb(60, 0, 0, 0)
             }),
             Cursor = new Cursor(StandardCursorType.Hand),
@@ -70,7 +68,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             VerticalAlignment = VerticalAlignment.Center,
             TextAlignment = TextAlignment.Center,
             FontWeight = FontWeight.Medium,
-            FontSize = 14 * context.Scale,
+            FontSize = 14, // Unscaled - transform handles zoom
             IsHitTestVisible = false,
             Tag = LabelTextBlockTag
         };
@@ -115,10 +113,11 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     public virtual void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
     {
+        // In transform-based rendering, use logical (unscaled) dimensions
         if (visual is Border border)
         {
-            border.Width = width * context.Scale;
-            border.Height = height * context.Scale;
+            border.Width = width;
+            border.Height = height;
         }
     }
 

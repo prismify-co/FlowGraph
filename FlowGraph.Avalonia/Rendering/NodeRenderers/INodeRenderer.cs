@@ -129,10 +129,31 @@ public interface IResizableNodeRenderer : INodeRenderer
 
 /// <summary>
 /// Context information passed to node renderers.
+/// 
+/// <para><b>TRANSFORM-BASED RENDERING:</b></para>
+/// <para>
+/// <see cref="Scale"/> is always 1.0 - create visuals at logical size.
+/// The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom.
+/// </para>
 /// </summary>
 public class NodeRenderContext
 {
     public required ThemeResources Theme { get; init; }
     public required FlowCanvasSettings Settings { get; init; }
+    
+    /// <summary>
+    /// Logical scale for visual sizing. Always 1.0 in transform-based rendering.
+    /// </summary>
     public required double Scale { get; init; }
+    
+    /// <summary>
+    /// Actual viewport zoom level. Use for calculations, not visual sizing.
+    /// </summary>
+    public double ViewportZoom { get; init; } = 1.0;
+    
+    /// <summary>
+    /// Inverse scale for constant-size elements (1/ViewportZoom).
+    /// Apply as ScaleTransform to elements that should stay same screen size.
+    /// </summary>
+    public double InverseScale => 1.0 / ViewportZoom;
 }

@@ -8,6 +8,7 @@ namespace FlowGraph.Avalonia.Rendering.ShapeRenderers;
 
 /// <summary>
 /// Renderer for ellipse/circle shape elements.
+/// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
 /// </summary>
 public class EllipseRenderer : IShapeRenderer
 {
@@ -17,13 +18,14 @@ public class EllipseRenderer : IShapeRenderer
     if (shape is not EllipseElement ellipse)
       throw new ArgumentException($"Expected EllipseElement, got {shape.GetType().Name}");
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     var avaloniaEllipse = new Ellipse
     {
-      Width = (ellipse.Width ?? 50) * context.Scale,
-      Height = (ellipse.Height ?? 50) * context.Scale,
+      Width = ellipse.Width ?? 50,
+      Height = ellipse.Height ?? 50,
       Fill = ShapeRenderContext.CreateBrush(ellipse.Fill),
       Stroke = ShapeRenderContext.CreateBrush(ellipse.Stroke),
-      StrokeThickness = ellipse.StrokeWidth * context.Scale,
+      StrokeThickness = ellipse.StrokeWidth,
       Opacity = ellipse.Opacity
     };
 
@@ -44,7 +46,7 @@ public class EllipseRenderer : IShapeRenderer
         Text = ellipse.Label,
         HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Center,
         VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
-        FontSize = 12 * context.Scale,
+        FontSize = 12,
         Foreground = Brushes.Black
       });
       return grid;
@@ -67,17 +69,18 @@ public class EllipseRenderer : IShapeRenderer
       if (textBlock != null)
       {
         textBlock.Text = ellipse.Label ?? string.Empty;
-        textBlock.FontSize = 12 * context.Scale;
+        textBlock.FontSize = 12;
       }
     }
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     if (avaloniaEllipse != null)
     {
-      avaloniaEllipse.Width = (ellipse.Width ?? 50) * context.Scale;
-      avaloniaEllipse.Height = (ellipse.Height ?? 50) * context.Scale;
+      avaloniaEllipse.Width = ellipse.Width ?? 50;
+      avaloniaEllipse.Height = ellipse.Height ?? 50;
       avaloniaEllipse.Fill = ShapeRenderContext.CreateBrush(ellipse.Fill);
       avaloniaEllipse.Stroke = ShapeRenderContext.CreateBrush(ellipse.Stroke);
-      avaloniaEllipse.StrokeThickness = ellipse.StrokeWidth * context.Scale;
+      avaloniaEllipse.StrokeThickness = ellipse.StrokeWidth;
       avaloniaEllipse.Opacity = ellipse.Opacity;
 
       if (ellipse.Rotation != 0)
@@ -101,18 +104,19 @@ public class EllipseRenderer : IShapeRenderer
       avaloniaEllipse = grid.Children.OfType<Ellipse>().FirstOrDefault();
     }
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     if (avaloniaEllipse != null)
     {
       if (shape.IsSelected)
       {
         // Add selection highlight
-        avaloniaEllipse.StrokeThickness = Math.Max(shape.StrokeWidth, 2) * context.Scale;
+        avaloniaEllipse.StrokeThickness = Math.Max(shape.StrokeWidth, 2);
         avaloniaEllipse.Stroke = Brushes.DodgerBlue;
       }
       else
       {
         // Restore original stroke
-        avaloniaEllipse.StrokeThickness = shape.StrokeWidth * context.Scale;
+        avaloniaEllipse.StrokeThickness = shape.StrokeWidth;
         avaloniaEllipse.Stroke = ShapeRenderContext.CreateBrush(shape.Stroke);
       }
     }

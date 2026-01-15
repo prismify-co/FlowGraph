@@ -8,6 +8,7 @@ namespace FlowGraph.Avalonia.Rendering.ShapeRenderers;
 
 /// <summary>
 /// Renderer for line shape elements.
+/// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
 /// </summary>
 public class LineRenderer : IShapeRenderer
 {
@@ -17,13 +18,14 @@ public class LineRenderer : IShapeRenderer
     if (shape is not LineElement line)
       throw new ArgumentException($"Expected LineElement, got {shape.GetType().Name}");
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     var canvas = new Canvas
     {
-      Width = Math.Abs(line.EndX - line.Position.X) * context.Scale + line.StrokeWidth * context.Scale * 2,
-      Height = Math.Abs(line.EndY - line.Position.Y) * context.Scale + line.StrokeWidth * context.Scale * 2
+      Width = Math.Abs(line.EndX - line.Position.X) + line.StrokeWidth * 2,
+      Height = Math.Abs(line.EndY - line.Position.Y) + line.StrokeWidth * 2
     };
 
-    var avaloniaLine = CreateLine(line, context);
+    var avaloniaLine = CreateLine(line);
     canvas.Children.Add(avaloniaLine);
 
     return canvas;
@@ -35,13 +37,14 @@ public class LineRenderer : IShapeRenderer
     if (shape is not LineElement line)
       return;
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     if (visual is Canvas canvas)
     {
       canvas.Children.Clear();
-      var avaloniaLine = CreateLine(line, context);
+      var avaloniaLine = CreateLine(line);
       canvas.Children.Add(avaloniaLine);
-      canvas.Width = Math.Abs(line.EndX - line.Position.X) * context.Scale + line.StrokeWidth * context.Scale * 2;
-      canvas.Height = Math.Abs(line.EndY - line.Position.Y) * context.Scale + line.StrokeWidth * context.Scale * 2;
+      canvas.Width = Math.Abs(line.EndX - line.Position.X) + line.StrokeWidth * 2;
+      canvas.Height = Math.Abs(line.EndY - line.Position.Y) + line.StrokeWidth * 2;
     }
   }
 
@@ -51,35 +54,36 @@ public class LineRenderer : IShapeRenderer
     if (visual is not Canvas canvas)
       return;
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     var avaloniaLine = canvas.Children.OfType<Line>().FirstOrDefault();
     if (avaloniaLine != null)
     {
       if (shape.IsSelected)
       {
-        avaloniaLine.StrokeThickness = Math.Max(shape.StrokeWidth, 2) * context.Scale;
+        avaloniaLine.StrokeThickness = Math.Max(shape.StrokeWidth, 2);
         avaloniaLine.Stroke = Brushes.DodgerBlue;
       }
       else
       {
-        avaloniaLine.StrokeThickness = shape.StrokeWidth * context.Scale;
+        avaloniaLine.StrokeThickness = shape.StrokeWidth;
         avaloniaLine.Stroke = ShapeRenderContext.CreateBrush(shape.Stroke);
       }
     }
   }
 
-  private Line CreateLine(LineElement line, ShapeRenderContext context)
+  private Line CreateLine(LineElement line)
   {
     var bounds = line.GetBounds();
 
-    // Calculate relative positions within the canvas
-    var startX = (line.Position.X - bounds.X) * context.Scale + line.StrokeWidth * context.Scale;
-    var startY = (line.Position.Y - bounds.Y) * context.Scale + line.StrokeWidth * context.Scale;
-    var endX = (line.EndX - bounds.X) * context.Scale + line.StrokeWidth * context.Scale;
-    var endY = (line.EndY - bounds.Y) * context.Scale + line.StrokeWidth * context.Scale;
+    // Calculate relative positions within the canvas (logical dimensions)
+    var startX = (line.Position.X - bounds.X) + line.StrokeWidth;
+    var startY = (line.Position.Y - bounds.Y) + line.StrokeWidth;
+    var endX = (line.EndX - bounds.X) + line.StrokeWidth;
+    var endY = (line.EndY - bounds.Y) + line.StrokeWidth;
 
     var pen = new Pen(
         ShapeRenderContext.CreateBrush(line.Stroke) ?? Brushes.Black,
-        line.StrokeWidth * context.Scale)
+        line.StrokeWidth)
     {
       DashStyle = ShapeRenderContext.ParseDashStyle(line.StrokeDashArray),
       LineCap = ConvertLineCap(line.EndCap)

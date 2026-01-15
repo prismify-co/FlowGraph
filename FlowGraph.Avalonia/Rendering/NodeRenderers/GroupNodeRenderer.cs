@@ -41,8 +41,9 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     public Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var (width, height) = GetScaledDimensions(node, context);
+        // In transform-based rendering, use logical (unscaled) dimensions
+        // MatrixTransform handles all zoom scaling
+        var (width, height) = GetDimensions(node);
 
         // Create container grid
         var container = new Grid
@@ -57,8 +58,8 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Width = width,
             Height = height,
             Fill = context.Theme.GroupBackground,
-            RadiusX = BorderRadius * scale,
-            RadiusY = BorderRadius * scale
+            RadiusX = BorderRadius,
+            RadiusY = BorderRadius
         };
 
         // Border - dashed when not selected, solid when selected
@@ -68,9 +69,9 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Height = height,
             Fill = Brushes.Transparent,
             Stroke = node.IsSelected ? context.Theme.NodeSelectedBorder : context.Theme.GroupBorder,
-            StrokeThickness = DashedStrokeThickness * scale,
-            RadiusX = BorderRadius * scale,
-            RadiusY = BorderRadius * scale
+            StrokeThickness = DashedStrokeThickness,
+            RadiusX = BorderRadius,
+            RadiusY = BorderRadius
         };
 
         // Apply dashed stroke only when not selected
@@ -91,12 +92,11 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     private StackPanel CreateHeaderPanel(Node node, NodeRenderContext context)
     {
-        var scale = context.Scale;
-
+        // In transform-based rendering, use logical (unscaled) dimensions
         var headerPanel = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Margin = new Thickness(8 * scale, 6 * scale, 8 * scale, 0),
+            Margin = new Thickness(8, 6, 8, 0),
             VerticalAlignment = VerticalAlignment.Top,
             Tag = HeaderPanelTag
         };
@@ -110,10 +110,10 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         {
             Text = node.Label ?? "Group",
             Foreground = context.Theme.GroupLabelText,
-            FontSize = 11 * scale,
+            FontSize = 11,
             FontWeight = FontWeight.Medium,
             VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(4 * scale, 0, 0, 0),
+            Margin = new Thickness(4, 0, 0, 0),
             Opacity = 0.9,
             Tag = LabelTextBlockTag
         };
@@ -124,7 +124,6 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     public void UpdateSelection(Control visual, Node node, NodeRenderContext context)
     {
-        var scale = context.Scale;
         var selectedBrush = context.Theme.NodeSelectedBorder;
         var normalBrush = context.Theme.GroupBorder;
 
@@ -153,26 +152,24 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
     {
-        var scale = context.Scale;
-        var scaledWidth = width * scale;
-        var scaledHeight = node.IsCollapsed ? HeaderHeight * scale : height * scale;
+        // In transform-based rendering, use logical (unscaled) dimensions
+        var logicalHeight = node.IsCollapsed ? HeaderHeight : height;
 
         if (visual is Grid grid)
         {
-            grid.Width = scaledWidth;
-            grid.Height = scaledHeight;
+            grid.Width = width;
+            grid.Height = logicalHeight;
 
             foreach (var child in grid.Children.OfType<Rectangle>())
             {
-                child.Width = scaledWidth;
-                child.Height = scaledHeight;
+                child.Width = width;
+                child.Height = logicalHeight;
             }
         }
     }
 
     public void UpdateCollapsedState(Control visual, Node node, NodeRenderContext context)
     {
-        var scale = context.Scale;
         UpdateSize(visual, node, context, node.Width ?? MinGroupWidth, node.Height ?? MinGroupHeight);
 
         // Update collapse button icon
@@ -207,25 +204,25 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
     public double? GetMinHeight(Node node, FlowCanvasSettings settings) =>
         node.IsCollapsed ? HeaderHeight : MinGroupHeight;
 
-    private static (double width, double height) GetScaledDimensions(Node node, NodeRenderContext context)
+    private static (double width, double height) GetDimensions(Node node)
     {
-        var scale = context.Scale;
-        var width = (node.Width ?? MinGroupWidth) * scale;
+        // In transform-based rendering, use logical (unscaled) dimensions
+        var width = node.Width ?? MinGroupWidth;
         var height = node.IsCollapsed
-            ? HeaderHeight * scale
-            : (node.Height ?? MinGroupHeight) * scale;
+            ? HeaderHeight
+            : (node.Height ?? MinGroupHeight);
         return (width, height);
     }
 
     private Border CreateCollapseButton(Node node, NodeRenderContext context)
     {
-        var scale = context.Scale;
-        var buttonSize = CollapseButtonSize * scale;
+        // In transform-based rendering, use logical (unscaled) dimensions
+        var buttonSize = CollapseButtonSize;
 
         var icon = new TextBlock
         {
             Text = node.IsCollapsed ? CollapsedIcon : ExpandedIcon,
-            FontSize = 12 * scale,
+            FontSize = 12,
             FontWeight = FontWeight.Bold,
             Foreground = context.Theme.GroupLabelText,
             HorizontalAlignment = HorizontalAlignment.Center,
@@ -237,7 +234,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Width = buttonSize,
             Height = buttonSize,
             Background = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128)),
-            CornerRadius = new CornerRadius(3 * scale),
+            CornerRadius = new CornerRadius(3),
             Cursor = new Cursor(StandardCursorType.Hand),
             Child = icon,
             VerticalAlignment = VerticalAlignment.Center,
@@ -290,7 +287,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Padding = new Thickness(4, 2),
             VerticalAlignment = VerticalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(4 * context.Scale, 0, 0, 0),
+            Margin = new Thickness(4, 0, 0, 0),
             MinWidth = 80,
             Tag = EditTextBoxTag,
             AcceptsReturn = false

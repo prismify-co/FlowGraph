@@ -12,6 +12,7 @@ namespace FlowGraph.Avalonia.Rendering.ShapeRenderers;
 
 /// <summary>
 /// Renderer for text shape elements.
+/// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
 /// </summary>
 public class TextRenderer : IShapeRenderer
 {
@@ -21,10 +22,11 @@ public class TextRenderer : IShapeRenderer
     if (shape is not TextElement text)
       throw new ArgumentException($"Expected TextElement, got {shape.GetType().Name}");
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     var textBlock = new TextBlock
     {
       Text = text.Text,
-      FontSize = text.FontSize * context.Scale,
+      FontSize = text.FontSize,
       FontFamily = new FontFamily(text.FontFamily),
       FontWeight = ConvertFontWeight(text.FontWeight),
       FontStyle = ConvertFontStyle(text.FontStyle),
@@ -32,7 +34,7 @@ public class TextRenderer : IShapeRenderer
       TextAlignment = ConvertTextAlignment(text.TextAlignment),
       Opacity = text.Opacity,
       TextWrapping = text.MaxWidth.HasValue ? TextWrapping.Wrap : TextWrapping.NoWrap,
-      MaxWidth = text.MaxWidth.HasValue ? text.MaxWidth.Value * context.Scale : double.PositiveInfinity
+      MaxWidth = text.MaxWidth ?? double.PositiveInfinity
     };
 
     // Apply rotation if specified
@@ -51,10 +53,11 @@ public class TextRenderer : IShapeRenderer
     if (shape is not TextElement text)
       return;
 
+    // Use logical (unscaled) dimensions - MatrixTransform handles zoom
     if (visual is TextBlock textBlock)
     {
       textBlock.Text = text.Text;
-      textBlock.FontSize = text.FontSize * context.Scale;
+      textBlock.FontSize = text.FontSize;
       textBlock.FontFamily = new FontFamily(text.FontFamily);
       textBlock.FontWeight = ConvertFontWeight(text.FontWeight);
       textBlock.FontStyle = ConvertFontStyle(text.FontStyle);
@@ -62,7 +65,7 @@ public class TextRenderer : IShapeRenderer
       textBlock.TextAlignment = ConvertTextAlignment(text.TextAlignment);
       textBlock.Opacity = text.Opacity;
       textBlock.TextWrapping = text.MaxWidth.HasValue ? TextWrapping.Wrap : TextWrapping.NoWrap;
-      textBlock.MaxWidth = text.MaxWidth.HasValue ? text.MaxWidth.Value * context.Scale : double.PositiveInfinity;
+      textBlock.MaxWidth = text.MaxWidth ?? double.PositiveInfinity;
 
       if (text.Rotation != 0)
       {

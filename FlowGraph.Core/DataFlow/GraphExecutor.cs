@@ -32,8 +32,8 @@ public sealed class GraphExecutor : IDisposable
     public GraphExecutor(Graph graph)
     {
         _graph = graph ?? throw new ArgumentNullException(nameof(graph));
-        _graph.Edges.CollectionChanged += OnEdgesChanged;
-        _graph.Nodes.CollectionChanged += OnNodesChanged;
+        _graph.EdgesChanged += OnEdgesChanged;
+        _graph.NodesChanged += OnNodesChanged;
         RebuildDependencyGraph();
     }
 
@@ -524,8 +524,8 @@ public sealed class GraphExecutor : IDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        _graph.Edges.CollectionChanged -= OnEdgesChanged;
-        _graph.Nodes.CollectionChanged -= OnNodesChanged;
+        _graph.EdgesChanged -= OnEdgesChanged;
+        _graph.NodesChanged -= OnNodesChanged;
 
         _lock.EnterWriteLock();
         try

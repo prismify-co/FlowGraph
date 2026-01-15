@@ -1,7 +1,3 @@
-// CS0618: Suppress obsolete warnings - these tests verify backward-compatible
-// CollectionChanged events on the obsolete Graph.Nodes and Graph.Edges properties.
-#pragma warning disable CS0618
-
 namespace FlowGraph.Core.Tests;
 
 public class GraphTests
@@ -210,12 +206,12 @@ public class GraphTests
     }
 
     [Fact]
-    public void Nodes_CollectionChanged_ShouldFireOnAdd()
+    public void NodesChanged_ShouldFireOnAdd()
     {
         var graph = new Graph();
         var eventFired = false;
 
-        graph.Nodes.CollectionChanged += (s, e) =>
+        graph.NodesChanged += (s, e) =>
         {
             eventFired = true;
             Assert.Equal(System.Collections.Specialized.NotifyCollectionChangedAction.Add, e.Action);
@@ -227,7 +223,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void Edges_CollectionChanged_ShouldFireOnAdd()
+    public void EdgesChanged_ShouldFireOnAdd()
     {
         var graph = new Graph();
         var node1 = new Node { Type = "Source" };
@@ -238,7 +234,7 @@ public class GraphTests
         graph.AddNode(node2);
 
         var eventFired = false;
-        graph.Edges.CollectionChanged += (s, e) =>
+        graph.EdgesChanged += (s, e) =>
         {
             eventFired = true;
             Assert.Equal(System.Collections.Specialized.NotifyCollectionChangedAction.Add, e.Action);
@@ -256,15 +252,10 @@ public class GraphTests
     }
 
     [Fact]
-    public void Edges_CollectionChanged_FiresBeforeCollectionIsUpdated()
+    public void EdgesChanged_CollectionIsUpdatedWhenEventFires()
     {
-        // IMPORTANT: This test documents the behavior that CollectionChanged fires
-        // BEFORE the collection is actually modified. This is why FlowCanvas.DataBinding
-        // uses Dispatcher.UIThread.Post() to defer rendering - the collection must be
-        // fully updated before we can accurately iterate over it for rendering.
-        //
-        // This is a regression test to ensure we don't accidentally "fix" the collection
-        // behavior without also updating the UI code that depends on deferred rendering.
+        // UPDATED: With the new single-source-of-truth architecture, Elements is always
+        // up-to-date when events fire. EdgesChanged fires AFTER Elements is modified.
         var graph = new Graph();
         var node1 = new Node { Type = "Source" };
         var node2 = new Node { Type = "Target" };
@@ -276,15 +267,15 @@ public class GraphTests
         var countDuringAddEvent = -1;
         var countDuringRemoveEvent = -1;
 
-        graph.Edges.CollectionChanged += (s, e) =>
+        graph.EdgesChanged += (s, e) =>
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                countDuringAddEvent = graph.Elements.Edges.Count();
+                countDuringAddEvent = graph.Edges.Count;
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-                countDuringRemoveEvent = graph.Elements.Edges.Count();
+                countDuringRemoveEvent = graph.Edges.Count;
             }
         };
 
@@ -296,26 +287,23 @@ public class GraphTests
             TargetPort = "in1"
         };
 
-        // Add edge - event fires before collection is updated
+        // Add edge - collection IS updated when event fires
         graph.AddEdge(edge);
 
-        // The count during the Add event is 0 (not yet added), but after AddEdge returns it's 1
-        Assert.Equal(0, countDuringAddEvent); // Event fires BEFORE add
-        Assert.Single(graph.Elements.Edges); // But collection IS updated after method returns
+        Assert.Equal(1, countDuringAddEvent); // Collection already has the edge
+        Assert.Single(graph.Edges);
 
-        // Remove edge - event fires before collection is updated  
+        // Remove edge - collection IS updated when event fires
         graph.RemoveEdge(edge.Id);
 
-        // The count during the Remove event is 1 (not yet removed), but after RemoveEdge returns it's 0
-        Assert.Equal(1, countDuringRemoveEvent); // Event fires BEFORE remove
-        Assert.Empty(graph.Elements.Edges); // But collection IS updated after method returns
+        Assert.Equal(0, countDuringRemoveEvent); // Collection already removed the edge
+        Assert.Empty(graph.Edges);
     }
 
     [Fact]
-    public void Edges_CollectionChanged_NewItemsContainsAddedEdge()
+    public void EdgesChanged_NewItemsContainsAddedEdge()
     {
-        // Even though the collection count is stale during the event,
-        // the NewItems in the event args should contain the edge being added.
+        // NewItems in the event args contains the edge being added.
         // UI code can use this for incremental updates instead of full re-renders.
         var graph = new Graph();
         var node1 = new Node { Type = "Source" };
@@ -327,7 +315,7 @@ public class GraphTests
 
         Edge? edgeFromEvent = null;
 
-        graph.Edges.CollectionChanged += (s, e) =>
+        graph.EdgesChanged += (s, e) =>
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
@@ -349,10 +337,9 @@ public class GraphTests
     }
 
     [Fact]
-    public void Edges_CollectionChanged_OldItemsContainsRemovedEdge()
+    public void EdgesChanged_OldItemsContainsRemovedEdge()
     {
-        // Even though the collection count is stale during the event,
-        // the OldItems in the event args should contain the edge being removed.
+        // OldItems in the event args contains the edge being removed.
         var graph = new Graph();
         var node1 = new Node { Type = "Source" };
         var node2 = new Node { Type = "Target" };
@@ -372,7 +359,7 @@ public class GraphTests
 
         Edge? edgeFromEvent = null;
 
-        graph.Edges.CollectionChanged += (s, e) =>
+        graph.EdgesChanged += (s, e) =>
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {

@@ -37,6 +37,12 @@ public interface IPortRenderer
 
 /// <summary>
 /// Context information passed to port renderers.
+/// 
+/// <para><b>TRANSFORM-BASED RENDERING:</b></para>
+/// <para>
+/// <see cref="Scale"/> is always 1.0 - create visuals at logical size.
+/// The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom.
+/// </para>
 /// </summary>
 public class PortRenderContext
 {
@@ -51,9 +57,20 @@ public class PortRenderContext
   public required FlowCanvasSettings Settings { get; init; }
 
   /// <summary>
-  /// Current zoom scale.
+  /// Logical scale for visual sizing. Always 1.0 in transform-based rendering.
   /// </summary>
   public required double Scale { get; init; }
+  
+  /// <summary>
+  /// Actual viewport zoom level. Use for calculations, not visual sizing.
+  /// </summary>
+  public double ViewportZoom { get; init; } = 1.0;
+  
+  /// <summary>
+  /// Inverse scale for constant-size elements (1/ViewportZoom).
+  /// Apply as ScaleTransform to elements that should stay same screen size.
+  /// </summary>
+  public double InverseScale => 1.0 / ViewportZoom;
 
   /// <summary>
   /// Whether this is an output port (true) or input port (false).

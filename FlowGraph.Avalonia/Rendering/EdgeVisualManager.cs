@@ -214,13 +214,15 @@ public class EdgeVisualManager
         var startPoint = new AvaloniaPoint(sourceX, sourceY);
         var endPoint = new AvaloniaPoint(targetX, targetY);
 
-        var scale = _renderContext.Scale;
+        // In transform-based rendering, Scale=1.0 always. MatrixTransform handles zoom.
+        // We still get the viewport zoom for calculations that need it (like inverse scale for constant-size elements)
+        var viewportZoom = _renderContext.ViewportZoom;
 
         // Check for custom edge renderer
         var customRenderer = _edgeRendererRegistry?.GetRenderer(edge);
         if (customRenderer != null)
         {
-            return RenderCustomEdge(canvas, edge, graph, theme, customRenderer, sourceNode, targetNode, startPoint, endPoint, scale);
+            return RenderCustomEdge(canvas, edge, graph, theme, customRenderer, sourceNode, targetNode, startPoint, endPoint, viewportZoom);
         }
 
         // Create path based on edge type - use waypoints if available
@@ -246,22 +248,24 @@ public class EdgeVisualManager
 
         var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
 
-        // Create visible edge path (rendered first, appears behind)
+        // Create visible edge path - use logical (unscaled) dimensions
+        // MatrixTransform handles all zoom scaling
         var visiblePath = new AvaloniaPath
         {
             Data = pathGeometry,
             Stroke = strokeBrush,
-            StrokeThickness = (edge.IsSelected ? 3 : 2) * scale,
+            StrokeThickness = edge.IsSelected ? 3 : 2,
             StrokeDashArray = null,
             IsHitTestVisible = false
         };
 
         // Create invisible hit area path (wider, transparent stroke for easier clicking)
+        // Use logical dimensions - MatrixTransform scales the hit area appropriately
         var hitAreaPath = new AvaloniaPath
         {
             Data = pathGeometry,
             Stroke = Brushes.Transparent,
-            StrokeThickness = _renderContext.Settings.EdgeHitAreaWidth * scale,
+            StrokeThickness = _renderContext.Settings.EdgeHitAreaWidth,
             Tag = edge,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
@@ -277,26 +281,26 @@ public class EdgeVisualManager
         // Track markers for this edge
         var markers = new List<AvaloniaPath>();
 
-        // Render end marker (arrow)
+        // Render end marker (arrow) - use logical dimensions
         if (edge.MarkerEnd != EdgeMarker.None)
         {
             var lastFromPoint = GetLastFromPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
             // Use port position if available, otherwise default to Left for input ports
             var targetPortPosition = targetPort?.Position ?? PortPosition.Left;
-            var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, scale, targetPortPosition);
+            var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, targetPortPosition);
             if (markerPath != null)
             {
                 markers.Add(markerPath);
             }
         }
 
-        // Render start marker
+        // Render start marker - use logical dimensions
         if (edge.MarkerStart != EdgeMarker.None)
         {
             var firstToPoint = GetFirstToPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
             // Use port position if available, otherwise default to Right for output ports
             var sourcePortPosition = sourcePort?.Position ?? PortPosition.Right;
-            var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, scale, sourcePortPosition);
+            var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, sourcePortPosition);
             if (markerPath != null)
             {
                 markers.Add(markerPath);
@@ -314,7 +318,7 @@ public class EdgeVisualManager
         if (!string.IsNullOrEmpty(effectiveLabel))
         {
             // Pass transformed waypoints for accurate label positioning along the routed path
-            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, transformedWaypoints, edge, theme, scale);
+            var labelVisual = RenderEdgeLabel(canvas, startPoint, endPoint, transformedWaypoints, edge, theme);
             if (labelVisual != null)
             {
                 _edgeLabels[edge.Id] = labelVisual;
@@ -326,6 +330,7 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Updates the selection visual state of an edge.
+    /// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
     /// </summary>
     /// <param name="edge">The edge to update.</param>
     /// <param name="theme">Theme resources for styling.</param>
@@ -341,7 +346,7 @@ public class EdgeVisualManager
                 {
                     Theme = theme,
                     Settings = _renderContext.Settings,
-                    Scale = _renderContext.Scale,
+                    Scale = _renderContext.Scale, // Scale is 1.0 in transform-based rendering
                     SourceNode = null!, // Not needed for selection update
                     TargetNode = null!,
                     StartPoint = default,
@@ -355,9 +360,9 @@ public class EdgeVisualManager
 
         if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
         {
-            var scale = _renderContext.Scale;
+            // Use logical (unscaled) dimensions - MatrixTransform handles zoom
             visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
-            visiblePath.StrokeThickness = (edge.IsSelected ? 3 : 2) * scale;
+            visiblePath.StrokeThickness = edge.IsSelected ? 3 : 2;
         }
     }
 
@@ -374,7 +379,7 @@ public class EdgeVisualManager
         Node targetNode,
         AvaloniaPoint startPoint,
         AvaloniaPoint endPoint,
-        double scale)
+        double viewportZoom)
     {
         IReadOnlyList<AvaloniaPoint>? transformedWaypoints = null;
         var waypoints = edge.Waypoints; // cloned list via Edge.State
@@ -386,11 +391,12 @@ public class EdgeVisualManager
                 .ToList();
         }
 
+        // Scale is 1.0 in transform-based rendering - MatrixTransform handles zoom
         var context = new EdgeRenderers.EdgeRenderContext
         {
             Theme = theme,
             Settings = _renderContext.Settings,
-            Scale = scale,
+            Scale = 1.0, // Transform-based rendering
             SourceNode = sourceNode,
             TargetNode = targetNode,
             StartPoint = startPoint,
@@ -545,13 +551,13 @@ public class EdgeVisualManager
 
     /// <summary>
     /// Renders a marker (arrow) at an edge endpoint.
+    /// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
     /// </summary>
     /// <param name="canvas">The canvas to render on.</param>
     /// <param name="point">The marker tip position.</param>
     /// <param name="fromPoint">The point the edge comes from (for angle calculation).</param>
     /// <param name="marker">The marker type.</param>
     /// <param name="stroke">The stroke brush.</param>
-    /// <param name="scale">The render scale.</param>
     /// <param name="portPosition">Optional port position for accurate arrow direction.</param>
     /// <returns>The rendered marker path.</returns>
     private AvaloniaPath RenderEdgeMarker(
@@ -560,12 +566,12 @@ public class EdgeVisualManager
         AvaloniaPoint fromPoint,
         EdgeMarker marker,
         IBrush stroke,
-        double scale,
         PortPosition? portPosition = null)
     {
         // Use the hybrid angle calculation for consistent arrow direction
         var angle = EdgePathHelper.CalculateArrowAngle(point, fromPoint, portPosition);
-        var markerSize = 10 * scale;
+        // Use logical (unscaled) marker size - MatrixTransform handles zoom
+        var markerSize = 10;
         var isClosed = marker == EdgeMarker.ArrowClosed;
 
         var markerGeometry = EdgePathHelper.CreateArrowMarker(point, angle, markerSize, isClosed);
@@ -574,7 +580,7 @@ public class EdgeVisualManager
         {
             Data = markerGeometry,
             Stroke = stroke,
-            StrokeThickness = 2 * scale,
+            StrokeThickness = 2,
             Fill = isClosed ? stroke : null,
             Tag = "marker"
         };
@@ -587,8 +593,9 @@ public class EdgeVisualManager
     /// Renders a label on an edge with support for anchor positioning and offsets.
     /// Automatically positions labels based on edge direction to avoid overlap with the edge line.
     /// Supports perpendicular offsets that rotate with the edge direction (like GoJS segmentOffset).
+    /// Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
     /// </summary>
-    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme, double scale)
+    private TextBlock? RenderEdgeLabel(Canvas canvas, AvaloniaPoint start, AvaloniaPoint end, IReadOnlyList<Core.Point>? waypoints, Edge edge, ThemeResources theme)
     {
         var labelInfo = edge.Definition.LabelInfo;
         var labelText = labelInfo?.Text ?? edge.Label;
@@ -609,16 +616,17 @@ public class EdgeVisualManager
         }
 
         // Calculate position along the actual path (including waypoints) and get edge angle
-        var (posX, posY, edgeDirection, edgeAngle) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, scale);
+        // Use 1.0 for scale since we're in transform-based rendering
+        var (posX, posY, edgeDirection, edgeAngle) = CalculateLabelPositionOnPathWithDirectionAndAngle(start, end, waypoints, t, 1.0);
 
-        // Create the text block first to measure it (if needed)
+        // Create the text block first - use logical (unscaled) dimensions
         var textBlock = new TextBlock
         {
             Text = labelText,
-            FontSize = 12 * scale,
+            FontSize = 12,
             Foreground = theme.NodeText,
             Background = theme.NodeBackground,
-            Padding = new Thickness(4 * scale, 2 * scale, 4 * scale, 2 * scale),
+            Padding = new Thickness(4, 2, 4, 2),
             Tag = edge,  // Store edge reference for event handling
             Cursor = new Cursor(StandardCursorType.Hand)
         };
@@ -681,8 +689,9 @@ public class EdgeVisualManager
             perpOffsetY = -Math.Cos(edgeAngle) * perpOffset;  // Negative because screen Y is inverted
         }
 
-        var finalOffsetX = (userOffsetX + autoOffsetX) * scale + perpOffsetX * scale;
-        var finalOffsetY = (userOffsetY + autoOffsetY) * scale + perpOffsetY * scale;
+        // Use logical dimensions - MatrixTransform handles zoom
+        var finalOffsetX = userOffsetX + autoOffsetX + perpOffsetX;
+        var finalOffsetY = userOffsetY + autoOffsetY + perpOffsetY;
 
         Canvas.SetLeft(textBlock, posX + finalOffsetX);
         Canvas.SetTop(textBlock, posY + finalOffsetY);

@@ -1,7 +1,3 @@
-// CS0618: Suppress obsolete warnings - FlowCanvas subscribes to CollectionChanged
-// events on Graph.Nodes/Edges which require the ObservableCollection properties.
-#pragma warning disable CS0618
-
 using Avalonia;
 using Avalonia.Controls;
 using FlowGraph.Core;
@@ -52,16 +48,16 @@ public partial class FlowCanvas
     {
         if (oldGraph != null)
         {
-            oldGraph.Nodes.CollectionChanged -= OnNodesChanged;
-            oldGraph.Edges.CollectionChanged -= OnEdgesChanged;
+            oldGraph.NodesChanged -= OnNodesChanged;
+            oldGraph.EdgesChanged -= OnEdgesChanged;
             UnsubscribeFromNodeChanges(oldGraph);
             UnsubscribeFromEdgeChanges(oldGraph);
         }
 
         if (newGraph != null)
         {
-            newGraph.Nodes.CollectionChanged += OnNodesChanged;
-            newGraph.Edges.CollectionChanged += OnEdgesChanged;
+            newGraph.NodesChanged += OnNodesChanged;
+            newGraph.EdgesChanged += OnEdgesChanged;
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
@@ -92,7 +88,7 @@ public partial class FlowCanvas
 
     private void SubscribeToNodeChanges(Graph graph)
     {
-        foreach (var node in graph.Elements.Nodes)
+        foreach (var node in graph.Nodes)
         {
             node.PropertyChanged += OnNodePropertyChanged;
         }
@@ -100,7 +96,7 @@ public partial class FlowCanvas
 
     private void UnsubscribeFromNodeChanges(Graph graph)
     {
-        foreach (var node in graph.Elements.Nodes)
+        foreach (var node in graph.Nodes)
         {
             node.PropertyChanged -= OnNodePropertyChanged;
         }
@@ -108,7 +104,7 @@ public partial class FlowCanvas
 
     private void SubscribeToEdgeChanges(Graph graph)
     {
-        foreach (var edge in graph.Elements.Edges)
+        foreach (var edge in graph.Edges)
         {
             edge.PropertyChanged += OnEdgePropertyChanged;
         }
@@ -116,7 +112,7 @@ public partial class FlowCanvas
 
     private void UnsubscribeFromEdgeChanges(Graph graph)
     {
-        foreach (var edge in graph.Elements.Edges)
+        foreach (var edge in graph.Edges)
         {
             edge.PropertyChanged -= OnEdgePropertyChanged;
         }
@@ -130,6 +126,12 @@ public partial class FlowCanvas
 
         _nodePropertyChangedCount++;
 
+        // DEBUG: Log IsSelected changes to trace selection flow
+        if (e.PropertyName == nameof(Node.IsSelected))
+        {
+            System.Diagnostics.Debug.WriteLine($"[OnNodePropertyChanged] Node {node.Id} IsSelected changed to {node.IsSelected}, DirectRendering={_useDirectRendering}");
+        }
+
         // Use unified render service - handles both retained and direct rendering modes
         switch (e.PropertyName)
         {
@@ -139,6 +141,7 @@ public partial class FlowCanvas
                 _renderService.RenderEdges();
                 break;
             case nameof(Node.IsSelected):
+                System.Diagnostics.Debug.WriteLine($"[OnNodePropertyChanged] Calling UpdateNodeSelection for {node.Id}");
                 _renderService.UpdateNodeSelection(node);
                 UpdateResizeHandlesForNode(node);
                 break;
@@ -211,37 +214,50 @@ public partial class FlowCanvas
 
     private void OnNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Action={e.Action}, OldItems={e.OldItems?.Count}, NewItems={e.NewItems?.Count}");
+        
         if (e.OldItems != null)
         {
-            foreach (Node node in e.OldItems)
+            foreach (var item in e.OldItems)
             {
-                node.PropertyChanged -= OnNodePropertyChanged;
+                if (item is Node node)
+                    node.PropertyChanged -= OnNodePropertyChanged;
             }
         }
 
         if (e.NewItems != null)
         {
-            foreach (Node node in e.NewItems)
+            foreach (var item in e.NewItems)
             {
-                node.PropertyChanged += OnNodePropertyChanged;
+                if (item is Node node)
+                    node.PropertyChanged += OnNodePropertyChanged;
             }
         }
 
-        // For Reset action (e.g., from BulkObservableCollection.AddRange), 
-        // re-subscribe to all nodes since NewItems is null
+        // For Reset action (e.g., from ElementCollection.AddRange), 
+        // re-subscribe to all nodes since NewItems is null.
+        // Graph.Nodes is now a live view into Elements, so it's always in sync.
         if (e.Action == NotifyCollectionChangedAction.Reset && Graph != null)
         {
+            var nodeCount = Graph.Nodes.Count;
+            System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribing to {nodeCount} nodes");
+            
             // Unsubscribe from all first to avoid duplicates
-            foreach (var node in Graph.Elements.Nodes)
+            foreach (var node in Graph.Nodes)
             {
                 node.PropertyChanged -= OnNodePropertyChanged;
             }
             // Then subscribe to all
-            foreach (var node in Graph.Elements.Nodes)
+            foreach (var node in Graph.Nodes)
             {
                 node.PropertyChanged += OnNodePropertyChanged;
             }
+            
+            System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribed to {nodeCount} nodes PropertyChanged");
         }
+
+        // Invalidate direct renderer's spatial index when nodes change
+        _directRenderer?.InvalidateIndex();
 
         _graphNeedsRender = true;
         RenderElements();
@@ -251,41 +267,41 @@ public partial class FlowCanvas
     {
         if (e.OldItems != null)
         {
-            foreach (Edge edge in e.OldItems)
+            foreach (var item in e.OldItems)
             {
-                edge.PropertyChanged -= OnEdgePropertyChanged;
+                if (item is Edge edge)
+                    edge.PropertyChanged -= OnEdgePropertyChanged;
             }
         }
 
         if (e.NewItems != null)
         {
-            foreach (Edge edge in e.NewItems)
+            foreach (var item in e.NewItems)
             {
-                edge.PropertyChanged += OnEdgePropertyChanged;
+                if (item is Edge edge)
+                    edge.PropertyChanged += OnEdgePropertyChanged;
             }
         }
 
-        // For Reset action (e.g., from BulkObservableCollection.AddRange), 
-        // re-subscribe to all edges since NewItems is null
+        // For Reset action (e.g., from ElementCollection.AddRange), 
+        // re-subscribe to all edges since NewItems is null.
+        // Graph.Edges is now a live view into Elements, so it's always in sync.
         if (e.Action == NotifyCollectionChangedAction.Reset && Graph != null)
         {
             // Unsubscribe from all first to avoid duplicates
-            foreach (var edge in Graph.Elements.Edges)
+            foreach (var edge in Graph.Edges)
             {
                 edge.PropertyChanged -= OnEdgePropertyChanged;
             }
             // Then subscribe to all
-            foreach (var edge in Graph.Elements.Edges)
+            foreach (var edge in Graph.Edges)
             {
                 edge.PropertyChanged += OnEdgePropertyChanged;
             }
         }
 
         _graphNeedsRender = true;
-        // Defer rendering to next UI tick to ensure collection is fully updated.
-        // The CollectionChanged event fires BEFORE the collection modification is complete,
-        // so iterating over the collection immediately would see stale data.
-        global::Avalonia.Threading.Dispatcher.UIThread.Post(RenderEdges, global::Avalonia.Threading.DispatcherPriority.Render);
+        RenderEdges();
     }
 
     #endregion

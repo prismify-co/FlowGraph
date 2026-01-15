@@ -220,6 +220,8 @@ public class DirectGraphRenderer : Control, IRenderLayer
     public void InvalidateIndex()
     {
         _indexDirty = true;
+        // Also invalidate the node lookup dictionary since nodes may have been added/removed
+        _nodeById = null;
     }
 
     /// <summary>
@@ -397,6 +399,12 @@ public class DirectGraphRenderer : Control, IRenderLayer
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
 
+        // Ensure node lookup dictionary is built (lazy rebuild after InvalidateIndex)
+        if (_nodeById == null)
+        {
+            _nodeById = _graph.Elements.Nodes.ToDictionary(n => n.Id);
+        }
+
         // For viewport culling, we need the render area size (0,0,width,height)
         // not the control's position in its parent
         var viewBounds = new Rect(0, 0, bounds.Width, bounds.Height);
@@ -521,13 +529,24 @@ public class DirectGraphRenderer : Control, IRenderLayer
 
         // Draw resize handles for selected nodes (on top of everything)
         var handlesDrawn = 0;
+        var handlesSkippedNotSelected = 0;
+        var handlesSkippedNotResizable = 0;
+        var handlesSkippedVisibility = 0;
         foreach (var node in _graph.Elements.Nodes)
         {
-            if (!node.IsSelected || !node.IsResizable) continue;
-            if (!IsNodeVisibleFast(node)) continue; // Use O(1) lookup instead of O(n)
+            if (!node.IsSelected) { handlesSkippedNotSelected++; continue; }
+            if (!node.IsResizable) { handlesSkippedNotResizable++; continue; }
+            if (!IsNodeVisibleFast(node)) { handlesSkippedVisibility++; continue; }
 
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
             handlesDrawn++;
+        }
+        
+        // Always log handle status to debug selection issues
+        if (logThisFrame || handlesDrawn > 0 || _graph.Elements.Nodes.Any(n => n.IsSelected))
+        {
+            var selectedCount = _graph.Elements.Nodes.Count(n => n.IsSelected);
+            System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Handles: drawn={handlesDrawn}, selected={selectedCount}, skipped(notSelected={handlesSkippedNotSelected}, notResizable={handlesSkippedNotResizable}, visibility={handlesSkippedVisibility})");
         }
 
         // Draw edge endpoint handles for selected edges (on top of everything)

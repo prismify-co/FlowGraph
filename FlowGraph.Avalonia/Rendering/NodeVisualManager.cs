@@ -167,13 +167,15 @@ public class NodeVisualManager
             "NodeVisualManager.RenderNode");
 
         var scale = _renderContext.Scale;
+        var viewportZoom = _renderContext.ViewportZoom;
         var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
 
         var context = new NodeRenderContext
         {
             Theme = theme,
             Settings = _renderContext.Settings,
-            Scale = scale
+            Scale = scale,
+            ViewportZoom = viewportZoom
         };
 
         // Create the node visual using the renderer
@@ -252,6 +254,7 @@ public class NodeVisualManager
         Action<Control, Node, Port, bool>? onPortCreated = null)
     {
         var scale = _renderContext.Scale;
+        var viewportZoom = _renderContext.ViewportZoom;
         var renderer = _portRendererRegistry.GetRenderer(port);
 
         var context = new PortRenderContext
@@ -259,14 +262,15 @@ public class NodeVisualManager
             Theme = theme,
             Settings = _renderContext.Settings,
             Scale = scale,
+            ViewportZoom = viewportZoom,
             IsOutput = isOutput,
             Index = index,
             TotalPorts = totalPorts
         };
 
         // Get port size from renderer or use default
+        // In transform-based rendering, use unscaled port size - the transform handles zoom
         var portSize = renderer.GetSize(port, node, _renderContext.Settings) ?? _renderContext.Settings.PortSize;
-        var scaledPortSize = portSize * scale;
 
         // Use GraphRenderModel for port position calculation
         var canvasPos = _model.GetPortPositionByIndex(node, index, totalPorts, isOutput);
@@ -275,8 +279,9 @@ public class NodeVisualManager
         var portVisual = renderer.CreatePortVisual(port, node, context);
 
         // Position in canvas coordinates (transform handles zoom/pan)
-        Canvas.SetLeft(portVisual, canvasPos.X - scaledPortSize / 2);
-        Canvas.SetTop(portVisual, canvasPos.Y - scaledPortSize / 2);
+        // Use unscaled port size for offset - the MatrixTransform scales everything uniformly
+        Canvas.SetLeft(portVisual, canvasPos.X - portSize / 2);
+        Canvas.SetTop(portVisual, canvasPos.Y - portSize / 2);
 
         canvas.Children.Add(portVisual);
         _portVisuals[(node.Id, port.Id)] = portVisual;

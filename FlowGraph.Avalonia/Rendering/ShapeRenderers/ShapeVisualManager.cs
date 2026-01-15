@@ -176,9 +176,9 @@ public class ShapeVisualManager
 
   private ShapeRenderContext CreateShapeContext()
   {
+    // In transform-based rendering, Scale is 1.0 - MatrixTransform handles zoom
     var settings = _renderContext?.Settings ?? FlowCanvasSettings.Default;
-    var scale = _renderContext?.Scale ?? 1.0;
-    return new ShapeRenderContext(settings, scale);
+    return new ShapeRenderContext(settings, 1.0);
   }
 
   private void UpdatePosition(Control visual, ShapeElement shape)

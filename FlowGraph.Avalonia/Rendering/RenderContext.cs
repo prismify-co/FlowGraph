@@ -7,6 +7,17 @@ namespace FlowGraph.Avalonia.Rendering;
 /// <summary>
 /// Shared rendering context containing settings, viewport state, and coordinate transformation utilities.
 /// Used by all visual managers to ensure consistent rendering behavior.
+/// 
+/// <para><b>TRANSFORM-BASED RENDERING (Phase 2):</b></para>
+/// <para>
+/// Renderers create visuals at "logical size" (unscaled). The MatrixTransform on MainCanvas
+/// handles all zoom/pan transformations. This enables O(1) zoom operations.
+/// </para>
+/// <list type="bullet">
+/// <item><see cref="Scale"/> always returns 1.0 - use for visual sizing</item>
+/// <item><see cref="ViewportZoom"/> returns actual zoom - use for calculations</item>
+/// <item><see cref="InverseScale"/> returns 1/zoom - use for constant-size elements</item>
+/// </list>
 /// </summary>
 public class RenderContext
 {
@@ -42,9 +53,56 @@ public class RenderContext
     public ViewportState? Viewport => _viewport;
 
     /// <summary>
-    /// Gets the current zoom/scale factor.
+    /// Gets the logical scale factor for creating visuals.
+    /// 
+    /// <para><b>ALWAYS RETURNS 1.0</b></para>
+    /// <para>
+    /// In transform-based rendering, visuals are created at logical size (unscaled).
+    /// The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom operations
+    /// since visuals don't need to be recreated when zoom changes.
+    /// </para>
+    /// 
+    /// <para><b>Usage:</b> Use for visual sizing (Width, Height, FontSize, etc.)</para>
+    /// <para><b>For actual zoom:</b> Use <see cref="ViewportZoom"/> instead.</para>
     /// </summary>
-    public double Scale => _viewport?.Zoom ?? 1.0;
+    /// <remarks>
+    /// This is a breaking change from the previous behavior where Scale returned viewport.Zoom.
+    /// Custom renderers that used context.Scale for calculations should switch to ViewportZoom.
+    /// </remarks>
+    public double Scale => 1.0;
+
+    /// <summary>
+    /// Gets the actual viewport zoom level.
+    /// 
+    /// <para><b>Usage:</b></para>
+    /// <list type="bullet">
+    /// <item>Calculations that need to know the current zoom (e.g., level-of-detail decisions)</item>
+    /// <item>Hit testing calculations</item>
+    /// <item>Computing inverse scale for constant-size elements</item>
+    /// </list>
+    /// 
+    /// <para><b>DO NOT USE</b> for visual sizing - use <see cref="Scale"/> instead.</para>
+    /// </summary>
+    public double ViewportZoom => _viewport?.Zoom ?? 1.0;
+
+    /// <summary>
+    /// Gets the inverse scale factor for elements that should stay constant screen size.
+    /// 
+    /// <para><b>Usage:</b> Apply as a ScaleTransform to elements like:</para>
+    /// <list type="bullet">
+    /// <item>Resize handles (should stay same size regardless of zoom)</item>
+    /// <item>Edge endpoint handles</item>
+    /// <item>Selection indicators</item>
+    /// </list>
+    /// 
+    /// <example>
+    /// <code>
+    /// handle.RenderTransform = new ScaleTransform(context.InverseScale, context.InverseScale);
+    /// handle.RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative);
+    /// </code>
+    /// </example>
+    /// </summary>
+    public double InverseScale => 1.0 / ViewportZoom;
 
     /// <summary>
     /// Sets the viewport state for coordinate transformations.
@@ -206,9 +264,14 @@ public class RenderContext
     }
 
     /// <summary>
-    /// Scales a value by the current zoom factor.
+    /// Scales a value by the logical scale factor (always 1.0).
+    /// 
+    /// <para><b>DEPRECATED:</b> This method now returns the input value unchanged.</para>
+    /// <para>In transform-based rendering, visual sizing should use unscaled values.</para>
+    /// <para>For calculations that need actual zoom, use <c>value * ViewportZoom</c>.</para>
     /// </summary>
     /// <param name="value">The value to scale.</param>
-    /// <returns>The scaled value.</returns>
+    /// <returns>The input value unchanged (Scale is always 1.0).</returns>
+    [Obsolete("Use raw values for visual sizing. For zoom-aware calculations, use value * ViewportZoom.")]
     public double ScaleValue(double value) => value * Scale;
 }

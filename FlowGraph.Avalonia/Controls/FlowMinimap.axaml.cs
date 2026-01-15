@@ -128,11 +128,11 @@ public partial class FlowMinimap : UserControl
         UnsubscribeFromGraph();
 
         _subscribedGraph = graph;
-        graph.Nodes.CollectionChanged += OnGraphChanged;
-        graph.Edges.CollectionChanged += OnGraphChanged;
+        graph.NodesChanged += OnGraphChanged;
+        graph.EdgesChanged += OnGraphChanged;
         graph.BatchLoadCompleted += OnBatchLoadCompleted;
 
-        foreach (var node in graph.Elements.Nodes)
+        foreach (var node in graph.Nodes)
             node.PropertyChanged += OnNodeChanged;
     }
 
@@ -140,11 +140,11 @@ public partial class FlowMinimap : UserControl
     {
         if (_subscribedGraph == null) return;
 
-        _subscribedGraph.Nodes.CollectionChanged -= OnGraphChanged;
-        _subscribedGraph.Edges.CollectionChanged -= OnGraphChanged;
+        _subscribedGraph.NodesChanged -= OnGraphChanged;
+        _subscribedGraph.EdgesChanged -= OnGraphChanged;
         _subscribedGraph.BatchLoadCompleted -= OnBatchLoadCompleted;
 
-        foreach (var node in _subscribedGraph.Elements.Nodes)
+        foreach (var node in _subscribedGraph.Nodes)
             node.PropertyChanged -= OnNodeChanged;
 
         _subscribedGraph = null;

@@ -49,7 +49,10 @@ public class GraphRendererTests
 
         renderer.SetViewport(viewport);
 
-        Assert.Equal(2.0, renderer.RenderContext.Scale);
+        // Scale is always 1.0 in transform-based rendering
+        // ViewportZoom returns the actual zoom level
+        Assert.Equal(1.0, renderer.RenderContext.Scale);
+        Assert.Equal(2.0, renderer.RenderContext.ViewportZoom);
     }
 
     [Fact]

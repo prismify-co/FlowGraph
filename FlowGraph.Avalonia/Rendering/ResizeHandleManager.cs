@@ -59,13 +59,15 @@ public class ResizeHandleManager
         if (!node.IsSelected || !node.IsResizable)
             return;
 
-        var scale = _renderContext.Scale;
-        var handleSize = 8 * scale;
+        // For resize handles, we want constant screen size regardless of zoom
+        // Use InverseScale to counteract the MatrixTransform zoom
+        var inverseScale = _renderContext.InverseScale;
+        var handleSize = 8 * inverseScale;
         var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
         var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
 
         System.Diagnostics.Debug.WriteLine($"[ResizeHandles] Node={node.Id}: NodeDimensions=({nodeWidth:F0}x{nodeHeight:F0}), node.Width={node.Width}, node.Height={node.Height}");
-        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Scale={scale:F2}, CanvasPos=({canvasPos.X:F0},{canvasPos.Y:F0})");
+        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   InverseScale={inverseScale:F2}, CanvasPos=({canvasPos.X:F0},{canvasPos.Y:F0})");
         System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Settings: NodeWidth={_renderContext.Settings.NodeWidth}, NodeHeight={_renderContext.Settings.NodeHeight}");
 
         var handles = new List<Rectangle>();
@@ -137,8 +139,9 @@ public class ResizeHandleManager
         if (!_resizeHandles.TryGetValue(node.Id, out var handles))
             return;
 
-        var scale = _renderContext.Scale;
-        var handleSize = 8 * scale;
+        // Use InverseScale for constant screen size
+        var inverseScale = _renderContext.InverseScale;
+        var handleSize = 8 * inverseScale;
         var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
         var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
 
@@ -146,6 +149,9 @@ public class ResizeHandleManager
         {
             if (handle.Tag is (Node _, ResizeHandlePosition position))
             {
+                // Update handle size (may have changed with zoom)
+                handle.Width = handleSize;
+                handle.Height = handleSize;
                 PositionResizeHandle(handle, canvasPos, nodeWidth, nodeHeight, handleSize, position);
             }
         }

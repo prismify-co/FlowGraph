@@ -34,14 +34,18 @@ public class RenderContextTests
     }
 
     [Fact]
-    public void Scale_WithViewport_ReturnsZoom()
+    public void Scale_WithViewport_ReturnsOne_TransformBasedRendering()
     {
+        // In transform-based rendering, Scale always returns 1.0
+        // The MatrixTransform handles all zoom/pan visually
+        // Use ViewportZoom if you need the actual zoom level
         var context = new RenderContext();
         var viewport = new ViewportState();
         viewport.SetZoom(2.0);
         context.SetViewport(viewport);
         
-        Assert.Equal(2.0, context.Scale);
+        Assert.Equal(1.0, context.Scale);
+        Assert.Equal(2.0, context.ViewportZoom);
     }
 
     [Fact]
@@ -92,14 +96,21 @@ public class RenderContextTests
     }
 
     [Fact]
-    public void ScaleValue_WithViewport_ScalesValue()
+    [Obsolete("ScaleValue is deprecated - testing legacy behavior")]
+    public void ScaleValue_WithViewport_ReturnsUnchanged_TransformBasedRendering()
     {
+        // In transform-based rendering, ScaleValue returns the input unchanged
+        // because Scale is always 1.0 (visuals are created at logical size)
+        // For zoom-aware calculations, use value * ViewportZoom directly
         var context = new RenderContext();
         var viewport = new ViewportState();
         viewport.SetZoom(2.5);
         context.SetViewport(viewport);
         
-        Assert.Equal(25.0, context.ScaleValue(10.0));
+#pragma warning disable CS0618 // Type or member is obsolete
+        Assert.Equal(10.0, context.ScaleValue(10.0)); // Returns unchanged
+#pragma warning restore CS0618
+        Assert.Equal(25.0, 10.0 * context.ViewportZoom); // Use this pattern instead
     }
 
     [Fact]

@@ -1,55 +1,7 @@
-// CS0618: Suppress obsolete warnings - this file intentionally uses Graph.Nodes/Edges
-// for internal synchronization with the Elements collection.
-#pragma warning disable CS0618
-
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FlowGraph.Core.Elements;
 
 namespace FlowGraph.Core;
-
-/// <summary>
-/// An <see cref="ObservableCollection{T}"/> that can suppress notifications during batch operations.
-/// Use <see cref="AddRange"/> to add multiple items with a single notification.
-/// </summary>
-/// <typeparam name="T">The type of elements in the collection.</typeparam>
-public class BulkObservableCollection<T> : ObservableCollection<T>
-{
-    private bool _suppressNotifications;
-
-    /// <summary>
-    /// Adds a range of items without firing individual notifications.
-    /// A single <see cref="NotifyCollectionChangedAction.Reset"/> notification is fired after all items are added.
-    /// </summary>
-    /// <param name="items">The items to add.</param>
-    public void AddRange(IEnumerable<T> items)
-    {
-        ArgumentNullException.ThrowIfNull(items);
-
-        _suppressNotifications = true;
-        try
-        {
-            foreach (var item in items)
-            {
-                Items.Add(item);
-            }
-        }
-        finally
-        {
-            _suppressNotifications = false;
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
-    }
-
-    /// <inheritdoc/>
-    protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-    {
-        if (!_suppressNotifications)
-        {
-            base.OnCollectionChanged(e);
-        }
-    }
-}
 
 /// <summary>
 /// Represents a flow graph containing nodes, edges, and other canvas elements.
@@ -57,152 +9,142 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
 /// </summary>
 /// <remarks>
 /// <para>
-/// The Graph class supports the canvas-first architecture where any
-/// <see cref="ICanvasElement"/> can be added to the canvas, not just nodes and edges.
+/// The Graph class uses the canvas-first architecture where the <see cref="Elements"/>
+/// collection is the single source of truth. All element types (nodes, edges, shapes, etc.)
+/// are stored in this unified collection.
 /// </para>
 /// <para>
-/// For backward compatibility, the <see cref="Nodes"/> and <see cref="Edges"/>
-/// collections continue to work as before. New code can use <see cref="Elements"/>
-/// to access all elements uniformly.
+/// <see cref="Nodes"/> and <see cref="Edges"/> provide typed read-only views into Elements
+/// for convenience when working with graph-specific operations.
+/// </para>
+/// <para>
+/// Subscribe to <see cref="Elements"/>.CollectionChanged for all element changes, or use
+/// the convenience events <see cref="NodesChanged"/> and <see cref="EdgesChanged"/> for
+/// type-specific notifications.
 /// </para>
 /// </remarks>
 public class Graph
 {
     private bool _isBatchLoading;
-    private bool _isSyncing; // Prevent infinite recursion during sync
 
     /// <summary>
     /// Initializes a new instance of the Graph class.
-    /// Sets up bidirectional sync between legacy collections (Nodes/Edges) and Elements.
     /// </summary>
     public Graph()
     {
-        // Sync legacy Nodes collection → Elements (for backward compat when code uses Nodes.Add directly)
-        Nodes.CollectionChanged += (_, e) =>
-        {
-            if (_isSyncing) return;
-            _isSyncing = true;
-            try
-            {
-                SyncNodesToElements(e);
-            }
-            finally
-            {
-                _isSyncing = false;
-            }
-        };
-
-        // Sync legacy Edges collection → Elements (for backward compat when code uses Edges.Add directly)
-        Edges.CollectionChanged += (_, e) =>
-        {
-            if (_isSyncing) return;
-            _isSyncing = true;
-            try
-            {
-                SyncEdgesToElements(e);
-            }
-            finally
-            {
-                _isSyncing = false;
-            }
-        };
+        // Forward Elements.CollectionChanged to typed events
+        Elements.CollectionChanged += OnElementsCollectionChanged;
     }
 
-    private void SyncNodesToElements(NotifyCollectionChangedEventArgs e)
+    private void OnElementsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+        // For Add/Remove actions, we can determine which typed event to raise
+        // For Reset, we raise both events since we don't know what changed
+        bool hasNodeChanges = false;
+        bool hasEdgeChanges = false;
+
+        switch (e.Action)
         {
-            foreach (Node node in e.NewItems)
-            {
-                if (!Elements.Contains(node))
-                    Elements.Add(node);
-            }
+            case NotifyCollectionChangedAction.Add when e.NewItems != null:
+                foreach (var item in e.NewItems)
+                {
+                    if (item is Node) hasNodeChanges = true;
+                    else if (item is Edge) hasEdgeChanges = true;
+                }
+                break;
+
+            case NotifyCollectionChangedAction.Remove when e.OldItems != null:
+                foreach (var item in e.OldItems)
+                {
+                    if (item is Node) hasNodeChanges = true;
+                    else if (item is Edge) hasEdgeChanges = true;
+                }
+                break;
+
+            case NotifyCollectionChangedAction.Reset:
+                // For Reset, raise both events since we can't tell what changed
+                hasNodeChanges = true;
+                hasEdgeChanges = true;
+                break;
+
+            case NotifyCollectionChangedAction.Replace:
+                // Check both old and new items
+                if (e.OldItems != null)
+                {
+                    foreach (var item in e.OldItems)
+                    {
+                        if (item is Node) hasNodeChanges = true;
+                        else if (item is Edge) hasEdgeChanges = true;
+                    }
+                }
+                if (e.NewItems != null)
+                {
+                    foreach (var item in e.NewItems)
+                    {
+                        if (item is Node) hasNodeChanges = true;
+                        else if (item is Edge) hasEdgeChanges = true;
+                    }
+                }
+                break;
         }
-        else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
-        {
-            foreach (Node node in e.OldItems)
-            {
-                Elements.Remove(node);
-            }
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Reset)
-        {
-            // For Reset (e.g. after AddRange), sync the full state
-            var elementsNodes = Elements.Nodes.ToList();
-            foreach (var node in elementsNodes)
-            {
-                if (!Nodes.Contains(node))
-                    Elements.Remove(node);
-            }
-            foreach (var node in Nodes)
-            {
-                if (!Elements.Contains(node))
-                    Elements.Add(node);
-            }
-        }
+
+        if (hasNodeChanges)
+            NodesChanged?.Invoke(this, e);
+        if (hasEdgeChanges)
+            EdgesChanged?.Invoke(this, e);
     }
 
-    private void SyncEdgesToElements(NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
-        {
-            foreach (Edge edge in e.NewItems)
-            {
-                if (!Elements.Contains(edge))
-                    Elements.Add(edge);
-            }
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
-        {
-            foreach (Edge edge in e.OldItems)
-            {
-                Elements.Remove(edge);
-            }
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Reset)
-        {
-            // For Reset (e.g. after AddRange), sync the full state
-            var elementsEdges = Elements.Edges.ToList();
-            foreach (var edge in elementsEdges)
-            {
-                if (!Edges.Contains(edge))
-                    Elements.Remove(edge);
-            }
-            foreach (var edge in Edges)
-            {
-                if (!Elements.Contains(edge))
-                    Elements.Add(edge);
-            }
-        }
-    }
+    #region Collections
 
     /// <summary>
     /// Gets the collection of all canvas elements (nodes, edges, shapes, etc.).
+    /// This is the single source of truth for all graph elements.
     /// </summary>
     /// <remarks>
-    /// This is the primary collection for the canvas-first architecture.
-    /// Use typed accessors like <see cref="Nodes"/> and <see cref="Edges"/> for 
-    /// graph-specific operations.
+    /// Subscribe to <see cref="ElementCollection.CollectionChanged"/> for change notifications.
+    /// Use typed accessors <see cref="Nodes"/> and <see cref="Edges"/> for read-only typed access.
     /// </remarks>
     public ElementCollection Elements { get; } = new();
 
     /// <summary>
-    /// Gets the collection of node elements.
-    /// This is a convenience accessor that returns nodes from <see cref="Elements"/>.
+    /// Gets a read-only view of all node elements.
     /// </summary>
-    [Obsolete("Use Elements.Nodes for new code. This property is retained for backward compatibility.")]
-    public BulkObservableCollection<Node> Nodes { get; } = [];
+    /// <remarks>
+    /// This is a live view into <see cref="Elements"/>. To add/remove nodes, use
+    /// <see cref="AddNode"/>, <see cref="AddNodes"/>, <see cref="RemoveNode"/>, or
+    /// modify <see cref="Elements"/> directly.
+    /// </remarks>
+    public IReadOnlyList<Node> Nodes => Elements.Nodes;
 
     /// <summary>
-    /// Gets the collection of edge elements.
-    /// This is a convenience accessor that returns edges from <see cref="Elements"/>.
+    /// Gets a read-only view of all edge elements.
     /// </summary>
-    [Obsolete("Use Elements.Edges for new code. This property is retained for backward compatibility.")]
-    public BulkObservableCollection<Edge> Edges { get; } = [];
+    /// <remarks>
+    /// This is a live view into <see cref="Elements"/>. To add/remove edges, use
+    /// <see cref="AddEdge"/>, <see cref="AddEdges"/>, <see cref="RemoveEdge"/>, or
+    /// modify <see cref="Elements"/> directly.
+    /// </remarks>
+    public IReadOnlyList<Edge> Edges => Elements.Edges;
+
+    #endregion
+
+    #region Events
+
+    /// <summary>
+    /// Event raised when nodes are added, removed, or the collection is reset.
+    /// This is a convenience event derived from <see cref="Elements"/>.CollectionChanged.
+    /// </summary>
+    public event NotifyCollectionChangedEventHandler? NodesChanged;
+
+    /// <summary>
+    /// Event raised when edges are added, removed, or the collection is reset.
+    /// This is a convenience event derived from <see cref="Elements"/>.CollectionChanged.
+    /// </summary>
+    public event NotifyCollectionChangedEventHandler? EdgesChanged;
 
     /// <summary>
     /// Gets whether the graph is currently in batch loading mode.
-    /// During batch loading, collection change notifications are suppressed.
+    /// During batch loading, edge validation is skipped.
     /// </summary>
     public bool IsBatchLoading => _isBatchLoading;
 
@@ -213,7 +155,7 @@ public class Graph
     public event EventHandler? BatchLoadCompleted;
 
     /// <summary>
-    /// Begins batch loading mode. Collection change notifications are suppressed
+    /// Begins batch loading mode. Edge validation is skipped
     /// until EndBatchLoad is called. Use this when adding many elements at once.
     /// </summary>
     public void BeginBatchLoad()
@@ -230,7 +172,9 @@ public class Graph
         BatchLoadCompleted?.Invoke(this, EventArgs.Empty);
     }
 
-    #region Element Operations (New API)
+    #endregion
+
+    #region Element Operations (Primary API)
 
     /// <summary>
     /// Adds any canvas element to the graph.
@@ -240,12 +184,6 @@ public class Graph
     {
         ArgumentNullException.ThrowIfNull(element);
         Elements.Add(element);
-
-        // Sync with legacy collections for backward compat
-        if (element is Node node)
-            Nodes.Add(node);
-        else if (element is Edge edge)
-            Edges.Add(edge);
     }
 
     /// <summary>
@@ -256,12 +194,6 @@ public class Graph
     {
         ArgumentNullException.ThrowIfNull(element);
         Elements.Remove(element);
-
-        // Sync with legacy collections for backward compat
-        if (element is Node node)
-            Nodes.Remove(node);
-        else if (element is Edge edge)
-            Edges.Remove(edge);
     }
 
     /// <summary>
@@ -271,21 +203,7 @@ public class Graph
     public void AddElements(IEnumerable<ICanvasElement> elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
-        var elementList = elements.ToList();
-        
-        _isSyncing = true;
-        try
-        {
-            Elements.AddRange(elementList);
-
-            // Sync with legacy collections for backward compat
-            Nodes.AddRange(elementList.OfType<Node>());
-            Edges.AddRange(elementList.OfType<Edge>());
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
+        Elements.AddRange(elements);
     }
 
     /// <summary>
@@ -295,122 +213,86 @@ public class Graph
     public void RemoveElements(IEnumerable<ICanvasElement> elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
-        var elementList = elements.ToList();
-        
-        _isSyncing = true;
-        try
-        {
-            Elements.RemoveRange(elementList);
-
-            // Sync with legacy collections for backward compat
-            var nodes = elementList.OfType<Node>().ToList();
-            var edges = elementList.OfType<Edge>().ToList();
-
-            foreach (var node in nodes)
-                Nodes.Remove(node);
-            foreach (var edge in edges)
-                Edges.Remove(edge);
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
+        Elements.RemoveRange(elements);
     }
 
     #endregion
 
-    #region Node Operations (Legacy API - Backward Compatible)
-
-    /// <summary>
-    /// Adds multiple nodes at once with a single notification.
-    /// </summary>
-    public void AddNodes(IEnumerable<Node> nodes)
-    {
-        var nodeList = nodes.ToList();
-        _isSyncing = true;
-        try
-        {
-            Nodes.AddRange(nodeList);
-            Elements.AddRange(nodeList);
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
-    }
+    #region Node Operations (Convenience API)
 
     /// <summary>
     /// Adds a node to the graph.
     /// </summary>
+    /// <param name="node">The node to add.</param>
     public void AddNode(Node node)
     {
         ArgumentNullException.ThrowIfNull(node);
-        _isSyncing = true;
-        try
-        {
-            Nodes.Add(node);
-            Elements.Add(node);
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
+        Elements.Add(node);
+    }
+
+    /// <summary>
+    /// Adds multiple nodes at once with a single notification.
+    /// </summary>
+    /// <param name="nodes">The nodes to add.</param>
+    public void AddNodes(IEnumerable<Node> nodes)
+    {
+        ArgumentNullException.ThrowIfNull(nodes);
+        Elements.AddRange(nodes);
     }
 
     /// <summary>
     /// Removes a node and all connected edges from the graph.
     /// </summary>
+    /// <param name="nodeId">The ID of the node to remove.</param>
     public void RemoveNode(string nodeId)
     {
-        var node = Nodes.FirstOrDefault(n => n.Id == nodeId);
+        var node = Elements.FindById<Node>(nodeId);
         if (node != null)
         {
-            _isSyncing = true;
-            try
+            // Remove connected edges first
+            var edgesToRemove = Elements.GetEdgesForNode(nodeId).ToList();
+            if (edgesToRemove.Count > 0)
             {
-                // Remove connected edges first
-                var edgesToRemove = Edges.Where(e => e.Source == nodeId || e.Target == nodeId).ToList();
-                foreach (var edge in edgesToRemove)
-                {
-                    Edges.Remove(edge);
-                    Elements.Remove(edge);
-                }
-
-                Nodes.Remove(node);
-                Elements.Remove(node);
+                Elements.RemoveRange(edgesToRemove);
             }
-            finally
-            {
-                _isSyncing = false;
-            }
+            Elements.Remove(node);
         }
+    }
+
+    /// <summary>
+    /// Removes multiple nodes and their connected edges at once.
+    /// </summary>
+    /// <param name="nodeIds">The IDs of nodes to remove.</param>
+    public void RemoveNodes(IEnumerable<string> nodeIds)
+    {
+        var nodeIdList = nodeIds.ToList();
+        var nodesToRemove = nodeIdList
+            .Select(id => Elements.FindById<Node>(id))
+            .Where(n => n != null)
+            .Cast<Node>()
+            .ToList();
+
+        if (nodesToRemove.Count == 0) return;
+
+        // Get all connected edges
+        var edgesToRemove = Elements.GetEdgesForNodes(nodeIdList);
+
+        // Remove all in one batch
+        var allToRemove = new List<ICanvasElement>();
+        allToRemove.AddRange(edgesToRemove);
+        allToRemove.AddRange(nodesToRemove);
+        Elements.RemoveRange(allToRemove);
     }
 
     #endregion
 
-    #region Edge Operations (Legacy API - Backward Compatible)
-
-    /// <summary>
-    /// Adds multiple edges at once with a single notification.
-    /// </summary>
-    public void AddEdges(IEnumerable<Edge> edges)
-    {
-        var edgeList = edges.ToList();
-        _isSyncing = true;
-        try
-        {
-            Edges.AddRange(edgeList);
-            Elements.AddRange(edgeList);
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
-    }
+    #region Edge Operations (Convenience API)
 
     /// <summary>
     /// Adds an edge to the graph.
     /// </summary>
+    /// <param name="edge">The edge to add.</param>
+    /// <exception cref="InvalidOperationException">Thrown if source or target node doesn't exist (unless in batch loading mode).</exception>
     public void AddEdge(Edge edge)
     {
         ArgumentNullException.ThrowIfNull(edge);
@@ -418,47 +300,97 @@ public class Graph
         // Skip validation during batch load
         if (!_isBatchLoading)
         {
-            var sourceExists = Nodes.Any(n => n.Id == edge.Source);
-            var targetExists = Nodes.Any(n => n.Id == edge.Target);
+            var sourceExists = Elements.ContainsId(edge.Source);
+            var targetExists = Elements.ContainsId(edge.Target);
 
             if (!sourceExists || !targetExists)
             {
-                throw new InvalidOperationException("Source and target nodes must exist before adding an edge.");
+                throw new InvalidOperationException(
+                    $"Source and target nodes must exist before adding an edge. " +
+                    $"Source '{edge.Source}' exists: {sourceExists}, Target '{edge.Target}' exists: {targetExists}");
             }
         }
 
-        _isSyncing = true;
-        try
-        {
-            Edges.Add(edge);
-            Elements.Add(edge);
-        }
-        finally
-        {
-            _isSyncing = false;
-        }
+        Elements.Add(edge);
+    }
+
+    /// <summary>
+    /// Adds multiple edges at once with a single notification.
+    /// </summary>
+    /// <param name="edges">The edges to add.</param>
+    public void AddEdges(IEnumerable<Edge> edges)
+    {
+        ArgumentNullException.ThrowIfNull(edges);
+        Elements.AddRange(edges);
     }
 
     /// <summary>
     /// Removes an edge from the graph.
     /// </summary>
+    /// <param name="edgeId">The ID of the edge to remove.</param>
     public void RemoveEdge(string edgeId)
     {
-        var edge = Edges.FirstOrDefault(e => e.Id == edgeId);
+        var edge = Elements.FindById<Edge>(edgeId);
         if (edge != null)
         {
-            _isSyncing = true;
-            try
-            {
-                Edges.Remove(edge);
-                Elements.Remove(edge);
-            }
-            finally
-            {
-                _isSyncing = false;
-            }
+            Elements.Remove(edge);
         }
     }
+
+    /// <summary>
+    /// Removes multiple edges at once.
+    /// </summary>
+    /// <param name="edgeIds">The IDs of edges to remove.</param>
+    public void RemoveEdges(IEnumerable<string> edgeIds)
+    {
+        var edgesToRemove = edgeIds
+            .Select(id => Elements.FindById<Edge>(id))
+            .Where(e => e != null)
+            .Cast<Edge>()
+            .ToList();
+
+        if (edgesToRemove.Count > 0)
+        {
+            Elements.RemoveRange(edgesToRemove);
+        }
+    }
+
+    #endregion
+
+    #region Query Operations
+
+    /// <summary>
+    /// Finds a node by its ID.
+    /// </summary>
+    /// <param name="nodeId">The node ID to search for.</param>
+    /// <returns>The node if found; otherwise, null.</returns>
+    public Node? FindNode(string nodeId) => Elements.FindById<Node>(nodeId);
+
+    /// <summary>
+    /// Finds an edge by its ID.
+    /// </summary>
+    /// <param name="edgeId">The edge ID to search for.</param>
+    /// <returns>The edge if found; otherwise, null.</returns>
+    public Edge? FindEdge(string edgeId) => Elements.FindById<Edge>(edgeId);
+
+    /// <summary>
+    /// Gets all edges connected to a node.
+    /// </summary>
+    /// <param name="nodeId">The node ID.</param>
+    /// <returns>Enumerable of connected edges.</returns>
+    public IEnumerable<Edge> GetEdgesForNode(string nodeId) => Elements.GetEdgesForNode(nodeId);
+
+    /// <summary>
+    /// Determines whether a node with the specified ID exists.
+    /// </summary>
+    /// <param name="nodeId">The node ID to check.</param>
+    public bool ContainsNode(string nodeId) => Elements.FindById<Node>(nodeId) != null;
+
+    /// <summary>
+    /// Determines whether an edge with the specified ID exists.
+    /// </summary>
+    /// <param name="edgeId">The edge ID to check.</param>
+    public bool ContainsEdge(string edgeId) => Elements.FindById<Edge>(edgeId) != null;
 
     #endregion
 }
