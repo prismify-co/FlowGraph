@@ -233,7 +233,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         {
             Width = buttonSize,
             Height = buttonSize,
-            Background = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128)),
+            Background = context.Theme.GroupButtonBackground,
             CornerRadius = new CornerRadius(3),
             Cursor = new Cursor(StandardCursorType.Hand),
             Child = icon,
@@ -241,14 +241,15 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Tag = (node, "collapse") // Tag to identify this as a collapse button
         };
 
-        // Hover effect
+        // Hover effect - capture theme reference for use in lambda
+        var theme = context.Theme;
         button.PointerEntered += (s, e) =>
         {
-            button.Background = new SolidColorBrush(Color.FromArgb(60, 128, 128, 128));
+            button.Background = theme.GroupButtonHover;
         };
         button.PointerExited += (s, e) =>
         {
-            button.Background = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128));
+            button.Background = theme.GroupButtonBackground;
         };
 
         return button;

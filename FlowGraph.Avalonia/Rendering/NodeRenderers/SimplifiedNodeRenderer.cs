@@ -51,8 +51,8 @@ public class SimplifiedNodeRenderer : INodeRenderer
     {
         if (visual is Border border)
         {
-            border.BorderBrush = node.IsSelected 
-                ? context.Theme.NodeSelectedBorder 
+            border.BorderBrush = node.IsSelected
+                ? context.Theme.NodeSelectedBorder
                 : context.Theme.NodeBorder;
             border.BorderThickness = new Thickness(
                 (node.IsSelected ? BorderThickness + 1 : BorderThickness) * context.Scale);

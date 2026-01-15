@@ -196,6 +196,18 @@ public class ThemeResources
     public IBrush GroupHeaderBackground => GetBrush("FlowCanvasGroupHeaderBackground",
         IsLightTheme ? "#30845EC2" : "#3C3C3C");
 
+    /// <summary>
+    /// Background for group collapse/expand button.
+    /// </summary>
+    public IBrush GroupButtonBackground => GetBrush("FlowCanvasGroupButtonBackground",
+        IsLightTheme ? "#14808080" : "#14808080");
+
+    /// <summary>
+    /// Hover background for group collapse/expand button.
+    /// </summary>
+    public IBrush GroupButtonHover => GetBrush("FlowCanvasGroupButtonHover",
+        IsLightTheme ? "#3C808080" : "#3C808080");
+
     // Legacy properties (kept for backward compatibility)
     public IBrush GroupHeaderText => GetBrush("FlowCanvasGroupHeaderText", "#FFFFFF");
     public IBrush GroupHeaderHover => GetBrush("FlowCanvasGroupHeaderHover", "#505050");
