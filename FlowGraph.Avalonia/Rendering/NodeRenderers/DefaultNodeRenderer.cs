@@ -45,7 +45,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
                 OffsetX = 2,
                 OffsetY = 2,
                 Blur = 8,
-                Color = Color.FromArgb(60, 0, 0, 0)
+                Color = theme.NodeShadow
             }),
             Cursor = new Cursor(StandardCursorType.Hand),
             Tag = node,

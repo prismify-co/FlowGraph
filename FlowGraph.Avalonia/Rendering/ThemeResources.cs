@@ -119,6 +119,12 @@ public class ThemeResources
     public IBrush NodeText => GetBrush("FlowCanvasNodeText",
         IsLightTheme ? "#1E1E1E" : "#FFFFFF");
 
+    /// <summary>
+    /// Shadow color for default nodes.
+    /// </summary>
+    public Color NodeShadow => GetColor("FlowCanvasNodeShadow",
+        IsLightTheme ? "#3C000000" : "#3C000000");
+
     #endregion
 
     #region Input Node (Green)
