@@ -261,6 +261,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
                 _mainCanvas.Children.Clear();
             }
             
+            // Clear visual manager tracking dictionaries
+            // DirectGraphRenderer will handle its own rendering
+            _graphRenderer.Clear();
+            
             // Add DirectGraphRenderer to RootPanel (after GridCanvas, MainCanvas)
             _rootPanel.Children.Add(_directRenderer);
             _directRenderer.Width = _rootPanel.Bounds.Width;
@@ -733,7 +737,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _lastOffsetY = _viewport.OffsetY;
             
             // Update resize handles (they use InverseScale for constant screen size)
-            _graphRenderer.UpdateAllResizeHandles();
+            // Only for visual tree mode - DirectGraphRenderer handles its own
+            if (!_useDirectRendering)
+            {
+                _graphRenderer.UpdateAllResizeHandles();
+            }
             
             // Update grid background (separate canvas, not transformed)
             RenderGrid();

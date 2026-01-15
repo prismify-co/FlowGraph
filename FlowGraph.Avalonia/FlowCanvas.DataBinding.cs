@@ -143,7 +143,12 @@ public partial class FlowCanvas
             case nameof(Node.IsSelected):
                 System.Diagnostics.Debug.WriteLine($"[OnNodePropertyChanged] Calling UpdateNodeSelection for {node.Id}");
                 _renderService.UpdateNodeSelection(node);
-                UpdateResizeHandlesForNode(node);
+                // Only update visual tree resize handles when NOT in direct rendering mode
+                // DirectGraphRenderer draws its own handles via DrawingContext
+                if (!_useDirectRendering)
+                {
+                    UpdateResizeHandlesForNode(node);
+                }
                 break;
             case nameof(Node.Width):
             case nameof(Node.Height):
@@ -155,7 +160,11 @@ public partial class FlowCanvas
             case nameof(Node.IsCollapsed):
                 // Update resize handles when collapse state changes
                 _renderService.Invalidate();
-                UpdateResizeHandlesForNode(node);
+                // Only update visual tree resize handles when NOT in direct rendering mode
+                if (!_useDirectRendering)
+                {
+                    UpdateResizeHandlesForNode(node);
+                }
                 break;
         }
 
