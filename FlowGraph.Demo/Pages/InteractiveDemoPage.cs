@@ -136,7 +136,8 @@ public class InteractiveDemoPage : IDemoPage
     {
         if (_canvas == null) return;
 
-        _canvas.NodeRenderers.Register("colorpicker", new ColorPickerNodeRenderer());
+        // Use ShadUI-styled color picker for better UX
+        _canvas.NodeRenderers.Register("colorpicker", new ShadColorPickerNodeRenderer());
         _canvas.NodeRenderers.Register("radiobutton", new RadioButtonNodeRenderer());
         _canvas.NodeRenderers.Register("zoomslider", new ZoomSliderNodeRenderer());
         _canvas.NodeRenderers.Register("outputdisplay", new OutputDisplayNodeRenderer());
@@ -205,7 +206,7 @@ public class InteractiveDemoPage : IDemoPage
         };
         graph.AddElement(titleText);
 
-        // Color picker node
+        // Color picker node (ShadUI Card with ColorView)
         var colorNode = CreateNode("shape-color", "colorpicker", "shape color",
             50, 90, 160, 100,
             outputs: [new PortDefinition { Id = "color", Type = "color", Label = "Color" }]);
