@@ -1,4 +1,5 @@
 using FlowGraph.Core;
+using FlowGraph.Core.Elements.Shapes;
 using FlowGraph.Core.Models;
 using FlowGraph.Core.Serialization;
 using System.Text.Json;
@@ -381,6 +382,194 @@ public class SerializationTests
         var json = graph.ToJson(indented: false);
 
         Assert.DoesNotContain("\n  ", json);
+    }
+
+    #endregion
+
+    #region Shape Serialization Tests
+
+    [Fact]
+    public void Serialize_GraphWithShapes_IncludesAllShapes()
+    {
+        var graph = new Graph();
+        graph.AddElement(new RectangleElement("rect1")
+        {
+            Position = new Point(100, 100),
+            Width = 200,
+            Height = 100,
+            Fill = "#3498db",
+            Stroke = "#2980b9",
+            CornerRadius = 8
+        });
+
+        var json = graph.ToJson();
+
+        Assert.Contains("rect1", json);
+        Assert.Contains("rectangle", json);
+        Assert.Contains("#3498db", json);
+    }
+
+    [Fact]
+    public void RoundTrip_RectangleElement_PropertiesPreserved()
+    {
+        var graph = new Graph();
+        graph.AddElement(new RectangleElement("rect1")
+        {
+            Position = new Point(100, 200),
+            Width = 250,
+            Height = 150,
+            Fill = "#E3F2FD",
+            Stroke = "#1976D2",
+            StrokeWidth = 2,
+            CornerRadius = 12,
+            Label = "Test Rectangle",
+            Opacity = 0.8,
+            ZIndex = 50
+        });
+
+        var json = graph.ToJson();
+        var loaded = GraphSerializationExtensions.LoadFromJson(json);
+
+        Assert.NotNull(loaded);
+        var shape = loaded.Elements.Shapes.FirstOrDefault() as RectangleElement;
+        Assert.NotNull(shape);
+        Assert.Equal("rect1", shape.Id);
+        Assert.Equal(100, shape.Position.X);
+        Assert.Equal(200, shape.Position.Y);
+        Assert.Equal(250, shape.Width);
+        Assert.Equal(150, shape.Height);
+        Assert.Equal("#E3F2FD", shape.Fill);
+        Assert.Equal("#1976D2", shape.Stroke);
+        Assert.Equal(2, shape.StrokeWidth);
+        Assert.Equal(12, shape.CornerRadius);
+        Assert.Equal("Test Rectangle", shape.Label);
+        Assert.Equal(0.8, shape.Opacity);
+        Assert.Equal(50, shape.ZIndex);
+    }
+
+    [Fact]
+    public void RoundTrip_LineElement_PropertiesPreserved()
+    {
+        var graph = new Graph();
+        graph.AddElement(new LineElement("line1")
+        {
+            Position = new Point(50, 50),
+            EndX = 200,
+            EndY = 150,
+            Stroke = "#FF0000",
+            StrokeWidth = 3,
+            StrokeDashArray = "5,5",
+            StartCap = LineCapStyle.Arrow,
+            EndCap = LineCapStyle.Circle
+        });
+
+        var json = graph.ToJson();
+        var loaded = GraphSerializationExtensions.LoadFromJson(json);
+
+        Assert.NotNull(loaded);
+        var shape = loaded.Elements.Shapes.FirstOrDefault() as LineElement;
+        Assert.NotNull(shape);
+        Assert.Equal("line1", shape.Id);
+        Assert.Equal(50, shape.Position.X);
+        Assert.Equal(200, shape.EndX);
+        Assert.Equal(150, shape.EndY);
+        Assert.Equal("#FF0000", shape.Stroke);
+        Assert.Equal(3, shape.StrokeWidth);
+        Assert.Equal("5,5", shape.StrokeDashArray);
+        Assert.Equal(LineCapStyle.Arrow, shape.StartCap);
+        Assert.Equal(LineCapStyle.Circle, shape.EndCap);
+    }
+
+    [Fact]
+    public void RoundTrip_TextElement_PropertiesPreserved()
+    {
+        var graph = new Graph();
+        graph.AddElement(new TextElement("text1")
+        {
+            Position = new Point(300, 300),
+            Text = "Hello World",
+            FontSize = 24,
+            FontFamily = "Arial",
+            FontWeight = FontWeight.Bold,
+            TextAlignment = TextAlignment.Center,
+            Fill = "#333333"
+        });
+
+        var json = graph.ToJson();
+        var loaded = GraphSerializationExtensions.LoadFromJson(json);
+
+        Assert.NotNull(loaded);
+        var shape = loaded.Elements.Shapes.FirstOrDefault() as TextElement;
+        Assert.NotNull(shape);
+        Assert.Equal("text1", shape.Id);
+        Assert.Equal(300, shape.Position.X);
+        Assert.Equal("Hello World", shape.Text);
+        Assert.Equal(24, shape.FontSize);
+        Assert.Equal("Arial", shape.FontFamily);
+        Assert.Equal(FontWeight.Bold, shape.FontWeight);
+        Assert.Equal(TextAlignment.Center, shape.TextAlignment);
+        Assert.Equal("#333333", shape.Fill);
+    }
+
+    [Fact]
+    public void RoundTrip_EllipseElement_PropertiesPreserved()
+    {
+        var graph = new Graph();
+        graph.AddElement(new EllipseElement("ellipse1")
+        {
+            Position = new Point(400, 400),
+            Width = 100,
+            Height = 60,
+            Fill = "#4CAF50",
+            Stroke = "#2E7D32",
+            StrokeWidth = 2
+        });
+
+        var json = graph.ToJson();
+        var loaded = GraphSerializationExtensions.LoadFromJson(json);
+
+        Assert.NotNull(loaded);
+        var shape = loaded.Elements.Shapes.FirstOrDefault() as EllipseElement;
+        Assert.NotNull(shape);
+        Assert.Equal("ellipse1", shape.Id);
+        Assert.Equal(400, shape.Position.X);
+        Assert.Equal(100, shape.Width);
+        Assert.Equal(60, shape.Height);
+        Assert.Equal("#4CAF50", shape.Fill);
+        Assert.Equal("#2E7D32", shape.Stroke);
+    }
+
+    [Fact]
+    public void RoundTrip_MixedElements_AllPreserved()
+    {
+        var graph = new Graph();
+        
+        // Add a node
+        graph.AddNode(TestHelpers.CreateNode("node1", x: 0, y: 0,
+            outputs: [new Port { Id = "out", Type = "data" }]));
+        
+        // Add a shape
+        graph.AddElement(new RectangleElement("rect1")
+        {
+            Position = new Point(100, 100),
+            Width = 200,
+            Height = 100
+        });
+        
+        // Add another node
+        graph.AddNode(TestHelpers.CreateNode("node2", x: 300, y: 0,
+            inputs: [new Port { Id = "in", Type = "data" }]));
+        
+        // Add an edge
+        graph.AddEdge(TestHelpers.CreateEdge("edge1", "node1", "node2", "out", "in"));
+
+        var json = graph.ToJson();
+        var loaded = GraphSerializationExtensions.LoadFromJson(json);
+
+        Assert.NotNull(loaded);
+        Assert.Equal(2, loaded.Elements.NodeCount);
+        Assert.Equal(1, loaded.Elements.EdgeCount);
+        Assert.Equal(1, loaded.Elements.ShapeCount);
     }
 
     #endregion
