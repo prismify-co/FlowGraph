@@ -1,3 +1,54 @@
+## FlowGraph v0.5.0
+
+### ⚠️ Breaking Changes
+
+- **Graph API Refactor** - `Graph.Elements` is now the single source of truth
+  - `Graph.Nodes` and `Graph.Edges` are now **read-only** `IReadOnlyList<T>` views
+  - Use `graph.AddNode()` and `graph.AddEdge()` for mutations
+  - Use `graph.Elements.Remove()` to remove elements
+  - `CollectionChanged` events replaced with `NodesChanged` and `EdgesChanged` events
+
+### Migration Guide
+
+| Old API                         | New API                       |
+| ------------------------------- | ----------------------------- |
+| `graph.Nodes.Add(node)`         | `graph.AddNode(node)`         |
+| `graph.Edges.Add(edge)`         | `graph.AddEdge(edge)`         |
+| `graph.Nodes.Remove(node)`      | `graph.Elements.Remove(node)` |
+| `graph.Edges.Remove(edge)`      | `graph.Elements.Remove(edge)` |
+| `graph.Nodes.CollectionChanged` | `graph.NodesChanged`          |
+| `graph.Edges.CollectionChanged` | `graph.EdgesChanged`          |
+
+### New Features
+
+- **Extensibility Interfaces**
+  - `ICollisionProvider` - Interface for custom collision detection implementations
+  - `ISnapProvider` - Interface for single-authority drag architecture
+  - `ResizableVisual` pattern for unified render service
+
+- **Shape System Enhancements**
+  - Shape selection and hit-testing support
+  - Shape serialization with full round-trip support
+
+- **Public Events API** - Internal canvas events now exposed as public API on `FlowCanvas`
+
+### Performance Improvements
+
+- **O(1) Grid Panning** - Transform-based optimization eliminates per-element updates
+- **Phase 2 Retained Mode Rendering** - Zoom no longer clears/re-renders entire canvas
+  - Pan: O(1), Zoom: O(handles) instead of O(n), Add/Remove: O(1)
+- **DirectRendering Optimizations** - Skip visual tree operations in DirectRendering mode
+
+### Internal Improvements
+
+- Massive code quality refactor: `DirectGraphRenderer` and `EdgeVisualManager` split into partial classes
+- `ArrowGeometryHelper` consolidates arrow point calculations
+- `GraphDefaults` now includes bezier control point and arrow constants
+- `EdgeStrokeThickness` setting added to `FlowCanvasSettings`
+- Removed `BulkObservableCollection` and bidirectional sync code (no longer needed)
+
+---
+
 ## FlowGraph v0.4.2
 
 ### Performance Improvements
@@ -98,6 +149,16 @@ var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == "myNode");
 - The deprecated `Nodes` and `Edges` properties will continue to work and fire `CollectionChanged` events
 - Internal synchronization ensures both APIs stay in sync
 - This change prepares the architecture for FlowGraph.Pro features and custom element types
+
+---
+
+## FlowGraph v0.3.7
+
+### New Features
+
+- **Comprehensive Diagnostics System** - New `FlowGraph.Core.Diagnostics` namespace
+- **FlowCanvasSettings Integration** - Easy configuration for diagnostics logging
+- Full documentation at `docs/articles/diagnostics.md`
 
 ---
 
