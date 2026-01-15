@@ -427,7 +427,7 @@ public class IdleState : InputStateBase
         else
         {
             var canvasPoint = context.ScreenToCanvas(position);
-            var boxSelectState = new BoxSelectingState(canvasPoint, context.MainCanvas, context.Settings, context.Viewport);
+            var boxSelectState = new BoxSelectingState(canvasPoint, context.MainCanvas, context.Settings, context.Viewport, context.Theme);
             CapturePointer(e, context.RootPanel);
             e.Handled = true;
             return StateTransitionResult.TransitionTo(boxSelectState);

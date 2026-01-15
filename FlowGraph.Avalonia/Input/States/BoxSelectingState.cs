@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Input.States;
@@ -21,7 +22,7 @@ public class BoxSelectingState : InputStateBase
 
     public override string Name => "BoxSelecting";
 
-    public BoxSelectingState(AvaloniaPoint startCanvasPoint, Canvas? canvas, FlowCanvasSettings settings, ViewportState viewport)
+    public BoxSelectingState(AvaloniaPoint startCanvasPoint, Canvas? canvas, FlowCanvasSettings settings, ViewportState viewport, ThemeResources? theme = null)
     {
         _startCanvas = startCanvasPoint;
         _endCanvas = startCanvasPoint;
@@ -31,9 +32,9 @@ public class BoxSelectingState : InputStateBase
 
         _selectionBox = new Rectangle
         {
-            Stroke = new SolidColorBrush(Color.Parse("#0078D4")),
+            Stroke = theme?.SelectionBoxStroke ?? new SolidColorBrush(Color.Parse("#0078D4")),
             StrokeThickness = 1,
-            Fill = new SolidColorBrush(Color.FromArgb(40, 0, 120, 212)),
+            Fill = theme?.SelectionBoxFill ?? new SolidColorBrush(Color.FromArgb(40, 0, 120, 212)),
             IsHitTestVisible = false
         };
     }
