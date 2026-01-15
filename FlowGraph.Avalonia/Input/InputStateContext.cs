@@ -61,6 +61,14 @@ public class InputStateContext
     public IConnectionValidator? ConnectionValidator { get; set; }
 
     /// <summary>
+    /// Optional snap provider for providing snap offsets during drag operations.
+    /// External systems (like helper lines, guides) can register as a snap provider
+    /// to influence node positions during drag without directly setting positions.
+    /// Set by FlowCanvas.
+    /// </summary>
+    public ISnapProvider? SnapProvider { get; set; }
+
+    /// <summary>
     /// Shape visual manager for updating shape selection state.
     /// Set by FlowCanvas.
     /// </summary>
@@ -192,7 +200,7 @@ public class InputStateContext
     public void ApplyViewportTransform()
     {
         System.Diagnostics.Debug.WriteLine($"[ApplyViewportTransform] Called: Offset=({_viewport.OffsetX:F1},{_viewport.OffsetY:F1}) Zoom={_viewport.Zoom:F2} DirectRenderer={(DirectRenderer != null ? "YES" : "NO")}");
-        
+
         if (ViewportTransform != null)
         {
             _viewport.ApplyToTransforms(ViewportTransform);

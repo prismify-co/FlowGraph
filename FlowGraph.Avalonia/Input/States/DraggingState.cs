@@ -33,7 +33,7 @@ public class DraggingState : InputStateBase
     {
         _dragStartScreen = screenPosition;
         _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
-        
+
         // Scale drag threshold inversely with zoom: at zoom 0.30, threshold = min(4/0.30, 15) = 13.3 pixels
         // This prevents accidental drags when clicking on tiny zoomed-out nodes
         _effectiveDragThreshold = Math.Min(BaseDragThreshold / viewport.Zoom, MaxDragThreshold);
@@ -83,7 +83,7 @@ public class DraggingState : InputStateBase
 
     private static long _dragMoveCount = 0;
     private static long _totalDragMoveMs = 0;
-    
+
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -118,6 +118,9 @@ public class DraggingState : InputStateBase
             var startPos = new Core.Point(_dragStartCanvas.X, _dragStartCanvas.Y);
             context.RaiseNodeDragStart(_draggedNodes, startPos);
             _dragStartRaised = true;
+
+            // Notify snap provider that drag has started
+            context.SnapProvider?.OnDragStart(_draggedNodes, startPos);
         }
 
         var currentCanvas = context.ScreenToCanvas(currentScreen);
@@ -126,6 +129,27 @@ public class DraggingState : InputStateBase
 
         // OPTIMIZED: Use cached node references instead of O(n) FirstOrDefault lookups
         var posUpdateSw = System.Diagnostics.Stopwatch.StartNew();
+
+        // Calculate proposed position for primary node (used for snap provider query)
+        Core.Point? snapOffset = null;
+        if (context.SnapProvider != null && _startPositions.Count > 0)
+        {
+            // Use the first node's position as the reference for snapping
+            var firstEntry = _startPositions.First();
+            var proposedX = firstEntry.Value.X + deltaX;
+            var proposedY = firstEntry.Value.Y + deltaY;
+
+            if (_settings.SnapToGrid)
+            {
+                var snapSize = _settings.EffectiveSnapGridSize;
+                proposedX = Math.Round(proposedX / snapSize) * snapSize;
+                proposedY = Math.Round(proposedY / snapSize) * snapSize;
+            }
+
+            var proposedPosition = new Core.Point(proposedX, proposedY);
+            snapOffset = context.SnapProvider.GetSnapOffset(_draggedNodes, proposedPosition);
+        }
+
         foreach (var (nodeId, startPos) in _startPositions)
         {
             if (_nodeById.TryGetValue(nodeId, out var node))
@@ -140,6 +164,13 @@ public class DraggingState : InputStateBase
                     newY = Math.Round(newY / snapSize) * snapSize;
                 }
 
+                // Apply snap offset from provider (helper lines, guides, etc.)
+                if (snapOffset.HasValue)
+                {
+                    newX += snapOffset.Value.X;
+                    newY += snapOffset.Value.Y;
+                }
+
                 node.Position = new Core.Point(newX, newY);
             }
         }
@@ -151,7 +182,7 @@ public class DraggingState : InputStateBase
         context.RaiseNodesDragging(_draggedNodeIds);
         routingSw.Stop();
         var routingMs = routingSw.ElapsedMilliseconds;
-        
+
         sw.Stop();
         _dragMoveCount++;
         _totalDragMoveMs += sw.ElapsedMilliseconds;
@@ -174,6 +205,7 @@ public class DraggingState : InputStateBase
             if (_dragStartRaised)
             {
                 context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
+                context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: true);
             }
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
@@ -213,6 +245,7 @@ public class DraggingState : InputStateBase
         if (_dragStartRaised)
         {
             context.RaiseNodeDragStop(_draggedNodes, cancelled: false);
+            context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: false);
         }
 
         ReleasePointer(e);
@@ -239,6 +272,7 @@ public class DraggingState : InputStateBase
             if (_dragStartRaised)
             {
                 context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
+                context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: true);
             }
 
             return StateTransitionResult.TransitionTo(IdleState.Instance);

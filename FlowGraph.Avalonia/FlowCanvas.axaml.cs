@@ -196,6 +196,23 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </summary>
     public IConnectionValidator? ConnectionValidator { get; set; }
 
+    private ISnapProvider? _snapProvider;
+    /// <summary>
+    /// Gets or sets the snap provider for providing snap offsets during drag operations.
+    /// External systems (like helper lines, guides) can register as a snap provider
+    /// to influence node positions during drag without directly setting positions.
+    /// </summary>
+    public ISnapProvider? SnapProvider
+    {
+        get => _snapProvider;
+        set
+        {
+            _snapProvider = value;
+            // Update the input context immediately so drag operations see the change
+            _inputContext.SnapProvider = value;
+        }
+    }
+
     #endregion
 
     #region Public Methods - Performance
@@ -260,16 +277,16 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             {
                 _mainCanvas.Children.Clear();
             }
-            
+
             // Clear visual manager tracking dictionaries
             // DirectGraphRenderer will handle its own rendering
             _graphRenderer.Clear();
-            
+
             // Add DirectGraphRenderer to RootPanel (after GridCanvas, MainCanvas)
             _rootPanel.Children.Add(_directRenderer);
             _directRenderer.Width = _rootPanel.Bounds.Width;
             _directRenderer.Height = _rootPanel.Bounds.Height;
-            
+
             // Update input context to trigger redraws on viewport changes
             _inputContext.DirectRenderer = _directRenderer;
         }
@@ -647,13 +664,13 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _mainCanvas = this.FindControl<Canvas>("MainCanvas");
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
-        
+
         // Get the MatrixTransform from MainCanvas.RenderTransform
         if (_mainCanvas?.RenderTransform is MatrixTransform mt)
         {
             _viewportTransform = mt;
         }
-        
+
         _theme = new ThemeResources(this);
 
         // Apply background setting
@@ -669,6 +686,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.ViewportTransform = _viewportTransform;
         _inputContext.Theme = _theme;
         _inputContext.ConnectionValidator = ConnectionValidator;
+        _inputContext.SnapProvider = SnapProvider;
 
         // Initialize shape visual manager now that canvas is available
         if (_mainCanvas != null)
@@ -708,23 +726,23 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     }
 
     private static int _fullRenderCount = 0;
-    
+
     private void ApplyViewportTransforms()
     {
         _graphRenderer.SetViewport(_viewport);
-        
+
         // Detect what changed for logging
         var zoomChanged = Math.Abs(_lastZoom - _viewport.Zoom) > 0.001;
-        var offsetChanged = Math.Abs(_lastOffsetX - _viewport.OffsetX) > 0.1 || 
+        var offsetChanged = Math.Abs(_lastOffsetX - _viewport.OffsetX) > 0.1 ||
                             Math.Abs(_lastOffsetY - _viewport.OffsetY) > 0.1;
-        
+
         // Phase 2: Transform-based pan/zoom with retained mode
         // Apply the viewport transform to MainCanvas for instant pan/zoom
         if (_viewportTransform != null)
         {
             _viewport.ApplyToTransforms(_viewportTransform);
         }
-        
+
         // For zoom changes, only update elements that use InverseScale
         // (resize handles must stay constant screen size)
         // The MatrixTransform handles scaling for all other elements
@@ -735,18 +753,18 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             {
                 System.Diagnostics.Debug.WriteLine($"[Viewport] Zoom #{_fullRenderCount} (retained mode, updating handles only)");
             }
-            
+
             _lastZoom = _viewport.Zoom;
             _lastOffsetX = _viewport.OffsetX;
             _lastOffsetY = _viewport.OffsetY;
-            
+
             // Update resize handles (they use InverseScale for constant screen size)
             // Only for visual tree mode - DirectGraphRenderer handles its own
             if (!_useDirectRendering)
             {
                 _graphRenderer.UpdateAllResizeHandles();
             }
-            
+
             // Update grid background (separate canvas, not transformed)
             RenderGrid();
         }
@@ -755,7 +773,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             // Pan-only change - update transform and grid
             _lastOffsetX = _viewport.OffsetX;
             _lastOffsetY = _viewport.OffsetY;
-            
+
             // Grid background is on separate untransformed canvas, must re-render
             RenderGrid();
         }
