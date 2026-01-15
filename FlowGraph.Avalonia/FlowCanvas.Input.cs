@@ -244,8 +244,17 @@ public partial class FlowCanvas
                         }
                         else
                         {
-                            // Default cursor
-                            _rootPanel.Cursor = Cursor.Default;
+                            // Check if hovering a shape
+                            var shapeHit = _directRenderer.HitTestShape(screenPos.X, screenPos.Y);
+                            if (shapeHit != null)
+                            {
+                                _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
+                            }
+                            else
+                            {
+                                // Default cursor
+                                _rootPanel.Cursor = Cursor.Default;
+                            }
                         }
                     }
                 }
@@ -445,6 +454,16 @@ public partial class FlowCanvas
             // Create a dummy path with the edge as tag
             var dummyEdge = new global::Avalonia.Controls.Shapes.Path { Tag = edgeHit };
             return dummyEdge;
+        }
+
+        // Check shapes AFTER edges - shapes have lowest ZIndex (typically background elements)
+        var shapeHit = _directRenderer.HitTestShape(screenX, screenY);
+        if (shapeHit != null)
+        {
+            System.Diagnostics.Debug.WriteLine($"[HitTest] Shape hit: {shapeHit.Id}");
+            // Create a dummy control with the shape as tag
+            var dummyShape = new ContentControl { Tag = shapeHit };
+            return dummyShape;
         }
 
         System.Diagnostics.Debug.WriteLine($"[HitTest] No hit at ({screenX:F0}, {screenY:F0})");

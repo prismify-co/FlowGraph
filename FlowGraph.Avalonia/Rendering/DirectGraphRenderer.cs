@@ -1444,6 +1444,41 @@ public class DirectGraphRenderer : Control, IRenderLayer
         return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
     }
 
+    /// <summary>
+    /// Hit tests for shapes at the given screen coordinates.
+    /// Shapes with higher ZIndex are tested first (topmost shapes have priority).
+    /// </summary>
+    /// <param name="screenX">Screen X coordinate.</param>
+    /// <param name="screenY">Screen Y coordinate.</param>
+    /// <returns>The hit shape, or null if no shape was hit.</returns>
+    public Core.Elements.Shapes.ShapeElement? HitTestShape(double screenX, double screenY)
+    {
+        if (_graph == null || _viewport == null) return null;
+
+        var canvasPoint = ScreenToCanvas(screenX, screenY);
+        var shapes = _graph.Elements.Shapes;
+        if (shapes.Count == 0) return null;
+
+        // Test shapes in reverse ZIndex order (highest first = topmost)
+        // Filter to only visible and selectable shapes
+        var testOrder = shapes
+            .Where(s => s.IsVisible && s.IsSelectable)
+            .OrderByDescending(s => s.ZIndex)
+            .ToList();
+
+        foreach (var shape in testOrder)
+        {
+            var bounds = shape.GetBounds();
+            if (bounds.Contains(new Core.Point(canvasPoint.X, canvasPoint.Y)))
+            {
+                System.Diagnostics.Debug.WriteLine($"[HitTestShape] Hit shape {shape.Id} (type: {shape.Type}) at canvas ({canvasPoint.X:F0},{canvasPoint.Y:F0})");
+                return shape;
+            }
+        }
+
+        return null;
+    }
+
     #endregion
 
     #region Coordinate Transforms

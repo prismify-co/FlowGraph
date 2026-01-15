@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering.ShapeRenderers;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
@@ -59,6 +60,12 @@ public class InputStateContext
     /// </summary>
     public IConnectionValidator? ConnectionValidator { get; set; }
 
+    /// <summary>
+    /// Shape visual manager for updating shape selection state.
+    /// Set by FlowCanvas.
+    /// </summary>
+    public ShapeVisualManager? ShapeVisualManager { get; set; }
+
     #endregion
 
     #region Events
@@ -92,6 +99,7 @@ public class InputStateContext
     public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
     public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
     public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
+    public event EventHandler? SelectionChangeRequested;
 
     #endregion
 
@@ -141,6 +149,9 @@ public class InputStateContext
         => EdgeReconnected?.Invoke(this, new EdgeReconnectedEventArgs(oldEdge, newEdge));
     public void RaiseEdgeDisconnected(Edge edge)
         => EdgeDisconnected?.Invoke(this, new EdgeDisconnectedEventArgs(edge));
+
+    public void RaiseSelectionChanged()
+        => SelectionChangeRequested?.Invoke(this, EventArgs.Empty);
 
     /// <summary>
     /// Raises the NodeLabelEditRequested event and returns whether it was handled.

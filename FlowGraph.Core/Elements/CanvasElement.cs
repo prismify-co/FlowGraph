@@ -29,6 +29,7 @@ public abstract class CanvasElement : ICanvasElement
   private double? _width;
   private double? _height;
   private bool _isSelected;
+  private bool _isSelectable = true;
   private bool _isVisible = true;
   private int _zIndex;
 
@@ -125,6 +126,20 @@ public abstract class CanvasElement : ICanvasElement
       {
         _isSelected = value;
         OnPropertyChanged(nameof(IsSelected));
+      }
+    }
+  }
+
+  /// <inheritdoc />
+  public bool IsSelectable
+  {
+    get => _isSelectable;
+    set
+    {
+      if (_isSelectable != value)
+      {
+        _isSelectable = value;
+        OnPropertyChanged(nameof(IsSelectable));
       }
     }
   }

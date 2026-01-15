@@ -1,6 +1,7 @@
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
+using FlowGraph.Core.Elements.Shapes;
 
 namespace FlowGraph.Avalonia;
 
@@ -17,6 +18,7 @@ public class SelectionManager
     // Track previous selection state to detect changes
     private HashSet<string> _previousSelectedNodeIds = new();
     private HashSet<string> _previousSelectedEdgeIds = new();
+    private HashSet<string> _previousSelectedShapeIds = new();
 
     /// <summary>
     /// Creates a new selection manager.
@@ -79,7 +81,7 @@ public class SelectionManager
     }
 
     /// <summary>
-    /// Deselects all nodes and edges.
+    /// Deselects all nodes, edges, and shapes.
     /// </summary>
     public void DeselectAll()
     {
@@ -95,6 +97,11 @@ public class SelectionManager
         foreach (var edge in graph.Elements.Edges.Where(e => e.IsSelected))
         {
             edge.IsSelected = false;
+        }
+
+        foreach (var shape in graph.Elements.Shapes.Where(s => s.IsSelected))
+        {
+            shape.IsSelected = false;
         }
 
         EdgeRerenderRequested?.Invoke(this, EventArgs.Empty);
@@ -209,9 +216,18 @@ public class SelectionManager
     }
 
     /// <summary>
+    /// Gets all selected shapes.
+    /// </summary>
+    public IEnumerable<ShapeElement> GetSelectedShapes()
+    {
+        var graph = _context.Graph;
+        return graph?.Elements.Shapes.Where(s => s.IsSelected) ?? Enumerable.Empty<ShapeElement>();
+    }
+
+    /// <summary>
     /// Gets whether any items are selected.
     /// </summary>
-    public bool HasSelection => GetSelectedNodes().Any() || GetSelectedEdges().Any();
+    public bool HasSelection => GetSelectedNodes().Any() || GetSelectedEdges().Any() || GetSelectedShapes().Any();
 
     private void RaiseSelectionChangedIfNeeded()
     {
@@ -220,13 +236,16 @@ public class SelectionManager
 
         var currentSelectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected).ToList();
         var currentSelectedEdges = graph.Elements.Edges.Where(e => e.IsSelected).ToList();
+        var currentSelectedShapes = graph.Elements.Shapes.Where(s => s.IsSelected).ToList();
 
         var currentNodeIds = currentSelectedNodes.Select(n => n.Id).ToHashSet();
         var currentEdgeIds = currentSelectedEdges.Select(e => e.Id).ToHashSet();
+        var currentShapeIds = currentSelectedShapes.Select(s => s.Id).ToHashSet();
 
         // Check if selection actually changed
         if (currentNodeIds.SetEquals(_previousSelectedNodeIds) &&
-            currentEdgeIds.SetEquals(_previousSelectedEdgeIds))
+            currentEdgeIds.SetEquals(_previousSelectedEdgeIds) &&
+            currentShapeIds.SetEquals(_previousSelectedShapeIds))
         {
             return;
         }
@@ -236,15 +255,20 @@ public class SelectionManager
         var removedNodeIds = _previousSelectedNodeIds.Except(currentNodeIds).ToHashSet();
         var addedEdgeIds = currentEdgeIds.Except(_previousSelectedEdgeIds).ToHashSet();
         var removedEdgeIds = _previousSelectedEdgeIds.Except(currentEdgeIds).ToHashSet();
+        var addedShapeIds = currentShapeIds.Except(_previousSelectedShapeIds).ToHashSet();
+        var removedShapeIds = _previousSelectedShapeIds.Except(currentShapeIds).ToHashSet();
 
         var addedNodes = currentSelectedNodes.Where(n => addedNodeIds.Contains(n.Id)).ToList();
         var removedNodes = graph.Elements.Nodes.Where(n => removedNodeIds.Contains(n.Id)).ToList();
         var addedEdges = currentSelectedEdges.Where(e => addedEdgeIds.Contains(e.Id)).ToList();
         var removedEdges = graph.Elements.Edges.Where(e => removedEdgeIds.Contains(e.Id)).ToList();
+        var addedShapes = currentSelectedShapes.Where(s => addedShapeIds.Contains(s.Id)).ToList();
+        var removedShapes = graph.Elements.Shapes.Where(s => removedShapeIds.Contains(s.Id)).ToList();
 
         // Update tracking
         _previousSelectedNodeIds = currentNodeIds;
         _previousSelectedEdgeIds = currentEdgeIds;
+        _previousSelectedShapeIds = currentShapeIds;
 
         // Raise event
         SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(
@@ -253,6 +277,9 @@ public class SelectionManager
             addedNodes,
             removedNodes,
             addedEdges,
-            removedEdges));
+            removedEdges,
+            currentSelectedShapes,
+            addedShapes,
+            removedShapes));
     }
 }

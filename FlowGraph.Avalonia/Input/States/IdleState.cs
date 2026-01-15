@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
+using FlowGraph.Core.Elements.Shapes;
 using System.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -47,6 +48,11 @@ public class IdleState : InputStateBase
                 // Could be edge path (hit area) or edge label (TextBlock)
                 bool isLabel = source is TextBlock;
                 return HandleEdgeClick(context, e, edge, isLabel);
+            }
+
+            if (source?.Tag is ShapeElement shape)
+            {
+                return HandleShapeClick(context, e, shape);
             }
 
             if (source?.Tag is (Node portNode, Port port, bool isOutput))
@@ -307,6 +313,44 @@ public class IdleState : InputStateBase
         }
 
         return null;
+    }
+
+    private StateTransitionResult HandleShapeClick(InputStateContext context, PointerPressedEventArgs e, ShapeElement shape)
+    {
+        var graph = context.Graph;
+        if (graph == null) return StateTransitionResult.Unhandled();
+
+        Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}");
+
+        bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+
+        // Handle selection only if shape is selectable
+        if (shape.IsSelectable)
+        {
+            if (!ctrlHeld && !shape.IsSelected)
+            {
+                Debug.WriteLine($"[IdleState.HandleShapeClick] Selecting shape {shape.Id}, deselecting others");
+                // Deselect all nodes, edges, and shapes
+                foreach (var n in graph.Elements.Nodes.Where(n => n.IsSelected))
+                    n.IsSelected = false;
+                foreach (var ed in graph.Elements.Edges.Where(ed => ed.IsSelected))
+                    ed.IsSelected = false;
+                foreach (var s in graph.Elements.Shapes.Where(s => s.IsSelected && s.Id != shape.Id))
+                    s.IsSelected = false;
+                shape.IsSelected = true;
+            }
+            else if (ctrlHeld)
+            {
+                shape.IsSelected = !shape.IsSelected;
+            }
+        }
+
+        // Update visual selection state
+        context.ShapeVisualManager?.UpdateSelection(shape.Id, shape.IsSelected);
+        context.RaiseSelectionChanged();
+
+        e.Handled = true;
+        return StateTransitionResult.Stay();
     }
 
     private StateTransitionResult HandlePortClick(

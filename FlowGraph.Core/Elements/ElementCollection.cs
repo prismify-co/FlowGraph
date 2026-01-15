@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 
 // Import types from parent namespace
 using FlowGraph.Core;
+using FlowGraph.Core.Elements.Shapes;
 
 namespace FlowGraph.Core.Elements;
 
@@ -27,6 +28,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   // PERFORMANCE: Maintain typed lists for O(1) access instead of O(n) OfType<> filtering
   private readonly List<Node> _nodeList = new();
   private readonly List<Edge> _edgeList = new();
+  private readonly List<ShapeElement> _shapeList = new();
   
   // PERFORMANCE: Index edges by source/target node for O(1) edge lookup
   private readonly Dictionary<string, List<Edge>> _edgesBySourceNode = new();
@@ -99,6 +101,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
       _idLookup.Clear();
       _nodeList.Clear();
       _edgeList.Clear();
+      _shapeList.Clear();
       _edgesBySourceNode.Clear();
       _edgesByTargetNode.Clear();
       foreach (var element in elements)
@@ -158,6 +161,7 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
     _idLookup.Clear();
     _nodeList.Clear();
     _edgeList.Clear();
+    _shapeList.Clear();
     _edgesBySourceNode.Clear();
     _edgesByTargetNode.Clear();
     base.ClearItems();
@@ -189,6 +193,10 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
       }
       targetList.Add(edge);
     }
+    else if (item is ShapeElement shape)
+    {
+      _shapeList.Add(shape);
+    }
   }
   
   private void RemoveFromTypedLists(ICanvasElement item)
@@ -217,6 +225,10 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
           _edgesByTargetNode.Remove(edge.Target);
       }
     }
+    else if (item is ShapeElement shape)
+    {
+      _shapeList.Remove(shape);
+    }
   }
 
   #region Typed Accessors
@@ -242,6 +254,17 @@ public class ElementCollection : ObservableCollection<ICanvasElement>
   /// Gets the count of edges in the collection. O(1) operation.
   /// </summary>
   public int EdgeCount => _edgeList.Count;
+
+  /// <summary>
+  /// Gets all shape elements in the collection.
+  /// PERFORMANCE: Returns cached list for O(1) access instead of O(n) OfType filtering.
+  /// </summary>
+  public IReadOnlyList<ShapeElement> Shapes => _shapeList;
+  
+  /// <summary>
+  /// Gets the count of shapes in the collection. O(1) operation.
+  /// </summary>
+  public int ShapeCount => _shapeList.Count;
   
   /// <summary>
   /// Gets all edges connected to a specific node (either as source or target).

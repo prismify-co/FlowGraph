@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
+using FlowGraph.Core.Elements.Shapes;
 using AvaloniaPoint = Avalonia.Point;
 using AvaloniaRect = Avalonia.Rect;
 using CorePoint = FlowGraph.Core.Point;
@@ -238,6 +239,11 @@ public class SelectionChangedEventArgs : EventArgs
     public IReadOnlyList<Edge> SelectedEdges { get; }
 
     /// <summary>
+    /// The currently selected shapes.
+    /// </summary>
+    public IReadOnlyList<ShapeElement> SelectedShapes { get; }
+
+    /// <summary>
     /// Nodes that were added to the selection.
     /// </summary>
     public IReadOnlyList<Node> AddedNodes { get; }
@@ -257,20 +263,36 @@ public class SelectionChangedEventArgs : EventArgs
     /// </summary>
     public IReadOnlyList<Edge> RemovedEdges { get; }
 
+    /// <summary>
+    /// Shapes that were added to the selection.
+    /// </summary>
+    public IReadOnlyList<ShapeElement> AddedShapes { get; }
+
+    /// <summary>
+    /// Shapes that were removed from the selection.
+    /// </summary>
+    public IReadOnlyList<ShapeElement> RemovedShapes { get; }
+
     public SelectionChangedEventArgs(
         IReadOnlyList<Node> selectedNodes,
         IReadOnlyList<Edge> selectedEdges,
         IReadOnlyList<Node>? addedNodes = null,
         IReadOnlyList<Node>? removedNodes = null,
         IReadOnlyList<Edge>? addedEdges = null,
-        IReadOnlyList<Edge>? removedEdges = null)
+        IReadOnlyList<Edge>? removedEdges = null,
+        IReadOnlyList<ShapeElement>? selectedShapes = null,
+        IReadOnlyList<ShapeElement>? addedShapes = null,
+        IReadOnlyList<ShapeElement>? removedShapes = null)
     {
         SelectedNodes = selectedNodes;
         SelectedEdges = selectedEdges;
+        SelectedShapes = selectedShapes ?? [];
         AddedNodes = addedNodes ?? [];
         RemovedNodes = removedNodes ?? [];
         AddedEdges = addedEdges ?? [];
         RemovedEdges = removedEdges ?? [];
+        AddedShapes = addedShapes ?? [];
+        RemovedShapes = removedShapes ?? [];
     }
 }
 

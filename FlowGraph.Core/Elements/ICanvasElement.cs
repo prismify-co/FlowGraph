@@ -70,6 +70,14 @@ public interface ICanvasElement : INotifyPropertyChanged
   bool IsSelected { get; set; }
 
   /// <summary>
+  /// Gets or sets whether this element can be selected by user interaction.
+  /// </summary>
+  /// <remarks>
+  /// When false, clicking on the element will not select it.
+  /// </remarks>
+  bool IsSelectable { get; }
+
+  /// <summary>
   /// Gets or sets whether this element is visible.
   /// </summary>
   /// <remarks>

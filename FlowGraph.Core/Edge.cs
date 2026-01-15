@@ -209,6 +209,11 @@ public class Edge : ICanvasElement
     }
 
     /// <summary>
+    /// Whether this edge can be selected by user interaction.
+    /// </summary>
+    public bool IsSelectable { get; set; } = true;
+
+    /// <summary>
     /// Optional waypoints for custom edge routing.
     /// </summary>
     public List<Point>? Waypoints

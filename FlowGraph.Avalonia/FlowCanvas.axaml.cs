@@ -614,6 +614,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Forward label edit request
         _inputContext.NodeLabelEditRequested += (_, e) => NodeLabelEditRequested?.Invoke(this, e);
         _inputContext.EdgeLabelEditRequested += (_, e) => EdgeLabelEditRequested?.Invoke(this, e);
+
+        // Handle selection change request (used by shape clicks)
+        _inputContext.SelectionChangeRequested += (_, _) => _selectionManager.NotifySelectionMayHaveChanged();
     }
 
     private void SubscribeToSelectionManagerEvents()
@@ -674,6 +677,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             var renderContext = new Rendering.RenderContext(Settings);
             renderContext.SetViewport(_viewport);
             _shapeVisualManager.SetRenderContext(renderContext);
+            _inputContext.ShapeVisualManager = _shapeVisualManager;
         }
 
         SetupEventHandlers();
