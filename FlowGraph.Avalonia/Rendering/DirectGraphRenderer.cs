@@ -278,47 +278,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         }
     }
 
-    #region Inline Editing Support
-
-    /// <summary>
-    /// Begins editing a node's label. The label will not be drawn while editing.
-    /// </summary>
-    /// <param name="nodeId">ID of the node to edit.</param>
-    public void BeginEditNode(string nodeId)
-    {
-        _editingNodeId = nodeId;
-        InvalidateVisual();
-    }
-
-    /// <summary>
-    /// Ends editing a node's label.
-    /// </summary>
-    public void EndEditNode()
-    {
-        _editingNodeId = null;
-        InvalidateVisual();
-    }
-
-    /// <summary>
-    /// Begins editing an edge's label. The label will not be drawn while editing.
-    /// </summary>
-    /// <param name="edgeId">ID of the edge to edit.</param>
-    public void BeginEditEdge(string edgeId)
-    {
-        _editingEdgeId = edgeId;
-        InvalidateVisual();
-    }
-
-    /// <summary>
-    /// Ends editing an edge's label.
-    /// </summary>
-    public void EndEditEdge()
-    {
-        _editingEdgeId = null;
-        InvalidateVisual();
-    }
-
-    #endregion
+    // Inline editing methods are in DirectGraphRenderer.InlineEditing.cs
 
     private void RebuildSpatialIndex()
     {
@@ -414,14 +374,14 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
-        
+
         _debugFrameCount++;
         var logThisFrame = _debugFrameCount % 60 == 1; // Log every 60 frames (roughly every second)
-        
+
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Frame={_debugFrameCount} Viewport: Offset=({offsetX:F1},{offsetY:F1}) Zoom={zoom:F2} Nodes={nodeCount} viewBounds=(0,0,{viewBounds.Width:F0}x{viewBounds.Height:F0})");
-            
+
             // Calculate what canvas area is visible
             var visibleCanvasMinX = (0 - offsetX) / zoom;
             var visibleCanvasMaxX = (viewBounds.Width - offsetX) / zoom;
@@ -464,7 +424,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
 
             visibleNodeIds.Add(node.Id);
         }
-        
+
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] VisibleNodes: {visibleNodeIds.Count} of {visibleNodeCullStats_Total} (groups={visibleNodeCullStats_SkippedGroup}, visibility={visibleNodeCullStats_SkippedVisibility}, bounds={visibleNodeCullStats_SkippedBounds})");
@@ -480,13 +440,13 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             // Early culling: skip edges with both endpoints outside viewport
             var sourceVisible = visibleNodeIds.Contains(edge.Source);
             var targetVisible = visibleNodeIds.Contains(edge.Target);
-            
+
             if (!sourceVisible && !targetVisible)
             {
                 edgesSkipped_BothOutside++;
                 continue;
             }
-            
+
             // Track edges where one endpoint's node is missing
             if (_nodeById != null)
             {
@@ -497,7 +457,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             DrawEdge(context, edge, zoom, offsetX, offsetY, viewBounds, useSimplifiedNodes);
             edgesDrawn++;
         }
-        
+
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Edges: drew={edgesDrawn}, skippedBothOutside={edgesSkipped_BothOutside}, missingSource={edgesMissingSource}, missingTarget={edgesMissingTarget}");
@@ -541,7 +501,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
             handlesDrawn++;
         }
-        
+
         // Always log handle status to debug selection issues
         if (logThisFrame || handlesDrawn > 0 || _graph.Elements.Nodes.Any(n => n.IsSelected))
         {
@@ -560,7 +520,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
                 edgeHandlesDrawn++;
             }
         }
-        
+
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Drew: nodes={nodesDrawn}, groups={groupsDrawn}, edges=?, handles={handlesDrawn}, edgeHandles={edgeHandlesDrawn}");
