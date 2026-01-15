@@ -245,6 +245,34 @@ public class ThemeResources
 
     #endregion
 
+    #region Interactive Nodes
+
+    /// <summary>
+    /// Background for value display containers (output nodes, etc.).
+    /// </summary>
+    public IBrush InteractiveValueBackground => GetBrush("FlowCanvasInteractiveValueBackground",
+        IsLightTheme ? "#F0F0F0" : "#383838");
+
+    /// <summary>
+    /// Foreground for muted/placeholder text in interactive nodes.
+    /// </summary>
+    public IBrush InteractiveMutedText => GetBrush("FlowCanvasInteractiveMutedText",
+        IsLightTheme ? "#505050" : "#909090");
+
+    /// <summary>
+    /// Background for preview areas in interactive nodes.
+    /// </summary>
+    public IBrush InteractivePreviewBackground => GetBrush("FlowCanvasInteractivePreviewBackground",
+        IsLightTheme ? "#FAFAFA" : "#2A2A2A");
+
+    /// <summary>
+    /// Foreground for preview placeholder text.
+    /// </summary>
+    public IBrush InteractivePreviewText => GetBrush("FlowCanvasInteractivePreviewText",
+        IsLightTheme ? "#C8C8C8" : "#505050");
+
+    #endregion
+
     #region Minimap
 
     public IBrush MinimapBackground => GetBrush("FlowCanvasMinimapBackground",

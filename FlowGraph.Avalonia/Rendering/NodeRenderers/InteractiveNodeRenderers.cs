@@ -334,7 +334,7 @@ public class DisplayNodeRenderer : DataNodeRendererBase
 
         var valueDisplay = new Border
         {
-            Background = new SolidColorBrush(Color.FromRgb(240, 240, 240)),
+            Background = context.Theme.InteractiveValueBackground,
             CornerRadius = new CornerRadius(4),
             Padding = new Thickness(8, 4),
             Child = new TextBlock
@@ -407,7 +407,7 @@ public class RadioButtonNodeRenderer : WhiteHeaderedNodeRendererBase
                 FontSize = 11,
                 IsChecked = option == selectedValue,
                 GroupName = node.Id,
-                Foreground = new SolidColorBrush(Color.FromRgb(80, 80, 80)),
+                Foreground = context.Theme.InteractiveMutedText,
                 Tag = option
             };
 
@@ -568,7 +568,7 @@ public class OutputDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
         {
             Width = baseWidth - 40,
             Height = baseHeight - 80,
-            Background = new SolidColorBrush(Color.FromRgb(250, 250, 250)),
+            Background = context.Theme.InteractivePreviewBackground,
             CornerRadius = new CornerRadius(8),
             Tag = "ContentArea",
             Child = new TextBlock
@@ -577,7 +577,7 @@ public class OutputDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
                 FontSize = 24,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200))
+                Foreground = context.Theme.InteractivePreviewText
             }
         };
 
