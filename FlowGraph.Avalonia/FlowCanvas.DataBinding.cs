@@ -40,7 +40,6 @@ public partial class FlowCanvas
         _directRenderer?.UpdateSettings(newSettings);
 
         // Re-render with new settings
-        _graphNeedsRender = true;
         RenderAll();
     }
 
@@ -61,7 +60,6 @@ public partial class FlowCanvas
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
-            _graphNeedsRender = true;
             CenterOnGraph();
             ApplyViewportTransforms();
         }
@@ -265,7 +263,6 @@ public partial class FlowCanvas
             System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribed to {nodeCount} nodes PropertyChanged");
             
             // Reset requires full re-render
-            _graphNeedsRender = true;
             RenderElements();
             return;
         }
@@ -311,14 +308,12 @@ public partial class FlowCanvas
 
                 default:
                     // For other actions (Replace, Move), fall back to full re-render
-                    _graphNeedsRender = true;
                     RenderElements();
                     break;
             }
         }
         else
         {
-            _graphNeedsRender = true;
             RenderElements();
         }
     }
@@ -360,7 +355,6 @@ public partial class FlowCanvas
             }
             
             // Reset requires full edge re-render
-            _graphNeedsRender = true;
             RenderEdges();
             return;
         }
@@ -398,14 +392,12 @@ public partial class FlowCanvas
 
                 default:
                     // For other actions, fall back to full edge re-render
-                    _graphNeedsRender = true;
                     RenderEdges();
                     break;
             }
         }
         else
         {
-            _graphNeedsRender = true;
             RenderEdges();
         }
     }

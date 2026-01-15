@@ -503,7 +503,6 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private double _lastZoom = 1.0;
     private double _lastOffsetX = 0;
     private double _lastOffsetY = 0;
-    private bool _graphNeedsRender = true;
 
     // Animation state
     private readonly Dictionary<string, double> _edgeOpacityOverrides = new();
@@ -522,7 +521,6 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         {
             _theme = new ThemeResources(this);
             UpdateInputContextTheme();
-            _graphNeedsRender = true;
             RenderAll();
         };
     }
@@ -723,7 +721,6 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Defer initial render until after first layout pass to avoid redundant heavy renders.
         global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            _graphNeedsRender = true;
             RenderAll();
             CenterOnGraph();
         }, global::Avalonia.Threading.DispatcherPriority.Loaded);

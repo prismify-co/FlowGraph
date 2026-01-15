@@ -280,16 +280,17 @@ The canvas-first architecture refactor is complete. All phases have been impleme
 
 ### Completed Phases
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| Phase 1 | Core abstractions (`ICanvasElement`, `ElementCollection`) | ✅ Complete |
-| Phase 2 | Shape renderers and FlowCanvas integration | ✅ Complete |
-| Phase 2.6 | Public coordinate API | ✅ Complete |
-| Phase 3 | Rendering contracts (`ICoordinateTransformer`, `IViewportState`) | ✅ Complete |
+| Phase     | Description                                                      | Status      |
+| --------- | ---------------------------------------------------------------- | ----------- |
+| Phase 1   | Core abstractions (`ICanvasElement`, `ElementCollection`)        | ✅ Complete |
+| Phase 2   | Shape renderers and FlowCanvas integration                       | ✅ Complete |
+| Phase 2.6 | Public coordinate API                                            | ✅ Complete |
+| Phase 3   | Rendering contracts (`ICoordinateTransformer`, `IViewportState`) | ✅ Complete |
 
 ### Declined Work
 
 **Phase 4 (Pro & Demo Updates)** was considered and declined:
+
 - Converting `LifelineBackgroundRenderer` to shapes would be over-engineering
 - `IBackgroundRenderer` with `BackgroundRenderTarget` is the correct abstraction for diagram infrastructure
 - "If it works, don't rewrite it"

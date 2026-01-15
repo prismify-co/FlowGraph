@@ -101,7 +101,7 @@ public class Graph
     /// This is the single source of truth for all graph elements.
     /// </summary>
     /// <remarks>
-    /// Subscribe to <see cref="ElementCollection.CollectionChanged"/> for change notifications.
+    /// Subscribe to <c>Elements.CollectionChanged</c> for change notifications.
     /// Use typed accessors <see cref="Nodes"/> and <see cref="Edges"/> for read-only typed access.
     /// </remarks>
     public ElementCollection Elements { get; } = new();
