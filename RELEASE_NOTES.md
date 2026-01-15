@@ -22,11 +22,13 @@
 ### New Features
 
 - **Extensibility Interfaces**
+
   - `ICollisionProvider` - Interface for custom collision detection implementations
   - `ISnapProvider` - Interface for single-authority drag architecture
   - `ResizableVisual` pattern for unified render service
 
 - **Shape System Enhancements**
+
   - Shape selection and hit-testing support
   - Shape serialization with full round-trip support
 
