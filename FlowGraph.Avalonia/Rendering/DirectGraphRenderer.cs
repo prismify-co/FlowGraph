@@ -414,14 +414,14 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         var zoom = _viewport.Zoom;
         var offsetX = _viewport.OffsetX;
         var offsetY = _viewport.OffsetY;
-
+        
         _debugFrameCount++;
         var logThisFrame = _debugFrameCount % 60 == 1; // Log every 60 frames (roughly every second)
-
+        
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Frame={_debugFrameCount} Viewport: Offset=({offsetX:F1},{offsetY:F1}) Zoom={zoom:F2} Nodes={nodeCount} viewBounds=(0,0,{viewBounds.Width:F0}x{viewBounds.Height:F0})");
-
+            
             // Calculate what canvas area is visible
             var visibleCanvasMinX = (0 - offsetX) / zoom;
             var visibleCanvasMaxX = (viewBounds.Width - offsetX) / zoom;
@@ -464,7 +464,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
 
             visibleNodeIds.Add(node.Id);
         }
-
+        
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] VisibleNodes: {visibleNodeIds.Count} of {visibleNodeCullStats_Total} (groups={visibleNodeCullStats_SkippedGroup}, visibility={visibleNodeCullStats_SkippedVisibility}, bounds={visibleNodeCullStats_SkippedBounds})");
@@ -480,13 +480,13 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             // Early culling: skip edges with both endpoints outside viewport
             var sourceVisible = visibleNodeIds.Contains(edge.Source);
             var targetVisible = visibleNodeIds.Contains(edge.Target);
-
+            
             if (!sourceVisible && !targetVisible)
             {
                 edgesSkipped_BothOutside++;
                 continue;
             }
-
+            
             // Track edges where one endpoint's node is missing
             if (_nodeById != null)
             {
@@ -497,7 +497,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             DrawEdge(context, edge, zoom, offsetX, offsetY, viewBounds, useSimplifiedNodes);
             edgesDrawn++;
         }
-
+        
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Edges: drew={edgesDrawn}, skippedBothOutside={edgesSkipped_BothOutside}, missingSource={edgesMissingSource}, missingTarget={edgesMissingTarget}");
@@ -541,7 +541,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             DrawResizeHandles(context, node, zoom, offsetX, offsetY);
             handlesDrawn++;
         }
-
+        
         // Always log handle status to debug selection issues
         if (logThisFrame || handlesDrawn > 0 || _graph.Elements.Nodes.Any(n => n.IsSelected))
         {
@@ -560,7 +560,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
                 edgeHandlesDrawn++;
             }
         }
-
+        
         if (logThisFrame)
         {
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Drew: nodes={nodesDrawn}, groups={groupsDrawn}, edges=?, handles={handlesDrawn}, edgeHandles={edgeHandlesDrawn}");
@@ -568,416 +568,11 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         }
     }
 
-    #region Node Rendering
-
-    private void DrawNode(DrawingContext context, Node node, double zoom, double offsetX, double offsetY, bool showLabels, bool showPorts, bool useSimplified)
-    {
-        var canvasBounds = _model.GetNodeBounds(node);
-        var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
-
-        // Check if custom renderer exists and implements IDirectNodeRenderer
-        if (!useSimplified && _nodeRenderers != null)
-        {
-            var renderer = _nodeRenderers.GetRenderer(node.Type);
-            if (renderer is IDirectNodeRenderer directRenderer)
-            {
-                var background = GetNodeBackground(node);
-                var borderPen = node.IsSelected ? _nodeSelectedPen : _nodeBorderPen;
-
-                var renderContext = new DirectNodeRenderContext
-                {
-                    ScreenBounds = screenBounds,
-                    Zoom = zoom,
-                    IsSelected = node.IsSelected,
-                    IsEditing = _editingNodeId == node.Id,
-                    Background = background,
-                    BorderPen = borderPen,
-                    TextBrush = _theme!.NodeText,
-                    Theme = _theme,
-                    Settings = _settings,
-                    Model = _model
-                };
-
-                directRenderer.DrawNode(context, node, renderContext);
-                if (showPorts)
-                    DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
-                return;
-            }
-        }
-
-        // Simplified or default drawing
-        var cornerRadius = useSimplified ? 0 : GraphRenderModel.NodeCornerRadius * zoom;
-        var defaultBackground = GetNodeBackground(node);
-
-        // Draw rounded rectangle (or sharp rect if simplified)
-        if (useSimplified)
-        {
-            // Simple rectangle - faster than rounded
-            context.DrawRectangle(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, screenBounds);
-        }
-        else
-        {
-            var geometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
-            context.DrawGeometry(defaultBackground, node.IsSelected ? _nodeSelectedPen : _nodeBorderPen, geometry);
-        }
-
-        // Draw label (skip if being edited or LOD disabled)
-        if (showLabels && _editingNodeId != node.Id)
-        {
-            var label = node.Label ?? node.Type ?? node.Id;
-            if (!string.IsNullOrEmpty(label))
-            {
-                DrawCenteredText(context, label, screenBounds, 10 * zoom, _theme!.NodeText);
-            }
-        }
-
-        // Draw ports (if LOD allows)
-        if (showPorts)
-            DrawNodePorts(context, node, canvasBounds, zoom, offsetX, offsetY);
-    }
-
-    private IBrush? GetNodeBackground(Node node)
-    {
-        return node.Type?.ToLowerInvariant() switch
-        {
-            "input" => _nodeInputBackground,
-            "output" => _nodeOutputBackground,
-            _ => _nodeBackground
-        };
-    }
-
-    private void DrawNodePorts(DrawingContext context, Node node, Rect canvasBounds, double zoom, double offsetX, double offsetY)
-    {
-        var portSize = _settings.PortSize * zoom;
-
-        // Input ports
-        for (int i = 0; i < node.Inputs.Count; i++)
-        {
-            var port = node.Inputs[i];
-            var canvasPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
-            var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-
-            var isHovered = _hoveredPort.HasValue &&
-                           _hoveredPort.Value.nodeId == node.Id &&
-                           _hoveredPort.Value.portId == port.Id;
-
-            var brush = isHovered ? _theme!.PortHover : _portBrush;
-            context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
-        }
-
-        // Output ports
-        for (int i = 0; i < node.Outputs.Count; i++)
-        {
-            var port = node.Outputs[i];
-            var canvasPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
-            var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-
-            var isHovered = _hoveredPort.HasValue &&
-                           _hoveredPort.Value.nodeId == node.Id &&
-                           _hoveredPort.Value.portId == port.Id;
-
-            var brush = isHovered ? _theme!.PortHover : _portBrush;
-            context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
-        }
-    }
-
-    #endregion
-
-    #region Edge Rendering
-
-    private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds, bool useSimplified)
-    {
-        // O(1) dictionary lookup instead of O(n) FirstOrDefault - massive speedup for large graphs
-        if (_nodeById == null || _graph == null) return;
-        if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return;
-        if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
-        if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) return;
-
-        // Use optimized overload with pre-looked-up nodes
-        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
-        var startScreen = CanvasToScreen(startCanvas, zoom, offsetX, offsetY);
-        var endScreen = CanvasToScreen(endCanvas, zoom, offsetX, offsetY);
-
-        // Cull edges outside visible bounds
-        var margin = 100 * zoom;
-        var edgeMinX = Math.Min(startScreen.X, endScreen.X) - margin;
-        var edgeMaxX = Math.Max(startScreen.X, endScreen.X) + margin;
-        var edgeMinY = Math.Min(startScreen.Y, endScreen.Y) - margin;
-        var edgeMaxY = Math.Max(startScreen.Y, endScreen.Y) + margin;
-
-        if (edgeMaxX < 0 || edgeMinX > viewBounds.Width || edgeMaxY < 0 || edgeMinY > viewBounds.Height)
-            return;
-
-        var pen = edge.IsSelected ? _edgeSelectedPen : _edgePen;
-
-        // Simplified rendering: straight line instead of bezier when zoomed out
-        if (useSimplified)
-        {
-            context.DrawLine(pen!, startScreen, endScreen);
-        }
-        else
-        {
-            // Get control points (scaled to screen)
-            var (cp1Canvas, cp2Canvas) = _model.GetBezierControlPoints(startCanvas, endCanvas);
-            var cp1Screen = CanvasToScreen(cp1Canvas, zoom, offsetX, offsetY);
-            var cp2Screen = CanvasToScreen(cp2Canvas, zoom, offsetX, offsetY);
-
-            // Draw bezier curve
-            var geometry = new StreamGeometry();
-            using (var ctx = geometry.Open())
-            {
-                ctx.BeginFigure(startScreen, false);
-                ctx.CubicBezierTo(cp1Screen, cp2Screen, endScreen);
-                ctx.EndFigure(false);
-            }
-
-            context.DrawGeometry(null, pen, geometry);
-        }
-
-        // Draw arrow at end (skip in simplified mode for performance)
-        if (!useSimplified && edge.MarkerEnd != EdgeMarker.None)
-        {
-            var cp2Screen = useSimplified ? startScreen : CanvasToScreen(_model.GetBezierControlPoints(startCanvas, endCanvas).Item2, zoom, offsetX, offsetY);
-            var angle = Math.Atan2(endScreen.Y - cp2Screen.Y, endScreen.X - cp2Screen.X);
-            DrawArrow(context, endScreen, angle, pen!.Brush, zoom, edge.MarkerEnd == EdgeMarker.ArrowClosed);
-        }
-
-        // Draw edge label (skip if being edited or in simplified mode)
-        if (!useSimplified && !string.IsNullOrEmpty(edge.Label) && _editingEdgeId != edge.Id)
-        {
-            var midCanvas = _model.GetEdgeMidpoint(startCanvas, endCanvas);
-            var midScreen = CanvasToScreen(midCanvas, zoom, offsetX, offsetY);
-            DrawEdgeLabel(context, edge.Label, midScreen, zoom);
-        }
-    }
-
-    private void DrawEdgeEndpointHandles(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY)
-    {
-        // Use O(1) dictionary lookup instead of O(n) FirstOrDefault
-        if (_nodeById == null) return;
-        if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return;
-        if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
-
-        // Use optimized overload with pre-looked-up nodes
-        var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
-        var startScreen = CanvasToScreen(startCanvas, zoom, offsetX, offsetY);
-        var endScreen = CanvasToScreen(endCanvas, zoom, offsetX, offsetY);
-
-        var handleSize = _settings.EdgeEndpointHandleSize * zoom;
-        var halfSize = handleSize / 2;
-
-        // Source handle
-        var isSourceHovered = _hoveredEndpointHandle.HasValue &&
-                              _hoveredEndpointHandle.Value.edgeId == edge.Id &&
-                              _hoveredEndpointHandle.Value.isSource;
-        var sourceFill = isSourceHovered ? _theme!.PortHover : _endpointHandleFill;
-        context.DrawEllipse(sourceFill, _endpointHandlePen, startScreen, halfSize, halfSize);
-
-        // Target handle
-        var isTargetHovered = _hoveredEndpointHandle.HasValue &&
-                              _hoveredEndpointHandle.Value.edgeId == edge.Id &&
-                              !_hoveredEndpointHandle.Value.isSource;
-        var targetFill = isTargetHovered ? _theme!.PortHover : _endpointHandleFill;
-        context.DrawEllipse(targetFill, _endpointHandlePen, endScreen, halfSize, halfSize);
-    }
-
-    private void DrawEdgeLabel(DrawingContext context, string label, AvaloniaPoint midScreen, double zoom)
-    {
-        var fontSize = 12 * zoom;
-        var formattedText = new FormattedText(
-            label,
-            System.Globalization.CultureInfo.CurrentCulture,
-            FlowDirection.LeftToRight,
-            _typeface,
-            fontSize,
-            _theme!.NodeText);
-
-        var padding = 4 * zoom;
-        var bgRect = new Rect(
-            midScreen.X - padding,
-            midScreen.Y - 10 * zoom - padding,
-            formattedText.Width + padding * 2,
-            formattedText.Height + padding * 2);
-
-        context.DrawRectangle(_theme.NodeBackground, null, bgRect, 3 * zoom, 3 * zoom);
-        context.DrawText(formattedText, new AvaloniaPoint(midScreen.X, midScreen.Y - 10 * zoom));
-    }
-
-    private void DrawArrow(DrawingContext context, AvaloniaPoint tip, double angle, IBrush? brush, double zoom, bool filled)
-    {
-        var arrowSize = 10 * zoom;
-
-        var p1 = new AvaloniaPoint(
-            tip.X - arrowSize * Math.Cos(angle - Math.PI / 6),
-            tip.Y - arrowSize * Math.Sin(angle - Math.PI / 6));
-        var p2 = new AvaloniaPoint(
-            tip.X - arrowSize * Math.Cos(angle + Math.PI / 6),
-            tip.Y - arrowSize * Math.Sin(angle + Math.PI / 6));
-
-        var geometry = new StreamGeometry();
-        using (var ctx = geometry.Open())
-        {
-            ctx.BeginFigure(tip, filled);
-            ctx.LineTo(p1);
-            ctx.LineTo(p2);
-            ctx.EndFigure(true);
-        }
-
-        var pen = filled ? null : new Pen(brush, 2 * zoom);
-        context.DrawGeometry(filled ? brush : null, pen, geometry);
-    }
-
-    #endregion
-
-    #region Resize Handles
-
-    private void DrawResizeHandles(DrawingContext context, Node node, double zoom, double offsetX, double offsetY)
-    {
-        var handleSize = GraphRenderModel.ResizeHandleSize * zoom;
-
-        foreach (var (_, center) in _model.GetResizeHandlePositions(node))
-        {
-            var screenCenter = CanvasToScreen(center, zoom, offsetX, offsetY);
-            var rect = new Rect(
-                screenCenter.X - handleSize / 2,
-                screenCenter.Y - handleSize / 2,
-                handleSize,
-                handleSize);
-            context.DrawRectangle(_resizeHandleFill, _resizeHandlePen, rect);
-        }
-    }
-
-    #endregion
-
-    #region Group Rendering
-
-    private void DrawGroup(DrawingContext context, Node group, double zoom, double offsetX, double offsetY)
-    {
-        var canvasBounds = _model.GetNodeBounds(group);
-        var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
-        var cornerRadius = GraphRenderModel.GroupBorderRadius * zoom;
-
-        // Background fill
-        var bgGeometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
-        context.DrawGeometry(_theme!.GroupBackground, null, bgGeometry);
-
-        // Border
-        var borderBrush = group.IsSelected ? _theme.NodeSelectedBorder : _theme.GroupBorder;
-        var borderPen = new Pen(borderBrush, GraphRenderModel.GroupDashedStrokeThickness * zoom);
-        if (!group.IsSelected)
-        {
-            borderPen.DashStyle = new DashStyle(new double[] { 4, 2 }, 0);
-        }
-
-        var borderGeometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
-        context.DrawGeometry(null, borderPen, borderGeometry);
-
-        // Header
-        DrawGroupHeader(context, group, zoom, offsetX, offsetY);
-
-        // Ports
-        DrawGroupPorts(context, group, canvasBounds, zoom, offsetX, offsetY);
-    }
-
-    private void DrawCollapsedGroup(DrawingContext context, Node group, double zoom, double offsetX, double offsetY)
-    {
-        // Same as DrawGroup but with collapsed height
-        DrawGroup(context, group, zoom, offsetX, offsetY);
-    }
-
-    private void DrawGroupHeader(DrawingContext context, Node group, double zoom, double offsetX, double offsetY)
-    {
-        // Collapse button
-        var buttonBounds = _model.GetGroupCollapseButtonBounds(group);
-        var screenButtonBounds = CanvasToScreen(buttonBounds, zoom, offsetX, offsetY);
-
-        var buttonBrush = new SolidColorBrush(Color.FromArgb(20, 128, 128, 128));
-        context.DrawRectangle(buttonBrush, null, screenButtonBounds, 3 * zoom, 3 * zoom);
-
-        // Collapse indicator
-        var indicatorText = group.IsCollapsed ? "+" : "-";
-        var indicatorFontSize = 12 * zoom;
-        var indicatorFormatted = new FormattedText(
-            indicatorText,
-            System.Globalization.CultureInfo.CurrentCulture,
-            FlowDirection.LeftToRight,
-            new Typeface(_typeface.FontFamily, FontStyle.Normal, FontWeight.Bold, FontStretch.Normal),
-            indicatorFontSize,
-            _theme!.GroupLabelText);
-
-        var indicatorX = screenButtonBounds.X + (screenButtonBounds.Width - indicatorFormatted.Width) / 2;
-        var indicatorY = screenButtonBounds.Y + (screenButtonBounds.Height - indicatorFormatted.Height) / 2;
-        context.DrawText(indicatorFormatted, new AvaloniaPoint(indicatorX, indicatorY));
-
-        // Label (skip if being edited)
-        if (_editingNodeId != group.Id)
-        {
-            var label = group.Label ?? "Group";
-            var fontSize = 11 * zoom;
-
-            // Get color from theme, with fallback for non-SolidColorBrush
-            var labelBrush = _theme.GroupLabelText;
-            if (labelBrush is SolidColorBrush solidBrush)
-            {
-                labelBrush = new SolidColorBrush(solidBrush.Color, 0.9);
-            }
-
-            var formattedText = new FormattedText(
-                label,
-                System.Globalization.CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(_typeface.FontFamily, FontStyle.Normal, FontWeight.Medium, FontStretch.Normal),
-                fontSize,
-                labelBrush);
-
-            var labelPos = _model.GetGroupLabelPosition(group);
-            var screenLabelPos = CanvasToScreen(labelPos, zoom, offsetX, offsetY);
-
-            // Adjust Y to center with button
-            var textY = screenButtonBounds.Y + (screenButtonBounds.Height - formattedText.Height) / 2;
-
-            context.DrawText(formattedText, new AvaloniaPoint(screenLabelPos.X, textY));
-        }
-    }
-
-    private void DrawGroupPorts(DrawingContext context, Node group, Rect canvasBounds, double zoom, double offsetX, double offsetY)
-    {
-        var portSize = _settings.PortSize * zoom;
-
-        // Input ports
-        for (int i = 0; i < group.Inputs.Count; i++)
-        {
-            var port = group.Inputs[i];
-            var canvasPos = _model.GetPortPositionByIndex(group, i, group.Inputs.Count, false);
-            var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-
-            var isHovered = _hoveredPort.HasValue &&
-                           _hoveredPort.Value.nodeId == group.Id &&
-                           _hoveredPort.Value.portId == port.Id;
-
-            var brush = isHovered ? _theme!.PortHover : _portBrush;
-            context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
-        }
-
-        // Output ports
-        for (int i = 0; i < group.Outputs.Count; i++)
-        {
-            var port = group.Outputs[i];
-            var canvasPos = _model.GetPortPositionByIndex(group, i, group.Outputs.Count, true);
-            var screenPos = CanvasToScreen(canvasPos, zoom, offsetX, offsetY);
-
-            var isHovered = _hoveredPort.HasValue &&
-                           _hoveredPort.Value.nodeId == group.Id &&
-                           _hoveredPort.Value.portId == port.Id;
-
-            var brush = isHovered ? _theme!.PortHover : _portBrush;
-            context.DrawEllipse(brush, _portPen, screenPos, portSize / 2, portSize / 2);
-        }
-    }
-
-    #endregion
-
-    // Hit Testing methods are in DirectGraphRenderer.HitTesting.cs
+    // Node rendering methods are in DirectGraphRenderer.NodeRendering.cs
+    // Edge rendering methods are in DirectGraphRenderer.EdgeRendering.cs
+    // Group rendering methods are in DirectGraphRenderer.GroupRendering.cs
+    // Hit testing methods are in DirectGraphRenderer.HitTesting.cs
+    // Helper methods are in DirectGraphRenderer.Helpers.cs
 
     #region Coordinate Transforms
 
