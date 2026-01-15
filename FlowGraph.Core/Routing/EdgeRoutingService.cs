@@ -213,30 +213,18 @@ public class EdgeRoutingService
         if (sourceNode == null || targetNode == null)
             return [];
 
-        var sourcePos = GetPortPosition(sourceNode, edge.SourcePort, true);
-        var targetPos = GetPortPosition(targetNode, edge.TargetPort, false);
+        // Reuse DirectRouter.GetPortPosition to avoid code duplication
+        var context = new EdgeRoutingContext
+        {
+            Graph = graph,
+            Options = Options,
+            DefaultNodeWidth = DefaultNodeWidth,
+            DefaultNodeHeight = DefaultNodeHeight
+        };
+
+        var sourcePos = Routing.DirectRouter.GetPortPosition(sourceNode, edge.SourcePort, true, context);
+        var targetPos = Routing.DirectRouter.GetPortPosition(targetNode, edge.TargetPort, false, context);
 
         return [sourcePos, targetPos];
-    }
-
-    private Point GetPortPosition(Node node, string? portId, bool isOutput)
-    {
-        var nodeWidth = node.Width ?? DefaultNodeWidth;
-        var nodeHeight = node.Height ?? DefaultNodeHeight;
-
-        var ports = isOutput ? node.Outputs : node.Inputs;
-        var portIndex = 0;
-        if (!string.IsNullOrEmpty(portId))
-        {
-            var idx = ports.FindIndex(p => p.Id == portId);
-            if (idx >= 0) portIndex = idx;
-        }
-
-        var totalPorts = Math.Max(1, ports.Count);
-        var spacing = nodeHeight / (totalPorts + 1);
-        var portY = node.Position.Y + spacing * (portIndex + 1);
-        var portX = isOutput ? node.Position.X + nodeWidth : node.Position.X;
-
-        return new Point(portX, portY);
     }
 }
