@@ -49,25 +49,29 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     protected virtual double HeaderFontSize => 11;
 
     /// <summary>
-    /// Gets the header text color.
+    /// Gets the header text brush from theme, with optional override.
     /// </summary>
-    public virtual Color HeaderTextColor => Color.FromRgb(100, 100, 100);
+    protected virtual IBrush GetHeaderTextBrush(ThemeResources theme) => theme.HeaderedNodeHeaderText;
 
     /// <summary>
-    /// Gets the header background color. Default is glassy semi-transparent (~50% opacity).
-    /// Override this in subclasses to provide accent colors.
+    /// Gets the header background brush from theme, with optional override.
     /// </summary>
-    public virtual Color HeaderBackgroundColor => Color.FromArgb(128, 248, 248, 248); // ~50% opacity light gray (glassy)
+    protected virtual IBrush GetHeaderBackgroundBrush(ThemeResources theme) => theme.HeaderedNodeHeaderBackground;
 
     /// <summary>
-    /// Gets the body background color.
+    /// Gets the body background brush from theme, with optional override.
     /// </summary>
-    public virtual Color BodyBackgroundColor => Colors.White;
+    protected virtual IBrush GetBodyBackgroundBrush(ThemeResources theme) => theme.HeaderedNodeBodyBackground;
 
     /// <summary>
-    /// Gets the node border color (outer border).
+    /// Gets the node border brush from theme, with optional override.
     /// </summary>
-    public virtual Color NodeBorderColor => Color.FromRgb(230, 230, 230);
+    protected virtual IBrush GetNodeBorderBrush(ThemeResources theme) => theme.HeaderedNodeBorder;
+
+    /// <summary>
+    /// Gets the shadow color from theme, with optional override.
+    /// </summary>
+    protected virtual Color GetShadowColor(ThemeResources theme) => theme.HeaderedNodeShadow;
 
     /// <summary>
     /// Gets the border thickness for the outer node border.
@@ -103,8 +107,8 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         // Header panel - glassy semi-transparent background with bottom border separator
         var headerPanel = new Border
         {
-            Background = new SolidColorBrush(HeaderBackgroundColor),
-            BorderBrush = new SolidColorBrush(NodeBorderColor),
+            Background = GetHeaderBackgroundBrush(context.Theme),
+            BorderBrush = GetNodeBorderBrush(context.Theme),
             BorderThickness = new Thickness(0, 0, 0, 1), // Bottom border only - separator line
             Padding = new Thickness(HorizontalPadding, HeaderVerticalPadding, HorizontalPadding, HeaderVerticalPadding),
             Tag = HeaderPanelTag,
@@ -113,7 +117,7 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
                 Text = node.Label ?? GetDefaultLabel(),
                 FontWeight = FontWeight.Medium,
                 FontSize = HeaderFontSize,
-                Foreground = new SolidColorBrush(HeaderTextColor),
+                Foreground = GetHeaderTextBrush(context.Theme),
                 TextTrimming = TextTrimming.CharacterEllipsis, // Trim long labels
                 Tag = HeaderLabelTag
             }
@@ -121,10 +125,10 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         DockPanel.SetDock(headerPanel, Dock.Top);
         mainPanel.Children.Add(headerPanel);
 
-        // Body panel - solid white background, fills remaining space
+        // Body panel - solid background, fills remaining space
         var bodyPanel = new Border
         {
-            Background = new SolidColorBrush(BodyBackgroundColor),
+            Background = GetBodyBackgroundBrush(context.Theme),
             Padding = new Thickness(HorizontalPadding, ContentVerticalPadding, HorizontalPadding, ContentVerticalPadding),
             Tag = BodyPanelTag,
             Child = CreateContent(node, processor, context)
@@ -137,7 +141,7 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
             Width = baseWidth * scale,
             Height = baseHeight * scale,
             Background = Brushes.Transparent,
-            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : new SolidColorBrush(NodeBorderColor),
+            BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : GetNodeBorderBrush(context.Theme),
             BorderThickness = new Thickness(node.IsSelected ? SelectedBorderThickness : BorderThickness),
             CornerRadius = new CornerRadius(CornerRadius),
             ClipToBounds = true, // Clip children to rounded corners
@@ -147,7 +151,7 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
                 OffsetY = 2,
                 Blur = 8,
                 Spread = -2,
-                Color = Color.FromArgb(30, 0, 0, 0)
+                Color = GetShadowColor(context.Theme)
             }),
             Tag = OuterBorderTag,
             Cursor = new Cursor(StandardCursorType.Hand),
@@ -180,7 +184,7 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         {
             outerBorder.BorderBrush = node.IsSelected
                 ? context.Theme.NodeSelectedBorder
-                : new SolidColorBrush(NodeBorderColor);
+                : GetNodeBorderBrush(context.Theme);
             outerBorder.BorderThickness = new Thickness(node.IsSelected ? SelectedBorderThickness : BorderThickness);
         }
     }
@@ -204,33 +208,25 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
 /// <summary>
 /// Headered node with accent-colored header (pink/rose tint).
 /// The header has a glassy semi-transparent pink background and pink text.
+/// Override methods use fixed accent colors rather than theme resources.
 /// </summary>
 public abstract class StyledHeaderedNodeRendererBase : HeaderedNodeRendererBase
 {
-    /// <summary>
-    /// Pink/rose header text color.
-    /// </summary>
-    public override Color HeaderTextColor => Color.FromRgb(200, 80, 120);
+    private static readonly IBrush PinkHeaderText = new SolidColorBrush(Color.FromRgb(200, 80, 120)).ToImmutable();
+    private static readonly IBrush PinkHeaderBackground = new SolidColorBrush(Color.FromArgb(128, 255, 235, 240)).ToImmutable();
 
-    /// <summary>
-    /// Glassy semi-transparent pink header background (~50% opacity for glass effect).
-    /// </summary>
-    public override Color HeaderBackgroundColor => Color.FromArgb(128, 255, 235, 240); // Light pink with 50% opacity (glassy)
+    /// <inheritdoc />
+    protected override IBrush GetHeaderTextBrush(ThemeResources theme) => PinkHeaderText;
+
+    /// <inheritdoc />
+    protected override IBrush GetHeaderBackgroundBrush(ThemeResources theme) => PinkHeaderBackground;
 }
 
 /// <summary>
 /// Headered node with neutral gray header (subtle gray tint).
-/// The header has a glassy semi-transparent gray background and gray text.
+/// Uses the default theme resources - provided for explicit naming.
 /// </summary>
 public abstract class WhiteHeaderedNodeRendererBase : HeaderedNodeRendererBase
 {
-    /// <summary>
-    /// Gray header text color.
-    /// </summary>
-    public override Color HeaderTextColor => Color.FromRgb(100, 100, 100);
-
-    /// <summary>
-    /// Glassy semi-transparent light gray header background (~50% opacity for glass effect).
-    /// </summary>
-    public override Color HeaderBackgroundColor => Color.FromArgb(128, 248, 248, 248); // Light gray with 50% opacity (glassy)
+    // Uses default theme resources from base class
 }

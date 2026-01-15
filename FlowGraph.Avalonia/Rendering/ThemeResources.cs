@@ -84,6 +84,19 @@ public class ThemeResources
         return TryGetResource<IBrush>(key);
     }
 
+    /// <summary>
+    /// Gets a color resource with a fallback value.
+    /// </summary>
+    public Color GetColor(string key, string fallbackColor)
+    {
+        if (_element.TryGetResource(key, _element.ActualThemeVariant, out var resource))
+        {
+            if (resource is Color color) return color;
+            if (resource is SolidColorBrush brush) return brush.Color;
+        }
+        return Color.Parse(fallbackColor);
+    }
+
     #region Canvas
 
     public IBrush Background => GetBrush("FlowCanvasBackground",
@@ -195,6 +208,40 @@ public class ThemeResources
     public IBrush SelectionBoxFill => GetBrush("FlowCanvasSelectionBoxFill", "#204682B4");
 
     public IBrush SelectionBoxStroke => GetBrush("FlowCanvasSelectionBoxStroke", "#4682B4");
+
+    #endregion
+
+    #region Headered Nodes (React Flow style)
+
+    /// <summary>
+    /// Header text color for headered nodes.
+    /// </summary>
+    public IBrush HeaderedNodeHeaderText => GetBrush("FlowCanvasHeaderedNodeHeaderText",
+        IsLightTheme ? "#646464" : "#B0B0B0");
+
+    /// <summary>
+    /// Header background color for headered nodes (semi-transparent glassy effect).
+    /// </summary>
+    public IBrush HeaderedNodeHeaderBackground => GetBrush("FlowCanvasHeaderedNodeHeaderBackground",
+        IsLightTheme ? "#80F8F8F8" : "#80303030");
+
+    /// <summary>
+    /// Body background color for headered nodes.
+    /// </summary>
+    public IBrush HeaderedNodeBodyBackground => GetBrush("FlowCanvasHeaderedNodeBodyBackground",
+        IsLightTheme ? "#FFFFFF" : "#252526");
+
+    /// <summary>
+    /// Border color for headered nodes.
+    /// </summary>
+    public IBrush HeaderedNodeBorder => GetBrush("FlowCanvasHeaderedNodeBorder",
+        IsLightTheme ? "#E6E6E6" : "#404040");
+
+    /// <summary>
+    /// Shadow color for headered nodes.
+    /// </summary>
+    public Color HeaderedNodeShadow => GetColor("FlowCanvasHeaderedNodeShadow",
+        IsLightTheme ? "#1E000000" : "#1E000000");
 
     #endregion
 
