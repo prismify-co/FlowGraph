@@ -12,16 +12,11 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// </summary>
 public class SimplifiedNodeRenderer : INodeRenderer
 {
-    private const double DefaultWidth = 100;
-    private const double DefaultHeight = 50;
-    private const double CornerRadius = 4;
-    private const double BorderThickness = 2;
-
     public Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
         var scale = context.Scale;
-        var width = (node.Width ?? DefaultWidth) * scale;
-        var height = (node.Height ?? DefaultHeight) * scale;
+        var width = (node.Width ?? DesignTokens.NodeWidthNarrow) * scale;
+        var height = (node.Height ?? DesignTokens.NodeHeightCompact) * scale;
 
         // Use a simple Border with a TextBlock - minimal visual tree
         var border = new Border
@@ -30,17 +25,17 @@ public class SimplifiedNodeRenderer : INodeRenderer
             Height = height,
             Background = GetBackgroundBrush(node, context),
             BorderBrush = node.IsSelected ? context.Theme.NodeSelectedBorder : context.Theme.NodeBorder,
-            BorderThickness = new Thickness(BorderThickness * scale),
-            CornerRadius = new CornerRadius(CornerRadius * scale),
+            BorderThickness = new Thickness(DesignTokens.BorderBase * scale),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusBase * scale),
             Child = new TextBlock
             {
                 Text = node.Label ?? node.Type ?? node.Id,
                 Foreground = context.Theme.NodeText,
-                FontSize = 10 * scale,
+                FontSize = DesignTokens.FontSizeXs * scale,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4 * scale)
+                Margin = new Thickness(DesignTokens.SpacingSm * scale)
             }
         };
 
@@ -55,7 +50,7 @@ public class SimplifiedNodeRenderer : INodeRenderer
                 ? context.Theme.NodeSelectedBorder
                 : context.Theme.NodeBorder;
             border.BorderThickness = new Thickness(
-                (node.IsSelected ? BorderThickness + 1 : BorderThickness) * context.Scale);
+                (node.IsSelected ? DesignTokens.BorderThick : DesignTokens.BorderBase) * context.Scale);
         }
     }
 
@@ -68,13 +63,13 @@ public class SimplifiedNodeRenderer : INodeRenderer
         }
     }
 
-    public double? GetWidth(Node node, FlowCanvasSettings settings) => node.Width ?? DefaultWidth;
+    public double? GetWidth(Node node, FlowCanvasSettings settings) => node.Width ?? DesignTokens.NodeWidthNarrow;
 
-    public double? GetHeight(Node node, FlowCanvasSettings settings) => node.Height ?? DefaultHeight;
+    public double? GetHeight(Node node, FlowCanvasSettings settings) => node.Height ?? DesignTokens.NodeHeightCompact;
 
-    public double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
+    public double? GetMinWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeMinWidth;
 
-    public double? GetMinHeight(Node node, FlowCanvasSettings settings) => 30;
+    public double? GetMinHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeMinHeight;
 
     private static IBrush GetBackgroundBrush(Node node, NodeRenderContext context)
     {

@@ -18,8 +18,8 @@ public class SliderNodeRenderer : DataNodeRendererBase
     public double Maximum { get; set; } = 100;
     public double TickFrequency { get; set; } = 1;
 
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 180;
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 100;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeWidthWide;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightTall;
 
     public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
@@ -29,13 +29,13 @@ public class SliderNodeRenderer : DataNodeRendererBase
         var scale = context.Scale;
         var initialValue = GetSliderValue(node, processor, Minimum);
 
-        var content = new StackPanel { Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+        var content = new StackPanel { Spacing = DesignTokens.SpacingBase, VerticalAlignment = VerticalAlignment.Center };
 
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Slider",
             FontWeight = FontWeight.SemiBold,
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             Foreground = context.Theme.NodeText
         });
 
@@ -46,14 +46,14 @@ public class SliderNodeRenderer : DataNodeRendererBase
             Value = initialValue,
             TickFrequency = TickFrequency,
             IsSnapToTickEnabled = TickFrequency > 0,
-            Width = 140,
+            Width = DesignTokens.SliderWidth,
             Tag = "Slider"
         };
 
         var valueText = new TextBlock
         {
             Text = initialValue.ToString("F1"),
-            FontSize = 11,
+            FontSize = DesignTokens.FontSizeSm,
             Foreground = context.Theme.NodeText,
             HorizontalAlignment = HorizontalAlignment.Center,
             Tag = "ValueText"
@@ -73,7 +73,7 @@ public class SliderNodeRenderer : DataNodeRendererBase
         content.Children.Add(slider);
         content.Children.Add(valueText);
 
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(8 * scale) };
+        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(DesignTokens.SpacingMd * scale) };
         border.ClipToBounds = true;
         return border;
     }
@@ -103,7 +103,7 @@ public class SliderNodeRenderer : DataNodeRendererBase
 /// </summary>
 public class NumberInputNodeRenderer : DataNodeRendererBase
 {
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.InputWidthWide;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 90;
 
     public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
@@ -114,21 +114,21 @@ public class NumberInputNodeRenderer : DataNodeRendererBase
         var scale = context.Scale;
         var initialValue = node.Data is double d ? d : (processor is InputNodeProcessor<double> p ? p.Value : 0);
 
-        var content = new StackPanel { Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+        var content = new StackPanel { Spacing = DesignTokens.SpacingBase, VerticalAlignment = VerticalAlignment.Center };
 
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Number",
             FontWeight = FontWeight.SemiBold,
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             Foreground = context.Theme.NodeText
         });
 
         var textBox = new TextBox
         {
             Text = initialValue.ToString(),
-            Width = 100,
-            FontSize = 12,
+            Width = DesignTokens.InputWidthNarrow,
+            FontSize = DesignTokens.FontSizeBase,
             HorizontalContentAlignment = HorizontalAlignment.Center,
             Tag = "NumberInput"
         };
@@ -146,7 +146,7 @@ public class NumberInputNodeRenderer : DataNodeRendererBase
 
         content.Children.Add(textBox);
 
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(8 * scale) };
+        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(DesignTokens.SpacingMd * scale) };
         border.ClipToBounds = true;
         return border;
     }
@@ -157,7 +157,7 @@ public class NumberInputNodeRenderer : DataNodeRendererBase
 /// </summary>
 public class TextInputNodeRenderer : DataNodeRendererBase
 {
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 180;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeWidthWide;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 90;
 
     public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
@@ -168,17 +168,17 @@ public class TextInputNodeRenderer : DataNodeRendererBase
         var scale = context.Scale;
         var initialValue = node.Data as string ?? (processor is InputNodeProcessor<string> p ? p.Value ?? "" : "");
 
-        var content = new StackPanel { Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+        var content = new StackPanel { Spacing = DesignTokens.SpacingBase, VerticalAlignment = VerticalAlignment.Center };
 
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Text",
             FontWeight = FontWeight.SemiBold,
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             Foreground = context.Theme.NodeText
         });
 
-        var textBox = new TextBox { Text = initialValue, Width = 140, FontSize = 12, Tag = "TextInput" };
+        var textBox = new TextBox { Text = initialValue, Width = DesignTokens.InputWidthDefault, FontSize = DesignTokens.FontSizeBase, Tag = "TextInput" };
 
         textBox.PointerPressed += (s, e) => e.Handled = true;
         textBox.TextChanged += (s, e) =>
@@ -189,7 +189,7 @@ public class TextInputNodeRenderer : DataNodeRendererBase
 
         content.Children.Add(textBox);
 
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(8 * scale) };
+        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(DesignTokens.SpacingMd * scale) };
         border.ClipToBounds = true;
         return border;
     }
@@ -200,8 +200,8 @@ public class TextInputNodeRenderer : DataNodeRendererBase
 /// </summary>
 public class ToggleNodeRenderer : DataNodeRendererBase
 {
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 140;
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 80;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.SliderWidth;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightDefault;
 
     public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
@@ -214,7 +214,7 @@ public class ToggleNodeRenderer : DataNodeRendererBase
         var checkBox = new CheckBox
         {
             Content = node.Label ?? "Toggle",
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             IsChecked = initialValue,
             Tag = "Toggle"
         };
@@ -231,7 +231,7 @@ public class ToggleNodeRenderer : DataNodeRendererBase
         {
             Stretch = Stretch.Uniform,
             Child = checkBox,
-            Margin = new Thickness(8 * scale),
+            Margin = new Thickness(DesignTokens.SpacingMd * scale),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -247,8 +247,8 @@ public class DropdownNodeRenderer : DataNodeRendererBase
 {
     public IList<string> Options { get; set; } = new List<string>();
 
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 100;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.InputWidthWide;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightTall;
 
     public override Control CreateDataBoundVisual(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
@@ -258,17 +258,17 @@ public class DropdownNodeRenderer : DataNodeRendererBase
         var scale = context.Scale;
         var (options, selectedValue) = GetDropdownData(node, processor);
 
-        var content = new StackPanel { Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+        var content = new StackPanel { Spacing = DesignTokens.SpacingBase, VerticalAlignment = VerticalAlignment.Center };
 
         content.Children.Add(new TextBlock
         {
             Text = node.Label ?? "Select",
             FontWeight = FontWeight.SemiBold,
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             Foreground = context.Theme.NodeText
         });
 
-        var comboBox = new ComboBox { ItemsSource = options, Width = 120, FontSize = 11, Tag = "Dropdown" };
+        var comboBox = new ComboBox { ItemsSource = options, Width = DesignTokens.ComboBoxWidth, FontSize = DesignTokens.FontSizeSm, Tag = "Dropdown" };
         comboBox.PointerPressed += (s, e) => e.Handled = true;
 
         if (options.Count > 0)
@@ -288,7 +288,7 @@ public class DropdownNodeRenderer : DataNodeRendererBase
 
         content.Children.Add(comboBox);
 
-        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(8 * scale) };
+        border.Child = new Viewbox { Stretch = Stretch.Uniform, Child = content, Margin = new Thickness(DesignTokens.SpacingMd * scale) };
         border.ClipToBounds = true;
         return border;
     }
@@ -386,8 +386,8 @@ public class RadioButtonNodeRenderer : WhiteHeaderedNodeRendererBase
 
     public IList<string> Options { get; set; } = new List<string> { "cube", "pyramid" };
 
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 120;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.InputWidthWide;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightExpanded;
 
     protected override string GetDefaultLabel() => "shape type";
 
@@ -397,14 +397,14 @@ public class RadioButtonNodeRenderer : WhiteHeaderedNodeRendererBase
 
         // Create container Border with Tag = node for processor lookup (like ZoomSlider)
         var container = new Border { Tag = node };
-        var radioPanel = new StackPanel { Spacing = 6 };
+        var radioPanel = new StackPanel { Spacing = DesignTokens.SpacingBase };
 
         foreach (var option in options)
         {
             var radio = new RadioButton
             {
                 Content = option,
-                FontSize = 11,
+                FontSize = DesignTokens.FontSizeSm,
                 IsChecked = option == selectedValue,
                 GroupName = node.Id,
                 Foreground = context.Theme.InteractiveMutedText,
@@ -488,7 +488,7 @@ public class ZoomSliderNodeRenderer : WhiteHeaderedNodeRendererBase
     // Static registry to store processor mappings (survives visual tree rebuilds)
     private static readonly Dictionary<string, INodeProcessor> ProcessorRegistry = new();
 
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 160;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.InputWidthWide;
     public override double? GetHeight(Node node, FlowCanvasSettings settings) => 90;
 
     protected override string GetDefaultLabel() => "zoom level";
@@ -504,7 +504,7 @@ public class ZoomSliderNodeRenderer : WhiteHeaderedNodeRendererBase
             Minimum = 0,
             Maximum = 100,
             Value = initialValue,
-            Width = 120,
+            Width = DesignTokens.ComboBoxWidth,
             Tag = "Slider"
         };
 
@@ -552,12 +552,12 @@ public class ZoomSliderNodeRenderer : WhiteHeaderedNodeRendererBase
 /// </summary>
 public class OutputDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
 {
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 220;
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 200;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeWidthLarge;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightLarge;
 
     protected override string GetDefaultLabel() => "output";
 
-    protected override double ContentVerticalPadding => 10;
+    protected override double ContentVerticalPadding => DesignTokens.SpacingLg;
 
     protected override Control CreateContent(Node node, INodeProcessor? processor, NodeRenderContext context)
     {
@@ -569,12 +569,12 @@ public class OutputDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
             Width = baseWidth - 40,
             Height = baseHeight - 80,
             Background = context.Theme.InteractivePreviewBackground,
-            CornerRadius = new CornerRadius(8),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusLg),
             Tag = "ContentArea",
             Child = new TextBlock
             {
                 Text = "Preview",
-                FontSize = 24,
+                FontSize = DesignTokens.FontSizeXl,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Foreground = context.Theme.InteractivePreviewText

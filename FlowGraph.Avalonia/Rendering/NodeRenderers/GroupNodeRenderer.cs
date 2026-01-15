@@ -96,7 +96,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         var headerPanel = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Margin = new Thickness(8, 6, 8, 0),
+            Margin = new Thickness(DesignTokens.SpacingMd, DesignTokens.SpacingBase, DesignTokens.SpacingMd, 0),
             VerticalAlignment = VerticalAlignment.Top,
             Tag = HeaderPanelTag
         };
@@ -110,10 +110,10 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         {
             Text = node.Label ?? "Group",
             Foreground = context.Theme.GroupLabelText,
-            FontSize = 11,
+            FontSize = DesignTokens.FontSizeSm,
             FontWeight = FontWeight.Medium,
             VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(4, 0, 0, 0),
+            Margin = new Thickness(DesignTokens.SpacingSm, 0, 0, 0),
             Opacity = 0.9,
             Tag = LabelTextBlockTag
         };
@@ -222,7 +222,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         var icon = new TextBlock
         {
             Text = node.IsCollapsed ? CollapsedIcon : ExpandedIcon,
-            FontSize = 12,
+            FontSize = DesignTokens.FontSizeBase,
             FontWeight = FontWeight.Bold,
             Foreground = context.Theme.GroupLabelText,
             HorizontalAlignment = HorizontalAlignment.Center,
@@ -234,7 +234,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Width = buttonSize,
             Height = buttonSize,
             Background = context.Theme.GroupButtonBackground,
-            CornerRadius = new CornerRadius(3),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusSm),
             Cursor = new Cursor(StandardCursorType.Hand),
             Child = icon,
             VerticalAlignment = VerticalAlignment.Center,
@@ -283,12 +283,12 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             FontSize = labelTextBlock.FontSize,
             Foreground = context.Theme.GroupLabelText,
             Background = Brushes.White,
-            BorderThickness = new Thickness(1),
+            BorderThickness = new Thickness(DesignTokens.BorderThin),
             BorderBrush = context.Theme.NodeSelectedBorder,
-            Padding = new Thickness(4, 2),
+            Padding = new Thickness(DesignTokens.SpacingSm, DesignTokens.SpacingXs),
             VerticalAlignment = VerticalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(4, 0, 0, 0),
+            Margin = new Thickness(DesignTokens.SpacingSm, 0, 0, 0),
             MinWidth = 80,
             Tag = EditTextBoxTag,
             AcceptsReturn = false

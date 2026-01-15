@@ -38,13 +38,13 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Height = height,
             Background = nodeBackground,
             BorderBrush = nodeBorder,
-            BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2),
-            CornerRadius = new CornerRadius(8),
+            BorderThickness = node.IsSelected ? new Thickness(DesignTokens.BorderThick) : new Thickness(DesignTokens.BorderBase),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusLg),
             BoxShadow = new BoxShadows(new BoxShadow
             {
-                OffsetX = 2,
-                OffsetY = 2,
-                Blur = 8,
+                OffsetX = DesignTokens.ShadowOffsetX,
+                OffsetY = DesignTokens.ShadowOffsetY,
+                Blur = DesignTokens.ShadowBlur,
                 Color = theme.NodeShadow
             }),
             Cursor = new Cursor(StandardCursorType.Hand),
@@ -68,7 +68,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             VerticalAlignment = VerticalAlignment.Center,
             TextAlignment = TextAlignment.Center,
             FontWeight = FontWeight.Medium,
-            FontSize = 14, // Unscaled - transform handles zoom
+            FontSize = DesignTokens.FontSizeMd, // Unscaled - transform handles zoom
             IsHitTestVisible = false,
             Tag = LabelTextBlockTag
         };
@@ -107,7 +107,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             border.BorderBrush = node.IsSelected
                 ? context.Theme.NodeSelectedBorder
                 : context.Theme.NodeBorder;
-            border.BorderThickness = node.IsSelected ? new Thickness(3) : new Thickness(2);
+            border.BorderThickness = node.IsSelected ? new Thickness(DesignTokens.BorderThick) : new Thickness(DesignTokens.BorderBase);
         }
     }
 
@@ -125,7 +125,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
     public virtual double? GetHeight(Node node, FlowCanvasSettings settings) => null;
 
-    public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings) => 60;
+    public virtual double? GetMinWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeMinWidth;
 
     public virtual double? GetMinHeight(Node node, FlowCanvasSettings settings) => 40;
 
@@ -157,9 +157,9 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             FontSize = labelTextBlock.FontSize,
             Foreground = context.Theme.NodeText,
             Background = Brushes.White,
-            BorderThickness = new Thickness(1),
+            BorderThickness = new Thickness(DesignTokens.BorderThin),
             BorderBrush = context.Theme.NodeSelectedBorder,
-            Padding = new Thickness(4, 2),
+            Padding = new Thickness(DesignTokens.SpacingSm, DesignTokens.SpacingXs),
             TextAlignment = TextAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,

@@ -41,12 +41,12 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     /// <summary>
     /// The corner radius for the outer node border.
     /// </summary>
-    protected virtual double CornerRadius => 8;
+    protected virtual double CornerRadius => DesignTokens.RadiusLg;
 
     /// <summary>
     /// The font size for the header label.
     /// </summary>
-    protected virtual double HeaderFontSize => 11;
+    protected virtual double HeaderFontSize => DesignTokens.FontSizeSm;
 
     /// <summary>
     /// Gets the header text brush from theme, with optional override.
@@ -76,12 +76,12 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
     /// <summary>
     /// Gets the border thickness for the outer node border.
     /// </summary>
-    protected virtual double BorderThickness => 1;
+    protected virtual double BorderThickness => DesignTokens.BorderThin;
 
     /// <summary>
     /// Gets the selected border thickness.
     /// </summary>
-    protected virtual double SelectedBorderThickness => 2;
+    protected virtual double SelectedBorderThickness => DesignTokens.BorderBase;
 
     /// <inheritdoc />
     public override Control CreateNodeVisual(Node node, NodeRenderContext context)

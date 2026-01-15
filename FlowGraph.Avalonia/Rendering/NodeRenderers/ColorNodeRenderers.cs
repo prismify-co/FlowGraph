@@ -49,10 +49,10 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
         {
             Width = 24,
             Height = 24,
-            CornerRadius = new CornerRadius(4),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusBase),
             Background = new SolidColorBrush(initialColor),
             BorderBrush = context.Theme.HeaderedNodeBorder,
-            BorderThickness = new Thickness(1),
+            BorderThickness = new Thickness(DesignTokens.BorderThin),
             Tag = "ColorPreview",
             Cursor = new Cursor(StandardCursorType.Hand)
         };
@@ -62,9 +62,9 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
         {
             Text = ColorToHex(initialColor),
             Width = 80,
-            FontSize = 11,
+            FontSize = DesignTokens.FontSizeSm,
             FontFamily = new FontFamily("Consolas, Monaco, monospace"),
-            Padding = new Thickness(4, 2),
+            Padding = new Thickness(DesignTokens.SpacingSm, DesignTokens.SpacingXs),
             Tag = "HexInput"
         };
 
@@ -267,10 +267,10 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
 public class ColorDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
 {
     /// <inheritdoc />
-    public override double? GetWidth(Node node, FlowCanvasSettings settings) => 120;
+    public override double? GetWidth(Node node, FlowCanvasSettings settings) => DesignTokens.NodeWidthNarrow;
 
     /// <inheritdoc />
-    public override double? GetHeight(Node node, FlowCanvasSettings settings) => 120;
+    public override double? GetHeight(Node node, FlowCanvasSettings settings) => DesignTokens.NodeHeightExpanded;
 
     /// <inheritdoc />
     protected override string GetDefaultLabel() => "Color";
@@ -282,10 +282,10 @@ public class ColorDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
         {
             Width = 60,
             Height = 60,
-            CornerRadius = new CornerRadius(8),
+            CornerRadius = new CornerRadius(DesignTokens.RadiusLg),
             Background = Brushes.Gray,
             BorderBrush = context.Theme.HeaderedNodeBorder,
-            BorderThickness = new Thickness(1),
+            BorderThickness = new Thickness(DesignTokens.BorderThin),
             Tag = "ColorSwatch",
             HorizontalAlignment = HorizontalAlignment.Center
         };
