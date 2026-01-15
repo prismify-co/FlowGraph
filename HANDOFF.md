@@ -3,7 +3,37 @@
 > **Date:** January 9, 2026  
 > **Session Goal:** Complete canvas-first architecture refactor  
 > **Estimated Time:** 4 hours
-> **Last Updated:** Phase 2.5 Complete - Shape Integration Done
+> **Last Updated:** January 14, 2026 - Graph API Refactor Complete
+
+---
+
+## ⚠️ BREAKING CHANGE: Graph API Refactor (Jan 14, 2026)
+
+### Summary
+
+`Graph.Elements` is now the **single source of truth**. `Graph.Nodes` and `Graph.Edges` are read-only views.
+
+### Migration Guide
+
+| Old API | New API |
+|---------|----------|
+| `graph.Nodes.Add(node)` | `graph.AddNode(node)` |
+| `graph.Edges.Add(edge)` | `graph.AddEdge(edge)` |
+| `graph.Nodes.Remove(node)` | `graph.Elements.Remove(node)` |
+| `graph.Edges.Remove(edge)` | `graph.Elements.Remove(edge)` |
+| `graph.Nodes.CollectionChanged` | `graph.NodesChanged` |
+| `graph.Edges.CollectionChanged` | `graph.EdgesChanged` |
+| `graph.Nodes.Clear()` | `graph.Elements.Clear()` |
+
+### Transform-Based Rendering
+
+Renderers now use **logical (unscaled) dimensions**. The `MatrixTransform` on `MainCanvas` handles all zoom/pan.
+
+| Property | Value | Usage |
+|----------|-------|-------|
+| `RenderContext.Scale` | Always `1.0` | Use for visual sizing |
+| `RenderContext.ViewportZoom` | Actual zoom | Use for calculations |
+| `RenderContext.InverseScale` | `1/ViewportZoom` | Use for constant-size elements |
 
 ---
 
@@ -339,27 +369,48 @@ using (FlowGraphLogger.BeginScope("RenderAll"))
 
 ### Preserved APIs
 
-- `Graph.Nodes` / `Graph.Edges` (now computed properties)
+- `Graph.Nodes` / `Graph.Edges` (now read-only `IReadOnlyList<T>` views)
 - `Graph.AddNode()` / `Graph.RemoveNode()` / `Graph.AddEdge()` / `Graph.RemoveEdge()`
 - All Node/Edge properties
-- All existing renderers
+- All existing renderers (updated to use unscaled dimensions)
 
-### Breaking Changes
+### Breaking Changes (Jan 14, 2026)
 
-- Namespace changes (add using statements)
-- `Node` and `Edge` now extend `CanvasElement`
-- Internal rendering pipeline changed
+1. **Graph mutation API changed**:
+   - `graph.Nodes.Add()` → `graph.AddNode()`
+   - `graph.Edges.Add()` → `graph.AddEdge()`
+   - `graph.Nodes.Remove()` → `graph.Elements.Remove()`
+   - Collection events moved to `graph.NodesChanged` / `graph.EdgesChanged`
+
+2. **Transform-based rendering**:
+   - `RenderContext.Scale` now always returns `1.0`
+   - Use `RenderContext.ViewportZoom` for actual zoom level
+   - All visual dimensions are logical (unscaled)
+
+3. **Removed**:
+   - `BulkObservableCollection<T>` - no longer needed
+   - Bidirectional sync between Nodes/Edges and Elements
 
 ### Migration for Consumers
 
 ```csharp
-// Add these usings
-using FlowGraph.Core.Elements;
-using FlowGraph.Core.Elements.Nodes;
-using FlowGraph.Core.Elements.Edges;
+// BEFORE (obsolete)
+graph.Nodes.Add(node);
+graph.Edges.Add(edge);
+graph.Nodes.CollectionChanged += OnNodesChanged;
 
-// OR add type aliases in FlowGraph.Core root namespace
-// (we'll provide these for backward compat)
+// AFTER (new API)
+graph.AddNode(node);
+graph.AddEdge(edge);
+graph.NodesChanged += OnNodesChanged;
+
+// For removals:
+graph.Elements.Remove(node);  // or graph.RemoveNode(node.Id)
+graph.Elements.Remove(edge);  // or graph.RemoveEdge(edge.Id)
+
+// For custom renderers - use unscaled dimensions:
+var width = node.Width ?? settings.NodeWidth;  // NOT * scale
+var height = node.Height ?? settings.NodeHeight;
 ```
 
 ---
