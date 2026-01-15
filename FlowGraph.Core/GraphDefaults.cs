@@ -109,6 +109,29 @@ public static class GraphDefaults
   /// </summary>
   public const double ConnectionSnapDistance = 30;
 
+  /// <summary>
+  /// Minimum offset for bezier control points.
+  /// Ensures curves have visible curvature even for close nodes.
+  /// </summary>
+  public const double MinBezierControlOffset = 50;
+
+  /// <summary>
+  /// Maximum offset for bezier control points.
+  /// Prevents curves from extending too far for distant nodes.
+  /// </summary>
+  public const double MaxBezierControlOffset = 150;
+
+  /// <summary>
+  /// Default arrow size for edge markers.
+  /// </summary>
+  public const double EdgeArrowSize = 10;
+
+  /// <summary>
+  /// Arrow angle in radians (30 degrees / π/6).
+  /// Controls the spread of arrow heads.
+  /// </summary>
+  public const double EdgeArrowAngle = Math.PI / 6;
+
   #endregion
 
   #region Command History
