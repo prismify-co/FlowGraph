@@ -151,6 +151,7 @@ public partial class EdgeVisualManager
     }
 
     var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
+    var settings = _renderContext.Settings;
 
     // Create visible edge path - use logical (unscaled) dimensions
     // MatrixTransform handles all zoom scaling
@@ -158,7 +159,7 @@ public partial class EdgeVisualManager
     {
       Data = pathGeometry,
       Stroke = strokeBrush,
-      StrokeThickness = edge.IsSelected ? 3 : 2,
+      StrokeThickness = edge.IsSelected ? settings.EdgeSelectedStrokeThickness : settings.EdgeStrokeThickness,
       StrokeDashArray = null,
       IsHitTestVisible = false
     };
@@ -265,8 +266,9 @@ public partial class EdgeVisualManager
     if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
     {
       // Use logical (unscaled) dimensions - MatrixTransform handles zoom
+      var settings = _renderContext.Settings;
       visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
-      visiblePath.StrokeThickness = edge.IsSelected ? 3 : 2;
+      visiblePath.StrokeThickness = edge.IsSelected ? settings.EdgeSelectedStrokeThickness : settings.EdgeStrokeThickness;
     }
   }
 

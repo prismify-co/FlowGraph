@@ -104,6 +104,20 @@ public class FlowCanvasSettings
     /// </summary>
     public bool DebugCoordinateTransforms { get; set; } = false;
 
+    #region Edge Settings
+
+    /// <summary>
+    /// Stroke thickness for normal (unselected) edges.
+    /// </summary>
+    public double EdgeStrokeThickness { get; set; } = 2;
+
+    /// <summary>
+    /// Stroke thickness for selected edges.
+    /// </summary>
+    public double EdgeSelectedStrokeThickness { get; set; } = 3;
+
+    #endregion
+
     #region Diagnostics Settings
 
     /// <summary>
