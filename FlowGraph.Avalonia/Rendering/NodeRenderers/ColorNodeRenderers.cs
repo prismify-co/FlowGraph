@@ -51,7 +51,7 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
             Height = 24,
             CornerRadius = new CornerRadius(4),
             Background = new SolidColorBrush(initialColor),
-            BorderBrush = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
+            BorderBrush = context.Theme.HeaderedNodeBorder,
             BorderThickness = new Thickness(1),
             Tag = "ColorPreview",
             Cursor = new Cursor(StandardCursorType.Hand)
@@ -284,7 +284,7 @@ public class ColorDisplayNodeRenderer : WhiteHeaderedNodeRendererBase
             Height = 60,
             CornerRadius = new CornerRadius(8),
             Background = Brushes.Gray,
-            BorderBrush = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
+            BorderBrush = context.Theme.HeaderedNodeBorder,
             BorderThickness = new Thickness(1),
             Tag = "ColorSwatch",
             HorizontalAlignment = HorizontalAlignment.Center
