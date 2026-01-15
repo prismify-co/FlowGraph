@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -12,18 +13,17 @@ namespace FlowGraph.Avalonia.Controls;
 /// </summary>
 public class MinimapRenderControl : Control
 {
-    // Cached brushes and pens (created once, reused)
-    private static readonly IBrush EdgeBrush = new SolidColorBrush(Color.Parse("#808080")).ToImmutable();
-    private static readonly IPen EdgePen = new Pen(EdgeBrush, 1);
-    private static readonly IBrush GroupBrush = new SolidColorBrush(Color.FromArgb(40, 132, 94, 194)).ToImmutable();
-    private static readonly IBrush CollapsedGroupBrush = new SolidColorBrush(Color.FromArgb(80, 132, 94, 194)).ToImmutable();
-    private static readonly IBrush GroupBorderBrush = new SolidColorBrush(Color.Parse("#845EC2")).ToImmutable();
-    private static readonly IPen GroupBorderPen = new Pen(GroupBorderBrush, 1);
-    private static readonly IBrush NodeBrush = new SolidColorBrush(Color.Parse("#4682B4")).ToImmutable();
-    private static readonly IBrush SelectedNodeBrush = new SolidColorBrush(Color.Parse("#FF6B00")).ToImmutable();
-    private static readonly IBrush ViewportFillBrush = new SolidColorBrush(Color.FromArgb(25, 14, 165, 233)).ToImmutable();
-    private static readonly IBrush ViewportStrokeBrush = new SolidColorBrush(Color.Parse("#0EA5E9")).ToImmutable();
-    private static readonly IPen ViewportPen = new Pen(ViewportStrokeBrush, 2);
+    // Lazily-initialized brushes from theme (cached for performance)
+    private ThemeResources? _theme;
+    private IBrush? _edgeBrush;
+    private IPen? _edgePen;
+    private IBrush? _groupBrush;
+    private IBrush? _collapsedGroupBrush;
+    private IPen? _groupBorderPen;
+    private IBrush? _nodeBrush;
+    private IBrush? _selectedNodeBrush;
+    private IBrush? _viewportFillBrush;
+    private IPen? _viewportPen;
 
     private const double DefaultNodeWidth = 150;
     private const double DefaultNodeHeight = 80;
@@ -37,12 +37,32 @@ public class MinimapRenderControl : Control
     internal double ExtentY { get; set; }
     internal Rect ViewportBounds { get; set; }
 
+    private void EnsureBrushes()
+    {
+        if (_theme != null) return;
+
+        _theme = new ThemeResources(this);
+        _edgeBrush = _theme.EdgeStroke;
+        _edgePen = new Pen(_edgeBrush, 1);
+        _groupBrush = _theme.GroupBackground;
+        // Create collapsed brush with higher alpha
+        var baseColor = _theme.GroupBackground is SolidColorBrush gb ? gb.Color : Color.Parse("#845EC2");
+        _collapsedGroupBrush = new SolidColorBrush(Color.FromArgb(80, baseColor.R, baseColor.G, baseColor.B)).ToImmutable();
+        _groupBorderPen = new Pen(_theme.GroupBorder, 1);
+        _nodeBrush = _theme.NodeBorder; // Uses node border color for visibility
+        _selectedNodeBrush = _theme.NodeSelectedBorder;
+        _viewportFillBrush = _theme.MinimapViewportFill;
+        _viewportPen = new Pen(_theme.MinimapViewportStroke, 2);
+    }
+
     public override void Render(DrawingContext context)
     {
         base.Render(context);
 
         if (Graph == null || VisibleNodes == null || VisibleNodes.Count == 0 || NodeById == null)
             return;
+
+        EnsureBrushes();
 
         var graph = Graph;
         var visibleNodes = VisibleNodes;
@@ -72,7 +92,7 @@ public class MinimapRenderControl : Control
                 targetNode.Position.X + GetNodeWidth(targetNode) / 2,
                 targetNode.Position.Y + GetNodeHeight(targetNode) / 2);
 
-            context.DrawLine(EdgePen, startPos, endPos);
+            context.DrawLine(_edgePen!, startPos, endPos);
         }
 
         // Draw groups first (behind regular nodes)
@@ -85,8 +105,8 @@ public class MinimapRenderControl : Control
             var height = Math.Max(GetNodeHeight(node) * Scale, 6);
             var rect = new Rect(pos.X, pos.Y, width, height);
 
-            var fill = node.IsCollapsed ? CollapsedGroupBrush : GroupBrush;
-            context.DrawRectangle(fill, GroupBorderPen, rect, 3, 3);
+            var fill = node.IsCollapsed ? _collapsedGroupBrush : _groupBrush;
+            context.DrawRectangle(fill, _groupBorderPen, rect, 3, 3);
         }
 
         // Draw regular nodes (on top of groups)
@@ -99,7 +119,7 @@ public class MinimapRenderControl : Control
             var height = Math.Max(GetNodeHeight(node) * Scale, 3);
             var rect = new Rect(pos.X, pos.Y, width, height);
 
-            var fill = node.IsSelected ? SelectedNodeBrush : NodeBrush;
+            var fill = node.IsSelected ? _selectedNodeBrush : _nodeBrush;
             context.DrawRectangle(fill, null, rect, 2, 2);
         }
 
@@ -111,7 +131,7 @@ public class MinimapRenderControl : Control
             var vpHeight = Math.Max(ViewportBounds.Height * Scale, 10);
             var vpRect = new Rect(vpTopLeft.X, vpTopLeft.Y, vpWidth, vpHeight);
 
-            context.DrawRectangle(ViewportFillBrush, ViewportPen, vpRect);
+            context.DrawRectangle(_viewportFillBrush, _viewportPen, vpRect);
         }
     }
 
