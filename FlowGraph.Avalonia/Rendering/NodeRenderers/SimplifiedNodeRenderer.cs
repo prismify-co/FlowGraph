@@ -81,8 +81,8 @@ public class SimplifiedNodeRenderer : INodeRenderer
         // Use type-based colors for quick visual differentiation
         return node.Type?.ToLowerInvariant() switch
         {
-            "input" => new SolidColorBrush(Color.FromRgb(200, 230, 200)),  // Light green
-            "output" => new SolidColorBrush(Color.FromRgb(230, 200, 200)), // Light red
+            "input" => context.Theme.InputNodeBackground,
+            "output" => context.Theme.OutputNodeBackground,
             _ => context.Theme.NodeBackground
         };
     }
