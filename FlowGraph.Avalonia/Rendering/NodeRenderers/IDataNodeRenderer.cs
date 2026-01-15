@@ -82,6 +82,18 @@ public abstract class DataNodeRendererBase : DefaultNodeRenderer, IDataNodeRende
     }
 
     /// <summary>
+    /// Gets the Node associated with a visual control.
+    /// Handles both direct Tag assignment and ResizableVisual dictionary storage.
+    /// Use this method instead of directly accessing visual.Tag for Node lookups.
+    /// </summary>
+    /// <param name="visual">The visual control to get the node from.</param>
+    /// <returns>The associated Node, or null if not found.</returns>
+    protected static Node? GetNodeFromVisual(Control visual)
+    {
+        return ResizableVisual.GetNodeFromTag(visual.Tag);
+    }
+
+    /// <summary>
     /// Finds a control by its Tag property.
     /// </summary>
     /// <typeparam name="T">The control type to find.</typeparam>
