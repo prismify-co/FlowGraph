@@ -119,8 +119,9 @@ public class DraggingState : InputStateBase
             context.RaiseNodeDragStart(_draggedNodes, startPos);
             _dragStartRaised = true;
 
-            // Notify snap provider that drag has started
+            // Notify providers that drag has started
             context.SnapProvider?.OnDragStart(_draggedNodes, startPos);
+            context.CollisionProvider?.OnDragStart(_draggedNodes, startPos);
         }
 
         var currentCanvas = context.ScreenToCanvas(currentScreen);
@@ -130,11 +131,13 @@ public class DraggingState : InputStateBase
         // OPTIMIZED: Use cached node references instead of O(n) FirstOrDefault lookups
         var posUpdateSw = System.Diagnostics.Stopwatch.StartNew();
 
-        // Calculate proposed position for primary node (used for snap provider query)
+        // Calculate proposed position for primary node (used for provider queries)
         Core.Point? snapOffset = null;
-        if (context.SnapProvider != null && _startPositions.Count > 0)
+        Core.Point? collisionOffset = null;
+        
+        if (_startPositions.Count > 0)
         {
-            // Use the first node's position as the reference for snapping
+            // Use the first node's position as the reference
             var firstEntry = _startPositions.First();
             var proposedX = firstEntry.Value.X + deltaX;
             var proposedY = firstEntry.Value.Y + deltaY;
@@ -147,7 +150,22 @@ public class DraggingState : InputStateBase
             }
 
             var proposedPosition = new Core.Point(proposedX, proposedY);
-            snapOffset = context.SnapProvider.GetSnapOffset(_draggedNodes, proposedPosition);
+            
+            // Query snap provider first (helper lines, guides)
+            if (context.SnapProvider != null)
+            {
+                snapOffset = context.SnapProvider.GetSnapOffset(_draggedNodes, proposedPosition);
+            }
+            
+            // Query collision provider second (applied after snap)
+            // Pass the position WITH snap applied so collision sees final intended position
+            if (context.CollisionProvider != null)
+            {
+                var positionAfterSnap = snapOffset.HasValue
+                    ? new Core.Point(proposedPosition.X + snapOffset.Value.X, proposedPosition.Y + snapOffset.Value.Y)
+                    : proposedPosition;
+                collisionOffset = context.CollisionProvider.GetCollisionOffset(_draggedNodes, positionAfterSnap);
+            }
         }
 
         foreach (var (nodeId, startPos) in _startPositions)
@@ -169,6 +187,13 @@ public class DraggingState : InputStateBase
                 {
                     newX += snapOffset.Value.X;
                     newY += snapOffset.Value.Y;
+                }
+                
+                // Apply collision offset (blocking/push to prevent overlap)
+                if (collisionOffset.HasValue)
+                {
+                    newX += collisionOffset.Value.X;
+                    newY += collisionOffset.Value.Y;
                 }
 
                 node.Position = new Core.Point(newX, newY);
@@ -206,6 +231,7 @@ public class DraggingState : InputStateBase
             {
                 context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
                 context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: true);
+                context.CollisionProvider?.OnDragEnd(_draggedNodes, cancelled: true);
             }
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
@@ -246,6 +272,7 @@ public class DraggingState : InputStateBase
         {
             context.RaiseNodeDragStop(_draggedNodes, cancelled: false);
             context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: false);
+            context.CollisionProvider?.OnDragEnd(_draggedNodes, cancelled: false);
         }
 
         ReleasePointer(e);
@@ -273,6 +300,7 @@ public class DraggingState : InputStateBase
             {
                 context.RaiseNodeDragStop(_draggedNodes, cancelled: true);
                 context.SnapProvider?.OnDragEnd(_draggedNodes, cancelled: true);
+                context.CollisionProvider?.OnDragEnd(_draggedNodes, cancelled: true);
             }
 
             return StateTransitionResult.TransitionTo(IdleState.Instance);

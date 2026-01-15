@@ -69,6 +69,13 @@ public class InputStateContext
     public ISnapProvider? SnapProvider { get; set; }
 
     /// <summary>
+    /// Optional collision provider for preventing node overlap during drag.
+    /// Applied after SnapProvider. Returns offset to prevent collision.
+    /// Set by FlowCanvas.
+    /// </summary>
+    public ICollisionProvider? CollisionProvider { get; set; }
+
+    /// <summary>
     /// Shape visual manager for updating shape selection state.
     /// Set by FlowCanvas.
     /// </summary>

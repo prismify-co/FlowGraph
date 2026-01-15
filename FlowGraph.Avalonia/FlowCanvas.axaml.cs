@@ -213,6 +213,21 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
     }
 
+    private ICollisionProvider? _collisionProvider;
+    /// <summary>
+    /// Gets or sets the collision provider for preventing node overlap during drag.
+    /// Applied after SnapProvider, allowing collision to override snap when needed.
+    /// </summary>
+    public ICollisionProvider? CollisionProvider
+    {
+        get => _collisionProvider;
+        set
+        {
+            _collisionProvider = value;
+            _inputContext.CollisionProvider = value;
+        }
+    }
+
     #endregion
 
     #region Public Methods - Performance
