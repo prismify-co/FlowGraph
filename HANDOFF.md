@@ -15,24 +15,24 @@
 
 ### Migration Guide
 
-| Old API | New API |
-|---------|----------|
-| `graph.Nodes.Add(node)` | `graph.AddNode(node)` |
-| `graph.Edges.Add(edge)` | `graph.AddEdge(edge)` |
-| `graph.Nodes.Remove(node)` | `graph.Elements.Remove(node)` |
-| `graph.Edges.Remove(edge)` | `graph.Elements.Remove(edge)` |
-| `graph.Nodes.CollectionChanged` | `graph.NodesChanged` |
-| `graph.Edges.CollectionChanged` | `graph.EdgesChanged` |
-| `graph.Nodes.Clear()` | `graph.Elements.Clear()` |
+| Old API                         | New API                       |
+| ------------------------------- | ----------------------------- |
+| `graph.Nodes.Add(node)`         | `graph.AddNode(node)`         |
+| `graph.Edges.Add(edge)`         | `graph.AddEdge(edge)`         |
+| `graph.Nodes.Remove(node)`      | `graph.Elements.Remove(node)` |
+| `graph.Edges.Remove(edge)`      | `graph.Elements.Remove(edge)` |
+| `graph.Nodes.CollectionChanged` | `graph.NodesChanged`          |
+| `graph.Edges.CollectionChanged` | `graph.EdgesChanged`          |
+| `graph.Nodes.Clear()`           | `graph.Elements.Clear()`      |
 
 ### Transform-Based Rendering
 
 Renderers now use **logical (unscaled) dimensions**. The `MatrixTransform` on `MainCanvas` handles all zoom/pan.
 
-| Property | Value | Usage |
-|----------|-------|-------|
-| `RenderContext.Scale` | Always `1.0` | Use for visual sizing |
-| `RenderContext.ViewportZoom` | Actual zoom | Use for calculations |
+| Property                     | Value            | Usage                          |
+| ---------------------------- | ---------------- | ------------------------------ |
+| `RenderContext.Scale`        | Always `1.0`     | Use for visual sizing          |
+| `RenderContext.ViewportZoom` | Actual zoom      | Use for calculations           |
 | `RenderContext.InverseScale` | `1/ViewportZoom` | Use for constant-size elements |
 
 ---
@@ -377,12 +377,14 @@ using (FlowGraphLogger.BeginScope("RenderAll"))
 ### Breaking Changes (Jan 14, 2026)
 
 1. **Graph mutation API changed**:
+
    - `graph.Nodes.Add()` → `graph.AddNode()`
    - `graph.Edges.Add()` → `graph.AddEdge()`
    - `graph.Nodes.Remove()` → `graph.Elements.Remove()`
    - Collection events moved to `graph.NodesChanged` / `graph.EdgesChanged`
 
 2. **Transform-based rendering**:
+
    - `RenderContext.Scale` now always returns `1.0`
    - Use `RenderContext.ViewportZoom` for actual zoom level
    - All visual dimensions are logical (unscaled)
