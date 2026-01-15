@@ -782,6 +782,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
             // Update grid background (separate canvas, not transformed)
             RenderGrid();
+
+            // Update custom background renderers (they render to GridCanvas which has no transform)
+            RenderCustomBackgrounds();
         }
         else if (offsetChanged)
         {
@@ -791,6 +794,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
             // Grid background is on separate untransformed canvas, must re-render
             RenderGrid();
+
+            // Update custom background renderers (they render to GridCanvas which has no transform)
+            RenderCustomBackgrounds();
         }
     }
 

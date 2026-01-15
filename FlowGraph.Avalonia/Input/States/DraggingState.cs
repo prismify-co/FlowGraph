@@ -134,7 +134,7 @@ public class DraggingState : InputStateBase
         // Calculate proposed position for primary node (used for provider queries)
         Core.Point? snapOffset = null;
         Core.Point? collisionOffset = null;
-        
+
         if (_startPositions.Count > 0)
         {
             // Use the first node's position as the reference
@@ -150,13 +150,13 @@ public class DraggingState : InputStateBase
             }
 
             var proposedPosition = new Core.Point(proposedX, proposedY);
-            
+
             // Query snap provider first (helper lines, guides)
             if (context.SnapProvider != null)
             {
                 snapOffset = context.SnapProvider.GetSnapOffset(_draggedNodes, proposedPosition);
             }
-            
+
             // Query collision provider second (applied after snap)
             // Pass the position WITH snap applied so collision sees final intended position
             if (context.CollisionProvider != null)
@@ -188,7 +188,7 @@ public class DraggingState : InputStateBase
                     newX += snapOffset.Value.X;
                     newY += snapOffset.Value.Y;
                 }
-                
+
                 // Apply collision offset (blocking/push to prevent overlap)
                 if (collisionOffset.HasValue)
                 {

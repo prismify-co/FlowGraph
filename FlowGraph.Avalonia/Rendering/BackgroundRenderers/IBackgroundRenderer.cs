@@ -6,6 +6,26 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering.BackgroundRenderers;
 
 /// <summary>
+/// Specifies which canvas layer a background renderer should render to.
+/// </summary>
+public enum BackgroundRenderTarget
+{
+  /// <summary>
+  /// Render to GridCanvas (no transform). 
+  /// Use for fixed backgrounds that should not zoom/pan with nodes.
+  /// Requires manual CanvasToScreen() coordinate conversion.
+  /// </summary>
+  GridCanvas,
+
+  /// <summary>
+  /// Render to MainCanvas (has MatrixTransform for zoom/pan).
+  /// Use for diagram elements that should zoom/pan with nodes.
+  /// Use canvas coordinates directly - transform handles zoom/pan automatically.
+  /// </summary>
+  MainCanvas
+}
+
+/// <summary>
 /// Interface for custom background renderers.
 /// Implement this to render custom backgrounds behind the main graph content.
 /// </summary>
@@ -19,6 +39,13 @@ namespace FlowGraph.Avalonia.Rendering.BackgroundRenderers;
 /// Multiple background renderers can be registered and are rendered in order.
 /// Each renderer receives the full graph context and can access node positions.
 /// </para>
+/// <para>
+/// <b>Important:</b> Set <see cref="RenderTarget"/> appropriately:
+/// <list type="bullet">
+/// <item><see cref="BackgroundRenderTarget.GridCanvas"/>: For fixed backgrounds (default). Use CanvasToScreen() for coordinates.</item>
+/// <item><see cref="BackgroundRenderTarget.MainCanvas"/>: For diagram decorations that should zoom/pan with nodes. Use canvas coordinates directly.</item>
+/// </list>
+/// </para>
 /// </remarks>
 /// <example>
 /// <code>
@@ -31,6 +58,13 @@ namespace FlowGraph.Avalonia.Rendering.BackgroundRenderers;
 /// </example>
 public interface IBackgroundRenderer
 {
+  /// <summary>
+  /// Gets the target canvas for this renderer.
+  /// Default is GridCanvas (for backward compatibility).
+  /// Override to return MainCanvas for diagram elements that should zoom/pan with nodes.
+  /// </summary>
+  BackgroundRenderTarget RenderTarget => BackgroundRenderTarget.GridCanvas;
+
   /// <summary>
   /// Renders background content onto the canvas.
   /// </summary>

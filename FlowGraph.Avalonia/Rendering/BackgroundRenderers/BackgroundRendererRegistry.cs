@@ -30,7 +30,8 @@ public class BackgroundRendererRegistry
   private readonly List<IBackgroundRenderer> _renderers = new();
   private IBackgroundRenderer? _singleRenderer;
   private bool _useSingleMode;
-  private Canvas? _lastCanvas;
+  private Canvas? _lastGridCanvas;
+  private Canvas? _lastMainCanvas;
 
   /// <summary>
   /// Gets whether there are any background renderers registered.
@@ -57,9 +58,13 @@ public class BackgroundRendererRegistry
   public bool Remove(IBackgroundRenderer renderer)
   {
     var removed = _renderers.Remove(renderer);
-    if (removed && _lastCanvas != null)
+    if (removed)
     {
-      renderer.Cleanup(_lastCanvas);
+      var canvas = renderer.RenderTarget == BackgroundRenderTarget.MainCanvas ? _lastMainCanvas : _lastGridCanvas;
+      if (canvas != null)
+      {
+        renderer.Cleanup(canvas);
+      }
     }
     return removed;
   }
@@ -96,41 +101,86 @@ public class BackgroundRendererRegistry
   /// </summary>
   private void CleanupAllRenderers()
   {
-    if (_lastCanvas == null) return;
-
     if (_useSingleMode)
     {
-      _singleRenderer?.Cleanup(_lastCanvas);
+      if (_singleRenderer != null)
+      {
+        var canvas = _singleRenderer.RenderTarget == BackgroundRenderTarget.MainCanvas ? _lastMainCanvas : _lastGridCanvas;
+        if (canvas != null)
+        {
+          _singleRenderer.Cleanup(canvas);
+        }
+      }
     }
     else
     {
       foreach (var renderer in _renderers)
       {
-        renderer.Cleanup(_lastCanvas);
+        var canvas = renderer.RenderTarget == BackgroundRenderTarget.MainCanvas ? _lastMainCanvas : _lastGridCanvas;
+        if (canvas != null)
+        {
+          renderer.Cleanup(canvas);
+        }
       }
     }
   }
 
   /// <summary>
-  /// Renders all registered backgrounds.
+  /// Renders all registered backgrounds to the specified canvas.
+  /// Only renders renderers that target the specified canvas type.
   /// </summary>
   /// <param name="canvas">The canvas to render to.</param>
   /// <param name="context">The rendering context.</param>
-  public void Render(Canvas canvas, BackgroundRenderContext context)
+  /// <param name="target">The target canvas type to filter by.</param>
+  public void Render(Canvas canvas, BackgroundRenderContext context, BackgroundRenderTarget target)
   {
-    _lastCanvas = canvas;
+    // Track canvases by target type
+    if (target == BackgroundRenderTarget.GridCanvas)
+      _lastGridCanvas = canvas;
+    else
+      _lastMainCanvas = canvas;
 
     if (_useSingleMode)
     {
-      _singleRenderer?.Render(canvas, context);
+      if (_singleRenderer?.RenderTarget == target)
+      {
+        _singleRenderer.Render(canvas, context);
+      }
     }
     else
     {
       foreach (var renderer in _renderers)
       {
-        renderer.Render(canvas, context);
+        if (renderer.RenderTarget == target)
+        {
+          renderer.Render(canvas, context);
+        }
       }
     }
+  }
+
+  /// <summary>
+  /// Renders all registered backgrounds (legacy method for backward compatibility).
+  /// Assumes GridCanvas target.
+  /// </summary>
+  /// <param name="canvas">The canvas to render to.</param>
+  /// <param name="context">The rendering context.</param>
+  [Obsolete("Use Render(canvas, context, target) overload for explicit canvas targeting")]
+  public void Render(Canvas canvas, BackgroundRenderContext context)
+  {
+    Render(canvas, context, BackgroundRenderTarget.GridCanvas);
+  }
+
+  /// <summary>
+  /// Gets whether there are any renderers registered for the specified target.
+  /// </summary>
+  public bool HasRenderersForTarget(BackgroundRenderTarget target)
+  {
+    if (_useSingleMode)
+    {
+      return _singleRenderer?.RenderTarget == target;
+    }
+    return _renderers.Any(r => r.RenderTarget == target);
   }
 
   /// <summary>

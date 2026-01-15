@@ -132,29 +132,60 @@ public partial class FlowCanvas
         if (_gridCanvas == null || _theme == null) return;
 
         var registry = _graphRenderer.BackgroundRenderers;
-        if (!registry.HasRenderers) return;
-
-        var context = new Rendering.BackgroundRenderers.BackgroundRenderContext
+        if (!registry.HasRenderers)
         {
-            Theme = _theme,
+            return;
+        }
+
+        // Only render GridCanvas backgrounds here
+        // MainCanvas backgrounds are rendered in RenderElements after the canvas clear
+        if (!registry.HasRenderersForTarget(Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas))
+        {
+            return;
+        }
+
+        var context = CreateBackgroundRenderContext();
+        registry.Render(_gridCanvas, context, Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas);
+    }
+
+    /// <summary>
+    /// Renders background renderers that target MainCanvas.
+    /// Called from RenderElements after canvas clear but before nodes/edges.
+    /// </summary>
+    private void RenderMainCanvasBackgrounds()
+    {
+        if (_mainCanvas == null || _theme == null) return;
+
+        var registry = _graphRenderer.BackgroundRenderers;
+        if (!registry.HasRenderersForTarget(Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas))
+        {
+            return;
+        }
+
+        var context = CreateBackgroundRenderContext();
+        registry.Render(_mainCanvas, context, Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas);
+    }
+
+    /// <summary>
+    /// Creates the background render context with current viewport state.
+    /// </summary>
+    private Rendering.BackgroundRenderers.BackgroundRenderContext CreateBackgroundRenderContext()
+    {
+        return new Rendering.BackgroundRenderers.BackgroundRenderContext
+        {
+            Theme = _theme!,
             Settings = Settings,
             Scale = _viewport.Zoom,
             Graph = Graph,
             VisibleBounds = new global::Avalonia.Rect(0, 0, Bounds.Width, Bounds.Height),
             Offset = new global::Avalonia.Point(_viewport.OffsetX, _viewport.OffsetY),
-            // CanvasToScreen: converts canvas coordinates to screen coordinates
-            // Same formula as ViewportState.CanvasToScreen: screenX = canvasX * Zoom + OffsetX
             CanvasToScreen = (x, y) => new global::Avalonia.Point(
                 x * _viewport.Zoom + _viewport.OffsetX,
                 y * _viewport.Zoom + _viewport.OffsetY),
-            // ScreenToCanvas: converts screen coordinates to canvas coordinates  
-            // Same formula as ViewportState.ScreenToCanvas: canvasX = (screenX - OffsetX) / Zoom
             ScreenToCanvas = (x, y) => new global::Avalonia.Point(
                 (x - _viewport.OffsetX) / _viewport.Zoom,
                 (y - _viewport.OffsetY) / _viewport.Zoom)
         };
-
-        registry.Render(_gridCanvas, context);
     }
 
     private void RenderShapes()
@@ -250,6 +281,10 @@ public partial class FlowCanvas
         _mainCanvas.Children.Clear();
         _graphRenderer.Clear();
         _shapeVisualManager?.Clear();
+
+        // Render MainCanvas background renderers AFTER clear but BEFORE elements
+        // This ensures they appear behind nodes/edges but aren't wiped by the clear
+        RenderMainCanvasBackgrounds();
 
         var clearTime = sw?.ElapsedMilliseconds ?? 0;
 
