@@ -222,7 +222,7 @@ public partial class FlowCanvas
     private void OnNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Action={e.Action}, OldItems={e.OldItems?.Count}, NewItems={e.NewItems?.Count}");
-        
+
         if (e.OldItems != null)
         {
             foreach (var item in e.OldItems)
@@ -248,7 +248,7 @@ public partial class FlowCanvas
         {
             var nodeCount = Graph.Nodes.Count;
             System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribing to {nodeCount} nodes");
-            
+
             // Unsubscribe from all first to avoid duplicates
             foreach (var node in Graph.Nodes)
             {
@@ -259,9 +259,9 @@ public partial class FlowCanvas
             {
                 node.PropertyChanged += OnNodePropertyChanged;
             }
-            
+
             System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribed to {nodeCount} nodes PropertyChanged");
-            
+
             // Reset requires full re-render
             RenderElements();
             return;
@@ -353,7 +353,7 @@ public partial class FlowCanvas
             {
                 edge.PropertyChanged += OnEdgePropertyChanged;
             }
-            
+
             // Reset requires full edge re-render
             RenderEdges();
             return;

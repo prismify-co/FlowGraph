@@ -68,23 +68,23 @@ public partial class FlowCanvas
     public void FitToView()
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        
+
         if (Graph == null || !Graph.Elements.Nodes.Any()) return;
 
         var boundsTime = sw.ElapsedMilliseconds;
         var graphBounds = CalculateGraphBounds();
         var calcTime = sw.ElapsedMilliseconds - boundsTime;
-        
+
         var viewSize = Bounds.Size;
         System.Diagnostics.Debug.WriteLine($"[FitToView] GraphBounds=({graphBounds.X:F0},{graphBounds.Y:F0},{graphBounds.Width:F0}x{graphBounds.Height:F0}) ViewSize=({viewSize.Width:F0}x{viewSize.Height:F0})");
-        
+
         _viewport.FitToBounds(graphBounds, viewSize);
         var fitTime = sw.ElapsedMilliseconds - calcTime - boundsTime;
-        
+
         System.Diagnostics.Debug.WriteLine($"[FitToView] After fit: Zoom={_viewport.Zoom:F3} Offset=({_viewport.OffsetX:F1},{_viewport.OffsetY:F1})");
-        
+
         RenderGrid();
-        
+
         sw.Stop();
         System.Diagnostics.Debug.WriteLine($"[FitToView] Total={sw.ElapsedMilliseconds}ms | Bounds={calcTime}ms, Fit={fitTime}ms, Grid={sw.ElapsedMilliseconds - fitTime - calcTime - boundsTime}ms");
     }
@@ -139,7 +139,7 @@ public partial class FlowCanvas
         // Single-pass iteration instead of 4 separate LINQ queries (4x faster)
         double minX = double.MaxValue, minY = double.MaxValue;
         double maxX = double.MinValue, maxY = double.MinValue;
-        
+
         foreach (var node in Graph.Elements.Nodes)
         {
             minX = Math.Min(minX, node.Position.X);
