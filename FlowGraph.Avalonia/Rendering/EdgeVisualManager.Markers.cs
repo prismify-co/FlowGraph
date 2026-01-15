@@ -66,7 +66,7 @@ public partial class EdgeVisualManager
     var dx = end.X - start.X;
     var dy = end.Y - start.Y;
     var controlPointOffset = Math.Abs(dx) / 2;
-    controlPointOffset = Math.Max(controlPointOffset, 50);
+    controlPointOffset = Math.Max(controlPointOffset, GraphDefaults.MinBezierControlOffset);
 
     // Mirror the control point logic from EdgePathHelper.CalculateDirectionAwareControlPoints
     if (dx > Math.Abs(dy) * 0.5)

@@ -287,8 +287,8 @@ public class GraphRenderModel
     public (AvaloniaPoint cp1, AvaloniaPoint cp2) GetBezierControlPoints(AvaloniaPoint start, AvaloniaPoint end)
     {
         var dx = end.X - start.X;
-        var controlOffset = Math.Max(50, Math.Abs(dx) * 0.5);
-        controlOffset = Math.Min(controlOffset, 150);
+        var controlOffset = Math.Max(GraphDefaults.MinBezierControlOffset, Math.Abs(dx) * 0.5);
+        controlOffset = Math.Min(controlOffset, GraphDefaults.MaxBezierControlOffset);
 
         var cp1 = new AvaloniaPoint(start.X + controlOffset, start.Y);
         var cp2 = new AvaloniaPoint(end.X - controlOffset, end.Y);

@@ -296,7 +296,7 @@ public static class EdgePathHelper
         };
 
         var controlPointOffset = Math.Abs(end.X - start.X) / 2;
-        controlPointOffset = Math.Max(controlPointOffset, 50);
+        controlPointOffset = Math.Max(controlPointOffset, GraphDefaults.MinBezierControlOffset);
 
         // Calculate direction-aware control points
         var (control1, control2) = CalculateDirectionAwareControlPoints(start, end, controlPointOffset);
