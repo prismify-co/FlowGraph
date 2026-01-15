@@ -273,7 +273,14 @@ public partial class FlowCanvas
         // Invalidate direct renderer's spatial index when nodes change
         _directRenderer?.InvalidateIndex();
 
-        // Incremental updates for Add/Remove operations
+        // In DirectRendering mode, just invalidate - DirectGraphRenderer handles everything
+        if (_useDirectRendering)
+        {
+            _directRenderer?.InvalidateVisual();
+            return;
+        }
+
+        // Incremental updates for Add/Remove operations (visual tree mode only)
         if (_mainCanvas != null && _theme != null && Graph != null)
         {
             switch (e.Action)
@@ -358,7 +365,14 @@ public partial class FlowCanvas
             return;
         }
 
-        // Incremental updates for Add/Remove operations
+        // In DirectRendering mode, just invalidate - DirectGraphRenderer handles everything
+        if (_useDirectRendering)
+        {
+            _directRenderer?.InvalidateVisual();
+            return;
+        }
+
+        // Incremental updates for Add/Remove operations (visual tree mode only)
         if (_mainCanvas != null && _theme != null && Graph != null)
         {
             switch (e.Action)
