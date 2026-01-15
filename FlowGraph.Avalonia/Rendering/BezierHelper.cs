@@ -501,18 +501,8 @@ public static class EdgePathHelper
     /// <param name="closed">If true, creates a filled triangle; if false, creates open arrow lines.</param>
     public static PathGeometry CreateArrowMarker(AvaloniaPoint point, double angle, double size = 10, bool closed = false)
     {
-        // Arrow points back from the tip
-        var arrowAngle = Math.PI / 6; // 30 degrees spread
-
-        var p1 = new AvaloniaPoint(
-            point.X - size * Math.Cos(angle - arrowAngle),
-            point.Y - size * Math.Sin(angle - arrowAngle)
-        );
-
-        var p2 = new AvaloniaPoint(
-            point.X - size * Math.Cos(angle + arrowAngle),
-            point.Y - size * Math.Sin(angle + arrowAngle)
-        );
+        // Use shared helper for arrow point calculation
+        var (p1, p2) = ArrowGeometryHelper.CalculateArrowPoints(point, angle, size);
 
         var pathFigure = new PathFigure
         {

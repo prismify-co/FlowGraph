@@ -130,14 +130,10 @@ public partial class DirectGraphRenderer
 
   private void DrawArrow(DrawingContext context, AvaloniaPoint tip, double angle, IBrush? brush, double zoom, bool filled)
   {
-    var arrowSize = 10 * zoom;
+    var arrowSize = GraphDefaults.EdgeArrowSize * zoom;
 
-    var p1 = new AvaloniaPoint(
-        tip.X - arrowSize * Math.Cos(angle - Math.PI / 6),
-        tip.Y - arrowSize * Math.Sin(angle - Math.PI / 6));
-    var p2 = new AvaloniaPoint(
-        tip.X - arrowSize * Math.Cos(angle + Math.PI / 6),
-        tip.Y - arrowSize * Math.Sin(angle + Math.PI / 6));
+    // Use shared helper for arrow point calculation
+    var (p1, p2) = ArrowGeometryHelper.CalculateArrowPoints(tip, angle, arrowSize);
 
     var geometry = new StreamGeometry();
     using (var ctx = geometry.Open())
