@@ -3,7 +3,7 @@
 > **Date:** January 9, 2026  
 > **Session Goal:** Complete canvas-first architecture refactor  
 > **Estimated Time:** 4 hours
-> **Last Updated:** January 14, 2026 - Graph API Refactor Complete
+> **Last Updated:** January 14, 2026 - Phase 2 Retained Mode Complete
 
 ---
 
@@ -34,6 +34,17 @@ Renderers now use **logical (unscaled) dimensions**. The `MatrixTransform` on `M
 | `RenderContext.Scale`        | Always `1.0`     | Use for visual sizing          |
 | `RenderContext.ViewportZoom` | Actual zoom      | Use for calculations           |
 | `RenderContext.InverseScale` | `1/ViewportZoom` | Use for constant-size elements |
+
+### Phase 2 Retained Mode (Jan 14, 2026)
+
+Zoom no longer clears and re-renders the entire canvas. Incremental updates are now used.
+
+| Operation   | Before | After      |
+| ----------- | ------ | ---------- |
+| Pan         | O(1)   | O(1)       |
+| Zoom        | O(n)   | O(handles) |
+| Add node    | O(n)   | O(1)       |
+| Remove node | O(n)   | O(1)       |
 
 ---
 
