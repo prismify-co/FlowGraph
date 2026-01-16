@@ -482,7 +482,6 @@ public class NodeVisualManager
         var visualTop = canvasPos.Y - portSize / 2;
         Canvas.SetLeft(portVisual, visualLeft);
         Canvas.SetTop(portVisual, visualTop);
-        Console.WriteLine($"[NodeVisualManager.RenderPort] Port {port.Id} on {node.Id}: CanvasPos=({canvasPos.X:F1}, {canvasPos.Y:F1}), PortSize={portSize}, VisualPos=({visualLeft:F1}, {visualTop:F1})");
 
         canvas.Children.Add(portVisual);
         _portVisuals[(node.Id, port.Id)] = portVisual;
@@ -757,9 +756,7 @@ public class NodeVisualManager
     /// <returns>The port position in canvas coordinates.</returns>
     public AvaloniaPoint GetPortCanvasPosition(Node node, Port port, bool isOutput)
     {
-        var pos = _model.GetPortPosition(node, port, isOutput);
-        Console.WriteLine($"[NodeVisualManager.GetPortCanvasPosition] Node={node.Id}, Port={port.Id}, IsOutput={isOutput} -> ({pos.X:F1}, {pos.Y:F1}), NodePos=({node.Position.X:F1}, {node.Position.Y:F1})");
-        return pos;
+        return _model.GetPortPosition(node, port, isOutput);
     }
 
     /// <summary>

@@ -21,7 +21,6 @@ public class ConnectingState : InputStateBase
     private readonly bool _fromOutput;
     private AvaloniaPoint _endPoint;
     private AvaloniaPath? _tempLine;
-    private Ellipse? _debugMarker; // DEBUG: Visual marker to show where the endpoint is
     private readonly Control? _portVisual;
     private readonly Cursor? _previousCursor;
     private readonly ThemeResources _theme;
@@ -73,17 +72,6 @@ public class ConnectingState : InputStateBase
             Opacity = 0.7
         };
         canvas.Children.Add(_tempLine);
-
-        // DEBUG: Create a visible marker at the endpoint position (red circle)
-        _debugMarker = new Ellipse
-        {
-            Width = 10,
-            Height = 10,
-            Fill = Brushes.Red,
-            Stroke = Brushes.White,
-            StrokeThickness = 2
-        };
-        canvas.Children.Add(_debugMarker);
     }
 
     public override void Enter(InputStateContext context)
@@ -111,13 +99,6 @@ public class ConnectingState : InputStateBase
         {
             context.MainCanvas.Children.Remove(_tempLine);
             _tempLine = null;
-        }
-
-        // DEBUG: Remove debug marker
-        if (_debugMarker != null && context.MainCanvas != null)
-        {
-            context.MainCanvas.Children.Remove(_debugMarker);
-            _debugMarker = null;
         }
     }
 
@@ -264,13 +245,6 @@ public class ConnectingState : InputStateBase
 
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
         _tempLine.Data = pathGeometry;
-
-        // DEBUG: Position the debug marker at the endpoint (centered on the point)
-        if (_debugMarker != null)
-        {
-            Canvas.SetLeft(_debugMarker, endPoint.X - 5);
-            Canvas.SetTop(_debugMarker, endPoint.Y - 5);
-        }
     }
 
     /// <summary>
