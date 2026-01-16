@@ -29,7 +29,7 @@ public class PanningState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var currentPoint = GetPosition(context, e);
+        var currentPoint = GetScreenPosition(context, e);
         var deltaX = currentPoint.X - _startPoint.X;
         var deltaY = currentPoint.Y - _startPoint.Y;
 

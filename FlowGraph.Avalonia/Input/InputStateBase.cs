@@ -37,15 +37,17 @@ public abstract class InputStateBase : IInputState
     #region Helper Methods
 
     /// <summary>
-    /// Gets the current pointer position relative to the root panel (screen coordinates).
+    /// Gets the current pointer position relative to the root panel (screen/viewport coordinates).
+    /// Use this for pan calculations, auto-pan edge detection, etc.
     /// </summary>
-    protected static AvaloniaPoint GetPosition(InputStateContext context, PointerEventArgs e)
+    protected static AvaloniaPoint GetScreenPosition(InputStateContext context, PointerEventArgs e)
         => e.GetPosition(context.RootPanel);
 
     /// <summary>
     /// Gets the current pointer position in canvas coordinates.
     /// This uses GetPosition(MainCanvas) which automatically applies the inverse transform,
     /// giving us direct canvas coordinates without needing ScreenToCanvas conversion.
+    /// Use this for hit testing, node positions, edge endpoints, etc.
     /// </summary>
     protected static AvaloniaPoint GetCanvasPosition(InputStateContext context, PointerEventArgs e)
         => e.GetPosition(context.MainCanvas);
@@ -57,10 +59,11 @@ public abstract class InputStateBase : IInputState
         => e.GetCurrentPoint(context.RootPanel);
 
     /// <summary>
-    /// Performs hit testing on the main canvas.
+    /// Performs hit testing on the main canvas. The position must be in canvas coordinates
+    /// (use GetCanvasPosition, not GetScreenPosition).
     /// </summary>
-    protected static IInputElement? HitTest(InputStateContext context, AvaloniaPoint position)
-        => context.MainCanvas?.InputHitTest(position);
+    protected static IInputElement? HitTestCanvas(InputStateContext context, AvaloniaPoint canvasPosition)
+        => context.MainCanvas?.InputHitTest(canvasPosition);
 
     /// <summary>
     /// Captures the pointer to the specified element.

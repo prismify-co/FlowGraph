@@ -52,7 +52,7 @@ public class BoxSelectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var screenPos = GetPosition(context, e);
+        var screenPos = GetScreenPosition(context, e);
         _endCanvas = context.ScreenToCanvas(screenPos);
 
         UpdateSelectionBoxVisual();

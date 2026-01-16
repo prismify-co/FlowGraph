@@ -105,7 +105,7 @@ public class ConnectingState : InputStateBase
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         // Store screen position for AutoPan edge detection
-        var screenPos = GetPosition(context, e);
+        var screenPos = GetScreenPosition(context, e);
         
         // Get canvas position directly - MainCanvas has a transform, and GetPosition(MainCanvas)
         // automatically applies the inverse transform, giving us direct canvas coordinates
@@ -152,7 +152,7 @@ public class ConnectingState : InputStateBase
         Port? targetPort = null;
 
         // First try direct hit test on port (using canvas coordinates)
-        var hitElement = HitTest(context, canvasPoint);
+        var hitElement = HitTestCanvas(context, canvasPoint);
 
         if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
@@ -327,7 +327,7 @@ public class ConnectingState : InputStateBase
     private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint canvasPoint)
     {
         // First check direct hit test (uses canvas coordinates)
-        var hitElement = HitTest(context, canvasPoint);
+        var hitElement = HitTestCanvas(context, canvasPoint);
         Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;

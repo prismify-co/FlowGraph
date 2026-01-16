@@ -22,7 +22,7 @@ public class IdleState : InputStateBase
     public override StateTransitionResult HandlePointerPressed(InputStateContext context, PointerPressedEventArgs e, Control? source)
     {
         var point = GetPointerPoint(context, e);
-        var position = GetPosition(context, e);
+        var position = GetScreenPosition(context, e);
         var isReadOnly = context.Settings.IsReadOnly;
 
         // Middle mouse button always starts panning (allowed in read-only mode)
@@ -79,7 +79,7 @@ public class IdleState : InputStateBase
 
     public override StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)
     {
-        var position = GetPosition(context, e);
+        var position = GetScreenPosition(context, e);
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
         // Pan on scroll behavior
@@ -240,7 +240,7 @@ public class IdleState : InputStateBase
         // Check if click is near edge endpoints for reconnection - blocked in read-only mode
         if (!isReadOnly)
         {
-            var screenPos2 = GetPosition(context, e);
+            var screenPos2 = GetScreenPosition(context, e);
             var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
 
             if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
@@ -390,7 +390,7 @@ public class IdleState : InputStateBase
             return StateTransitionResult.Stay();
         }
 
-        var position = GetPosition(context, e);
+        var position = GetScreenPosition(context, e);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);
         connectingState.CreateTempLine(context.MainCanvas);
         // Always capture on RootPanel, not on the port visual (which may be a dummy control in direct rendering mode)

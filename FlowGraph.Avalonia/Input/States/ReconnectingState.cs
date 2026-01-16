@@ -96,21 +96,24 @@ public class ReconnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        _currentEndPoint = GetPosition(context, e);
+        // Store screen position for AutoPan edge detection and snap target calculation
+        var screenPos = GetScreenPosition(context, e);
+        
+        // Get canvas position for edge visual and hit testing
+        _currentEndPoint = GetCanvasPosition(context, e);
 
-        // AutoPan: pan viewport when dragging near edges
+        // AutoPan: pan viewport when dragging near edges (uses screen coordinates)
         if (context.Settings.EnableAutoPan && context.RootPanel != null)
         {
-            var currentScreen = e.GetPosition(context.RootPanel);
             var viewBounds = context.RootPanel.Bounds;
             var edgeDist = context.Settings.AutoPanEdgeDistance;
             var panSpeed = context.Settings.AutoPanSpeed;
 
             double panX = 0, panY = 0;
-            if (currentScreen.X < edgeDist) panX = panSpeed;
-            else if (currentScreen.X > viewBounds.Width - edgeDist) panX = -panSpeed;
-            if (currentScreen.Y < edgeDist) panY = panSpeed;
-            else if (currentScreen.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
+            if (screenPos.X < edgeDist) panX = panSpeed;
+            else if (screenPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
+            if (screenPos.Y < edgeDist) panY = panSpeed;
+            else if (screenPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
 
             if (panX != 0 || panY != 0)
             {
@@ -119,11 +122,13 @@ public class ReconnectingState : InputStateBase
             }
         }
 
-        // Try to find a snap target
-        _snappedTarget = FindSnapTarget(context, _currentEndPoint);
+        // Try to find a snap target (uses screen coordinates for distance calculation)
+        _snappedTarget = FindSnapTarget(context, screenPos);
 
         // Update the edge visual to follow the cursor (or snap to target)
         UpdateEdgeVisual(context);
+        
+        // Update port validation visual (uses canvas coordinates for hit testing)
         UpdatePortValidationVisual(context, _currentEndPoint);
 
         return StateTransitionResult.Stay();
@@ -138,13 +143,13 @@ public class ReconnectingState : InputStateBase
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }
 
-        var screenPoint = GetPosition(context, e);
-
         // Find target port (direct hit or snapped)
         Node? targetNode = null;
         Port? targetPort = null;
 
-        var hitElement = HitTest(context, screenPoint);
+        // Use canvas coordinates for hit testing
+        var canvasPoint = GetCanvasPosition(context, e);
+        var hitElement = HitTestCanvas(context, canvasPoint);
         if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
@@ -360,9 +365,14 @@ public class ReconnectingState : InputStateBase
         return bestTarget;
     }
 
-    private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint screenPoint)
+    /// <summary>
+    /// Updates the visual appearance of ports during reconnection dragging.
+    /// </summary>
+    /// <param name="context">The input state context.</param>
+    /// <param name="canvasPoint">The cursor position in canvas coordinates.</param>
+    private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint canvasPoint)
     {
-        var hitElement = HitTest(context, screenPoint);
+        var hitElement = HitTestCanvas(context, canvasPoint);
         Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;

@@ -45,7 +45,7 @@ public class ResizingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var currentPoint = GetPosition(context, e);
+        var currentPoint = GetScreenPosition(context, e);
         var deltaX = (currentPoint.X - _startPoint.X) / _viewport.Zoom;
         var deltaY = (currentPoint.Y - _startPoint.Y) / _viewport.Zoom;
 

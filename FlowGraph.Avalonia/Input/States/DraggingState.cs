@@ -90,7 +90,7 @@ public class DraggingState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        var currentScreen = GetPosition(context, e);
+        var currentScreen = GetScreenPosition(context, e);
 
         // Check if we've met the drag threshold
         if (!_dragThresholdMet)
