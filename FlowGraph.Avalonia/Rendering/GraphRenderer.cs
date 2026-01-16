@@ -328,9 +328,18 @@ public class GraphRenderer
     public (double width, double height) GetNodeDimensions(Node node) => _nodeVisualManager.GetNodeDimensions(node);
 
     /// <summary>
-    /// Gets the port position in screen coordinates.
-    /// Use this for hit testing and distance calculations in screen space.
+    /// Gets the port position in viewport coordinates.
     /// </summary>
+    /// <remarks>
+    /// <b>WARNING:</b> For distance calculations with pointer events, prefer using <see cref="GetPortCanvasPosition"/>
+    /// since pointer events give canvas coords via <c>e.GetPosition(MainCanvas)</c>.
+    /// </remarks>
+    public AvaloniaPoint GetPortViewportPosition(Node node, Port port, bool isOutput) => _nodeVisualManager.GetPortViewportPosition(node, port, isOutput);
+
+    /// <summary>
+    /// Gets the port position in screen coordinates.
+    /// </summary>
+    [Obsolete("Use GetPortViewportPosition or GetPortCanvasPosition instead.")]
     public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput) => _nodeVisualManager.GetPortScreenPosition(node, port, isOutput);
 
     /// <summary>

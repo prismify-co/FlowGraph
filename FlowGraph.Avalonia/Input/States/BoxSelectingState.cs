@@ -53,7 +53,7 @@ public class BoxSelectingState : InputStateBase
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         var screenPos = GetScreenPosition(context, e);
-        _endCanvas = context.ScreenToCanvas(screenPos);
+        _endCanvas = context.ViewportToCanvas(screenPos);
 
         UpdateSelectionBoxVisual();
         UpdateSelection(context, e.KeyModifiers.HasFlag(KeyModifiers.Control));
@@ -80,8 +80,8 @@ public class BoxSelectingState : InputStateBase
 
     private void UpdateSelectionBoxVisual()
     {
-        var startScreen = _viewport.CanvasToScreen(_startCanvas);
-        var endScreen = _viewport.CanvasToScreen(_endCanvas);
+        var startScreen = _viewport.CanvasToViewport(_startCanvas);
+        var endScreen = _viewport.CanvasToViewport(_endCanvas);
 
         var left = Math.Min(startScreen.X, endScreen.X);
         var top = Math.Min(startScreen.Y, endScreen.Y);

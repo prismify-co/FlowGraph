@@ -30,6 +30,10 @@ public partial class DirectGraphRenderer
         canvasPoint.Y * zoom + offsetY);
   }
 
+  // Alias for clearer naming in hit testing code
+  private AvaloniaPoint CanvasToViewport(AvaloniaPoint canvasPoint, double zoom, double offsetX, double offsetY)
+    => CanvasToScreen(canvasPoint, zoom, offsetX, offsetY);
+
   private Rect CanvasToScreen(Rect canvasRect, double zoom, double offsetX, double offsetY)
   {
     return new Rect(

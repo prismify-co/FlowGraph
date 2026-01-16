@@ -128,7 +128,7 @@ public partial class FlowCanvas
             bounds.X + bounds.Width / 2,
             bounds.Y + bounds.Height / 2);
 
-        return _viewport.CanvasToScreen(center);
+        return _viewport.CanvasToViewport(center);
     }
 
     private Rect CalculateGraphBounds()

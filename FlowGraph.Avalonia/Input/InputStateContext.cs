@@ -192,8 +192,8 @@ public class InputStateContext
 
     #region Coordinate Helpers
 
-    public AvaloniaPoint ScreenToCanvas(AvaloniaPoint screenPoint) => _viewport.ScreenToCanvas(screenPoint);
-    public AvaloniaPoint CanvasToScreen(AvaloniaPoint canvasPoint) => _viewport.CanvasToScreen(canvasPoint);
+    public AvaloniaPoint ViewportToCanvas(AvaloniaPoint viewportPoint) => _viewport.ViewportToCanvas(viewportPoint);
+    public AvaloniaPoint CanvasToViewport(AvaloniaPoint canvasPoint) => _viewport.CanvasToViewport(canvasPoint);
 
     #endregion
 

@@ -733,18 +733,29 @@ public class NodeVisualManager
     #endregion
 
     /// <summary>
-    /// Gets the screen position of a port using GraphRenderModel.
-    /// Use this for hit testing and distance calculations in screen space.
+    /// Gets the viewport position of a port using GraphRenderModel.
     /// </summary>
+    /// <remarks>
+    /// <b>WARNING:</b> This returns viewport-relative coordinates, NOT screen/control coordinates.
+    /// For distance calculations with pointer events, prefer using <see cref="GetPortCanvasPosition"/>
+    /// and comparing in canvas space, since pointer events give canvas coords via <c>e.GetPosition(MainCanvas)</c>.
+    /// </remarks>
     /// <param name="node">The parent node.</param>
     /// <param name="port">The port.</param>
     /// <param name="isOutput">True if this is an output port.</param>
-    /// <returns>The port position in screen coordinates.</returns>
-    public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
+    /// <returns>The port position in viewport coordinates.</returns>
+    public AvaloniaPoint GetPortViewportPosition(Node node, Port port, bool isOutput)
     {
         var canvasPos = _model.GetPortPosition(node, port, isOutput);
-        return _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
+        return _renderContext.CanvasToViewport(canvasPos.X, canvasPos.Y);
     }
+    
+    /// <summary>
+    /// Gets the screen position of a port using GraphRenderModel.
+    /// </summary>
+    [Obsolete("Use GetPortViewportPosition or GetPortCanvasPosition instead. 'Screen' terminology was ambiguous.")]
+    public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
+        => GetPortViewportPosition(node, port, isOutput);
 
     /// <summary>
     /// Gets the canvas position of a port using GraphRenderModel.

@@ -32,7 +32,7 @@ public class DraggingState : InputStateBase
     public DraggingState(Graph graph, AvaloniaPoint screenPosition, ViewportState viewport, FlowCanvasSettings settings)
     {
         _dragStartScreen = screenPosition;
-        _dragStartCanvas = viewport.ScreenToCanvas(screenPosition);
+        _dragStartCanvas = viewport.ViewportToCanvas(screenPosition);
 
         // Scale drag threshold inversely with zoom: at zoom 0.30, threshold = min(4/0.30, 15) = 13.3 pixels
         // This prevents accidental drags when clicking on tiny zoomed-out nodes
@@ -150,7 +150,7 @@ public class DraggingState : InputStateBase
             }
         }
 
-        var currentCanvas = context.ScreenToCanvas(currentScreen);
+        var currentCanvas = context.ViewportToCanvas(currentScreen);
         var deltaX = currentCanvas.X - _dragStartCanvas.X;
         var deltaY = currentCanvas.Y - _dragStartCanvas.Y;
 

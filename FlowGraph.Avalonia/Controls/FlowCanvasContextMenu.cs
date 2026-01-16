@@ -289,8 +289,8 @@ public class FlowCanvasContextMenu
         var selectedNode = _canvas.Graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
         if (selectedNode != null)
         {
-            // Get screen position for the editor
-            var screenPos = _canvas.Viewport.CanvasToScreen(
+            // Get viewport position for the editor
+            var screenPos = _canvas.Viewport.CanvasToViewport(
                 new global::Avalonia.Point(selectedNode.Position.X, selectedNode.Position.Y));
 
             // Raise the label edit request event

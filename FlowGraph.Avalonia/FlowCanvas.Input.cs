@@ -480,7 +480,7 @@ public partial class FlowCanvas
     private void HandleContextMenuRequest(PointerPressedEventArgs e, Control? target, object? targetObject)
     {
         var screenPos = e.GetPosition(_rootPanel);
-        var canvasPos = _viewport.ScreenToCanvas(screenPos);
+        var canvasPos = _viewport.ViewportToCanvas(screenPos);
         var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
 
         // In direct rendering mode, target may be a dummy control - use _rootPanel for positioning

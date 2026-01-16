@@ -130,7 +130,7 @@ public class IdleState : InputStateBase
         if (node.IsGroup)
         {
             // Calculate the click position relative to the node
-            var canvasPos = context.ScreenToCanvas(position);
+            var canvasPos = context.ViewportToCanvas(position);
             var relativeX = canvasPos.X - node.Position.X;
             var relativeY = canvasPos.Y - node.Position.Y;
 
@@ -165,7 +165,7 @@ public class IdleState : InputStateBase
             {
                 if (!isReadOnly && context.Settings.EnableGroupLabelEditing)
                 {
-                    var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
+                    var screenPos = context.CanvasToViewport(new AvaloniaPoint(node.Position.X, node.Position.Y));
                     context.RaiseNodeLabelEditRequested(node, screenPos);
                 }
                 else
@@ -176,7 +176,7 @@ public class IdleState : InputStateBase
             }
             else if (!isReadOnly && context.Settings.EnableNodeLabelEditing)
             {
-                var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
+                var screenPos = context.CanvasToViewport(new AvaloniaPoint(node.Position.X, node.Position.Y));
                 context.RaiseNodeLabelEditRequested(node, screenPos);
             }
             e.Handled = true;
@@ -240,8 +240,8 @@ public class IdleState : InputStateBase
         // Check if click is near edge endpoints for reconnection - blocked in read-only mode
         if (!isReadOnly)
         {
-            var screenPos2 = GetScreenPosition(context, e);
-            var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
+            var canvasPos = GetCanvasPosition(context, e);
+            var reconnectInfo = CheckEdgeEndpointClick(context, edge, canvasPos);
 
             if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
             {
@@ -250,8 +250,9 @@ public class IdleState : InputStateBase
                 // Start reconnecting state
                 if (context.Theme != null && context.MainCanvas != null)
                 {
+                    var screenPos = GetScreenPosition(context, e);
                     var reconnectState = new ReconnectingState(
-                        edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos2, context.Theme);
+                        edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos, context.Theme);
                     reconnectState.CreateTempLine(context.MainCanvas);
                     CapturePointer(e, context.RootPanel);
                     e.Handled = true;
@@ -280,9 +281,10 @@ public class IdleState : InputStateBase
 
     /// <summary>
     /// Checks if a click is near an edge endpoint and returns reconnection info if so.
+    /// Uses canvas coordinates for distance calculation to avoid coordinate system mismatches.
     /// </summary>
     private (bool draggingTarget, Node fixedNode, Port fixedPort, Node movingNode, Port movingPort)?
-        CheckEdgeEndpointClick(InputStateContext context, Edge edge, AvaloniaPoint screenPos)
+        CheckEdgeEndpointClick(InputStateContext context, Edge edge, AvaloniaPoint canvasPos)
     {
         var graph = context.Graph;
         if (graph == null) return null;
@@ -297,20 +299,22 @@ public class IdleState : InputStateBase
 
         if (sourcePort == null || targetPort == null) return null;
 
-        var sourceScreenPos = context.GraphRenderer.GetPortScreenPosition(sourceNode, sourcePort, true);
-        var targetScreenPos = context.GraphRenderer.GetPortScreenPosition(targetNode, targetPort, false);
+        // Use canvas coordinates to avoid viewport/screen coordinate mismatches
+        var sourceCanvasPos = context.GraphRenderer.GetPortCanvasPosition(sourceNode, sourcePort, true);
+        var targetCanvasPos = context.GraphRenderer.GetPortCanvasPosition(targetNode, targetPort, false);
 
-        var snapDistance = context.Settings.EdgeEndpointHandleSize * 2;
+        // Scale snap distance to canvas coordinates (handle size is in screen pixels)
+        var snapDistance = context.Settings.EdgeEndpointHandleSize * 2 / context.Viewport.Zoom;
 
         // Check distance to source endpoint
         var distToSource = Math.Sqrt(
-            Math.Pow(screenPos.X - sourceScreenPos.X, 2) +
-            Math.Pow(screenPos.Y - sourceScreenPos.Y, 2));
+            Math.Pow(canvasPos.X - sourceCanvasPos.X, 2) +
+            Math.Pow(canvasPos.Y - sourceCanvasPos.Y, 2));
 
         // Check distance to target endpoint  
         var distToTarget = Math.Sqrt(
-            Math.Pow(screenPos.X - targetScreenPos.X, 2) +
-            Math.Pow(screenPos.Y - targetScreenPos.Y, 2));
+            Math.Pow(canvasPos.X - targetCanvasPos.X, 2) +
+            Math.Pow(canvasPos.Y - targetCanvasPos.Y, 2));
 
         if (distToTarget < snapDistance && distToTarget < distToSource)
         {
@@ -439,7 +443,7 @@ public class IdleState : InputStateBase
         // Box selection allowed in read-only mode (for viewing, doesn't modify graph)
         else
         {
-            var canvasPoint = context.ScreenToCanvas(position);
+            var canvasPoint = context.ViewportToCanvas(position);
             var boxSelectState = new BoxSelectingState(canvasPoint, context.MainCanvas, context.Settings, context.Viewport, context.Theme);
             CapturePointer(e, context.RootPanel);
             e.Handled = true;
@@ -469,7 +473,7 @@ public class IdleState : InputStateBase
             var selectedNode = graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
             if (selectedNode != null)
             {
-                var screenPos = context.CanvasToScreen(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));
+                var screenPos = context.CanvasToViewport(new AvaloniaPoint(selectedNode.Position.X, selectedNode.Position.Y));
                 context.RaiseNodeLabelEditRequested(selectedNode, screenPos);
                 return StateTransitionResult.Stay(true);
             }

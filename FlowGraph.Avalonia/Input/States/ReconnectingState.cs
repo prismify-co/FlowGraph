@@ -260,8 +260,8 @@ public class ReconnectingState : InputStateBase
         }
         else
         {
-            // _currentEndPoint is in screen coordinates, convert to canvas
-            movingPoint = context.ScreenToCanvas(_currentEndPoint);
+            // _currentEndPoint is in viewport coordinates, convert to canvas
+            movingPoint = context.ViewportToCanvas(_currentEndPoint);
         }
 
         // Create the path geometry

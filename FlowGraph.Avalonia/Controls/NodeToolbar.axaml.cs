@@ -243,9 +243,9 @@ public partial class NodeToolbar : UserControl
         var maxX = selectedNodes.Max(n => n.Position.X + (n.Width ?? settings.NodeWidth));
         var maxY = selectedNodes.Max(n => n.Position.Y + (n.Height ?? settings.NodeHeight));
 
-        // Convert to screen coordinates
-        var topLeft = viewport.CanvasToScreen(new AvaloniaPoint(minX, minY));
-        var bottomRight = viewport.CanvasToScreen(new AvaloniaPoint(maxX, maxY));
+        // Convert to viewport coordinates
+        var topLeft = viewport.CanvasToViewport(new AvaloniaPoint(minX, minY));
+        var bottomRight = viewport.CanvasToViewport(new AvaloniaPoint(maxX, maxY));
 
         var boundsWidth = bottomRight.X - topLeft.X;
         var boundsHeight = bottomRight.Y - topLeft.Y;

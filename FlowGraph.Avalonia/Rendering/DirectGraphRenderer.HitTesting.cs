@@ -380,20 +380,31 @@ public partial class DirectGraphRenderer
   }
 
   /// <summary>
-  /// Gets the screen position for a port (for creating connection temp lines, etc.)
+  /// Gets the viewport position for a port.
   /// </summary>
-  public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
+  /// <remarks>
+  /// <b>WARNING:</b> For distance calculations with pointer events, prefer using <see cref="GetPortCanvasPosition"/>
+  /// since pointer events give canvas coords via <c>e.GetPosition(MainCanvas)</c>.
+  /// </remarks>
+  public AvaloniaPoint GetPortViewportPosition(Node node, Port port, bool isOutput)
   {
     if (_viewport == null) return default;
 
     var canvasPos = _model.GetPortPosition(node, port, isOutput);
-    return CanvasToScreen(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
+    return CanvasToViewport(canvasPos, _viewport.Zoom, _viewport.OffsetX, _viewport.OffsetY);
   }
 
   /// <summary>
-  /// Gets the screen position for an edge endpoint (source or target).
+  /// Gets the screen position for a port.
   /// </summary>
-  public AvaloniaPoint GetEdgeEndpointScreenPosition(Edge edge, bool isSource)
+  [Obsolete("Use GetPortViewportPosition or GetPortCanvasPosition instead.")]
+  public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
+    => GetPortViewportPosition(node, port, isOutput);
+
+  /// <summary>
+  /// Gets the viewport position for an edge endpoint (source or target).
+  /// </summary>
+  public AvaloniaPoint GetEdgeEndpointViewportPosition(Edge edge, bool isSource)
   {
     if (_graph == null || _viewport == null || _nodeById == null) return default;
 

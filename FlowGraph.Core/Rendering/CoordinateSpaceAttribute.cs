@@ -12,9 +12,22 @@ public enum CoordinateSpace
     Canvas,
     
     /// <summary>
+    /// Viewport coordinates - positions within the visible viewport window.
+    /// The viewport origin (0,0) is the top-left of the visible canvas area.
+    /// These coordinates change as the user zooms and pans.
+    /// </summary>
+    Viewport,
+    
+    /// <summary>
     /// Screen coordinates - pixel positions after zoom/pan transforms.
     /// Pointer events and direct rendering use this space.
     /// </summary>
+    /// <remarks>
+    /// <b>DEPRECATED:</b> This term was ambiguous. Use <see cref="Viewport"/> instead
+    /// when referring to viewport-relative coordinates, or document the specific
+    /// control coordinate space being used.
+    /// </remarks>
+    [Obsolete("Use Viewport instead. 'Screen' was ambiguous - could mean viewport or control coordinates.")]
     Screen,
     
     /// <summary>

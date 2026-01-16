@@ -157,7 +157,7 @@ public class ConnectingState : InputStateBase
         // Get screen coordinates first, then convert to canvas using viewport
         // NOTE: Don't use e.GetPosition(MainCanvas) as it may not correctly apply the MatrixTransform
         var screenPoint = GetScreenPosition(context, e);
-        var canvasPoint = context.ScreenToCanvas(screenPoint);
+        var canvasPoint = context.ViewportToCanvas(screenPoint);
 
         bool connectionCompleted = false;
         Node? targetNode = null;

@@ -62,7 +62,7 @@ public partial class FlowCanvas
         }
 
         // Calculate paste position (center of viewport or with offset from original)
-        var viewCenter = _viewport.ScreenToCanvas(new global::Avalonia.Point(
+        var viewCenter = _viewport.ViewportToCanvas(new global::Avalonia.Point(
             _viewport.ViewSize.Width / 2,
             _viewport.ViewSize.Height / 2));
         var pastePosition = new Core.Point(viewCenter.X, viewCenter.Y);

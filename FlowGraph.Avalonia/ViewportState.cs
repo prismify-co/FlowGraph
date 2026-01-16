@@ -75,8 +75,8 @@ public class ViewportState : IViewportState
         if (ViewSize.Width <= 0 || ViewSize.Height <= 0)
             return new Rect(0, 0, 0, 0);
 
-        var topLeft = ScreenToCanvas(new Point(0, 0));
-        var bottomRight = ScreenToCanvas(new Point(ViewSize.Width, ViewSize.Height));
+        var topLeft = ViewportToCanvas(new Point(0, 0));
+        var bottomRight = ViewportToCanvas(new Point(ViewSize.Width, ViewSize.Height));
 
         return new Rect(topLeft, bottomRight);
     }
@@ -202,29 +202,29 @@ public class ViewportState : IViewportState
     }
 
     /// <summary>
-    /// Transforms a screen point to canvas coordinates.
+    /// Transforms a viewport point to canvas coordinates.
     /// </summary>
-    public Point ScreenToCanvas(Point screenPoint)
+    public Point ViewportToCanvas(Point viewportPoint)
     {
         return new Point(
-            (screenPoint.X - OffsetX) / Zoom,
-            (screenPoint.Y - OffsetY) / Zoom
+            (viewportPoint.X - OffsetX) / Zoom,
+            (viewportPoint.Y - OffsetY) / Zoom
         );
     }
 
     /// <inheritdoc />
-    CorePoint ICoordinateTransformer.ScreenToCanvas(double screenX, double screenY)
+    CorePoint ICoordinateTransformer.ViewportToCanvas(double viewportX, double viewportY)
     {
         return new CorePoint(
-            (screenX - OffsetX) / Zoom,
-            (screenY - OffsetY) / Zoom
+            (viewportX - OffsetX) / Zoom,
+            (viewportY - OffsetY) / Zoom
         );
     }
 
     /// <summary>
-    /// Transforms a canvas point to screen coordinates.
+    /// Transforms a canvas point to viewport coordinates.
     /// </summary>
-    public Point CanvasToScreen(Point canvasPoint)
+    public Point CanvasToViewport(Point canvasPoint)
     {
         return new Point(
             canvasPoint.X * Zoom + OffsetX,
@@ -233,7 +233,7 @@ public class ViewportState : IViewportState
     }
 
     /// <inheritdoc />
-    CorePoint ICoordinateTransformer.CanvasToScreen(double canvasX, double canvasY)
+    CorePoint ICoordinateTransformer.CanvasToViewport(double canvasX, double canvasY)
     {
         return new CorePoint(
             canvasX * Zoom + OffsetX,
@@ -242,16 +242,42 @@ public class ViewportState : IViewportState
     }
 
     /// <inheritdoc />
-    public CorePoint ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
+    public CorePoint ViewportToCanvasDelta(double viewportDeltaX, double viewportDeltaY)
     {
-        return new CorePoint(screenDeltaX / Zoom, screenDeltaY / Zoom);
+        return new CorePoint(viewportDeltaX / Zoom, viewportDeltaY / Zoom);
     }
 
     /// <inheritdoc />
-    public CorePoint CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
+    public CorePoint CanvasToViewportDelta(double canvasDeltaX, double canvasDeltaY)
     {
         return new CorePoint(canvasDeltaX * Zoom, canvasDeltaY * Zoom);
     }
+    
+    #region Obsolete methods for backward compatibility
+    
+    /// <summary>
+    /// Transforms a screen point to canvas coordinates.
+    /// </summary>
+    [Obsolete("Use ViewportToCanvas instead.")]
+    public Point ScreenToCanvas(Point screenPoint) => ViewportToCanvas(screenPoint);
+
+    /// <summary>
+    /// Transforms a canvas point to screen coordinates.
+    /// </summary>
+    [Obsolete("Use CanvasToViewport instead.")]
+    public Point CanvasToScreen(Point canvasPoint) => CanvasToViewport(canvasPoint);
+    
+    /// <inheritdoc />
+    [Obsolete("Use ViewportToCanvasDelta instead.")]
+    public CorePoint ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
+        => ViewportToCanvasDelta(screenDeltaX, screenDeltaY);
+
+    /// <inheritdoc />
+    [Obsolete("Use CanvasToViewportDelta instead.")]
+    public CorePoint CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
+        => CanvasToViewportDelta(canvasDeltaX, canvasDeltaY);
+    
+    #endregion
 
     /// <summary>
     /// Fits the viewport to show a bounding box with padding.

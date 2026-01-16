@@ -202,16 +202,16 @@ public class RenderContext
         {
             if (_settings.DebugCoordinateTransforms)
             {
-                System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToScreen: NO VIEWPORT! Returning ({canvasX}, {canvasY})");
+                System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToViewport: NO VIEWPORT! Returning ({canvasX}, {canvasY})");
             }
             return new AvaloniaPoint(canvasX, canvasY);
         }
 
-        var result = _viewport.CanvasToScreen(new AvaloniaPoint(canvasX, canvasY));
+        var result = _viewport.CanvasToViewport(new AvaloniaPoint(canvasX, canvasY));
 
         if (_settings.DebugCoordinateTransforms)
         {
-            System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToScreen: ({canvasX}, {canvasY}) -> ({result.X}, {result.Y}) [zoom={_viewport.Zoom}, offset=({_viewport.OffsetX}, {_viewport.OffsetY})]");
+            System.Diagnostics.Debug.WriteLine($"RenderContext.CanvasToViewport: ({canvasX}, {canvasY}) -> ({result.X}, {result.Y}) [zoom={_viewport.Zoom}, offset=({_viewport.OffsetX}, {_viewport.OffsetY})]");
         }
 
         return result;
@@ -226,6 +226,20 @@ public class RenderContext
     {
         return CanvasToScreen(canvasPoint.X, canvasPoint.Y);
     }
+
+    /// <summary>
+    /// Transforms canvas coordinates to viewport coordinates.
+    /// Alias for <see cref="CanvasToScreen(double, double)"/> for API consistency.
+    /// </summary>
+    public AvaloniaPoint CanvasToViewport(double canvasX, double canvasY)
+        => CanvasToScreen(canvasX, canvasY);
+
+    /// <summary>
+    /// Transforms a canvas point to viewport coordinates.
+    /// Alias for <see cref="CanvasToScreen(AvaloniaPoint)"/> for API consistency.
+    /// </summary>
+    public AvaloniaPoint CanvasToViewport(AvaloniaPoint canvasPoint)
+        => CanvasToScreen(canvasPoint);
 
     /// <summary>
     /// Transforms a screen coordinate to canvas coordinate.
@@ -250,7 +264,7 @@ public class RenderContext
             return new AvaloniaPoint(screenX, screenY);
         }
 
-        return _viewport.ScreenToCanvas(new AvaloniaPoint(screenX, screenY));
+        return _viewport.ViewportToCanvas(new AvaloniaPoint(screenX, screenY));
     }
 
     /// <summary>
@@ -262,6 +276,20 @@ public class RenderContext
     {
         return ScreenToCanvas(screenPoint.X, screenPoint.Y);
     }
+
+    /// <summary>
+    /// Transforms viewport coordinates to canvas coordinates.
+    /// Alias for <see cref="ScreenToCanvas(double, double)"/> for API consistency.
+    /// </summary>
+    public AvaloniaPoint ViewportToCanvas(double viewportX, double viewportY)
+        => ScreenToCanvas(viewportX, viewportY);
+
+    /// <summary>
+    /// Transforms a viewport point to canvas coordinates.
+    /// Alias for <see cref="ScreenToCanvas(AvaloniaPoint)"/> for API consistency.
+    /// </summary>
+    public AvaloniaPoint ViewportToCanvas(AvaloniaPoint viewportPoint)
+        => ScreenToCanvas(viewportPoint);
 
     /// <summary>
     /// Scales a value by the logical scale factor (always 1.0).
