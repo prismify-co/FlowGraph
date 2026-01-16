@@ -35,6 +35,11 @@
   <ItemGroup>
     <ProjectReference Include="..\FlowGraph.Avalonia\FlowGraph.Avalonia.csproj" />
     <ProjectReference Include="..\FlowGraph.3D\FlowGraph.3D.csproj" />
-    <ProjectReference Include="..\..\shad-ui\src\ShadUI\ShadUI.csproj" />
+    <!-- Temporary: using local patched ShadUI DLL until upstream fixes ColorView spectrum sizing -->
+    <!-- <PackageReference Include="ShadUI" Version="0.1.6" /> -->
+    <!-- <ProjectReference Include="..\..\shad-ui\src\ShadUI\ShadUI.csproj" /> -->
+    <Reference Include="ShadUI">
+      <HintPath>lib\ShadUI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

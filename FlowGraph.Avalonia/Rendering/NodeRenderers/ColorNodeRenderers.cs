@@ -80,7 +80,8 @@ public class ColorPickerNodeRenderer : WhiteHeaderedNodeRendererBase
             IsColorComponentsVisible = false,
             IsColorPaletteVisible = false,
             IsHexInputVisible = true,
-            Width = 250,
+            // Let ColorView use its natural size from the template (408px width)
+            // The ColorSpectrum forces itself to be square using Math.Min(width, height)
             Tag = "ColorView"
         };
 
