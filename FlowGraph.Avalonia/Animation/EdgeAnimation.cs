@@ -171,21 +171,23 @@ public class EdgeFlowAnimation : IAnimation
         if (IsComplete) return;
 
         _elapsed += deltaTime;
-        
+
         // Update offset based on direction
+        // Note: Decreasing offset makes dashes visually move forward along the path
+        // So for forward flow (source to target), we decrease; for reverse, we increase
         if (_reverse)
-        {
-            _currentOffset -= _speed * deltaTime;
-            // Wrap around to prevent underflow
-            if (_currentOffset < -1000)
-                _currentOffset += 1000;
-        }
-        else
         {
             _currentOffset += _speed * deltaTime;
             // Wrap around to prevent overflow
             if (_currentOffset > 1000)
                 _currentOffset -= 1000;
+        }
+        else
+        {
+            _currentOffset -= _speed * deltaTime;
+            // Wrap around to prevent underflow
+            if (_currentOffset < -1000)
+                _currentOffset += 1000;
         }
 
         _onUpdate?.Invoke(_edge, _currentOffset);
@@ -342,11 +344,11 @@ public class EdgePulseAnimation : IAnimation
         if (IsComplete) return;
 
         _elapsed += deltaTime;
-        
+
         // Sine wave oscillation
         var sine = Math.Sin(_elapsed * _frequency * 2 * Math.PI);
         var normalized = (sine + 1) / 2; // Convert from -1..1 to 0..1
-        
+
         CurrentThickness = _baseThickness + _pulseAmount * normalized;
         _onUpdate?.Invoke(_edge, CurrentThickness);
 
@@ -422,6 +424,234 @@ public class MultiEdgeFadeAnimation : IAnimation
         {
             IsComplete = true;
             _onComplete?.Invoke();
+        }
+    }
+
+    public void Cancel()
+    {
+        IsComplete = true;
+    }
+}
+
+/// <summary>
+/// Cycles through rainbow colors continuously for a colorful effect.
+/// </summary>
+public class EdgeRainbowAnimation : IAnimation
+{
+    private readonly Edge _edge;
+    private readonly double _cycleSpeed;
+    private readonly double? _maxDuration;
+    private readonly Action<Edge, Color>? _onUpdate;
+
+    private double _elapsed;
+    private double _hue;
+
+    public bool IsComplete { get; private set; }
+
+    /// <summary>
+    /// Gets the current color.
+    /// </summary>
+    public Color CurrentColor { get; private set; }
+
+    /// <summary>
+    /// Creates a new rainbow color animation.
+    /// </summary>
+    /// <param name="edge">The edge to animate.</param>
+    /// <param name="cycleSpeed">How fast to cycle through colors (1.0 = one full cycle per second).</param>
+    /// <param name="onUpdate">Callback called each frame with the edge and current color.</param>
+    /// <param name="maxDuration">Maximum duration in seconds, or null for infinite.</param>
+    public EdgeRainbowAnimation(
+        Edge edge,
+        double cycleSpeed = 0.5,
+        Action<Edge, Color>? onUpdate = null,
+        double? maxDuration = null)
+    {
+        _edge = edge;
+        _cycleSpeed = cycleSpeed;
+        _onUpdate = onUpdate;
+        _maxDuration = maxDuration;
+        CurrentColor = HsvToRgb(0, 1, 1);
+    }
+
+    public void Update(double deltaTime)
+    {
+        if (IsComplete) return;
+
+        _elapsed += deltaTime;
+        _hue = (_hue + deltaTime * _cycleSpeed) % 1.0;
+
+        CurrentColor = HsvToRgb(_hue, 0.8, 1.0);
+        _onUpdate?.Invoke(_edge, CurrentColor);
+
+        if (_maxDuration.HasValue && _elapsed >= _maxDuration.Value)
+        {
+            IsComplete = true;
+        }
+    }
+
+    public void Cancel()
+    {
+        IsComplete = true;
+    }
+
+    private static Color HsvToRgb(double h, double s, double v)
+    {
+        var hi = (int)(h * 6) % 6;
+        var f = h * 6 - (int)(h * 6);
+        var p = v * (1 - s);
+        var q = v * (1 - f * s);
+        var t = v * (1 - (1 - f) * s);
+
+        double r, g, b;
+        switch (hi)
+        {
+            case 0: r = v; g = t; b = p; break;
+            case 1: r = q; g = v; b = p; break;
+            case 2: r = p; g = v; b = t; break;
+            case 3: r = p; g = q; b = v; break;
+            case 4: r = t; g = p; b = v; break;
+            default: r = v; g = p; b = q; break;
+        }
+
+        return Color.FromRgb((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+    }
+}
+
+/// <summary>
+/// Pulsing glow effect that oscillates opacity/intensity continuously.
+/// </summary>
+public class EdgePulseGlowAnimation : IAnimation
+{
+    private readonly Edge _edge;
+    private readonly double _minOpacity;
+    private readonly double _maxOpacity;
+    private readonly double _frequency;
+    private readonly double? _maxDuration;
+    private readonly Action<Edge, double>? _onUpdate;
+
+    private double _elapsed;
+
+    public bool IsComplete { get; private set; }
+
+    /// <summary>
+    /// Gets the current opacity value.
+    /// </summary>
+    public double CurrentOpacity { get; private set; }
+
+    /// <summary>
+    /// Creates a new pulsing glow animation.
+    /// </summary>
+    /// <param name="edge">The edge to animate.</param>
+    /// <param name="minOpacity">Minimum opacity during pulse.</param>
+    /// <param name="maxOpacity">Maximum opacity during pulse.</param>
+    /// <param name="frequency">Pulse frequency in Hz (cycles per second).</param>
+    /// <param name="onUpdate">Callback called each frame with the edge and current opacity.</param>
+    /// <param name="maxDuration">Maximum duration in seconds, or null for infinite.</param>
+    public EdgePulseGlowAnimation(
+        Edge edge,
+        double minOpacity = 0.3,
+        double maxOpacity = 1.0,
+        double frequency = 1.0,
+        Action<Edge, double>? onUpdate = null,
+        double? maxDuration = null)
+    {
+        _edge = edge;
+        _minOpacity = Math.Clamp(minOpacity, 0, 1);
+        _maxOpacity = Math.Clamp(maxOpacity, 0, 1);
+        _frequency = frequency;
+        _onUpdate = onUpdate;
+        _maxDuration = maxDuration;
+        CurrentOpacity = maxOpacity;
+    }
+
+    public void Update(double deltaTime)
+    {
+        if (IsComplete) return;
+
+        _elapsed += deltaTime;
+
+        // Smooth sine wave oscillation
+        var sine = Math.Sin(_elapsed * _frequency * 2 * Math.PI);
+        var normalized = (sine + 1) / 2; // 0..1
+
+        CurrentOpacity = _minOpacity + (_maxOpacity - _minOpacity) * normalized;
+        _onUpdate?.Invoke(_edge, CurrentOpacity);
+
+        if (_maxDuration.HasValue && _elapsed >= _maxDuration.Value)
+        {
+            IsComplete = true;
+        }
+    }
+
+    public void Cancel()
+    {
+        IsComplete = true;
+    }
+}
+
+/// <summary>
+/// Continuous thickness pulse animation that loops indefinitely.
+/// </summary>
+public class EdgeContinuousPulseAnimation : IAnimation
+{
+    private readonly Edge _edge;
+    private readonly double _minThickness;
+    private readonly double _maxThickness;
+    private readonly double _frequency;
+    private readonly double? _maxDuration;
+    private readonly Action<Edge, double>? _onUpdate;
+
+    private double _elapsed;
+
+    public bool IsComplete { get; private set; }
+
+    /// <summary>
+    /// Gets the current thickness value.
+    /// </summary>
+    public double CurrentThickness { get; private set; }
+
+    /// <summary>
+    /// Creates a new continuous pulse animation.
+    /// </summary>
+    /// <param name="edge">The edge to animate.</param>
+    /// <param name="minThickness">Minimum stroke thickness.</param>
+    /// <param name="maxThickness">Maximum stroke thickness.</param>
+    /// <param name="frequency">Pulse frequency in Hz.</param>
+    /// <param name="onUpdate">Callback called each frame with the edge and current thickness.</param>
+    /// <param name="maxDuration">Maximum duration in seconds, or null for infinite.</param>
+    public EdgeContinuousPulseAnimation(
+        Edge edge,
+        double minThickness = 1.5,
+        double maxThickness = 4.0,
+        double frequency = 1.5,
+        Action<Edge, double>? onUpdate = null,
+        double? maxDuration = null)
+    {
+        _edge = edge;
+        _minThickness = minThickness;
+        _maxThickness = maxThickness;
+        _frequency = frequency;
+        _onUpdate = onUpdate;
+        _maxDuration = maxDuration;
+        CurrentThickness = minThickness;
+    }
+
+    public void Update(double deltaTime)
+    {
+        if (IsComplete) return;
+
+        _elapsed += deltaTime;
+
+        // Sine wave for smooth pulsing
+        var sine = Math.Sin(_elapsed * _frequency * 2 * Math.PI);
+        var normalized = (sine + 1) / 2; // 0..1
+
+        CurrentThickness = _minThickness + (_maxThickness - _minThickness) * normalized;
+        _onUpdate?.Invoke(_edge, CurrentThickness);
+
+        if (_maxDuration.HasValue && _elapsed >= _maxDuration.Value)
+        {
+            IsComplete = true;
         }
     }
 

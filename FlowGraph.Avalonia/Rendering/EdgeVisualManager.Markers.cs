@@ -145,10 +145,13 @@ public partial class EdgeVisualManager
       Stroke = stroke,
       StrokeThickness = 2,
       Fill = isClosed ? stroke : null,
-      Tag = "marker"
+      Tag = "marker",
+      // Explicitly disable any inherited effects on markers
+      Effect = null
     };
 
     canvas.Children.Add(markerPath);
+
     return markerPath;
   }
 }

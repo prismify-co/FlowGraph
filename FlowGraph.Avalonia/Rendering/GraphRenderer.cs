@@ -141,6 +141,19 @@ public class GraphRenderer
     public Control? GetPortVisual(string nodeId, string portId) => _nodeVisualManager.GetPortVisual(nodeId, portId);
 
     /// <summary>
+    /// Updates the visual state of a port using its renderer.
+    /// </summary>
+    public void UpdatePortState(Node node, Port port, PortVisualState state, ThemeResources theme)
+        => _nodeVisualManager.UpdatePortState(node, port, state, theme);
+
+    /// <summary>
+    /// Updates the visual state of all ports in the graph based on their connection status.
+    /// This should be called after rendering to ensure animated ports start their animations.
+    /// </summary>
+    public void UpdateAllPortStates(Graph graph, ThemeResources theme)
+        => _nodeVisualManager.UpdateAllPortStates(graph, theme);
+
+    /// <summary>
     /// Gets the visual element for an edge (hit area path).
     /// </summary>
     public AvaloniaPath? GetEdgeVisual(string edgeId) => _edgeVisualManager.GetEdgeVisual(edgeId);
@@ -149,6 +162,11 @@ public class GraphRenderer
     /// Gets the visible path for an edge (the actual rendered stroke).
     /// </summary>
     public AvaloniaPath? GetEdgeVisiblePath(string edgeId) => _edgeVisualManager.GetEdgeVisiblePath(edgeId);
+
+    /// <summary>
+    /// Gets the glow path for an edge (background glow effect).
+    /// </summary>
+    public AvaloniaPath? GetEdgeGlowPath(string edgeId) => _edgeVisualManager.GetEdgeGlowPath(edgeId);
 
     /// <summary>
     /// Gets the markers (arrows) for an edge.

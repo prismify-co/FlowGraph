@@ -213,6 +213,36 @@ public partial class FlowCanvas
     }
 
     /// <summary>
+    /// Gets the edge flow animation manager for automatic style-based animations.
+    /// </summary>
+    /// <remarks>
+    /// The EdgeFlowAnimationManager automatically starts/stops flow animations
+    /// based on <see cref="Core.Models.EdgeStyle.AnimatedFlow"/> settings.
+    /// Edges with AnimatedFlow=true in their style will automatically animate.
+    /// </remarks>
+    public EdgeFlowAnimationManager EdgeFlowAnimations => _edgeFlowManager;
+
+    /// <summary>
+    /// Gets the edge effects manager for rainbow and pulse effects.
+    /// </summary>
+    /// <remarks>
+    /// The EdgeEffectsManager automatically handles:
+    /// - Rainbow color cycling (<see cref="Core.Models.EdgeStyle.RainbowEffect"/>)
+    /// - Pulsing opacity (<see cref="Core.Models.EdgeStyle.PulseEffect"/>)
+    /// </remarks>
+    public EdgeEffectsManager EdgeEffects => _edgeEffectsManager;
+
+    /// <summary>
+    /// Gets the number of edges currently with active flow animations.
+    /// </summary>
+    public int ActiveFlowAnimationCount => _edgeFlowManager?.ActiveAnimationCount ?? 0;
+
+    /// <summary>
+    /// Gets the total number of active edge effects (rainbow + pulse).
+    /// </summary>
+    public int ActiveEffectsCount => _edgeEffectsManager?.TotalActiveEffects ?? 0;
+
+    /// <summary>
     /// Animates an edge's color.
     /// </summary>
     /// <param name="edge">The edge to animate.</param>
@@ -565,6 +595,14 @@ public partial class FlowCanvas
             visiblePath.Opacity = opacity;
         }
 
+        // Glow path should follow the main path opacity (but scaled)
+        var glowPath = _graphRenderer.GetEdgeGlowPath(edge.Id);
+        if (glowPath != null)
+        {
+            // Glow is already at 0.6 base opacity, scale proportionally
+            glowPath.Opacity = opacity * 0.6;
+        }
+
         var hitArea = _graphRenderer.GetEdgeVisual(edge.Id);
         if (hitArea != null)
         {
@@ -580,11 +618,8 @@ public partial class FlowCanvas
             }
         }
 
-        var label = _graphRenderer.GetEdgeLabel(edge.Id);
-        if (label != null)
-        {
-            label.Opacity = opacity;
-        }
+        // Note: Labels are intentionally NOT updated here to maintain readability
+        // during pulse animations. Labels should remain at constant opacity.
     }
 
     private void UpdateEdgeThickness(Edge edge, double thickness)
@@ -611,10 +646,35 @@ public partial class FlowCanvas
 
     private void UpdateEdgeColor(Edge edge, Color color)
     {
+        var brush = new SolidColorBrush(color);
+
         var visiblePath = _graphRenderer.GetEdgeVisiblePath(edge.Id);
         if (visiblePath != null)
         {
-            visiblePath.Stroke = new SolidColorBrush(color);
+            visiblePath.Stroke = brush;
+        }
+
+        // Also update glow path color if present
+        var glowPath = _graphRenderer.GetEdgeGlowPath(edge.Id);
+        if (glowPath != null)
+        {
+            // Glow uses a lower opacity brush
+            glowPath.Stroke = new SolidColorBrush(color) { Opacity = 0.4 };
+        }
+
+        // Also update marker colors to match
+        var markers = _graphRenderer.GetEdgeMarkers(edge.Id);
+        if (markers != null)
+        {
+            foreach (var marker in markers)
+            {
+                marker.Stroke = brush;
+                // Update fill for closed markers (ArrowClosed)
+                if (marker.Fill != null)
+                {
+                    marker.Fill = brush;
+                }
+            }
         }
     }
 

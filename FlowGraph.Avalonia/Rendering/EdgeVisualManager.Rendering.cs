@@ -35,6 +35,10 @@ public partial class EdgeVisualManager
       if (visiblePath != excludePath)
         canvas.Children.Remove(visiblePath);
     }
+    foreach (var (_, glowPath) in _edgeGlowPaths)
+    {
+      canvas.Children.Remove(glowPath);
+    }
     foreach (var (_, markers) in _edgeMarkers)
     {
       foreach (var marker in markers)
@@ -55,6 +59,7 @@ public partial class EdgeVisualManager
     // Clear edge visuals dictionaries after removing from canvas
     _edgeVisuals.Clear();
     _edgeVisiblePaths.Clear();
+    _edgeGlowPaths.Clear();
     _edgeMarkers.Clear();
     _edgeLabels.Clear();
     _edgeEndpointHandles.Clear();
@@ -155,18 +160,44 @@ public partial class EdgeVisualManager
     var strokeWidth = GetEdgeStrokeWidth(edge, edge.IsSelected);
     var settings = _renderContext.Settings;
 
+    // Clone the geometry for visible path to prevent shared state issues
+    var visiblePathGeometry = pathGeometry.Clone();
+
+    // Check if edge has glow effect - if so, create a background glow path
+    // NOTE: We use a separate wider path instead of ImmutableDropShadowEffect/ImmutableBlurEffect
+    // because ANY Avalonia Effect causes visual artifacts with markers at fixed screen positions.
+    // This is an Avalonia rendering bug with Effects + sibling elements on transformed canvases.
+    var glowParams = GetGlowParameters(edge);
+    AvaloniaPath? glowPath = null;
+    if (glowParams.HasValue && !edge.IsSelected)
+    {
+      var (glowColor, intensity) = glowParams.Value;
+      var glowGeometry = pathGeometry.Clone();
+      glowPath = new AvaloniaPath
+      {
+        Data = glowGeometry,
+        Stroke = new SolidColorBrush(glowColor) { Opacity = 0.3 },
+        StrokeThickness = strokeWidth + (intensity * 2), // Subtle glow effect
+        StrokeDashArray = null,
+        IsHitTestVisible = false,
+        Opacity = 0.5
+      };
+      // Add glow path first (behind the main path)
+      canvas.Children.Add(glowPath);
+    }
+
     // Create visible edge path - use logical (unscaled) dimensions
     // MatrixTransform handles all zoom scaling
     var visiblePath = new AvaloniaPath
     {
-      Data = pathGeometry,
+      Data = visiblePathGeometry,
       Stroke = strokeBrush,
       StrokeThickness = strokeWidth,
       StrokeDashArray = null,
       IsHitTestVisible = false
     };
 
-    // Apply full edge style (dash, glow, opacity)
+    // Apply full edge style (dash, opacity - glow handled separately)
     ApplyEdgeStyle(visiblePath, edge, theme, edge.IsSelected);
 
     // Create invisible hit area path (wider, transparent stroke for easier clicking)
@@ -188,6 +219,12 @@ public partial class EdgeVisualManager
     _edgeVisuals[edge.Id] = hitAreaPath;
     _edgeVisiblePaths[edge.Id] = visiblePath;
 
+    // Track glow path if created
+    if (glowPath != null)
+    {
+      _edgeGlowPaths[edge.Id] = glowPath;
+    }
+
     // Track markers for this edge
     var markers = new List<AvaloniaPath>();
 
@@ -197,6 +234,7 @@ public partial class EdgeVisualManager
       var lastFromPoint = GetLastFromPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
       // Use port position if available, otherwise default to Left for input ports
       var targetPortPosition = targetPort?.Position ?? PortPosition.Left;
+
       var markerPath = RenderEdgeMarker(canvas, endPoint, lastFromPoint, edge.MarkerEnd, strokeBrush, targetPortPosition);
       if (markerPath != null)
       {
@@ -210,6 +248,7 @@ public partial class EdgeVisualManager
       var firstToPoint = GetFirstToPoint(startPoint, endPoint, edge.Waypoints, edge.Type);
       // Use port position if available, otherwise default to Right for output ports
       var sourcePortPosition = sourcePort?.Position ?? PortPosition.Right;
+
       var markerPath = RenderEdgeMarker(canvas, startPoint, firstToPoint, edge.MarkerStart, strokeBrush, sourcePortPosition);
       if (markerPath != null)
       {
@@ -270,8 +309,8 @@ public partial class EdgeVisualManager
 
     if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
     {
-      // Apply full edge style including custom colors, dash, glow
-      ApplyEdgeStyle(visiblePath, edge, theme, edge.IsSelected);
+      // Apply edge style without effects (don't reapply glow during selection updates to avoid rendering artifacts)
+      ApplyEdgeStyle(visiblePath, edge, theme, edge.IsSelected, applyEffects: false);
     }
   }
 

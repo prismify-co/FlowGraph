@@ -26,6 +26,7 @@ public partial class EdgeVisualManager
     // Visual tracking
     private readonly Dictionary<string, AvaloniaPath> _edgeVisuals = new();  // Hit area paths
     private readonly Dictionary<string, AvaloniaPath> _edgeVisiblePaths = new();  // Visible paths
+    private readonly Dictionary<string, AvaloniaPath> _edgeGlowPaths = new();  // Glow effect paths (background)
     private readonly Dictionary<string, List<AvaloniaPath>> _edgeMarkers = new();  // Edge markers (arrows)
     private readonly Dictionary<string, TextBlock> _edgeLabels = new();  // Edge labels
     private readonly Dictionary<string, (Ellipse source, Ellipse target)> _edgeEndpointHandles = new();  // Edge endpoint handles
@@ -61,6 +62,16 @@ public partial class EdgeVisualManager
     public AvaloniaPath? GetEdgeVisiblePath(string edgeId)
     {
         return _edgeVisiblePaths.TryGetValue(edgeId, out var path) ? path : null;
+    }
+
+    /// <summary>
+    /// Gets the glow path for an edge.
+    /// </summary>
+    /// <param name="edgeId">The edge ID.</param>
+    /// <returns>The edge's glow path, or null if not found.</returns>
+    public AvaloniaPath? GetEdgeGlowPath(string edgeId)
+    {
+        return _edgeGlowPaths.TryGetValue(edgeId, out var path) ? path : null;
     }
 
     /// <summary>

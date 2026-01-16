@@ -339,6 +339,10 @@ public partial class FlowCanvas
             ApplyEdgeOpacityOverrides();
         }
 
+        // Update port visual states based on connection status
+        // This enables animated port renderers to start their animations when connected
+        _graphRenderer.UpdateAllPortStates(Graph, _theme);
+
         // Re-render resize handles for selected nodes after full re-render
         // This is needed because Clear() removes all handles, but IsSelected doesn't change
         // so no PropertyChanged event fires to trigger UpdateResizeHandlesForNode

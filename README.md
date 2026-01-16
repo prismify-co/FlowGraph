@@ -510,6 +510,59 @@ canvas.AnimateGroupCollapse(groupId, duration: 0.5);
 canvas.AnimateGroupExpand(groupId, duration: 0.5);
 ```
 
+## Edge Styles & Effects
+
+Customize edge appearance with `EdgeStyle`:
+
+```csharp
+var edge = new Edge
+{
+    Source = "node1",
+    Target = "node2",
+    Style = new EdgeStyle
+    {
+        // Basic styling
+        Color = "#00BCD4",
+        Thickness = 3,
+        Dash = "5,5",           // Dashed line
+        Opacity = 1.0,
+
+        // Flow animation
+        AnimatedFlow = true,
+        FlowSpeed = 60,
+        FlowDirection = FlowDirection.Forward,
+
+        // Glow effect
+        Glow = true,
+        GlowColor = "#00BCD4",
+        GlowIntensity = 2.0,
+
+        // Rainbow color cycling
+        Rainbow = true,
+        RainbowSpeed = 0.5,
+
+        // Pulse opacity effect
+        Pulse = true,
+        PulseFrequency = 1.5,
+        PulseMinOpacity = 0.3
+    }
+};
+```
+
+### Predefined Styles
+
+```csharp
+// Built-in presets
+edge.Style = EdgeStyle.Active;     // Cyan with flow animation
+edge.Style = EdgeStyle.Stream;     // Blue continuous stream
+edge.Style = EdgeStyle.Electric;   // Yellow electric effect
+edge.Style = EdgeStyle.Neon;       // Bright glow
+edge.Style = EdgeStyle.Pulse;      // Pulsing opacity
+edge.Style = EdgeStyle.Rainbow;    // Color cycling
+```
+
+> **Note:** Glow effects use a background path technique rather than Avalonia's built-in `Effect` system due to a known Avalonia rendering issue where effects on transformed canvases can cause sibling elements to render at incorrect positions.
+
 ## Serialization
 
 ```csharp

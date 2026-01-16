@@ -492,6 +492,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private FlowCanvasContextMenu _contextMenu = null!;
     private ThemeResources _theme = null!;
     private AnimationManager _animationManager = null!;
+    private Animation.EdgeFlowAnimationManager _edgeFlowManager = null!;
+    private Animation.EdgeEffectsManager _edgeEffectsManager = null!;
     private EdgeRoutingManager _edgeRoutingManager = null!;
     private LabelEditManager _labelEditManager = null!;
     private Rendering.ShapeRenderers.ShapeVisualManager? _shapeVisualManager;
@@ -532,6 +534,17 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _graphRenderer = new GraphRenderer(Settings);
         _graphRenderer.SetViewport(_viewport);
         _animationManager = new AnimationManager();
+
+        // Initialize edge flow animation manager for automatic animated edges
+        _edgeFlowManager = new Animation.EdgeFlowAnimationManager(
+            _animationManager,
+            (edge, offset) => UpdateEdgeDashOffset(edge, offset));
+
+        // Initialize edge effects manager for rainbow/pulse effects
+        _edgeEffectsManager = new Animation.EdgeEffectsManager(
+            _animationManager,
+            (edge, color) => UpdateEdgeColor(edge, color),
+            (edge, opacity) => UpdateEdgeOpacity(edge, opacity));
 
         // Initialize unified render service that abstracts retained vs direct rendering
         _renderService = new GraphRenderService(

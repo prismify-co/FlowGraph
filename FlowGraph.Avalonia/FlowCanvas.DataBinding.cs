@@ -45,6 +45,9 @@ public partial class FlowCanvas
 
     private void HandleGraphChanged(Graph? oldGraph, Graph? newGraph)
     {
+        // Stop flow animations for old graph
+        _edgeFlowManager?.StopAllAnimations();
+
         if (oldGraph != null)
         {
             oldGraph.NodesChanged -= OnNodesChanged;
@@ -62,6 +65,9 @@ public partial class FlowCanvas
 
             CenterOnGraph();
             ApplyViewportTransforms();
+
+            // Start flow animations for new graph
+            SyncEdgeFlowAnimations();
         }
     }
 
@@ -179,9 +185,14 @@ public partial class FlowCanvas
         // In direct rendering mode, invalidate the renderer for visual changes
         if (_useDirectRendering && _directRenderer != null)
         {
-            if (e.PropertyName is nameof(Edge.IsSelected))
+            if (e.PropertyName is nameof(Edge.IsSelected) or nameof(Edge.Style))
             {
                 _directRenderer.InvalidateVisual();
+            }
+            // Handle style change for animations even in direct rendering mode
+            if (e.PropertyName == nameof(Edge.Style))
+            {
+                SyncEdgeFlowAnimations();
             }
             return;
         }
@@ -191,6 +202,15 @@ public partial class FlowCanvas
         {
             case nameof(Edge.IsSelected):
                 _graphRenderer.UpdateEdgeSelection(edge, _theme);
+                break;
+            case nameof(Edge.Style):
+                // Re-render edge with new style and sync animations
+                if (_mainCanvas != null && Graph != null && _theme != null)
+                {
+                    _graphRenderer.RemoveEdgeVisual(_mainCanvas, edge);
+                    _graphRenderer.RenderEdge(_mainCanvas, edge, Graph, _theme);
+                }
+                SyncEdgeFlowAnimations();
                 break;
         }
     }
@@ -356,6 +376,8 @@ public partial class FlowCanvas
 
             // Reset requires full edge re-render
             RenderEdges();
+            // Sync edge flow animations
+            SyncEdgeFlowAnimations();
             return;
         }
 
@@ -363,6 +385,8 @@ public partial class FlowCanvas
         if (_useDirectRendering)
         {
             _directRenderer?.InvalidateVisual();
+            // Sync edge flow animations even in direct rendering mode
+            SyncEdgeFlowAnimations();
             return;
         }
 
@@ -400,6 +424,19 @@ public partial class FlowCanvas
         {
             RenderEdges();
         }
+
+        // Sync edge flow animations after any edge change
+        SyncEdgeFlowAnimations();
+    }
+
+    /// <summary>
+    /// Synchronizes edge flow animations with current edge styles.
+    /// </summary>
+    private void SyncEdgeFlowAnimations()
+    {
+        if (Graph == null) return;
+        _edgeFlowManager?.SyncAnimations(Graph.Edges);
+        _edgeEffectsManager?.SyncEffects(Graph.Edges);
     }
 
     #endregion

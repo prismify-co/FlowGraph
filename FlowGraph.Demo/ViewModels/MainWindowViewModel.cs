@@ -27,6 +27,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _pages = new IDemoPage[]
         {
             new InteractiveDemoPage(),
+            new EdgeStylesDemoPage(),
             new ShapesDemoPage(),
             new PerformanceDemoPage()
         };
@@ -57,15 +58,21 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void OpenEdgeStyles()
+    {
+        NavigateTo(_pages[1], "edge-styles");
+    }
+
+    [RelayCommand]
     private void OpenShapes()
     {
-        NavigateTo(_pages[1], "shapes");
+        NavigateTo(_pages[2], "shapes");
     }
 
     [RelayCommand]
     private void OpenPerformance()
     {
-        NavigateTo(_pages[2], "performance");
+        NavigateTo(_pages[3], "performance");
     }
 
     [RelayCommand]

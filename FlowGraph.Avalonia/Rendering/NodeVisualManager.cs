@@ -89,6 +89,71 @@ public class NodeVisualManager
     }
 
     /// <summary>
+    /// Updates the visual state of a port using its renderer.
+    /// </summary>
+    /// <param name="node">The node containing the port.</param>
+    /// <param name="port">The port to update.</param>
+    /// <param name="state">The new visual state.</param>
+    /// <param name="theme">The current theme.</param>
+    public void UpdatePortState(Node node, Port port, PortVisualState state, ThemeResources theme)
+    {
+        if (!_portVisuals.TryGetValue((node.Id, port.Id), out var visual)) return;
+
+        var renderer = _portRendererRegistry.GetRenderer(port);
+        var isOutput = node.Outputs.Contains(port);
+        var ports = isOutput ? node.Outputs : node.Inputs;
+        var index = ports.IndexOf(port);
+
+        var context = new PortRenderContext
+        {
+            Theme = theme,
+            Settings = _renderContext.Settings,
+            Scale = 1.0, // In transform-based rendering, scale is handled by MatrixTransform
+            ViewportZoom = _renderContext.ViewportZoom,
+            IsOutput = isOutput,
+            Index = index,
+            TotalPorts = ports.Count
+        };
+
+        renderer.UpdateState(visual, port, node, context, state);
+    }
+
+    /// <summary>
+    /// Updates the visual state of all ports in the graph based on their connection status.
+    /// This should be called after rendering to ensure animated ports start their animations.
+    /// </summary>
+    /// <param name="graph">The graph containing the nodes and edges.</param>
+    /// <param name="theme">The current theme.</param>
+    public void UpdateAllPortStates(Graph graph, ThemeResources theme)
+    {
+        // Build a set of connected ports
+        var connectedPorts = new HashSet<(string nodeId, string portId)>();
+        foreach (var edge in graph.Elements.Edges)
+        {
+            connectedPorts.Add((edge.Source, edge.SourcePort));
+            connectedPorts.Add((edge.Target, edge.TargetPort));
+        }
+
+        // Update each port's visual state
+        foreach (var node in graph.Elements.Nodes)
+        {
+            foreach (var port in node.Inputs)
+            {
+                var isConnected = connectedPorts.Contains((node.Id, port.Id));
+                var state = new PortVisualState { IsConnected = isConnected };
+                UpdatePortState(node, port, state, theme);
+            }
+
+            foreach (var port in node.Outputs)
+            {
+                var isConnected = connectedPorts.Contains((node.Id, port.Id));
+                var state = new PortVisualState { IsConnected = isConnected };
+                UpdatePortState(node, port, state, theme);
+            }
+        }
+    }
+
+    /// <summary>
     /// Clears all tracked node and port visuals.
     /// Note: This does not remove them from the canvas.
     /// </summary>

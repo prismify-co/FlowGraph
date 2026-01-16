@@ -115,8 +115,8 @@ public sealed record EdgeDefinition
     /// If <see cref="AutoRoute"/> is true and <see cref="RoutingMode"/> is Auto,
     /// obstacle avoidance is enabled. Otherwise, <see cref="RoutingMode"/> determines behavior.
     /// </remarks>
-    public EdgeRoutingMode EffectiveRoutingMode => 
-        RoutingMode != EdgeRoutingMode.Auto ? RoutingMode : 
+    public EdgeRoutingMode EffectiveRoutingMode =>
+        RoutingMode != EdgeRoutingMode.Auto ? RoutingMode :
         AutoRoute ? EdgeRoutingMode.Auto : EdgeRoutingMode.Auto;
 
     /// <summary>
