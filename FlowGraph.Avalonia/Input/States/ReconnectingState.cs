@@ -98,6 +98,27 @@ public class ReconnectingState : InputStateBase
     {
         _currentEndPoint = GetPosition(context, e);
 
+        // AutoPan: pan viewport when dragging near edges
+        if (context.Settings.EnableAutoPan && context.RootPanel != null)
+        {
+            var currentScreen = e.GetPosition(context.RootPanel);
+            var viewBounds = context.RootPanel.Bounds;
+            var edgeDist = context.Settings.AutoPanEdgeDistance;
+            var panSpeed = context.Settings.AutoPanSpeed;
+
+            double panX = 0, panY = 0;
+            if (currentScreen.X < edgeDist) panX = panSpeed;
+            else if (currentScreen.X > viewBounds.Width - edgeDist) panX = -panSpeed;
+            if (currentScreen.Y < edgeDist) panY = panSpeed;
+            else if (currentScreen.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
+
+            if (panX != 0 || panY != 0)
+            {
+                context.Viewport.Pan(panX, panY);
+                context.ApplyViewportTransform();
+            }
+        }
+
         // Try to find a snap target
         _snappedTarget = FindSnapTarget(context, _currentEndPoint);
 

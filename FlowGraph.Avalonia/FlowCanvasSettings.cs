@@ -408,6 +408,69 @@ public class FlowCanvasSettings
 
     #endregion
 
+    #region Level of Detail (LOD)
+
+    /// <summary>
+    /// Gets or sets the zoom threshold below which ports are hidden.
+    /// When zoom level is below this value, ports are not rendered for better performance.
+    /// Default is 0.4 (40% zoom).
+    /// </summary>
+    public double LodPortsZoomThreshold { get; set; } = 0.4;
+
+    /// <summary>
+    /// Gets or sets the zoom threshold below which node labels are hidden.
+    /// When zoom level is below this value, labels are not rendered for better performance.
+    /// Default is 0.3 (30% zoom).
+    /// </summary>
+    public double LodLabelsZoomThreshold { get; set; } = 0.3;
+
+    /// <summary>
+    /// Gets or sets the zoom threshold below which simplified node rendering is used.
+    /// When zoom level is below this value, nodes are rendered as simple rectangles without
+    /// rounded corners or custom renderers. Default is 0.5 (50% zoom).
+    /// </summary>
+    public double LodSimplifiedZoomThreshold { get; set; } = 0.5;
+
+    /// <summary>
+    /// Gets or sets whether LOD (Level of Detail) rendering is enabled.
+    /// When true, visual details are automatically hidden at low zoom levels for better performance.
+    /// When false, all details are always rendered regardless of zoom level. Default is true.
+    /// </summary>
+    public bool EnableLod { get; set; } = true;
+
+    #endregion
+
+    #region Interaction Mode
+
+    /// <summary>
+    /// Gets or sets whether the canvas is in read-only mode.
+    /// When true, all editing interactions are disabled (no dragging, connecting, selecting, etc.).
+    /// Pan and zoom still work. Useful for displaying graphs without allowing modification.
+    /// Default is false.
+    /// </summary>
+    public bool IsReadOnly { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets whether auto-pan is enabled when dragging near viewport edges.
+    /// When true, the viewport automatically pans when dragging nodes or edges near the edge
+    /// of the visible area. Default is true.
+    /// </summary>
+    public bool EnableAutoPan { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the distance from viewport edge (in pixels) at which auto-pan activates.
+    /// Default is 50 pixels.
+    /// </summary>
+    public double AutoPanEdgeDistance { get; set; } = 50;
+
+    /// <summary>
+    /// Gets or sets the speed of auto-pan in pixels per frame.
+    /// Higher values result in faster panning. Default is 10.
+    /// </summary>
+    public double AutoPanSpeed { get; set; } = 10;
+
+    #endregion
+
     /// <summary>
     /// Default settings instance.
     /// </summary>

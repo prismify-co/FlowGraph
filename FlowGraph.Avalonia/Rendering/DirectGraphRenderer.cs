@@ -390,10 +390,11 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Visible canvas area: X=[{visibleCanvasMinX:F0} to {visibleCanvasMaxX:F0}] Y=[{visibleCanvasMinY:F0} to {visibleCanvasMaxY:F0}]");
         }
 
-        // Level-of-Detail thresholds
-        var showPorts = _settings.ShowPorts && zoom >= 0.4;  // Skip ports when zoomed out or disabled
-        var showLabels = zoom >= 0.3;      // Skip labels when very zoomed out
-        var useSimplifiedNodes = zoom < 0.5; // Simplified rendering at low zoom
+        // Level-of-Detail thresholds (configurable via settings)
+        var lodEnabled = _settings.EnableLod;
+        var showPorts = _settings.ShowPorts && (!lodEnabled || zoom >= _settings.LodPortsZoomThreshold);
+        var showLabels = !lodEnabled || zoom >= _settings.LodLabelsZoomThreshold;
+        var useSimplifiedNodes = lodEnabled && zoom < _settings.LodSimplifiedZoomThreshold;
 
         // Build visible node set for edge culling (only render edges with visible endpoints)
         var visibleNodeIds = new HashSet<string>();

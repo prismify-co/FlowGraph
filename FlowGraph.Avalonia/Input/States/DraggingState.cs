@@ -124,6 +124,32 @@ public class DraggingState : InputStateBase
             context.CollisionProvider?.OnDragStart(_draggedNodes, startPos);
         }
 
+        // AutoPan: pan viewport when dragging near edges
+        if (_settings.EnableAutoPan && context.RootPanel != null)
+        {
+            var viewBounds = context.RootPanel.Bounds;
+            var edgeDist = _settings.AutoPanEdgeDistance;
+            var panSpeed = _settings.AutoPanSpeed;
+
+            double panX = 0, panY = 0;
+
+            if (currentScreen.X < edgeDist)
+                panX = panSpeed;
+            else if (currentScreen.X > viewBounds.Width - edgeDist)
+                panX = -panSpeed;
+
+            if (currentScreen.Y < edgeDist)
+                panY = panSpeed;
+            else if (currentScreen.Y > viewBounds.Height - edgeDist)
+                panY = -panSpeed;
+
+            if (panX != 0 || panY != 0)
+            {
+                context.Viewport.Pan(panX, panY);
+                context.ApplyViewportTransform();
+            }
+        }
+
         var currentCanvas = context.ScreenToCanvas(currentScreen);
         var deltaX = currentCanvas.X - _dragStartCanvas.X;
         var deltaY = currentCanvas.Y - _dragStartCanvas.Y;

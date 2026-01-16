@@ -157,6 +157,7 @@ public class ShapeRendererRegistry
     Register("line", new LineRenderer());
     Register("text", new TextRenderer());
     Register("ellipse", new EllipseRenderer());
+    Register("comment", new CommentRenderer());
 
     // Set rectangle as the default fallback
     _defaultRenderer = new RectangleRenderer();

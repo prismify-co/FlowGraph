@@ -23,8 +23,9 @@ public class IdleState : InputStateBase
     {
         var point = GetPointerPoint(context, e);
         var position = GetPosition(context, e);
+        var isReadOnly = context.Settings.IsReadOnly;
 
-        // Middle mouse button always starts panning
+        // Middle mouse button always starts panning (allowed in read-only mode)
         if (point.Properties.IsMiddleButtonPressed)
         {
             var panState = new PanningState(position, context.Viewport);
@@ -40,33 +41,37 @@ public class IdleState : InputStateBase
             var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
             if (node != null)
             {
-                return HandleNodeClick(context, e, source!, node, position);
+                return HandleNodeClick(context, e, source!, node, position, isReadOnly);
             }
 
             if (source?.Tag is Edge edge)
             {
                 // Could be edge path (hit area) or edge label (TextBlock)
                 bool isLabel = source is TextBlock;
-                return HandleEdgeClick(context, e, edge, isLabel);
+                return HandleEdgeClick(context, e, edge, isLabel, isReadOnly);
             }
 
             if (source?.Tag is ShapeElement shape)
             {
-                return HandleShapeClick(context, e, shape);
+                return HandleShapeClick(context, e, shape, isReadOnly);
             }
 
             if (source?.Tag is (Node portNode, Port port, bool isOutput))
             {
+                // Port clicks always blocked in read-only mode (they start connections)
+                if (isReadOnly) return StateTransitionResult.Unhandled();
                 return HandlePortClick(context, e, source as Ellipse, portNode, port, isOutput);
             }
 
             if (source?.Tag is (Node resizeNode, ResizeHandlePosition handlePos))
             {
+                // Resize always blocked in read-only mode
+                if (isReadOnly) return StateTransitionResult.Unhandled();
                 return HandleResizeHandleClick(context, e, source as Rectangle, resizeNode, handlePos, position);
             }
 
             // Empty canvas click
-            return HandleCanvasClick(context, e, position);
+            return HandleCanvasClick(context, e, position, isReadOnly);
         }
 
         return StateTransitionResult.Unhandled();
@@ -113,14 +118,15 @@ public class IdleState : InputStateBase
         PointerPressedEventArgs e,
         Control control,
         Node node,
-        AvaloniaPoint position)
+        AvaloniaPoint position,
+        bool isReadOnly = false)
     {
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        Debug.WriteLine($"[IdleState.HandleNodeClick] Node={node.Id}, position=({position.X:F0},{position.Y:F0}), IsSelected={node.IsSelected}");
+        Debug.WriteLine($"[IdleState.HandleNodeClick] Node={node.Id}, position=({position.X:F0},{position.Y:F0}), IsSelected={node.IsSelected}, ReadOnly={isReadOnly}");
 
-        // Check for group collapse button click (always allowed)
+        // Check for group collapse button click (always allowed, even in read-only mode)
         if (node.IsGroup)
         {
             // Calculate the click position relative to the node
@@ -152,21 +158,23 @@ public class IdleState : InputStateBase
         }
 
         // Double-click handling - check FIRST before any selection/drag logic
+        // Label editing blocked in read-only mode, but collapse toggle allowed
         if (e.ClickCount == 2)
         {
             if (node.IsGroup)
             {
-                if (context.Settings.EnableGroupLabelEditing)
+                if (!isReadOnly && context.Settings.EnableGroupLabelEditing)
                 {
                     var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
                     context.RaiseNodeLabelEditRequested(node, screenPos);
                 }
                 else
                 {
+                    // Collapse toggle always allowed
                     context.RaiseGroupCollapseToggle(node.Id);
                 }
             }
-            else if (context.Settings.EnableNodeLabelEditing)
+            else if (!isReadOnly && context.Settings.EnableNodeLabelEditing)
             {
                 var screenPos = context.CanvasToScreen(new AvaloniaPoint(node.Position.X, node.Position.Y));
                 context.RaiseNodeLabelEditRequested(node, screenPos);
@@ -177,7 +185,7 @@ public class IdleState : InputStateBase
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
-        // Handle selection only if node is selectable
+        // Handle selection (allowed in read-only mode for viewing purposes)
         if (node.IsSelectable)
         {
             if (!ctrlHeld && !node.IsSelected)
@@ -194,8 +202,8 @@ public class IdleState : InputStateBase
             }
         }
 
-        // Start dragging only if node is draggable and selected
-        if (node.IsDraggable && node.IsSelected)
+        // Start dragging only if node is draggable and selected - blocked in read-only mode
+        if (!isReadOnly && node.IsDraggable && node.IsSelected)
         {
             Debug.WriteLine($"[IdleState.HandleNodeClick] Starting drag for node {node.Id}");
             var dragState = new DraggingState(graph, position, context.Viewport, context.Settings);
@@ -209,13 +217,13 @@ public class IdleState : InputStateBase
         return StateTransitionResult.Stay();
     }
 
-    private StateTransitionResult HandleEdgeClick(InputStateContext context, PointerPressedEventArgs e, Edge edge, bool isLabel = false)
+    private StateTransitionResult HandleEdgeClick(InputStateContext context, PointerPressedEventArgs e, Edge edge, bool isLabel = false, bool isReadOnly = false)
     {
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        // Double-click on edge label to edit
-        if (e.ClickCount == 2 && isLabel && context.Settings.EnableEdgeLabelEditing)
+        // Double-click on edge label to edit - blocked in read-only mode
+        if (e.ClickCount == 2 && isLabel && !isReadOnly && context.Settings.EnableEdgeLabelEditing)
         {
             var labelVisual = context.GraphRenderer.GetEdgeLabel(edge.Id);
             if (labelVisual != null)
@@ -229,27 +237,30 @@ public class IdleState : InputStateBase
             return StateTransitionResult.Stay();
         }
 
-        // Check if click is near edge endpoints for reconnection
-        var screenPos2 = GetPosition(context, e);
-        var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
-
-        if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
+        // Check if click is near edge endpoints for reconnection - blocked in read-only mode
+        if (!isReadOnly)
         {
-            var (draggingTarget, fixedNode, fixedPort, movingNode, movingPort) = reconnectInfo.Value;
+            var screenPos2 = GetPosition(context, e);
+            var reconnectInfo = CheckEdgeEndpointClick(context, edge, screenPos2);
 
-            // Start reconnecting state
-            if (context.Theme != null && context.MainCanvas != null)
+            if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
             {
-                var reconnectState = new ReconnectingState(
-                    edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos2, context.Theme);
-                reconnectState.CreateTempLine(context.MainCanvas);
-                CapturePointer(e, context.RootPanel);
-                e.Handled = true;
-                return StateTransitionResult.TransitionTo(reconnectState);
+                var (draggingTarget, fixedNode, fixedPort, movingNode, movingPort) = reconnectInfo.Value;
+
+                // Start reconnecting state
+                if (context.Theme != null && context.MainCanvas != null)
+                {
+                    var reconnectState = new ReconnectingState(
+                        edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos2, context.Theme);
+                    reconnectState.CreateTempLine(context.MainCanvas);
+                    CapturePointer(e, context.RootPanel);
+                    e.Handled = true;
+                    return StateTransitionResult.TransitionTo(reconnectState);
+                }
             }
         }
 
-        // Normal edge selection
+        // Normal edge selection (allowed in read-only mode for viewing)
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
         if (!ctrlHeld)
@@ -315,16 +326,16 @@ public class IdleState : InputStateBase
         return null;
     }
 
-    private StateTransitionResult HandleShapeClick(InputStateContext context, PointerPressedEventArgs e, ShapeElement shape)
+    private StateTransitionResult HandleShapeClick(InputStateContext context, PointerPressedEventArgs e, ShapeElement shape, bool isReadOnly = false)
     {
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}");
+        Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}, ReadOnly={isReadOnly}");
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
-        // Handle selection only if shape is selectable
+        // Handle selection (allowed in read-only mode for viewing)
         if (shape.IsSelectable)
         {
             if (!ctrlHeld && !shape.IsSelected)
@@ -404,7 +415,7 @@ public class IdleState : InputStateBase
         return StateTransitionResult.TransitionTo(resizeState);
     }
 
-    private StateTransitionResult HandleCanvasClick(InputStateContext context, PointerPressedEventArgs e, AvaloniaPoint position)
+    private StateTransitionResult HandleCanvasClick(InputStateContext context, PointerPressedEventArgs e, AvaloniaPoint position, bool isReadOnly = false)
     {
         bool shiftHeld = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
@@ -417,6 +428,7 @@ public class IdleState : InputStateBase
             context.RaiseDeselectAll();
         }
 
+        // Panning always allowed
         if (shouldPan)
         {
             var panState = new PanningState(position, context.Viewport);
@@ -424,6 +436,7 @@ public class IdleState : InputStateBase
             e.Handled = true;
             return StateTransitionResult.TransitionTo(panState);
         }
+        // Box selection allowed in read-only mode (for viewing, doesn't modify graph)
         else
         {
             var canvasPoint = context.ScreenToCanvas(position);
@@ -440,16 +453,17 @@ public class IdleState : InputStateBase
 
     private StateTransitionResult HandleKeyboardShortcut(InputStateContext context, KeyEventArgs e)
     {
-        if (e.Key == Key.Delete || e.Key == Key.Back)
+        var isReadOnly = context.Settings.IsReadOnly;
+
+        // Delete/backspace blocked in read-only mode
+        if (!isReadOnly && (e.Key == Key.Delete || e.Key == Key.Back))
         {
             context.RaiseDeleteSelected();
             return StateTransitionResult.Stay(true);
         }
 
-        // F2 to rename selected node (like Windows Explorer)
-        // F2 always works for renaming, regardless of EnableNodeLabelEditing/EnableGroupLabelEditing settings
-        // (those settings only control double-click behavior)
-        if (e.Key == Key.F2)
+        // F2 to rename selected node - blocked in read-only mode
+        if (!isReadOnly && e.Key == Key.F2)
         {
             var graph = context.Graph;
             var selectedNode = graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
@@ -465,39 +479,44 @@ public class IdleState : InputStateBase
         {
             switch (e.Key)
             {
+                // Select all - allowed in read-only mode
                 case Key.A:
                     context.RaiseSelectAll();
                     return StateTransitionResult.Stay(true);
+                // Undo/Redo - blocked in read-only mode
                 case Key.Z when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                    context.RaiseRedo();
+                    if (!isReadOnly) context.RaiseRedo();
                     return StateTransitionResult.Stay(true);
                 case Key.Z:
-                    context.RaiseUndo();
+                    if (!isReadOnly) context.RaiseUndo();
                     return StateTransitionResult.Stay(true);
                 case Key.Y:
-                    context.RaiseRedo();
+                    if (!isReadOnly) context.RaiseRedo();
                     return StateTransitionResult.Stay(true);
+                // Copy allowed (doesn't modify graph), Cut/Paste/Duplicate blocked
                 case Key.C:
                     context.RaiseCopy();
                     return StateTransitionResult.Stay(true);
                 case Key.X:
-                    context.RaiseCut();
+                    if (!isReadOnly) context.RaiseCut();
                     return StateTransitionResult.Stay(true);
                 case Key.V:
-                    context.RaisePaste();
+                    if (!isReadOnly) context.RaisePaste();
                     return StateTransitionResult.Stay(true);
                 case Key.D:
-                    context.RaiseDuplicate();
+                    if (!isReadOnly) context.RaiseDuplicate();
                     return StateTransitionResult.Stay(true);
+                // Group/Ungroup - blocked in read-only mode
                 case Key.G when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                    context.RaiseUngroup();
+                    if (!isReadOnly) context.RaiseUngroup();
                     return StateTransitionResult.Stay(true);
                 case Key.G:
-                    context.RaiseGroup();
+                    if (!isReadOnly) context.RaiseGroup();
                     return StateTransitionResult.Stay(true);
             }
         }
 
+        // Escape always allowed (deselects)
         if (e.Key == Key.Escape)
         {
             context.RaiseDeselectAll();
