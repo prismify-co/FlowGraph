@@ -199,20 +199,22 @@ public class ConnectingState : InputStateBase
     {
         if (_tempLine == null) return;
 
-        var startPoint = context.GraphRenderer.GetPortPosition(_sourceNode, _sourcePort, _fromOutput);
+        // Use canvas coordinates for path geometry on MainCanvas (which uses MatrixTransform)
+        var startPoint = context.GraphRenderer.GetPortCanvasPosition(_sourceNode, _sourcePort, _fromOutput);
 
         // If we have a snapped target, draw to that port instead of the cursor
         AvaloniaPoint endPoint;
         if (_snappedTarget.HasValue)
         {
-            endPoint = context.GraphRenderer.GetPortPosition(
+            endPoint = context.GraphRenderer.GetPortCanvasPosition(
                 _snappedTarget.Value.node,
                 _snappedTarget.Value.port,
                 _snappedTarget.Value.isOutput);
         }
         else
         {
-            endPoint = _endPoint;
+            // _endPoint is in screen coordinates, convert to canvas
+            endPoint = context.ScreenToCanvas(_endPoint);
         }
 
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
@@ -234,7 +236,7 @@ public class ConnectingState : InputStateBase
         var snapDistance = settings.ConnectionSnapDistance;
         var canvasPoint = context.ScreenToCanvas(screenPoint);
         var zoom = context.Viewport.Zoom;
-        
+
         // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
         // Add some padding to account for node width
         var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
@@ -257,7 +259,7 @@ public class ConnectingState : InputStateBase
             var canvasDx = nodeCenterX - canvasPoint.X;
             var canvasDy = nodeCenterY - canvasPoint.Y;
             var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
-            
+
             if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
                 continue;
 
@@ -267,8 +269,8 @@ public class ConnectingState : InputStateBase
 
             foreach (var port in portsToCheck)
             {
-                // Get the port's screen position
-                var portScreenPos = context.GraphRenderer.GetPortPosition(node, port, isOutput);
+                // Get the port's screen position for distance calculation
+                var portScreenPos = context.GraphRenderer.GetPortScreenPosition(node, port, isOutput);
 
                 // Calculate distance
                 var dx = portScreenPos.X - screenPoint.X;

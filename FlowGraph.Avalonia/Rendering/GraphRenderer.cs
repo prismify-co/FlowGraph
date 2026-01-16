@@ -292,9 +292,16 @@ public class GraphRenderer
     public (double width, double height) GetNodeDimensions(Node node) => _nodeVisualManager.GetNodeDimensions(node);
 
     /// <summary>
-    /// Gets the source point for a connection from a node/port in screen coordinates.
+    /// Gets the port position in screen coordinates.
+    /// Use this for hit testing and distance calculations in screen space.
     /// </summary>
-    public AvaloniaPoint GetPortPosition(Node node, Port port, bool isOutput) => _nodeVisualManager.GetPortPosition(node, port, isOutput);
+    public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput) => _nodeVisualManager.GetPortScreenPosition(node, port, isOutput);
+
+    /// <summary>
+    /// Gets the port position in canvas coordinates.
+    /// Use this for drawing visual elements on MainCanvas (which uses MatrixTransform).
+    /// </summary>
+    public AvaloniaPoint GetPortCanvasPosition(Node node, Port port, bool isOutput) => _nodeVisualManager.GetPortCanvasPosition(node, port, isOutput);
 
     /// <summary>
     /// Calculates the Y position for a port in canvas coordinates.

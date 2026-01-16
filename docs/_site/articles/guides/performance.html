@@ -483,14 +483,14 @@ public override void Render(DrawingContext context, Node node)
 <h3 id="data-management">Data Management</h3>
 <p>Store large payloads outside the graph:</p>
 <pre><code class="lang-csharp">// ❌ Avoid: Large data in node
-node.Data = new { 
+node.Data = new {
     Image = LoadBitmap(),      // Large!
     Document = LoadXml(),      // Large!
     Metadata = complexObject   // Serialization overhead
 };
 
 // ✅ Better: Reference by ID
-node.Data = new NodeData { 
+node.Data = new NodeData {
     ImageId = &quot;img-123&quot;,
     DocumentId = &quot;doc-456&quot;
 };

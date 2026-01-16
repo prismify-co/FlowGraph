@@ -223,7 +223,7 @@ public class NodeVisualManager
 
         // Create the node visual using the renderer
         var control = renderer.CreateNodeVisual(node, context);
-        
+
         // Preserve any existing metadata (like ResizableVisual) when setting the node tag
         if (control.Tag is Dictionary<string, object> existingTags)
         {
@@ -369,7 +369,7 @@ public class NodeVisualManager
                 Canvas.SetTop(control, node.Position.Y);
             }
         }
-        
+
         // Update all port positions
         foreach (var node in graph.Elements.Nodes)
         {
@@ -479,7 +479,7 @@ public class NodeVisualManager
     {
         // If renderer declares it has composite visuals but doesn't use ResizableVisual,
         // emit a debug warning (once per renderer type)
-        if (renderer.HasCompositeVisual && 
+        if (renderer.HasCompositeVisual &&
             renderer is not IResizableNodeRenderer &&
             !ResizableVisual.HasResizeMetadata(control))
         {
@@ -577,15 +577,29 @@ public class NodeVisualManager
 
     /// <summary>
     /// Gets the screen position of a port using GraphRenderModel.
+    /// Use this for hit testing and distance calculations in screen space.
     /// </summary>
     /// <param name="node">The parent node.</param>
     /// <param name="port">The port.</param>
     /// <param name="isOutput">True if this is an output port.</param>
     /// <returns>The port position in screen coordinates.</returns>
-    public AvaloniaPoint GetPortPosition(Node node, Port port, bool isOutput)
+    public AvaloniaPoint GetPortScreenPosition(Node node, Port port, bool isOutput)
     {
         var canvasPos = _model.GetPortPosition(node, port, isOutput);
         return _renderContext.CanvasToScreen(canvasPos.X, canvasPos.Y);
+    }
+
+    /// <summary>
+    /// Gets the canvas position of a port using GraphRenderModel.
+    /// Use this for drawing visual elements on MainCanvas (which uses MatrixTransform).
+    /// </summary>
+    /// <param name="node">The parent node.</param>
+    /// <param name="port">The port.</param>
+    /// <param name="isOutput">True if this is an output port.</param>
+    /// <returns>The port position in canvas coordinates.</returns>
+    public AvaloniaPoint GetPortCanvasPosition(Node node, Port port, bool isOutput)
+    {
+        return _model.GetPortPosition(node, port, isOutput);
     }
 
     /// <summary>

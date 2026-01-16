@@ -1,3 +1,20 @@
+## FlowGraph v0.5.1
+
+### Bug Fixes
+
+- **Fixed Edge Drag Coordinate Mismatch** - Dragging from ports to create or reconnect edges now correctly follows the cursor
+  - The temporary edge line was severely offset due to mixing screen and canvas coordinate systems
+  - `GraphRenderer.GetPortPosition()` returned screen coordinates, but edge visuals on `MainCanvas` require canvas coordinates
+
+### API Improvements
+
+- **Explicit Coordinate System API** - Renamed ambiguous `GetPortPosition()` to two explicit methods:
+  - `GetPortScreenPosition()` - Returns port position in screen coordinates (for hit testing, snap distance calculations)
+  - `GetPortCanvasPosition()` - Returns port position in canvas coordinates (for drawing visual elements on MainCanvas)
+  - This prevents future coordinate system bugs by making the API self-documenting
+
+---
+
 ## FlowGraph v0.5.0
 
 ### ⚠️ Breaking Changes

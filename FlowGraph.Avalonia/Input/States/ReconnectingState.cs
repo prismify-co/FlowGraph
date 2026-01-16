@@ -196,21 +196,22 @@ public class ReconnectingState : InputStateBase
         var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
         if (visiblePath == null) return;
 
-        // Get the fixed endpoint - use the correct isOutput value
-        var fixedPoint = context.GraphRenderer.GetPortPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
+        // Use canvas coordinates for path geometry on MainCanvas (which uses MatrixTransform)
+        var fixedPoint = context.GraphRenderer.GetPortCanvasPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
 
         // Determine the moving endpoint
         AvaloniaPoint movingPoint;
         if (_snappedTarget.HasValue)
         {
-            movingPoint = context.GraphRenderer.GetPortPosition(
+            movingPoint = context.GraphRenderer.GetPortCanvasPosition(
                 _snappedTarget.Value.node,
                 _snappedTarget.Value.port,
                 _snappedTarget.Value.isOutput);
         }
         else
         {
-            movingPoint = _currentEndPoint;
+            // _currentEndPoint is in screen coordinates, convert to canvas
+            movingPoint = context.ScreenToCanvas(_currentEndPoint);
         }
 
         // Create the path geometry
@@ -283,7 +284,7 @@ public class ReconnectingState : InputStateBase
         var snapDistance = settings.ConnectionSnapDistance;
         var canvasPoint = context.ScreenToCanvas(screenPoint);
         var zoom = context.Viewport.Zoom;
-        
+
         // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
         var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
 
@@ -308,7 +309,7 @@ public class ReconnectingState : InputStateBase
             var canvasDx = nodeCenterX - canvasPoint.X;
             var canvasDy = nodeCenterY - canvasPoint.Y;
             var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
-            
+
             if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
                 continue;
 
@@ -318,7 +319,7 @@ public class ReconnectingState : InputStateBase
 
             foreach (var port in portsToCheck)
             {
-                var portScreenPos = context.GraphRenderer.GetPortPosition(node, port, isOutput);
+                var portScreenPos = context.GraphRenderer.GetPortScreenPosition(node, port, isOutput);
 
                 var dx = portScreenPos.X - screenPoint.X;
                 var dy = portScreenPos.Y - screenPoint.Y;

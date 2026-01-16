@@ -286,8 +286,8 @@ public class IdleState : InputStateBase
 
         if (sourcePort == null || targetPort == null) return null;
 
-        var sourceScreenPos = context.GraphRenderer.GetPortPosition(sourceNode, sourcePort, true);
-        var targetScreenPos = context.GraphRenderer.GetPortPosition(targetNode, targetPort, false);
+        var sourceScreenPos = context.GraphRenderer.GetPortScreenPosition(sourceNode, sourcePort, true);
+        var targetScreenPos = context.GraphRenderer.GetPortScreenPosition(targetNode, targetPort, false);
 
         var snapDistance = context.Settings.EdgeEndpointHandleSize * 2;
 
