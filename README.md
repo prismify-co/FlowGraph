@@ -14,14 +14,14 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 ### Core
 
 - **Pan & Zoom** - Mouse wheel zoom, middle-click pan, configurable drag behavior
-- **Node System** - Draggable, resizable, selectable nodes with custom renderers
-- **Port Renderers** - Customizable port visuals via `IPortRenderer` extensibility API
+- **Node System** - Draggable, selectable nodes with custom renderers
+- **Port System** - Input/output ports with position, type, and connection limits
 - **Edge Types** - Bezier, Straight, Step, SmoothStep curves with arrow markers
 - **Edge Labels** - Positioned labels with anchor points (Start, Center, End) and offsets
-- **Connection Validation** - Custom rules for valid connections with built-in validators
+- **Connection Validation** - Extensible validation with built-in validators (type matching, no cycles, no duplicates)
 - **Undo/Redo** - Full command history with keyboard shortcuts
 - **Clipboard** - Copy, cut, paste, duplicate operations
-- **Serialization** - JSON save/load support with batch loading
+- **Serialization** - JSON save/load with full round-trip support
 - **Definition + State Pattern** - Immutable definitions with mutable runtime state
 
 ### Components
@@ -35,15 +35,17 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 
 ### Advanced
 
-- **Grouping** - Collapsible node groups with nesting and proxy ports
+- **Grouping** - Collapsible node groups with proxy ports
 - **Edge Routing** - Orthogonal, bezier, and smart routing algorithms with A\* pathfinding
 - **Animations** - Smooth viewport, node, edge, and group animations
 - **State Machine** - Clean input handling architecture
 - **Edge Reconnection** - Drag edge endpoints to reconnect or disconnect
-- **Label Editing** - Double-click to edit node, edge, and group labels
+- **Label Editing** - Double-click to edit node and edge labels
 - **Virtualization** - Render only visible nodes for large graphs (500+ nodes)
 - **Direct Rendering** - GPU-accelerated rendering bypassing visual tree
-- **Context Menus** - Customizable right-click menus
+- **Custom Renderers** - Extensible node, port, edge, and background renderers
+- **Data Flow** - Built-in reactive data propagation system
+- **Shape System** - Support for shapes with selection and serialization
 
 ## Installation
 
@@ -101,7 +103,6 @@ Install-Package FlowGraph.Avalonia
 ```csharp
 using FlowGraph.Core;
 using FlowGraph.Core.Models;
-using System.Collections.Immutable;
 
 public class MainViewModel
 {
@@ -123,18 +124,6 @@ public class MainViewModel
             new NodeState { X = 100, Y = 100 }
         );
 
-        var processNode = new Node(
-            new NodeDefinition
-            {
-                Id = Guid.NewGuid().ToString(),
-                Type = "process",
-                Label = "Process",
-                Inputs = [new PortDefinition { Id = "in", Type = "data" }],
-                Outputs = [new PortDefinition { Id = "out", Type = "data" }]
-            },
-            new NodeState { X = 300, Y = 100 }
-        );
-
         var outputNode = new Node(
             new NodeDefinition
             {
@@ -143,58 +132,25 @@ public class MainViewModel
                 Label = "Output",
                 Inputs = [new PortDefinition { Id = "in", Type = "data" }]
             },
-            new NodeState { X = 500, Y = 100 }
+            new NodeState { X = 300, Y = 100 }
         );
 
         MyGraph.AddNode(inputNode);
-        MyGraph.AddNode(processNode);
         MyGraph.AddNode(outputNode);
 
-        // Create edges using EdgeDefinition
+        // Create edge
         MyGraph.AddEdge(new Edge(
             new EdgeDefinition
             {
                 Id = Guid.NewGuid().ToString(),
                 Source = inputNode.Id,
-                Target = processNode.Id,
+                Target = outputNode.Id,
                 SourcePort = "out",
                 TargetPort = "in",
                 Type = EdgeType.Bezier,
                 MarkerEnd = EdgeMarker.Arrow
             }
         ));
-
-        MyGraph.AddEdge(new Edge(
-            new EdgeDefinition
-            {
-                Id = Guid.NewGuid().ToString(),
-                Source = processNode.Id,
-                Target = outputNode.Id,
-                SourcePort = "out",
-                TargetPort = "in",
-                Type = EdgeType.Bezier,
-                MarkerEnd = EdgeMarker.ArrowClosed
-            }
-        ));
-    }
-}
-
-// Backward-compatible API (using parameterless constructor)
-public class LegacyViewModel
-{
-    public Graph MyGraph { get; } = new Graph();
-
-    public LegacyViewModel()
-    {
-        var node = new Node
-        {
-            Type = "default",
-            Position = new Point(100, 100),
-            Label = "My Node",
-            Inputs = [new Port { Id = "in", Type = "data" }]
-        };
-
-        MyGraph.AddNode(node);
     }
 }
 ```
@@ -221,7 +177,6 @@ var settings = new FlowCanvasSettings
     GridSpacing = 20,
     GridDotSize = 2,
     SnapToGrid = true,
-    SnapGridSize = null, // Uses GridSpacing if null
     ShowGrid = true,
     ShowBackground = true,
 
@@ -234,6 +189,13 @@ var settings = new FlowCanvasSettings
     NodeWidth = 150,
     NodeHeight = 80,
     PortSize = 12,
+    ShowPorts = true,
+
+    // Edges
+    EdgeStrokeThickness = 2,
+    EdgeSelectedStrokeThickness = 3,
+    EdgeHitAreaWidth = 15,
+    DefaultEdgeType = EdgeType.Bezier,
 
     // Connections
     StrictConnectionDirection = true,
@@ -241,17 +203,10 @@ var settings = new FlowCanvasSettings
     SnapConnectionToNode = true,
     ShowEdgeEndpointHandles = true,
     EdgeEndpointHandleSize = 10,
-    EdgeHitAreaWidth = 15,
 
     // Selection
-    SelectionMode = SelectionMode.Partial, // or SelectionMode.Full
-
-    // Viewport
+    SelectionMode = SelectionMode.Partial,
     PanOnDrag = true,
-    PanOnScroll = false,
-    PanOnScrollSpeed = 1.0,
-    ViewportBounds = new Rect(-1000, -1000, 3000, 3000),
-    ViewportBoundsPadding = 100,
 
     // Groups
     GroupPadding = 20,
@@ -267,13 +222,12 @@ var settings = new FlowCanvasSettings
     RouteNewEdges = true,
     RouteOnlyAffectedEdges = true,
     RoutingNodePadding = 10,
-    DefaultEdgeType = EdgeType.Bezier,
     DefaultRouterAlgorithm = RouterAlgorithm.Auto,
 
     // Editing
     EnableNodeLabelEditing = true,
-    EnableGroupLabelEditing = false,
     EnableEdgeLabelEditing = true,
+    EnableGroupLabelEditing = false,
 
     // Performance
     EnableVirtualization = true,
@@ -281,6 +235,15 @@ var settings = new FlowCanvasSettings
     RenderBatchSize = 50,
     UseSimplifiedNodeRendering = false,
     DirectRenderingNodeThreshold = 100,
+
+    // Viewport
+    ViewportBounds = null, // Unconstrained
+    ViewportBoundsPadding = 100,
+    PanOnScroll = false,
+    PanOnScrollSpeed = 1.0,
+
+    // Diagnostics
+    EnableDiagnostics = false,
     DebugCoordinateTransforms = false
 };
 
@@ -321,6 +284,83 @@ public class CustomNodeRenderer : DefaultNodeRenderer
 canvas.NodeRenderers.Register("custom", new CustomNodeRenderer());
 ```
 
+## Custom Port Renderers
+
+Customize port visuals with `IPortRenderer`:
+
+```csharp
+public class CustomPortRenderer : DefaultPortRenderer
+{
+    public override Control CreatePortVisual(Port port, PortRenderContext context)
+    {
+        // Create custom port visual
+        return new Ellipse
+        {
+            Width = context.Settings.PortSize,
+            Height = context.Settings.PortSize,
+            Fill = port.Type == "data" ? Brushes.Blue : Brushes.Green,
+            Stroke = Brushes.White,
+            StrokeThickness = 2
+        };
+    }
+}
+
+// Register the renderer
+canvas.PortRenderers.Register("custom-port", new CustomPortRenderer());
+```
+
+## Custom Edge Renderers
+
+Create custom edge visuals with `IEdgeRenderer`:
+
+```csharp
+public class SequenceMessageRenderer : IEdgeRenderer
+{
+    public EdgeRenderResult Render(EdgeRenderContext context)
+    {
+        // Custom rendering logic for sequence diagram messages
+        var path = CreateMessagePath(context);
+        var label = CreateMessageLabel(context);
+
+        return new EdgeRenderResult
+        {
+            Path = path,
+            HitArea = CreateHitArea(path),
+            Labels = [label]
+        };
+    }
+}
+
+// Register with pattern matching
+canvas.EdgeRenderers.Register("sequence-*", new SequenceMessageRenderer());
+```
+
+## Custom Background Renderers
+
+Add custom background layers with `IBackgroundRenderer`:
+
+```csharp
+public class LifelineRenderer : IBackgroundRenderer
+{
+    public void Render(DrawingContext context, BackgroundRenderContext bgContext)
+    {
+        // Draw lifelines behind nodes
+        foreach (var node in bgContext.Nodes.Where(n => n.Type == "lifeline"))
+        {
+            var screenPos = bgContext.CanvasToScreen(node.Position);
+            // Draw vertical lifeline
+            context.DrawLine(pen, screenPos, new Point(screenPos.X, bgContext.Bounds.Bottom));
+        }
+    }
+
+    public void OnGraphChanged(Graph graph) { /* Update cached data */ }
+    public void OnViewportChanged(ViewportState viewport) { /* Handle zoom/pan */ }
+}
+
+// Register background renderer
+canvas.BackgroundRenderers.Add(new LifelineRenderer());
+```
+
 ## Connection Validation
 
 Implement `IConnectionValidator` for custom connection rules:
@@ -343,10 +383,13 @@ public class TypeMatchValidator : IConnectionValidator
     }
 }
 
-// Use built-in validators
+// Built-in validators
 canvas.ConnectionValidator = new TypeMatchingConnectionValidator();
+canvas.ConnectionValidator = new NoSelfConnectionValidator();
+canvas.ConnectionValidator = new NoDuplicateConnectionValidator();
+canvas.ConnectionValidator = new NoCycleConnectionValidator();
 
-// Or create a composite validator
+// Composite validator
 var validator = new CompositeConnectionValidator()
     .Add(new NoSelfConnectionValidator())
     .Add(new NoDuplicateConnectionValidator())
@@ -355,7 +398,7 @@ var validator = new CompositeConnectionValidator()
 
 canvas.ConnectionValidator = validator;
 
-// Use standard or strict presets
+// Or use presets
 canvas.ConnectionValidator = CompositeConnectionValidator.CreateStandard();
 canvas.ConnectionValidator = CompositeConnectionValidator.CreateStrict();
 ```
@@ -403,7 +446,6 @@ canvas.GroupCollapsedChanged += (s, e) =>
 // Label editing
 canvas.NodeLabelEditRequested += (s, e) =>
 {
-    // Show label edit UI for node
     var newLabel = ShowLabelEditDialog(e.Node.Label);
     if (newLabel != null)
         e.Node.Label = newLabel;
@@ -411,7 +453,6 @@ canvas.NodeLabelEditRequested += (s, e) =>
 
 canvas.EdgeLabelEditRequested += (s, e) =>
 {
-    // Show label edit UI for edge
     var newLabel = ShowLabelEditDialog(e.Edge.Label);
     if (newLabel != null)
         e.Edge.Label = newLabel;
@@ -492,10 +533,9 @@ var copy = graph.Clone();
 
 ## Batch Loading
 
-For better performance when loading large graphs, use batch loading to suppress change notifications:
+For better performance when loading large graphs:
 
 ```csharp
-// Batch loading mode
 graph.BeginBatchLoad();
 try
 {
@@ -511,7 +551,7 @@ try
 }
 finally
 {
-    graph.EndBatchLoad(); // Raises BatchLoadCompleted event
+    graph.EndBatchLoad();
 }
 
 // Or use AddRange for bulk operations
@@ -521,16 +561,14 @@ graph.AddEdges(edgeCollection);
 // Subscribe to batch load completion
 graph.BatchLoadCompleted += (s, e) =>
 {
-    Console.WriteLine("Batch load completed, UI will refresh");
+    Console.WriteLine("Batch load completed");
 };
 ```
 
 ## Accessing Graph Elements
 
-FlowGraph v0.4.0+ uses a unified Elements collection:
-
 ```csharp
-// Preferred API (v0.4.0+)
+// Primary API (v0.4.0+)
 var nodes = graph.Elements.Nodes;
 var edges = graph.Elements.Edges;
 
@@ -539,20 +577,20 @@ var selectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected);
 var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == "myNode");
 var connectedEdges = graph.Elements.Edges.Where(e => e.Source == nodeId);
 
-// Iterate over all elements
-foreach (var node in graph.Elements.Nodes)
-{
-    Console.WriteLine($"Node: {node.Label} at ({node.Position.X}, {node.Position.Y})");
-}
+// Add and remove elements
+graph.AddNode(newNode);
+graph.AddEdge(newEdge);
+graph.Elements.Remove(node);
+graph.Elements.Remove(edge);
 
-// Legacy API (deprecated but still functional)
-// var nodes = graph.Nodes;  // Shows deprecation warning
-// var edges = graph.Edges;  // Shows deprecation warning
+// Listen for changes
+graph.NodesChanged += (s, e) => Console.WriteLine("Nodes changed");
+graph.EdgesChanged += (s, e) => Console.WriteLine("Edges changed");
 ```
 
 ## Definition + State Pattern
 
-FlowGraph uses an immutable Definition + mutable State pattern for nodes and edges:
+FlowGraph uses an immutable Definition + mutable State pattern:
 
 ```csharp
 // Node Definition (immutable) - defines "what" a node is
@@ -567,7 +605,6 @@ var definition = new NodeDefinition
     IsDraggable = true,
     IsDeletable = true,
     IsConnectable = true,
-    IsResizable = true,
     Data = customData
 };
 
@@ -595,41 +632,21 @@ node.State.IsSelected = true;
 // Backward-compatible pass-through properties
 node.Label = "Another Update"; // Updates Definition
 node.Position = new Point(300, 300); // Updates State
-node.IsSelected = true; // Updates State
-
-// Edge Definition + State works similarly
-var edgeDef = new EdgeDefinition
-{
-    Id = Guid.NewGuid().ToString(),
-    Source = sourceNodeId,
-    Target = targetNodeId,
-    SourcePort = "out",
-    TargetPort = "in",
-    Type = EdgeType.Bezier,
-    MarkerEnd = EdgeMarker.Arrow,
-    AutoRoute = false,
-    Label = "Simple Label"  // Or use LabelInfo for positioning
-};
-
-var edge = new Edge(edgeDef, new EdgeState());
 ```
 
 ## Edge Label Positioning
-
-Use `LabelInfo` for precise control over edge label placement:
 
 ```csharp
 using FlowGraph.Core.Models;
 
 // Label at different positions along the edge
-var edgeWithLabel = new Edge(new EdgeDefinition
+var edge = new Edge(new EdgeDefinition
 {
     Id = Guid.NewGuid().ToString(),
     Source = sourceNodeId,
     Target = targetNodeId,
     SourcePort = "out",
     TargetPort = "in",
-    // Position label near the start with vertical offset
     LabelInfo = new LabelInfo("Yes", LabelAnchor.Start, offsetY: -10)
 });
 
@@ -644,8 +661,6 @@ edge.Definition = edge.Definition.WithLabelInfo("No", LabelAnchor.End, offsetX: 
 
 ## Port Definitions
 
-Ports now support additional properties:
-
 ```csharp
 var port = new PortDefinition
 {
@@ -653,8 +668,8 @@ var port = new PortDefinition
     Type = "data",
     Label = "Data Input",
     Position = PortPosition.Left,
-    MaxConnections = 1, // Limit connections
-    IsRequired = true // Mark as required
+    MaxConnections = 1,
+    IsRequired = true
 };
 
 // Add ports to node definition
@@ -678,8 +693,6 @@ var nodeDefinition = baseDefinition.WithPorts(
 // Create groups
 canvas.Groups.GroupSelected();
 canvas.Groups.GroupSelected("My Group");
-
-// Create group from specific nodes
 canvas.Groups.CreateGroup(nodeIds, "Group Label");
 
 // Collapse/expand
@@ -700,55 +713,31 @@ canvas.Groups.UngroupSelected();
 // Check group state
 bool isCollapsed = canvas.Groups.IsGroupCollapsed(groupId);
 var childNodes = canvas.Groups.GetGroupChildren(groupId);
-
-// Group events
-canvas.GroupCollapsedChanged += (s, e) =>
-{
-    Console.WriteLine($"Group {e.GroupId} is {(e.IsCollapsed ? "collapsed" : "expanded")}");
-};
 ```
 
-## Performance Optimization
+## Data Flow System
 
-FlowGraph includes several performance features for large graphs:
+FlowGraph includes a reactive data propagation system:
 
 ```csharp
-// Enable virtualization (default: true)
-// Only renders nodes/edges visible in viewport
-canvas.Settings.EnableVirtualization = true;
-canvas.Settings.VirtualizationBuffer = 200; // Buffer in canvas units
+using FlowGraph.Core.DataFlow;
 
-// Use simplified node rendering for large graphs (500+ nodes)
-canvas.EnableSimplifiedRendering();
+// Create executor
+var executor = new GraphExecutor(graph);
 
-// Or enable specific settings
-canvas.Settings.UseSimplifiedNodeRendering = true;
-canvas.Settings.RenderBatchSize = 50; // Batch render in chunks
+// Register node processors
+executor.RegisterProcessor(new MyNodeProcessor(node));
 
-// Enable direct GPU rendering (automatic for 100+ nodes)
-canvas.Settings.DirectRenderingNodeThreshold = 100;
-// Or manually enable/disable
-canvas.EnableDirectRendering();
-canvas.DisableDirectRendering();
+// Execute when inputs change (automatic via ReactivePort)
+executor.Execute();
 
-// Disable simplified rendering when needed
-canvas.DisableSimplifiedRendering();
+// Listen for events
+executor.ExecutionStarted += (s, e) => Console.WriteLine("Execution started");
+executor.ExecutionCompleted += (s, e) => Console.WriteLine("Execution completed");
+executor.NodeProcessed += (s, e) => Console.WriteLine($"Processed: {e.NodeId}");
 
-// Batch loading for initial graph load
-graph.BeginBatchLoad();
-// Add 1000s of nodes/edges...
-graph.EndBatchLoad();
-
-// Edge routing optimization
-canvas.Settings.RouteOnlyAffectedEdges = true; // Only re-route affected edges
-canvas.Settings.RouteEdgesOnDrag = false; // Disable routing during drag
-
-// Performance tips:
-// - Use batch operations (AddNodes/AddEdges) instead of individual adds
-// - Enable virtualization for graphs > 100 nodes
-// - Use simplified rendering for graphs > 500 nodes
-// - Direct rendering automatically kicks in at 100+ nodes
-// - Disable edge routing during initial load, enable after
+// Clean up
+executor.Dispose();
 ```
 
 ## Edge Routing
@@ -766,28 +755,58 @@ canvas.Routing.RouteEdge(edgeId);
 // Route all edges
 canvas.Routing.RouteAllEdges();
 
-// Route only selected edges
-canvas.Routing.RouteSelectedEdges();
-
-// Clear routing for an edge
-canvas.Routing.ClearEdgeRouting(edgeId);
-
 // Configure routing behavior
-canvas.Settings.RouteEdgesOnDrag = true; // Re-route while dragging
-canvas.Settings.RouteNewEdges = true; // Auto-route new connections
-canvas.Settings.RouteOnlyAffectedEdges = true; // Performance optimization
-canvas.Settings.RoutingNodePadding = 10; // Space around nodes
+canvas.Settings.RouteEdgesOnDrag = true;
+canvas.Settings.RouteNewEdges = true;
+canvas.Settings.RouteOnlyAffectedEdges = true;
+canvas.Settings.RoutingNodePadding = 10;
+```
+
+## Performance Optimization
+
+```csharp
+// Enable virtualization (default: true)
+canvas.Settings.EnableVirtualization = true;
+canvas.Settings.VirtualizationBuffer = 200;
+
+// Enable simplified rendering for large graphs
+canvas.EnableSimplifiedRendering();
+canvas.Settings.UseSimplifiedNodeRendering = true;
+canvas.Settings.RenderBatchSize = 50;
+
+// Enable direct GPU rendering (automatic for 100+ nodes)
+canvas.Settings.DirectRenderingNodeThreshold = 100;
+canvas.EnableDirectRendering();
+canvas.DisableDirectRendering();
+
+// Batch loading for initial graph load
+graph.BeginBatchLoad();
+// Add nodes/edges...
+graph.EndBatchLoad();
+
+// Edge routing optimization
+canvas.Settings.RouteOnlyAffectedEdges = true;
+canvas.Settings.RouteEdgesOnDrag = false; // Disable during large operations
 ```
 
 ## Project Structure
 
 ```
 FlowGraph/
-├── FlowGraph.Core           # Data models, commands, serialization
+├── FlowGraph.Core           # Data models, commands, serialization, data flow
 ├── FlowGraph.Avalonia       # Avalonia UI controls and rendering
-├── FlowGraph.Demo           # Sample application
+├── FlowGraph.3D             # 3D visualization integration (demo)
+├── FlowGraph.Demo           # Sample application with interactive demos
 └── FlowGraph.Core.Tests     # Unit tests
 ```
+
+## Demo Application
+
+The demo application showcases:
+
+- **Interactive 3D Demo** - Data flow between custom nodes with 3D visualization
+- **Shapes & Layers** - Shape system with selection and serialization
+- **Performance Demo** - Stress testing with 500+ nodes
 
 ## Requirements
 
@@ -811,3 +830,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 - Inspired by [React Flow](https://reactflow.dev/)
 - Built with [Avalonia UI](https://avaloniaui.net/)
+- UI themed with [ShadUI](https://github.com/pureform-design/shad-ui)
