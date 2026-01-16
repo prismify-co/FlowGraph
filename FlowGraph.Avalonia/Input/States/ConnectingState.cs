@@ -21,6 +21,7 @@ public class ConnectingState : InputStateBase
     private readonly bool _fromOutput;
     private AvaloniaPoint _endPoint;
     private AvaloniaPath? _tempLine;
+    private Ellipse? _debugMarker; // DEBUG: Visual marker to show where the endpoint is
     private readonly Control? _portVisual;
     private readonly Cursor? _previousCursor;
     private readonly ThemeResources _theme;
@@ -72,6 +73,17 @@ public class ConnectingState : InputStateBase
             Opacity = 0.7
         };
         canvas.Children.Add(_tempLine);
+
+        // DEBUG: Create a visible marker at the endpoint position (red circle)
+        _debugMarker = new Ellipse
+        {
+            Width = 10,
+            Height = 10,
+            Fill = Brushes.Red,
+            Stroke = Brushes.White,
+            StrokeThickness = 2
+        };
+        canvas.Children.Add(_debugMarker);
     }
 
     public override void Enter(InputStateContext context)
@@ -100,25 +112,36 @@ public class ConnectingState : InputStateBase
             context.MainCanvas.Children.Remove(_tempLine);
             _tempLine = null;
         }
+
+        // DEBUG: Remove debug marker
+        if (_debugMarker != null && context.MainCanvas != null)
+        {
+            context.MainCanvas.Children.Remove(_debugMarker);
+            _debugMarker = null;
+        }
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        _endPoint = GetPosition(context, e);
+        // Store screen position for AutoPan edge detection
+        var screenPos = GetPosition(context, e);
+        
+        // Get canvas position directly - MainCanvas has a transform, and GetPosition(MainCanvas)
+        // automatically applies the inverse transform, giving us direct canvas coordinates
+        _endPoint = GetCanvasPosition(context, e);
 
-        // AutoPan: pan viewport when dragging near edges
+        // AutoPan: pan viewport when dragging near edges (use screen coordinates)
         if (context.Settings.EnableAutoPan && context.RootPanel != null)
         {
-            var currentScreen = e.GetPosition(context.RootPanel);
             var viewBounds = context.RootPanel.Bounds;
             var edgeDist = context.Settings.AutoPanEdgeDistance;
             var panSpeed = context.Settings.AutoPanSpeed;
 
             double panX = 0, panY = 0;
-            if (currentScreen.X < edgeDist) panX = panSpeed;
-            else if (currentScreen.X > viewBounds.Width - edgeDist) panX = -panSpeed;
-            if (currentScreen.Y < edgeDist) panY = panSpeed;
-            else if (currentScreen.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
+            if (screenPos.X < edgeDist) panX = panSpeed;
+            else if (screenPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
+            if (screenPos.Y < edgeDist) panY = panSpeed;
+            else if (screenPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
 
             if (panX != 0 || panY != 0)
             {
@@ -127,12 +150,12 @@ public class ConnectingState : InputStateBase
             }
         }
 
-        // Try to find a snap target
-        _snappedTarget = FindSnapTarget(context, _endPoint);
+        // Try to find a snap target (uses screen coordinates for distance calculation)
+        _snappedTarget = FindSnapTarget(context, screenPos);
 
         UpdateTempLine(context);
 
-        // Update port validation visual
+        // Update port validation visual (uses canvas coordinates for hit testing)
         UpdatePortValidationVisual(context, _endPoint);
 
         return StateTransitionResult.Stay();
@@ -140,14 +163,15 @@ public class ConnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
-        var screenPoint = GetPosition(context, e);
+        // Get canvas coordinates for hit testing
+        var canvasPoint = GetCanvasPosition(context, e);
 
         bool connectionCompleted = false;
         Node? targetNode = null;
         Port? targetPort = null;
 
-        // First try direct hit test on port
-        var hitElement = HitTest(context, screenPoint);
+        // First try direct hit test on port (using canvas coordinates)
+        var hitElement = HitTest(context, canvasPoint);
 
         if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
@@ -234,12 +258,19 @@ public class ConnectingState : InputStateBase
         }
         else
         {
-            // _endPoint is in screen coordinates, convert to canvas
-            endPoint = context.ScreenToCanvas(_endPoint);
+            // _endPoint is already in canvas coordinates (from GetCanvasPosition)
+            endPoint = _endPoint;
         }
 
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
         _tempLine.Data = pathGeometry;
+
+        // DEBUG: Position the debug marker at the endpoint (centered on the point)
+        if (_debugMarker != null)
+        {
+            Canvas.SetLeft(_debugMarker, endPoint.X - 5);
+            Canvas.SetTop(_debugMarker, endPoint.Y - 5);
+        }
     }
 
     /// <summary>
@@ -317,10 +348,12 @@ public class ConnectingState : InputStateBase
     /// Updates the visual appearance of ports during connection dragging.
     /// Shows green for valid connections, red for invalid ones.
     /// </summary>
-    private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint screenPoint)
+    /// <param name="context">The input state context.</param>
+    /// <param name="canvasPoint">The cursor position in canvas coordinates.</param>
+    private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint canvasPoint)
     {
-        // First check direct hit test
-        var hitElement = HitTest(context, screenPoint);
+        // First check direct hit test (uses canvas coordinates)
+        var hitElement = HitTest(context, canvasPoint);
         Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;

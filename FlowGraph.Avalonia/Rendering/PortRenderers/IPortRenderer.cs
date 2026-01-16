@@ -95,12 +95,12 @@ public class PortRenderContext
   /// Logical scale for visual sizing. Always 1.0 in transform-based rendering.
   /// </summary>
   public required double Scale { get; init; }
-  
+
   /// <summary>
   /// Actual viewport zoom level. Use for calculations, not visual sizing.
   /// </summary>
   public double ViewportZoom { get; init; } = 1.0;
-  
+
   /// <summary>
   /// Inverse scale for constant-size elements (1/ViewportZoom).
   /// Apply as ScaleTransform to elements that should stay same screen size.

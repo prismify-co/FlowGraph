@@ -37,10 +37,18 @@ public abstract class InputStateBase : IInputState
     #region Helper Methods
 
     /// <summary>
-    /// Gets the current pointer position relative to the root panel.
+    /// Gets the current pointer position relative to the root panel (screen coordinates).
     /// </summary>
     protected static AvaloniaPoint GetPosition(InputStateContext context, PointerEventArgs e)
         => e.GetPosition(context.RootPanel);
+
+    /// <summary>
+    /// Gets the current pointer position in canvas coordinates.
+    /// This uses GetPosition(MainCanvas) which automatically applies the inverse transform,
+    /// giving us direct canvas coordinates without needing ScreenToCanvas conversion.
+    /// </summary>
+    protected static AvaloniaPoint GetCanvasPosition(InputStateContext context, PointerEventArgs e)
+        => e.GetPosition(context.MainCanvas);
 
     /// <summary>
     /// Gets the pointer point for button state information.

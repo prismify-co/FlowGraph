@@ -206,10 +206,12 @@ public class ViewportState : IViewportState
     /// </summary>
     public Point ScreenToCanvas(Point screenPoint)
     {
-        return new Point(
+        var result = new Point(
             (screenPoint.X - OffsetX) / Zoom,
             (screenPoint.Y - OffsetY) / Zoom
         );
+        Console.WriteLine($"[ViewportState.ScreenToCanvas] Input=({screenPoint.X:F1}, {screenPoint.Y:F1}), Offset=({OffsetX:F1}, {OffsetY:F1}), Zoom={Zoom:F2} -> Output=({result.X:F1}, {result.Y:F1})");
+        return result;
     }
 
     /// <inheritdoc />
@@ -301,6 +303,7 @@ public class ViewportState : IViewportState
             OffsetX, // m31 - translate X (offsetX)
             OffsetY  // m32 - translate Y (offsetY)
         );
+        Console.WriteLine($"[ViewportState.ApplyToTransforms] Matrix: Zoom={Zoom:F2}, Offset=({OffsetX:F1}, {OffsetY:F1})");
         transform.Matrix = matrix;
     }
 
