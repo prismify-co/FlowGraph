@@ -82,7 +82,7 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFadeAnimation(edge, 0.2, 1.0);
-        
+
         Assert.Equal(0.2, animation.CurrentOpacity);
     }
 
@@ -91,11 +91,11 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFadeAnimation(edge, 0, 1, duration: 0.1);
-        
+
         Assert.False(animation.IsComplete);
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(animation.IsComplete);
         Assert.Equal(1.0, animation.CurrentOpacity);
     }
@@ -105,7 +105,7 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = EdgeFadeAnimation.FadeIn(edge);
-        
+
         Assert.Equal(0.0, animation.CurrentOpacity);
     }
 
@@ -114,7 +114,7 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = EdgeFadeAnimation.FadeOut(edge);
-        
+
         Assert.Equal(1.0, animation.CurrentOpacity);
     }
 
@@ -124,13 +124,13 @@ public class AnimationTests
         var edge = CreateTestEdge();
         var updateCalled = false;
         double lastOpacity = -1;
-        
+
         var animation = new EdgeFadeAnimation(
             edge, 0, 1, 0.1,
             onUpdate: (e, opacity) => { updateCalled = true; lastOpacity = opacity; });
-        
+
         animation.Update(0.05);
-        
+
         Assert.True(updateCalled);
         Assert.True(lastOpacity > 0 && lastOpacity < 1);
     }
@@ -140,13 +140,13 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var completeCalled = false;
-        
+
         var animation = new EdgeFadeAnimation(
             edge, 0, 1, 0.1,
             onComplete: () => completeCalled = true);
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(completeCalled);
     }
 
@@ -159,11 +159,11 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFlowAnimation(edge, speed: 100);
-        
+
         Assert.Equal(0, animation.CurrentDashOffset);
-        
+
         animation.Update(0.1);
-        
+
         // Negative offset moves the dash pattern in the visual "forward" direction (source to target)
         Assert.Equal(-10, animation.CurrentDashOffset, 1);
     }
@@ -173,11 +173,11 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFlowAnimation(edge, speed: 100, reverse: true);
-        
+
         Assert.Equal(0, animation.CurrentDashOffset);
-        
+
         animation.Update(0.1);
-        
+
         // Positive offset moves the dash pattern in the visual "backward" direction (target to source)
         Assert.Equal(10, animation.CurrentDashOffset, 1);
     }
@@ -187,9 +187,9 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFlowAnimation(edge, speed: -100);
-        
+
         animation.Update(0.1);
-        
+
         // Negative speed reverses direction, producing positive offset (visual backward direction)
         Assert.Equal(10, animation.CurrentDashOffset, 1);
     }
@@ -199,11 +199,11 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFlowAnimation(edge);
-        
+
         animation.Update(1.0);
         animation.Update(1.0);
         animation.Update(1.0);
-        
+
         Assert.False(animation.IsComplete);
     }
 
@@ -212,10 +212,10 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeFlowAnimation(edge, speed: 50, reverse: false, maxDuration: 0.5);
-        
+
         animation.Update(0.3);
         Assert.False(animation.IsComplete);
-        
+
         animation.Update(0.3);
         Assert.True(animation.IsComplete);
     }
@@ -229,7 +229,7 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgePulseAnimation(edge, baseThickness: 3);
-        
+
         Assert.Equal(3, animation.CurrentThickness);
     }
 
@@ -238,11 +238,11 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgePulseAnimation(edge, duration: 0.5);
-        
+
         Assert.False(animation.IsComplete);
-        
+
         animation.Update(0.6);
-        
+
         Assert.True(animation.IsComplete);
     }
 
@@ -251,14 +251,14 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgePulseAnimation(edge, baseThickness: 2, pulseAmount: 2, frequency: 1, duration: 2);
-        
+
         var thicknesses = new List<double>();
         for (int i = 0; i < 10; i++)
         {
             animation.Update(0.1);
             thicknesses.Add(animation.CurrentThickness);
         }
-        
+
         var midpoint = 3.0;
         Assert.Contains(thicknesses, t => t > midpoint);
         Assert.Contains(thicknesses, t => t < midpoint);
@@ -274,7 +274,7 @@ public class AnimationTests
         var edge = CreateTestEdge();
         var startColor = Colors.Red;
         var animation = new EdgeColorAnimation(edge, startColor, Colors.Blue);
-        
+
         Assert.Equal(startColor, animation.CurrentColor);
     }
 
@@ -284,9 +284,9 @@ public class AnimationTests
         var edge = CreateTestEdge();
         var endColor = Colors.Green;
         var animation = new EdgeColorAnimation(edge, Colors.Red, endColor, duration: 0.1);
-        
+
         animation.Update(0.15);
-        
+
         Assert.Equal(endColor, animation.CurrentColor);
     }
 
@@ -295,14 +295,14 @@ public class AnimationTests
     {
         var edge = CreateTestEdge();
         var animation = new EdgeColorAnimation(
-            edge, 
-            Color.FromRgb(0, 0, 0), 
-            Color.FromRgb(100, 100, 100), 
+            edge,
+            Color.FromRgb(0, 0, 0),
+            Color.FromRgb(100, 100, 100),
             duration: 1.0,
             easing: Easing.Linear);
-        
+
         animation.Update(0.5);
-        
+
         Assert.True(animation.CurrentColor.R >= 40 && animation.CurrentColor.R <= 60);
         Assert.True(animation.CurrentColor.G >= 40 && animation.CurrentColor.G <= 60);
         Assert.True(animation.CurrentColor.B >= 40 && animation.CurrentColor.B <= 60);
@@ -317,13 +317,13 @@ public class AnimationTests
     {
         var edges = new[] { CreateTestEdge(), CreateTestEdge(), CreateTestEdge() };
         var updatedEdges = new List<Edge>();
-        
+
         var animation = new MultiEdgeFadeAnimation(
             edges, 0, 1, 0.1,
             onUpdate: (edgeList, opacity) => updatedEdges.AddRange(edgeList));
-        
+
         animation.Update(0.05);
-        
+
         Assert.Equal(3, updatedEdges.Count);
     }
 
@@ -336,7 +336,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = new NodeFadeAnimation(node, 0.3, 1.0);
-        
+
         Assert.Equal(0.3, animation.CurrentOpacity);
     }
 
@@ -345,7 +345,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeFadeAnimation.FadeIn(node);
-        
+
         Assert.Equal(0.0, animation.CurrentOpacity);
     }
 
@@ -354,7 +354,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeFadeAnimation.FadeOut(node);
-        
+
         Assert.Equal(1.0, animation.CurrentOpacity);
     }
 
@@ -363,9 +363,9 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = new NodeFadeAnimation(node, 0, 1, duration: 0.1);
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(animation.IsComplete);
         Assert.Equal(1.0, animation.CurrentOpacity);
     }
@@ -379,7 +379,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = new NodeScaleAnimation(node, 0.5, 1.0);
-        
+
         Assert.Equal(0.5, animation.CurrentScale);
     }
 
@@ -388,7 +388,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeScaleAnimation.PopIn(node);
-        
+
         Assert.Equal(0.5, animation.CurrentScale);
     }
 
@@ -397,7 +397,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeScaleAnimation.ShrinkOut(node);
-        
+
         Assert.Equal(1.0, animation.CurrentScale);
     }
 
@@ -406,9 +406,9 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = new NodeScaleAnimation(node, 0.5, 1.5, duration: 0.1);
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(animation.IsComplete);
         Assert.Equal(1.5, animation.CurrentScale, 2);
     }
@@ -422,7 +422,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeAppearAnimation.Appear(node);
-        
+
         Assert.Equal(0, animation.CurrentOpacity);
         Assert.Equal(0.8, animation.CurrentScale);
     }
@@ -432,7 +432,7 @@ public class AnimationTests
     {
         var node = CreateTestNode();
         var animation = NodeAppearAnimation.Disappear(node);
-        
+
         Assert.Equal(1, animation.CurrentOpacity);
         Assert.Equal(1, animation.CurrentScale);
     }
@@ -443,10 +443,10 @@ public class AnimationTests
         var node = CreateTestNode();
         double finalOpacity = 0;
         double finalScale = 0;
-        
+
         var animation = NodeAppearAnimation.Appear(node, 0.1, (n, o, s) => { finalOpacity = o; finalScale = s; });
         animation.Update(0.15);
-        
+
         Assert.True(animation.IsComplete);
         Assert.Equal(1, finalOpacity, 2);
         Assert.True(finalScale >= 0.99 && finalScale <= 1.1); // May overshoot slightly
@@ -461,13 +461,13 @@ public class AnimationTests
     {
         var nodes = new[] { CreateTestNode(), CreateTestNode(), CreateTestNode() };
         var updatedNodes = new HashSet<Node>();
-        
+
         var animation = new MultiNodeAppearAnimation(
             nodes, true, 0.1, 0,
             onUpdate: (n, o, s) => updatedNodes.Add(n));
-        
+
         animation.Update(0.05);
-        
+
         Assert.Equal(3, updatedNodes.Count);
     }
 
@@ -476,14 +476,14 @@ public class AnimationTests
     {
         var nodes = new[] { CreateTestNode(), CreateTestNode(), CreateTestNode() };
         var nodeOpacities = new Dictionary<Node, double>();
-        
+
         var animation = new MultiNodeAppearAnimation(
             nodes, true, 0.1, 0.1,
             onUpdate: (n, o, s) => nodeOpacities[n] = o);
-        
+
         // After 0.05s, only first node should have started
         animation.Update(0.05);
-        
+
         Assert.True(nodeOpacities[nodes[0]] > 0);
         Assert.Equal(0, nodeOpacities[nodes[1]]);
         Assert.Equal(0, nodeOpacities[nodes[2]]);
@@ -498,7 +498,7 @@ public class AnimationTests
     {
         var group = CreateTestGroup();
         var animation = GroupCollapseAnimation.Collapse(group, 300, 200, 150, 50);
-        
+
         Assert.Equal(300, animation.CurrentWidth);
         Assert.Equal(200, animation.CurrentHeight);
         Assert.Equal(1, animation.ChildrenOpacity);
@@ -509,7 +509,7 @@ public class AnimationTests
     {
         var group = CreateTestGroup();
         var animation = GroupCollapseAnimation.Expand(group, 300, 200, 150, 50);
-        
+
         Assert.Equal(150, animation.CurrentWidth);
         Assert.Equal(50, animation.CurrentHeight);
         Assert.Equal(0, animation.ChildrenOpacity);
@@ -520,12 +520,12 @@ public class AnimationTests
     {
         var group = CreateTestGroup();
         double finalWidth = 0, finalHeight = 0, finalOpacity = 1;
-        
+
         var animation = GroupCollapseAnimation.Collapse(group, 300, 200, 150, 50, 0.1,
             onUpdate: (g, w, h, o) => { finalWidth = w; finalHeight = h; finalOpacity = o; });
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(animation.IsComplete);
         Assert.Equal(150, finalWidth, 1);
         Assert.Equal(50, finalHeight, 1);
@@ -537,16 +537,16 @@ public class AnimationTests
     {
         var group = CreateTestGroup();
         var opacities = new List<double>();
-        
+
         var animation = GroupCollapseAnimation.Collapse(group, 300, 200, 150, 50, 0.4,
             onUpdate: (g, w, h, o) => opacities.Add(o));
-        
+
         // Sample at multiple points
         animation.Update(0.1);
         animation.Update(0.1);
         animation.Update(0.1);
         animation.Update(0.1);
-        
+
         // Children should fade out in first half
         Assert.True(opacities[0] < 1);
         Assert.Equal(0, opacities[1], 1);
@@ -568,12 +568,12 @@ public class AnimationTests
     {
         var intensities = new List<double>();
         var animation = new SelectionPulseAnimation(0.4, i => intensities.Add(i));
-        
+
         for (int i = 0; i < 10; i++)
         {
             animation.Update(0.04);
         }
-        
+
         // Should have risen and then fallen
         Assert.True(intensities.Max() > 0.5);
         Assert.True(intensities.Last() < intensities.Max());
@@ -583,9 +583,9 @@ public class AnimationTests
     public void SelectionPulseAnimation_CompletesAfterDuration()
     {
         var animation = new SelectionPulseAnimation(0.2);
-        
+
         animation.Update(0.25);
-        
+
         Assert.True(animation.IsComplete);
     }
 
@@ -597,11 +597,11 @@ public class AnimationTests
     public void BoxSelectionAnimation_IncrementsOffset()
     {
         var animation = new BoxSelectionAnimation(100);
-        
+
         Assert.Equal(0, animation.CurrentDashOffset);
-        
+
         animation.Update(0.1);
-        
+
         Assert.Equal(10, animation.CurrentDashOffset, 1);
     }
 
@@ -609,9 +609,9 @@ public class AnimationTests
     public void BoxSelectionAnimation_NeverCompletes()
     {
         var animation = new BoxSelectionAnimation();
-        
+
         animation.Update(10.0);
-        
+
         Assert.False(animation.IsComplete);
     }
 
@@ -619,9 +619,9 @@ public class AnimationTests
     public void BoxSelectionAnimation_WrapsOffset()
     {
         var animation = new BoxSelectionAnimation(1000);
-        
+
         animation.Update(0.15);
-        
+
         Assert.True(animation.CurrentDashOffset < 100);
     }
 
