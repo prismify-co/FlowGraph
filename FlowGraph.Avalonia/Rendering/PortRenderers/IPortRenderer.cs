@@ -33,6 +33,41 @@ public interface IPortRenderer
   /// Return null to use the default port size from settings.
   /// </summary>
   double? GetSize(Port port, Node node, FlowCanvasSettings settings);
+
+  /// <summary>
+  /// Called when the port visual is being removed from the canvas.
+  /// Use this to stop animations and clean up resources.
+  /// </summary>
+  /// <param name="visual">The port's visual control being removed.</param>
+  /// <param name="port">The port data.</param>
+  /// <param name="node">The parent node.</param>
+  void OnDetached(Control visual, Port port, Node node) { }
+
+  /// <summary>
+  /// Triggers a one-shot data pulse animation to indicate data flowing through the port.
+  /// </summary>
+  /// <param name="visual">The port's visual control.</param>
+  /// <param name="port">The port data.</param>
+  /// <param name="node">The parent node.</param>
+  /// <param name="context">The rendering context.</param>
+  void TriggerDataPulse(Control visual, Port port, Node node, PortRenderContext context) { }
+
+  /// <summary>
+  /// Triggers a one-shot error animation (e.g., shake effect) for validation failures.
+  /// </summary>
+  /// <param name="visual">The port's visual control.</param>
+  /// <param name="port">The port data.</param>
+  /// <param name="node">The parent node.</param>
+  /// <param name="message">Optional error message.</param>
+  void TriggerError(Control visual, Port port, Node node, string? message) { }
+
+  /// <summary>
+  /// Triggers a one-shot success animation (e.g., flash effect) for successful connections.
+  /// </summary>
+  /// <param name="visual">The port's visual control.</param>
+  /// <param name="port">The port data.</param>
+  /// <param name="node">The parent node.</param>
+  void TriggerSuccess(Control visual, Port port, Node node) { }
 }
 
 /// <summary>
@@ -114,7 +149,83 @@ public record PortVisualState
   public bool IsDragging { get; init; }
 
   /// <summary>
+  /// The type of state change that just occurred, if any.
+  /// Use this to trigger one-shot animations (e.g., ripple on connect).
+  /// </summary>
+  public PortStateChange Change { get; init; } = PortStateChange.None;
+
+  /// <summary>
+  /// Number of edges connected to this port.
+  /// Useful for showing connection count badges or varying visual intensity.
+  /// </summary>
+  public int ConnectionCount { get; init; }
+
+  /// <summary>
+  /// Whether data is currently being received on this port (for input ports).
+  /// Use this for data flow indicators/animations.
+  /// </summary>
+  public bool IsReceivingData { get; init; }
+
+  /// <summary>
+  /// Whether data is currently being sent from this port (for output ports).
+  /// Use this for data flow indicators/animations.
+  /// </summary>
+  public bool IsSendingData { get; init; }
+
+  /// <summary>
+  /// Whether the port has a validation error.
+  /// </summary>
+  public bool HasError { get; init; }
+
+  /// <summary>
+  /// Optional error message when <see cref="HasError"/> is true.
+  /// </summary>
+  public string? ErrorMessage { get; init; }
+
+  /// <summary>
   /// Default state instance.
   /// </summary>
   public static PortVisualState Default { get; } = new();
+}
+
+/// <summary>
+/// Indicates the type of state change that just occurred on a port.
+/// Used to trigger one-shot animations.
+/// </summary>
+public enum PortStateChange
+{
+  /// <summary>
+  /// No state change (steady state).
+  /// </summary>
+  None,
+
+  /// <summary>
+  /// An edge was just connected to this port.
+  /// Use for connection ripple/pulse animation.
+  /// </summary>
+  JustConnected,
+
+  /// <summary>
+  /// An edge was just disconnected from this port.
+  /// Use for disconnection fade/ripple animation.
+  /// </summary>
+  JustDisconnected,
+
+  /// <summary>
+  /// Data just passed through this port.
+  /// Use for data flow pulse animation.
+  /// </summary>
+  DataPulse,
+
+  /// <summary>
+  /// A validation error just occurred.
+  /// Use for error shake animation.
+  /// </summary>
+  ValidationError,
+
+  /// <summary>
+  /// A validation succeeded (e.g., valid drop target confirmed).
+  /// Use for success flash animation.
+  /// </summary>
+  ValidationSuccess
 }

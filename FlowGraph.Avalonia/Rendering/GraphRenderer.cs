@@ -154,6 +154,24 @@ public class GraphRenderer
         => _nodeVisualManager.UpdateAllPortStates(graph, theme);
 
     /// <summary>
+    /// Triggers a data pulse animation on a specific port.
+    /// </summary>
+    public void TriggerPortDataPulse(Node node, Port port, ThemeResources theme)
+        => _nodeVisualManager.TriggerPortDataPulse(node, port, theme);
+
+    /// <summary>
+    /// Triggers an error animation on a specific port.
+    /// </summary>
+    public void TriggerPortError(Node node, Port port, string? message = null)
+        => _nodeVisualManager.TriggerPortError(node, port, message);
+
+    /// <summary>
+    /// Triggers a success animation on a specific port.
+    /// </summary>
+    public void TriggerPortSuccess(Node node, Port port)
+        => _nodeVisualManager.TriggerPortSuccess(node, port);
+
+    /// <summary>
     /// Gets the visual element for an edge (hit area path).
     /// </summary>
     public AvaloniaPath? GetEdgeVisual(string edgeId) => _edgeVisualManager.GetEdgeVisual(edgeId);
