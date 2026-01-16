@@ -164,7 +164,8 @@ public class AnimationTests
         
         animation.Update(0.1);
         
-        Assert.Equal(10, animation.CurrentDashOffset, 1);
+        // Negative offset moves the dash pattern in the visual "forward" direction (source to target)
+        Assert.Equal(-10, animation.CurrentDashOffset, 1);
     }
 
     [Fact]
@@ -177,7 +178,8 @@ public class AnimationTests
         
         animation.Update(0.1);
         
-        Assert.Equal(-10, animation.CurrentDashOffset, 1);
+        // Positive offset moves the dash pattern in the visual "backward" direction (target to source)
+        Assert.Equal(10, animation.CurrentDashOffset, 1);
     }
 
     [Fact]
@@ -188,7 +190,8 @@ public class AnimationTests
         
         animation.Update(0.1);
         
-        Assert.Equal(-10, animation.CurrentDashOffset, 1);
+        // Negative speed reverses direction, producing positive offset (visual backward direction)
+        Assert.Equal(10, animation.CurrentDashOffset, 1);
     }
 
     [Fact]
