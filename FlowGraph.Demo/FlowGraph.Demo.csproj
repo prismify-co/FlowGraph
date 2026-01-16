@@ -20,7 +20,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
-    <PackageReference Include="ShadUI" Version="0.1.6" />
+    <!-- Use local ShadUI project for development -->
+    <!--<PackageReference Include="ShadUI" Version="0.1.6" />-->
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
@@ -34,5 +35,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FlowGraph.Avalonia\FlowGraph.Avalonia.csproj" />
     <ProjectReference Include="..\FlowGraph.3D\FlowGraph.3D.csproj" />
+    <ProjectReference Include="..\..\shad-ui\src\ShadUI\ShadUI.csproj" />
   </ItemGroup>
 </Project>

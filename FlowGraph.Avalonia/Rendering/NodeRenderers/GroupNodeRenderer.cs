@@ -132,11 +132,11 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             // Find the border rectangle (the one with Stroke set)
             var border = grid.Children.OfType<Rectangle>()
                 .FirstOrDefault(r => r.Stroke != null);
-            
+
             if (border != null)
             {
                 border.Stroke = node.IsSelected ? selectedBrush : normalBrush;
-                
+
                 // Toggle dashed style based on selection
                 if (node.IsSelected)
                 {

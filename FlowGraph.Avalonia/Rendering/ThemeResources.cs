@@ -305,6 +305,27 @@ public class ThemeResources
     public IBrush InteractivePreviewText => GetBrush("FlowCanvasInteractivePreviewText",
         IsLightTheme ? "#C8C8C8" : "#505050");
 
+    /// <summary>
+    /// Accent color for interactive controls (radio buttons, checkboxes, etc.).
+    /// Falls back to PrimaryBrush from ShadUI theme, then to a default blue.
+    /// </summary>
+    public IBrush InteractiveAccent
+    {
+        get
+        {
+            // First try FlowCanvas-specific accent
+            var accent = TryGetBrush("FlowCanvasInteractiveAccent");
+            if (accent != null) return accent;
+
+            // Then try ShadUI PrimaryBrush
+            var primary = TryGetBrush("PrimaryBrush");
+            if (primary != null) return primary;
+
+            // Default fallback
+            return new SolidColorBrush(IsLightTheme ? Color.Parse("#0078D4") : Color.Parse("#4AA3DF"));
+        }
+    }
+
     #endregion
 
     #region Minimap

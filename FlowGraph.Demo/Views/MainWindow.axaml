@@ -1,109 +1,162 @@
 <shad:Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:FlowGraph.Demo.ViewModels"
-        xmlns:lucide="clr-namespace:LucideAvalonia;assembly=LucideAvalonia"
-        xmlns:shad="clr-namespace:ShadUI;assembly=ShadUI"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
-        x:Class="FlowGraph.Demo.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="FlowGraph Demo"
-        Width="1200" Height="800">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FlowGraph.Demo.ViewModels"
+             xmlns:lucide="clr-namespace:LucideAvalonia;assembly=LucideAvalonia"
+             xmlns:shad="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="FlowGraph.Demo.Views.MainWindow"
+             x:DataType="vm:MainWindowViewModel"
+             x:Name="Window"
+             Icon="/Assets/avalonia-logo.ico"
+             Title="FlowGraph Demo"
+             Width="1200" Height="800"
+             SaveWindowState="True"
+             WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="Auto,*">
-        <!-- ShadUI Sidebar -->
-        <shad:Sidebar x:Name="MainSidebar" 
-                      Grid.Column="0" 
-                      Expanded="True"
-                      Width="220">
-            
-            <!-- Header -->
-            <shad:Sidebar.Header>
-                <StackPanel Margin="8,12">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <lucide:Lucide Icon="Workflow" StrokeThickness="1.5" Width="24" Height="24" Foreground="{DynamicResource PrimaryBrush}"/>
-                        <TextBlock Text="FlowGraph" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <TextBlock Text="Demo Application" FontSize="12" Foreground="{DynamicResource MutedForegroundBrush}" Margin="34,4,0,0"/>
-                </StackPanel>
-            </shad:Sidebar.Header>
-            
-            <!-- Navigation Items -->
-            <StackPanel Spacing="4">
-                <shad:SidebarItemLabel Text="PAGES" Expanded="{Binding #MainSidebar.Expanded}"/>
-                
-                <shad:SidebarItem x:Name="NavInteractive"
-                                  Content="Interactive 3D"
-                                  Route="interactive"
-                                  IsChecked="True"
-                                  Expanded="{Binding #MainSidebar.Expanded}"
-                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
-                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
-                                  Click="OnNavInteractiveClick">
-                    <shad:SidebarItem.Icon>
-                        <lucide:Lucide Icon="Boxes" StrokeThickness="1.5" Width="18" Height="18"/>
-                    </shad:SidebarItem.Icon>
-                </shad:SidebarItem>
-                
-                <shad:SidebarItem x:Name="NavShapes"
-                                  Content="Shapes &amp; Z-Index"
-                                  Route="shapes"
-                                  Expanded="{Binding #MainSidebar.Expanded}"
-                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
-                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
-                                  Click="OnNavShapesClick">
-                    <shad:SidebarItem.Icon>
-                        <lucide:Lucide Icon="Shapes" StrokeThickness="1.5" Width="18" Height="18"/>
-                    </shad:SidebarItem.Icon>
-                </shad:SidebarItem>
-                
-                <shad:SidebarItem x:Name="NavPerformance"
-                                  Content="Performance Test"
-                                  Route="performance"
-                                  Expanded="{Binding #MainSidebar.Expanded}"
-                                  SharedSizeGroup="{Binding #MainSidebar.DefaultItemsSharedSizeGroup}"
-                                  GroupName="{Binding #MainSidebar.DefaultItemsGroup}"
-                                  Click="OnNavPerformanceClick">
-                    <shad:SidebarItem.Icon>
-                        <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" Width="18" Height="18"/>
-                    </shad:SidebarItem.Icon>
-                </shad:SidebarItem>
-            </StackPanel>
-            
-            <!-- Footer with collapse toggle -->
-            <shad:Sidebar.Footer>
-                <StackPanel Margin="8">
-                    <Button x:Name="CollapseButton" 
-                            Click="OnToggleSidebar"
-                            Background="Transparent"
-                            Padding="8"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            CornerRadius="6">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <lucide:Lucide Icon="PanelLeftClose" StrokeThickness="1.5" Width="18" Height="18"/>
-                            <TextBlock Text="Collapse" VerticalAlignment="Center" IsVisible="{Binding #MainSidebar.Expanded}"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </shad:Sidebar.Footer>
-        </shad:Sidebar>
-        
-        <!-- Main Content Area -->
-        <Border Grid.Column="1" 
-                Background="{DynamicResource BackgroundBrush}"
-                Padding="16">
-            <shad:Card>
-                <ContentControl x:Name="PageContent"/>
-            </shad:Card>
+    <!-- Window Logo -->
+    <shad:Window.LogoContent>
+        <Border Background="{DynamicResource PrimaryBrush}"
+                CornerRadius="4"
+                Width="18" Height="18"
+                Margin="8,0,0,0">
+            <lucide:Lucide Icon="Workflow"
+                           StrokeThickness="2"
+                           Width="12" Height="12"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
         </Border>
-    </Grid>
+    </shad:Window.LogoContent>
 
+    <!-- Title Bar Right Content -->
+    <shad:Window.RightWindowTitleBarContent>
+        <StackPanel Orientation="Horizontal" Spacing="4">
+            <!-- Theme Toggle -->
+            <Button Background="Transparent"
+                    BorderThickness="0"
+                    CornerRadius="6"
+                    Width="32" Height="32"
+                    Padding="0"
+                    Command="{Binding SwitchThemeCommand}"
+                    ToolTip.Tip="Toggle Theme">
+                <Panel>
+                    <lucide:Lucide Icon="Sun"
+                                   StrokeThickness="1.5"
+                                   Width="16" Height="16"
+                                   IsVisible="{Binding IsDarkTheme}" />
+                    <lucide:Lucide Icon="Moon"
+                                   StrokeThickness="1.5"
+                                   Width="16" Height="16"
+                                   IsVisible="{Binding !IsDarkTheme}" />
+                </Panel>
+            </Button>
+        </StackPanel>
+    </shad:Window.RightWindowTitleBarContent>
+
+    <Panel>
+        <Grid ColumnDefinitions="Auto,*">
+            <!-- Sidebar -->
+            <shad:Sidebar x:Name="MainSidebar"
+                          Grid.Column="0"
+                          Expanded="{Binding #SidebarToggle.IsChecked}"
+                          CurrentRoute="{Binding CurrentRoute}"
+                          MinWidth="56"
+                          BorderBrush="{DynamicResource BorderBrush}"
+                          BorderThickness="0,0,1,0">
+
+                <!-- Header with Toggle -->
+                <shad:Sidebar.Header>
+                    <ToggleButton x:Name="SidebarToggle"
+                                  CornerRadius="8"
+                                  Height="36"
+                                  Width="36"
+                                  IsChecked="True"
+                                  Padding="0"
+                                  Margin="10,8"
+                                  Theme="{DynamicResource SideTogglerTheme}"
+                                  ToolTip.Tip="Toggle Sidebar">
+                        <Viewbox Width="18" Height="18">
+                            <lucide:Lucide Icon="PanelLeft" StrokeThickness="1.5" />
+                        </Viewbox>
+                    </ToggleButton>
+                </shad:Sidebar.Header>
+
+                <!-- Navigation Items -->
+                <StackPanel Spacing="4">
+                    <shad:SidebarItemLabel AsSeparator="True" 
+                                           IsVisible="{Binding #MainSidebar.Expanded}" />
+
+                    <shad:SidebarItem Command="{Binding OpenInteractiveCommand}"
+                                      Content="Interactive 3D"
+                                      Route="interactive"
+                                      IsChecked="True">
+                        <shad:SidebarItem.Icon>
+                            <Viewbox>
+                                <lucide:Lucide Icon="Boxes" StrokeThickness="1.5" />
+                            </Viewbox>
+                        </shad:SidebarItem.Icon>
+                    </shad:SidebarItem>
+
+                    <shad:SidebarItem Command="{Binding OpenShapesCommand}"
+                                      Content="Shapes &amp; Layers"
+                                      Route="shapes">
+                        <shad:SidebarItem.Icon>
+                            <Viewbox>
+                                <lucide:Lucide Icon="Layers" StrokeThickness="1.5" />
+                            </Viewbox>
+                        </shad:SidebarItem.Icon>
+                    </shad:SidebarItem>
+
+                    <shad:SidebarItem Command="{Binding OpenPerformanceCommand}"
+                                      Content="Performance"
+                                      Route="performance">
+                        <shad:SidebarItem.Icon>
+                            <Viewbox>
+                                <lucide:Lucide Icon="Gauge" StrokeThickness="1.5" />
+                            </Viewbox>
+                        </shad:SidebarItem.Icon>
+                    </shad:SidebarItem>
+                </StackPanel>
+
+                <!-- Footer -->
+                <shad:Sidebar.Footer>
+                    <Grid Margin="4,8">
+                        <!-- Version when expanded -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="6"
+                                    Opacity="0.6"
+                                    IsVisible="{Binding #MainSidebar.Expanded}">
+                            <lucide:Lucide Icon="Tag"
+                                           StrokeThickness="1.5"
+                                           Width="12" Height="12" />
+                            <TextBlock Text="v0.5.0"
+                                       FontSize="11"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                        
+                        <!-- Icon when collapsed -->
+                        <lucide:Lucide Icon="Tag"
+                                       StrokeThickness="1.5"
+                                       Width="14" Height="14"
+                                       Opacity="0.5"
+                                       HorizontalAlignment="Center"
+                                       IsVisible="{Binding !#MainSidebar.Expanded}"
+                                       ToolTip.Tip="v0.5.0" />
+                    </Grid>
+                </shad:Sidebar.Footer>
+            </shad:Sidebar>
+
+            <!-- Main Content -->
+            <TransitioningContentControl Grid.Column="1"
+                                         Content="{Binding SelectedPage}"
+                                         Background="{DynamicResource BackgroundBrush}" />
+        </Grid>
+    </Panel>
 </shad:Window>
 
