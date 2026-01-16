@@ -24,7 +24,10 @@ public partial class DirectGraphRenderer
     if (ctx == null) return null;
     var context = ctx.Value;
 
-    var handleRadius = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
+    // Scale handle radius to canvas space: divide by zoom so it stays consistent in screen pixels
+    // When zoomed out (zoom=0.5), canvas distances are 2x larger, so we need 2x larger canvas radius
+    var handleRadiusScreen = _settings.EdgeEndpointHandleSize / 2 + 4; // Extra padding for easier clicking
+    var handleRadiusCanvas = handleRadiusScreen / context.Zoom;
 
     int edgesChecked = 0;
     int edgesSkippedViewport = 0;
@@ -47,12 +50,12 @@ public partial class DirectGraphRenderer
       edgesChecked++;
       var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
 
-      // Check source handle
-      if (IsPointInCircle(context.CanvasPoint, startCanvas, handleRadius))
+      // Check source handle (comparing in canvas space with zoom-adjusted radius)
+      if (IsPointInCircle(context.CanvasPoint, startCanvas, handleRadiusCanvas))
         return (edge, true);
 
       // Check target handle
-      if (IsPointInCircle(context.CanvasPoint, endCanvas, handleRadius))
+      if (IsPointInCircle(context.CanvasPoint, endCanvas, handleRadiusCanvas))
         return (edge, false);
     }
 
@@ -92,7 +95,7 @@ public partial class DirectGraphRenderer
       nodesChecked++;
       foreach (var (pos, center) in _model.GetResizeHandlePositions(node))
       {
-        if (_model.IsPointInResizeHandle(context.CanvasPoint, center))
+        if (_model.IsPointInResizeHandle(context.CanvasPoint, center, context.Zoom))
         {
           return (node, pos);
         }
@@ -269,7 +272,7 @@ public partial class DirectGraphRenderer
       for (int i = 0; i < node.Inputs.Count; i++)
       {
         var portPos = _model.GetPortPositionByIndex(node, i, node.Inputs.Count, false);
-        if (_model.IsPointInPort(context.CanvasPoint, portPos))
+        if (_model.IsPointInPort(context.CanvasPoint, portPos, context.Zoom))
         {
           return (node, node.Inputs[i], false);
         }
@@ -279,7 +282,7 @@ public partial class DirectGraphRenderer
       for (int i = 0; i < node.Outputs.Count; i++)
       {
         var portPos = _model.GetPortPositionByIndex(node, i, node.Outputs.Count, true);
-        if (_model.IsPointInPort(context.CanvasPoint, portPos))
+        if (_model.IsPointInPort(context.CanvasPoint, portPos, context.Zoom))
         {
           return (node, node.Outputs[i], true);
         }
@@ -305,7 +308,7 @@ public partial class DirectGraphRenderer
       for (int i = 0; i < group.Inputs.Count; i++)
       {
         var portPos = _model.GetPortPositionByIndex(group, i, group.Inputs.Count, false);
-        if (_model.IsPointInPort(context.CanvasPoint, portPos))
+        if (_model.IsPointInPort(context.CanvasPoint, portPos, context.Zoom))
         {
           return (group, group.Inputs[i], false);
         }
@@ -315,7 +318,7 @@ public partial class DirectGraphRenderer
       for (int i = 0; i < group.Outputs.Count; i++)
       {
         var portPos = _model.GetPortPositionByIndex(group, i, group.Outputs.Count, true);
-        if (_model.IsPointInPort(context.CanvasPoint, portPos))
+        if (_model.IsPointInPort(context.CanvasPoint, portPos, context.Zoom))
         {
           return (group, group.Outputs[i], true);
         }
@@ -342,9 +345,9 @@ public partial class DirectGraphRenderer
     if (ctx == null) return null;
     var context = ctx.Value;
 
-    // Edge hit distance: When zoomed OUT, cap at base value for tight screen pixels.
-    // When zoomed IN, scale to maintain consistent screen pixel distance.
-    var hitDistance = Math.Min(_settings.EdgeHitAreaWidth / context.Zoom, (double)_settings.EdgeHitAreaWidth);
+    // Edge hit distance: EdgeHitAreaWidth is in screen pixels, convert to canvas coordinates
+    // by dividing by zoom so hit area remains consistent in screen space at any zoom level.
+    var hitDistanceCanvas = _settings.EdgeHitAreaWidth / context.Zoom;
 
     int edgesChecked = 0;
     int edgesSkippedViewport = 0;
@@ -367,7 +370,7 @@ public partial class DirectGraphRenderer
       edgesChecked++;
       var (start, end) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);
 
-      if (_model.IsPointNearEdge(context.CanvasPoint, start, end, hitDistance))
+      if (_model.IsPointNearEdge(context.CanvasPoint, start, end, hitDistanceCanvas))
       {
         sw.Stop();
         System.Diagnostics.Debug.WriteLine($"[HitTestEdge] Hit in {sw.ElapsedMilliseconds}ms | EdgesChecked:{edgesChecked}, SkippedViewport:{edgesSkippedViewport}");

@@ -241,9 +241,12 @@ public class GraphRenderModel
     /// <summary>
     /// Gets the hit test radius for ports (includes padding for easier clicking).
     /// </summary>
-    public double GetPortHitRadius()
+    /// <param name="zoom">Current zoom level for scaling screen-size hit radius to canvas coordinates.</param>
+    public double GetPortHitRadius(double zoom)
     {
-        return _settings.PortSize / 2 + PortHitPadding;
+        // The hit radius is in screen pixels, convert to canvas coordinates by dividing by zoom
+        var hitRadiusScreen = _settings.PortSize / 2 + PortHitPadding;
+        return hitRadiusScreen / zoom;
     }
 
     #endregion
@@ -435,9 +438,12 @@ public class GraphRenderModel
     /// <summary>
     /// Checks if a point (in canvas coords) is within a port's hit area.
     /// </summary>
-    public bool IsPointInPort(AvaloniaPoint point, AvaloniaPoint portCenter)
+    /// <param name="point">Point in canvas coordinates.</param>
+    /// <param name="portCenter">Port center in canvas coordinates.</param>
+    /// <param name="zoom">Current zoom level for scaling screen-size hit area to canvas coordinates.</param>
+    public bool IsPointInPort(AvaloniaPoint point, AvaloniaPoint portCenter, double zoom)
     {
-        var hitRadius = GetPortHitRadius();
+        var hitRadius = GetPortHitRadius(zoom);
         var dx = point.X - portCenter.X;
         var dy = point.Y - portCenter.Y;
         return dx * dx + dy * dy <= hitRadius * hitRadius;
@@ -511,11 +517,16 @@ public class GraphRenderModel
     /// <summary>
     /// Checks if a point is within a resize handle's hit area.
     /// </summary>
-    public bool IsPointInResizeHandle(AvaloniaPoint point, AvaloniaPoint handleCenter)
+    /// <param name="point">Point in canvas coordinates.</param>
+    /// <param name="handleCenter">Handle center in canvas coordinates.</param>
+    /// <param name="zoom">Current zoom level for scaling screen-size hit area to canvas coordinates.</param>
+    public bool IsPointInResizeHandle(AvaloniaPoint point, AvaloniaPoint handleCenter, double zoom)
     {
-        var halfSize = ResizeHandleSize / 2 + 2; // Small extra margin for easier clicking
-        return Math.Abs(point.X - handleCenter.X) <= halfSize &&
-               Math.Abs(point.Y - handleCenter.Y) <= halfSize;
+        // halfSize is in screen pixels, convert to canvas coordinates by dividing by zoom
+        var halfSizeScreen = ResizeHandleSize / 2 + 2; // Small extra margin for easier clicking
+        var halfSizeCanvas = halfSizeScreen / zoom;
+        return Math.Abs(point.X - handleCenter.X) <= halfSizeCanvas &&
+               Math.Abs(point.Y - handleCenter.Y) <= halfSizeCanvas;
     }
 
     #endregion
