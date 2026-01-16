@@ -35,6 +35,9 @@ public class ConnectingState : InputStateBase
     // Track whether connect start was raised
     private bool _connectStartRaised;
 
+    // DEBUG: counter for throttled logging
+    private int _debugMoveCount;
+
     public override string Name => "Connecting";
     public override bool IsModal => true;
 
@@ -69,7 +72,8 @@ public class ConnectingState : InputStateBase
             Stroke = _theme.EdgeStroke,
             StrokeThickness = 2,
             StrokeDashArray = [5, 3],
-            Opacity = 0.7
+            Opacity = 0.7,
+            IsHitTestVisible = false // Don't block hit testing on ports underneath
         };
         canvas.Children.Add(_tempLine);
     }
@@ -106,7 +110,7 @@ public class ConnectingState : InputStateBase
     {
         // Store screen position for AutoPan edge detection
         var screenPos = GetScreenPosition(context, e);
-        
+
         // Get canvas position directly - MainCanvas has a transform, and GetPosition(MainCanvas)
         // automatically applies the inverse transform, giving us direct canvas coordinates
         _endPoint = GetCanvasPosition(context, e);
@@ -131,8 +135,14 @@ public class ConnectingState : InputStateBase
             }
         }
 
-        // Try to find a snap target (uses screen coordinates for distance calculation)
-        _snappedTarget = FindSnapTarget(context, screenPos);
+        // Try to find a snap target (uses canvas coordinates for distance calculation)
+        _snappedTarget = FindSnapTarget(context, _endPoint);
+
+        // DEBUG: Log cursor position every 50 moves
+        if (_debugMoveCount++ % 50 == 0)
+        {
+            Console.WriteLine($"[CURSOR] screenPos={screenPos}, canvasPos={_endPoint}, zoom={context.Viewport.Zoom:F2}");
+        }
 
         UpdateTempLine(context);
 
@@ -144,15 +154,18 @@ public class ConnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
-        // Get canvas coordinates for hit testing
-        var canvasPoint = GetCanvasPosition(context, e);
+        // Get screen coordinates first, then convert to canvas using viewport
+        // NOTE: Don't use e.GetPosition(MainCanvas) as it may not correctly apply the MatrixTransform
+        var screenPoint = GetScreenPosition(context, e);
+        var canvasPoint = context.ScreenToCanvas(screenPoint);
 
         bool connectionCompleted = false;
         Node? targetNode = null;
         Port? targetPort = null;
 
         // First try direct hit test on port (using canvas coordinates)
-        var hitElement = HitTestCanvas(context, canvasPoint);
+        // Use HitTestForPort which skips edge paths and markers that might block the port
+        var hitElement = HitTestForPort(context, canvasPoint);
 
         if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
@@ -173,6 +186,10 @@ public class ConnectingState : InputStateBase
                 targetNode = null;
                 targetPort = null;
             }
+        }
+        else
+        {
+            // No direct hit and no snap target
         }
 
         // Attempt connection if we have a target
@@ -250,22 +267,30 @@ public class ConnectingState : InputStateBase
     /// <summary>
     /// Finds the nearest compatible port within snap distance.
     /// OPTIMIZED: Uses early exit based on canvas distance to avoid checking all 5000 nodes.
+    /// Uses canvas coordinates for all calculations since screen coordinate conversion has
+    /// issues with RootPanel offsets.
     /// </summary>
-    private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint screenPoint)
+    private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint canvasPoint)
     {
         var graph = context.Graph;
         var settings = context.Settings;
 
         if (graph == null || !settings.SnapConnectionToNode || settings.ConnectionSnapDistance <= 0)
+        {
             return null;
+        }
 
         var snapDistance = settings.ConnectionSnapDistance;
-        var canvasPoint = context.ScreenToCanvas(screenPoint);
         var zoom = context.Viewport.Zoom;
 
-        // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
-        // Add some padding to account for node width
-        var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
+        // Convert snap distance to canvas coordinates (screen pixels / zoom = canvas units)
+        var canvasSnapDistance = snapDistance / zoom;
+
+        // DEBUG: Log snap search params
+        Console.WriteLine($"[SNAP-SEARCH] canvasPoint={canvasPoint}, snapDist={snapDistance}, canvasSnapDist={canvasSnapDistance:F1}, zoom={zoom:F2}");
+
+        // OPTIMIZATION: For early rejection, add node width to allow for ports on node edges
+        var earlyRejectDistance = canvasSnapDistance + settings.NodeWidth;
 
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
@@ -286,8 +311,16 @@ public class ConnectingState : InputStateBase
             var canvasDy = nodeCenterY - canvasPoint.Y;
             var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
 
-            if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
+            // DEBUG: Log distance check for each node
+            Console.WriteLine($"[SNAP-NODE] {node.Id}: center=({nodeCenterX:F1},{nodeCenterY:F1}), canvasDist={Math.Sqrt(canvasDistSq):F1}, threshold={earlyRejectDistance:F1}");
+
+            if (canvasDistSq > earlyRejectDistance * earlyRejectDistance)
+            {
+                Console.WriteLine($"[SNAP-NODE] {node.Id}: REJECTED (too far in canvas coords)");
                 continue;
+            }
+
+            Console.WriteLine($"[SNAP-NODE] {node.Id}: PASSED early filter, checking ports...");
 
             // Check ports on the opposite side (if from output, look at inputs)
             var portsToCheck = _fromOutput ? node.Inputs : node.Outputs;
@@ -295,21 +328,25 @@ public class ConnectingState : InputStateBase
 
             foreach (var port in portsToCheck)
             {
-                // Get the port's screen position for distance calculation
-                var portScreenPos = context.GraphRenderer.GetPortScreenPosition(node, port, isOutput);
+                // Get the port's canvas position for distance calculation
+                var portCanvasPos = context.GraphRenderer.GetPortCanvasPosition(node, port, isOutput);
 
-                // Calculate distance
-                var dx = portScreenPos.X - screenPoint.X;
-                var dy = portScreenPos.Y - screenPoint.Y;
+                // Calculate distance in canvas coordinates
+                var dx = portCanvasPos.X - canvasPoint.X;
+                var dy = portCanvasPos.Y - canvasPoint.Y;
                 var distance = Math.Sqrt(dx * dx + dy * dy);
 
-                if (distance < snapDistance && distance < bestDistance)
+                // DEBUG: Log port distance
+                Console.WriteLine($"[SNAP] Port {node.Id}.{port.Id}: portCanvasPos={portCanvasPos}, mouseCanvas={canvasPoint}, dist={distance:F1}, snapDist={canvasSnapDistance:F1}");
+
+                if (distance < canvasSnapDistance && distance < bestDistance)
                 {
                     // Check if this connection would be valid
                     if (IsConnectionValid(context, node, port))
                     {
                         bestDistance = distance;
                         bestTarget = (node, port, isOutput);
+                        Console.WriteLine($"[SNAP] >>> SNAPPED to {node.Id}.{port.Id} at distance {distance:F1}");
                     }
                 }
             }
@@ -327,7 +364,8 @@ public class ConnectingState : InputStateBase
     private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint canvasPoint)
     {
         // First check direct hit test (uses canvas coordinates)
-        var hitElement = HitTestCanvas(context, canvasPoint);
+        // Use HitTestForPort which skips edge paths and markers
+        var hitElement = HitTestForPort(context, canvasPoint);
         Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;

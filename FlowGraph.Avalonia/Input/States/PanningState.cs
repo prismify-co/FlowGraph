@@ -34,10 +34,10 @@ public class PanningState : InputStateBase
         var deltaY = currentPoint.Y - _startPoint.Y;
 
         context.Viewport.SetOffset(_startOffsetX + deltaX, _startOffsetY + deltaY);
-        
+
         // Apply transform to canvas instead of full re-render
         context.ApplyViewportTransform();
-        
+
         e.Handled = true;
         return StateTransitionResult.Stay();
     }

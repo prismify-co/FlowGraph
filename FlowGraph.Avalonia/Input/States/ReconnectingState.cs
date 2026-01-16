@@ -98,7 +98,7 @@ public class ReconnectingState : InputStateBase
     {
         // Store screen position for AutoPan edge detection and snap target calculation
         var screenPos = GetScreenPosition(context, e);
-        
+
         // Get canvas position for edge visual and hit testing
         _currentEndPoint = GetCanvasPosition(context, e);
 
@@ -122,12 +122,12 @@ public class ReconnectingState : InputStateBase
             }
         }
 
-        // Try to find a snap target (uses screen coordinates for distance calculation)
-        _snappedTarget = FindSnapTarget(context, screenPos);
+        // Try to find a snap target (uses canvas coordinates for distance calculation)
+        _snappedTarget = FindSnapTarget(context, _currentEndPoint);
 
         // Update the edge visual to follow the cursor (or snap to target)
         UpdateEdgeVisual(context);
-        
+
         // Update port validation visual (uses canvas coordinates for hit testing)
         UpdatePortValidationVisual(context, _currentEndPoint);
 
@@ -149,27 +149,50 @@ public class ReconnectingState : InputStateBase
 
         // Use canvas coordinates for hit testing
         var canvasPoint = GetCanvasPosition(context, e);
-        var hitElement = HitTestCanvas(context, canvasPoint);
+        var screenPoint = GetScreenPosition(context, e);
+
+        Console.WriteLine($"[ReconnectingState.Released] screenPoint={screenPoint}, canvasPoint={canvasPoint}");
+        Console.WriteLine($"[ReconnectingState.Released] Viewport: Zoom={context.Viewport.Zoom}, Offset=({context.Viewport.OffsetX}, {context.Viewport.OffsetY})");
+        Console.WriteLine($"[ReconnectingState.Released] _draggingTarget={_draggingTarget} (true=need input port, false=need output port)");
+
+        // Use HitTestForPort which skips edge paths and markers that might block the port
+        var hitElement = HitTestForPort(context, canvasPoint);
+        Console.WriteLine($"[ReconnectingState.Released] HitTestForPort result: {hitElement?.GetType().Name ?? "null"}, Tag={hitElement?.Tag}");
+
         if (hitElement is Control targetPortVisual &&
             targetPortVisual.Tag is (Node tn, Port tp, bool isOutput))
         {
+            Console.WriteLine($"[ReconnectingState.Released] Hit port: Node={tn.Id}, Port={tp.Id}, isOutput={isOutput}");
             // Verify it's the correct port type
             if (_draggingTarget && !isOutput) // Need input port
             {
+                Console.WriteLine($"[ReconnectingState.Released] Accepted: Need input, got input");
                 targetNode = tn;
                 targetPort = tp;
             }
             else if (!_draggingTarget && isOutput) // Need output port
             {
+                Console.WriteLine($"[ReconnectingState.Released] Accepted: Need output, got output");
                 targetNode = tn;
                 targetPort = tp;
+            }
+            else
+            {
+                Console.WriteLine($"[ReconnectingState.Released] Rejected: Port type mismatch");
             }
         }
         else if (_snappedTarget.HasValue)
         {
+            Console.WriteLine($"[ReconnectingState.Released] Using snap target: Node={_snappedTarget.Value.node.Id}, Port={_snappedTarget.Value.port.Id}");
             targetNode = _snappedTarget.Value.node;
             targetPort = _snappedTarget.Value.port;
         }
+        else
+        {
+            Console.WriteLine($"[ReconnectingState.Released] No hit and no snap target");
+        }
+
+        Console.WriteLine($"[ReconnectingState.Released] Final target: Node={targetNode?.Id ?? "null"}, Port={targetPort?.Id ?? "null"}");
 
         // Determine what to do
         if (targetNode != null && targetPort != null && targetNode.IsConnectable)
@@ -211,6 +234,7 @@ public class ReconnectingState : InputStateBase
             // Style as a connection in progress (dashed, slightly transparent)
             visiblePath.StrokeDashArray = [5, 3];
             visiblePath.Opacity = 0.8;
+            visiblePath.IsHitTestVisible = false; // Don't block hit testing on ports underneath
         }
     }
 
@@ -286,6 +310,7 @@ public class ReconnectingState : InputStateBase
             // Reset styling
             visiblePath.StrokeDashArray = null;
             visiblePath.Opacity = 1.0;
+            visiblePath.IsHitTestVisible = true; // Restore hit testing
         }
 
         // Show markers again
@@ -299,7 +324,7 @@ public class ReconnectingState : InputStateBase
         }
     }
 
-    private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint screenPoint)
+    private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint canvasPoint)
     {
         var graph = context.Graph;
         var settings = context.Settings;
@@ -308,11 +333,13 @@ public class ReconnectingState : InputStateBase
             return null;
 
         var snapDistance = settings.ConnectionSnapDistance;
-        var canvasPoint = context.ScreenToCanvas(screenPoint);
         var zoom = context.Viewport.Zoom;
 
-        // OPTIMIZATION: Convert snap distance to canvas coordinates for early rejection
-        var canvasSnapDistance = (snapDistance / zoom) + settings.NodeWidth;
+        // Convert snap distance to canvas coordinates (screen pixels / zoom = canvas units)
+        var canvasSnapDistance = snapDistance / zoom;
+
+        // For early rejection, add node width to allow for ports on node edges
+        var earlyRejectDistance = canvasSnapDistance + settings.NodeWidth;
 
         (Node node, Port port, bool isOutput)? bestTarget = null;
         double bestDistance = double.MaxValue;
@@ -336,7 +363,7 @@ public class ReconnectingState : InputStateBase
             var canvasDy = nodeCenterY - canvasPoint.Y;
             var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
 
-            if (canvasDistSq > canvasSnapDistance * canvasSnapDistance)
+            if (canvasDistSq > earlyRejectDistance * earlyRejectDistance)
                 continue;
 
             // Look at the correct port type based on which end we're dragging
@@ -345,13 +372,15 @@ public class ReconnectingState : InputStateBase
 
             foreach (var port in portsToCheck)
             {
-                var portScreenPos = context.GraphRenderer.GetPortScreenPosition(node, port, isOutput);
+                // Get the port's canvas position for distance calculation
+                var portCanvasPos = context.GraphRenderer.GetPortCanvasPosition(node, port, isOutput);
 
-                var dx = portScreenPos.X - screenPoint.X;
-                var dy = portScreenPos.Y - screenPoint.Y;
+                // Calculate distance in canvas coordinates
+                var dx = portCanvasPos.X - canvasPoint.X;
+                var dy = portCanvasPos.Y - canvasPoint.Y;
                 var distance = Math.Sqrt(dx * dx + dy * dy);
 
-                if (distance < snapDistance && distance < bestDistance)
+                if (distance < canvasSnapDistance && distance < bestDistance)
                 {
                     if (IsConnectionValid(context, node, port))
                     {
@@ -372,7 +401,8 @@ public class ReconnectingState : InputStateBase
     /// <param name="canvasPoint">The cursor position in canvas coordinates.</param>
     private void UpdatePortValidationVisual(InputStateContext context, AvaloniaPoint canvasPoint)
     {
-        var hitElement = HitTestCanvas(context, canvasPoint);
+        // Use HitTestForPort which skips edge paths and markers
+        var hitElement = HitTestForPort(context, canvasPoint);
         Control? targetPortVisual = null;
         Node? targetNode = null;
         Port? targetPort = null;

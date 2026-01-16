@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.VisualTree;
+using FlowGraph.Core;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Input;
@@ -10,11 +12,11 @@ namespace FlowGraph.Avalonia.Input;
 public abstract class InputStateBase : IInputState
 {
     public abstract string Name { get; }
-    
+
     public virtual bool IsModal => false;
 
     public virtual void Enter(InputStateContext context) { }
-    
+
     public virtual void Exit(InputStateContext context) { }
 
     public virtual StateTransitionResult HandlePointerPressed(InputStateContext context, PointerPressedEventArgs e, Control? source)
@@ -64,6 +66,35 @@ public abstract class InputStateBase : IInputState
     /// </summary>
     protected static IInputElement? HitTestCanvas(InputStateContext context, AvaloniaPoint canvasPosition)
         => context.MainCanvas?.InputHitTest(canvasPosition);
+
+    /// <summary>
+    /// Performs hit testing on the main canvas specifically for finding ports.
+    /// Skips edge paths and markers that might be blocking the port.
+    /// The position must be in canvas coordinates.
+    /// </summary>
+    protected static Control? HitTestForPort(InputStateContext context, AvaloniaPoint canvasPosition)
+    {
+        if (context.MainCanvas == null) return null;
+
+        // Get all elements at this position using GetVisualsAt
+        var visualsAtPoint = context.MainCanvas.GetVisualsAt(canvasPosition);
+
+        foreach (var visual in visualsAtPoint)
+        {
+            if (visual is Control control)
+            {
+                // Check if this is a port (Ellipse with port Tag)
+                if (control.Tag is (Node, Port, bool))
+                {
+                    return control;
+                }
+            }
+        }
+
+        // Fallback to regular hit test
+        var hitElement = context.MainCanvas.InputHitTest(canvasPosition);
+        return hitElement as Control;
+    }
 
     /// <summary>
     /// Captures the pointer to the specified element.
