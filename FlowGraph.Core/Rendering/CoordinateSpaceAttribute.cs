@@ -10,14 +10,14 @@ public enum CoordinateSpace
     /// Node positions and graph geometry use this space.
     /// </summary>
     Canvas,
-    
+
     /// <summary>
     /// Viewport coordinates - positions within the visible viewport window.
     /// The viewport origin (0,0) is the top-left of the visible canvas area.
     /// These coordinates change as the user zooms and pans.
     /// </summary>
     Viewport,
-    
+
     /// <summary>
     /// Screen coordinates - pixel positions after zoom/pan transforms.
     /// Pointer events and direct rendering use this space.
@@ -29,7 +29,7 @@ public enum CoordinateSpace
     /// </remarks>
     [Obsolete("Use Viewport instead. 'Screen' was ambiguous - could mean viewport or control coordinates.")]
     Screen,
-    
+
     /// <summary>
     /// Local coordinates - relative to a parent element's origin.
     /// Port positions relative to their node use this space.
@@ -52,7 +52,7 @@ public enum CoordinateSpace
 /// Point ScreenToCanvas(Point screenPoint);
 /// </code>
 /// </example>
-[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | 
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property |
                 AttributeTargets.ReturnValue | AttributeTargets.Method)]
 public class CoordinateSpaceAttribute : Attribute
 {
@@ -60,7 +60,7 @@ public class CoordinateSpaceAttribute : Attribute
     /// The coordinate space this element operates in.
     /// </summary>
     public CoordinateSpace Space { get; }
-    
+
     /// <summary>
     /// Creates a new CoordinateSpaceAttribute with the specified space.
     /// </summary>

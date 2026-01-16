@@ -93,10 +93,10 @@ public partial class FlowCanvas
         else
         {
             // Get position relative to the canvas (not rootPanel) for hit testing
-            var canvasPos = _rootPanel != null && _mainCanvas != null 
-                ? e.GetPosition(_mainCanvas) 
+            var canvasPos = _rootPanel != null && _mainCanvas != null
+                ? e.GetPosition(_mainCanvas)
                 : screenPos;
-            
+
             var rawHit = _mainCanvas?.InputHitTest(canvasPos);
             hitElement = rawHit as Control;
 
@@ -133,11 +133,11 @@ public partial class FlowCanvas
                 var current = rawHit as Control;
                 int depth = 0;
                 bool foundValidTarget = false;
-                
+
                 while (current != null && depth < 20)
                 {
                     var tag = current.Tag;
-                    
+
                     // Check if this is a valid target
                     if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
                         tag is Edge || // Edge
@@ -149,12 +149,12 @@ public partial class FlowCanvas
                         Debug.WriteLine($"[Input]   Found valid target at depth {depth}: {current.GetType().Name}, Tag={GetTagDescription(current)}");
                         break;
                     }
-                    
+
                     Debug.WriteLine($"[Input]   Parent[{depth}]: {current.GetType().Name}, Tag={GetTagDescription(current)}");
                     current = current.Parent as Control;
                     depth++;
                 }
-                
+
                 // If we didn't find a valid target, treat as canvas click (set to null)
                 if (!foundValidTarget)
                 {
@@ -259,13 +259,13 @@ public partial class FlowCanvas
                     }
                 }
             }
-            
+
             // Update throttle timestamp after hover test
             _lastHoverHitTestTicks = currentTicks;
         }
 
         _inputStateMachine.HandlePointerMoved(e);
-        
+
         sw.Stop();
         _pointerMoveCount++;
         _totalPointerMoveMs += sw.ElapsedMilliseconds;
@@ -307,7 +307,7 @@ public partial class FlowCanvas
         {
             var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(control.Tag);
             if (node == null) return;
-            
+
             var point = e.GetCurrentPoint(control);
 
             if (point.Properties.IsRightButtonPressed)
@@ -526,8 +526,8 @@ public partial class FlowCanvas
             }
             else
             {
-                var canvasPosForHit = _rootPanel != null && _mainCanvas != null 
-                    ? e.GetPosition(_mainCanvas) 
+                var canvasPosForHit = _rootPanel != null && _mainCanvas != null
+                    ? e.GetPosition(_mainCanvas)
                     : screenPos;
                 hitElement = _mainCanvas?.InputHitTest(canvasPosForHit) as Control;
             }
@@ -572,11 +572,11 @@ public partial class FlowCanvas
         if (element == null) return "null";
         var control = element as Control;
         if (control?.Tag == null) return "no-tag";
-        
+
         // Check for Node (direct or in dictionary)
         var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(control.Tag);
         if (node != null) return $"Node({node.Id})";
-        
+
         if (control.Tag is Edge e) return $"Edge({e.Id})";
         if (control.Tag is Dictionary<string, object> dict) return $"Dict({dict.Count} keys)";
         return control.Tag.GetType().Name;

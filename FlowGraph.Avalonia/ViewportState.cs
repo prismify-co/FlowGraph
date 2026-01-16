@@ -252,9 +252,9 @@ public class ViewportState : IViewportState
     {
         return new CorePoint(canvasDeltaX * Zoom, canvasDeltaY * Zoom);
     }
-    
+
     #region Obsolete methods for backward compatibility
-    
+
     /// <summary>
     /// Transforms a screen point to canvas coordinates.
     /// </summary>
@@ -266,7 +266,7 @@ public class ViewportState : IViewportState
     /// </summary>
     [Obsolete("Use CanvasToViewport instead.")]
     public Point CanvasToScreen(Point canvasPoint) => CanvasToViewport(canvasPoint);
-    
+
     /// <inheritdoc />
     [Obsolete("Use ViewportToCanvasDelta instead.")]
     public CorePoint ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
@@ -276,7 +276,7 @@ public class ViewportState : IViewportState
     [Obsolete("Use CanvasToViewportDelta instead.")]
     public CorePoint CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
         => CanvasToViewportDelta(canvasDeltaX, canvasDeltaY);
-    
+
     #endregion
 
     /// <summary>

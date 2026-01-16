@@ -749,7 +749,7 @@ public class NodeVisualManager
         var canvasPos = _model.GetPortPosition(node, port, isOutput);
         return _renderContext.CanvasToViewport(canvasPos.X, canvasPos.Y);
     }
-    
+
     /// <summary>
     /// Gets the screen position of a port using GraphRenderModel.
     /// </summary>

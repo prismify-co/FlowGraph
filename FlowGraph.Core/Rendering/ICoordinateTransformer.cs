@@ -51,17 +51,17 @@ public interface ICoordinateTransformer
     /// The current zoom level (1.0 = 100%, 2.0 = 200%, 0.5 = 50%).
     /// </summary>
     double Zoom { get; }
-    
+
     /// <summary>
     /// The X component of the current pan offset in viewport coordinates.
     /// </summary>
     double OffsetX { get; }
-    
+
     /// <summary>
     /// The Y component of the current pan offset in viewport coordinates.
     /// </summary>
     double OffsetY { get; }
-    
+
     /// <summary>
     /// Transforms a point from viewport space to canvas space.
     /// 
@@ -84,9 +84,9 @@ public interface ICoordinateTransformer
     /// <returns>The equivalent point in canvas coordinates.</returns>
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     Point ViewportToCanvas(
-        [CoordinateSpace(CoordinateSpace.Viewport)] double viewportX, 
+        [CoordinateSpace(CoordinateSpace.Viewport)] double viewportX,
         [CoordinateSpace(CoordinateSpace.Viewport)] double viewportY);
-    
+
     /// <summary>
     /// Transforms a point from canvas space to viewport space.
     /// 
@@ -110,9 +110,9 @@ public interface ICoordinateTransformer
     /// <returns>The equivalent point in viewport coordinates.</returns>
     [return: CoordinateSpace(CoordinateSpace.Viewport)]
     Point CanvasToViewport(
-        [CoordinateSpace(CoordinateSpace.Canvas)] double canvasX, 
+        [CoordinateSpace(CoordinateSpace.Canvas)] double canvasX,
         [CoordinateSpace(CoordinateSpace.Canvas)] double canvasY);
-    
+
     /// <summary>
     /// Transforms a delta/vector from viewport space to canvas space.
     /// Unlike point transforms, this only applies zoom (not offset).
@@ -130,7 +130,7 @@ public interface ICoordinateTransformer
     /// <param name="viewportDeltaY">Y delta in viewport space.</param>
     /// <returns>The equivalent delta in canvas coordinates.</returns>
     Point ViewportToCanvasDelta(double viewportDeltaX, double viewportDeltaY);
-    
+
     /// <summary>
     /// Transforms a delta/vector from canvas space to viewport space.
     /// Unlike point transforms, this only applies zoom (not offset).
@@ -141,9 +141,9 @@ public interface ICoordinateTransformer
     /// <param name="canvasDeltaY">Y delta in canvas space.</param>
     /// <returns>The equivalent delta in viewport coordinates.</returns>
     Point CanvasToViewportDelta(double canvasDeltaX, double canvasDeltaY);
-    
+
     #region Obsolete methods for backward compatibility
-    
+
     /// <summary>
     /// Transforms a point from screen space to canvas space.
     /// </summary>
@@ -154,10 +154,10 @@ public interface ICoordinateTransformer
     [Obsolete("Use ViewportToCanvas instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     Point ScreenToCanvas(
-        [CoordinateSpace(CoordinateSpace.Screen)] double screenX, 
+        [CoordinateSpace(CoordinateSpace.Screen)] double screenX,
         [CoordinateSpace(CoordinateSpace.Screen)] double screenY)
         => ViewportToCanvas(screenX, screenY);
-    
+
     /// <summary>
     /// Transforms a point from canvas space to screen space.
     /// </summary>
@@ -167,24 +167,24 @@ public interface ICoordinateTransformer
     [Obsolete("Use CanvasToViewport instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
     [return: CoordinateSpace(CoordinateSpace.Screen)]
     Point CanvasToScreen(
-        [CoordinateSpace(CoordinateSpace.Canvas)] double canvasX, 
+        [CoordinateSpace(CoordinateSpace.Canvas)] double canvasX,
         [CoordinateSpace(CoordinateSpace.Canvas)] double canvasY)
         => CanvasToViewport(canvasX, canvasY);
-    
+
     /// <summary>
     /// Transforms a delta/vector from screen space to canvas space.
     /// </summary>
     [Obsolete("Use ViewportToCanvasDelta instead. 'Screen' terminology was ambiguous.")]
     Point ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
         => ViewportToCanvasDelta(screenDeltaX, screenDeltaY);
-    
+
     /// <summary>
     /// Transforms a delta/vector from canvas space to screen space.
     /// </summary>
     [Obsolete("Use CanvasToViewportDelta instead. 'Screen' terminology was ambiguous.")]
     Point CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
         => CanvasToViewportDelta(canvasDeltaX, canvasDeltaY);
-    
+
     #endregion
 }
 
@@ -198,95 +198,95 @@ public static class CoordinateTransformerExtensions
     /// </summary>
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     public static Point ViewportToCanvas(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         [CoordinateSpace(CoordinateSpace.Viewport)] Point viewportPoint)
     {
         return transformer.ViewportToCanvas(viewportPoint.X, viewportPoint.Y);
     }
-    
+
     /// <summary>
     /// Transforms a point from canvas space to viewport space.
     /// </summary>
     [return: CoordinateSpace(CoordinateSpace.Viewport)]
     public static Point CanvasToViewport(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         [CoordinateSpace(CoordinateSpace.Canvas)] Point canvasPoint)
     {
         return transformer.CanvasToViewport(canvasPoint.X, canvasPoint.Y);
     }
-    
+
     /// <summary>
     /// Transforms a rectangle from canvas space to viewport space.
     /// </summary>
     [return: CoordinateSpace(CoordinateSpace.Viewport)]
     public static Rect CanvasToViewport(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         [CoordinateSpace(CoordinateSpace.Canvas)] Rect canvasRect)
     {
         var topLeft = transformer.CanvasToViewport(canvasRect.X, canvasRect.Y);
         var size = transformer.CanvasToViewportDelta(canvasRect.Width, canvasRect.Height);
         return new Rect(topLeft.X, topLeft.Y, size.X, size.Y);
     }
-    
+
     /// <summary>
     /// Transforms a rectangle from viewport space to canvas space.
     /// </summary>
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     public static Rect ViewportToCanvas(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         [CoordinateSpace(CoordinateSpace.Viewport)] Rect viewportRect)
     {
         var topLeft = transformer.ViewportToCanvas(viewportRect.X, viewportRect.Y);
         var size = transformer.ViewportToCanvasDelta(viewportRect.Width, viewportRect.Height);
         return new Rect(topLeft.X, topLeft.Y, size.X, size.Y);
     }
-    
+
     #region Obsolete extension methods
-    
+
     /// <summary>
     /// Transforms a point from screen space to canvas space.
     /// </summary>
     [Obsolete("Use ViewportToCanvas instead.")]
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     public static Point ScreenToCanvas(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         Point screenPoint)
     {
         return transformer.ViewportToCanvas(screenPoint.X, screenPoint.Y);
     }
-    
+
     /// <summary>
     /// Transforms a point from canvas space to screen space.
     /// </summary>
     [Obsolete("Use CanvasToViewport instead.")]
     public static Point CanvasToScreen(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         Point canvasPoint)
     {
         return transformer.CanvasToViewport(canvasPoint.X, canvasPoint.Y);
     }
-    
+
     /// <summary>
     /// Transforms a rectangle from canvas space to screen space.
     /// </summary>
     [Obsolete("Use CanvasToViewport instead.")]
     public static Rect CanvasToScreen(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         Rect canvasRect)
     {
         return transformer.CanvasToViewport(canvasRect);
     }
-    
+
     /// <summary>
     /// Transforms a rectangle from screen space to canvas space.
     /// </summary>
     [Obsolete("Use ViewportToCanvas instead.")]
     public static Rect ScreenToCanvas(
-        this ICoordinateTransformer transformer, 
+        this ICoordinateTransformer transformer,
         Rect screenRect)
     {
         return transformer.ViewportToCanvas(screenRect);
     }
-    
+
     #endregion
 }
