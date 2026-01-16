@@ -150,7 +150,9 @@ public partial class EdgeVisualManager
       pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type);
     }
 
-    var strokeBrush = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
+    // Get styling from EdgeStyle or defaults
+    var strokeBrush = GetEdgeStrokeBrush(edge, theme, edge.IsSelected);
+    var strokeWidth = GetEdgeStrokeWidth(edge, edge.IsSelected);
     var settings = _renderContext.Settings;
 
     // Create visible edge path - use logical (unscaled) dimensions
@@ -159,10 +161,13 @@ public partial class EdgeVisualManager
     {
       Data = pathGeometry,
       Stroke = strokeBrush,
-      StrokeThickness = edge.IsSelected ? settings.EdgeSelectedStrokeThickness : settings.EdgeStrokeThickness,
+      StrokeThickness = strokeWidth,
       StrokeDashArray = null,
       IsHitTestVisible = false
     };
+
+    // Apply full edge style (dash, glow, opacity)
+    ApplyEdgeStyle(visiblePath, edge, theme, edge.IsSelected);
 
     // Create invisible hit area path (wider, transparent stroke for easier clicking)
     // Use logical dimensions - MatrixTransform scales the hit area appropriately
@@ -265,10 +270,8 @@ public partial class EdgeVisualManager
 
     if (_edgeVisiblePaths.TryGetValue(edge.Id, out var visiblePath))
     {
-      // Use logical (unscaled) dimensions - MatrixTransform handles zoom
-      var settings = _renderContext.Settings;
-      visiblePath.Stroke = edge.IsSelected ? theme.NodeSelectedBorder : theme.EdgeStroke;
-      visiblePath.StrokeThickness = edge.IsSelected ? settings.EdgeSelectedStrokeThickness : settings.EdgeStrokeThickness;
+      // Apply full edge style including custom colors, dash, glow
+      ApplyEdgeStyle(visiblePath, edge, theme, edge.IsSelected);
     }
   }
 

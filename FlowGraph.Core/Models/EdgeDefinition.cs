@@ -99,6 +99,15 @@ public sealed record EdgeDefinition
     public EdgeRoutingMode RoutingMode { get; init; } = EdgeRoutingMode.Auto;
 
     /// <summary>
+    /// Visual style for the edge including colors, dash patterns, and effects.
+    /// </summary>
+    /// <remarks>
+    /// When null, the edge uses theme defaults. Set to customize individual edges
+    /// or use preset styles like <see cref="EdgeStyle.Success"/> or <see cref="EdgeStyle.Error"/>.
+    /// </remarks>
+    public EdgeStyle? Style { get; init; }
+
+    /// <summary>
     /// Gets the effective routing mode, considering both <see cref="RoutingMode"/> 
     /// and legacy <see cref="AutoRoute"/> property.
     /// </summary>
@@ -156,4 +165,10 @@ public sealed record EdgeDefinition
     /// </summary>
     public EdgeDefinition WithRoutingMode(EdgeRoutingMode mode) =>
         this with { RoutingMode = mode };
+
+    /// <summary>
+    /// Creates a new definition with a different visual style.
+    /// </summary>
+    public EdgeDefinition WithStyle(EdgeStyle? style) =>
+        this with { Style = style };
 }

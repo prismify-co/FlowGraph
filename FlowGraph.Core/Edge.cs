@@ -195,6 +195,15 @@ public class Edge : ICanvasElement
         set => Definition = Definition with { AutoRoute = value };
     }
 
+    /// <summary>
+    /// Visual style for the edge including colors, dash patterns, and effects.
+    /// </summary>
+    public EdgeStyle? Style
+    {
+        get => Definition.Style;
+        set => Definition = Definition with { Style = value };
+    }
+
     #endregion
 
     #region Pass-through Properties (State)
