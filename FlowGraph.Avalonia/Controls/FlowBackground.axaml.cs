@@ -23,7 +23,13 @@ public enum BackgroundVariant
     /// <summary>
     /// Grid of crossing lines (+ pattern at each intersection).
     /// </summary>
-    Cross
+    Cross,
+
+    /// <summary>
+    /// Hierarchical grid with major and minor lines.
+    /// Major lines appear every N minor lines (configurable via Gap).
+    /// </summary>
+    HierarchicalGrid
 }
 
 /// <summary>
@@ -261,6 +267,10 @@ internal class BackgroundDrawingControl : Control
             case BackgroundVariant.Cross:
                 RenderCross(context, pen, startX, startY, endX, endY, gap, size, zoom, offsetX, offsetY, bounds);
                 break;
+
+            case BackgroundVariant.HierarchicalGrid:
+                RenderHierarchicalGrid(context, brush, pen, startX, startY, endX, endY, gap, zoom, offsetX, offsetY, bounds);
+                break;
         }
     }
 
@@ -347,6 +357,55 @@ internal class BackgroundDrawingControl : Control
                     new Point(screenX, screenY - armLength),
                     new Point(screenX, screenY + armLength));
             }
+        }
+    }
+
+    private void RenderHierarchicalGrid(
+        DrawingContext context,
+        IBrush brush,
+        Pen pen,
+        double startX, double startY, double endX, double endY,
+        double gap, double zoom, double offsetX, double offsetY,
+        Rect bounds)
+    {
+        // Major lines appear every 5 minor lines
+        const int majorInterval = 5;
+        var majorGap = gap * majorInterval;
+
+        // Pens for different line weights
+        var minorPen = new Pen(brush, pen.Thickness * 0.5, lineCap: PenLineCap.Flat);
+        var majorPen = new Pen(brush, pen.Thickness * 1.5, lineCap: PenLineCap.Flat);
+
+        // Calculate major grid start positions (aligned to major interval)
+        var majorStartX = Math.Floor(startX / majorGap) * majorGap;
+        var majorStartY = Math.Floor(startY / majorGap) * majorGap;
+
+        // Draw minor vertical lines
+        for (var x = startX; x <= endX; x += gap)
+        {
+            var screenX = x * zoom + offsetX;
+            if (screenX < 0 || screenX > bounds.Width)
+                continue;
+
+            // Check if this is a major line
+            var isMajor = Math.Abs(x % majorGap) < 0.01;
+            var currentPen = isMajor ? majorPen : minorPen;
+
+            context.DrawLine(currentPen, new Point(screenX, 0), new Point(screenX, bounds.Height));
+        }
+
+        // Draw minor horizontal lines
+        for (var y = startY; y <= endY; y += gap)
+        {
+            var screenY = y * zoom + offsetY;
+            if (screenY < 0 || screenY > bounds.Height)
+                continue;
+
+            // Check if this is a major line
+            var isMajor = Math.Abs(y % majorGap) < 0.01;
+            var currentPen = isMajor ? majorPen : minorPen;
+
+            context.DrawLine(currentPen, new Point(0, screenY), new Point(bounds.Width, screenY));
         }
     }
 }

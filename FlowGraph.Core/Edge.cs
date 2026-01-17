@@ -204,6 +204,19 @@ public class Edge : ICanvasElement
         set => Definition = Definition with { Style = value };
     }
 
+    /// <summary>
+    /// Whether this edge is locked, preventing deletion and reconnection via UI.
+    /// </summary>
+    /// <remarks>
+    /// When true, the edge cannot be deleted or reconnected through user interaction.
+    /// Programmatic changes are still allowed.
+    /// </remarks>
+    public bool IsLocked
+    {
+        get => Definition.IsLocked;
+        set => Definition = Definition with { IsLocked = value };
+    }
+
     #endregion
 
     #region Pass-through Properties (State)

@@ -99,6 +99,16 @@ public sealed record EdgeDefinition
     public EdgeRoutingMode RoutingMode { get; init; } = EdgeRoutingMode.Auto;
 
     /// <summary>
+    /// Whether this edge is locked, preventing deletion and reconnection via UI.
+    /// </summary>
+    /// <remarks>
+    /// When true, the edge cannot be deleted or reconnected through user interaction.
+    /// Programmatic changes are still allowed. Useful for critical connections
+    /// that should not be accidentally modified.
+    /// </remarks>
+    public bool IsLocked { get; init; }
+
+    /// <summary>
     /// Visual style for the edge including colors, dash patterns, and effects.
     /// </summary>
     /// <remarks>

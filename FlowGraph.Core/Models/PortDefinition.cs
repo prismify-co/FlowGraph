@@ -44,6 +44,15 @@ public sealed record PortDefinition
   public bool IsRequired { get; init; }
 
   /// <summary>
+  /// Optional tooltip text shown when hovering over the port.
+  /// </summary>
+  /// <remarks>
+  /// Provides additional context about the port's purpose, expected data type,
+  /// or usage guidelines. Rendered as a native tooltip on hover.
+  /// </remarks>
+  public string? Tooltip { get; init; }
+
+  /// <summary>
   /// Creates a PortDefinition from a legacy Port record.
   /// </summary>
   public static PortDefinition FromPort(Port port) => new()
