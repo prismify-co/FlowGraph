@@ -22,12 +22,12 @@ A comprehensive refactor to prevent coordinate space confusion at compile time.
 
 The following methods are deprecated and will be removed in a future version:
 
-| Deprecated Method | Replacement |
-|---|---|
-| `FlowCanvas.GetCanvasPosition(e)` | `GetTypedCanvasPosition(e)` |
-| `FlowCanvas.GetViewportPosition(e)` | `GetTypedViewportPosition(e)` |
-| `ViewportState.ScreenToCanvas()` | `ViewportState.ViewportToCanvas()` |
-| `ViewportState.CanvasToScreen()` | `ViewportState.CanvasToViewport()` |
+| Deprecated Method                   | Replacement                        |
+| ----------------------------------- | ---------------------------------- |
+| `FlowCanvas.GetCanvasPosition(e)`   | `GetTypedCanvasPosition(e)`        |
+| `FlowCanvas.GetViewportPosition(e)` | `GetTypedViewportPosition(e)`      |
+| `ViewportState.ScreenToCanvas()`    | `ViewportState.ViewportToCanvas()` |
+| `ViewportState.CanvasToScreen()`    | `ViewportState.CanvasToViewport()` |
 
 ### Internal Improvements
 
@@ -84,13 +84,11 @@ The following methods are deprecated and will be removed in a future version:
 ### New Features
 
 - **Extensibility Interfaces**
-
   - `ICollisionProvider` - Interface for custom collision detection implementations
   - `ISnapProvider` - Interface for single-authority drag architecture
   - `ResizableVisual` pattern for unified render service
 
 - **Shape System Enhancements**
-
   - Shape selection and hit-testing support
   - Shape serialization with full round-trip support
 
@@ -125,7 +123,6 @@ The following methods are deprecated and will be removed in a future version:
 ### New Features
 
 - **Edge Routing Enhancements**
-
   - New `EdgeRoutingMode` enum for manual waypoint editing support (Normal, Manual, Guided)
   - Constraint support for `SmartBezierRouter` Guided mode
   - Direction-aware edge label placement with perpendicular offsets
@@ -174,7 +171,6 @@ The following methods are deprecated and will be removed in a future version:
 ### New Features
 
 - **Unified Elements Collection** - Single source of truth for all canvas elements
-
   - `Graph.Elements` property provides access to all nodes, edges, and future element types
   - `Graph.Elements.Nodes` returns `IEnumerable<Node>` for type-safe node access
   - `Graph.Elements.Edges` returns `IEnumerable<Edge>` for type-safe edge access
@@ -231,7 +227,6 @@ var node = graph.Elements.Nodes.FirstOrDefault(n => n.Id == "myNode");
 ### New Features
 
 - **Custom Edge Renderers** - Full extensibility API for custom edge visuals
-
   - `IEdgeRenderer` interface for creating custom edge representations (sequence messages, swimlane flows, etc.)
   - `EdgeRendererRegistry` with wildcard pattern matching (e.g., `sequence-*` matches `sequence-message`)
   - `EdgeRenderContext` provides source/target nodes, coordinates, theme, and scale
