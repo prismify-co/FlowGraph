@@ -16,8 +16,10 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 - **Pan & Zoom** - Mouse wheel zoom, middle-click pan, configurable drag behavior
 - **Node System** - Draggable, selectable nodes with custom renderers
 - **Port System** - Input/output ports with position, type, and connection limits
+- **Port Tooltips** - Hover over ports to see descriptive tooltips
 - **Edge Types** - Bezier, Straight, Step, SmoothStep curves with arrow markers
 - **Edge Labels** - Positioned labels with anchor points (Start, Center, End) and offsets
+- **Edge Locking** - Lock edges to prevent modification
 - **Connection Validation** - Extensible validation with built-in validators (type matching, no cycles, no duplicates)
 - **Undo/Redo** - Full command history with keyboard shortcuts
 - **Clipboard** - Copy, cut, paste, duplicate operations
@@ -28,7 +30,7 @@ A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https:
 
 - **FlowMinimap** - Overview with viewport navigation
 - **FlowControls** - Zoom in/out/fit buttons panel
-- **FlowBackground** - Dots, lines, or cross patterns
+- **FlowBackground** - Dots, lines, cross, or hierarchical grid patterns
 - **NodeToolbar** - Floating toolbar on node selection
 - **FlowDiagnostics** - Debug panel for development
 - **FlowPanel** - Positioned overlay panels (9 positions)

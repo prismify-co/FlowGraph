@@ -1,3 +1,38 @@
+## FlowGraph v0.7.0
+
+### New Features
+
+- **Edge Locking** - Edges can now be locked to prevent modification
+- **Port Tooltips** - Hover over ports to see descriptive tooltips
+- **Hierarchical Grid Background** - New grid pattern option with major/minor gridlines
+- **Configurable FitToView Padding** - `FlowCanvasSettings.FitToViewPadding` controls the margin around fitted content
+
+### Bug Fixes
+
+- **FitToView in Direct Rendering Mode** - Fixed FitToView button not updating visuals (only grid dots changed, not nodes)
+- **FitToView with Shapes-Only Graphs** - FitToView and CenterOnGraph now work correctly when graph contains only shapes (no nodes)
+- **FitToView Element Inclusion** - FitToView now includes all elements (nodes, shapes, groups) with proper padding
+- **Cache Invalidation** - Fixed spatial index not updating when node positions change, causing stale hit-test results
+- **Obsolete API Warnings** - Resolved CoordinateSpace.Screen deprecation warnings
+
+### Performance Improvements
+
+- **Render Service Optimization** - `ICanvasRenderService.Invalidate()` now uses O(1) `InvalidateVisual()` instead of O(n) `RenderAll()`
+- **Batched Updates** - Property change handlers now use batched methods (`UpdateNodeAfterMove`, `UpdateNodeAfterResize`) reducing redundant render calls from 3-4× to 1×
+- **Event-Based Cache Invalidation** - Added `PositionChanged` and `BoundsChanged` events for efficient cache invalidation
+
+### Internal Improvements
+
+- Renamed rendering classes for clarity:
+  - `GraphRenderer` → `CanvasElementManager` (it manages elements, doesn't render)
+  - `DirectGraphRenderer` → `DirectCanvasRenderer` (handles all canvas elements, not just graphs)
+  - `IGraphRenderService` → `ICanvasRenderService`
+- New batched API methods:
+  - `ICanvasRenderService.UpdateNodeAfterMove()` - Efficient position change handling
+  - `ICanvasRenderService.UpdateNodeAfterResize()` - Efficient size change handling
+
+---
+
 ## FlowGraph v0.6.0
 
 ### ✨ Major Refactor: Type-Safe Coordinate System
