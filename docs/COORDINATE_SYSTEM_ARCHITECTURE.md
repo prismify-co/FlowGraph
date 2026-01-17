@@ -27,18 +27,22 @@ All visual elements that need dual-mode support have been fixed:
 New type-safe coordinate types have been added to prevent coordinate space confusion at compile time (commit cacb718):
 
 **FlowGraph.Core/Coordinates:**
+
 - `CanvasPoint`, `CanvasVector`, `CanvasRect` - Canvas/graph space coordinates
 - `ViewportPoint`, `ViewportVector`, `ViewportRect` - Screen/viewport space coordinates
 - `ITypedCoordinateTransformer` - Type-safe coordinate conversion interface
 - `TypedCoordinateTransformer` - Default implementation
 
 **FlowGraph.Avalonia/Coordinates:**
+
 - `AvaloniaCoordinateExtensions` - Convert between typed coords and Avalonia types
 
 **FlowGraph.Avalonia/Input:**
+
 - `IInputCoordinates` - Rendering-mode agnostic input coordinate interface
 
 **FlowGraph.Avalonia/Rendering:**
+
 - `IRenderTarget` - Mode-agnostic temporary visual rendering interface
 
 ### Phase 3: Migration to Type-Safe Coordinates 🔲 NOT STARTED
@@ -1092,10 +1096,10 @@ public override StateTransitionResult HandlePointerMoved(InputStateContext conte
 {
     // Get position - works correctly in both rendering modes
     CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
-    
+
     // Use for hit testing, snapping, etc.
     var snapTarget = FindSnapTarget(canvasPos);
-    
+
     // Get viewport position for auto-pan
     ViewportPoint viewportPos = context.Coordinates.GetPointerViewportPosition(e);
     if (viewportPos.IsNearEdge(context.Coordinates.GetViewportBounds(), 30))
@@ -1114,11 +1118,11 @@ The `IRenderTarget` interface (not yet integrated) will simplify temp visual cre
 public override void Enter(InputStateContext context)
 {
     var startCanvas = context.RenderModel.GetPortPosition(sourceNode, sourcePort);
-    
+
     // Create preview - IRenderTarget handles mode differences internally
     _lineHandle = context.RenderTarget.CreateConnectionPreview(
-        startCanvas, startCanvas, 
-        context.Theme.EdgeStroke, 
+        startCanvas, startCanvas,
+        context.Theme.EdgeStroke,
         strokeThickness: 2.0);
 }
 

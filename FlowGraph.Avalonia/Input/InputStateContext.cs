@@ -3,9 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Rendering.ShapeRenderers;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
+using FlowGraph.Core.Coordinates;
 using AvaloniaPoint = Avalonia.Point;
 using AvaloniaRect = Avalonia.Rect;
 
@@ -20,6 +22,10 @@ public class InputStateContext
     private FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
     private readonly Rendering.GraphRenderer _graphRenderer;
+
+    // Type-safe coordinate and rendering interfaces
+    private InputCoordinatesAdapter? _coordinates;
+    private RenderTargetAdapter? _renderTarget;
 
     public InputStateContext(
         FlowCanvasSettings settings,
@@ -47,12 +53,67 @@ public class InputStateContext
     public Rendering.GraphRenderer GraphRenderer => _graphRenderer;
 
     // UI elements - set by the canvas
-    public Panel? RootPanel { get; set; }
-    public Canvas? MainCanvas { get; set; }
+    private Panel? _rootPanel;
+    private Canvas? _mainCanvas;
+    private DirectGraphRenderer? _directRenderer;
+
+    public Panel? RootPanel
+    {
+        get => _rootPanel;
+        set { _rootPanel = value; InvalidateAdapters(); }
+    }
+
+    public Canvas? MainCanvas
+    {
+        get => _mainCanvas;
+        set { _mainCanvas = value; InvalidateAdapters(); }
+    }
+
     public MatrixTransform? ViewportTransform { get; set; }
-    public Rendering.DirectGraphRenderer? DirectRenderer { get; set; }
+
+    public DirectGraphRenderer? DirectRenderer
+    {
+        get => _directRenderer;
+        set { _directRenderer = value; InvalidateAdapters(); }
+    }
+
     public Graph? Graph { get; set; }
-    public Rendering.ThemeResources? Theme { get; set; }
+    public ThemeResources? Theme { get; set; }
+
+    /// <summary>
+    /// Type-safe coordinate helper that abstracts rendering mode differences.
+    /// Use this instead of ViewportToCanvas/CanvasToViewport for new code.
+    /// </summary>
+    public IInputCoordinates Coordinates
+    {
+        get
+        {
+            _coordinates ??= new InputCoordinatesAdapter(_viewport, _rootPanel, _mainCanvas, _directRenderer);
+            return _coordinates;
+        }
+    }
+
+    /// <summary>
+    /// Mode-agnostic render target for creating temporary visuals.
+    /// Handles container selection and coordinate conversion internally.
+    /// </summary>
+    public IRenderTarget RenderTarget
+    {
+        get
+        {
+            _renderTarget ??= new RenderTargetAdapter(_viewport, _rootPanel, _mainCanvas, _directRenderer);
+            return _renderTarget;
+        }
+    }
+
+    /// <summary>
+    /// Invalidates cached adapters when UI elements change.
+    /// </summary>
+    private void InvalidateAdapters()
+    {
+        _coordinates = null;
+        _renderTarget = null;
+    }
 
     /// <summary>
     /// Optional connection validator for validating new connections.
