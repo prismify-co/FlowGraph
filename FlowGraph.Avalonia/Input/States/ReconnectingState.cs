@@ -91,7 +91,7 @@ public class ReconnectingState : InputStateBase
     public void CreateTempLine(InputStateContext context)
     {
         _isDirectRenderingMode = context.DirectRenderer != null;
-        
+
         if (_isDirectRenderingMode && context.RootPanel != null)
         {
             CreateTempLineInternal(context.RootPanel, isDirectMode: true);
@@ -120,13 +120,13 @@ public class ReconnectingState : InputStateBase
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
-        
+
         // Create the temp line overlay for showing the reconnecting edge
         CreateTempLine(context);
 
         // Hide the original edge visual while reconnecting (if it exists in visual tree mode)
         HideOriginalEdgeVisual(context);
-        
+
         // Initial update of the temp line
         UpdateTempLine(context);
     }
@@ -365,7 +365,7 @@ public class ReconnectingState : InputStateBase
             // Direct rendering mode: temp line is in RootPanel (untransformed)
             // Convert canvas coords to viewport coords
             var fixedPointViewport = context.CanvasToViewport(fixedPointCanvas);
-            
+
             AvaloniaPoint movingPointViewport;
             if (_snappedTarget.HasValue)
             {

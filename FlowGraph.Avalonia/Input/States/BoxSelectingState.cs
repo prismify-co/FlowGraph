@@ -46,7 +46,7 @@ public class BoxSelectingState : InputStateBase
         // In Direct Rendering mode, add to RootPanel (untransformed) and use viewport coordinates
         // In Visual Tree mode, add to MainCanvas (transformed) and use canvas coordinates
         _isDirectRenderingMode = context.DirectRenderer != null;
-        
+
         if (_isDirectRenderingMode && context.RootPanel != null)
         {
             _container = context.RootPanel;
@@ -55,7 +55,7 @@ public class BoxSelectingState : InputStateBase
         {
             _container = context.MainCanvas;
         }
-        
+
         _container?.Children.Add(_selectionBox);
         UpdateSelectionBoxVisual();
     }
@@ -98,7 +98,7 @@ public class BoxSelectingState : InputStateBase
     private void UpdateSelectionBoxVisual()
     {
         double left, top, width, height;
-        
+
         if (_isDirectRenderingMode)
         {
             // Direct Rendering mode: container is RootPanel (untransformed)

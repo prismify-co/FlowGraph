@@ -10,16 +10,16 @@ This section documents all visual elements that need dual-mode support and their
 
 ### Status Summary
 
-| Component           | Visual Element             | Current Container            | Current Coords  | Status                              |
-| ------------------- | -------------------------- | ---------------------------- | --------------- | ----------------------------------- |
-| ConnectingState     | Temp connection line       | Mode-aware                   | Mode-aware      | ✅ Fixed (commit 2ea4ec9)           |
-| BoxSelectingState   | Selection rectangle        | Mode-aware                   | Mode-aware      | ✅ Fixed (commit 8b0a63a)           |
-| ReconnectingState   | Temp reconnection line     | Mode-aware                   | Mode-aware      | ✅ Fixed (commit f5b1b1a)           |
-| ResizeHandleManager | Resize handles             | Skipped in Direct mode       | N/A             | ✅ Fixed (commit 06e0387)           |
-| ShapeVisualManager  | Shape overlays             | MainCanvas                   | Canvas          | 🟡 Low Priority (shapes are static) |
-| DraggingState       | None (modifies positions)  | N/A                          | N/A             | ✅ OK                               |
-| ResizingState       | None (modifies dimensions) | N/A                          | N/A             | ✅ OK                               |
-| PanningState        | None (modifies viewport)   | N/A                          | N/A             | ✅ OK                               |
+| Component           | Visual Element             | Current Container      | Current Coords | Status                              |
+| ------------------- | -------------------------- | ---------------------- | -------------- | ----------------------------------- |
+| ConnectingState     | Temp connection line       | Mode-aware             | Mode-aware     | ✅ Fixed (commit 2ea4ec9)           |
+| BoxSelectingState   | Selection rectangle        | Mode-aware             | Mode-aware     | ✅ Fixed (commit 8b0a63a)           |
+| ReconnectingState   | Temp reconnection line     | Mode-aware             | Mode-aware     | ✅ Fixed (commit f5b1b1a)           |
+| ResizeHandleManager | Resize handles             | Skipped in Direct mode | N/A            | ✅ Fixed (commit 06e0387)           |
+| ShapeVisualManager  | Shape overlays             | MainCanvas             | Canvas         | 🟡 Low Priority (shapes are static) |
+| DraggingState       | None (modifies positions)  | N/A                    | N/A            | ✅ OK                               |
+| ResizingState       | None (modifies dimensions) | N/A                    | N/A            | ✅ OK                               |
+| PanningState        | None (modifies viewport)   | N/A                    | N/A            | ✅ OK                               |
 
 ### Completed Fixes
 
@@ -46,7 +46,8 @@ This section documents all visual elements that need dual-mode support and their
 **Location:** [ShapeVisualManager.cs](../FlowGraph.Avalonia/Rendering/ShapeVisualManager.cs)
 
 Shape overlays are added to MainCanvas. In Direct Rendering mode, these may conflict with directly-rendered shapes. However, shapes are typically static background elements and the visual conflict is minimal.
-if (visiblePath == null) return;  // This returns null in Direct Rendering!
+if (visiblePath == null) return; // This returns null in Direct Rendering!
+
 ---
 
 ## Current State Analysis

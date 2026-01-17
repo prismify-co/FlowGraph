@@ -218,7 +218,7 @@ public partial class FlowCanvas
     private void UpdateResizeHandlesForNode(Node node)
     {
         if (_mainCanvas == null || _theme == null) return;
-        
+
         // In Direct Rendering mode, skip visual tree resize handles
         // DirectGraphRenderer draws its own handles and handles hit testing
         if (_useDirectRendering && _directRenderer != null)
