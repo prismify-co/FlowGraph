@@ -35,6 +35,12 @@ public class ConnectingState : InputStateBase
     // Track whether connect start was raised
     private bool _connectStartRaised;
 
+    // Track which container holds the temp line (for cleanup)
+    private Panel? _tempLineContainer;
+
+    // Store viewport position for direct rendering mode temp line
+    private AvaloniaPoint _endPointViewport;
+
     // DEBUG: counter for throttled logging
     private int _debugMoveCount;
 
@@ -76,6 +82,36 @@ public class ConnectingState : InputStateBase
             IsHitTestVisible = false // Don't block hit testing on ports underneath
         };
         canvas.Children.Add(_tempLine);
+        _tempLineContainer = canvas;
+    }
+
+    /// <summary>
+    /// Creates the temporary connection line, using RootPanel for direct rendering mode
+    /// or MainCanvas for visual tree mode.
+    /// </summary>
+    public void CreateTempLine(InputStateContext context)
+    {
+        _tempLine = new AvaloniaPath
+        {
+            Stroke = _theme.EdgeStroke,
+            StrokeThickness = 2,
+            StrokeDashArray = [5, 3],
+            Opacity = 0.7,
+            IsHitTestVisible = false
+        };
+
+        // In direct rendering mode, add to RootPanel (untransformed) and use viewport coords
+        // In visual tree mode, add to MainCanvas (transformed) and use canvas coords
+        if (context.DirectRenderer != null && context.RootPanel != null)
+        {
+            context.RootPanel.Children.Add(_tempLine);
+            _tempLineContainer = context.RootPanel;
+        }
+        else if (context.MainCanvas != null)
+        {
+            context.MainCanvas.Children.Add(_tempLine);
+            _tempLineContainer = context.MainCanvas;
+        }
     }
 
     public override void Enter(InputStateContext context)
@@ -98,18 +134,20 @@ public class ConnectingState : InputStateBase
         // Restore hovered port color
         RestoreHoveredPortColor();
 
-        // Remove temp line
-        if (_tempLine != null && context.MainCanvas != null)
+        // Remove temp line from whichever container it was added to
+        if (_tempLine != null && _tempLineContainer != null)
         {
-            context.MainCanvas.Children.Remove(_tempLine);
+            _tempLineContainer.Children.Remove(_tempLine);
             _tempLine = null;
+            _tempLineContainer = null;
         }
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        // Store screen position for AutoPan edge detection
+        // Store screen position for AutoPan edge detection and direct rendering mode
         var screenPos = GetScreenPosition(context, e);
+        _endPointViewport = screenPos;
 
         // Get canvas position directly - MainCanvas has a transform, and GetPosition(MainCanvas)
         // automatically applies the inverse transform, giving us direct canvas coordinates
@@ -138,12 +176,9 @@ public class ConnectingState : InputStateBase
         // Try to find a snap target (uses canvas coordinates for distance calculation)
         _snappedTarget = FindSnapTarget(context, _endPoint);
 
-        // DEBUG: Log cursor position every 50 moves
-        if (_debugMoveCount++ % 50 == 0)
-        {
-            Console.WriteLine($"[CURSOR] screenPos={screenPos}, canvasPos={_endPoint}, zoom={context.Viewport.Zoom:F2}");
-        }
-
+        // Uncomment for debugging:
+        // if (_debugMoveCount++ % 50 == 0)
+        //     Console.WriteLine($"[CURSOR] screenPos={screenPos}, canvasPos={_endPoint}, zoom={context.Viewport.Zoom:F2}");
         UpdateTempLine(context);
 
         // Update port validation visual (uses canvas coordinates for hit testing)
@@ -242,22 +277,51 @@ public class ConnectingState : InputStateBase
     {
         if (_tempLine == null) return;
 
-        // Use canvas coordinates for path geometry on MainCanvas (which uses MatrixTransform)
-        var startPoint = context.GraphRenderer.GetPortCanvasPosition(_sourceNode, _sourcePort, _fromOutput);
+        // Get canvas coordinates for port positions
+        var startPointCanvas = context.GraphRenderer.GetPortCanvasPosition(_sourceNode, _sourcePort, _fromOutput);
 
-        // If we have a snapped target, draw to that port instead of the cursor
-        AvaloniaPoint endPoint;
-        if (_snappedTarget.HasValue)
+        // In direct rendering mode, temp line is in RootPanel (untransformed)
+        // so we need to convert canvas coords to viewport coords
+        AvaloniaPoint startPoint, endPoint;
+        if (context.DirectRenderer != null)
         {
-            endPoint = context.GraphRenderer.GetPortCanvasPosition(
-                _snappedTarget.Value.node,
-                _snappedTarget.Value.port,
-                _snappedTarget.Value.isOutput);
+            // Start point: convert port position from canvas to viewport
+            startPoint = context.CanvasToViewport(startPointCanvas);
+
+            // End point: use viewport position directly for cursor,
+            // or convert snapped port position from canvas to viewport
+            if (_snappedTarget.HasValue)
+            {
+                var endPointCanvas = context.GraphRenderer.GetPortCanvasPosition(
+                    _snappedTarget.Value.node,
+                    _snappedTarget.Value.port,
+                    _snappedTarget.Value.isOutput);
+                endPoint = context.CanvasToViewport(endPointCanvas);
+            }
+            else
+            {
+                // Use the stored viewport position directly (cursor position in screen coords)
+                endPoint = _endPointViewport;
+            }
         }
         else
         {
-            // _endPoint is already in canvas coordinates (from GetCanvasPosition)
-            endPoint = _endPoint;
+            // In visual tree mode, temp line is in MainCanvas which has the transform
+            // so we use canvas coordinates directly
+            startPoint = startPointCanvas;
+
+            if (_snappedTarget.HasValue)
+            {
+                endPoint = context.GraphRenderer.GetPortCanvasPosition(
+                    _snappedTarget.Value.node,
+                    _snappedTarget.Value.port,
+                    _snappedTarget.Value.isOutput);
+            }
+            else
+            {
+                // _endPoint is already in canvas coordinates (from GetCanvasPosition)
+                endPoint = _endPoint;
+            }
         }
 
         var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_fromOutput);
@@ -286,9 +350,6 @@ public class ConnectingState : InputStateBase
         // Convert snap distance to canvas coordinates (screen pixels / zoom = canvas units)
         var canvasSnapDistance = snapDistance / zoom;
 
-        // DEBUG: Log snap search params
-        Console.WriteLine($"[SNAP-SEARCH] canvasPoint={canvasPoint}, snapDist={snapDistance}, canvasSnapDist={canvasSnapDistance:F1}, zoom={zoom:F2}");
-
         // OPTIMIZATION: For early rejection, add node width to allow for ports on node edges
         var earlyRejectDistance = canvasSnapDistance + settings.NodeWidth;
 
@@ -311,16 +372,10 @@ public class ConnectingState : InputStateBase
             var canvasDy = nodeCenterY - canvasPoint.Y;
             var canvasDistSq = canvasDx * canvasDx + canvasDy * canvasDy;
 
-            // DEBUG: Log distance check for each node
-            Console.WriteLine($"[SNAP-NODE] {node.Id}: center=({nodeCenterX:F1},{nodeCenterY:F1}), canvasDist={Math.Sqrt(canvasDistSq):F1}, threshold={earlyRejectDistance:F1}");
-
             if (canvasDistSq > earlyRejectDistance * earlyRejectDistance)
             {
-                Console.WriteLine($"[SNAP-NODE] {node.Id}: REJECTED (too far in canvas coords)");
                 continue;
             }
-
-            Console.WriteLine($"[SNAP-NODE] {node.Id}: PASSED early filter, checking ports...");
 
             // Check ports on the opposite side (if from output, look at inputs)
             var portsToCheck = _fromOutput ? node.Inputs : node.Outputs;
@@ -336,9 +391,6 @@ public class ConnectingState : InputStateBase
                 var dy = portCanvasPos.Y - canvasPoint.Y;
                 var distance = Math.Sqrt(dx * dx + dy * dy);
 
-                // DEBUG: Log port distance
-                Console.WriteLine($"[SNAP] Port {node.Id}.{port.Id}: portCanvasPos={portCanvasPos}, mouseCanvas={canvasPoint}, dist={distance:F1}, snapDist={canvasSnapDistance:F1}");
-
                 if (distance < canvasSnapDistance && distance < bestDistance)
                 {
                     // Check if this connection would be valid
@@ -346,7 +398,6 @@ public class ConnectingState : InputStateBase
                     {
                         bestDistance = distance;
                         bestTarget = (node, port, isOutput);
-                        Console.WriteLine($"[SNAP] >>> SNAPPED to {node.Id}.{port.Id} at distance {distance:F1}");
                     }
                 }
             }

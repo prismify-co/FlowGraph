@@ -394,9 +394,11 @@ public class IdleState : InputStateBase
             return StateTransitionResult.Stay();
         }
 
-        var position = GetScreenPosition(context, e);
+        // Use canvas coordinates for the initial position since ConnectingState works in canvas space
+        var position = GetCanvasPosition(context, e);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);
-        connectingState.CreateTempLine(context.MainCanvas);
+        // Use context-aware CreateTempLine which handles direct rendering mode
+        connectingState.CreateTempLine(context);
         // Always capture on RootPanel, not on the port visual (which may be a dummy control in direct rendering mode)
         CapturePointer(e, context.RootPanel);
         e.Handled = true;
