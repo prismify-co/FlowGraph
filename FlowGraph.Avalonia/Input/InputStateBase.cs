@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using FlowGraph.Core;
+using FlowGraph.Core.Coordinates;
 using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Input;
@@ -107,6 +108,49 @@ public abstract class InputStateBase : IInputState
     /// </summary>
     protected static void ReleasePointer(PointerEventArgs e)
         => e.Pointer.Capture(null);
+
+    #endregion
+
+    #region Typed Coordinate Helpers
+
+    /// <summary>
+    /// Gets the current pointer position in canvas coordinates using the type-safe coordinate system.
+    /// This method is rendering-mode agnostic - works correctly in both Visual Tree and Direct modes.
+    /// Prefer this over GetCanvasPosition() for new code.
+    /// </summary>
+    protected static CanvasPoint GetTypedCanvasPosition(InputStateContext context, PointerEventArgs e)
+        => context.Coordinates.GetPointerCanvasPosition(e);
+
+    /// <summary>
+    /// Gets the current pointer position in viewport/screen coordinates using the type-safe coordinate system.
+    /// Prefer this over GetScreenPosition() for new code.
+    /// </summary>
+    protected static ViewportPoint GetTypedViewportPosition(InputStateContext context, PointerEventArgs e)
+        => context.Coordinates.GetPointerViewportPosition(e);
+
+    /// <summary>
+    /// Converts a canvas point to an Avalonia Point for backward compatibility.
+    /// </summary>
+    protected static AvaloniaPoint ToAvaloniaPoint(CanvasPoint canvas)
+        => new(canvas.X, canvas.Y);
+
+    /// <summary>
+    /// Converts a viewport point to an Avalonia Point for backward compatibility.
+    /// </summary>
+    protected static AvaloniaPoint ToAvaloniaPoint(ViewportPoint viewport)
+        => new(viewport.X, viewport.Y);
+
+    /// <summary>
+    /// Converts an Avalonia Point to a CanvasPoint.
+    /// </summary>
+    protected static CanvasPoint ToCanvasPoint(AvaloniaPoint point)
+        => new(point.X, point.Y);
+
+    /// <summary>
+    /// Converts an Avalonia Point to a ViewportPoint.
+    /// </summary>
+    protected static ViewportPoint ToViewportPoint(AvaloniaPoint point)
+        => new(point.X, point.Y);
 
     #endregion
 }
