@@ -77,10 +77,10 @@ public interface IViewportState : IReadOnlyViewportState
     /// (e.g., 0.1 to 5.0).
     /// </param>
     /// <param name="zoomCenter">
-    /// Optional screen coordinate to zoom toward. If null, zooms toward the 
+    /// Optional viewport coordinate to zoom toward. If null, zooms toward the 
     /// center of the viewport.
     /// </param>
-    void SetZoom(double zoom, [CoordinateSpace(CoordinateSpace.Screen)] Point? zoomCenter = null);
+    void SetZoom(double zoom, [CoordinateSpace(CoordinateSpace.Viewport)] Point? zoomCenter = null);
     
     /// <summary>
     /// Pans the viewport by the specified delta in screen coordinates.

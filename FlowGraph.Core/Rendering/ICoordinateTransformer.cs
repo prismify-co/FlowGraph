@@ -154,8 +154,8 @@ public interface ICoordinateTransformer
     [Obsolete("Use ViewportToCanvas instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
     [return: CoordinateSpace(CoordinateSpace.Canvas)]
     Point ScreenToCanvas(
-        [CoordinateSpace(CoordinateSpace.Screen)] double screenX,
-        [CoordinateSpace(CoordinateSpace.Screen)] double screenY)
+        [CoordinateSpace(CoordinateSpace.Viewport)] double screenX,
+        [CoordinateSpace(CoordinateSpace.Viewport)] double screenY)
         => ViewportToCanvas(screenX, screenY);
 
     /// <summary>
@@ -165,7 +165,7 @@ public interface ICoordinateTransformer
     /// <b>DEPRECATED:</b> The term "Screen" is ambiguous. Use <see cref="CanvasToViewport"/> instead.
     /// </remarks>
     [Obsolete("Use CanvasToViewport instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
-    [return: CoordinateSpace(CoordinateSpace.Screen)]
+    [return: CoordinateSpace(CoordinateSpace.Viewport)]
     Point CanvasToScreen(
         [CoordinateSpace(CoordinateSpace.Canvas)] double canvasX,
         [CoordinateSpace(CoordinateSpace.Canvas)] double canvasY)

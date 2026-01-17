@@ -358,8 +358,8 @@ public partial class DirectGraphRenderer
   /// Gets the viewport position for a port.
   /// </summary>
   /// <remarks>
-  /// <b>WARNING:</b> For distance calculations with pointer events, prefer using <see cref="GetPortCanvasPosition"/>
-  /// since pointer events give canvas coords via <c>e.GetPosition(MainCanvas)</c>.
+  /// <b>WARNING:</b> For distance calculations with pointer events, prefer using canvas coordinates
+  /// (via <c>_model.GetPortPosition</c>) since pointer events give canvas coords via <c>e.GetPosition(MainCanvas)</c>.
   /// </remarks>
   public AvaloniaPoint GetPortViewportPosition(Node node, Port port, bool isOutput)
   {
