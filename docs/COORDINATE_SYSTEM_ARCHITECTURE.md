@@ -45,9 +45,39 @@ New type-safe coordinate types have been added to prevent coordinate space confu
 
 - `IRenderTarget` - Mode-agnostic temporary visual rendering interface
 
-### Phase 3: Migration to Type-Safe Coordinates 🔲 NOT STARTED
+### Phase 3: Adapter Implementation & Integration ✅ COMPLETE
 
-Gradually migrate existing code to use the new type-safe coordinates. This is optional but recommended for long-term maintainability.
+Implementation classes and integration into InputStateContext (commits 619e09a, 85c06ec):
+
+**FlowGraph.Avalonia/Input:**
+
+- `InputCoordinatesAdapter` - Implements `IInputCoordinates`, abstracts rendering mode
+- `InputStateBase` - Added typed coordinate helper methods for gradual migration
+
+**FlowGraph.Avalonia/Rendering:**
+
+- `RenderTargetAdapter` - Implements `IRenderTarget` with mode-aware container selection
+- `ConnectionPreviewHandle` - Manages temp bezier connection lines
+- `SelectionBoxHandle` - Manages temp selection rectangles
+
+**InputStateContext integration:**
+
+- `context.Coordinates` - Type-safe coordinate interface (lazy-initialized)
+- `context.RenderTarget` - Mode-agnostic rendering interface (lazy-initialized)
+
+### Phase 4: Incremental Migration 🟡 IN PROGRESS
+
+Input states can now use the new typed system. Migration is incremental - existing code continues to work:
+
+```csharp
+// Old way (still works)
+var canvasPos = GetCanvasPosition(context, e);
+
+// New way (type-safe, mode-agnostic)
+CanvasPoint canvasPos = GetTypedCanvasPosition(context, e);
+// or
+CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
+```
 
 ---
 
