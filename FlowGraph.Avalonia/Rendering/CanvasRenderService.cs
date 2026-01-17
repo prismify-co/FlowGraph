@@ -52,9 +52,9 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: trigger a full re-render
-      // InvalidateVisual() alone doesn't work - we need RenderAll() to actually redraw
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      // Avalonia batches multiple Invalidate() calls into one Render()
+      Invalidate();
     }
     else
     {
@@ -68,8 +68,8 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: trigger a full re-render
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      Invalidate();
     }
     else
     {
@@ -83,8 +83,8 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: trigger a full re-render
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      Invalidate();
     }
     else
     {
@@ -98,8 +98,8 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: trigger a full re-render
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      Invalidate();
     }
     else
     {
@@ -113,8 +113,8 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: handles are drawn each frame, trigger re-render
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      Invalidate();
     }
     else
     {
@@ -128,8 +128,9 @@ public class CanvasRenderService : ICanvasRenderService
   {
     if (IsDirectRenderingMode)
     {
-      // Direct rendering: single refresh is more efficient than multiple calls
-      _refreshAction();
+      // Direct rendering: mark as needing repaint
+      // Avalonia batches this with any other pending invalidations
+      Invalidate();
     }
     else
     {
