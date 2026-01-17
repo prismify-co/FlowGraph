@@ -10,6 +10,7 @@ using FlowGraph.Avalonia.Routing;
 using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
+using FlowGraph.Core.Coordinates;
 using LayoutNs = FlowGraph.Avalonia.Layout;
 
 namespace FlowGraph.Avalonia;
@@ -120,6 +121,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// <remarks>
     /// <para>This method uses <c>e.GetPosition(MainCanvas)</c> internally, which correctly</para>
     /// <para>accounts for the viewport transform. Prefer this over <see cref="ScreenToCanvas(double, double)"/>.</para>
+    /// <para><b>DEPRECATED:</b> For new code, use <see cref="GetTypedCanvasPosition(global::Avalonia.Input.PointerEventArgs)"/> 
+    /// which returns a type-safe <see cref="CanvasPoint"/> instead.</para>
     /// </remarks>
     /// <example>
     /// <code>
@@ -128,6 +131,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// var hitHandle = HitTest(canvasPos.X, canvasPos.Y);
     /// </code>
     /// </example>
+    [System.Obsolete("Use GetTypedCanvasPosition(e) instead, which returns a type-safe CanvasPoint.")]
     public global::Avalonia.Point GetCanvasPosition(global::Avalonia.Input.PointerEventArgs e)
         => _mainCanvas != null ? e.GetPosition(_mainCanvas) : e.GetPosition(this);
 
@@ -137,8 +141,63 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </summary>
     /// <param name="e">The pointer event.</param>
     /// <returns>Position in viewport/screen coordinates.</returns>
+    /// <remarks>
+    /// <para><b>DEPRECATED:</b> For new code, use <see cref="GetTypedViewportPosition(global::Avalonia.Input.PointerEventArgs)"/>
+    /// which returns a type-safe <see cref="ViewportPoint"/> instead.</para>
+    /// </remarks>
+    [System.Obsolete("Use GetTypedViewportPosition(e) instead, which returns a type-safe ViewportPoint.")]
     public global::Avalonia.Point GetViewportPosition(global::Avalonia.Input.PointerEventArgs e)
         => _rootPanel != null ? e.GetPosition(_rootPanel) : e.GetPosition(this);
+
+    /// <summary>
+    /// Gets canvas coordinates from a pointer event using the type-safe coordinate system.
+    /// This is the <b>preferred method</b> for extension/Pro code to get canvas coordinates.
+    /// </summary>
+    /// <param name="e">The pointer event.</param>
+    /// <returns>Position in canvas coordinates as a type-safe <see cref="CanvasPoint"/>.</returns>
+    /// <remarks>
+    /// <para>Use canvas coordinates for:</para>
+    /// <list type="bullet">
+    /// <item>Hit testing on the canvas</item>
+    /// <item>Node/edge positions</item>
+    /// <item>Selection box bounds</item>
+    /// <item>Any position that needs to be stored or compared with node data</item>
+    /// </list>
+    /// <para>
+    /// This method uses the same coordinate system as the internal input states,
+    /// ensuring consistent behavior in both Visual Tree and Direct Rendering modes.
+    /// </para>
+    /// </remarks>
+    public CanvasPoint GetTypedCanvasPosition(global::Avalonia.Input.PointerEventArgs e)
+    {
+        #pragma warning disable CS0618 // We're the new typed wrapper calling the old method
+        var avaloniaPoint = GetCanvasPosition(e);
+        #pragma warning restore CS0618
+        return new CanvasPoint(avaloniaPoint.X, avaloniaPoint.Y);
+    }
+
+    /// <summary>
+    /// Gets viewport coordinates from a pointer event using the type-safe coordinate system.
+    /// This is the <b>preferred method</b> for extension/Pro code to get viewport coordinates.
+    /// </summary>
+    /// <param name="e">The pointer event.</param>
+    /// <returns>Position in viewport coordinates as a type-safe <see cref="ViewportPoint"/>.</returns>
+    /// <remarks>
+    /// <para>Use viewport coordinates for:</para>
+    /// <list type="bullet">
+    /// <item>Pan calculations (delta from last position)</item>
+    /// <item>Auto-pan edge detection</item>
+    /// <item>UI overlay positioning</item>
+    /// <item>Any position relative to the visible screen area</item>
+    /// </list>
+    /// </remarks>
+    public ViewportPoint GetTypedViewportPosition(global::Avalonia.Input.PointerEventArgs e)
+    {
+        #pragma warning disable CS0618 // We're the new typed wrapper calling the old method
+        var avaloniaPoint = GetViewportPosition(e);
+        #pragma warning restore CS0618
+        return new ViewportPoint(avaloniaPoint.X, avaloniaPoint.Y);
+    }
 
     /// <summary>
     /// Converts canvas coordinates to screen coordinates.
