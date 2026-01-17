@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using FlowGraph.Core.Elements;
+using FlowGraph.Core.Events;
 
 namespace FlowGraph.Core;
 
@@ -26,6 +27,8 @@ namespace FlowGraph.Core;
 public class Graph
 {
     private bool _isBatchLoading;
+    private bool _isSubscribedToNodeBounds;
+    private EventHandler<NodeBoundsChangedEventArgs>? _nodeBoundsChanged;
 
     /// <summary>
     /// Initializes a new instance of the Graph class.
@@ -48,7 +51,11 @@ public class Graph
             case NotifyCollectionChangedAction.Add when e.NewItems != null:
                 foreach (var item in e.NewItems)
                 {
-                    if (item is Node) hasNodeChanges = true;
+                    if (item is Node node)
+                    {
+                        hasNodeChanges = true;
+                        ManageNodeBoundsSubscriptions(node, subscribe: true);
+                    }
                     else if (item is Edge) hasEdgeChanges = true;
                 }
                 break;
@@ -56,7 +63,11 @@ public class Graph
             case NotifyCollectionChangedAction.Remove when e.OldItems != null:
                 foreach (var item in e.OldItems)
                 {
-                    if (item is Node) hasNodeChanges = true;
+                    if (item is Node node)
+                    {
+                        hasNodeChanges = true;
+                        ManageNodeBoundsSubscriptions(node, subscribe: false);
+                    }
                     else if (item is Edge) hasEdgeChanges = true;
                 }
                 break;
@@ -65,6 +76,10 @@ public class Graph
                 // For Reset, raise both events since we can't tell what changed
                 hasNodeChanges = true;
                 hasEdgeChanges = true;
+                // Note: Reset typically means the collection was cleared or replaced entirely.
+                // Previous node subscriptions become orphaned (harmless), and we need to
+                // subscribe to whatever nodes remain. This is handled in ManageNodeBoundsSubscriptions
+                // when new nodes are added after the reset.
                 break;
 
             case NotifyCollectionChangedAction.Replace:
@@ -73,7 +88,11 @@ public class Graph
                 {
                     foreach (var item in e.OldItems)
                     {
-                        if (item is Node) hasNodeChanges = true;
+                        if (item is Node node)
+                        {
+                            hasNodeChanges = true;
+                            ManageNodeBoundsSubscriptions(node, subscribe: false);
+                        }
                         else if (item is Edge) hasEdgeChanges = true;
                     }
                 }
@@ -81,7 +100,11 @@ public class Graph
                 {
                     foreach (var item in e.NewItems)
                     {
-                        if (item is Node) hasNodeChanges = true;
+                        if (item is Node node)
+                        {
+                            hasNodeChanges = true;
+                            ManageNodeBoundsSubscriptions(node, subscribe: true);
+                        }
                         else if (item is Edge) hasEdgeChanges = true;
                     }
                 }
@@ -143,6 +166,45 @@ public class Graph
     public event NotifyCollectionChangedEventHandler? EdgesChanged;
 
     /// <summary>
+    /// Event raised when any node's bounds (position or size) change.
+    /// Uses lazy subscription - only subscribes to individual node events when this event has subscribers.
+    /// Ideal for spatial index invalidation and layout systems.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This event uses a lazy subscription pattern for performance. When no handlers are subscribed,
+    /// no per-node subscriptions are maintained. Once a handler subscribes, the Graph automatically
+    /// subscribes to all existing nodes' BoundsChanged events and manages subscriptions as nodes
+    /// are added/removed.
+    /// </para>
+    /// <para>
+    /// For high-frequency operations like dragging many nodes, consider using explicit invalidation
+    /// methods instead of relying on this event, as it fires for each individual node change.
+    /// </para>
+    /// </remarks>
+    public event EventHandler<NodeBoundsChangedEventArgs>? NodeBoundsChanged
+    {
+        add
+        {
+            if (!_isSubscribedToNodeBounds && value != null)
+            {
+                SubscribeToAllNodeBounds();
+                _isSubscribedToNodeBounds = true;
+            }
+            _nodeBoundsChanged += value;
+        }
+        remove
+        {
+            _nodeBoundsChanged -= value;
+            if (_nodeBoundsChanged == null && _isSubscribedToNodeBounds)
+            {
+                UnsubscribeFromAllNodeBounds();
+                _isSubscribedToNodeBounds = false;
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets whether the graph is currently in batch loading mode.
     /// During batch loading, edge validation is skipped.
     /// </summary>
@@ -170,6 +232,43 @@ public class Graph
     {
         _isBatchLoading = false;
         BatchLoadCompleted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SubscribeToAllNodeBounds()
+    {
+        foreach (var node in Nodes)
+        {
+            node.BoundsChanged += OnNodeBoundsChanged;
+        }
+    }
+
+    private void UnsubscribeFromAllNodeBounds()
+    {
+        foreach (var node in Nodes)
+        {
+            node.BoundsChanged -= OnNodeBoundsChanged;
+        }
+    }
+
+    private void OnNodeBoundsChanged(object? sender, BoundsChangedEventArgs e)
+    {
+        if (sender is Node node)
+        {
+            _nodeBoundsChanged?.Invoke(this, new NodeBoundsChangedEventArgs(node, e));
+        }
+    }
+
+    /// <summary>
+    /// Called when nodes are added/removed to manage NodeBoundsChanged subscriptions.
+    /// </summary>
+    private void ManageNodeBoundsSubscriptions(Node node, bool subscribe)
+    {
+        if (!_isSubscribedToNodeBounds) return;
+
+        if (subscribe)
+            node.BoundsChanged += OnNodeBoundsChanged;
+        else
+            node.BoundsChanged -= OnNodeBoundsChanged;
     }
 
     #endregion

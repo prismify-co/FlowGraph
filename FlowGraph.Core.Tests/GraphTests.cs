@@ -1,3 +1,5 @@
+using FlowGraph.Core.Events;
+
 namespace FlowGraph.Core.Tests;
 
 public class GraphTests
@@ -372,4 +374,126 @@ public class GraphTests
         Assert.NotNull(edgeFromEvent);
         Assert.Equal(edge.Id, edgeFromEvent!.Id);
     }
+
+    #region NodeBoundsChanged Event Tests
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldFireWhenNodePositionChanges()
+    {
+        var graph = new Graph();
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        Events.NodeBoundsChangedEventArgs? args = null;
+        graph.NodeBoundsChanged += (s, e) => args = e;
+
+        node.Position = new Point(100, 200);
+
+        Assert.NotNull(args);
+        Assert.Same(node, args.Node);
+        Assert.Equal(100, args.BoundsChange.NewPosition.X);
+        Assert.Equal(200, args.BoundsChange.NewPosition.Y);
+    }
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldFireWhenNodeSizeChanges()
+    {
+        var graph = new Graph();
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        Events.NodeBoundsChangedEventArgs? args = null;
+        graph.NodeBoundsChanged += (s, e) => args = e;
+
+        node.State.Width = 200;
+
+        Assert.NotNull(args);
+        Assert.Same(node, args.Node);
+        Assert.Equal(200, args.BoundsChange.NewWidth);
+    }
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldUseLazySubscription()
+    {
+        // When no subscribers, changing node position should not require subscription overhead
+        var graph = new Graph();
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        // No subscriber - this should work fine without any subscription management
+        node.Position = new Point(100, 200);
+
+        // Now add subscriber
+        var eventCount = 0;
+        graph.NodeBoundsChanged += (s, e) => eventCount++;
+
+        // Should get events now (2 events: one for X, one for Y)
+        node.Position = new Point(200, 300);
+        Assert.Equal(2, eventCount);
+    }
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldSubscribeToNewNodesWhenHasSubscribers()
+    {
+        var graph = new Graph();
+        var eventCount = 0;
+
+        // Subscribe BEFORE adding node
+        graph.NodeBoundsChanged += (s, e) => eventCount++;
+
+        // Now add node
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        // Should get events for the new node (2 events: one for X, one for Y)
+        node.Position = new Point(100, 200);
+        Assert.Equal(2, eventCount);
+    }
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldUnsubscribeWhenNodeRemoved()
+    {
+        var graph = new Graph();
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        var eventCount = 0;
+        graph.NodeBoundsChanged += (s, e) => eventCount++;
+
+        // Get initial events (2: one for X, one for Y)
+        node.Position = new Point(100, 200);
+        Assert.Equal(2, eventCount);
+
+        // Remove node
+        graph.RemoveNode(node.Id);
+
+        // Should NOT get events after removal
+        node.Position = new Point(200, 300);
+        Assert.Equal(2, eventCount); // Still 2, not 4
+    }
+
+    [Fact]
+    public void NodeBoundsChanged_ShouldCleanupWhenLastSubscriberRemoved()
+    {
+        var graph = new Graph();
+        var node = new Node { Type = "Test" };
+        graph.AddNode(node);
+
+        var eventCount = 0;
+        EventHandler<NodeBoundsChangedEventArgs> handler = (s, e) => eventCount++;
+        
+        graph.NodeBoundsChanged += handler;
+        node.Position = new Point(100, 200);
+        Assert.Equal(2, eventCount); // 2 events: one for X, one for Y
+
+        // Remove subscriber
+        graph.NodeBoundsChanged -= handler;
+
+        // Graph should have unsubscribed from nodes (no way to verify directly,
+        // but this tests the code path without errors)
+        node.Position = new Point(200, 300);
+        Assert.Equal(2, eventCount); // Still 2 because handler was removed
+    }
+
+    #endregion
 }

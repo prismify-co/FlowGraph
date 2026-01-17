@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel;
 using FlowGraph.Core.Elements;
+using FlowGraph.Core.Events;
 using FlowGraph.Core.Models;
 
 namespace FlowGraph.Core;
@@ -30,8 +31,25 @@ public class Node : ICanvasElement
     private List<Port> _inputs;
     private List<Port> _outputs;
 
+    // Cached bounds for change detection
+    private Point _lastPosition;
+    private double? _lastWidth;
+    private double? _lastHeight;
+
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Raised when the node's position (X, Y) changes.
+    /// More efficient than PropertyChanged for position-specific listeners.
+    /// </summary>
+    public event EventHandler<PositionChangedEventArgs>? PositionChanged;
+
+    /// <summary>
+    /// Raised when the node's bounds (position or size) change.
+    /// Useful for spatial index invalidation and layout systems.
+    /// </summary>
+    public event EventHandler<BoundsChangedEventArgs>? BoundsChanged;
 
     /// <summary>
     /// Creates a node with the specified definition and optional state.
@@ -44,6 +62,7 @@ public class Node : ICanvasElement
         _state = state ?? new NodeState();
         _inputs = definition.Inputs.Select(p => p.ToPort()).ToList();
         _outputs = definition.Outputs.Select(p => p.ToPort()).ToList();
+        CacheBounds();
         SubscribeToState();
     }
 
@@ -461,13 +480,54 @@ public class Node : ICanvasElement
         _state.PropertyChanged -= OnStatePropertyChanged;
     }
 
+    private void CacheBounds()
+    {
+        _lastPosition = new Point(State.X, State.Y);
+        _lastWidth = State.Width;
+        _lastHeight = State.Height;
+    }
+
     private void OnStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         // Forward state property changes and map X/Y to Position
         OnPropertyChanged(e.PropertyName);
+
+        bool positionChanged = false;
+        bool sizeChanged = false;
+
         if (e.PropertyName is "X" or "Y")
         {
             OnPropertyChanged(nameof(Position));
+            positionChanged = true;
+        }
+        else if (e.PropertyName is "Width" or "Height")
+        {
+            sizeChanged = true;
+        }
+
+        // Raise specific change events for position/bounds
+        if (positionChanged || sizeChanged)
+        {
+            var oldPosition = _lastPosition;
+            var newPosition = Position;
+            var oldWidth = _lastWidth;
+            var oldHeight = _lastHeight;
+            var newWidth = State.Width;
+            var newHeight = State.Height;
+
+            // Update cached values
+            CacheBounds();
+
+            if (positionChanged && (oldPosition.X != newPosition.X || oldPosition.Y != newPosition.Y))
+            {
+                PositionChanged?.Invoke(this, new PositionChangedEventArgs(oldPosition, newPosition));
+            }
+
+            // Bounds changed if position OR size changed
+            BoundsChanged?.Invoke(this, new BoundsChangedEventArgs(
+                oldPosition, newPosition,
+                oldWidth, newWidth,
+                oldHeight, newHeight));
         }
     }
 
