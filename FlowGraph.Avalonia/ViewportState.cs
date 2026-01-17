@@ -281,6 +281,8 @@ public class ViewportState : IViewportState
 
     /// <summary>
     /// Fits the viewport to show a bounding box with padding.
+    /// The padding is the minimum margin on each side in screen pixels.
+    /// For better visual results, the actual margin will be at least 15% of the viewport dimension.
     /// </summary>
     public void FitToBounds(Rect bounds, Size viewSize, double padding = 50)
     {
@@ -289,8 +291,12 @@ public class ViewportState : IViewportState
 
         ViewSize = viewSize;
 
-        var zoomX = (viewSize.Width - padding * 2) / bounds.Width;
-        var zoomY = (viewSize.Height - padding * 2) / bounds.Height;
+        // Use the larger of fixed padding or 15% of viewport size for better visual margins
+        var effectivePaddingX = Math.Max(padding, viewSize.Width * 0.15);
+        var effectivePaddingY = Math.Max(padding, viewSize.Height * 0.15);
+
+        var zoomX = (viewSize.Width - effectivePaddingX * 2) / bounds.Width;
+        var zoomY = (viewSize.Height - effectivePaddingY * 2) / bounds.Height;
         var newZoom = Math.Clamp(Math.Min(zoomX, zoomY), _settings.MinZoom, _settings.MaxZoom);
 
         Zoom = newZoom;
