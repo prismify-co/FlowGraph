@@ -295,9 +295,6 @@ public class EdgeRoutingManager
         }
     }
 
-    private static long _routingCallCount = 0;
-    private static long _routingSkippedCount = 0;
-
     /// <summary>
     /// Called when nodes are being dragged. Re-routes edges if configured to do so.
     /// OPTIMIZED: Uses throttling and edge caching to avoid O(n) iteration on every mouse move.
@@ -306,21 +303,14 @@ public class EdgeRoutingManager
     public void OnNodesDragging(IEnumerable<string> draggedNodeIds)
     {
         if (!IsEnabled || !RouteOnDrag)
-        {
-            _routingSkippedCount++;
             return;
-        }
 
         // Throttle routing during drag to avoid excessive CPU usage
         var now = DateTime.UtcNow;
         if ((now - _lastDragRouteTime).TotalMilliseconds < DragRouteThrottleMs)
-        {
-            _routingSkippedCount++;
             return;
-        }
-        _lastDragRouteTime = now;
 
-        var sw = System.Diagnostics.Stopwatch.StartNew();
+        _lastDragRouteTime = now;
 
         var settings = _context.Settings;
         if (settings.RouteOnlyAffectedEdges)
@@ -330,14 +320,6 @@ public class EdgeRoutingManager
         else
         {
             RouteAllEdges(forceRefresh: true);
-        }
-
-        sw.Stop();
-        _routingCallCount++;
-        if (_routingCallCount % 30 == 0)
-        {
-            System.Diagnostics.Debug.WriteLine($"[EdgeRouting] Call #{_routingCallCount}, took {sw.ElapsedMilliseconds}ms, skipped={_routingSkippedCount}");
-            _routingSkippedCount = 0;
         }
     }
 

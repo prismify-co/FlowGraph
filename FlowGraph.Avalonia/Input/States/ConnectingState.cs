@@ -41,9 +41,6 @@ public class ConnectingState : InputStateBase
     // Store viewport position for direct rendering mode temp line
     private AvaloniaPoint _endPointViewport;
 
-    // DEBUG: counter for throttled logging
-    private int _debugMoveCount;
-
     public override string Name => "Connecting";
     public override bool IsModal => true;
 
@@ -175,9 +172,6 @@ public class ConnectingState : InputStateBase
         // Try to find a snap target (uses canvas coordinates for distance calculation)
         _snappedTarget = FindSnapTarget(context, _endPoint);
 
-        // Uncomment for debugging:
-        // if (_debugMoveCount++ % 50 == 0)
-        //     Console.WriteLine($"[CURSOR] screenPos={screenPos}, canvasPos={_endPoint}, zoom={context.Viewport.Zoom:F2}");
         UpdateTempLine(context);
 
         // Update port validation visual (uses canvas coordinates for hit testing)

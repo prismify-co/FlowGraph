@@ -114,17 +114,10 @@ public partial class DirectGraphRenderer
   /// <returns>The hit node, or null if no node was hit.</returns>
   public Node? HitTestNode(double screenX, double screenY)
   {
-    var sw = System.Diagnostics.Stopwatch.StartNew();
-
     if (_graph == null) return null;
 
-    long rebuildTime = 0;
     if (_indexDirty)
-    {
-      var rebuildSw = System.Diagnostics.Stopwatch.StartNew();
       RebuildSpatialIndex();
-      rebuildTime = rebuildSw.ElapsedMilliseconds;
-    }
 
     if (_nodeIndex == null) return null;
 
@@ -133,21 +126,14 @@ public partial class DirectGraphRenderer
     var context = ctx.Value;
 
     // Check regular nodes first (they're on top)
-    var regularCheckStart = sw.ElapsedMilliseconds;
-    int nodesChecked = 0;
-    int nodesSkippedViewport = 0;
     for (int i = _nodeIndex.Count - 1; i >= 0; i--)
     {
       var (node, nx, ny, nw, nh) = _nodeIndex[i];
 
       // VIEWPORT CULLING: Skip nodes outside visible area
       if (!context.IsNodeIndexEntryVisible(nx, ny, nw, nh))
-      {
-        nodesSkippedViewport++;
         continue;
-      }
 
-      nodesChecked++;
       var bounds = new Rect(nx, ny, nw, nh);
 
       if (bounds.Contains(context.CanvasPoint))
@@ -159,16 +145,11 @@ public partial class DirectGraphRenderer
         if (!IsClickValidForNodeSize(context.CanvasPoint, nx, ny, nw, nh, screenW, screenH, node.Id))
           continue;
 
-        sw.Stop();
-        System.Diagnostics.Debug.WriteLine($"[HitTest] Regular node found in {sw.ElapsedMilliseconds}ms (rebuild:{rebuildTime}ms, checked:{nodesChecked}, skippedViewport:{nodesSkippedViewport})");
         return node;
       }
     }
-    var regularCheckTime = sw.ElapsedMilliseconds - regularCheckStart;
 
     // Check groups (they're behind regular nodes)
-    var groupCheckStart = sw.ElapsedMilliseconds;
-    int groupsChecked = 0;
     if (_nodeById != null)
     {
       foreach (var kvp in _nodeById)
@@ -176,22 +157,16 @@ public partial class DirectGraphRenderer
         var node = kvp.Value;
         if (!node.IsGroup) continue;
 
-        groupsChecked++;
         if (!IsNodeVisibleFast(node)) continue;
 
         var bounds = _model.GetNodeBounds(node);
         if (bounds.Contains(context.CanvasPoint))
         {
-          sw.Stop();
-          System.Diagnostics.Debug.WriteLine($"[HitTest] Group found in {sw.ElapsedMilliseconds}ms | Rebuild:{rebuildTime}ms, Regular:{regularCheckTime}ms, Groups:{sw.ElapsedMilliseconds - groupCheckStart}ms, GroupsChecked:{groupsChecked}");
           return node;
         }
       }
     }
-    var groupCheckTime = sw.ElapsedMilliseconds - groupCheckStart;
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"[HitTest] No hit in {sw.ElapsedMilliseconds}ms | Rebuild:{rebuildTime}ms, Regular:{regularCheckTime}ms, Groups:{groupCheckTime}ms, GroupsChecked:{groupsChecked}");
     return null;
   }
 
@@ -229,7 +204,6 @@ public partial class DirectGraphRenderer
 
     if (distFromCenterX > maxDistFromCenter || distFromCenterY > maxDistFromCenter)
     {
-      System.Diagnostics.Debug.WriteLine($"[HitTest] Node {nodeId} skipped: click at edge ({distFromCenterX:P0},{distFromCenterY:P0}) > maxDist {maxDistFromCenter:P0} (screenSize={smallestScreenDim:F0}px)");
       return false;
     }
 
@@ -325,8 +299,6 @@ public partial class DirectGraphRenderer
       }
     }
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"[HitTestPort] No hit in {sw.ElapsedMilliseconds}ms | NodesChecked:{nodesChecked}, SkippedViewport:{nodesSkippedViewport}, Groups:{groupsChecked}, GroupsSkipped:{groupsSkippedViewport}");
     return null;
   }
 

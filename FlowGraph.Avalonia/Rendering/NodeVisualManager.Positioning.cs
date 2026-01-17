@@ -123,7 +123,6 @@ public partial class NodeVisualManager
     /// <param name="theme">Theme resources for styling.</param>
     public void UpdateNodeSize(Node node, ThemeResources theme)
     {
-        System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] Node={node.Id}, HasVisual={_nodeVisuals.ContainsKey(node.Id)}");
         if (_nodeVisuals.TryGetValue(node.Id, out var control))
         {
             var scale = _renderContext.Scale;
@@ -136,9 +135,7 @@ public partial class NodeVisualManager
             };
 
             var bounds = _model.GetNodeBounds(node);
-            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] Bounds={bounds.Width}x{bounds.Height}, Renderer={renderer.GetType().Name}");
             renderer.UpdateSize(control, node, context, bounds.Width, bounds.Height);
-            System.Diagnostics.Debug.WriteLine($"[NodeVisualManager.UpdateNodeSize] After UpdateSize: control.Width={control.Width}, control.Height={control.Height}");
 
 #if DEBUG
             // Validate that composite renderers properly handle resize

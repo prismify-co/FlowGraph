@@ -81,12 +81,9 @@ public class GraphRenderService : IGraphRenderService
   /// <inheritdoc />
   public void UpdateNodeSelection(Node node)
   {
-    System.Diagnostics.Debug.WriteLine($"[GraphRenderService.UpdateNodeSelection] Node={node.Id}, IsDirectRenderingMode={IsDirectRenderingMode}");
-    
     if (IsDirectRenderingMode)
     {
       // Direct rendering: trigger a full re-render
-      System.Diagnostics.Debug.WriteLine($"[GraphRenderService.UpdateNodeSelection] Calling _refreshAction()");
       _refreshAction();
     }
     else
@@ -114,7 +111,6 @@ public class GraphRenderService : IGraphRenderService
   /// <inheritdoc />
   public void UpdateNodeAfterResize(Node node)
   {
-    System.Diagnostics.Debug.WriteLine($"[UpdateNodeAfterResize] Node={node.Id}, IsDirectMode={IsDirectRenderingMode}");
     if (IsDirectRenderingMode)
     {
       // Direct rendering: single refresh is more efficient than multiple calls
@@ -123,7 +119,6 @@ public class GraphRenderService : IGraphRenderService
     else
     {
       // Retained mode: update all visual aspects individually
-      System.Diagnostics.Debug.WriteLine($"[UpdateNodeAfterResize] Calling UpdateNodeSize for {node.Id}");
       _retainedRenderer.UpdateNodeSize(node, _getTheme());
       _retainedRenderer.UpdateNodePosition(node);
       _retainedRenderer.UpdateResizeHandlePositions(node);

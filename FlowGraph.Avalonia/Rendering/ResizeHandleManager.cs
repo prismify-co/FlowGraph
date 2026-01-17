@@ -66,10 +66,6 @@ public class ResizeHandleManager
         var (nodeWidth, nodeHeight) = _nodeVisualManager.GetNodeDimensions(node);
         var canvasPos = new AvaloniaPoint(node.Position.X, node.Position.Y);
 
-        System.Diagnostics.Debug.WriteLine($"[ResizeHandles] Node={node.Id}: NodeDimensions=({nodeWidth:F0}x{nodeHeight:F0}), node.Width={node.Width}, node.Height={node.Height}");
-        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   InverseScale={inverseScale:F2}, CanvasPos=({canvasPos.X:F0},{canvasPos.Y:F0})");
-        System.Diagnostics.Debug.WriteLine($"[ResizeHandles]   Settings: NodeWidth={_renderContext.Settings.NodeWidth}, NodeHeight={_renderContext.Settings.NodeHeight}");
-
         var handles = new List<Rectangle>();
         var positions = new[]
         {
