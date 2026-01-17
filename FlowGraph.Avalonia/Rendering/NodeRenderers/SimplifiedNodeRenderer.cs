@@ -46,11 +46,14 @@ public class SimplifiedNodeRenderer : INodeRenderer
     {
         if (visual is Border border)
         {
+            // Priority: Selected > Highlighted > Normal
             border.BorderBrush = node.IsSelected
                 ? context.Theme.NodeSelectedBorder
-                : context.Theme.NodeBorder;
+                : node.IsHighlighted
+                    ? context.Theme.NodeHighlightedBorder
+                    : context.Theme.NodeBorder;
             border.BorderThickness = new Thickness(
-                (node.IsSelected ? DesignTokens.BorderThick : DesignTokens.BorderBase) * context.Scale);
+                ((node.IsSelected || node.IsHighlighted) ? DesignTokens.BorderThick : DesignTokens.BorderBase) * context.Scale);
         }
     }
 

@@ -112,6 +112,35 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     public global::Avalonia.Point Offset => new(_viewport.OffsetX, _viewport.OffsetY);
 
     /// <summary>
+    /// Gets canvas coordinates from a pointer event.
+    /// This is the correct way to get coordinates for hit testing, node positioning, etc.
+    /// </summary>
+    /// <param name="e">The pointer event.</param>
+    /// <returns>Position in canvas coordinates.</returns>
+    /// <remarks>
+    /// <para>This method uses <c>e.GetPosition(MainCanvas)</c> internally, which correctly</para>
+    /// <para>accounts for the viewport transform. Prefer this over <see cref="ScreenToCanvas(double, double)"/>.</para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // In your Pro extension service:
+    /// var canvasPos = _canvas.GetCanvasPosition(e);
+    /// var hitHandle = HitTest(canvasPos.X, canvasPos.Y);
+    /// </code>
+    /// </example>
+    public global::Avalonia.Point GetCanvasPosition(global::Avalonia.Input.PointerEventArgs e)
+        => _mainCanvas != null ? e.GetPosition(_mainCanvas) : e.GetPosition(this);
+
+    /// <summary>
+    /// Gets viewport/screen coordinates from a pointer event.
+    /// Use this for pan calculations, auto-pan edge detection, etc.
+    /// </summary>
+    /// <param name="e">The pointer event.</param>
+    /// <returns>Position in viewport/screen coordinates.</returns>
+    public global::Avalonia.Point GetViewportPosition(global::Avalonia.Input.PointerEventArgs e)
+        => _rootPanel != null ? e.GetPosition(_rootPanel) : e.GetPosition(this);
+
+    /// <summary>
     /// Converts canvas coordinates to screen coordinates.
     /// </summary>
     /// <param name="canvasX">X position in canvas coordinates.</param>
@@ -130,22 +159,36 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         => CanvasToScreen(canvasPoint.X, canvasPoint.Y);
 
     /// <summary>
-    /// Converts screen coordinates to canvas coordinates.
+    /// Converts viewport coordinates to canvas coordinates.
     /// </summary>
-    /// <param name="screenX">X position in screen coordinates.</param>
-    /// <param name="screenY">Y position in screen coordinates.</param>
+    /// <param name="screenX">X position in viewport coordinates.</param>
+    /// <param name="screenY">Y position in viewport coordinates.</param>
     /// <returns>The equivalent position in canvas coordinates.</returns>
+    /// <remarks>
+    /// <para><b>WARNING:</b> Do not use this with <c>e.GetPosition(this)</c> for pointer events!</para>
+    /// <para>For pointer events, use <see cref="GetCanvasPosition(global::Avalonia.Input.PointerEventArgs)"/> instead,</para>
+    /// <para>which correctly handles the MainCanvas transform.</para>
+    /// <para>This method is intended for converting known viewport coordinates (e.g., from bounds calculations).</para>
+    /// </remarks>
+    [System.Obsolete("For pointer events, use GetCanvasPosition(e) instead. This method is for viewport coordinate conversion only.")]
     public global::Avalonia.Point ScreenToCanvas(double screenX, double screenY)
         => new(screenX / _viewport.Zoom + _viewport.OffsetX,
                screenY / _viewport.Zoom + _viewport.OffsetY);
 
     /// <summary>
-    /// Converts screen coordinates to canvas coordinates.
+    /// Converts viewport coordinates to canvas coordinates.
     /// </summary>
-    /// <param name="screenPoint">Position in screen coordinates.</param>
+    /// <param name="screenPoint">Position in viewport coordinates.</param>
     /// <returns>The equivalent position in canvas coordinates.</returns>
+    /// <remarks>
+    /// <para><b>WARNING:</b> Do not use this with <c>e.GetPosition(this)</c> for pointer events!</para>
+    /// <para>For pointer events, use <see cref="GetCanvasPosition(global::Avalonia.Input.PointerEventArgs)"/> instead.</para>
+    /// </remarks>
+    [System.Obsolete("For pointer events, use GetCanvasPosition(e) instead. This method is for viewport coordinate conversion only.")]
+    #pragma warning disable CS0618 // Suppress obsolete warning for internal call
     public global::Avalonia.Point ScreenToCanvas(global::Avalonia.Point screenPoint)
         => ScreenToCanvas(screenPoint.X, screenPoint.Y);
+    #pragma warning restore CS0618
 
     /// <summary>
     /// Gets the visible bounds in canvas coordinates.
@@ -155,8 +198,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         get
         {
+            #pragma warning disable CS0618 // ScreenToCanvas is obsolete for pointer events but valid for bounds
             var topLeft = ScreenToCanvas(0, 0);
             var bottomRight = ScreenToCanvas(Bounds.Width, Bounds.Height);
+            #pragma warning restore CS0618
             return new global::Avalonia.Rect(topLeft, bottomRight);
         }
     }

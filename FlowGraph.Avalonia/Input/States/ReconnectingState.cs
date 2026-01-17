@@ -150,14 +150,14 @@ public class ReconnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        // Store screen position for AutoPan edge detection and direct rendering mode
-        var screenPos = GetScreenPosition(context, e);
-        _currentEndPointViewport = screenPos;
+        // Get positions using typed coordinate system
+        var viewportPos = GetTypedViewportPosition(context, e);
+        var canvasPos = GetTypedCanvasPosition(context, e);
+        
+        _currentEndPointViewport = ToAvaloniaPoint(viewportPos);
+        _currentEndPoint = ToAvaloniaPoint(canvasPos);
 
-        // Get canvas position for hit testing and snap calculations
-        _currentEndPoint = GetCanvasPosition(context, e);
-
-        // AutoPan: pan viewport when dragging near edges (uses screen coordinates)
+        // AutoPan: pan viewport when dragging near edges (uses viewport coordinates)
         if (context.Settings.EnableAutoPan && context.RootPanel != null)
         {
             var viewBounds = context.RootPanel.Bounds;
@@ -165,10 +165,10 @@ public class ReconnectingState : InputStateBase
             var panSpeed = context.Settings.AutoPanSpeed;
 
             double panX = 0, panY = 0;
-            if (screenPos.X < edgeDist) panX = panSpeed;
-            else if (screenPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
-            if (screenPos.Y < edgeDist) panY = panSpeed;
-            else if (screenPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
+            if (viewportPos.X < edgeDist) panX = panSpeed;
+            else if (viewportPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
+            if (viewportPos.Y < edgeDist) panY = panSpeed;
+            else if (viewportPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
 
             if (panX != 0 || panY != 0)
             {
@@ -202,11 +202,12 @@ public class ReconnectingState : InputStateBase
         Node? targetNode = null;
         Port? targetPort = null;
 
-        // Use canvas coordinates for hit testing
-        var canvasPoint = GetCanvasPosition(context, e);
-        var screenPoint = GetScreenPosition(context, e);
+        // Use canvas coordinates for hit testing (typed system handles rendering mode)
+        var canvasPos = GetTypedCanvasPosition(context, e);
+        var canvasPoint = ToAvaloniaPoint(canvasPos);
+        var viewportPoint = GetTypedViewportPosition(context, e);
 
-        Console.WriteLine($"[ReconnectingState.Released] screenPoint={screenPoint}, canvasPoint={canvasPoint}");
+        Console.WriteLine($"[ReconnectingState.Released] viewportPoint=({viewportPoint.X}, {viewportPoint.Y}), canvasPoint={canvasPoint}");
         Console.WriteLine($"[ReconnectingState.Released] Viewport: Zoom={context.Viewport.Zoom}, Offset=({context.Viewport.OffsetX}, {context.Viewport.OffsetY})");
         Console.WriteLine($"[ReconnectingState.Released] _draggingTarget={_draggingTarget} (true=need input port, false=need output port)");
 

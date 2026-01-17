@@ -29,10 +29,10 @@ public class DraggingState : InputStateBase
 
     public override string Name => "Dragging";
 
-    public DraggingState(Graph graph, AvaloniaPoint screenPosition, ViewportState viewport, FlowCanvasSettings settings)
+    public DraggingState(Graph graph, AvaloniaPoint viewportPosition, AvaloniaPoint canvasPosition, ViewportState viewport, FlowCanvasSettings settings)
     {
-        _dragStartScreen = screenPosition;
-        _dragStartCanvas = viewport.ViewportToCanvas(screenPosition);
+        _dragStartScreen = viewportPosition;
+        _dragStartCanvas = canvasPosition;
 
         // Scale drag threshold inversely with zoom: at zoom 0.30, threshold = min(4/0.30, 15) = 13.3 pixels
         // This prevents accidental drags when clicking on tiny zoomed-out nodes
@@ -90,13 +90,15 @@ public class DraggingState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        var currentScreen = GetScreenPosition(context, e);
+        // Get both viewport and canvas positions using typed system
+        var currentViewport = GetTypedViewportPosition(context, e);
+        var currentCanvas = GetTypedCanvasPosition(context, e);
 
-        // Check if we've met the drag threshold
+        // Check if we've met the drag threshold (using viewport coordinates)
         if (!_dragThresholdMet)
         {
-            var distX = currentScreen.X - _dragStartScreen.X;
-            var distY = currentScreen.Y - _dragStartScreen.Y;
+            var distX = currentViewport.X - _dragStartScreen.X;
+            var distY = currentViewport.Y - _dragStartScreen.Y;
             var distance = Math.Sqrt(distX * distX + distY * distY);
 
             if (distance < _effectiveDragThreshold)
@@ -133,14 +135,14 @@ public class DraggingState : InputStateBase
 
             double panX = 0, panY = 0;
 
-            if (currentScreen.X < edgeDist)
+            if (currentViewport.X < edgeDist)
                 panX = panSpeed;
-            else if (currentScreen.X > viewBounds.Width - edgeDist)
+            else if (currentViewport.X > viewBounds.Width - edgeDist)
                 panX = -panSpeed;
 
-            if (currentScreen.Y < edgeDist)
+            if (currentViewport.Y < edgeDist)
                 panY = panSpeed;
-            else if (currentScreen.Y > viewBounds.Height - edgeDist)
+            else if (currentViewport.Y > viewBounds.Height - edgeDist)
                 panY = -panSpeed;
 
             if (panX != 0 || panY != 0)
@@ -150,7 +152,6 @@ public class DraggingState : InputStateBase
             }
         }
 
-        var currentCanvas = context.ViewportToCanvas(currentScreen);
         var deltaX = currentCanvas.X - _dragStartCanvas.X;
         var deltaY = currentCanvas.Y - _dragStartCanvas.Y;
 

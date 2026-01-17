@@ -51,6 +51,12 @@ public interface INodeState : INotifyPropertyChanged
   bool IsSelected { get; set; }
 
   /// <summary>
+  /// Whether this node is highlighted for emphasis (e.g., search results, analysis feedback).
+  /// Unlike selection, highlighting is purely visual and doesn't affect operations.
+  /// </summary>
+  bool IsHighlighted { get; set; }
+
+  /// <summary>
   /// Whether this node is currently being dragged.
   /// </summary>
   bool IsDragging { get; set; }

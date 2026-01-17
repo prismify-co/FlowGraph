@@ -216,7 +216,8 @@ public abstract class StyledNodeRendererBase : DefaultNodeRenderer
     {
         base.UpdateSelection(visual, node, context);
         
-        if (visual is Border border && !node.IsSelected)
+        // For styled nodes, use type-specific border when not selected or highlighted
+        if (visual is Border border && !node.IsSelected && !node.IsHighlighted)
         {
             border.BorderBrush = GetNodeBorder(context.Theme);
         }

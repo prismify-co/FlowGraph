@@ -316,6 +316,16 @@ public class Node : ICanvasElement
     }
 
     /// <summary>
+    /// Whether this node is highlighted for emphasis (e.g., search results, analysis feedback).
+    /// Unlike selection, highlighting is purely visual and doesn't affect operations.
+    /// </summary>
+    public bool IsHighlighted
+    {
+        get => State.IsHighlighted;
+        set => State.IsHighlighted = value;
+    }
+
+    /// <summary>
     /// Whether this node is currently being dragged.
     /// </summary>
     public bool IsDragging
@@ -412,6 +422,7 @@ public class Node : ICanvasElement
             Width = State.Width,
             Height = State.Height,
             IsSelected = State.IsSelected,
+            IsHighlighted = State.IsHighlighted,
             IsDragging = State.IsDragging,
             IsCollapsed = State.IsCollapsed
         };
@@ -427,6 +438,7 @@ public class Node : ICanvasElement
         State.Width = snapshot.Width;
         State.Height = snapshot.Height;
         State.IsSelected = snapshot.IsSelected;
+        State.IsHighlighted = snapshot.IsHighlighted;
         State.IsDragging = snapshot.IsDragging;
         State.IsCollapsed = snapshot.IsCollapsed;
     }

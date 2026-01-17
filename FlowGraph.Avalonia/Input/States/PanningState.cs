@@ -29,7 +29,8 @@ public class PanningState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var currentPoint = GetScreenPosition(context, e);
+        // Panning works in viewport coordinates (screen-space delta)
+        var currentPoint = GetTypedViewportPosition(context, e);
         var deltaX = currentPoint.X - _startPoint.X;
         var deltaY = currentPoint.Y - _startPoint.Y;
 

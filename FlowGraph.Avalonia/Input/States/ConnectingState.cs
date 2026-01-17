@@ -145,15 +145,14 @@ public class ConnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        // Store screen position for AutoPan edge detection and direct rendering mode
-        var screenPos = GetScreenPosition(context, e);
-        _endPointViewport = screenPos;
+        // Get positions using typed coordinate system (works in both rendering modes)
+        var viewportPos = GetTypedViewportPosition(context, e);
+        var canvasPos = GetTypedCanvasPosition(context, e);
+        
+        _endPointViewport = ToAvaloniaPoint(viewportPos);
+        _endPoint = ToAvaloniaPoint(canvasPos);
 
-        // Get canvas position directly - MainCanvas has a transform, and GetPosition(MainCanvas)
-        // automatically applies the inverse transform, giving us direct canvas coordinates
-        _endPoint = GetCanvasPosition(context, e);
-
-        // AutoPan: pan viewport when dragging near edges (use screen coordinates)
+        // AutoPan: pan viewport when dragging near edges (use viewport coordinates)
         if (context.Settings.EnableAutoPan && context.RootPanel != null)
         {
             var viewBounds = context.RootPanel.Bounds;
@@ -161,10 +160,10 @@ public class ConnectingState : InputStateBase
             var panSpeed = context.Settings.AutoPanSpeed;
 
             double panX = 0, panY = 0;
-            if (screenPos.X < edgeDist) panX = panSpeed;
-            else if (screenPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
-            if (screenPos.Y < edgeDist) panY = panSpeed;
-            else if (screenPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
+            if (viewportPos.X < edgeDist) panX = panSpeed;
+            else if (viewportPos.X > viewBounds.Width - edgeDist) panX = -panSpeed;
+            if (viewportPos.Y < edgeDist) panY = panSpeed;
+            else if (viewportPos.Y > viewBounds.Height - edgeDist) panY = -panSpeed;
 
             if (panX != 0 || panY != 0)
             {
@@ -189,10 +188,9 @@ public class ConnectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
-        // Get screen coordinates first, then convert to canvas using viewport
-        // NOTE: Don't use e.GetPosition(MainCanvas) as it may not correctly apply the MatrixTransform
-        var screenPoint = GetScreenPosition(context, e);
-        var canvasPoint = context.ViewportToCanvas(screenPoint);
+        // Get canvas coordinates using typed system (handles both rendering modes correctly)
+        var typedCanvasPoint = GetTypedCanvasPosition(context, e);
+        var canvasPoint = ToAvaloniaPoint(typedCanvasPoint);
 
         bool connectionCompleted = false;
         Node? targetNode = null;

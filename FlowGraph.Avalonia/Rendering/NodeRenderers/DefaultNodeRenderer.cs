@@ -30,7 +30,8 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         var height = node.Height ?? GetHeight(node, settings) ?? settings.NodeHeight;
 
         var nodeBackground = theme.NodeBackground;
-        var nodeBorder = node.IsSelected ? theme.NodeSelectedBorder : theme.NodeBorder;
+        var nodeBorder = GetBorderBrush(node, theme);
+        var borderThickness = GetBorderThickness(node);
 
         var border = new Border
         {
@@ -38,7 +39,7 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
             Height = height,
             Background = nodeBackground,
             BorderBrush = nodeBorder,
-            BorderThickness = node.IsSelected ? new Thickness(DesignTokens.BorderThick) : new Thickness(DesignTokens.BorderBase),
+            BorderThickness = borderThickness,
             CornerRadius = new CornerRadius(DesignTokens.RadiusLg),
             BoxShadow = new BoxShadows(new BoxShadow
             {
@@ -53,6 +54,30 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
         };
 
         return border;
+    }
+
+    /// <summary>
+    /// Gets the appropriate border brush based on node state.
+    /// Priority: Selected > Highlighted > Normal
+    /// </summary>
+    protected virtual IBrush GetBorderBrush(Node node, ThemeResources theme)
+    {
+        if (node.IsSelected)
+            return theme.NodeSelectedBorder;
+        if (node.IsHighlighted)
+            return theme.NodeHighlightedBorder;
+        return theme.NodeBorder;
+    }
+
+    /// <summary>
+    /// Gets the appropriate border thickness based on node state.
+    /// </summary>
+    protected virtual Thickness GetBorderThickness(Node node)
+    {
+        // Both selected and highlighted use thick border for visibility
+        return (node.IsSelected || node.IsHighlighted)
+            ? new Thickness(DesignTokens.BorderThick)
+            : new Thickness(DesignTokens.BorderBase);
     }
 
     /// <summary>
@@ -104,10 +129,8 @@ public class DefaultNodeRenderer : INodeRenderer, IEditableNodeRenderer
     {
         if (visual is Border border)
         {
-            border.BorderBrush = node.IsSelected
-                ? context.Theme.NodeSelectedBorder
-                : context.Theme.NodeBorder;
-            border.BorderThickness = node.IsSelected ? new Thickness(DesignTokens.BorderThick) : new Thickness(DesignTokens.BorderBase);
+            border.BorderBrush = GetBorderBrush(node, context.Theme);
+            border.BorderThickness = GetBorderThickness(node);
         }
     }
 

@@ -116,6 +116,12 @@ public class ThemeResources
 
     public IBrush NodeSelectedBorder => GetBrush("FlowCanvasNodeSelectedBorder", "#FF6B00");
 
+    /// <summary>
+    /// Border color for highlighted nodes (e.g., search results, analysis feedback).
+    /// Default is yellow/amber for visibility.
+    /// </summary>
+    public IBrush NodeHighlightedBorder => GetBrush("FlowCanvasNodeHighlightedBorder", "#FBBF24");
+
     public IBrush NodeText => GetBrush("FlowCanvasNodeText",
         IsLightTheme ? "#1E1E1E" : "#FFFFFF");
 

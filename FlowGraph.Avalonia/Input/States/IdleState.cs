@@ -22,7 +22,8 @@ public class IdleState : InputStateBase
     public override StateTransitionResult HandlePointerPressed(InputStateContext context, PointerPressedEventArgs e, Control? source)
     {
         var point = GetPointerPoint(context, e);
-        var position = GetScreenPosition(context, e);
+        var viewportPos = GetTypedViewportPosition(context, e);
+        var position = ToAvaloniaPoint(viewportPos);
         var isReadOnly = context.Settings.IsReadOnly;
 
         // Middle mouse button always starts panning (allowed in read-only mode)
@@ -79,7 +80,8 @@ public class IdleState : InputStateBase
 
     public override StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)
     {
-        var position = GetScreenPosition(context, e);
+        var viewportPos = GetTypedViewportPosition(context, e);
+        var position = ToAvaloniaPoint(viewportPos);
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
         // Pan on scroll behavior
@@ -206,7 +208,9 @@ public class IdleState : InputStateBase
         if (!isReadOnly && node.IsDraggable && node.IsSelected)
         {
             Debug.WriteLine($"[IdleState.HandleNodeClick] Starting drag for node {node.Id}");
-            var dragState = new DraggingState(graph, position, context.Viewport, context.Settings);
+            // Pass both viewport and canvas positions for consistent coordinate handling
+            var canvasPos = GetTypedCanvasPosition(context, e);
+            var dragState = new DraggingState(graph, position, ToAvaloniaPoint(canvasPos), context.Viewport, context.Settings);
             // Always capture on RootPanel, not on the source control (which may be a dummy control in direct rendering mode)
             CapturePointer(e, context.RootPanel);
             e.Handled = true;
@@ -240,8 +244,8 @@ public class IdleState : InputStateBase
         // Check if click is near edge endpoints for reconnection - blocked in read-only mode
         if (!isReadOnly)
         {
-            var canvasPos = GetCanvasPosition(context, e);
-            var reconnectInfo = CheckEdgeEndpointClick(context, edge, canvasPos);
+            var canvasPos = GetTypedCanvasPosition(context, e);
+            var reconnectInfo = CheckEdgeEndpointClick(context, edge, ToAvaloniaPoint(canvasPos));
 
             if (reconnectInfo.HasValue && context.Settings.ShowEdgeEndpointHandles)
             {
@@ -250,7 +254,8 @@ public class IdleState : InputStateBase
                 // Start reconnecting state
                 if (context.Theme != null && context.MainCanvas != null)
                 {
-                    var screenPos = GetScreenPosition(context, e);
+                    var viewportPos = GetTypedViewportPosition(context, e);
+                    var screenPos = ToAvaloniaPoint(viewportPos);
                     var reconnectState = new ReconnectingState(
                         edge, draggingTarget, fixedNode, fixedPort, movingNode, movingPort, screenPos, context.Theme);
                     reconnectState.CreateTempLine(context.MainCanvas);
@@ -395,7 +400,8 @@ public class IdleState : InputStateBase
         }
 
         // Use canvas coordinates for the initial position since ConnectingState works in canvas space
-        var position = GetCanvasPosition(context, e);
+        var canvasPos = GetTypedCanvasPosition(context, e);
+        var position = ToAvaloniaPoint(canvasPos);
         var connectingState = new ConnectingState(node, port, isOutput, position, portVisual, context.Theme);
         // Use context-aware CreateTempLine which handles direct rendering mode
         connectingState.CreateTempLine(context);
@@ -445,7 +451,9 @@ public class IdleState : InputStateBase
         // Box selection allowed in read-only mode (for viewing, doesn't modify graph)
         else
         {
-            var canvasPoint = context.ViewportToCanvas(position);
+            // Use typed coordinate system for accurate canvas position
+            var typedCanvasPos = GetTypedCanvasPosition(context, e);
+            var canvasPoint = new AvaloniaPoint(typedCanvasPos.X, typedCanvasPos.Y);
             var boxSelectState = new BoxSelectingState(canvasPoint, context.Settings, context.Viewport, context.Theme);
             CapturePointer(e, context.RootPanel);
             e.Handled = true;

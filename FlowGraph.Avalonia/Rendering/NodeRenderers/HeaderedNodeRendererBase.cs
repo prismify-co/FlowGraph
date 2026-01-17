@@ -182,10 +182,13 @@ public abstract class HeaderedNodeRendererBase : DataNodeRendererBase
         var outerBorder = FindByTag<Border>(visual, OuterBorderTag) ?? (visual as Border);
         if (outerBorder != null)
         {
+            // Priority: Selected > Highlighted > Normal
             outerBorder.BorderBrush = node.IsSelected
                 ? context.Theme.NodeSelectedBorder
-                : GetNodeBorderBrush(context.Theme);
-            outerBorder.BorderThickness = new Thickness(node.IsSelected ? SelectedBorderThickness : BorderThickness);
+                : node.IsHighlighted
+                    ? context.Theme.NodeHighlightedBorder
+                    : GetNodeBorderBrush(context.Theme);
+            outerBorder.BorderThickness = new Thickness((node.IsSelected || node.IsHighlighted) ? SelectedBorderThickness : BorderThickness);
         }
     }
 

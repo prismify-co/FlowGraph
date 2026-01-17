@@ -154,6 +154,10 @@ public partial class FlowCanvas
                     UpdateResizeHandlesForNode(node);
                 }
                 break;
+            case nameof(Node.IsHighlighted):
+                // Highlight state affects visual appearance (border color/thickness)
+                _renderService.UpdateNodeSelection(node);
+                break;
             case nameof(Node.Width):
             case nameof(Node.Height):
                 _renderService.UpdateNodeSize(node);

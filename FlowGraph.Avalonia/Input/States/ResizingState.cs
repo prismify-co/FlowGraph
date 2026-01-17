@@ -45,7 +45,9 @@ public class ResizingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var currentPoint = GetScreenPosition(context, e);
+        // Use typed viewport position since we need to calculate delta in viewport space
+        // then scale by zoom for canvas-space delta
+        var currentPoint = GetTypedViewportPosition(context, e);
         var deltaX = (currentPoint.X - _startPoint.X) / _viewport.Zoom;
         var deltaY = (currentPoint.Y - _startPoint.Y) / _viewport.Zoom;
 

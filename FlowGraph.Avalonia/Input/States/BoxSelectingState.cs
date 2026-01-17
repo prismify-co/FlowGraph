@@ -68,9 +68,12 @@ public class BoxSelectingState : InputStateBase
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        var screenPos = GetScreenPosition(context, e);
-        _endViewport = screenPos;
-        _endCanvas = context.ViewportToCanvas(screenPos);
+        // Get both viewport and canvas positions using typed coordinate system
+        var typedViewport = GetTypedViewportPosition(context, e);
+        var typedCanvas = GetTypedCanvasPosition(context, e);
+        
+        _endViewport = new AvaloniaPoint(typedViewport.X, typedViewport.Y);
+        _endCanvas = new AvaloniaPoint(typedCanvas.X, typedCanvas.Y);
 
         UpdateSelectionBoxVisual();
         UpdateSelection(context, e.KeyModifiers.HasFlag(KeyModifiers.Control));

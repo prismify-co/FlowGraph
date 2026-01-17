@@ -125,6 +125,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
     public void UpdateSelection(Control visual, Node node, NodeRenderContext context)
     {
         var selectedBrush = context.Theme.NodeSelectedBorder;
+        var highlightedBrush = context.Theme.NodeHighlightedBorder;
         var normalBrush = context.Theme.GroupBorder;
 
         if (visual is Grid grid)
@@ -135,10 +136,15 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
             if (border != null)
             {
-                border.Stroke = node.IsSelected ? selectedBrush : normalBrush;
+                // Priority: Selected > Highlighted > Normal
+                border.Stroke = node.IsSelected
+                    ? selectedBrush
+                    : node.IsHighlighted
+                        ? highlightedBrush
+                        : normalBrush;
 
-                // Toggle dashed style based on selection
-                if (node.IsSelected)
+                // Toggle dashed style based on selection/highlight
+                if (node.IsSelected || node.IsHighlighted)
                 {
                     border.StrokeDashArray = null;
                 }

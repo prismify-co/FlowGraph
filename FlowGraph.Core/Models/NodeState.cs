@@ -15,6 +15,7 @@ public class NodeState : ObservableBase, INodeState
   private double? _width;
   private double? _height;
   private bool _isSelected;
+  private bool _isHighlighted;
   private bool _isDragging;
   private bool _isCollapsed;
   private bool _isVisible = true;
@@ -56,6 +57,13 @@ public class NodeState : ObservableBase, INodeState
   }
 
   /// <inheritdoc />
+  public bool IsHighlighted
+  {
+    get => _isHighlighted;
+    set => SetField(ref _isHighlighted, value);
+  }
+
+  /// <inheritdoc />
   public bool IsDragging
   {
     get => _isDragging;
@@ -93,6 +101,7 @@ public class NodeState : ObservableBase, INodeState
     Width = Width,
     Height = Height,
     IsSelected = IsSelected,
+    IsHighlighted = IsHighlighted,
     IsDragging = IsDragging,
     IsCollapsed = IsCollapsed,
     IsVisible = IsVisible,
@@ -109,6 +118,7 @@ public class NodeState : ObservableBase, INodeState
     Width = other.Width;
     Height = other.Height;
     IsSelected = other.IsSelected;
+    IsHighlighted = other.IsHighlighted;
     IsDragging = other.IsDragging;
     IsCollapsed = other.IsCollapsed;
     IsVisible = other.IsVisible;
