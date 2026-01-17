@@ -7,6 +7,7 @@ A node-based graph editor for .NET and Avalonia.
 - [Getting Started](articles/getting-started.md)
 - [API Reference](api/index.md)
 - [Guides](articles/guides/index.md)
+- [Architecture](COORDINATE_SYSTEM_ARCHITECTURE.md)
 
 ## About
 
@@ -40,4 +41,4 @@ dotnet add package FlowGraph.Avalonia
 
 ## License
 
-MIT License - © 2026 Prismify LLC
+MIT License - ï¿½ 2026 Prismify LLC
