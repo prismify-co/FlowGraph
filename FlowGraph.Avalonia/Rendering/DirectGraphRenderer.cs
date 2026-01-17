@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Core;
+using FlowGraph.Core.Events;
 using FlowGraph.Core.Rendering;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -194,11 +195,19 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         // Only rebuild spatial index if graph instance changed (not on every viewport/selection change)
         if (_graph != graph)
         {
+            // Unsubscribe from old graph's NodeBoundsChanged event
+            if (_graph != null)
+                _graph.NodeBoundsChanged -= OnNodeBoundsChanged;
+
             _indexDirty = true;
             _lastIndexedGraph = null;
 
             // Build node lookup dictionary for O(1) edge endpoint resolution (only when graph changes!)
             _nodeById = graph?.Elements.Nodes.ToDictionary(n => n.Id);
+
+            // Subscribe to new graph's NodeBoundsChanged event (safety net for cache invalidation)
+            if (graph != null)
+                graph.NodeBoundsChanged += OnNodeBoundsChanged;
         }
 
         _graph = graph;
@@ -234,6 +243,17 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
     {
         _indexDirty = true;
         // Don't clear _nodeById - the nodes are the same, just in different positions
+    }
+
+    /// <summary>
+    /// Event handler for Graph.NodeBoundsChanged - acts as a safety net for cache invalidation.
+    /// If explicit InvalidatePositions() calls already set the flag, this is a harmless no-op.
+    /// </summary>
+    private void OnNodeBoundsChanged(object? sender, NodeBoundsChangedEventArgs e)
+    {
+        // Just mark dirty - don't call InvalidateVisual() to avoid N repaints for N changes
+        // The render loop will pick up the dirty flag on the next frame
+        _indexDirty = true;
     }
 
     /// <summary>
