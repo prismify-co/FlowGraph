@@ -65,13 +65,19 @@ public partial class FlowCanvas
     public void SetZoom(double zoom) => _viewport.SetZoom(zoom);
 
     /// <summary>
-    /// Fits all nodes into the viewport.
+    /// Fits all elements (nodes and shapes) into the viewport.
     /// </summary>
     public void FitToView()
     {
-        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
+        if (Graph == null) return;
+        
+        // Need at least one node or shape to fit
+        if (!Graph.Elements.Nodes.Any() && !Graph.Elements.Shapes.Any()) return;
 
         var graphBounds = CalculateGraphBounds();
+        if (graphBounds.Width <= 0 || graphBounds.Height <= 0)
+            return;
+            
         var viewSize = Bounds.Size;
         
         if (viewSize.Width <= 0 || viewSize.Height <= 0)
@@ -82,13 +88,17 @@ public partial class FlowCanvas
     }
 
     /// <summary>
-    /// Centers the viewport on the center of all nodes without changing zoom.
+    /// Centers the viewport on the center of all elements (nodes and shapes) without changing zoom.
     /// </summary>
     public void CenterOnGraph()
     {
-        if (Graph == null || !Graph.Elements.Nodes.Any()) return;
+        if (Graph == null) return;
+        if (!Graph.Elements.Nodes.Any() && !Graph.Elements.Shapes.Any()) return;
 
         var bounds = CalculateGraphBounds();
+        if (bounds.Width <= 0 || bounds.Height <= 0)
+            return;
+            
         var center = new AvaloniaPoint(
             bounds.X + bounds.Width / 2,
             bounds.Y + bounds.Height / 2);
