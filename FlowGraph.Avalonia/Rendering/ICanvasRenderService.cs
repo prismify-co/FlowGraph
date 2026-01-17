@@ -46,9 +46,18 @@ public interface ICanvasRenderService
   void UpdateResizeHandlePositions(Node node);
 
   /// <summary>
+  /// Updates all visual aspects of a node after a move operation.
+  /// This is more efficient than calling individual update methods.
+  /// In direct mode, this triggers a single invalidation.
+  /// In retained mode, this updates position, handles, and edges.
+  /// </summary>
+  /// <param name="node">The node that was moved.</param>
+  void UpdateNodeAfterMove(Node node);
+
+  /// <summary>
   /// Updates all visual aspects of a node after a resize operation.
   /// This is more efficient than calling individual update methods.
-  /// In direct mode, this triggers a single refresh.
+  /// In direct mode, this triggers a single invalidation.
   /// In retained mode, this updates size, position, handles, and edges.
   /// </summary>
   /// <param name="node">The node that was resized.</param>

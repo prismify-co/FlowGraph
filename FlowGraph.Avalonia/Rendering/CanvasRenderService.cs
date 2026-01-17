@@ -124,6 +124,24 @@ public class CanvasRenderService : ICanvasRenderService
   }
 
   /// <inheritdoc />
+  public void UpdateNodeAfterMove(Node node)
+  {
+    if (IsDirectRenderingMode)
+    {
+      // Direct rendering: mark as needing repaint
+      // Avalonia batches this with any other pending invalidations
+      Invalidate();
+    }
+    else
+    {
+      // Retained mode: update position, handles, and edges
+      _retainedRenderer.UpdateNodePosition(node);
+      _retainedRenderer.UpdateResizeHandlePositions(node);
+      _renderEdgesAction();
+    }
+  }
+
+  /// <inheritdoc />
   public void UpdateNodeAfterResize(Node node)
   {
     if (IsDirectRenderingMode)

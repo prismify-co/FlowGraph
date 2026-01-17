@@ -140,9 +140,8 @@ public partial class FlowCanvas
         switch (e.PropertyName)
         {
             case nameof(Node.Position):
-                _renderService.UpdateNodePosition(node);
-                _renderService.UpdateResizeHandlePositions(node);
-                _renderService.RenderEdges();
+                // Use the batched update for efficiency (handles edges too)
+                _renderService.UpdateNodeAfterMove(node);
                 break;
             case nameof(Node.IsSelected):
                 System.Diagnostics.Debug.WriteLine($"[OnNodePropertyChanged] Calling UpdateNodeSelection for {node.Id}");
@@ -160,10 +159,8 @@ public partial class FlowCanvas
                 break;
             case nameof(Node.Width):
             case nameof(Node.Height):
-                _renderService.UpdateNodeSize(node);
-                _renderService.UpdateNodePosition(node);
-                _renderService.UpdateResizeHandlePositions(node);
-                _renderService.RenderEdges();
+                // Use the batched update for efficiency (handles edges too)
+                _renderService.UpdateNodeAfterResize(node);
                 break;
             case nameof(Node.IsCollapsed):
                 // Update resize handles when collapse state changes
