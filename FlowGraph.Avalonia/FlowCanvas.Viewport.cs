@@ -84,6 +84,10 @@ public partial class FlowCanvas
             return;
 
         _viewport.FitToBounds(graphBounds, viewSize, Settings.FitToViewPadding);
+        
+        // Explicitly apply transforms - the ViewportChanged event may not trigger 
+        // ApplyViewportTransforms if we're in certain states (e.g., during graph loading)
+        ApplyViewportTransforms();
         RenderGrid();
     }
 
@@ -104,6 +108,7 @@ public partial class FlowCanvas
             bounds.Y + bounds.Height / 2);
 
         _viewport.CenterOn(center);
+        ApplyViewportTransforms();
         RenderGrid();
     }
 

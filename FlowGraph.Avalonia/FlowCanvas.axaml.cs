@@ -877,6 +877,12 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _viewport.ApplyToTransforms(_viewportTransform);
         }
 
+        // DirectRendering mode bypasses visual tree, so we need to trigger a redraw
+        if (_useDirectRendering && _directRenderer != null && (zoomChanged || offsetChanged))
+        {
+            _directRenderer.InvalidateVisual();
+        }
+
         // For zoom changes, only update elements that use InverseScale
         // (resize handles must stay constant screen size)
         // The MatrixTransform handles scaling for all other elements
