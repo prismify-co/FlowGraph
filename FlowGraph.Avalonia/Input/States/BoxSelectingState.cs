@@ -15,18 +15,20 @@ public class BoxSelectingState : InputStateBase
 {
     private readonly AvaloniaPoint _startCanvas;
     private AvaloniaPoint _endCanvas;
+    private AvaloniaPoint _endViewport;
     private readonly Rectangle _selectionBox;
-    private readonly Canvas? _canvas;
+    private Panel? _container;
     private readonly FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
+    private bool _isDirectRenderingMode;
 
     public override string Name => "BoxSelecting";
 
-    public BoxSelectingState(AvaloniaPoint startCanvasPoint, Canvas? canvas, FlowCanvasSettings settings, ViewportState viewport, ThemeResources? theme = null)
+    public BoxSelectingState(AvaloniaPoint startCanvasPoint, FlowCanvasSettings settings, ViewportState viewport, ThemeResources? theme = null)
     {
         _startCanvas = startCanvasPoint;
         _endCanvas = startCanvasPoint;
-        _canvas = canvas;
+        _endViewport = viewport.CanvasToViewport(startCanvasPoint);
         _settings = settings;
         _viewport = viewport;
 
@@ -41,18 +43,33 @@ public class BoxSelectingState : InputStateBase
 
     public override void Enter(InputStateContext context)
     {
-        _canvas?.Children.Add(_selectionBox);
+        // In Direct Rendering mode, add to RootPanel (untransformed) and use viewport coordinates
+        // In Visual Tree mode, add to MainCanvas (transformed) and use canvas coordinates
+        _isDirectRenderingMode = context.DirectRenderer != null;
+        
+        if (_isDirectRenderingMode && context.RootPanel != null)
+        {
+            _container = context.RootPanel;
+        }
+        else
+        {
+            _container = context.MainCanvas;
+        }
+        
+        _container?.Children.Add(_selectionBox);
         UpdateSelectionBoxVisual();
     }
 
     public override void Exit(InputStateContext context)
     {
-        _canvas?.Children.Remove(_selectionBox);
+        _container?.Children.Remove(_selectionBox);
+        _container = null;
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
         var screenPos = GetScreenPosition(context, e);
+        _endViewport = screenPos;
         _endCanvas = context.ViewportToCanvas(screenPos);
 
         UpdateSelectionBoxVisual();
@@ -80,13 +97,27 @@ public class BoxSelectingState : InputStateBase
 
     private void UpdateSelectionBoxVisual()
     {
-        var startScreen = _viewport.CanvasToViewport(_startCanvas);
-        var endScreen = _viewport.CanvasToViewport(_endCanvas);
-
-        var left = Math.Min(startScreen.X, endScreen.X);
-        var top = Math.Min(startScreen.Y, endScreen.Y);
-        var width = Math.Abs(endScreen.X - startScreen.X);
-        var height = Math.Abs(endScreen.Y - startScreen.Y);
+        double left, top, width, height;
+        
+        if (_isDirectRenderingMode)
+        {
+            // Direct Rendering mode: container is RootPanel (untransformed)
+            // Use viewport coordinates directly
+            var startViewport = _viewport.CanvasToViewport(_startCanvas);
+            left = Math.Min(startViewport.X, _endViewport.X);
+            top = Math.Min(startViewport.Y, _endViewport.Y);
+            width = Math.Abs(_endViewport.X - startViewport.X);
+            height = Math.Abs(_endViewport.Y - startViewport.Y);
+        }
+        else
+        {
+            // Visual Tree mode: container is MainCanvas (transformed)
+            // Use canvas coordinates - MatrixTransform will handle viewport transform
+            left = Math.Min(_startCanvas.X, _endCanvas.X);
+            top = Math.Min(_startCanvas.Y, _endCanvas.Y);
+            width = Math.Abs(_endCanvas.X - _startCanvas.X);
+            height = Math.Abs(_endCanvas.Y - _startCanvas.Y);
+        }
 
         Canvas.SetLeft(_selectionBox, left);
         Canvas.SetTop(_selectionBox, top);
