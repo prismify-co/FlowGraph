@@ -282,7 +282,7 @@ public class ViewportState : IViewportState
     /// <summary>
     /// Fits the viewport to show a bounding box with padding.
     /// The padding is the minimum margin on each side in screen pixels.
-    /// For better visual results, the actual margin will be at least 15% of the viewport dimension.
+    /// For better visual results, the actual margin will be at least <see cref="FlowCanvasSettings.FitToViewMinPaddingPercent"/> of the viewport dimension.
     /// </summary>
     public void FitToBounds(Rect bounds, Size viewSize, double padding = 50)
     {
@@ -291,9 +291,10 @@ public class ViewportState : IViewportState
 
         ViewSize = viewSize;
 
-        // Use the larger of fixed padding or 15% of viewport size for better visual margins
-        var effectivePaddingX = Math.Max(padding, viewSize.Width * 0.15);
-        var effectivePaddingY = Math.Max(padding, viewSize.Height * 0.15);
+        // Use the larger of fixed padding or percentage of viewport size for better visual margins
+        var minPaddingPercent = _settings.FitToViewMinPaddingPercent;
+        var effectivePaddingX = Math.Max(padding, viewSize.Width * minPaddingPercent);
+        var effectivePaddingY = Math.Max(padding, viewSize.Height * minPaddingPercent);
 
         var zoomX = (viewSize.Width - effectivePaddingX * 2) / bounds.Width;
         var zoomY = (viewSize.Height - effectivePaddingY * 2) / bounds.Height;

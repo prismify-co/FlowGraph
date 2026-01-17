@@ -294,6 +294,20 @@ public class FlowCanvasSettings
     public double ViewportBoundsPadding { get; set; } = 100;
 
     /// <summary>
+    /// Minimum padding (in pixels) around content when using FitToView.
+    /// The actual padding may be larger based on <see cref="FitToViewMinPaddingPercent"/>.
+    /// </summary>
+    public double FitToViewPadding { get; set; } = 50;
+
+    /// <summary>
+    /// Minimum padding as a percentage of viewport size (0.0 to 1.0) when using FitToView.
+    /// The effective padding is the larger of <see cref="FitToViewPadding"/> or this percentage.
+    /// For example, 0.15 means at least 15% of the viewport dimension will be padding.
+    /// Set to 0 to use only fixed pixel padding.
+    /// </summary>
+    public double FitToViewMinPaddingPercent { get; set; } = 0.15;
+
+    /// <summary>
     /// Whether to pan the viewport when scrolling (mouse wheel without Ctrl).
     /// When true: scroll = pan, Ctrl+scroll = zoom
     /// When false: scroll = zoom (default behavior)

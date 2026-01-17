@@ -77,7 +77,7 @@ public partial class FlowCanvas
         if (viewSize.Width <= 0 || viewSize.Height <= 0)
             return;
 
-        _viewport.FitToBounds(graphBounds, viewSize);
+        _viewport.FitToBounds(graphBounds, viewSize, Settings.FitToViewPadding);
         RenderGrid();
     }
 
