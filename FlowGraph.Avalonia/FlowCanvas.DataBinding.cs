@@ -299,6 +299,10 @@ public partial class FlowCanvas
 
             System.Diagnostics.Debug.WriteLine($"[OnNodesChanged] Reset: subscribed to {nodeCount} nodes PropertyChanged");
 
+            // IMPORTANT: Invalidate direct renderer's spatial index and node dictionary
+            // This must happen for Reset too, not just Add/Remove!
+            _directRenderer?.InvalidateIndex();
+
             // Reset requires full re-render
             RenderElements();
             return;
