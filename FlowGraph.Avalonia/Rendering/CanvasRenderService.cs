@@ -150,8 +150,14 @@ public class CanvasRenderService : ICanvasRenderService
   /// <inheritdoc />
   public void Invalidate()
   {
-    // Both modes use refresh to ensure immediate update
-    _refreshAction();
+    if (IsDirectRenderingMode)
+    {
+      // Direct rendering: just mark as needing repaint
+      // Avalonia will batch multiple invalidations into one Render() call
+      _getDirectRenderer()?.InvalidateVisual();
+    }
+    // Retained mode: no-op, the visual tree automatically handles invalidation
+    // when control properties change
   }
 
   /// <inheritdoc />
