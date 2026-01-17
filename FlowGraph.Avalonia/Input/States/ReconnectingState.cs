@@ -26,7 +26,13 @@ public class ReconnectingState : InputStateBase
     private readonly Node _originalMovingNode;
     private readonly Port _originalMovingPort;
     private AvaloniaPoint _currentEndPoint;
+    private AvaloniaPoint _currentEndPointViewport;
     private readonly ThemeResources _theme;
+
+    // Temp line overlay for showing the reconnecting edge
+    private AvaloniaPath? _tempLine;
+    private Panel? _tempLineContainer;
+    private bool _isDirectRenderingMode;
 
     // Track hovered/snapped port for validation visual feedback
     private Control? _hoveredPortVisual;
@@ -74,15 +80,55 @@ public class ReconnectingState : InputStateBase
 
     public void CreateTempLine(Canvas canvas)
     {
-        // We no longer create a separate temp line - we update the existing edge visual
+        // Legacy method - kept for backwards compatibility
+        CreateTempLineInternal(canvas, isDirectMode: false);
+    }
+
+    /// <summary>
+    /// Creates the temporary reconnection line, using RootPanel for direct rendering mode
+    /// or MainCanvas for visual tree mode.
+    /// </summary>
+    public void CreateTempLine(InputStateContext context)
+    {
+        _isDirectRenderingMode = context.DirectRenderer != null;
+        
+        if (_isDirectRenderingMode && context.RootPanel != null)
+        {
+            CreateTempLineInternal(context.RootPanel, isDirectMode: true);
+        }
+        else if (context.MainCanvas != null)
+        {
+            CreateTempLineInternal(context.MainCanvas, isDirectMode: false);
+        }
+    }
+
+    private void CreateTempLineInternal(Panel container, bool isDirectMode)
+    {
+        _tempLine = new AvaloniaPath
+        {
+            Stroke = _theme.EdgeStroke,
+            StrokeThickness = 2,
+            StrokeDashArray = [5, 3],
+            Opacity = 0.8,
+            IsHitTestVisible = false
+        };
+        container.Children.Add(_tempLine);
+        _tempLineContainer = container;
+        _isDirectRenderingMode = isDirectMode;
     }
 
     public override void Enter(InputStateContext context)
     {
         base.Enter(context);
+        
+        // Create the temp line overlay for showing the reconnecting edge
+        CreateTempLine(context);
 
-        // Make the edge appear "detached" by styling it as a connection-in-progress
-        UpdateEdgeVisualAsDetached(context);
+        // Hide the original edge visual while reconnecting (if it exists in visual tree mode)
+        HideOriginalEdgeVisual(context);
+        
+        // Initial update of the temp line
+        UpdateTempLine(context);
     }
 
     public override void Exit(InputStateContext context)
@@ -90,16 +136,25 @@ public class ReconnectingState : InputStateBase
         // Restore hovered port color
         RestoreHoveredPortColor();
 
-        // Reset the edge visual styling (it will be re-rendered if reconnection happened)
-        ResetEdgeVisual(context);
+        // Remove temp line
+        if (_tempLine != null && _tempLineContainer != null)
+        {
+            _tempLineContainer.Children.Remove(_tempLine);
+            _tempLine = null;
+            _tempLineContainer = null;
+        }
+
+        // Restore the original edge visual (will be re-rendered if reconnection happened)
+        ShowOriginalEdgeVisual(context);
     }
 
     public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
     {
-        // Store screen position for AutoPan edge detection and snap target calculation
+        // Store screen position for AutoPan edge detection and direct rendering mode
         var screenPos = GetScreenPosition(context, e);
+        _currentEndPointViewport = screenPos;
 
-        // Get canvas position for edge visual and hit testing
+        // Get canvas position for hit testing and snap calculations
         _currentEndPoint = GetCanvasPosition(context, e);
 
         // AutoPan: pan viewport when dragging near edges (uses screen coordinates)
@@ -125,8 +180,8 @@ public class ReconnectingState : InputStateBase
         // Try to find a snap target (uses canvas coordinates for distance calculation)
         _snappedTarget = FindSnapTarget(context, _currentEndPoint);
 
-        // Update the edge visual to follow the cursor (or snap to target)
-        UpdateEdgeVisual(context);
+        // Update the temp line overlay to follow the cursor (or snap to target)
+        UpdateTempLine(context);
 
         // Update port validation visual (uses canvas coordinates for hit testing)
         UpdatePortValidationVisual(context, _currentEndPoint);
@@ -224,71 +279,23 @@ public class ReconnectingState : InputStateBase
     }
 
     /// <summary>
-    /// Updates the edge visual to show it as "detached" and following the cursor.
+    /// Hides the original edge visual while reconnecting (visual tree mode only).
     /// </summary>
-    private void UpdateEdgeVisualAsDetached(InputStateContext context)
+    private void HideOriginalEdgeVisual(InputStateContext context)
     {
+        // In visual tree mode, hide the original edge so our temp line is visible
         var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
         if (visiblePath != null)
         {
-            // Style as a connection in progress (dashed, slightly transparent)
-            visiblePath.StrokeDashArray = [5, 3];
-            visiblePath.Opacity = 0.8;
-            visiblePath.IsHitTestVisible = false; // Don't block hit testing on ports underneath
-        }
-    }
-
-    /// <summary>
-    /// Updates the edge visual to follow the cursor or snap to a target port.
-    /// </summary>
-    private void UpdateEdgeVisual(InputStateContext context)
-    {
-        var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
-        if (visiblePath == null) return;
-
-        // Use canvas coordinates for path geometry on MainCanvas (which uses MatrixTransform)
-        var fixedPoint = context.GraphRenderer.GetPortCanvasPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
-
-        // Determine the moving endpoint
-        AvaloniaPoint movingPoint;
-        if (_snappedTarget.HasValue)
-        {
-            movingPoint = context.GraphRenderer.GetPortCanvasPosition(
-                _snappedTarget.Value.node,
-                _snappedTarget.Value.port,
-                _snappedTarget.Value.isOutput);
-        }
-        else
-        {
-            // _currentEndPoint is already in canvas coordinates (set by GetCanvasPosition in HandlePointerMoved)
-            movingPoint = _currentEndPoint;
+            visiblePath.IsVisible = false;
         }
 
-        // Create the path geometry
-        // When dragging target: fixed is source (output), moving is target (input)
-        // When dragging source: moving is source (output), fixed is target (input)
-        PathGeometry pathGeometry;
-        if (_draggingTarget)
-        {
-            // Fixed point is source, moving point is target
-            pathGeometry = BezierHelper.CreateBezierPath(fixedPoint, movingPoint, false);
-        }
-        else
-        {
-            // Moving point is source, fixed point is target
-            pathGeometry = BezierHelper.CreateBezierPath(movingPoint, fixedPoint, false);
-        }
-
-        visiblePath.Data = pathGeometry;
-
-        // Also update the hit area path
         var hitAreaPath = context.GraphRenderer.GetEdgeVisual(_edge.Id);
         if (hitAreaPath != null)
         {
-            hitAreaPath.Data = pathGeometry;
+            hitAreaPath.IsVisible = false;
         }
 
-        // Hide markers while dragging (they would be at wrong positions)
         var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
         if (markers != null)
         {
@@ -300,20 +307,23 @@ public class ReconnectingState : InputStateBase
     }
 
     /// <summary>
-    /// Resets the edge visual to its normal state.
+    /// Shows the original edge visual after reconnecting (visual tree mode only).
     /// </summary>
-    private void ResetEdgeVisual(InputStateContext context)
+    private void ShowOriginalEdgeVisual(InputStateContext context)
     {
+        // Restore visibility (the edge will be re-rendered/removed if reconnection happened)
         var visiblePath = context.GraphRenderer.GetEdgeVisiblePath(_edge.Id);
         if (visiblePath != null)
         {
-            // Reset styling
-            visiblePath.StrokeDashArray = null;
-            visiblePath.Opacity = 1.0;
-            visiblePath.IsHitTestVisible = true; // Restore hit testing
+            visiblePath.IsVisible = true;
         }
 
-        // Show markers again
+        var hitAreaPath = context.GraphRenderer.GetEdgeVisual(_edge.Id);
+        if (hitAreaPath != null)
+        {
+            hitAreaPath.IsVisible = true;
+        }
+
         var markers = context.GraphRenderer.GetEdgeMarkers(_edge.Id);
         if (markers != null)
         {
@@ -322,6 +332,84 @@ public class ReconnectingState : InputStateBase
                 marker.IsVisible = true;
             }
         }
+    }
+
+    /// <summary>
+    /// Updates the temp line overlay to follow the cursor or snap to a target port.
+    /// </summary>
+    private void UpdateTempLine(InputStateContext context)
+    {
+        if (_tempLine == null) return;
+
+        // Get canvas coordinates for the fixed port position
+        var fixedPointCanvas = context.GraphRenderer.GetPortCanvasPosition(_fixedNode, _fixedPort, _fixedPortIsOutput);
+
+        // Determine the moving endpoint in canvas coordinates
+        AvaloniaPoint movingPointCanvas;
+        if (_snappedTarget.HasValue)
+        {
+            movingPointCanvas = context.GraphRenderer.GetPortCanvasPosition(
+                _snappedTarget.Value.node,
+                _snappedTarget.Value.port,
+                _snappedTarget.Value.isOutput);
+        }
+        else
+        {
+            movingPointCanvas = _currentEndPoint;
+        }
+
+        // Convert to the appropriate coordinate space based on rendering mode
+        AvaloniaPoint startPoint, endPoint;
+        if (_isDirectRenderingMode)
+        {
+            // Direct rendering mode: temp line is in RootPanel (untransformed)
+            // Convert canvas coords to viewport coords
+            var fixedPointViewport = context.CanvasToViewport(fixedPointCanvas);
+            
+            AvaloniaPoint movingPointViewport;
+            if (_snappedTarget.HasValue)
+            {
+                movingPointViewport = context.CanvasToViewport(movingPointCanvas);
+            }
+            else
+            {
+                // Use viewport position directly for cursor
+                movingPointViewport = _currentEndPointViewport;
+            }
+
+            // Determine start/end based on which end we're dragging
+            if (_draggingTarget)
+            {
+                startPoint = fixedPointViewport;
+                endPoint = movingPointViewport;
+            }
+            else
+            {
+                startPoint = movingPointViewport;
+                endPoint = fixedPointViewport;
+            }
+        }
+        else
+        {
+            // Visual tree mode: temp line is in MainCanvas (transformed)
+            // Use canvas coordinates directly
+            if (_draggingTarget)
+            {
+                startPoint = fixedPointCanvas;
+                endPoint = movingPointCanvas;
+            }
+            else
+            {
+                startPoint = movingPointCanvas;
+                endPoint = fixedPointCanvas;
+            }
+        }
+
+        // Create the bezier path geometry
+        // When dragging target: fixed is source (output), moving is target (input)
+        // When dragging source: moving is source (output), fixed is target (input)
+        var pathGeometry = BezierHelper.CreateBezierPath(startPoint, endPoint, !_draggingTarget);
+        _tempLine.Data = pathGeometry;
     }
 
     private (Node node, Port port, bool isOutput)? FindSnapTarget(InputStateContext context, AvaloniaPoint canvasPoint)
