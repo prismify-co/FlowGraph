@@ -65,19 +65,34 @@ Implementation classes and integration into InputStateContext (commits 619e09a, 
 - `context.Coordinates` - Type-safe coordinate interface (lazy-initialized)
 - `context.RenderTarget` - Mode-agnostic rendering interface (lazy-initialized)
 
-### Phase 4: Incremental Migration 🟡 IN PROGRESS
+### Phase 4: Incremental Migration ✅ COMPLETE
 
-Input states can now use the new typed system. Migration is incremental - existing code continues to work:
+All input states now use the typed coordinate system:
 
 ```csharp
-// Old way (still works)
-var canvasPos = GetCanvasPosition(context, e);
-
-// New way (type-safe, mode-agnostic)
+// All states now use typed methods
 CanvasPoint canvasPos = GetTypedCanvasPosition(context, e);
-// or
-CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
+ViewportPoint viewportPos = GetTypedViewportPosition(context, e);
 ```
+
+**Migrated States:**
+- `DraggingState` - Uses `CanvasPoint` for position tracking and delta calculations
+- `BoxSelectingState` - Uses `CanvasPoint` for selection rectangle bounds
+- `ConnectingState` - Uses `CanvasPoint` for endpoint tracking
+- `ReconnectingState` - Uses `CanvasPoint` for endpoint tracking
+- `ResizingState` - Uses `ViewportPoint` for delta calculations
+- `PanningState` - Uses `ViewportPoint` for pan delta calculations
+- `IdleState` - Uses `CanvasPoint` for hit testing
+
+**Public API Added:**
+- `FlowCanvas.GetTypedCanvasPosition(e)` → `CanvasPoint` (for extension/Pro code)
+- `FlowCanvas.GetTypedViewportPosition(e)` → `ViewportPoint` (for extension/Pro code)
+
+**Deprecated Methods:**
+- `FlowCanvas.GetCanvasPosition(e)` - Use `GetTypedCanvasPosition` instead
+- `FlowCanvas.GetViewportPosition(e)` - Use `GetTypedViewportPosition` instead
+- `InputStateBase.GetCanvasPosition()` - Use `GetTypedCanvasPosition` instead
+- `InputStateBase.GetScreenPosition()` - Use `GetTypedViewportPosition` instead
 
 ---
 
@@ -127,7 +142,9 @@ if (visiblePath == null) return; // This returns null in Direct Rendering!
 
 ---
 
-## Current State Analysis
+## Historical Context (Pre-Refactor State)
+
+> **Note:** This section documents the state of the code BEFORE the typed coordinate system refactor was completed. It is preserved for historical reference. The issues described below have been resolved.
 
 ### 1. ViewportState.cs - Transform Management
 
@@ -154,10 +171,12 @@ public Point CanvasToViewport(Point canvasPoint)
 }
 ```
 
-**Issues:**
+**Issues (RESOLVED):**
 
-- Transforms are duplicated in multiple places (ViewportState, DirectGraphRenderer.CoordinateTransforms.cs)
-- No type safety - easy to pass viewport coords where canvas coords expected
+- ~~Transforms are duplicated in multiple places (ViewportState, DirectGraphRenderer.CoordinateTransforms.cs)~~
+- ~~No type safety - easy to pass viewport coords where canvas coords expected~~
+
+**Resolution:** Type-safe `CanvasPoint`/`ViewportPoint` types now prevent accidental mixing at compile time.
 
 ### 2. InputStateContext.cs - Coordinate Methods Exposed
 
@@ -170,11 +189,13 @@ public AvaloniaPoint ViewportToCanvas(AvaloniaPoint viewportPoint) => _viewport.
 public AvaloniaPoint CanvasToViewport(AvaloniaPoint canvasPoint) => _viewport.CanvasToViewport(canvasPoint);
 ```
 
-**Issues:**
+**Issues (RESOLVED):**
 
-- Input states must decide which coordinate space to work in
-- Different states use different approaches (some use `GetCanvasPosition`, some use `GetScreenPosition + ViewportToCanvas`)
-- ConnectingState has complex mode-aware logic for temp line positioning
+- ~~Input states must decide which coordinate space to work in~~
+- ~~Different states use different approaches (some use `GetCanvasPosition`, some use `GetScreenPosition + ViewportToCanvas`)~~
+- ~~ConnectingState has complex mode-aware logic for temp line positioning~~
+
+**Resolution:** All input states now use `GetTypedCanvasPosition()` and `GetTypedViewportPosition()` which handle mode-aware coordinate conversion internally.
 
 ### 3. GraphRenderModel.cs - Geometry Calculations
 
@@ -249,18 +270,21 @@ private AvaloniaPoint CanvasToScreen(AvaloniaPoint canvasPoint, double zoom, dou
 
 ---
 
-## Root Cause Analysis
+## Root Cause Analysis (Historical)
 
-The fundamental problem is **coordinate space ambiguity**:
+> **Note:** This section documents the problems that existed BEFORE the typed coordinate system refactor. These issues have been resolved.
+
+The fundamental problem was **coordinate space ambiguity**:
 
 1. **Visual Tree Mode**: Elements in `MainCanvas` use canvas coordinates, the `MatrixTransform` handles viewport transform automatically
 2. **Direct Rendering Mode**: Renderer is in `RootPanel`, must manually transform canvas→viewport for drawing
 3. **Interaction Code**: Must work differently depending on mode, leading to bugs like the temp line positioning issue
 
-### The ConnectingState Example
+### The ConnectingState Example (Historical)
 
 ```csharp
-// ConnectingState.cs - Mode-aware temp line positioning
+// OLD CODE - ConnectingState.cs - Mode-aware temp line positioning
+// This anti-pattern has been eliminated!
 if (context.DirectRenderer != null)
 {
     // Direct mode: temp line in RootPanel (untransformed)
@@ -277,11 +301,11 @@ else
 }
 ```
 
-**This per-state mode awareness is the anti-pattern we need to eliminate.**
+**This per-state mode awareness was the anti-pattern we needed to eliminate.** ✅ RESOLVED
 
 ---
 
-## Proposed Architecture
+## Implemented Architecture
 
 ### Design Principles
 
@@ -292,7 +316,7 @@ else
 
 ### 1. Typed Coordinate System
 
-Create distinct types for each coordinate space to prevent mixing at compile time:
+Distinct types for each coordinate space prevent mixing at compile time:
 
 ```csharp
 // FlowGraph.Core/Coordinates/CanvasPoint.cs
@@ -805,7 +829,8 @@ public class InputStateContext
 ### Before (Current)
 
 ```csharp
-// ConnectingState - must know about rendering modes
+// OLD CODE - ConnectingState - must know about rendering modes
+// This pattern has been ELIMINATED
 public override void Enter(InputStateContext context)
 {
     // Create temp line - must choose container based on mode
@@ -842,10 +867,11 @@ public override StateTransitionResult HandlePointerMoved(InputStateContext conte
 }
 ```
 
-### After (Proposed)
+### After (Implemented ✅)
 
 ```csharp
 // ConnectingState - rendering mode agnostic
+// All input states now use this pattern
 public override void Enter(InputStateContext context)
 {
     var startCanvas = context.RenderModel.GetPortPosition(_sourceNode, _sourcePort, _fromOutput);
@@ -857,8 +883,8 @@ public override void Enter(InputStateContext context)
 
 public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
 {
-    // IInputCoordinates handles coordinate conversion
-    var canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
+    // GetTypedCanvasPosition handles mode-aware coordinate conversion
+    CanvasPoint canvasPos = GetTypedCanvasPosition(context, e);
 
     // Always work in canvas coordinates
     context.RenderTarget.UpdateTempConnectionLine(_tempLineHandle, canvasPos);
@@ -869,7 +895,7 @@ public override StateTransitionResult HandlePointerMoved(InputStateContext conte
 
 ---
 
-## Benefits
+## Benefits (Achieved ✅)
 
 1. **Type Safety**: Compile-time prevention of coordinate mixing
 2. **Simplicity**: States don't need mode awareness
@@ -888,9 +914,9 @@ public override StateTransitionResult HandlePointerMoved(InputStateContext conte
 
 ---
 
-## Appendix: Complete Type Definitions
+## Appendix: Implemented Type Definitions
 
-See proposed files:
+See implemented files:
 
 - `FlowGraph.Core/Coordinates/CanvasPoint.cs`
 - `FlowGraph.Core/Coordinates/ViewportPoint.cs`
@@ -898,11 +924,11 @@ See proposed files:
 - `FlowGraph.Core/Coordinates/ViewportRect.cs`
 - `FlowGraph.Avalonia/Input/IInputCoordinates.cs`
 - `FlowGraph.Avalonia/Rendering/IRenderTarget.cs`
-- `FlowGraph.Avalonia/Rendering/UnifiedRenderTarget.cs`
+- `FlowGraph.Avalonia/Rendering/RenderTargetAdapter.cs`
 
 ## Appendix: Coordinate Flow Diagrams
 
-### Current Flow (Problem)
+### Old Flow (Problem - RESOLVED)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -943,7 +969,7 @@ See proposed files:
 └─────────────────────────────┘       └─────────────────────────────┘
 ```
 
-### Proposed Flow (Solution)
+### Implemented Flow (Solution) ✅
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -964,8 +990,7 @@ See proposed files:
 ┌─────────────────────────────────────────────────────────────────────┐
 │              Input State Logic (Mode Agnostic)                      │
 │                                                                     │
-│   CanvasPoint currentPos = context.Coordinates                     │
-│       .GetPointerCanvasPosition(e);                                 │
+│   CanvasPoint currentPos = GetTypedCanvasPosition(context, e);     │
 │                                                                     │
 │   context.RenderTarget.UpdateTempLine(_handle, currentPos);        │
 │                                                                     │
@@ -1004,14 +1029,14 @@ See proposed files:
 
 ## Conclusion
 
-This architecture eliminates the root cause of coordinate confusion by:
+This architecture successfully eliminated the root cause of coordinate confusion by:
 
 1. Making rendering mode invisible to interaction code
 2. Providing type-safe coordinate abstractions
 3. Centralizing mode-specific logic in well-defined interfaces
 4. Following patterns from established libraries
 
-The migration can be done gradually without breaking existing code, and the end result is significantly simpler interaction code that "just works" regardless of rendering mode.
+**Status: ✅ COMPLETE** - All input states now use the typed coordinate system and are fully mode-agnostic.
 
 ---
 

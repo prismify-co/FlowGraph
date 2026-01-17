@@ -1,3 +1,48 @@
+## FlowGraph v0.6.0
+
+### ✨ Major Refactor: Type-Safe Coordinate System
+
+A comprehensive refactor to prevent coordinate space confusion at compile time.
+
+### New Features
+
+- **Typed Coordinate Types** - New types in `FlowGraph.Core.Coordinates`:
+  - `CanvasPoint`, `CanvasVector`, `CanvasRect` - Canvas/graph space coordinates
+  - `ViewportPoint`, `ViewportVector`, `ViewportRect` - Screen/viewport space coordinates
+  - These prevent accidental mixing of coordinate spaces at compile time
+
+- **Type-Safe FlowCanvas API**:
+  - `GetTypedCanvasPosition(e)` → Returns `CanvasPoint`
+  - `GetTypedViewportPosition(e)` → Returns `ViewportPoint`
+  - Use these for extension/Pro code that needs pointer coordinates
+
+- **Mode-Agnostic Input System** - All input states now work correctly in both Visual Tree and Direct Rendering modes without special-case handling
+
+### Deprecated APIs
+
+The following methods are deprecated and will be removed in a future version:
+
+| Deprecated Method | Replacement |
+|---|---|
+| `FlowCanvas.GetCanvasPosition(e)` | `GetTypedCanvasPosition(e)` |
+| `FlowCanvas.GetViewportPosition(e)` | `GetTypedViewportPosition(e)` |
+| `ViewportState.ScreenToCanvas()` | `ViewportState.ViewportToCanvas()` |
+| `ViewportState.CanvasToScreen()` | `ViewportState.CanvasToViewport()` |
+
+### Internal Improvements
+
+- All input states (`DraggingState`, `ConnectingState`, `BoxSelectingState`, etc.) migrated to typed coordinate system
+- `IInputCoordinates` interface abstracts rendering-mode-specific coordinate conversion
+- `IRenderTarget` interface provides mode-agnostic temporary visual rendering
+- Removed debug statements from production code
+
+### Documentation
+
+- Updated `docs/COORDINATE_SYSTEM_ARCHITECTURE.md` with completion status
+- All implementation phases are now marked as ✅ COMPLETE
+
+---
+
 ## FlowGraph v0.5.1
 
 ### Bug Fixes
