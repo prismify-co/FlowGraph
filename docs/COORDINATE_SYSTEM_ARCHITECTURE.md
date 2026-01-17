@@ -1,8 +1,51 @@
-# FlowGraph Coordinate System Architecture Proposal
+# FlowGraph Coordinate System Architecture
 
 ## Executive Summary
 
-This document proposes a unified coordinate system architecture for FlowGraph that eliminates coordinate confusion between Visual Tree and Direct Rendering modes. The key insight is that **all interaction logic should work in a single coordinate space (Canvas)**, with transforms applied only at rendering boundaries.
+This document describes the coordinate system architecture for FlowGraph, including completed fixes for Direct Rendering mode and the new type-safe coordinate infrastructure.
+
+**Key principle:** All interaction logic should work in a single coordinate space (Canvas), with transforms applied only at rendering boundaries.
+
+## Implementation Status
+
+### Phase 1: Direct Rendering Fixes ✅ COMPLETE
+
+All visual elements that need dual-mode support have been fixed:
+
+| Component           | Visual Element             | Status                    |
+| ------------------- | -------------------------- | ------------------------- |
+| ConnectingState     | Temp connection line       | ✅ Fixed (commit 2ea4ec9) |
+| BoxSelectingState   | Selection rectangle        | ✅ Fixed (commit 8b0a63a) |
+| ReconnectingState   | Temp reconnection line     | ✅ Fixed (commit f5b1b1a) |
+| ResizeHandleManager | Resize handles             | ✅ Fixed (commit 06e0387) |
+| DraggingState       | None (modifies positions)  | ✅ OK                     |
+| ResizingState       | None (modifies dimensions) | ✅ OK                     |
+| PanningState        | None (modifies viewport)   | ✅ OK                     |
+
+### Phase 2: Type-Safe Coordinate Infrastructure ✅ COMPLETE
+
+New type-safe coordinate types have been added to prevent coordinate space confusion at compile time (commit cacb718):
+
+**FlowGraph.Core/Coordinates:**
+- `CanvasPoint`, `CanvasVector`, `CanvasRect` - Canvas/graph space coordinates
+- `ViewportPoint`, `ViewportVector`, `ViewportRect` - Screen/viewport space coordinates
+- `ITypedCoordinateTransformer` - Type-safe coordinate conversion interface
+- `TypedCoordinateTransformer` - Default implementation
+
+**FlowGraph.Avalonia/Coordinates:**
+- `AvaloniaCoordinateExtensions` - Convert between typed coords and Avalonia types
+
+**FlowGraph.Avalonia/Input:**
+- `IInputCoordinates` - Rendering-mode agnostic input coordinate interface
+
+**FlowGraph.Avalonia/Rendering:**
+- `IRenderTarget` - Mode-agnostic temporary visual rendering interface
+
+### Phase 3: Migration to Type-Safe Coordinates 🔲 NOT STARTED
+
+Gradually migrate existing code to use the new type-safe coordinates. This is optional but recommended for long-term maintainability.
+
+---
 
 ## Visual Element Audit (Direct Rendering Mode)
 
@@ -935,3 +978,152 @@ This architecture eliminates the root cause of coordinate confusion by:
 4. Following patterns from established libraries
 
 The migration can be done gradually without breaking existing code, and the end result is significantly simpler interaction code that "just works" regardless of rendering mode.
+
+---
+
+## Appendix: Typed Coordinate System Usage Guide
+
+### A. Type-Safe Coordinate Types
+
+The new coordinate types provide compile-time safety - you cannot accidentally pass a viewport point where a canvas point is expected:
+
+```csharp
+// FlowGraph.Core.Coordinates namespace
+using FlowGraph.Core.Coordinates;
+
+// Canvas coordinates - stable graph positions
+CanvasPoint nodePos = new(100, 200);
+CanvasVector delta = new(10, -5);
+CanvasRect bounds = new(0, 0, 200, 150);
+
+// Viewport coordinates - screen positions (affected by zoom/pan)
+ViewportPoint screenPos = new(500, 300);
+ViewportVector screenDelta = new(20, 10);
+ViewportRect viewBounds = ViewportRect.FromSize(800, 600);
+
+// Type safety - this won't compile!
+// CanvasPoint wrong = screenPos;  // Error: cannot convert ViewportPoint to CanvasPoint
+```
+
+### B. Coordinate Transformation
+
+Use `ITypedCoordinateTransformer` for conversions:
+
+```csharp
+// Create transformer with current viewport state
+var transformer = new TypedCoordinateTransformer(zoom: 1.5, offsetX: 100, offsetY: 50);
+
+// Type-safe conversions
+ViewportPoint viewport = new(500, 300);
+CanvasPoint canvas = transformer.ToCanvas(viewport);  // Returns CanvasPoint
+ViewportPoint back = transformer.ToViewport(canvas);  // Returns ViewportPoint
+
+// Vectors (deltas) - only zoom applied, no offset
+ViewportVector screenDelta = new(30, 20);
+CanvasVector canvasDelta = transformer.ToCanvas(screenDelta);  // 30/1.5, 20/1.5 = (20, 13.3)
+
+// Rectangles
+CanvasRect nodeBounds = new(100, 100, 200, 150);
+ViewportRect screenBounds = transformer.ToViewport(nodeBounds);
+```
+
+### C. Avalonia Integration
+
+Use extension methods to convert between typed coords and Avalonia types:
+
+```csharp
+using FlowGraph.Avalonia.Coordinates;
+using AvaloniaPoint = Avalonia.Point;
+
+// From Avalonia to typed
+AvaloniaPoint avaloniaPos = e.GetPosition(mainCanvas);
+CanvasPoint canvasPos = avaloniaPos.ToCanvasPoint();
+ViewportPoint viewportPos = avaloniaPos.ToViewportPoint();
+
+// From typed to Avalonia (for rendering)
+CanvasPoint nodeCenter = new(150, 200);
+AvaloniaPoint renderPos = nodeCenter.ToAvalonia();
+context.DrawEllipse(brush, pen, renderPos, 5, 5);
+
+// Direct transform with Avalonia types
+AvaloniaPoint transformed = avaloniaPos.ToCanvasSpace(transformer);
+```
+
+### D. Built-in Operations
+
+The coordinate types include useful operations:
+
+```csharp
+// Point arithmetic
+CanvasPoint start = new(100, 100);
+CanvasVector offset = new(50, 30);
+CanvasPoint end = start + offset;  // (150, 130)
+
+// Vector between points
+CanvasVector diff = end - start;  // (50, 30)
+
+// Distance calculations
+double dist = start.DistanceTo(end);
+double distSq = start.DistanceSquaredTo(end);  // Faster for comparisons
+
+// Grid snapping
+CanvasPoint snapped = start.SnappedToGrid(20);  // (100, 100)
+
+// Rectangle operations
+CanvasRect rect = new(50, 50, 200, 150);
+bool contains = rect.Contains(start);  // true
+CanvasRect inflated = rect.Inflate(10);  // Expand by 10 on all sides
+CanvasRect union = rect.Union(otherRect);
+
+// Viewport edge detection (for auto-pan)
+ViewportPoint cursor = new(10, 300);
+ViewportRect bounds = ViewportRect.FromSize(800, 600);
+bool nearEdge = cursor.IsNearEdge(bounds, edgeDistance: 20);  // true (near left)
+ViewportVector panDir = cursor.GetEdgePanDirection(bounds, 20);  // (1, 0) = pan right
+```
+
+### E. Future: Mode-Agnostic Input Handling
+
+The `IInputCoordinates` interface (not yet integrated) will simplify input states:
+
+```csharp
+// Future usage in input states
+public override StateTransitionResult HandlePointerMoved(InputStateContext context, PointerEventArgs e)
+{
+    // Get position - works correctly in both rendering modes
+    CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
+    
+    // Use for hit testing, snapping, etc.
+    var snapTarget = FindSnapTarget(canvasPos);
+    
+    // Get viewport position for auto-pan
+    ViewportPoint viewportPos = context.Coordinates.GetPointerViewportPosition(e);
+    if (viewportPos.IsNearEdge(context.Coordinates.GetViewportBounds(), 30))
+    {
+        TriggerAutoPan(viewportPos.GetEdgePanDirection(viewportBounds, 30));
+    }
+}
+```
+
+### F. Future: Mode-Agnostic Rendering
+
+The `IRenderTarget` interface (not yet integrated) will simplify temp visual creation:
+
+```csharp
+// Future usage in input states
+public override void Enter(InputStateContext context)
+{
+    var startCanvas = context.RenderModel.GetPortPosition(sourceNode, sourcePort);
+    
+    // Create preview - IRenderTarget handles mode differences internally
+    _lineHandle = context.RenderTarget.CreateConnectionPreview(
+        startCanvas, startCanvas, 
+        context.Theme.EdgeStroke, 
+        strokeThickness: 2.0);
+}
+
+public override void Exit(InputStateContext context)
+{
+    _lineHandle?.Dispose();  // Cleanup handled automatically
+}
+```
