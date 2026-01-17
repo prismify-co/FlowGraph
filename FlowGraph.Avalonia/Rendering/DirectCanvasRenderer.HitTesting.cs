@@ -5,9 +5,9 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
-/// DirectGraphRenderer partial - Hit testing methods.
+/// DirectCanvasRenderer partial - Hit testing methods.
 /// </summary>
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   /// <summary>
   /// Performs hit testing to find an edge endpoint handle at the given screen coordinates.
@@ -83,7 +83,7 @@ public partial class DirectGraphRenderer
     foreach (var node in _graph.Elements.Nodes)
     {
       if (!node.IsSelected || !node.IsResizable) continue;
-      if (!GraphRenderModel.IsNodeVisible(_graph, node)) continue;
+      if (!CanvasRenderModel.IsNodeVisible(_graph, node)) continue;
 
       // VIEWPORT CULLING: Skip nodes outside visible area
       if (!IsInVisibleBounds(node, context.Zoom, context.OffsetX, context.OffsetY, context.ViewBounds))
@@ -268,7 +268,7 @@ public partial class DirectGraphRenderer
     int groupsSkippedViewport = 0;
     foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))
     {
-      if (!GraphRenderModel.IsNodeVisible(_graph, group)) continue;
+      if (!CanvasRenderModel.IsNodeVisible(_graph, group)) continue;
 
       // VIEWPORT CULLING: Skip groups outside visible area
       if (!IsInVisibleBounds(group, context.Zoom, context.OffsetX, context.OffsetY, context.ViewBounds))

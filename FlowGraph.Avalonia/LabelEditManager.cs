@@ -16,8 +16,8 @@ public class LabelEditManager
   private readonly Func<Canvas?> _getMainCanvas;
   private readonly Func<ViewportState> _getViewport;
   private readonly Func<ThemeResources?> _getTheme;
-  private readonly Func<GraphRenderer> _getGraphRenderer;
-  private readonly Func<DirectGraphRenderer?> _getDirectRenderer;
+  private readonly Func<CanvasElementManager> _getGraphRenderer;
+  private readonly Func<DirectCanvasRenderer?> _getDirectRenderer;
   private readonly Func<bool> _getIsDirectRendering;
   private readonly Action _renderEdges;
 
@@ -39,8 +39,8 @@ public class LabelEditManager
       Func<Canvas?> getMainCanvas,
       Func<ViewportState> getViewport,
       Func<ThemeResources?> getTheme,
-      Func<GraphRenderer> getGraphRenderer,
-      Func<DirectGraphRenderer?> getDirectRenderer,
+      Func<CanvasElementManager> getGraphRenderer,
+      Func<DirectCanvasRenderer?> getDirectRenderer,
       Func<bool> getIsDirectRendering,
       Action renderEdges)
   {

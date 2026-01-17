@@ -19,7 +19,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// </summary>
 /// <remarks>
 /// <para>
-/// DirectGraphRenderer supports custom node rendering via the <see cref="IDirectNodeRenderer"/> interface.
+/// DirectCanvasRenderer supports custom node rendering via the <see cref="IDirectNodeRenderer"/> interface.
 /// When a node's renderer implements IDirectNodeRenderer, it delegates drawing to that implementation.
 /// </para>
 /// <para>
@@ -32,10 +32,10 @@ namespace FlowGraph.Avalonia.Rendering;
 /// container (e.g., RootPanel, not MainCanvas) to avoid double-transformation.
 /// </para>
 /// </remarks>
-public partial class DirectGraphRenderer : Control, IRenderLayer
+public partial class DirectCanvasRenderer : Control, IRenderLayer
 {
     private FlowCanvasSettings _settings;
-    private readonly GraphRenderModel _model;
+    private readonly CanvasRenderModel _model;
     private NodeRendererRegistry? _nodeRenderers;
     private Graph? _graph;
     private ViewportState? _viewport;
@@ -93,7 +93,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
 
     /// <inheritdoc />
     /// <remarks>
-    /// DirectGraphRenderer uses <see cref="LayerTransformMode.SelfTransformed"/> because it
+    /// DirectCanvasRenderer uses <see cref="LayerTransformMode.SelfTransformed"/> because it
     /// performs its own coordinate transforms internally via <see cref="ScreenToCanvas"/>.
     /// It MUST be placed outside any transformed container (e.g., as a child of RootPanel,
     /// not MainCanvas) to avoid double-transformation bugs.
@@ -117,24 +117,24 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
     #endregion
 
     /// <summary>
-    /// Creates a new DirectGraphRenderer with the specified settings.
+    /// Creates a new DirectCanvasRenderer with the specified settings.
     /// </summary>
     /// <param name="settings">Canvas settings for rendering configuration.</param>
-    public DirectGraphRenderer(FlowCanvasSettings settings)
+    public DirectCanvasRenderer(FlowCanvasSettings settings)
         : this(settings, null)
     {
     }
 
     /// <summary>
-    /// Creates a new DirectGraphRenderer with the specified settings and node renderer registry.
+    /// Creates a new DirectCanvasRenderer with the specified settings and node renderer registry.
     /// </summary>
     /// <param name="settings">Canvas settings for rendering configuration.</param>
     /// <param name="nodeRenderers">Optional registry of custom node renderers.</param>
-    public DirectGraphRenderer(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers)
+    public DirectCanvasRenderer(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers)
     {
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         _nodeRenderers = nodeRenderers;
-        _model = new GraphRenderModel(settings, nodeRenderers);
+        _model = new CanvasRenderModel(settings, nodeRenderers);
         IsHitTestVisible = false; // Hit testing handled separately
     }
 
@@ -142,7 +142,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
     /// Gets the render model used for geometry calculations.
     /// This model is shared with other renderers to ensure visual parity.
     /// </summary>
-    public GraphRenderModel Model => _model;
+    public CanvasRenderModel Model => _model;
 
     /// <summary>
     /// Updates the settings and propagates to the render model.
@@ -310,7 +310,7 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         }
     }
 
-    // Inline editing methods are in DirectGraphRenderer.InlineEditing.cs
+    // Inline editing methods are in DirectCanvasRenderer.InlineEditing.cs
 
     private void RebuildSpatialIndex()
     {
@@ -561,12 +561,12 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
         }
     }
 
-    // Node rendering methods are in DirectGraphRenderer.NodeRendering.cs
-    // Edge rendering methods are in DirectGraphRenderer.EdgeRendering.cs
-    // Group rendering methods are in DirectGraphRenderer.GroupRendering.cs
-    // Hit testing methods are in DirectGraphRenderer.HitTesting.cs
-    // Helper methods are in DirectGraphRenderer.Helpers.cs
-    // Inline editing methods are in DirectGraphRenderer.InlineEditing.cs
-    // Coordinate transforms are in DirectGraphRenderer.CoordinateTransforms.cs
-    // Drawing helpers are in DirectGraphRenderer.DrawingHelpers.cs
+    // Node rendering methods are in DirectCanvasRenderer.NodeRendering.cs
+    // Edge rendering methods are in DirectCanvasRenderer.EdgeRendering.cs
+    // Group rendering methods are in DirectCanvasRenderer.GroupRendering.cs
+    // Hit testing methods are in DirectCanvasRenderer.HitTesting.cs
+    // Helper methods are in DirectCanvasRenderer.Helpers.cs
+    // Inline editing methods are in DirectCanvasRenderer.InlineEditing.cs
+    // Coordinate transforms are in DirectCanvasRenderer.CoordinateTransforms.cs
+    // Drawing helpers are in DirectCanvasRenderer.DrawingHelpers.cs
 }

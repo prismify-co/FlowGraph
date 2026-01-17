@@ -20,7 +20,7 @@ public class ResizingState : InputStateBase
     private readonly Core.Point _startPosition;
     private readonly FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
-    private readonly GraphRenderer _graphRenderer;
+    private readonly CanvasElementManager _graphRenderer;
 
     public override string Name => "Resizing";
 
@@ -30,7 +30,7 @@ public class ResizingState : InputStateBase
         AvaloniaPoint startPoint,
         FlowCanvasSettings settings,
         ViewportState viewport,
-        GraphRenderer graphRenderer)
+        CanvasElementManager graphRenderer)
     {
         _node = node;
         _handlePosition = handlePosition;

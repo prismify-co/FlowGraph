@@ -7,11 +7,11 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// <summary>
 /// Interface for custom node renderers that support direct DrawingContext rendering.
 /// Implement this interface in addition to <see cref="INodeRenderer"/> to provide
-/// custom drawing logic for the high-performance DirectGraphRenderer mode.
+/// custom drawing logic for the high-performance DirectCanvasRenderer mode.
 /// </summary>
 /// <remarks>
 /// <para>
-/// When DirectGraphRenderer renders a node, it first checks if the node's renderer
+/// When DirectCanvasRenderer renders a node, it first checks if the node's renderer
 /// implements IDirectNodeRenderer. If so, it delegates to <see cref="DrawNode"/>.
 /// Otherwise, it uses the built-in default drawing logic.
 /// </para>
@@ -19,7 +19,7 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// Implementations should:
 /// - Draw node background and border
 /// - Draw node label (unless editingNodeId matches)
-/// - NOT draw ports (handled by DirectGraphRenderer for consistency)
+/// - NOT draw ports (handled by DirectCanvasRenderer for consistency)
 /// </para>
 /// </remarks>
 /// <example>
@@ -109,5 +109,5 @@ public class DirectNodeRenderContext
     /// <summary>
     /// The shared render model for geometry calculations.
     /// </summary>
-    public required GraphRenderModel Model { get; init; }
+    public required CanvasRenderModel Model { get; init; }
 }

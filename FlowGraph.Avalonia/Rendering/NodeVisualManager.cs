@@ -8,7 +8,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// <summary>
 /// Manages rendering and tracking of node and port visuals.
 /// Responsible for creating, updating, and removing node/port UI elements.
-/// Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectGraphRenderer.
+/// Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectCanvasRenderer.
 /// </summary>
 /// <remarks>
 /// This class is split across multiple files for organization:
@@ -25,7 +25,7 @@ public partial class NodeVisualManager
     private readonly RenderContext _renderContext;
     private readonly NodeRendererRegistry _nodeRendererRegistry;
     private readonly PortRendererRegistry _portRendererRegistry;
-    private readonly GraphRenderModel _model;
+    private readonly CanvasRenderModel _model;
 
     // Visual tracking
     private readonly Dictionary<string, Control> _nodeVisuals = new();
@@ -48,7 +48,7 @@ public partial class NodeVisualManager
         _renderContext = renderContext ?? throw new ArgumentNullException(nameof(renderContext));
         _nodeRendererRegistry = nodeRendererRegistry ?? new NodeRendererRegistry();
         _portRendererRegistry = portRendererRegistry ?? new PortRendererRegistry();
-        _model = new GraphRenderModel(renderContext.Settings, _nodeRendererRegistry);
+        _model = new CanvasRenderModel(renderContext.Settings, _nodeRendererRegistry);
     }
 
     #region Public Properties
@@ -66,7 +66,7 @@ public partial class NodeVisualManager
     /// <summary>
     /// Gets the render model used for geometry calculations.
     /// </summary>
-    public GraphRenderModel Model => _model;
+    public CanvasRenderModel Model => _model;
 
     #endregion
 

@@ -11,7 +11,7 @@ namespace FlowGraph.Avalonia;
 public class SelectionManager
 {
     private readonly IGraphContext _context;
-    private readonly Func<GraphRenderer> _getRenderer;
+    private readonly Func<CanvasElementManager> _getRenderer;
     private readonly Func<ThemeResources> _getTheme;
     private readonly CommandHistory _commandHistory;
 
@@ -29,7 +29,7 @@ public class SelectionManager
     /// <param name="commandHistory">The command history for undo/redo support.</param>
     public SelectionManager(
         IGraphContext context,
-        Func<GraphRenderer> getRenderer,
+        Func<CanvasElementManager> getRenderer,
         Func<ThemeResources> getTheme,
         CommandHistory commandHistory)
     {
@@ -43,7 +43,7 @@ public class SelectionManager
     [Obsolete("Use the constructor that accepts IGraphContext instead.")]
     public SelectionManager(
         Func<Graph?> getGraph,
-        Func<GraphRenderer> getRenderer,
+        Func<CanvasElementManager> getRenderer,
         Func<ThemeResources> getTheme,
         CommandHistory commandHistory)
         : this(new FuncGraphContext(getGraph), getRenderer, getTheme, commandHistory)

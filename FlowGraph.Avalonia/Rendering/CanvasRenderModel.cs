@@ -24,7 +24,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// </list>
 /// <para>
 /// By centralizing all geometry calculations here, both the visual tree renderer (NodeVisualManager)
-/// and the direct renderer (DirectGraphRenderer) produce identical visual output.
+/// and the direct renderer (DirectCanvasRenderer) produce identical visual output.
 /// </para>
 /// </remarks>
 /// <example>
@@ -41,7 +41,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// var (start, end) = model.GetEdgeEndpoints(edge, graph);
 /// </code>
 /// </example>
-public class GraphRenderModel
+public class CanvasRenderModel
 {
     private FlowCanvasSettings _settings;
     private NodeRendererRegistry? _nodeRenderers;
@@ -59,7 +59,7 @@ public class GraphRenderModel
     public const double ResizeHandleSize = 8;
     public const double PortHitPadding = 4;
 
-    public GraphRenderModel(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers = null)
+    public CanvasRenderModel(FlowCanvasSettings settings, NodeRendererRegistry? nodeRenderers = null)
     {
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         _nodeRenderers = nodeRenderers;

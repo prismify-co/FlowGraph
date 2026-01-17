@@ -1,4 +1,4 @@
-// DirectGraphRenderer.CoordinateTransforms.cs
+// DirectCanvasRenderer.CoordinateTransforms.cs
 // Partial class containing coordinate transformation methods
 
 using Avalonia;
@@ -7,7 +7,7 @@ using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
 
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   #region Coordinate Transforms
 

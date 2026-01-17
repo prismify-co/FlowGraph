@@ -6,15 +6,15 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
-/// DirectGraphRenderer partial - Group rendering methods.
+/// DirectCanvasRenderer partial - Group rendering methods.
 /// </summary>
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   private void DrawGroup(DrawingContext context, Node group, double zoom, double offsetX, double offsetY)
   {
     var canvasBounds = _model.GetNodeBounds(group);
     var screenBounds = CanvasToScreen(canvasBounds, zoom, offsetX, offsetY);
-    var cornerRadius = GraphRenderModel.GroupBorderRadius * zoom;
+    var cornerRadius = CanvasRenderModel.GroupBorderRadius * zoom;
 
     // Background fill
     var bgGeometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
@@ -22,7 +22,7 @@ public partial class DirectGraphRenderer
 
     // Border
     var borderBrush = group.IsSelected ? _theme.NodeSelectedBorder : _theme.GroupBorder;
-    var borderPen = new Pen(borderBrush, GraphRenderModel.GroupDashedStrokeThickness * zoom);
+    var borderPen = new Pen(borderBrush, CanvasRenderModel.GroupDashedStrokeThickness * zoom);
     if (!group.IsSelected)
     {
       borderPen.DashStyle = new DashStyle(new double[] { 4, 2 }, 0);

@@ -411,7 +411,7 @@ public class FlowCanvasSettings
 
     /// <summary>
     /// Gets or sets the node count threshold for automatically enabling direct rendering.
-    /// When the graph has more nodes than this threshold, DirectGraphRenderer is automatically used.
+    /// When the graph has more nodes than this threshold, DirectCanvasRenderer is automatically used.
     /// Set to 0 to disable auto-switching. Default is 100.
     /// </summary>
     /// <remarks>

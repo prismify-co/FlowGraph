@@ -18,7 +18,7 @@ public static class ArrowGeometryHelper
   /// <returns>Two points that form the back of the arrow.</returns>
   /// <remarks>
   /// The arrow spreads at 30 degrees (π/6) on each side from the direction.
-  /// This is used by both EdgePathHelper.CreateArrowMarker and DirectGraphRenderer.DrawArrow.
+  /// This is used by both EdgePathHelper.CreateArrowMarker and DirectCanvasRenderer.DrawArrow.
   /// </remarks>
   public static (AvaloniaPoint p1, AvaloniaPoint p2) CalculateArrowPoints(
       AvaloniaPoint tip,

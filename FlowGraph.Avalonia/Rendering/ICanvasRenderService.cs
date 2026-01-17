@@ -7,7 +7,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// the difference between retained mode (VisualTree) and direct rendering modes.
 /// This prevents the recurring issue of handlers only implementing one rendering path.
 /// </summary>
-public interface IGraphRenderService
+public interface ICanvasRenderService
 {
   /// <summary>
   /// Gets whether the renderer is currently in direct rendering mode.

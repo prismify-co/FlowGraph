@@ -4,16 +4,16 @@ namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
 /// Unified graph render service that abstracts the difference between
-/// retained mode (GraphRenderer) and direct rendering mode (DirectGraphRenderer).
+/// retained mode (CanvasElementManager) and direct rendering mode (DirectCanvasRenderer).
 /// 
 /// This service ensures that all rendering operations work correctly regardless
 /// of which rendering mode is active, solving the recurring issue of handlers
 /// only implementing one rendering path.
 /// </summary>
-public class GraphRenderService : IGraphRenderService
+public class CanvasRenderService : ICanvasRenderService
 {
-  private readonly GraphRenderer _retainedRenderer;
-  private readonly Func<DirectGraphRenderer?> _getDirectRenderer;
+  private readonly CanvasElementManager _retainedRenderer;
+  private readonly Func<DirectCanvasRenderer?> _getDirectRenderer;
   private readonly Func<bool> _getIsDirectRenderingMode;
   private readonly Action _renderEdgesAction;
   private readonly Action _refreshAction;
@@ -28,9 +28,9 @@ public class GraphRenderService : IGraphRenderService
   /// <param name="renderEdgesAction">Action to re-render edges.</param>
   /// <param name="refreshAction">Action to force a full refresh.</param>
   /// <param name="getTheme">Function to get the current theme resources.</param>
-  public GraphRenderService(
-    GraphRenderer retainedRenderer,
-    Func<DirectGraphRenderer?> getDirectRenderer,
+  public CanvasRenderService(
+    CanvasElementManager retainedRenderer,
+    Func<DirectCanvasRenderer?> getDirectRenderer,
     Func<bool> getIsDirectRenderingMode,
     Action renderEdgesAction,
     Action refreshAction,

@@ -7,9 +7,9 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
-/// DirectGraphRenderer partial - Helper methods and structs for hit testing and rendering.
+/// DirectCanvasRenderer partial - Helper methods and structs for hit testing and rendering.
 /// </summary>
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   /// <summary>
   /// Captures viewport state for hit testing operations.

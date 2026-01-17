@@ -1,4 +1,4 @@
-// DirectGraphRenderer.DrawingHelpers.cs
+// DirectCanvasRenderer.DrawingHelpers.cs
 // Partial class containing drawing helper methods
 
 using Avalonia;
@@ -7,7 +7,7 @@ using AvaloniaPoint = Avalonia.Point;
 
 namespace FlowGraph.Avalonia.Rendering;
 
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   #region Drawing Helpers
 

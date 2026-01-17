@@ -215,7 +215,7 @@ public partial class NodeVisualManager
     /// <returns>True if the node is visible.</returns>
     public static bool IsNodeVisible(Graph graph, Node node)
     {
-        return GraphRenderModel.IsNodeVisible(graph, node);
+        return CanvasRenderModel.IsNodeVisible(graph, node);
     }
 
     /// <summary>

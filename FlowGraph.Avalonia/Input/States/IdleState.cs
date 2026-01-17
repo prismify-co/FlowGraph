@@ -137,9 +137,9 @@ public class IdleState : InputStateBase
             var relativeY = canvasPos.Y - node.Position.Y;
 
             // Button area uses the same constants as GraphRenderModel
-            var buttonX = GraphRenderModel.GroupHeaderMarginX;
-            var buttonY = GraphRenderModel.GroupHeaderMarginY;
-            var buttonSize = GraphRenderModel.GroupCollapseButtonSize;
+            var buttonX = CanvasRenderModel.GroupHeaderMarginX;
+            var buttonY = CanvasRenderModel.GroupHeaderMarginY;
+            var buttonSize = CanvasRenderModel.GroupCollapseButtonSize;
 
             // Add extra padding for easier clicking
             var hitPadding = 4.0;

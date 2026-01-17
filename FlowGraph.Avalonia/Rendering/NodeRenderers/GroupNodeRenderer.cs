@@ -16,19 +16,19 @@ namespace FlowGraph.Avalonia.Rendering.NodeRenderers;
 /// Supports inline label editing via IEditableNodeRenderer.
 /// 
 /// IMPORTANT: This renderer uses constants from GraphRenderModel to ensure
-/// 100% visual parity with DirectGraphRenderer.
+/// 100% visual parity with DirectCanvasRenderer.
 /// </summary>
 public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 {
-    // Use constants from GraphRenderModel for visual parity with DirectGraphRenderer
-    private const double HeaderHeight = GraphRenderModel.GroupHeaderHeight;
-    private const double MinGroupWidth = GraphRenderModel.MinGroupWidth;
-    private const double MinGroupHeight = GraphRenderModel.MinGroupHeight;
-    private const double CollapseButtonSize = GraphRenderModel.GroupCollapseButtonSize;
-    private const double BorderRadius = GraphRenderModel.GroupBorderRadius;
-    private const double DashedStrokeThickness = GraphRenderModel.GroupDashedStrokeThickness;
-    private const double HeaderMarginX = GraphRenderModel.GroupHeaderMarginX;
-    private const double HeaderMarginY = GraphRenderModel.GroupHeaderMarginY;
+    // Use constants from GraphRenderModel for visual parity with DirectCanvasRenderer
+    private const double HeaderHeight = CanvasRenderModel.GroupHeaderHeight;
+    private const double MinGroupWidth = CanvasRenderModel.MinGroupWidth;
+    private const double MinGroupHeight = CanvasRenderModel.MinGroupHeight;
+    private const double CollapseButtonSize = CanvasRenderModel.GroupCollapseButtonSize;
+    private const double BorderRadius = CanvasRenderModel.GroupBorderRadius;
+    private const double DashedStrokeThickness = CanvasRenderModel.GroupDashedStrokeThickness;
+    private const double HeaderMarginX = CanvasRenderModel.GroupHeaderMarginX;
+    private const double HeaderMarginY = CanvasRenderModel.GroupHeaderMarginY;
 
     // Use simple ASCII characters that render in all fonts
     private const string ExpandedIcon = "-";   // Minus sign (expanded, can collapse)

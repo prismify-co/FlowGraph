@@ -7,9 +7,9 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
-/// DirectGraphRenderer partial - Node rendering methods.
+/// DirectCanvasRenderer partial - Node rendering methods.
 /// </summary>
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   private void DrawNode(DrawingContext context, Node node, double zoom, double offsetX, double offsetY, bool showLabels, bool showPorts, bool useSimplified)
   {
@@ -47,7 +47,7 @@ public partial class DirectGraphRenderer
     }
 
     // Simplified or default drawing
-    var cornerRadius = useSimplified ? 0 : GraphRenderModel.NodeCornerRadius * zoom;
+    var cornerRadius = useSimplified ? 0 : CanvasRenderModel.NodeCornerRadius * zoom;
     var defaultBackground = GetNodeBackground(node);
 
     // Draw rounded rectangle (or sharp rect if simplified)
@@ -124,7 +124,7 @@ public partial class DirectGraphRenderer
 
   private void DrawResizeHandles(DrawingContext context, Node node, double zoom, double offsetX, double offsetY)
   {
-    var handleSize = GraphRenderModel.ResizeHandleSize * zoom;
+    var handleSize = CanvasRenderModel.ResizeHandleSize * zoom;
 
     foreach (var (_, center) in _model.GetResizeHandlePositions(node))
     {

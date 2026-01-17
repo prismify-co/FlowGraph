@@ -1,9 +1,9 @@
-// DirectGraphRenderer.InlineEditing.cs
+// DirectCanvasRenderer.InlineEditing.cs
 // Partial class containing inline editing support methods
 
 namespace FlowGraph.Avalonia.Rendering;
 
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   #region Inline Editing Support
 

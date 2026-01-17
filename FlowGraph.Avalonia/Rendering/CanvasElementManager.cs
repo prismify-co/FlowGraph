@@ -15,7 +15,7 @@ namespace FlowGraph.Avalonia.Rendering;
 /// Coordinates rendering of all graph elements (nodes, ports, edges, handles).
 /// Acts as a facade over specialized visual managers for clean separation of concerns.
 /// </summary>
-public class GraphRenderer
+public class CanvasElementManager
 {
     private readonly RenderContext _renderContext;
     private readonly NodeVisualManager _nodeVisualManager;
@@ -27,7 +27,7 @@ public class GraphRenderer
     /// <summary>
     /// Creates a new graph renderer with default settings.
     /// </summary>
-    public GraphRenderer()
+    public CanvasElementManager()
         : this(null, null)
     {
     }
@@ -36,7 +36,7 @@ public class GraphRenderer
     /// Creates a new graph renderer with the specified settings.
     /// </summary>
     /// <param name="settings">Canvas settings. If null, default settings are used.</param>
-    public GraphRenderer(FlowCanvasSettings? settings)
+    public CanvasElementManager(FlowCanvasSettings? settings)
         : this(settings, null)
     {
     }
@@ -46,7 +46,7 @@ public class GraphRenderer
     /// </summary>
     /// <param name="settings">Canvas settings. If null, default settings are used.</param>
     /// <param name="nodeRendererRegistry">Registry for custom node renderers. If null, a default registry is created.</param>
-    public GraphRenderer(FlowCanvasSettings? settings, NodeRendererRegistry? nodeRendererRegistry)
+    public CanvasElementManager(FlowCanvasSettings? settings, NodeRendererRegistry? nodeRendererRegistry)
     {
         _renderContext = new RenderContext(settings);
         _nodeVisualManager = new NodeVisualManager(_renderContext, nodeRendererRegistry);

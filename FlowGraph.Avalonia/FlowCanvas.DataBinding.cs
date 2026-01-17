@@ -148,7 +148,7 @@ public partial class FlowCanvas
                 System.Diagnostics.Debug.WriteLine($"[OnNodePropertyChanged] Calling UpdateNodeSelection for {node.Id}");
                 _renderService.UpdateNodeSelection(node);
                 // Only update visual tree resize handles when NOT in direct rendering mode
-                // DirectGraphRenderer draws its own handles via DrawingContext
+                // DirectCanvasRenderer draws its own handles via DrawingContext
                 if (!_useDirectRendering)
                 {
                     UpdateResizeHandlesForNode(node);
@@ -228,7 +228,7 @@ public partial class FlowCanvas
         if (_mainCanvas == null || _theme == null) return;
 
         // In Direct Rendering mode, skip visual tree resize handles
-        // DirectGraphRenderer draws its own handles and handles hit testing
+        // DirectCanvasRenderer draws its own handles and handles hit testing
         if (_useDirectRendering && _directRenderer != null)
         {
             // Ensure any leftover visual tree handles are removed
@@ -311,7 +311,7 @@ public partial class FlowCanvas
         // Invalidate direct renderer's spatial index when nodes change
         _directRenderer?.InvalidateIndex();
 
-        // In DirectRendering mode, just invalidate - DirectGraphRenderer handles everything
+        // In DirectRendering mode, just invalidate - DirectCanvasRenderer handles everything
         if (_useDirectRendering)
         {
             _directRenderer?.InvalidateVisual();
@@ -402,7 +402,7 @@ public partial class FlowCanvas
             return;
         }
 
-        // In DirectRendering mode, just invalidate - DirectGraphRenderer handles everything
+        // In DirectRendering mode, just invalidate - DirectCanvasRenderer handles everything
         if (_useDirectRendering)
         {
             _directRenderer?.InvalidateVisual();

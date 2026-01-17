@@ -5,11 +5,11 @@ using Xunit;
 namespace FlowGraph.Core.Tests.Rendering;
 
 /// <summary>
-/// Tests for the cache invalidation infrastructure that DirectGraphRenderer relies on.
+/// Tests for the cache invalidation infrastructure that DirectCanvasRenderer relies on.
 /// These tests verify that the Node and Graph events fire correctly, which ensures
-/// the DirectGraphRenderer's event-based safety net will work properly.
+/// the DirectCanvasRenderer's event-based safety net will work properly.
 /// 
-/// Note: DirectGraphRenderer itself requires Avalonia runtime context (ThemeResources),
+/// Note: DirectCanvasRenderer itself requires Avalonia runtime context (ThemeResources),
 /// so we test the underlying event infrastructure that makes cache invalidation work.
 /// </summary>
 public class CacheInvalidationInfrastructureTests
@@ -88,7 +88,7 @@ public class CacheInvalidationInfrastructureTests
     [Fact]
     public void Graph_NodeBoundsChanged_FiresWhenNodeMoves()
     {
-        // Arrange - this is the key event DirectGraphRenderer subscribes to
+        // Arrange - this is the key event DirectCanvasRenderer subscribes to
         var graph = new Graph();
         var node = new Node { Type = "Test", Position = new Point(0, 0) };
         graph.AddNode(node);

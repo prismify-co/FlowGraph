@@ -6,9 +6,9 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Rendering;
 
 /// <summary>
-/// DirectGraphRenderer partial - Edge rendering methods.
+/// DirectCanvasRenderer partial - Edge rendering methods.
 /// </summary>
-public partial class DirectGraphRenderer
+public partial class DirectCanvasRenderer
 {
   private void DrawEdge(DrawingContext context, Edge edge, double zoom, double offsetX, double offsetY, Rect viewBounds, bool useSimplified)
   {
@@ -16,7 +16,7 @@ public partial class DirectGraphRenderer
     if (_nodeById == null || _graph == null) return;
     if (!_nodeById.TryGetValue(edge.Source, out var sourceNode)) return;
     if (!_nodeById.TryGetValue(edge.Target, out var targetNode)) return;
-    if (!GraphRenderModel.IsNodeVisible(_graph, sourceNode) || !GraphRenderModel.IsNodeVisible(_graph, targetNode)) return;
+    if (!CanvasRenderModel.IsNodeVisible(_graph, sourceNode) || !CanvasRenderModel.IsNodeVisible(_graph, targetNode)) return;
 
     // Use optimized overload with pre-looked-up nodes
     var (startCanvas, endCanvas) = _model.GetEdgeEndpoints(edge, sourceNode, targetNode);

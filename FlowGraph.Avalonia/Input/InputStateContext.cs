@@ -21,7 +21,7 @@ public class InputStateContext
 {
     private FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
-    private readonly Rendering.GraphRenderer _graphRenderer;
+    private readonly Rendering.CanvasElementManager _graphRenderer;
 
     // Type-safe coordinate and rendering interfaces
     private InputCoordinatesAdapter? _coordinates;
@@ -30,7 +30,7 @@ public class InputStateContext
     public InputStateContext(
         FlowCanvasSettings settings,
         ViewportState viewport,
-        Rendering.GraphRenderer graphRenderer)
+        Rendering.CanvasElementManager graphRenderer)
     {
         _settings = settings;
         _viewport = viewport;
@@ -50,12 +50,12 @@ public class InputStateContext
 
     public FlowCanvasSettings Settings => _settings;
     public ViewportState Viewport => _viewport;
-    public Rendering.GraphRenderer GraphRenderer => _graphRenderer;
+    public Rendering.CanvasElementManager GraphRenderer => _graphRenderer;
 
     // UI elements - set by the canvas
     private Panel? _rootPanel;
     private Canvas? _mainCanvas;
-    private DirectGraphRenderer? _directRenderer;
+    private DirectCanvasRenderer? _directRenderer;
 
     public Panel? RootPanel
     {
@@ -71,7 +71,7 @@ public class InputStateContext
 
     public MatrixTransform? ViewportTransform { get; set; }
 
-    public DirectGraphRenderer? DirectRenderer
+    public DirectCanvasRenderer? DirectRenderer
     {
         get => _directRenderer;
         set { _directRenderer = value; InvalidateAdapters(); }

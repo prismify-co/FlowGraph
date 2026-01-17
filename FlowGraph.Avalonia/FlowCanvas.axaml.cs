@@ -374,7 +374,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
         if (_directRenderer == null)
         {
-            _directRenderer = new DirectGraphRenderer(Settings, _graphRenderer.NodeRenderers);
+            _directRenderer = new DirectCanvasRenderer(Settings, _graphRenderer.NodeRenderers);
         }
         else
         {
@@ -383,8 +383,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _directRenderer.UpdateSettings(Settings);
         }
 
-        // CRITICAL: Add DirectGraphRenderer to _rootPanel, NOT _mainCanvas!
-        // DirectGraphRenderer does its own zoom/pan transforms internally,
+        // CRITICAL: Add DirectCanvasRenderer to _rootPanel, NOT _mainCanvas!
+        // DirectCanvasRenderer does its own zoom/pan transforms internally,
         // so it must NOT be affected by the MatrixTransform on _mainCanvas.
         // This ensures:
         // 1. Rendering is in screen coordinates (no double transform)
@@ -398,10 +398,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             }
 
             // Clear visual manager tracking dictionaries
-            // DirectGraphRenderer will handle its own rendering
+            // DirectCanvasRenderer will handle its own rendering
             _graphRenderer.Clear();
 
-            // Add DirectGraphRenderer to RootPanel (after GridCanvas, MainCanvas)
+            // Add DirectCanvasRenderer to RootPanel (after GridCanvas, MainCanvas)
             _rootPanel.Children.Add(_directRenderer);
             _directRenderer.Width = _rootPanel.Bounds.Width;
             _directRenderer.Height = _rootPanel.Bounds.Height;
@@ -418,7 +418,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         _useDirectRendering = false;
 
-        // Remove DirectGraphRenderer from RootPanel (where we added it)
+        // Remove DirectCanvasRenderer from RootPanel (where we added it)
         if (_rootPanel != null && _directRenderer != null)
         {
             _rootPanel.Children.Remove(_directRenderer);
@@ -441,7 +441,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// This service abstracts the difference between retained and direct rendering modes,
     /// ensuring all operations work correctly regardless of which mode is active.
     /// </summary>
-    public IGraphRenderService RenderService => _renderService;
+    public ICanvasRenderService RenderService => _renderService;
 
     #endregion
 
@@ -584,9 +584,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     // Components
     private ViewportState _viewport = null!;
     private GridRenderer _gridRenderer = null!;
-    private GraphRenderer _graphRenderer = null!;
-    private DirectGraphRenderer? _directRenderer;
-    private IGraphRenderService _renderService = null!;
+    private CanvasElementManager _graphRenderer = null!;
+    private DirectCanvasRenderer? _directRenderer;
+    private ICanvasRenderService _renderService = null!;
     private InputStateMachine _inputStateMachine = null!;
     private InputStateContext _inputContext = null!;
     private SelectionManager _selectionManager = null!;
@@ -635,7 +635,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         _viewport = new ViewportState(Settings);
         _gridRenderer = new GridRenderer(Settings);
-        _graphRenderer = new GraphRenderer(Settings);
+        _graphRenderer = new CanvasElementManager(Settings);
         _graphRenderer.SetViewport(_viewport);
         _animationManager = new AnimationManager();
 
@@ -651,7 +651,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             (edge, opacity) => UpdateEdgeOpacity(edge, opacity));
 
         // Initialize unified render service that abstracts retained vs direct rendering
-        _renderService = new GraphRenderService(
+        _renderService = new CanvasRenderService(
             retainedRenderer: _graphRenderer,
             getDirectRenderer: () => _directRenderer,
             getIsDirectRenderingMode: () => _useDirectRendering,
@@ -899,7 +899,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             _lastOffsetY = _viewport.OffsetY;
 
             // Update resize handles (they use InverseScale for constant screen size)
-            // Only for visual tree mode - DirectGraphRenderer handles its own
+            // Only for visual tree mode - DirectCanvasRenderer handles its own
             if (!_useDirectRendering)
             {
                 _graphRenderer.UpdateAllResizeHandles();

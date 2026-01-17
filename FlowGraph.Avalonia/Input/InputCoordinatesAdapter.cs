@@ -25,7 +25,7 @@ public sealed class InputCoordinatesAdapter : IInputCoordinates
     private readonly ViewportState _viewport;
     private readonly Panel? _rootPanel;
     private readonly Canvas? _mainCanvas;
-    private readonly DirectGraphRenderer? _directRenderer;
+    private readonly DirectCanvasRenderer? _directRenderer;
 
     /// <summary>
     /// Creates a new InputCoordinatesAdapter.
@@ -38,7 +38,7 @@ public sealed class InputCoordinatesAdapter : IInputCoordinates
         ViewportState viewport,
         Panel? rootPanel,
         Canvas? mainCanvas,
-        DirectGraphRenderer? directRenderer)
+        DirectCanvasRenderer? directRenderer)
     {
         _viewport = viewport ?? throw new ArgumentNullException(nameof(viewport));
         _rootPanel = rootPanel;
