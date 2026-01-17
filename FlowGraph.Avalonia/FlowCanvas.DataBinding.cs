@@ -174,6 +174,10 @@ public partial class FlowCanvas
                     UpdateResizeHandlesForNode(node);
                 }
                 break;
+            case nameof(Node.Data):
+                // Data changes may affect custom visual styling (execution state, etc.)
+                _renderService.UpdateNodeStyle(node);
+                break;
         }
 
         if (_nodePropertyChangedCount % 1000 == 0)

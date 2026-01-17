@@ -318,6 +318,11 @@ public class GraphRenderer
     public void UpdateNodeSelection(Node node, ThemeResources theme) => _nodeVisualManager.UpdateNodeSelection(node, theme);
 
     /// <summary>
+    /// Updates the custom style of a node based on its Data property.
+    /// </summary>
+    public void UpdateNodeStyle(Node node, ThemeResources theme) => _nodeVisualManager.UpdateNodeStyle(node, theme);
+
+    /// <summary>
     /// Updates the size of a node visual.
     /// </summary>
     public void UpdateNodeSize(Node node, ThemeResources theme) => _nodeVisualManager.UpdateNodeSize(node, theme);

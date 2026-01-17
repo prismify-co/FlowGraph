@@ -11,12 +11,18 @@ public sealed class LayoutTransitionManager
     private readonly Func<Graph?> _getGraph;
     private readonly Action _refreshEdges;
     private readonly AnimationManager _animations;
+    private readonly Action? _invalidatePositions;
 
-    public LayoutTransitionManager(Func<Graph?> getGraph, Action refreshEdges, AnimationManager animations)
+    public LayoutTransitionManager(
+        Func<Graph?> getGraph,
+        Action refreshEdges,
+        AnimationManager animations,
+        Action? invalidatePositions = null)
     {
         _getGraph = getGraph;
         _refreshEdges = refreshEdges;
         _animations = animations;
+        _invalidatePositions = invalidatePositions;
     }
 
     /// <summary>
@@ -51,6 +57,7 @@ public sealed class LayoutTransitionManager
                     }
                 }
 
+                _invalidatePositions?.Invoke();
                 _refreshEdges();
             },
             easing: easing,

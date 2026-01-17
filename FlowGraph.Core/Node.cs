@@ -86,7 +86,11 @@ public class Node : ICanvasElement
             if (old.IsDeletable != value.IsDeletable) OnPropertyChanged(nameof(IsDeletable));
             if (old.IsConnectable != value.IsConnectable) OnPropertyChanged(nameof(IsConnectable));
             if (old.IsResizable != value.IsResizable) OnPropertyChanged(nameof(IsResizable));
-            if (old.Data != value.Data) OnPropertyChanged(nameof(Data));
+            // Always fire for Data when Definition changes - it's a user data bag that often 
+            // contains mutable content (e.g., Dictionary<string,object?>) where reference 
+            // equality doesn't detect internal changes. This ensures execution visualization,
+            // custom styling, and other Data-dependent features work correctly.
+            OnPropertyChanged(nameof(Data));
             if (!old.Inputs.SequenceEqual(value.Inputs))
             {
                 _inputs = value.Inputs.Select(p => p.ToPort()).ToList();

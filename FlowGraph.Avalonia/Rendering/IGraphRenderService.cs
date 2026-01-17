@@ -33,6 +33,13 @@ public interface IGraphRenderService
   void UpdateNodeSelection(Node node);
 
   /// <summary>
+  /// Updates the custom style of a node based on its Data property.
+  /// Call this when node.Data changes and may affect visual appearance.
+  /// </summary>
+  /// <param name="node">The node to update.</param>
+  void UpdateNodeStyle(Node node);
+
+  /// <summary>
   /// Updates the resize handle positions for a node. Works in both rendering modes.
   /// </summary>
   /// <param name="node">The node to update handles for.</param>

@@ -117,6 +117,28 @@ public partial class NodeVisualManager
     }
 
     /// <summary>
+    /// Updates the custom style of a node visual based on its Data property.
+    /// </summary>
+    /// <param name="node">The node to update.</param>
+    /// <param name="theme">Theme resources for styling.</param>
+    public void UpdateNodeStyle(Node node, ThemeResources theme)
+    {
+        if (_nodeVisuals.TryGetValue(node.Id, out var control))
+        {
+            var scale = _renderContext.Scale;
+            var renderer = _nodeRendererRegistry.GetRenderer(node.Type);
+            var context = new NodeRenderContext
+            {
+                Theme = theme,
+                Settings = _renderContext.Settings,
+                Scale = scale
+            };
+
+            renderer.UpdateStyle(control, node, context);
+        }
+    }
+
+    /// <summary>
     /// Updates the size of a node visual.
     /// </summary>
     /// <param name="node">The node to update.</param>

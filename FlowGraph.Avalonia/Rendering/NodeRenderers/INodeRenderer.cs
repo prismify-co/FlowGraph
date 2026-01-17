@@ -94,6 +94,47 @@ public interface INodeRenderer
     double? GetMinHeight(Node node, FlowCanvasSettings settings) => 40;
 
     /// <summary>
+    /// Updates the visual style when the node's Data property changes.
+    /// Override this to react to custom data changes (e.g., execution state, validation errors).
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is called when <see cref="Node.Data"/> changes and allows renderers
+    /// to update visual appearance based on custom data stored in the node.
+    /// </para>
+    /// <para>
+    /// Common use cases:
+    /// <list type="bullet">
+    /// <item>Execution visualization (border colors for running/completed/failed states)</item>
+    /// <item>Validation feedback (error highlights)</item>
+    /// <item>Custom styling based on application-specific data</item>
+    /// </list>
+    /// </para>
+    /// <example>
+    /// <code>
+    /// public void UpdateStyle(Control visual, Node node, NodeRenderContext context)
+    /// {
+    ///     if (visual is Border border &amp;&amp; node.Data is Dictionary&lt;string, object?&gt; data)
+    ///     {
+    ///         if (data.TryGetValue("BorderColor", out var colorObj) &amp;&amp; colorObj is Color color)
+    ///         {
+    ///             border.BorderBrush = new SolidColorBrush(color);
+    ///         }
+    ///     }
+    /// }
+    /// </code>
+    /// </example>
+    /// </remarks>
+    /// <param name="visual">The node's visual control.</param>
+    /// <param name="node">The node data (check node.Data for custom state).</param>
+    /// <param name="context">The rendering context.</param>
+    void UpdateStyle(Control visual, Node node, NodeRenderContext context)
+    {
+        // Default implementation: do nothing
+        // Renderers that support custom styling should override this
+    }
+
+    /// <summary>
     /// Indicates whether this renderer creates composite visuals with multiple children
     /// that need individual size updates. Used for validation and debugging.
     /// </summary>

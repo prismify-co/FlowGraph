@@ -669,6 +669,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             getRenderer: () => _graphRenderer,
             getTheme: () => _theme,
             commandHistory: CommandHistory);
+
+        // Invalidate spatial index after undo/redo (commands may move nodes)
+        CommandHistory.HistoryChanged += (_, _) => _directRenderer?.InvalidatePositions();
+
         _groupManager = new GroupManager(
             context: this,
             commandHistory: CommandHistory,
@@ -708,7 +712,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         LayoutTransitions = new LayoutNs.LayoutTransitionManager(
             getGraph: () => Graph,
             refreshEdges: RefreshEdges,
-            animations: _animationManager);
+            animations: _animationManager,
+            invalidatePositions: () => _directRenderer?.InvalidatePositions());
     }
 
     #endregion
@@ -933,6 +938,15 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
     private void OnAnimationFrameUpdated(object? sender, EventArgs e)
     {
+        // Invalidate spatial index if animations are moving nodes
+        var categories = _animationManager.ActiveCategories;
+        if (categories.Contains(Animation.AnimationCategory.NodePosition) ||
+            categories.Contains(Animation.AnimationCategory.Layout) ||
+            categories.Contains(Animation.AnimationCategory.Group))
+        {
+            _directRenderer?.InvalidatePositions();
+        }
+
         if (!_animationManager.HasAnimations && IsInAnimationState())
         {
             _inputStateMachine.Reset();
@@ -1071,6 +1085,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private void OnNodesDragging(object? sender, NodesDraggingEventArgs e)
     {
         _edgeRoutingManager.OnNodesDragging(e.NodeIds);
+        // Invalidate spatial index so hit testing uses updated node positions
+        // Use InvalidatePositions() instead of InvalidateIndex() to preserve _nodeById dictionary
+        _directRenderer?.InvalidatePositions();
     }
 
     private void OnNodesDragged(object? sender, NodesDraggedEventArgs e)

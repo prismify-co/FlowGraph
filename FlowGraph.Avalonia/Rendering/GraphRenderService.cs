@@ -94,6 +94,21 @@ public class GraphRenderService : IGraphRenderService
   }
 
   /// <inheritdoc />
+  public void UpdateNodeStyle(Node node)
+  {
+    if (IsDirectRenderingMode)
+    {
+      // Direct rendering: trigger a full re-render
+      _refreshAction();
+    }
+    else
+    {
+      // Retained mode: update custom styling
+      _retainedRenderer.UpdateNodeStyle(node, _getTheme());
+    }
+  }
+
+  /// <inheritdoc />
   public void UpdateResizeHandlePositions(Node node)
   {
     if (IsDirectRenderingMode)

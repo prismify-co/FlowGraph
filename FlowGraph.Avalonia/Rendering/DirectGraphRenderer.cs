@@ -225,6 +225,18 @@ public partial class DirectGraphRenderer : Control, IRenderLayer
     }
 
     /// <summary>
+    /// Marks the spatial index as dirty due to node position changes.
+    /// Unlike <see cref="InvalidateIndex"/>, this preserves the node lookup dictionary
+    /// since the nodes themselves haven't changed, only their positions.
+    /// Call this during dragging operations for better performance.
+    /// </summary>
+    public void InvalidatePositions()
+    {
+        _indexDirty = true;
+        // Don't clear _nodeById - the nodes are the same, just in different positions
+    }
+
+    /// <summary>
     /// Sets the currently hovered port for visual feedback.
     /// </summary>
     /// <param name="nodeId">ID of the node containing the port, or null to clear.</param>
