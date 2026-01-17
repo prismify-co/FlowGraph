@@ -2,6 +2,9 @@ using FlowGraph.Avalonia;
 using AvaloniaSize = Avalonia.Size;
 using AvaloniaPoint = Avalonia.Point;
 
+// Tests for deprecated methods - suppress obsolete warnings intentionally
+#pragma warning disable CS0618
+
 namespace FlowGraph.Core.Tests;
 
 public class ViewportStateTests
