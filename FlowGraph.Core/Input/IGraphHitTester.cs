@@ -50,10 +50,13 @@ public enum HitTargetType
     /// <summary>A custom element type was hit.</summary>
     Custom = 1 << 8,
 
+    /// <summary>A resize handle on a shape was hit.</summary>
+    ShapeResizeHandle = 1 << 9,
+
     // Common combinations for processor registration
 
     /// <summary>All element types (for catch-all processors).</summary>
-    All = Canvas | Node | Edge | Port | ResizeHandle | Group | Waypoint | Shape | Custom,
+    All = Canvas | Node | Edge | Port | ResizeHandle | Group | Waypoint | Shape | Custom | ShapeResizeHandle,
 
     /// <summary>All draggable elements (nodes, shapes, groups).</summary>
     Draggable = Node | Shape | Group,
@@ -128,6 +131,16 @@ public class GraphHitTestResult
         ? info.Node
         : null;
 
+    /// <summary>Gets the hit shape resize handle position, or null if a shape resize handle was not hit.</summary>
+    public ResizeHandlePosition? ShapeResizeHandle => TargetType == HitTargetType.ShapeResizeHandle && Target is ShapeResizeHandleHitInfo info
+        ? info.HandlePosition
+        : null;
+
+    /// <summary>Gets the shape that owns a hit resize handle, or null if a shape resize handle was not hit.</summary>
+    public Elements.Shapes.ShapeElement? ShapeResizeHandleOwner => TargetType == HitTargetType.ShapeResizeHandle && Target is ShapeResizeHandleHitInfo info
+        ? info.Shape
+        : null;
+
     /// <summary>
     /// Creates a result indicating empty canvas was hit.
     /// </summary>
@@ -182,6 +195,17 @@ public class GraphHitTestResult
         CanvasPosition = canvasPosition,
         Distance = 0
     };
+
+    /// <summary>
+    /// Creates a result indicating a shape resize handle was hit.
+    /// </summary>
+    public static GraphHitTestResult ShapeResizeHandleHit(Elements.Shapes.ShapeElement shape, ResizeHandlePosition handlePosition, Point canvasPosition) => new()
+    {
+        TargetType = HitTargetType.ShapeResizeHandle,
+        Target = new ShapeResizeHandleHitInfo(shape, handlePosition),
+        CanvasPosition = canvasPosition,
+        Distance = 0
+    };
 }
 
 /// <summary>
@@ -190,12 +214,17 @@ public class GraphHitTestResult
 public record PortHitInfo(Node Node, Port Port, bool IsInput);
 
 /// <summary>
-/// Information about a hit resize handle.
+/// Information about a hit resize handle on a node.
 /// </summary>
 public record ResizeHandleHitInfo(Node Node, ResizeHandlePosition HandlePosition);
 
 /// <summary>
-/// Positions of resize handles on a node.
+/// Information about a hit resize handle on a shape.
+/// </summary>
+public record ShapeResizeHandleHitInfo(Elements.Shapes.ShapeElement Shape, ResizeHandlePosition HandlePosition);
+
+/// <summary>
+/// Positions of resize handles on a node or shape.
 /// </summary>
 public enum ResizeHandlePosition
 {

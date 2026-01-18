@@ -852,6 +852,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </para>
     /// <list type="bullet">
     /// <item>ResizeHandleProcessor (100) - Small targets, highest priority</item>
+    /// <item>ResizeHandleProcessor (100) - Node resize handles, highest priority</item>
+    /// <item>ShapeResizeHandleProcessor (95) - Shape resize handles</item>
     /// <item>PortProcessor (90) - Ports need priority over nodes</item>
     /// <item>NodeProcessor (80) - Node selection, dragging, label editing</item>
     /// <item>EdgeProcessor (70) - Edge selection, label editing</item>
@@ -863,6 +865,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         // Register in any order - they're sorted by priority internally
         _inputDispatcher.RegisterProcessor(new ResizeHandleProcessor());
+        _inputDispatcher.RegisterProcessor(new ShapeResizeHandleProcessor());
         _inputDispatcher.RegisterProcessor(new PortProcessor());
         _inputDispatcher.RegisterProcessor(new NodeProcessor());
         _inputDispatcher.RegisterProcessor(new EdgeProcessor());

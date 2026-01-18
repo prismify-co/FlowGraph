@@ -90,7 +90,7 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 2. Resize handles
+    // 2. Node resize handles (highest priority for precise targets)
     var resizeHit = renderer.HitTestResizeHandle(screenX, screenY);
     if (resizeHit.HasValue)
     {
@@ -103,7 +103,20 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 3. Ports
+    // 3. Shape resize handles (before shapes, so handles take priority)
+    var shapeResizeHit = renderer.HitTestShapeResizeHandle(screenX, screenY);
+    if (shapeResizeHit.HasValue)
+    {
+      var coreHandlePosition = ConvertResizeHandlePosition(shapeResizeHit.Value.position);
+      return new GraphHitTestResult
+      {
+        TargetType = HitTargetType.ShapeResizeHandle,
+        Target = new ShapeResizeHandleHitInfo(shapeResizeHit.Value.shape, coreHandlePosition),
+        CanvasPosition = canvasPosition
+      };
+    }
+
+    // 4. Ports
     var portHit = renderer.HitTestPort(screenX, screenY);
     if (portHit.HasValue)
     {

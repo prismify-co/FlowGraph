@@ -107,6 +107,69 @@ public partial class DirectCanvasRenderer
   }
 
   /// <summary>
+  /// Performs hit testing to find a shape resize handle at the given screen coordinates.
+  /// Shape resize handles are shown when a shape is selected and resizable.
+  /// </summary>
+  /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+  /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
+  /// <returns>Tuple of (shape, position) or null if no handle hit.</returns>
+  public (Core.Elements.Shapes.ShapeElement shape, ResizeHandlePosition position)? HitTestShapeResizeHandle(double screenX, double screenY)
+  {
+    if (_graph == null || _viewport == null) return null;
+
+    var ctx = CreateHitTestContext(screenX, screenY);
+    if (ctx == null) return null;
+    var context = ctx.Value;
+
+    var shapes = _graph.Elements.Shapes;
+    if (shapes.Count == 0) return null;
+
+    // Only check selected shapes - resize handles are only visible when selected
+    var selectedShapes = shapes.Where(s => s.IsSelected && s.IsVisible).ToList();
+    if (selectedShapes.Count == 0) return null;
+
+    // Handle size in screen pixels, convert to canvas space
+    var handleSize = 8.0; // Resize handle size in screen pixels
+    var handleSizeCanvas = handleSize / context.Zoom;
+    var hitPadding = 4.0 / context.Zoom; // Extra padding for easier clicking
+
+    foreach (var shape in selectedShapes)
+    {
+      var bounds = shape.GetBounds();
+      var x = bounds.X;
+      var y = bounds.Y;
+      var w = bounds.Width;
+      var h = bounds.Height;
+
+      // Generate resize handle positions (same as node resize handles)
+      // Using Rendering.ResizeHandlePosition enum values
+      var handles = new (ResizeHandlePosition pos, double cx, double cy)[]
+      {
+        (ResizeHandlePosition.TopLeft, x, y),
+        (ResizeHandlePosition.Top, x + w / 2, y),
+        (ResizeHandlePosition.TopRight, x + w, y),
+        (ResizeHandlePosition.Left, x, y + h / 2),
+        (ResizeHandlePosition.Right, x + w, y + h / 2),
+        (ResizeHandlePosition.BottomLeft, x, y + h),
+        (ResizeHandlePosition.Bottom, x + w / 2, y + h),
+        (ResizeHandlePosition.BottomRight, x + w, y + h),
+      };
+
+      foreach (var (pos, cx, cy) in handles)
+      {
+        var halfSize = handleSizeCanvas / 2 + hitPadding;
+        if (context.CanvasPoint.X >= cx - halfSize && context.CanvasPoint.X <= cx + halfSize &&
+            context.CanvasPoint.Y >= cy - halfSize && context.CanvasPoint.Y <= cy + halfSize)
+        {
+          return (shape, pos);
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /// <summary>
   /// Performs hit testing to find a node at the given screen coordinates.
   /// </summary>
   /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
