@@ -347,6 +347,175 @@ public class InputDispatcher
     return new StateTransitionResult(processorResult.NewState, processorResult.Handled);
   }
 
+  /// <summary>
+  /// Dispatches a pointer wheel event for viewport zoom/pan.
+  /// </summary>
+  /// <remarks>
+  /// Unlike other pointer events, wheel events don't use hit testing or processors.
+  /// They directly affect the viewport (zoom or pan) based on settings.
+  /// Behaviors can still intercept or observe wheel events.
+  /// </remarks>
+  /// <param name="context">The input state context.</param>
+  /// <param name="e">The wheel event args.</param>
+  /// <param name="viewportPosition">Position in viewport coordinates.</param>
+  /// <param name="currentStateName">Name of the current state (for behavior filtering).</param>
+  public StateTransitionResult DispatchPointerWheel(
+      InputStateContext context,
+      PointerWheelEventArgs e,
+      Core.Point viewportPosition,
+      string currentStateName = "Idle")
+  {
+    // Create a canvas-hit result since wheel events don't target specific elements
+    var inputEvent = new GraphInputEventAdapter(
+        GraphHitTestResult.CanvasHit(viewportPosition),
+        viewportPosition, // Canvas position approximation
+        viewportPosition,
+        ConvertModifiers(e.KeyModifiers),
+        CoreMouseButton.None,
+        1)
+    {
+      WheelDeltaValue = new Core.Point(e.Delta.X, e.Delta.Y)
+    };
+
+    // Behaviors before - allow interception
+    foreach (var behavior in GetActiveBehaviors(currentStateName))
+    {
+      var result = behavior.OnBeforePointerWheel(inputEvent);
+      if (result.SuppressDefault)
+      {
+        return result.Handled
+            ? StateTransitionResult.Stay(true)
+            : StateTransitionResult.Unhandled();
+      }
+    }
+
+    // Default wheel handling: zoom or pan based on settings
+    var ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+    var position = new global::Avalonia.Point(viewportPosition.X, viewportPosition.Y);
+
+    if (context.Settings.PanOnScroll && !ctrlHeld)
+    {
+      // Pan mode: scroll without Ctrl = pan
+      var speed = context.Settings.PanOnScrollSpeed * 50;
+      var deltaX = e.Delta.X * speed;
+      var deltaY = e.Delta.Y * speed;
+      context.Viewport.Pan(deltaX, deltaY);
+    }
+    else
+    {
+      // Zoom mode: default or Ctrl+scroll when PanOnScroll is enabled
+      if (e.Delta.Y > 0)
+        context.Viewport.ZoomIn(position);
+      else
+        context.Viewport.ZoomOut(position);
+    }
+
+    context.ApplyViewportTransform();
+    e.Handled = true;
+
+    // Behaviors after
+    foreach (var behavior in GetActiveBehaviors(currentStateName))
+    {
+      behavior.OnAfterPointerWheel(inputEvent);
+    }
+
+    return StateTransitionResult.Stay(true);
+  }
+
+  /// <summary>
+  /// Dispatches a key down event for keyboard shortcuts.
+  /// </summary>
+  /// <remarks>
+  /// Keyboard events don't use processors - they're handled globally.
+  /// Note: Behavior keyboard hooks are not currently implemented as they require
+  /// a framework-agnostic key representation. This handles keyboard shortcuts directly.
+  /// </remarks>
+  /// <param name="context">The input state context.</param>
+  /// <param name="e">The key event args.</param>
+  /// <param name="currentStateName">Name of the current state (for behavior filtering).</param>
+  public StateTransitionResult DispatchKeyDown(
+      InputStateContext context,
+      KeyEventArgs e,
+      string currentStateName = "Idle")
+  {
+    var isReadOnly = context.Settings.IsReadOnly;
+    var graph = context.Graph;
+
+    // Handle keyboard shortcuts
+    var handled = false;
+
+    // Delete/backspace - blocked in read-only mode
+    if (!isReadOnly && (e.Key == Key.Delete || e.Key == Key.Back))
+    {
+      context.RaiseDeleteSelected();
+      handled = true;
+    }
+    // F2 to rename selected node - blocked in read-only mode
+    else if (!isReadOnly && e.Key == Key.F2)
+    {
+      var selectedNode = graph?.Elements.Nodes.FirstOrDefault(n => n.IsSelected);
+      if (selectedNode != null)
+      {
+        var screenPos = context.CanvasToViewport(
+            new global::Avalonia.Point(selectedNode.Position.X, selectedNode.Position.Y));
+        context.RaiseNodeLabelEditRequested(selectedNode, screenPos);
+        handled = true;
+      }
+    }
+    // Ctrl+key shortcuts
+    else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
+    {
+      handled = HandleCtrlShortcut(context, e, isReadOnly);
+    }
+    // Escape - always allowed
+    else if (e.Key == Key.Escape)
+    {
+      context.RaiseDeselectAll();
+      handled = true;
+    }
+
+    return handled ? StateTransitionResult.Stay(true) : StateTransitionResult.Unhandled();
+  }
+
+  private static bool HandleCtrlShortcut(InputStateContext context, KeyEventArgs e, bool isReadOnly)
+  {
+    switch (e.Key)
+    {
+      case Key.A:
+        context.RaiseSelectAll();
+        return true;
+      case Key.Z when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+        if (!isReadOnly) context.RaiseRedo();
+        return true;
+      case Key.Z:
+        if (!isReadOnly) context.RaiseUndo();
+        return true;
+      case Key.Y:
+        if (!isReadOnly) context.RaiseRedo();
+        return true;
+      case Key.C:
+        context.RaiseCopy();
+        return true;
+      case Key.X:
+        if (!isReadOnly) context.RaiseCut();
+        return true;
+      case Key.V:
+        if (!isReadOnly) context.RaisePaste();
+        return true;
+      case Key.D:
+        if (!isReadOnly) context.RaiseDuplicate();
+        return true;
+      case Key.G when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+        if (!isReadOnly) context.RaiseUngroup();
+        return true;
+      case Key.G:
+        if (!isReadOnly) context.RaiseGroup();
+        return true;
+      default:
+        return false;
+    }
+  }
+
   #endregion
 
   #region Private Helpers
@@ -469,5 +638,11 @@ internal class GraphInputEventAdapter : IGraphInputEvent
   public CoreMouseButton Button { get; }
   public int ClickCount { get; }
   public bool Handled { get; set; }
-  public Core.Point WheelDelta => new Core.Point(0, 0);
+
+  /// <summary>
+  /// Gets or sets the wheel delta for scroll events.
+  /// </summary>
+  public Core.Point WheelDeltaValue { get; init; }
+
+  public Core.Point WheelDelta => WheelDeltaValue;
 }

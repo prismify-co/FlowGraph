@@ -79,8 +79,21 @@ public class IdleState : InputStateBase
 
     /// <summary>
     /// Legacy left-click handling via source control tag pattern matching.
-    /// This is kept for backward compatibility during the migration to InputDispatcher.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This fallback is necessary for:
+    /// <list type="bullet">
+    /// <item><b>Non-direct rendering mode:</b> Visual tree hit testing doesn't use the dispatcher's
+    /// IGraphHitTester, so we fall back to tag-based pattern matching.</item>
+    /// <item><b>Shape resize handles:</b> Not currently detected by DirectRendererHitTester.</item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// In direct rendering mode with the dispatcher enabled, most clicks are handled by processors
+    /// and this method is rarely reached.
+    /// </para>
+    /// </remarks>
     private StateTransitionResult HandleLegacyLeftClick(
         InputStateContext context,
         PointerPressedEventArgs e,
@@ -136,8 +149,19 @@ public class IdleState : InputStateBase
 
     public override StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)
     {
-        var viewportPos = GetTypedViewportPosition(context, e);
-        var position = ToAvaloniaPoint(viewportPos);
+        // Delegate to dispatcher if available
+        if (context.Dispatcher != null)
+        {
+            var viewportPos = GetTypedViewportPosition(context, e);
+            return context.Dispatcher.DispatchPointerWheel(
+                context, e,
+                new CorePoint(viewportPos.X, viewportPos.Y),
+                Name);
+        }
+
+        // Legacy fallback
+        var legacyViewportPos = GetTypedViewportPosition(context, e);
+        var position = ToAvaloniaPoint(legacyViewportPos);
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
         // Pan on scroll behavior
@@ -166,6 +190,13 @@ public class IdleState : InputStateBase
 
     public override StateTransitionResult HandleKeyDown(InputStateContext context, KeyEventArgs e)
     {
+        // Delegate to dispatcher if available
+        if (context.Dispatcher != null)
+        {
+            return context.Dispatcher.DispatchKeyDown(context, e, Name);
+        }
+
+        // Legacy fallback
         return HandleKeyboardShortcut(context, e);
     }
 
