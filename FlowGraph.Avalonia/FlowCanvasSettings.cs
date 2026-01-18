@@ -1,6 +1,8 @@
 using Avalonia;
+using Avalonia.Input;
 using FlowGraph.Core;
 using FlowGraph.Core.Diagnostics;
+using FlowGraph.Core.Elements;
 using FlowGraph.Core.Routing;
 
 using AvaloniaRect = Avalonia.Rect;
@@ -214,6 +216,33 @@ public class FlowCanvasSettings
     /// When false (default), edges to/from hidden nodes are simply hidden.
     /// </summary>
     public bool UseProxyPortsOnCollapse { get; set; } = true;
+
+    /// <summary>
+    /// Default movement mode for groups when dragged.
+    /// <see cref="GroupMovementMode.MoveWithChildren"/> moves all children with the group (default).
+    /// <see cref="GroupMovementMode.MoveGroupOnly"/> moves only the group boundary.
+    /// </summary>
+    public GroupMovementMode GroupMovementMode { get; set; } = GroupMovementMode.MoveWithChildren;
+
+    /// <summary>
+    /// Modifier key that toggles the group movement mode while held.
+    /// When pressed, temporarily switches between MoveWithChildren and MoveGroupOnly.
+    /// Default is Shift (matching Nodify behavior).
+    /// </summary>
+    public KeyModifiers GroupMovementModeToggleKey { get; set; } = KeyModifiers.Shift;
+
+    /// <summary>
+    /// Whether to show a visible resize handle on group corners.
+    /// When true, a small corner grip is displayed for easier resizing.
+    /// When false (default), resize uses invisible edge zones for a cleaner look.
+    /// </summary>
+    public bool ShowGroupResizeHandle { get; set; } = false;
+
+    /// <summary>
+    /// Default ZIndex for group nodes.
+    /// Groups typically render behind their children, so this defaults to ZIndexGroups (150).
+    /// </summary>
+    public int GroupDefaultZIndex { get; set; } = CanvasElement.ZIndexGroups;
 
     #endregion
 

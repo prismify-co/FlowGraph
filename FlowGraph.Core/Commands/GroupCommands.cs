@@ -88,7 +88,8 @@ public class GroupNodesCommand : IGraphCommand
                 X = _groupPosition.X,
                 Y = _groupPosition.Y,
                 Width = _groupWidth,
-                Height = _groupHeight
+                Height = _groupHeight,
+                ZIndex = Elements.CanvasElement.ZIndexGroups
             }
         );
 

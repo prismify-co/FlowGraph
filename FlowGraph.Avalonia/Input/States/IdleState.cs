@@ -210,7 +210,7 @@ public class IdleState : InputStateBase
             Debug.WriteLine($"[IdleState.HandleNodeClick] Starting drag for node {node.Id}");
             // Pass both viewport and canvas positions for consistent coordinate handling
             var canvasPos = GetTypedCanvasPosition(context, e);
-            var dragState = new DraggingState(graph, position, ToAvaloniaPoint(canvasPos), context.Viewport, context.Settings);
+            var dragState = new DraggingState(graph, position, ToAvaloniaPoint(canvasPos), context.Viewport, context.Settings, e.KeyModifiers);
             // Always capture on RootPanel, not on the source control (which may be a dummy control in direct rendering mode)
             CapturePointer(e, context.RootPanel);
             e.Handled = true;

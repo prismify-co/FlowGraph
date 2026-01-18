@@ -29,7 +29,7 @@ public class DraggingState : InputStateBase
 
     public override string Name => "Dragging";
 
-    public DraggingState(Graph graph, AvaloniaPoint viewportPosition, AvaloniaPoint canvasPosition, ViewportState viewport, FlowCanvasSettings settings)
+    public DraggingState(Graph graph, AvaloniaPoint viewportPosition, AvaloniaPoint canvasPosition, ViewportState viewport, FlowCanvasSettings settings, KeyModifiers keyModifiers = KeyModifiers.None)
     {
         _dragStartScreen = viewportPosition;
         _dragStartCanvas = canvasPosition;
@@ -48,12 +48,27 @@ public class DraggingState : InputStateBase
         // Collect all nodes to drag: selected AND draggable nodes + children of selected groups
         var nodesToDrag = new HashSet<string>();
 
+        // Determine if we should use group-only movement mode
+        // Default mode can be toggled by holding the configured key (default: Shift)
+        var isToggleHeld = (keyModifiers & settings.GroupMovementModeToggleKey) != 0;
+        var effectiveMode = settings.GroupMovementMode;
+        
+        // Toggle the mode if the key is held
+        if (isToggleHeld)
+        {
+            effectiveMode = effectiveMode == GroupMovementMode.MoveWithChildren 
+                ? GroupMovementMode.MoveGroupOnly 
+                : GroupMovementMode.MoveWithChildren;
+        }
+        
+        var includeGroupChildren = effectiveMode == GroupMovementMode.MoveWithChildren;
+
         foreach (var node in graph.Elements.Nodes.Where(n => n.IsSelected && n.IsDraggable))
         {
             nodesToDrag.Add(node.Id);
             _nodeById[node.Id] = node; // Cache node reference
 
-            if (node.IsGroup)
+            if (node.IsGroup && includeGroupChildren)
             {
                 // Include all children of dragged groups (even if not individually draggable)
                 foreach (var child in graph.GetGroupChildrenRecursive(node.Id))

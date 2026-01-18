@@ -38,6 +38,7 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
     private const string LabelTextBlockTag = "GroupLabel";
     private const string EditTextBoxTag = "GroupEditTextBox";
     private const string HeaderPanelTag = "GroupHeader";
+    private const string ResizeIndicatorTag = "GroupResizeIndicator";
 
     public Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
@@ -86,6 +87,13 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         container.Children.Add(backgroundRect);
         container.Children.Add(border);
         container.Children.Add(headerPanel);
+
+        // Add visible resize indicator if enabled and node is resizable
+        if (context.Settings.ShowGroupResizeHandle && node.IsResizable && !node.IsCollapsed)
+        {
+            var resizeIndicator = CreateResizeIndicator(context);
+            container.Children.Add(resizeIndicator);
+        }
 
         return container;
     }
@@ -171,6 +179,14 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
                 child.Width = width;
                 child.Height = logicalHeight;
             }
+
+            // Hide resize indicator when collapsed
+            var resizeIndicator = grid.Children.OfType<Polygon>()
+                .FirstOrDefault(p => p.Tag as string == ResizeIndicatorTag);
+            if (resizeIndicator != null)
+            {
+                resizeIndicator.IsVisible = !node.IsCollapsed;
+            }
         }
     }
 
@@ -189,6 +205,14 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
                 {
                     icon.Text = node.IsCollapsed ? CollapsedIcon : ExpandedIcon;
                 }
+            }
+
+            // Update resize indicator visibility
+            var resizeIndicator = grid.Children.OfType<Polygon>()
+                .FirstOrDefault(p => p.Tag as string == ResizeIndicatorTag);
+            if (resizeIndicator != null)
+            {
+                resizeIndicator.IsVisible = !node.IsCollapsed;
             }
         }
     }
@@ -218,6 +242,36 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
             ? HeaderHeight
             : (node.Height ?? MinGroupHeight);
         return (width, height);
+    }
+
+    /// <summary>
+    /// Creates a visual resize indicator (corner triangle) to show the group can be resized.
+    /// This is an always-visible affordance similar to nodify-avalonia's approach.
+    /// </summary>
+    private Control CreateResizeIndicator(NodeRenderContext context)
+    {
+        const double indicatorSize = 12;
+        
+        // Create a small triangle in the bottom-right corner
+        var triangle = new Polygon
+        {
+            // Points form a right triangle in the bottom-right corner
+            Points = new AvaloniaList<global::Avalonia.Point>
+            {
+                new global::Avalonia.Point(indicatorSize, 0),     // Top-right
+                new global::Avalonia.Point(indicatorSize, indicatorSize),  // Bottom-right
+                new global::Avalonia.Point(0, indicatorSize)      // Bottom-left
+            },
+            Fill = context.Theme.GroupBorder,
+            Opacity = 0.5,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(0, 0, 2, 2),
+            Cursor = new Cursor(StandardCursorType.BottomRightCorner),
+            Tag = ResizeIndicatorTag
+        };
+
+        return triangle;
     }
 
     private Border CreateCollapseButton(Node node, NodeRenderContext context)

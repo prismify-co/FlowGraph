@@ -44,6 +44,12 @@ public abstract class CanvasElement : ICanvasElement
   public const int ZIndexShapes = 100;
 
   /// <summary>
+  /// Default Z-index for group nodes. Groups render below regular nodes
+  /// so their children appear on top.
+  /// </summary>
+  public const int ZIndexGroups = 150;
+
+  /// <summary>
   /// Default Z-index for edge elements.
   /// </summary>
   public const int ZIndexEdges = 200;
