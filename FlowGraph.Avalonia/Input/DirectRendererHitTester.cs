@@ -25,15 +25,21 @@ namespace FlowGraph.Avalonia.Input;
 /// This adapter expects canvas coordinates and converts to screen coordinates for the renderer.
 /// </para>
 /// <para>
-/// <b>Priority Order:</b>
+/// <b>Priority Order (determines actual hit priority):</b>
 /// <list type="number">
-/// <item>Resize handles (highest - small targets on top)</item>
+/// <item>Node resize handles (highest - small targets on selected nodes)</item>
+/// <item>Shape resize handles (small targets on selected shapes)</item>
 /// <item>Edge endpoint handles (for reconnection)</item>
 /// <item>Ports (small targets)</item>
 /// <item>Nodes</item>
 /// <item>Edges</item>
 /// <item>Shapes (lowest - background elements)</item>
 /// </list>
+/// </para>
+/// <para>
+/// <b>Note:</b> Since this hit tester returns a single topmost result, the InputDispatcher
+/// processor priorities are not used for determining which element is hit. Priority is
+/// enforced entirely by this class's if/else chain ordering.
 /// </para>
 /// </remarks>
 public class DirectRendererHitTester : IGraphHitTester
@@ -77,20 +83,10 @@ public class DirectRendererHitTester : IGraphHitTester
     var screenY = screenPos.Y;
 
     // Check in priority order (same as PerformDirectRenderingHitTest)
+    // NOTE: This if/else chain determines actual hit priority, NOT the InputDispatcher
+    // processor priorities. The dispatcher receives a single topmost result.
 
-    // 1. Edge endpoint handles (for reconnection)
-    var endpointHit = renderer.HitTestEdgeEndpointHandle(screenX, screenY);
-    if (endpointHit.HasValue)
-    {
-      return new GraphHitTestResult
-      {
-        TargetType = HitTargetType.Waypoint, // Using Waypoint for edge endpoints
-        Target = new EdgeEndpointHitInfo(endpointHit.Value.edge, endpointHit.Value.isSource),
-        CanvasPosition = canvasPosition
-      };
-    }
-
-    // 2. Node resize handles (highest priority for precise targets)
+    // 1. Node resize handles (highest priority for precise targets)
     var resizeHit = renderer.HitTestResizeHandle(screenX, screenY);
     if (resizeHit.HasValue)
     {
@@ -103,7 +99,7 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 3. Shape resize handles (before shapes, so handles take priority)
+    // 2. Shape resize handles (before shapes, so handles take priority)
     var shapeResizeHit = renderer.HitTestShapeResizeHandle(screenX, screenY);
     if (shapeResizeHit.HasValue)
     {
@@ -116,7 +112,19 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 4. Ports
+    // 3. Edge endpoint handles (for reconnection - small targets)
+    var endpointHit = renderer.HitTestEdgeEndpointHandle(screenX, screenY);
+    if (endpointHit.HasValue)
+    {
+      return new GraphHitTestResult
+      {
+        TargetType = HitTargetType.Waypoint, // Using Waypoint for edge endpoints
+        Target = new EdgeEndpointHitInfo(endpointHit.Value.edge, endpointHit.Value.isSource),
+        CanvasPosition = canvasPosition
+      };
+    }
+
+    // 4. Ports (small targets)
     var portHit = renderer.HitTestPort(screenX, screenY);
     if (portHit.HasValue)
     {
@@ -128,7 +136,7 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 4. Nodes
+    // 5. Nodes
     var nodeHit = renderer.HitTestNode(screenX, screenY);
     if (nodeHit != null)
     {
@@ -140,7 +148,7 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 5. Edges (behind nodes)
+    // 6. Edges (behind nodes)
     var edgeHit = renderer.HitTestEdge(screenX, screenY);
     if (edgeHit != null)
     {
@@ -152,7 +160,7 @@ public class DirectRendererHitTester : IGraphHitTester
       };
     }
 
-    // 6. Shapes (lowest priority - background elements)
+    // 7. Shapes (lowest priority - background elements)
     var shapeHit = renderer.HitTestShape(screenX, screenY);
     if (shapeHit != null)
     {
