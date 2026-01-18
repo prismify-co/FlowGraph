@@ -271,7 +271,7 @@ public class InputStateContext
         string? currentText = null;
         if (shape is Core.Elements.Shapes.CommentElement comment)
             currentText = comment.Text;
-        
+
         var args = new ShapeTextEditRequestedEventArgs(shape, currentText, screenPosition);
         ShapeTextEditRequested?.Invoke(this, args);
         return args.Handled;
