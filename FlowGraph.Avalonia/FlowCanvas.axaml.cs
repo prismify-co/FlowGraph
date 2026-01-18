@@ -1235,11 +1235,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private void OnShapeResizing(object? sender, ShapeResizingEventArgs e)
     {
         System.Diagnostics.Debug.WriteLine($"[OnShapeResizing] Shape={e.Shape.Id}, NewSize={e.NewWidth}x{e.NewHeight}");
-        
+
         // Update the shape visual - this is the key to making resize visible immediately
         _shapeVisualManager?.AddOrUpdateShape(e.Shape);
         _shapeVisualManager?.UpdateResizeHandlePositions();
-        
+
         // Also invalidate direct renderer if in direct mode
         _directRenderer?.InvalidateVisual();
 

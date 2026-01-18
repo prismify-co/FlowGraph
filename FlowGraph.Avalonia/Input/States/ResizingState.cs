@@ -56,7 +56,14 @@ public class ResizingState : InputStateBase
         var minWidth = renderer.GetMinWidth(_node, _settings) ?? 60;
         var minHeight = renderer.GetMinHeight(_node, _settings) ?? 40;
 
-        var (newWidth, newHeight, newX, newY) = CalculateNewDimensions(deltaX, deltaY, minWidth, minHeight);
+        // Figma-style modifiers:
+        // Alt = Resize from center (symmetrical)
+        // Shift = Maintain aspect ratio (proportional)
+        var symmetrical = e.KeyModifiers.HasFlag(KeyModifiers.Alt);
+        var proportional = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+
+        var (newWidth, newHeight, newX, newY) = CalculateNewDimensions(
+            deltaX, deltaY, minWidth, minHeight, symmetrical, proportional);
 
         // Apply snap to grid
         if (_settings.SnapToGrid)
@@ -112,63 +119,189 @@ public class ResizingState : InputStateBase
     }
 
     private (double width, double height, double x, double y) CalculateNewDimensions(
-        double deltaX, double deltaY, double minWidth, double minHeight)
+        double deltaX, double deltaY, double minWidth, double minHeight,
+        bool symmetrical = false, bool proportional = false)
     {
         var newWidth = _startWidth;
         var newHeight = _startHeight;
         var newX = _startPosition.X;
         var newY = _startPosition.Y;
 
+        // For proportional resize, calculate aspect ratio
+        var aspectRatio = _startWidth / _startHeight;
+
+        // Calculate raw dimensions based on handle position
         switch (_handlePosition)
         {
             case ResizeHandlePosition.Right:
                 newWidth = Math.Max(minWidth, _startWidth + deltaX);
+                if (proportional)
+                    newHeight = newWidth / aspectRatio;
+                if (symmetrical)
+                {
+                    newX = _startPosition.X - (newWidth - _startWidth) / 2;
+                    if (proportional)
+                        newY = _startPosition.Y - (newHeight - _startHeight) / 2;
+                }
                 break;
 
             case ResizeHandlePosition.Left:
                 var leftDelta = Math.Min(deltaX, _startWidth - minWidth);
                 newWidth = _startWidth - leftDelta;
-                newX = _startPosition.X + leftDelta;
+                if (proportional)
+                    newHeight = newWidth / aspectRatio;
+                if (symmetrical)
+                {
+                    newX = _startPosition.X + leftDelta / 2;
+                    if (proportional)
+                        newY = _startPosition.Y - (newHeight - _startHeight) / 2;
+                }
+                else
+                {
+                    newX = _startPosition.X + leftDelta;
+                }
                 break;
 
             case ResizeHandlePosition.Bottom:
                 newHeight = Math.Max(minHeight, _startHeight + deltaY);
+                if (proportional)
+                    newWidth = newHeight * aspectRatio;
+                if (symmetrical)
+                {
+                    newY = _startPosition.Y - (newHeight - _startHeight) / 2;
+                    if (proportional)
+                        newX = _startPosition.X - (newWidth - _startWidth) / 2;
+                }
                 break;
 
             case ResizeHandlePosition.Top:
                 var topDelta = Math.Min(deltaY, _startHeight - minHeight);
                 newHeight = _startHeight - topDelta;
-                newY = _startPosition.Y + topDelta;
+                if (proportional)
+                    newWidth = newHeight * aspectRatio;
+                if (symmetrical)
+                {
+                    newY = _startPosition.Y + topDelta / 2;
+                    if (proportional)
+                        newX = _startPosition.X - (newWidth - _startWidth) / 2;
+                }
+                else
+                {
+                    newY = _startPosition.Y + topDelta;
+                }
                 break;
 
             case ResizeHandlePosition.BottomRight:
                 newWidth = Math.Max(minWidth, _startWidth + deltaX);
                 newHeight = Math.Max(minHeight, _startHeight + deltaY);
+                if (proportional)
+                {
+                    // Use the larger delta to drive proportional resize
+                    var widthRatio = newWidth / _startWidth;
+                    var heightRatio = newHeight / _startHeight;
+                    if (widthRatio > heightRatio)
+                        newHeight = newWidth / aspectRatio;
+                    else
+                        newWidth = newHeight * aspectRatio;
+                }
+                if (symmetrical)
+                {
+                    newX = _startPosition.X - (newWidth - _startWidth) / 2;
+                    newY = _startPosition.Y - (newHeight - _startHeight) / 2;
+                }
                 break;
 
             case ResizeHandlePosition.BottomLeft:
                 var blLeftDelta = Math.Min(deltaX, _startWidth - minWidth);
                 newWidth = _startWidth - blLeftDelta;
-                newX = _startPosition.X + blLeftDelta;
                 newHeight = Math.Max(minHeight, _startHeight + deltaY);
+                if (proportional)
+                {
+                    var widthRatio = newWidth / _startWidth;
+                    var heightRatio = newHeight / _startHeight;
+                    if (widthRatio < heightRatio)
+                        newHeight = newWidth / aspectRatio;
+                    else
+                    {
+                        var oldWidth = newWidth;
+                        newWidth = newHeight * aspectRatio;
+                        blLeftDelta = _startWidth - newWidth;
+                    }
+                }
+                if (symmetrical)
+                {
+                    newX = _startPosition.X + blLeftDelta / 2;
+                    newY = _startPosition.Y - (newHeight - _startHeight) / 2;
+                }
+                else
+                {
+                    newX = _startPosition.X + blLeftDelta;
+                }
                 break;
 
             case ResizeHandlePosition.TopRight:
                 newWidth = Math.Max(minWidth, _startWidth + deltaX);
                 var trTopDelta = Math.Min(deltaY, _startHeight - minHeight);
                 newHeight = _startHeight - trTopDelta;
-                newY = _startPosition.Y + trTopDelta;
+                if (proportional)
+                {
+                    var widthRatio = newWidth / _startWidth;
+                    var heightRatio = newHeight / _startHeight;
+                    if (widthRatio > heightRatio)
+                    {
+                        newHeight = newWidth / aspectRatio;
+                        trTopDelta = _startHeight - newHeight;
+                    }
+                    else
+                        newWidth = newHeight * aspectRatio;
+                }
+                if (symmetrical)
+                {
+                    newX = _startPosition.X - (newWidth - _startWidth) / 2;
+                    newY = _startPosition.Y + trTopDelta / 2;
+                }
+                else
+                {
+                    newY = _startPosition.Y + trTopDelta;
+                }
                 break;
 
             case ResizeHandlePosition.TopLeft:
                 var tlLeftDelta = Math.Min(deltaX, _startWidth - minWidth);
                 newWidth = _startWidth - tlLeftDelta;
-                newX = _startPosition.X + tlLeftDelta;
                 var tlTopDelta = Math.Min(deltaY, _startHeight - minHeight);
                 newHeight = _startHeight - tlTopDelta;
-                newY = _startPosition.Y + tlTopDelta;
+                if (proportional)
+                {
+                    var widthRatio = newWidth / _startWidth;
+                    var heightRatio = newHeight / _startHeight;
+                    if (widthRatio < heightRatio)
+                    {
+                        newHeight = newWidth / aspectRatio;
+                        tlTopDelta = _startHeight - newHeight;
+                    }
+                    else
+                    {
+                        newWidth = newHeight * aspectRatio;
+                        tlLeftDelta = _startWidth - newWidth;
+                    }
+                }
+                if (symmetrical)
+                {
+                    newX = _startPosition.X + tlLeftDelta / 2;
+                    newY = _startPosition.Y + tlTopDelta / 2;
+                }
+                else
+                {
+                    newX = _startPosition.X + tlLeftDelta;
+                    newY = _startPosition.Y + tlTopDelta;
+                }
                 break;
         }
+
+        // Enforce minimum sizes
+        newWidth = Math.Max(minWidth, newWidth);
+        newHeight = Math.Max(minHeight, newHeight);
 
         return (newWidth, newHeight, newX, newY);
     }
