@@ -1,3 +1,42 @@
+## FlowGraph v0.8.0
+
+### New Features
+
+- **Resize Handle Modes** - Control which resize handles appear on nodes with the new `ResizeHandleMode` flags enum
+  - `Node.AllowedResizeHandles` property specifies which handles to display
+  - Predefined combinations: `Corners`, `Edges`, `Horizontal`, `Vertical`, `All`
+  - Useful for shape nodes where only certain resize directions make sense (e.g., cylinders should only resize from edges)
+
+- **Figma-style Resize Modifiers** - Hold modifier keys while resizing for advanced behavior:
+  - `Shift` - Maintain aspect ratio
+  - `Alt` - Resize from center
+  - `Shift+Alt` - Both combined
+
+- **Quadtree Spatial Index** - O(log N) hit testing performance for large graphs
+  - Automatic spatial partitioning for nodes and shapes
+  - Significant performance improvement for graphs with 100+ elements
+
+### Bug Fixes
+
+- **Box Selection in Direct Rendering Mode** - Fixed positioning issues with selection rectangle
+- **Shape Selection in Retained Mode** - Fixed shape selection not working correctly
+- **Shape Visual Updates** - Shapes now update correctly during resize and selection changes
+- **Coordinate Transformations** - Consistent coordinate handling across all input states
+
+### Internal Improvements
+
+- **InputDispatcher Architecture** - New hybrid InputProcessor + Behavior pattern for cleaner input handling
+- **InputCoordinatesAdapter** - Consistent coordinate transformations across rendering modes
+- **ViewportOverlayPositioner** - Prevents Panel/Canvas positioning bugs for overlay elements
+
+### API Additions
+
+- `ResizeHandleMode` enum in `FlowGraph.Core` namespace
+- `Node.AllowedResizeHandles` property with `NodeDefinition` support
+- `Graph.ShapesChanged` event for dynamic shape updates
+
+---
+
 ## FlowGraph v0.7.0
 
 ### New Features

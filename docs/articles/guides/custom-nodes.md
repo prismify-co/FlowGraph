@@ -79,3 +79,40 @@ You can use path data from any icon library:
 - [Font Awesome](https://fontawesome.com/)
 
 Simply copy the SVG path data and use it with `Geometry.Parse()`.
+
+## Node Configuration
+
+### Resize Handle Modes
+
+Control which resize handles appear on nodes using the `AllowedResizeHandles` property:
+
+```csharp
+using FlowGraph.Core;
+
+// Only allow horizontal resizing (left and right handles)
+node.AllowedResizeHandles = ResizeHandleMode.Horizontal;
+
+// Only corners (no edge handles)
+node.AllowedResizeHandles = ResizeHandleMode.Corners;
+
+// Only edge handles (no corners)
+node.AllowedResizeHandles = ResizeHandleMode.Edges;
+
+// Specific handles only
+node.AllowedResizeHandles = ResizeHandleMode.Left | ResizeHandleMode.Right | ResizeHandleMode.Bottom;
+
+// All handles (default)
+node.AllowedResizeHandles = ResizeHandleMode.All;
+```
+
+This is useful for shape nodes where certain resize directions don't make sense (e.g., cylinders should only resize from edges, not corners).
+
+You can also set this via `NodeDefinition`:
+
+```csharp
+var definition = new NodeDefinition
+{
+    Type = "cylinder",
+    AllowedResizeHandles = ResizeHandleMode.Edges
+};
+```

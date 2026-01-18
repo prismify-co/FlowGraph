@@ -43,4 +43,4 @@ dotnet add package FlowGraph.Avalonia
 
 ## License
 
-MIT License - � 2026 Prismify LLC
+MIT License - © 2026 Prismify LLC
