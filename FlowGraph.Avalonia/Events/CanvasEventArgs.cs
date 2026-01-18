@@ -586,3 +586,54 @@ public class ShapeTextEditRequestedEventArgs : EventArgs
         ScreenPosition = screenPosition;
     }
 }
+
+/// <summary>
+/// Event args for shape resize in progress.
+/// </summary>
+public class ShapeResizingEventArgs : EventArgs
+{
+    public Core.Elements.Shapes.ShapeElement Shape { get; }
+    public double NewWidth { get; }
+    public double NewHeight { get; }
+    public CorePoint NewPosition { get; }
+
+    public ShapeResizingEventArgs(Core.Elements.Shapes.ShapeElement shape, double newWidth, double newHeight, CorePoint newPosition)
+    {
+        Shape = shape;
+        NewWidth = newWidth;
+        NewHeight = newHeight;
+        NewPosition = newPosition;
+    }
+}
+
+/// <summary>
+/// Event args for shape resize completion.
+/// </summary>
+public class ShapeResizedEventArgs : EventArgs
+{
+    public Core.Elements.Shapes.ShapeElement Shape { get; }
+    public double OldWidth { get; }
+    public double OldHeight { get; }
+    public double NewWidth { get; }
+    public double NewHeight { get; }
+    public CorePoint OldPosition { get; }
+    public CorePoint NewPosition { get; }
+
+    public ShapeResizedEventArgs(
+        Core.Elements.Shapes.ShapeElement shape,
+        double oldWidth,
+        double oldHeight,
+        double newWidth,
+        double newHeight,
+        CorePoint oldPosition,
+        CorePoint newPosition)
+    {
+        Shape = shape;
+        OldWidth = oldWidth;
+        OldHeight = oldHeight;
+        NewWidth = newWidth;
+        NewHeight = newHeight;
+        OldPosition = oldPosition;
+        NewPosition = newPosition;
+    }
+}

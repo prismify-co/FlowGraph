@@ -139,10 +139,14 @@ public partial class FlowCanvas
                     var tag = current.Tag;
 
                     // Check if this is a valid target
+                    // IMPORTANT: Check resize handles BEFORE their parent elements (shapes/nodes)
+                    // since resize handles are children of the main canvas, but we need to
+                    // recognize them as distinct clickable targets
                     if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
                         tag is Edge || // Edge
                         tag is (Node, Port, bool) || // Port
-                        tag is (Node, ResizeHandlePosition) || // Resize handle
+                        tag is (Node, ResizeHandlePosition) || // Node resize handle
+                        tag is (Core.Elements.Shapes.ShapeElement, ResizeHandlePosition) || // Shape resize handle
                         tag is Core.Elements.Shapes.ShapeElement) // Shape (sticky note, etc.)
                     {
                         hitElement = current;

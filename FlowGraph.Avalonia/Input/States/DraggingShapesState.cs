@@ -101,7 +101,7 @@ public class DraggingShapesState : InputStateBase
                 }
 
                 shape.Position = new Core.Point(newX, newY);
-                
+
                 // Update visual position directly
                 var visual = context.ShapeVisualManager?.GetVisual(shape.Id);
                 if (visual != null)
@@ -111,6 +111,9 @@ public class DraggingShapesState : InputStateBase
                 }
             }
         }
+
+        // Update resize handle positions to follow the dragged shapes
+        context.ShapeVisualManager?.UpdateResizeHandlePositions();
 
         e.Handled = true;
         return StateTransitionResult.Stay();
@@ -134,7 +137,7 @@ public class DraggingShapesState : InputStateBase
                 if (_startPositions.TryGetValue(shape.Id, out var startPos))
                 {
                     shape.Position = startPos;
-                    
+
                     var visual = context.ShapeVisualManager?.GetVisual(shape.Id);
                     if (visual != null)
                     {
@@ -143,6 +146,9 @@ public class DraggingShapesState : InputStateBase
                     }
                 }
             }
+
+            // Update resize handle positions after restoring original positions
+            context.ShapeVisualManager?.UpdateResizeHandlePositions();
 
             return StateTransitionResult.TransitionTo(IdleState.Instance);
         }

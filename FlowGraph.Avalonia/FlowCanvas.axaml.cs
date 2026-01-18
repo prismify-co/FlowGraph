@@ -869,6 +869,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             var renderContext = new Rendering.RenderContext(Settings);
             renderContext.SetViewport(_viewport);
             _shapeVisualManager.SetRenderContext(renderContext);
+            _shapeVisualManager.SetTheme(_theme);
             _inputContext.ShapeVisualManager = _shapeVisualManager;
             _graphRenderer.SetShapeVisualManager(_shapeVisualManager);
         }

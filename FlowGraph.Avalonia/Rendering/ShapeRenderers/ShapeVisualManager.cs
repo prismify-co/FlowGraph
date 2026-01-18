@@ -26,6 +26,8 @@ public class ShapeVisualManager
   private readonly Canvas _canvas;
   private readonly Dictionary<string, ShapeVisualEntry> _visuals = new();
   private RenderContext? _renderContext;
+  private ShapeResizeHandleManager? _resizeHandleManager;
+  private ThemeResources? _theme;
 
   /// <summary>
   /// Represents a tracked shape visual with its associated data.
@@ -46,12 +48,22 @@ public class ShapeVisualManager
   }
 
   /// <summary>
+  /// Sets the theme for rendering resize handles.
+  /// </summary>
+  public void SetTheme(ThemeResources theme)
+  {
+    _theme = theme;
+  }
+
+  /// <summary>
   /// Sets the render context for coordinate transformations and settings.
   /// </summary>
   /// <param name="context">The render context to use.</param>
   public void SetRenderContext(RenderContext context)
   {
     _renderContext = context;
+    // Create resize handle manager with render context
+    _resizeHandleManager = new ShapeResizeHandleManager(context);
   }
 
   /// <summary>
@@ -84,7 +96,7 @@ public class ShapeVisualManager
       {
         var renderer = ShapeRendererRegistry.Instance.GetRenderer(shape.Type);
         var visual = renderer.CreateShapeVisual(shape, shapeContext);
-        
+
         // IMPORTANT: Set the Tag to the shape for hit testing
         // This allows FlowCanvas.Input to recognize clicks on shapes
         visual.Tag = shape;
@@ -119,6 +131,19 @@ public class ShapeVisualManager
       entry.Shape.IsSelected = isSelected;
       var renderer = ShapeRendererRegistry.Instance.GetRenderer(entry.Shape.Type);
       renderer.UpdateSelection(entry.Visual, entry.Shape, CreateShapeContext());
+
+      // Update resize handles for resizable shapes
+      if (_resizeHandleManager != null && _theme != null)
+      {
+        if (isSelected && entry.Shape.IsResizable)
+        {
+          _resizeHandleManager.RenderResizeHandles(_canvas, entry.Shape, _theme);
+        }
+        else
+        {
+          _resizeHandleManager.RemoveResizeHandles(_canvas, shapeId);
+        }
+      }
     }
   }
 
@@ -132,6 +157,7 @@ public class ShapeVisualManager
     {
       _canvas.Children.Remove(entry.Visual);
       _visuals.Remove(shapeId);
+      _resizeHandleManager?.RemoveResizeHandles(_canvas, shapeId);
       FlowGraphLogger.Debug(LogCategory.Rendering, $"Removed shape visual '{shapeId}'", "ShapeVisualManager");
     }
   }
@@ -146,6 +172,7 @@ public class ShapeVisualManager
       _canvas.Children.Remove(entry.Visual);
     }
     _visuals.Clear();
+    _resizeHandleManager?.RemoveAllResizeHandles(_canvas);
     FlowGraphLogger.Debug(LogCategory.Rendering, "Cleared all shape visuals", "ShapeVisualManager");
   }
 
@@ -157,6 +184,15 @@ public class ShapeVisualManager
   public Control? GetVisual(string shapeId)
   {
     return _visuals.TryGetValue(shapeId, out var entry) ? entry.Visual : null;
+  }
+
+  /// <summary>
+  /// Updates the resize handle positions for all tracked shapes.
+  /// Call this during shape dragging to keep resize handles in sync with shape positions.
+  /// </summary>
+  public void UpdateResizeHandlePositions()
+  {
+    _resizeHandleManager?.UpdateAllResizeHandles();
   }
 
   /// <summary>

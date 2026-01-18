@@ -176,6 +176,8 @@ public class InputStateContext
     public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
     public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
     public event EventHandler<ShapeTextEditRequestedEventArgs>? ShapeTextEditRequested;
+    public event EventHandler<ShapeResizedEventArgs>? ShapeResized;
+    public event EventHandler<ShapeResizingEventArgs>? ShapeResizing;
     public event EventHandler? SelectionChangeRequested;
 
     #endregion
@@ -264,6 +266,18 @@ public class InputStateContext
         ShapeTextEditRequested?.Invoke(this, args);
         return args.Handled;
     }
+
+    /// <summary>
+    /// Raises the ShapeResizing event during shape resize operation.
+    /// </summary>
+    public void RaiseShapeResizing(Core.Elements.Shapes.ShapeElement shape, double newWidth, double newHeight, Core.Point newPos)
+        => ShapeResizing?.Invoke(this, new ShapeResizingEventArgs(shape, newWidth, newHeight, newPos));
+
+    /// <summary>
+    /// Raises the ShapeResized event after shape resize is complete.
+    /// </summary>
+    public void RaiseShapeResized(Core.Elements.Shapes.ShapeElement shape, double oldWidth, double oldHeight, double newWidth, double newHeight, Core.Point oldPos, Core.Point newPos)
+        => ShapeResized?.Invoke(this, new ShapeResizedEventArgs(shape, oldWidth, oldHeight, newWidth, newHeight, oldPos, newPos));
 
     #endregion
 

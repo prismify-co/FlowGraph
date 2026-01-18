@@ -71,6 +71,14 @@ public class IdleState : InputStateBase
                 return HandleResizeHandleClick(context, e, source as Rectangle, resizeNode, handlePos, position);
             }
 
+            // Shape resize handles
+            if (source?.Tag is (ShapeElement resizeShape, ResizeHandlePosition shapeHandlePos))
+            {
+                // Resize always blocked in read-only mode
+                if (isReadOnly) return StateTransitionResult.Unhandled();
+                return HandleShapeResizeHandleClick(context, e, resizeShape, shapeHandlePos, position);
+            }
+
             // Empty canvas click
             return HandleCanvasClick(context, e, position, isReadOnly);
         }
@@ -446,6 +454,19 @@ public class IdleState : InputStateBase
         // Note: handle can be null in direct rendering mode, but resize isn't supported there anyway
         var resizeState = new ResizingState(node, handlePos, position, context.Settings, context.Viewport, context.GraphRenderer);
         // Always capture on RootPanel for consistent behavior
+        CapturePointer(e, context.RootPanel);
+        e.Handled = true;
+        return StateTransitionResult.TransitionTo(resizeState);
+    }
+
+    private StateTransitionResult HandleShapeResizeHandleClick(
+        InputStateContext context,
+        PointerPressedEventArgs e,
+        ShapeElement shape,
+        ResizeHandlePosition handlePos,
+        AvaloniaPoint position)
+    {
+        var resizeState = new ResizingShapeState(shape, handlePos, position, context.Settings, context.Viewport);
         CapturePointer(e, context.RootPanel);
         e.Handled = true;
         return StateTransitionResult.TransitionTo(resizeState);

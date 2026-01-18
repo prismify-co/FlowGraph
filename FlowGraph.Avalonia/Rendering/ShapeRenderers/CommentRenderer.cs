@@ -31,6 +31,10 @@ public class CommentRenderer : IShapeRenderer
     {
       Width = comment.Width ?? 200,
       Height = comment.Height ?? 100,
+      // Important: Set transparent background to enable hit testing on the entire container area.
+      // Without this, only the child elements (Rectangle, TextBlock) would receive pointer events,
+      // but the walk-up to find the parent with ShapeElement tag might not work correctly.
+      Background = Brushes.Transparent,
     };
 
     // Shadow rectangle (offset behind the main rect)

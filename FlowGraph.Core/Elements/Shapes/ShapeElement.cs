@@ -39,6 +39,7 @@ public abstract class ShapeElement : CanvasElement
   private double _opacity = 1.0;
   private double _rotation;
   private string? _label;
+  private bool _isResizable;
 
   /// <summary>
   /// Creates a new shape element with the specified ID.
@@ -147,6 +148,26 @@ public abstract class ShapeElement : CanvasElement
       {
         _label = value;
         OnPropertyChanged(nameof(Label));
+      }
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets whether the shape can be resized by the user.
+  /// </summary>
+  /// <remarks>
+  /// When true and the shape is selected, resize handles will be displayed
+  /// allowing the user to drag and resize the shape.
+  /// </remarks>
+  public bool IsResizable
+  {
+    get => _isResizable;
+    set
+    {
+      if (_isResizable != value)
+      {
+        _isResizable = value;
+        OnPropertyChanged(nameof(IsResizable));
       }
     }
   }
