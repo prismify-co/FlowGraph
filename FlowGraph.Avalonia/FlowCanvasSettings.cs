@@ -412,6 +412,12 @@ public class FlowCanvasSettings
     /// </summary>
     public bool EnableEdgeLabelEditing { get; set; } = true;
 
+    /// <summary>
+    /// Whether double-clicking a shape (e.g., sticky note) triggers a text edit request.
+    /// When enabled, double-clicking raises the ShapeTextEditRequested event.
+    /// </summary>
+    public bool EnableShapeTextEditing { get; set; } = true;
+
     #endregion
 
     #region Performance

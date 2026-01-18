@@ -335,6 +335,146 @@ public class LabelEditManager
 
   #endregion
 
+  #region Shape Text Editing
+
+  /// <summary>
+  /// Event raised when a shape's text has been committed.
+  /// </summary>
+  public event EventHandler<ShapeTextCommittedEventArgs>? ShapeTextCommitted;
+
+  private string? _editingShapeId;
+
+  /// <summary>
+  /// Begins inline editing for a shape's text (e.g., sticky notes).
+  /// </summary>
+  /// <param name="shape">The shape to edit.</param>
+  /// <returns>True if editing started successfully.</returns>
+  public bool BeginEditShapeText(Core.Elements.Shapes.ShapeElement shape)
+  {
+    var theme = _getTheme();
+    var mainCanvas = _getMainCanvas();
+    
+    if (theme == null || mainCanvas == null) return false;
+    if (shape is not Core.Elements.Shapes.CommentElement comment) return false;
+    
+    _editingShapeId = shape.Id;
+
+    // Use graph coordinates directly - the MainCanvas MatrixTransform handles zoom/pan
+    var shapeWidth = shape.Width ?? 200;
+    var shapeHeight = shape.Height ?? 100;
+
+    // Create a multi-line TextBox for editing
+    var textBox = new TextBox
+    {
+      Text = comment.Text ?? "",
+      FontSize = comment.FontSize,
+      Foreground = Rendering.ShapeRenderers.ShapeRenderContext.CreateBrush(comment.TextColor) ?? Brushes.Black,
+      Background = Rendering.ShapeRenderers.ShapeRenderContext.CreateBrush(comment.BackgroundColor) ?? Brushes.LightYellow,
+      BorderThickness = new Thickness(2),
+      BorderBrush = theme.NodeSelectedBorder,
+      Padding = new Thickness(comment.Padding),
+      Width = shapeWidth,
+      Height = shapeHeight,
+      AcceptsReturn = true,
+      TextWrapping = global::Avalonia.Media.TextWrapping.Wrap,
+      Tag = ("ShapeTextEdit", shape.Id)
+    };
+
+    // Position in graph coordinates (MainCanvas transform handles the rest)
+    Canvas.SetLeft(textBox, shape.Position.X);
+    Canvas.SetTop(textBox, shape.Position.Y);
+    // Set high Z-index so it's on top of everything
+    textBox.ZIndex = 10000;
+
+    mainCanvas.Children.Add(textBox);
+
+    // Hide the shape visual while editing
+    var shapeVisual = _getGraphRenderer().GetShapeVisual(shape.Id);
+    if (shapeVisual != null)
+      shapeVisual.IsVisible = false;
+
+    SetupShapeTextBoxHandlers(
+        textBox,
+        onCommit: () => CommitShapeText(comment, textBox.Text ?? "", textBox, shapeVisual),
+        onCancel: () => CancelShapeTextEdit(comment, textBox, shapeVisual));
+
+    FocusAndSelectAll(textBox);
+    return true;
+  }
+
+  /// <summary>
+  /// Gets whether a shape is currently being edited.
+  /// </summary>
+  public bool IsEditingShape(Core.Elements.Shapes.ShapeElement shape)
+  {
+    return _editingShapeId == shape.Id;
+  }
+
+  private void CommitShapeText(Core.Elements.Shapes.CommentElement comment, string newText, TextBox textBox, Control? shapeVisual)
+  {
+    comment.Text = newText;
+    _editingShapeId = null;
+
+    _getMainCanvas()?.Children.Remove(textBox);
+    
+    // Show and update the shape visual
+    if (shapeVisual != null)
+      shapeVisual.IsVisible = true;
+    
+    // Force shape to re-render with new text
+    _getGraphRenderer().UpdateShapeVisual(comment);
+
+    ShapeTextCommitted?.Invoke(this, new ShapeTextCommittedEventArgs(comment, newText));
+  }
+
+  private void CancelShapeTextEdit(Core.Elements.Shapes.CommentElement comment, TextBox textBox, Control? shapeVisual)
+  {
+    _editingShapeId = null;
+    _getMainCanvas()?.Children.Remove(textBox);
+    
+    if (shapeVisual != null)
+      shapeVisual.IsVisible = true;
+  }
+
+  private static void SetupShapeTextBoxHandlers(TextBox textBox, Action onCommit, Action onCancel)
+  {
+    bool finished = false;
+
+    void Commit()
+    {
+      if (finished) return;
+      finished = true;
+      onCommit();
+    }
+
+    void Cancel()
+    {
+      if (finished) return;
+      finished = true;
+      onCancel();
+    }
+
+    textBox.KeyDown += (s, e) =>
+    {
+      // Escape to cancel
+      if (e.Key == global::Avalonia.Input.Key.Escape)
+      {
+        Cancel();
+        e.Handled = true;
+      }
+      // Ctrl+Enter to commit (since Enter adds new lines)
+      else if (e.Key == global::Avalonia.Input.Key.Enter && e.KeyModifiers.HasFlag(global::Avalonia.Input.KeyModifiers.Control))
+      {
+        Commit();
+        e.Handled = true;
+      }
+    };
+
+    textBox.LostFocus += (s, e) => Commit();
+  }
+
+  #endregion
+
   #region Private Helpers
 
   private TextBox CreateLabelTextBox(
@@ -458,4 +598,29 @@ public class EdgeLabelCommittedEventArgs : EventArgs
   /// The new label value (null if cleared).
   /// </summary>
   public string? NewLabel { get; }
+}
+
+/// <summary>
+/// Event args for when a shape's text is committed.
+/// </summary>
+public class ShapeTextCommittedEventArgs : EventArgs
+{
+  /// <summary>
+  /// Creates new event args.
+  /// </summary>
+  public ShapeTextCommittedEventArgs(Core.Elements.Shapes.ShapeElement shape, string? newText)
+  {
+    Shape = shape;
+    NewText = newText;
+  }
+
+  /// <summary>
+  /// The shape that was edited.
+  /// </summary>
+  public Core.Elements.Shapes.ShapeElement Shape { get; }
+
+  /// <summary>
+  /// The new text value.
+  /// </summary>
+  public string? NewText { get; }
 }

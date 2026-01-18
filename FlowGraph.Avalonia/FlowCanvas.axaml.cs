@@ -503,6 +503,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
 
     /// <summary>
+    /// Event raised when a user double-clicks a shape (e.g., sticky note) to edit its text.
+    /// </summary>
+    public event EventHandler<ShapeTextEditRequestedEventArgs>? ShapeTextEditRequested;
+
+    /// <summary>
     /// Event raised when an edge is clicked.
     /// </summary>
     public event EventHandler<EdgeClickedEventArgs>? EdgeClicked;
@@ -570,6 +575,14 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// <param name="edge">The edge to edit.</param>
     /// <returns>True if editing started successfully.</returns>
     public bool BeginEditEdgeLabel(Edge edge) => _labelEditManager.BeginEditEdgeLabel(edge);
+
+    /// <summary>
+    /// Begins inline editing for a shape's text (e.g., sticky notes).
+    /// Shows an inline TextBox overlay on the shape.
+    /// </summary>
+    /// <param name="shape">The shape to edit.</param>
+    /// <returns>True if editing started successfully.</returns>
+    public bool BeginEditShapeText(Core.Elements.Shapes.ShapeElement shape) => _labelEditManager.BeginEditShapeText(shape);
 
     #endregion
 
@@ -763,9 +776,35 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.EdgeReconnected += OnEdgeReconnected;
         _inputContext.EdgeDisconnected += OnEdgeDisconnected;
 
-        // Forward label edit request
-        _inputContext.NodeLabelEditRequested += (_, e) => NodeLabelEditRequested?.Invoke(this, e);
-        _inputContext.EdgeLabelEditRequested += (_, e) => EdgeLabelEditRequested?.Invoke(this, e);
+        // Forward label edit request with default inline editing behavior
+        _inputContext.NodeLabelEditRequested += (_, e) => 
+        {
+            NodeLabelEditRequested?.Invoke(this, e);
+            // If not handled externally, start inline editing
+            if (!e.Handled)
+            {
+                BeginEditNodeLabel(e.Node);
+                e.Handled = true;
+            }
+        };
+        _inputContext.EdgeLabelEditRequested += (_, e) => 
+        {
+            EdgeLabelEditRequested?.Invoke(this, e);
+            if (!e.Handled)
+            {
+                BeginEditEdgeLabel(e.Edge);
+                e.Handled = true;
+            }
+        };
+        _inputContext.ShapeTextEditRequested += (_, e) => 
+        {
+            ShapeTextEditRequested?.Invoke(this, e);
+            if (!e.Handled)
+            {
+                BeginEditShapeText(e.Shape);
+                e.Handled = true;
+            }
+        };
 
         // Handle selection change request (used by shape clicks)
         _inputContext.SelectionChangeRequested += (_, _) => _selectionManager.NotifySelectionMayHaveChanged();
@@ -831,6 +870,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
             renderContext.SetViewport(_viewport);
             _shapeVisualManager.SetRenderContext(renderContext);
             _inputContext.ShapeVisualManager = _shapeVisualManager;
+            _graphRenderer.SetShapeVisualManager(_shapeVisualManager);
         }
 
         SetupEventHandlers();

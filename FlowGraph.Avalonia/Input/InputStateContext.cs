@@ -175,6 +175,7 @@ public class InputStateContext
     public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
     public event EventHandler<NodeLabelEditRequestedEventArgs>? NodeLabelEditRequested;
     public event EventHandler<EdgeLabelEditRequestedEventArgs>? EdgeLabelEditRequested;
+    public event EventHandler<ShapeTextEditRequestedEventArgs>? ShapeTextEditRequested;
     public event EventHandler? SelectionChangeRequested;
 
     #endregion
@@ -246,6 +247,21 @@ public class InputStateContext
     {
         var args = new EdgeLabelEditRequestedEventArgs(edge, edge.Label, screenPosition);
         EdgeLabelEditRequested?.Invoke(this, args);
+        return args.Handled;
+    }
+
+    /// <summary>
+    /// Raises the ShapeTextEditRequested event and returns whether it was handled.
+    /// </summary>
+    public bool RaiseShapeTextEditRequested(Core.Elements.Shapes.ShapeElement shape, AvaloniaPoint screenPosition)
+    {
+        // Get current text from the shape (if it's a CommentElement)
+        string? currentText = null;
+        if (shape is Core.Elements.Shapes.CommentElement comment)
+            currentText = comment.Text;
+        
+        var args = new ShapeTextEditRequestedEventArgs(shape, currentText, screenPosition);
+        ShapeTextEditRequested?.Invoke(this, args);
         return args.Handled;
     }
 

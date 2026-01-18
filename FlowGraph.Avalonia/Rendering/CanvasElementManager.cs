@@ -5,6 +5,7 @@ using FlowGraph.Avalonia.Rendering.BackgroundRenderers;
 using FlowGraph.Avalonia.Rendering.EdgeRenderers;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
 using FlowGraph.Avalonia.Rendering.PortRenderers;
+using FlowGraph.Avalonia.Rendering.ShapeRenderers;
 using FlowGraph.Core;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaPoint = Avalonia.Point;
@@ -23,6 +24,15 @@ public class CanvasElementManager
     private readonly ResizeHandleManager _resizeHandleManager;
     private readonly EdgeRendererRegistry _edgeRendererRegistry;
     private readonly BackgroundRendererRegistry _backgroundRendererRegistry;
+    private ShapeVisualManager? _shapeVisualManager;
+
+    /// <summary>
+    /// Sets the shape visual manager for delegating shape operations.
+    /// </summary>
+    public void SetShapeVisualManager(ShapeVisualManager? manager)
+    {
+        _shapeVisualManager = manager;
+    }
 
     /// <summary>
     /// Creates a new graph renderer with default settings.
@@ -200,6 +210,19 @@ public class CanvasElementManager
     /// Gets the endpoint handles for an edge.
     /// </summary>
     public (Ellipse? source, Ellipse? target) GetEdgeEndpointHandles(string edgeId) => _edgeVisualManager.GetEdgeEndpointHandles(edgeId);
+
+    /// <summary>
+    /// Gets the visual element for a shape.
+    /// </summary>
+    public Control? GetShapeVisual(string shapeId) => _shapeVisualManager?.GetVisual(shapeId);
+
+    /// <summary>
+    /// Updates a shape visual after its properties have changed.
+    /// </summary>
+    public void UpdateShapeVisual(Core.Elements.Shapes.ShapeElement shape)
+    {
+        _shapeVisualManager?.AddOrUpdateShape(shape);
+    }
 
     #endregion
 

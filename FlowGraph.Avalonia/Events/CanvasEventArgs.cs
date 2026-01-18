@@ -552,3 +552,37 @@ public class EdgeLabelEditRequestedEventArgs : EventArgs
         ScreenPosition = screenPosition;
     }
 }
+
+/// <summary>
+/// Event args for shape text edit request.
+/// Raised when a user double-clicks a shape (like a sticky note) to edit its text.
+/// </summary>
+public class ShapeTextEditRequestedEventArgs : EventArgs
+{
+    /// <summary>
+    /// The shape to edit.
+    /// </summary>
+    public Core.Elements.Shapes.ShapeElement Shape { get; }
+
+    /// <summary>
+    /// The current text value.
+    /// </summary>
+    public string? CurrentText { get; }
+
+    /// <summary>
+    /// The screen position of the shape (for positioning an editor).
+    /// </summary>
+    public AvaloniaPoint ScreenPosition { get; }
+
+    /// <summary>
+    /// Set to true to indicate the event was handled and no default behavior should occur.
+    /// </summary>
+    public bool Handled { get; set; }
+
+    public ShapeTextEditRequestedEventArgs(Core.Elements.Shapes.ShapeElement shape, string? currentText, AvaloniaPoint screenPosition)
+    {
+        Shape = shape;
+        CurrentText = currentText;
+        ScreenPosition = screenPosition;
+    }
+}

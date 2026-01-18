@@ -340,11 +340,21 @@ public class IdleState : InputStateBase
         var graph = context.Graph;
         if (graph == null) return StateTransitionResult.Unhandled();
 
-        Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}, ReadOnly={isReadOnly}");
+        Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}, ReadOnly={isReadOnly}, ClickCount={e.ClickCount}");
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
         var viewportPos = GetTypedViewportPosition(context, e);
         var position = ToAvaloniaPoint(viewportPos);
+
+        // Double-click to edit shape text (e.g., sticky notes) - blocked in read-only mode
+        if (e.ClickCount == 2 && !isReadOnly && context.Settings.EnableShapeTextEditing)
+        {
+            Debug.WriteLine($"[IdleState.HandleShapeClick] Double-click on shape {shape.Id}, requesting text edit");
+            var screenPos = context.CanvasToViewport(new AvaloniaPoint(shape.Position.X, shape.Position.Y));
+            context.RaiseShapeTextEditRequested(shape, screenPos);
+            e.Handled = true;
+            return StateTransitionResult.Stay();
+        }
 
         // Handle selection (allowed in read-only mode for viewing)
         if (shape.IsSelectable)
