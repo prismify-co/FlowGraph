@@ -849,24 +849,22 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </para>
     /// <list type="bullet">
     /// <item>ResizeHandleProcessor (100) - Small targets, highest priority</item>
+    /// <item>PortProcessor (90) - Ports need priority over nodes</item>
     /// <item>NodeProcessor (80) - Node selection, dragging, label editing</item>
+    /// <item>EdgeProcessor (70) - Edge selection, label editing</item>
+    /// <item>ShapeProcessor (60) - Shape selection, dragging, text editing</item>
     /// <item>CanvasProcessor (0) - Empty canvas fallback, lowest priority</item>
     /// </list>
-    /// <para>
-    /// Additional processors (Port, Edge, Shape) will be added in subsequent phases.
-    /// </para>
     /// </remarks>
     private void RegisterDefaultProcessors()
     {
         // Register in any order - they're sorted by priority internally
         _inputDispatcher.RegisterProcessor(new ResizeHandleProcessor());
+        _inputDispatcher.RegisterProcessor(new PortProcessor());
         _inputDispatcher.RegisterProcessor(new NodeProcessor());
+        _inputDispatcher.RegisterProcessor(new EdgeProcessor());
+        _inputDispatcher.RegisterProcessor(new ShapeProcessor());
         _inputDispatcher.RegisterProcessor(new CanvasProcessor());
-
-        // TODO: Add remaining processors in Phase 2
-        // _inputDispatcher.RegisterProcessor(new PortProcessor());
-        // _inputDispatcher.RegisterProcessor(new EdgeProcessor());
-        // _inputDispatcher.RegisterProcessor(new ShapeProcessor());
     }
 
     #endregion
