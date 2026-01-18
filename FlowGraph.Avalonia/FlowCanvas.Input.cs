@@ -92,79 +92,87 @@ public partial class FlowCanvas
         }
         else
         {
-            // Get position relative to the canvas (not rootPanel) for hit testing
-            var canvasPos = _rootPanel != null && _mainCanvas != null
-                ? e.GetPosition(_mainCanvas)
-                : screenPos;
+            // Get position relative to _rootPanel (screen coordinates)
+            // Then convert to canvas coordinates using the viewport
+            var screenPosRaw = e.GetPosition(_rootPanel);
+            var canvasPos = _viewport.ViewportToCanvas(new global::Avalonia.Point(screenPosRaw.X, screenPosRaw.Y));;
 
-            var rawHit = _mainCanvas?.InputHitTest(canvasPos);
-            hitElement = rawHit as Control;
-
-            // Debug: log what we actually hit
-            if (rawHit == null)
+            // For hit testing, we need to find which element is at this canvas position
+            // First check if any shape contains this point (shapes use coordinate-based hit testing
+            // because visual tree hit testing doesn't work well with canvas transforms)
+            Control? hitElement_shape = null;
+            if (Graph != null && _shapeVisualManager != null)
             {
-                Debug.WriteLine($"[Input] VisualTreeHitTest returned null - nothing at ({screenPos.X:F0}, {screenPos.Y:F0})");
-
-                // Debug: Check node bounds
-                if (Graph != null && _graphRenderer != null)
+                foreach (var shape in Graph.Elements.Shapes.OrderByDescending(s => s.ZIndex))
                 {
-                    Debug.WriteLine($"[Input]   Canvas has {_mainCanvas?.Children.Count} children, checking node visuals:");
-                    foreach (var node in Graph.Elements.Nodes.Take(5))
+                    if (!shape.IsVisible || !shape.IsSelectable) continue;
+                    var bounds = shape.GetBounds();
+                    if (bounds.Contains(new Core.Point(canvasPos.X, canvasPos.Y)))
                     {
-                        var visual = _graphRenderer.GetNodeVisual(node.Id);
-                        if (visual != null)
-                        {
-                            var left = Canvas.GetLeft(visual);
-                            var top = Canvas.GetTop(visual);
-                            Debug.WriteLine($"[Input]   Node {node.Id}: Visual at ({left:F0},{top:F0}), Size=({visual.Bounds.Width:F0}x{visual.Bounds.Height:F0}), IsHitTestVisible={visual.IsHitTestVisible}");
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"[Input]   Node {node.Id}: NO VISUAL");
-                        }
+                        hitElement_shape = _shapeVisualManager.GetVisual(shape.Id);
+                        Debug.WriteLine($"[Input] Shape hit: {shape.Id} at bounds ({bounds.X:F0},{bounds.Y:F0},{bounds.Width:F0}x{bounds.Height:F0})");
+                        break;
                     }
                 }
             }
+
+            if (hitElement_shape != null)
+            {
+                // Shape was hit via coordinate-based testing
+                hitElement = hitElement_shape;
+            }
             else
             {
-                Debug.WriteLine($"[Input] VisualTreeHitTest hit: {rawHit.GetType().Name}, Tag={GetTagDescription(rawHit)}, IsHitTestVisible={(rawHit as Control)?.IsHitTestVisible}");
+                // Fall back to visual tree hit testing for nodes and edges
+                var localCanvasPos = e.GetPosition(_mainCanvas);
+                var rawHit = _mainCanvas?.InputHitTest(localCanvasPos);
 
-                // Walk up tree to find a valid target (node, edge, port, resize handle, shape, etc.)
-                var current = rawHit as Control;
-                int depth = 0;
-                bool foundValidTarget = false;
-
-                while (current != null && depth < 20)
+                // Debug: log what we actually hit
+                if (rawHit == null)
                 {
-                    var tag = current.Tag;
+                    Debug.WriteLine($"[Input] VisualTreeHitTest returned null at ({localCanvasPos.X:F0}, {localCanvasPos.Y:F0})");
+                    hitElement = null;
+                }
+                else
+                {
+                    Debug.WriteLine($"[Input] VisualTreeHitTest hit: {rawHit.GetType().Name}, Tag={GetTagDescription(rawHit)}, IsHitTestVisible={(rawHit as Control)?.IsHitTestVisible}");
 
-                    // Check if this is a valid target
-                    // IMPORTANT: Check resize handles BEFORE their parent elements (shapes/nodes)
-                    // since resize handles are children of the main canvas, but we need to
-                    // recognize them as distinct clickable targets
-                    if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
-                        tag is Edge || // Edge
-                        tag is (Node, Port, bool) || // Port
-                        tag is (Node, ResizeHandlePosition) || // Node resize handle
-                        tag is (Core.Elements.Shapes.ShapeElement, ResizeHandlePosition) || // Shape resize handle
-                        tag is Core.Elements.Shapes.ShapeElement) // Shape (sticky note, etc.)
+                    // Walk up tree to find a valid target (node, edge, port, resize handle, etc.)
+                    var current = rawHit as Control;
+                    int depth = 0;
+                    bool foundValidTarget = false;
+
+                    while (current != null && depth < 20)
                     {
-                        hitElement = current;
-                        foundValidTarget = true;
-                        Debug.WriteLine($"[Input]   Found valid target at depth {depth}: {current.GetType().Name}, Tag={GetTagDescription(current)}");
-                        break;
+                        var tag = current.Tag;
+
+                        // Check if this is a valid target
+                        // IMPORTANT: Check resize handles BEFORE their parent elements (shapes/nodes)
+                        // since resize handles are children of the main canvas
+                        if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
+                            tag is Edge || // Edge
+                            tag is (Node, Port, bool) || // Port
+                            tag is (Node, ResizeHandlePosition) || // Node resize handle
+                            tag is (Core.Elements.Shapes.ShapeElement, ResizeHandlePosition) || // Shape resize handle
+                            tag is Core.Elements.Shapes.ShapeElement) // Shape (sticky note, etc.)
+                        {
+                            hitElement = current;
+                            foundValidTarget = true;
+                            Debug.WriteLine($"[Input]   Found valid target at depth {depth}: {current.GetType().Name}, Tag={GetTagDescription(current)}");
+                            break;
+                        }
+
+                        Debug.WriteLine($"[Input]   Parent[{depth}]: {current.GetType().Name}, Tag={GetTagDescription(current)}");
+                        current = current.Parent as Control;
+                        depth++;
                     }
 
-                    Debug.WriteLine($"[Input]   Parent[{depth}]: {current.GetType().Name}, Tag={GetTagDescription(current)}");
-                    current = current.Parent as Control;
-                    depth++;
-                }
-
-                // If we didn't find a valid target, treat as canvas click (set to null)
-                if (!foundValidTarget)
-                {
-                    Debug.WriteLine($"[Input]   No valid target found in tree, treating as canvas click");
-                    hitElement = null;
+                    // If we didn't find a valid target, treat as canvas click (set to null)
+                    if (!foundValidTarget)
+                    {
+                        Debug.WriteLine($"[Input]   No valid target found in tree, treating as canvas click");
+                        hitElement = null;
+                    }
                 }
             }
         }
@@ -583,6 +591,7 @@ public partial class FlowCanvas
         if (node != null) return $"Node({node.Id})";
 
         if (control.Tag is Edge e) return $"Edge({e.Id})";
+        if (control.Tag is Core.Elements.Shapes.ShapeElement shape) return $"Shape({shape.Id}, type={shape.Type})";
         if (control.Tag is Dictionary<string, object> dict) return $"Dict({dict.Count} keys)";
         return control.Tag.GetType().Name;
     }
