@@ -82,16 +82,12 @@ public class IdleState : InputStateBase
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This fallback is necessary for:
-    /// <list type="bullet">
-    /// <item><b>Non-direct rendering mode:</b> Visual tree hit testing doesn't use the dispatcher's
-    /// IGraphHitTester, so we fall back to tag-based pattern matching.</item>
-    /// <item><b>Shape resize handles:</b> Not currently detected by DirectRendererHitTester.</item>
-    /// </list>
+    /// This fallback is necessary for <b>non-direct rendering mode</b>, where visual tree hit testing
+    /// doesn't use the dispatcher's IGraphHitTester, so we fall back to tag-based pattern matching.
     /// </para>
     /// <para>
-    /// In direct rendering mode with the dispatcher enabled, most clicks are handled by processors
-    /// and this method is rarely reached.
+    /// In direct rendering mode with the dispatcher enabled, all clicks are handled by processors
+    /// and this method is not reached.
     /// </para>
     /// </remarks>
     private StateTransitionResult HandleLegacyLeftClick(
