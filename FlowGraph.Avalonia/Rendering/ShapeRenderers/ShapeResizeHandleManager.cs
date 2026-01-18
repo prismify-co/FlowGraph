@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using FlowGraph.Core;
 using FlowGraph.Core.Elements.Shapes;
 using AvaloniaPoint = Avalonia.Point;
 
@@ -53,6 +54,23 @@ public class ShapeResizeHandleManager
         var canvasPos = new AvaloniaPoint(shape.Position.X, shape.Position.Y);
 
         var handles = new List<Rectangle>();
+
+        // Get allowed handles from the shape
+        var allowedHandles = shape.AllowedResizeHandles;
+
+        // Map ResizeHandlePosition to ResizeHandleMode flags
+        var positionToMode = new Dictionary<ResizeHandlePosition, ResizeHandleMode>
+        {
+            { ResizeHandlePosition.TopLeft, ResizeHandleMode.TopLeft },
+            { ResizeHandlePosition.Top, ResizeHandleMode.Top },
+            { ResizeHandlePosition.TopRight, ResizeHandleMode.TopRight },
+            { ResizeHandlePosition.Left, ResizeHandleMode.Left },
+            { ResizeHandlePosition.Right, ResizeHandleMode.Right },
+            { ResizeHandlePosition.BottomLeft, ResizeHandleMode.BottomLeft },
+            { ResizeHandlePosition.Bottom, ResizeHandleMode.Bottom },
+            { ResizeHandlePosition.BottomRight, ResizeHandleMode.BottomRight }
+        };
+
         var positions = new[]
         {
             ResizeHandlePosition.TopLeft,
@@ -67,6 +85,10 @@ public class ShapeResizeHandleManager
 
         foreach (var position in positions)
         {
+            // Check if this handle position is allowed for this shape
+            if (!allowedHandles.HasFlag(positionToMode[position]))
+                continue;
+
             var handle = CreateResizeHandle(handleSize, theme, shape, position);
             PositionResizeHandle(handle, canvasPos, shapeWidth, shapeHeight, handleSize, position);
 

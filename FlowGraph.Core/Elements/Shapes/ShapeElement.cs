@@ -171,4 +171,16 @@ public abstract class ShapeElement : CanvasElement
       }
     }
   }
+
+  /// <summary>
+  /// Gets the resize handle positions that should be shown for this shape.
+  /// Override in derived classes to customize which handles appear.
+  /// </summary>
+  /// <remarks>
+  /// Default implementation returns all 8 handles (corners + edges).
+  /// Shapes with non-rectangular geometry (cylinders, circles, etc.)
+  /// should override this to return only meaningful handles.
+  /// </remarks>
+  public virtual ResizeHandleMode AllowedResizeHandles => ResizeHandleMode.All;
 }
+

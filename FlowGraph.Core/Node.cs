@@ -258,6 +258,15 @@ public class Node : ICanvasElement
         set => Definition = Definition with { IsResizable = value };
     }
 
+    /// <summary>
+    /// Specifies which resize handles should be displayed when this node is selected.
+    /// </summary>
+    public ResizeHandleMode AllowedResizeHandles
+    {
+        get => Definition.AllowedResizeHandles;
+        set => Definition = Definition with { AllowedResizeHandles = value };
+    }
+
     #endregion
 
     #region Pass-through Properties (Definition - Ports)

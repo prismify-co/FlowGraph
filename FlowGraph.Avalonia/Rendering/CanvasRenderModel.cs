@@ -341,21 +341,31 @@ public class CanvasRenderModel
 
     /// <summary>
     /// Gets all resize handle positions for a node in canvas coordinates.
+    /// Respects the node's AllowedResizeHandles setting.
     /// </summary>
     public IEnumerable<(ResizeHandlePosition position, AvaloniaPoint center)> GetResizeHandlePositions(Node node)
     {
         var bounds = GetNodeBounds(node);
         var cx = bounds.X + bounds.Width / 2;
         var cy = bounds.Y + bounds.Height / 2;
+        var allowed = node.AllowedResizeHandles;
 
-        yield return (ResizeHandlePosition.TopLeft, new AvaloniaPoint(bounds.X, bounds.Y));
-        yield return (ResizeHandlePosition.Top, new AvaloniaPoint(cx, bounds.Y));
-        yield return (ResizeHandlePosition.TopRight, new AvaloniaPoint(bounds.Right, bounds.Y));
-        yield return (ResizeHandlePosition.Right, new AvaloniaPoint(bounds.Right, cy));
-        yield return (ResizeHandlePosition.BottomRight, new AvaloniaPoint(bounds.Right, bounds.Bottom));
-        yield return (ResizeHandlePosition.Bottom, new AvaloniaPoint(cx, bounds.Bottom));
-        yield return (ResizeHandlePosition.BottomLeft, new AvaloniaPoint(bounds.X, bounds.Bottom));
-        yield return (ResizeHandlePosition.Left, new AvaloniaPoint(bounds.X, cy));
+        if (allowed.HasFlag(ResizeHandleMode.TopLeft))
+            yield return (ResizeHandlePosition.TopLeft, new AvaloniaPoint(bounds.X, bounds.Y));
+        if (allowed.HasFlag(ResizeHandleMode.Top))
+            yield return (ResizeHandlePosition.Top, new AvaloniaPoint(cx, bounds.Y));
+        if (allowed.HasFlag(ResizeHandleMode.TopRight))
+            yield return (ResizeHandlePosition.TopRight, new AvaloniaPoint(bounds.Right, bounds.Y));
+        if (allowed.HasFlag(ResizeHandleMode.Right))
+            yield return (ResizeHandlePosition.Right, new AvaloniaPoint(bounds.Right, cy));
+        if (allowed.HasFlag(ResizeHandleMode.BottomRight))
+            yield return (ResizeHandlePosition.BottomRight, new AvaloniaPoint(bounds.Right, bounds.Bottom));
+        if (allowed.HasFlag(ResizeHandleMode.Bottom))
+            yield return (ResizeHandlePosition.Bottom, new AvaloniaPoint(cx, bounds.Bottom));
+        if (allowed.HasFlag(ResizeHandleMode.BottomLeft))
+            yield return (ResizeHandlePosition.BottomLeft, new AvaloniaPoint(bounds.X, bounds.Bottom));
+        if (allowed.HasFlag(ResizeHandleMode.Left))
+            yield return (ResizeHandlePosition.Left, new AvaloniaPoint(bounds.X, cy));
     }
 
     /// <summary>

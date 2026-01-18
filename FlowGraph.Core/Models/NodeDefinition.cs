@@ -90,6 +90,16 @@ public sealed record NodeDefinition
   /// </summary>
   public bool IsResizable { get; init; } = true;
 
+  /// <summary>
+  /// Specifies which resize handles should be displayed when this node is selected.
+  /// </summary>
+  /// <remarks>
+  /// Default is <see cref="ResizeHandleMode.All"/> (all 8 handles).
+  /// For nodes with non-rectangular geometry (cylinders, circles, etc.),
+  /// set this to only show handles that make visual sense.
+  /// </remarks>
+  public ResizeHandleMode AllowedResizeHandles { get; init; } = ResizeHandleMode.All;
+
   #endregion
 
   /// <summary>
