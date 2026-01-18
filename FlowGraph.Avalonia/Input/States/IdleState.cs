@@ -451,17 +451,22 @@ public class IdleState : InputStateBase
                 foreach (var ed in graph.Elements.Edges.Where(ed => ed.IsSelected))
                     ed.IsSelected = false;
                 foreach (var s in graph.Elements.Shapes.Where(s => s.IsSelected && s.Id != shape.Id))
+                {
                     s.IsSelected = false;
+                    // Update visual to reflect deselection
+                    context.ShapeVisualManager?.UpdateSelection(s.Id, false);
+                }
                 shape.IsSelected = true;
+                // Update visual to reflect selection
+                context.ShapeVisualManager?.UpdateSelection(shape.Id, true);
             }
             else if (ctrlHeld)
             {
                 shape.IsSelected = !shape.IsSelected;
+                context.ShapeVisualManager?.UpdateSelection(shape.Id, shape.IsSelected);
             }
         }
 
-        // Update visual selection state
-        context.ShapeVisualManager?.UpdateSelection(shape.Id, shape.IsSelected);
         context.RaiseSelectionChanged();
 
         // Start dragging if shape is selected - blocked in read-only mode

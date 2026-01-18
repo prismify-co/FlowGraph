@@ -113,17 +113,26 @@ public class ShapeProcessor : InputProcessorBase
 
     if (!ctrlHeld && !shape.IsSelected)
     {
-      // Single select: deselect other shapes
+      // Single select: deselect other shapes and update their visuals
       foreach (var s in graph.Elements.Shapes.Where(s => s.IsSelected && s.Id != shape.Id))
       {
         s.IsSelected = false;
+        // Update visual to reflect deselection
+        context.ShapeVisualManager?.UpdateSelection(s.Id, false);
       }
       // Also deselect nodes for exclusive shape selection
       foreach (var n in graph.Nodes.Where(n => n.IsSelected))
       {
         n.IsSelected = false;
       }
+      // Also deselect edges
+      foreach (var e in graph.Elements.Edges.Where(e => e.IsSelected))
+      {
+        e.IsSelected = false;
+      }
       shape.IsSelected = true;
+      // Update visual to reflect selection
+      context.ShapeVisualManager?.UpdateSelection(shape.Id, true);
 
       // Notify selection manager
       context.RaiseSelectionChanged();
@@ -132,6 +141,7 @@ public class ShapeProcessor : InputProcessorBase
     {
       // Toggle selection
       shape.IsSelected = !shape.IsSelected;
+      context.ShapeVisualManager?.UpdateSelection(shape.Id, shape.IsSelected);
       context.RaiseSelectionChanged();
     }
   }

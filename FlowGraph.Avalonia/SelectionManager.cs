@@ -99,9 +99,12 @@ public class SelectionManager
             edge.IsSelected = false;
         }
 
+        // Deselect shapes and update their visuals
+        var renderer = _getRenderer();
         foreach (var shape in graph.Elements.Shapes.Where(s => s.IsSelected))
         {
             shape.IsSelected = false;
+            renderer?.UpdateShapeSelection(shape.Id, false);
         }
 
         EdgeRerenderRequested?.Invoke(this, EventArgs.Empty);

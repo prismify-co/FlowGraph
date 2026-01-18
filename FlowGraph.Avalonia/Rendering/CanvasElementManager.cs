@@ -224,6 +224,16 @@ public class CanvasElementManager
         _shapeVisualManager?.AddOrUpdateShape(shape);
     }
 
+    /// <summary>
+    /// Updates the selection visual for a shape.
+    /// </summary>
+    /// <param name="shapeId">The ID of the shape.</param>
+    /// <param name="isSelected">Whether the shape is selected.</param>
+    public void UpdateShapeSelection(string shapeId, bool isSelected)
+    {
+        _shapeVisualManager?.UpdateSelection(shapeId, isSelected);
+    }
+
     #endregion
 
     #region Clear
