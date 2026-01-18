@@ -205,10 +205,13 @@ public class GroupManager
         var maxX = children.Max(n => n.Position.X + (n.Width ?? defaultWidth));
         var maxY = children.Max(n => n.Position.Y + (n.Height ?? defaultHeight));
 
+        // Use per-group padding if set, otherwise fall back to default
+        var padding = group.GroupPadding ?? GroupPadding;
+
         // Update group position and size
-        group.Position = new Point(minX - GroupPadding, minY - GroupPadding - HeaderHeight);
-        group.Width = maxX - minX + GroupPadding * 2;
-        group.Height = maxY - minY + GroupPadding * 2 + HeaderHeight;
+        group.Position = new Point(minX - padding, minY - padding - HeaderHeight);
+        group.Width = maxX - minX + padding * 2;
+        group.Height = maxY - minY + padding * 2 + HeaderHeight;
 
         GroupRerenderRequested?.Invoke(this, groupId);
     }

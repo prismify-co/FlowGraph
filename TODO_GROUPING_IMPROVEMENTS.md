@@ -45,9 +45,11 @@ Based on competitor analysis of **Nodify-Avalonia** and **Blazor.Diagrams**.
 
 ### Low Priority - Nice to Have
 
-- [ ] **Group Content Padding Setting**
-  - Per-group padding customization
-  - `Node.GroupPadding` property (nullable, falls back to default)
+- [x] **Group Content Padding Setting** ✅ COMPLETED
+  - Added `Node.GroupPadding` property (nullable, falls back to default)
+  - GroupManager uses per-group padding when auto-sizing
+  - GraphGroupExtensions.CalculateGroupBounds respects per-group padding
+  - Files: `NodeDefinition.cs`, `Node.cs`, `GroupManager.cs`, `GraphGroupExtensions.cs`
 
 ---
 

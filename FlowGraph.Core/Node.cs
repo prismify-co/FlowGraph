@@ -191,6 +191,16 @@ public class Node : ICanvasElement
     }
 
     /// <summary>
+    /// Custom padding around group children when calculating group bounds.
+    /// Only applies when IsGroup is true. If null, uses the default from settings.
+    /// </summary>
+    public double? GroupPadding
+    {
+        get => Definition.GroupPadding;
+        set => Definition = Definition with { GroupPadding = value };
+    }
+
+    /// <summary>
     /// Custom user data associated with the node.
     /// </summary>
     public object? Data

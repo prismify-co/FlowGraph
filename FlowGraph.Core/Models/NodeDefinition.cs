@@ -42,6 +42,12 @@ public sealed record NodeDefinition
   public bool IsGroup { get; init; }
 
   /// <summary>
+  /// Custom padding around group children when calculating group bounds.
+  /// Only applies when IsGroup is true. If null, uses the default from settings.
+  /// </summary>
+  public double? GroupPadding { get; init; }
+
+  /// <summary>
   /// Input ports for this node (immutable list).
   /// </summary>
   public ImmutableList<PortDefinition> Inputs { get; init; } = [];

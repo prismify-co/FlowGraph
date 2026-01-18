@@ -82,24 +82,28 @@ public static class GraphGroupExtensions
     /// </summary>
     /// <param name="graph">The graph containing the group.</param>
     /// <param name="groupId">The group ID.</param>
-    /// <param name="padding">Padding around children. Defaults to <see cref="GraphDefaults.GroupPadding"/>.</param>
+    /// <param name="padding">Padding around children. If null, uses the group's GroupPadding property or <see cref="GraphDefaults.GroupPadding"/>.</param>
     /// <param name="headerHeight">Height of group header. Defaults to <see cref="GraphDefaults.GroupHeaderHeight"/>.</param>
     /// <param name="defaultNodeWidth">Default node width. Defaults to <see cref="GraphDefaults.NodeWidth"/>.</param>
     /// <param name="defaultNodeHeight">Default node height. Defaults to <see cref="GraphDefaults.NodeHeight"/>.</param>
     public static (Point topLeft, double width, double height) CalculateGroupBounds(
         this Graph graph,
         string groupId,
-        double padding = GraphDefaults.GroupPadding,
+        double? padding = null,
         double headerHeight = GraphDefaults.GroupHeaderHeight,
         double defaultNodeWidth = GraphDefaults.NodeWidth,
         double defaultNodeHeight = GraphDefaults.NodeHeight)
     {
+        var group = graph.FindNode(groupId);
         var children = graph.GetGroupChildren(groupId).ToList();
 
         if (children.Count == 0)
         {
             return (new Point(0, 0), GraphDefaults.GroupMinWidth, GraphDefaults.GroupMinHeight);
         }
+
+        // Use provided padding, then per-group padding, then global default
+        var effectivePadding = padding ?? group?.GroupPadding ?? GraphDefaults.GroupPadding;
 
         var minX = double.MaxValue;
         var minY = double.MaxValue;
@@ -118,9 +122,9 @@ public static class GraphGroupExtensions
         }
 
         return (
-            new Point(minX - padding, minY - padding - headerHeight),
-            maxX - minX + padding * 2,
-            maxY - minY + padding * 2 + headerHeight
+            new Point(minX - effectivePadding, minY - effectivePadding - headerHeight),
+            maxX - minX + effectivePadding * 2,
+            maxY - minY + effectivePadding * 2 + headerHeight
         );
     }
 
