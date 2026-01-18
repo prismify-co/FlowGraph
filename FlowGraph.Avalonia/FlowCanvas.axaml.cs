@@ -4,6 +4,7 @@ using Avalonia.Media;
 using FlowGraph.Avalonia.Animation;
 using FlowGraph.Avalonia.Controls;
 using FlowGraph.Avalonia.Input;
+using FlowGraph.Avalonia.Input.Processors;
 using FlowGraph.Avalonia.Input.States;
 using FlowGraph.Avalonia.Rendering;
 using FlowGraph.Avalonia.Routing;
@@ -11,6 +12,7 @@ using FlowGraph.Avalonia.Validation;
 using FlowGraph.Core;
 using FlowGraph.Core.Commands;
 using FlowGraph.Core.Coordinates;
+using FlowGraph.Core.Input;
 using LayoutNs = FlowGraph.Avalonia.Layout;
 
 namespace FlowGraph.Avalonia;
@@ -408,6 +410,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
             // Update input context to trigger redraws on viewport changes
             _inputContext.DirectRenderer = _directRenderer;
+            
+            // Initialize hit tester for the InputDispatcher
+            _hitTester = new DirectRendererHitTester(() => _directRenderer, _viewport);
+            _inputDispatcher.SetHitTester(_hitTester);
         }
     }
 
@@ -602,6 +608,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private ICanvasRenderService _renderService = null!;
     private InputStateMachine _inputStateMachine = null!;
     private InputStateContext _inputContext = null!;
+    private InputDispatcher _inputDispatcher = null!;
+    private IGraphHitTester? _hitTester;
     private SelectionManager _selectionManager = null!;
     private ClipboardManager _clipboardManager = null!;
     private GroupManager _groupManager = null!;
@@ -675,6 +683,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Initialize input state machine
         _inputContext = new InputStateContext(Settings, _viewport, _graphRenderer);
         _inputStateMachine = new InputStateMachine(_inputContext);
+        
+        // Initialize the new InputDispatcher (Phase 1: alongside existing state machine)
+        _inputDispatcher = new InputDispatcher();
+        RegisterDefaultProcessors();
 
         _clipboardManager = new ClipboardManager();
         _selectionManager = new SelectionManager(
@@ -825,6 +837,36 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         };
         _groupManager.GroupRerenderRequested += (s, groupId) => RenderElements();
         _groupManager.NodesAddedToGroup += (s, e) => RenderElements();
+    }
+    
+    /// <summary>
+    /// Registers the default input processors for the new InputDispatcher.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// These processors implement the new InputProcessor pattern that replaces
+    /// the fragile pattern-matching in IdleState. They're registered in priority order:
+    /// </para>
+    /// <list type="bullet">
+    /// <item>ResizeHandleProcessor (100) - Small targets, highest priority</item>
+    /// <item>NodeProcessor (80) - Node selection, dragging, label editing</item>
+    /// <item>CanvasProcessor (0) - Empty canvas fallback, lowest priority</item>
+    /// </list>
+    /// <para>
+    /// Additional processors (Port, Edge, Shape) will be added in subsequent phases.
+    /// </para>
+    /// </remarks>
+    private void RegisterDefaultProcessors()
+    {
+        // Register in any order - they're sorted by priority internally
+        _inputDispatcher.RegisterProcessor(new ResizeHandleProcessor());
+        _inputDispatcher.RegisterProcessor(new NodeProcessor());
+        _inputDispatcher.RegisterProcessor(new CanvasProcessor());
+        
+        // TODO: Add remaining processors in Phase 2
+        // _inputDispatcher.RegisterProcessor(new PortProcessor());
+        // _inputDispatcher.RegisterProcessor(new EdgeProcessor());
+        // _inputDispatcher.RegisterProcessor(new ShapeProcessor());
     }
 
     #endregion

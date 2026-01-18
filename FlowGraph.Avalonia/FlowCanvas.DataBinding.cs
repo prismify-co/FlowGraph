@@ -55,6 +55,9 @@ public partial class FlowCanvas
             UnsubscribeFromNodeChanges(oldGraph);
             UnsubscribeFromEdgeChanges(oldGraph);
         }
+        
+        // Update the InputDispatcher with the new graph (for behavior attachment)
+        _inputDispatcher?.SetGraph(newGraph);
 
         if (newGraph != null)
         {
