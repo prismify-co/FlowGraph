@@ -7,12 +7,27 @@ using FlowGraph.Core;
 using FlowGraph.Core.Elements.Shapes;
 using System.Diagnostics;
 using AvaloniaPoint = Avalonia.Point;
+using CorePoint = FlowGraph.Core.Point;
 
 namespace FlowGraph.Avalonia.Input.States;
 
 /// <summary>
 /// The default idle state - handles initial interactions and transitions to other states.
 /// </summary>
+/// <remarks>
+/// <para>
+/// This state delegates to the InputDispatcher for processor-based routing when available,
+/// falling back to legacy pattern matching for compatibility.
+/// </para>
+/// <para>
+/// <b>Migration Path (Phase 3):</b>
+/// <list type="number">
+/// <item>InputDispatcher performs hit test and routes to appropriate processor</item>
+/// <item>Processors handle element-specific logic (selection, drag start, etc.)</item>
+/// <item>State transitions are returned and applied by InputStateMachine</item>
+/// </list>
+/// </para>
+/// </remarks>
 public class IdleState : InputStateBase
 {
     public static IdleState Instance { get; } = new();
@@ -34,56 +49,89 @@ public class IdleState : InputStateBase
             return StateTransitionResult.TransitionTo(panState);
         }
 
-        // Left click handling
+        // Left click handling - try dispatcher first, fall back to legacy
         if (point.Properties.IsLeftButtonPressed)
         {
-            // Check what was clicked via source control's Tag
-            // Node may be stored directly or in a dictionary (from ResizableVisual)
-            var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
-            if (node != null)
+            // Try the InputDispatcher if available (Phase 3 migration)
+            if (context.Dispatcher != null)
             {
-                return HandleNodeClick(context, e, source!, node, position, isReadOnly);
+                var canvasPos = GetTypedCanvasPosition(context, e);
+                var result = context.Dispatcher.DispatchPointerPressed(
+                    context, e,
+                    new CorePoint(canvasPos.X, canvasPos.Y),
+                    new CorePoint(viewportPos.X, viewportPos.Y),
+                    Name);
+
+                // If dispatcher handled it (including transitions), return that result
+                if (result.Handled || result.NewState != null)
+                {
+                    return result;
+                }
+                // Otherwise fall through to legacy handling
             }
 
-            if (source?.Tag is Edge edge)
-            {
-                // Could be edge path (hit area) or edge label (TextBlock)
-                bool isLabel = source is TextBlock;
-                return HandleEdgeClick(context, e, edge, isLabel, isReadOnly);
-            }
-
-            if (source?.Tag is ShapeElement shape)
-            {
-                return HandleShapeClick(context, e, shape, isReadOnly);
-            }
-
-            if (source?.Tag is (Node portNode, Port port, bool isOutput))
-            {
-                // Port clicks always blocked in read-only mode (they start connections)
-                if (isReadOnly) return StateTransitionResult.Unhandled();
-                return HandlePortClick(context, e, source as Ellipse, portNode, port, isOutput);
-            }
-
-            if (source?.Tag is (Node resizeNode, ResizeHandlePosition handlePos))
-            {
-                // Resize always blocked in read-only mode
-                if (isReadOnly) return StateTransitionResult.Unhandled();
-                return HandleResizeHandleClick(context, e, source as Rectangle, resizeNode, handlePos, position);
-            }
-
-            // Shape resize handles
-            if (source?.Tag is (ShapeElement resizeShape, ResizeHandlePosition shapeHandlePos))
-            {
-                // Resize always blocked in read-only mode
-                if (isReadOnly) return StateTransitionResult.Unhandled();
-                return HandleShapeResizeHandleClick(context, e, resizeShape, shapeHandlePos, position);
-            }
-
-            // Empty canvas click
-            return HandleCanvasClick(context, e, position, isReadOnly);
+            // Legacy pattern matching (for backward compatibility during migration)
+            return HandleLegacyLeftClick(context, e, source, position, isReadOnly);
         }
 
         return StateTransitionResult.Unhandled();
+    }
+
+    /// <summary>
+    /// Legacy left-click handling via source control tag pattern matching.
+    /// This is kept for backward compatibility during the migration to InputDispatcher.
+    /// </summary>
+    private StateTransitionResult HandleLegacyLeftClick(
+        InputStateContext context,
+        PointerPressedEventArgs e,
+        Control? source,
+        AvaloniaPoint position,
+        bool isReadOnly)
+    {
+        // Check what was clicked via source control's Tag
+        // Node may be stored directly or in a dictionary (from ResizableVisual)
+        var node = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(source?.Tag);
+        if (node != null)
+        {
+            return HandleNodeClick(context, e, source!, node, position, isReadOnly);
+        }
+
+        if (source?.Tag is Edge edge)
+        {
+            // Could be edge path (hit area) or edge label (TextBlock)
+            bool isLabel = source is TextBlock;
+            return HandleEdgeClick(context, e, edge, isLabel, isReadOnly);
+        }
+
+        if (source?.Tag is ShapeElement shape)
+        {
+            return HandleShapeClick(context, e, shape, isReadOnly);
+        }
+
+        if (source?.Tag is (Node portNode, Port port, bool isOutput))
+        {
+            // Port clicks always blocked in read-only mode (they start connections)
+            if (isReadOnly) return StateTransitionResult.Unhandled();
+            return HandlePortClick(context, e, source as Ellipse, portNode, port, isOutput);
+        }
+
+        if (source?.Tag is (Node resizeNode, ResizeHandlePosition handlePos))
+        {
+            // Resize always blocked in read-only mode
+            if (isReadOnly) return StateTransitionResult.Unhandled();
+            return HandleResizeHandleClick(context, e, source as Rectangle, resizeNode, handlePos, position);
+        }
+
+        // Shape resize handles
+        if (source?.Tag is (ShapeElement resizeShape, ResizeHandlePosition shapeHandlePos))
+        {
+            // Resize always blocked in read-only mode
+            if (isReadOnly) return StateTransitionResult.Unhandled();
+            return HandleShapeResizeHandleClick(context, e, resizeShape, shapeHandlePos, position);
+        }
+
+        // Empty canvas click
+        return HandleCanvasClick(context, e, position, isReadOnly);
     }
 
     public override StateTransitionResult HandlePointerWheel(InputStateContext context, PointerWheelEventArgs e)

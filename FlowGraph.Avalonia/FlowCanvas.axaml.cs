@@ -688,6 +688,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputDispatcher = new InputDispatcher();
         RegisterDefaultProcessors();
 
+        // Connect dispatcher to context for IdleState delegation (Phase 3)
+        _inputContext.Dispatcher = _inputDispatcher;
+
         _clipboardManager = new ClipboardManager();
         _selectionManager = new SelectionManager(
             context: this,

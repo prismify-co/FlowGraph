@@ -142,6 +142,16 @@ public class InputStateContext
     /// </summary>
     public ShapeVisualManager? ShapeVisualManager { get; set; }
 
+    /// <summary>
+    /// Reference to the InputDispatcher for processor-based input handling.
+    /// Set by FlowCanvas during initialization.
+    /// </summary>
+    /// <remarks>
+    /// This enables IdleState to delegate to the InputDispatcher instead of
+    /// doing manual pattern matching on source control tags.
+    /// </remarks>
+    public InputDispatcher? Dispatcher { get; set; }
+
     #endregion
 
     #region Events
