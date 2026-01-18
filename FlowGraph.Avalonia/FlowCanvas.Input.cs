@@ -34,9 +34,8 @@ public partial class FlowCanvas
         var sw = Stopwatch.StartNew();
 
         var point = e.GetCurrentPoint(_rootPanel);
-        var screenPos = e.GetPosition(_rootPanel);
 
-        Debug.WriteLine($"[Input] PointerPressed at ({screenPos.X:F0}, {screenPos.Y:F0}), DirectRendering={_useDirectRendering}, RightButton={point.Properties.IsRightButtonPressed}");
+        Debug.WriteLine($"[Input] PointerPressed, DirectRendering={_useDirectRendering}, RightButton={point.Properties.IsRightButtonPressed}");
 
         // Handle right-click for context menu
         if (point.Properties.IsRightButtonPressed)
@@ -46,9 +45,10 @@ public partial class FlowCanvas
             // In direct rendering mode, do hit testing first to find what was clicked
             if (_useDirectRendering && _directRenderer != null)
             {
-                // DirectRenderer expects screen coordinates (relative to _rootPanel)
+                // DirectRenderer expects viewport coordinates (relative to _rootPanel)
                 // It calls ScreenToCanvas internally
-                var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+                var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
+                var rightClickHit = PerformDirectRenderingHitTest(viewportPos.X, viewportPos.Y);
                 Debug.WriteLine($"[Input] Right-click hit test result: {rightClickHit?.Tag?.GetType().Name ?? "null"}");
 
                 var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(rightClickHit?.Tag);
@@ -83,10 +83,11 @@ public partial class FlowCanvas
         // In direct rendering mode, use coordinate-based hit testing
         if (_useDirectRendering && _directRenderer != null)
         {
-            // DirectRenderer expects screen coordinates (relative to _rootPanel)
+            // DirectRenderer expects viewport coordinates (relative to _rootPanel)
             // It calls ScreenToCanvas internally
             var hitSw = Stopwatch.StartNew();
-            hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+            var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
+            hitElement = PerformDirectRenderingHitTest(viewportPos.X, viewportPos.Y);
             hitSw.Stop();
             Debug.WriteLine($"[Input] DirectHitTest took {hitSw.ElapsedMilliseconds}ms, hit={hitElement?.Tag?.GetType().Name ?? "null"}");
         }
@@ -210,13 +211,12 @@ public partial class FlowCanvas
         // Track hover states and cursor in direct rendering mode (only when idle and throttled)
         if (shouldDoHoverTest && _useDirectRendering && _directRenderer != null && _rootPanel != null)
         {
-            // CRITICAL: Use screenPos (relative to _rootPanel), NOT canvasPos!
-            // DirectRenderer methods expect screen coordinates and call ScreenToCanvas internally.
-            // Using canvasPos would cause double-transformation at non-1.0 zoom levels.
-            var screenPos = e.GetPosition(_rootPanel);
+            // Get viewport position for DirectRenderer - it expects screen coordinates (relative to _rootPanel)
+            // and calls ScreenToCanvas internally
+            var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
 
             // Check resize handles first (highest priority for cursor)
-            var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
+            var resizeHit = _directRenderer.HitTestResizeHandle(viewportPos.X, viewportPos.Y);
             if (resizeHit.HasValue)
             {
                 _rootPanel.Cursor = GetResizeCursor(resizeHit.Value.position);
@@ -226,7 +226,7 @@ public partial class FlowCanvas
             else
             {
                 // Check port hover
-                var portHit = _directRenderer.HitTestPort(screenPos.X, screenPos.Y);
+                var portHit = _directRenderer.HitTestPort(viewportPos.X, viewportPos.Y);
                 if (portHit.HasValue)
                 {
                     _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -238,7 +238,7 @@ public partial class FlowCanvas
                     _directRenderer.ClearHoveredPort();
 
                     // Check edge endpoint handle hover
-                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(screenPos.X, screenPos.Y);
+                    var endpointHit = _directRenderer.HitTestEdgeEndpointHandle(viewportPos.X, viewportPos.Y);
                     if (endpointHit.HasValue)
                     {
                         _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -249,7 +249,7 @@ public partial class FlowCanvas
                         _directRenderer.ClearHoveredEndpointHandle();
 
                         // Check if hovering a node
-                        var nodeHit = _directRenderer.HitTestNode(screenPos.X, screenPos.Y);
+                        var nodeHit = _directRenderer.HitTestNode(viewportPos.X, viewportPos.Y);
                         if (nodeHit != null)
                         {
                             _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -257,7 +257,7 @@ public partial class FlowCanvas
                         else
                         {
                             // Check if hovering a shape
-                            var shapeHit = _directRenderer.HitTestShape(screenPos.X, screenPos.Y);
+                            var shapeHit = _directRenderer.HitTestShape(viewportPos.X, viewportPos.Y);
                             if (shapeHit != null)
                             {
                                 _rootPanel.Cursor = new Cursor(StandardCursorType.Hand);
@@ -491,8 +491,8 @@ public partial class FlowCanvas
     /// </summary>
     private void HandleContextMenuRequest(PointerPressedEventArgs e, Control? target, object? targetObject)
     {
-        var screenPos = e.GetPosition(_rootPanel);
-        var canvasPos = _viewport.ViewportToCanvas(screenPos);
+        // Use the coordinate adapter to get canvas position - it handles both rendering modes
+        var canvasPos = _inputContext.Coordinates.GetPointerCanvasPosition(e);
         var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
 
         // In direct rendering mode, target may be a dummy control - use _rootPanel for positioning
@@ -532,15 +532,17 @@ public partial class FlowCanvas
 
             if (_useDirectRendering && _directRenderer != null)
             {
-                // CRITICAL: Use screenPos, not canvasPos!
-                // DirectRenderer methods expect screen coordinates and call ScreenToCanvas internally.
-                hitElement = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
+                // Get viewport position for DirectRenderer (it expects screen coordinates)
+                var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
+                hitElement = PerformDirectRenderingHitTest(viewportPos.X, viewportPos.Y);
             }
             else
             {
-                var canvasPosForHit = _rootPanel != null && _mainCanvas != null
+                // In visual tree mode, get canvas position for hit testing
+                // GetPosition(mainCanvas) automatically applies inverse transform
+                var canvasPosForHit = _mainCanvas != null
                     ? e.GetPosition(_mainCanvas)
-                    : screenPos;
+                    : default;
                 hitElement = _mainCanvas?.InputHitTest(canvasPosForHit) as Control;
             }
 
