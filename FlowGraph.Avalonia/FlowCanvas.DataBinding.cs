@@ -194,7 +194,7 @@ public partial class FlowCanvas
         // In direct rendering mode, invalidate the renderer for visual changes
         if (_useDirectRendering && _directRenderer != null)
         {
-            if (e.PropertyName is nameof(Edge.IsSelected) or nameof(Edge.Style))
+            if (e.PropertyName is nameof(Edge.IsSelected) or nameof(Edge.Style) or nameof(Edge.Waypoints))
             {
                 _directRenderer.InvalidateVisual();
             }
@@ -220,6 +220,14 @@ public partial class FlowCanvas
                     _graphRenderer.RenderEdge(_mainCanvas, edge, Graph, _theme);
                 }
                 SyncEdgeFlowAnimations();
+                break;
+            case nameof(Edge.Waypoints):
+                // Re-render edge with new waypoints
+                if (_mainCanvas != null && Graph != null && _theme != null)
+                {
+                    _graphRenderer.RemoveEdgeVisual(_mainCanvas, edge);
+                    _graphRenderer.RenderEdge(_mainCanvas, edge, Graph, _theme);
+                }
                 break;
         }
     }

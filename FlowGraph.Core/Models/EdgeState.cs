@@ -27,7 +27,12 @@ public class EdgeState : ObservableBase, IEdgeState
   public IReadOnlyList<Point>? Waypoints
   {
     get => _waypoints;
-    set => SetField(ref _waypoints, value);
+    set
+    {
+      // Always update and notify for waypoints - list contents may differ even if reference equality passes
+      _waypoints = value;
+      OnPropertyChanged();
+    }
   }
 
   /// <inheritdoc />
