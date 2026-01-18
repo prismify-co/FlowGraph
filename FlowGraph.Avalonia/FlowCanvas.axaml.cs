@@ -548,6 +548,16 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </summary>
     public event EventHandler<EdgeDisconnectedEventArgs>? EdgeDisconnected;
 
+    /// <summary>
+    /// Event raised when a shape is being resized (in progress).
+    /// </summary>
+    public event EventHandler<ShapeResizingEventArgs>? ShapeResizing;
+
+    /// <summary>
+    /// Event raised when a shape resize is completed.
+    /// </summary>
+    public event EventHandler<ShapeResizedEventArgs>? ShapeResized;
+
     #endregion
 
     #region Public Methods - Label Editing
@@ -772,6 +782,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.NodesDragging += OnNodesDragging;
         _inputContext.NodeResizing += OnNodeResizing;
         _inputContext.NodeResized += OnNodeResized;
+        _inputContext.ShapeResizing += OnShapeResizing;
+        _inputContext.ShapeResized += OnShapeResized;
         // NOTE: GridRenderRequested is no longer needed to trigger renders.
         // Viewport changes are now handled efficiently through ViewportChanged -> ApplyViewportTransforms()
         // which uses transform-based panning (fast path) or full render (zoom changes).
@@ -1218,6 +1230,34 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         CommandHistory.Execute(new AlreadyExecutedCommand(command));
 
         NodeResized?.Invoke(this, e);
+    }
+
+    private void OnShapeResizing(object? sender, ShapeResizingEventArgs e)
+    {
+        System.Diagnostics.Debug.WriteLine($"[OnShapeResizing] Shape={e.Shape.Id}, NewSize={e.NewWidth}x{e.NewHeight}");
+        
+        // Update the shape visual - this is the key to making resize visible immediately
+        _shapeVisualManager?.AddOrUpdateShape(e.Shape);
+        _shapeVisualManager?.UpdateResizeHandlePositions();
+        
+        // Also invalidate direct renderer if in direct mode
+        _directRenderer?.InvalidateVisual();
+
+        ShapeResizing?.Invoke(this, e);
+    }
+
+    private void OnShapeResized(object? sender, ShapeResizedEventArgs e)
+    {
+        if (Graph == null) return;
+
+        // TODO: Add ResizeShapeCommand for undo/redo support
+        // var command = new ResizeShapeCommand(
+        //     Graph, e.Shape.Id,
+        //     e.OldWidth, e.OldHeight, e.NewWidth, e.NewHeight,
+        //     e.OldPosition, e.NewPosition);
+        // CommandHistory.Execute(new AlreadyExecutedCommand(command));
+
+        ShapeResized?.Invoke(this, e);
     }
 
     private void OnEdgeReconnected(object? sender, EdgeReconnectedEventArgs e)
