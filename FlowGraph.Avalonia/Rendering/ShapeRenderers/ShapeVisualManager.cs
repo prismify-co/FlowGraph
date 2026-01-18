@@ -84,6 +84,10 @@ public class ShapeVisualManager
       {
         var renderer = ShapeRendererRegistry.Instance.GetRenderer(shape.Type);
         var visual = renderer.CreateShapeVisual(shape, shapeContext);
+        
+        // IMPORTANT: Set the Tag to the shape for hit testing
+        // This allows FlowCanvas.Input to recognize clicks on shapes
+        visual.Tag = shape;
 
         _visuals[shape.Id] = new ShapeVisualEntry
         {

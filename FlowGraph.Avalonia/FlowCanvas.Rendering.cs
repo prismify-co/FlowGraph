@@ -234,6 +234,48 @@ public partial class FlowCanvas
         }
     }
 
+    /// <summary>
+    /// Renders shapes in direct rendering mode.
+    /// This uses retained mode (visual tree) via ShapeVisualManager, which works
+    /// alongside the DirectCanvasRenderer that handles nodes and edges.
+    /// </summary>
+    private void RenderShapesForDirectMode()
+    {
+        if (_shapeVisualManager == null || _mainCanvas == null || Graph == null) return;
+
+        // Update the render context with current viewport state
+        var renderContext = new Rendering.RenderContext(Settings);
+        renderContext.SetViewport(_viewport);
+        _shapeVisualManager.SetRenderContext(renderContext);
+
+        // Get all shape elements from the graph
+        var shapes = Graph.Elements.Shapes;
+
+        if (shapes.Count == 0)
+        {
+            return;
+        }
+
+        // Track which shapes still exist for cleanup
+        var existingShapeIds = _shapeVisualManager.GetShapeIds().ToHashSet();
+
+        // Render shapes ordered by Z-index
+        foreach (var shape in shapes.OrderBy(s => s.ZIndex))
+        {
+            if (!shape.IsVisible) continue;
+            _shapeVisualManager.AddOrUpdateShape(shape);
+            existingShapeIds.Remove(shape.Id);
+        }
+
+        // Remove visuals for shapes that no longer exist
+        foreach (var removedId in existingShapeIds)
+        {
+            _shapeVisualManager.RemoveShape(removedId);
+        }
+        
+        System.Diagnostics.Debug.WriteLine($"[RenderShapesForDirectMode] Rendered {shapes.Count} shapes");
+    }
+
     private void RenderElements()
     {
         FlowGraphLogger.Debug(LogCategory.Rendering,
@@ -268,6 +310,11 @@ public partial class FlowCanvas
             _directRenderer.Width = _rootPanel.Bounds.Width;
             _directRenderer.Height = _rootPanel.Bounds.Height;
             _directRenderer.Update(Graph, _viewport, _theme);
+            
+            // Still render shapes using retained mode (visual tree) even in direct rendering mode.
+            // Shapes use ShapeVisualManager which adds controls to _mainCanvas.
+            // This allows shapes like CommentElement (sticky notes) to work in large graphs.
+            RenderShapesForDirectMode();
             return;
         }
 

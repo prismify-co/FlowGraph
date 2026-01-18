@@ -129,7 +129,7 @@ public partial class FlowCanvas
             {
                 Debug.WriteLine($"[Input] VisualTreeHitTest hit: {rawHit.GetType().Name}, Tag={GetTagDescription(rawHit)}, IsHitTestVisible={(rawHit as Control)?.IsHitTestVisible}");
 
-                // Walk up tree to find a valid target (node, edge, port, resize handle, etc.)
+                // Walk up tree to find a valid target (node, edge, port, resize handle, shape, etc.)
                 var current = rawHit as Control;
                 int depth = 0;
                 bool foundValidTarget = false;
@@ -142,7 +142,8 @@ public partial class FlowCanvas
                     if (Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(tag) != null || // Node
                         tag is Edge || // Edge
                         tag is (Node, Port, bool) || // Port
-                        tag is (Node, ResizeHandlePosition)) // Resize handle
+                        tag is (Node, ResizeHandlePosition) || // Resize handle
+                        tag is Core.Elements.Shapes.ShapeElement) // Shape (sticky note, etc.)
                     {
                         hitElement = current;
                         foundValidTarget = true;

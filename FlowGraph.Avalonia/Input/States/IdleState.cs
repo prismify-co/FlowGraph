@@ -343,6 +343,8 @@ public class IdleState : InputStateBase
         Debug.WriteLine($"[IdleState.HandleShapeClick] Shape={shape.Id}, type={shape.Type}, IsSelected={shape.IsSelected}, ReadOnly={isReadOnly}");
 
         bool ctrlHeld = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+        var viewportPos = GetTypedViewportPosition(context, e);
+        var position = ToAvaloniaPoint(viewportPos);
 
         // Handle selection (allowed in read-only mode for viewing)
         if (shape.IsSelectable)
@@ -368,6 +370,18 @@ public class IdleState : InputStateBase
         // Update visual selection state
         context.ShapeVisualManager?.UpdateSelection(shape.Id, shape.IsSelected);
         context.RaiseSelectionChanged();
+
+        // Start dragging if shape is selected - blocked in read-only mode
+        // Shapes are draggable by default when selected (unlike nodes, they don't have an IsDraggable property)
+        if (!isReadOnly && shape.IsSelected)
+        {
+            Debug.WriteLine($"[IdleState.HandleShapeClick] Starting drag for shape {shape.Id}");
+            var canvasPos = GetTypedCanvasPosition(context, e);
+            var dragState = new DraggingShapesState(graph, position, ToAvaloniaPoint(canvasPos), context.Viewport, context.Settings);
+            CapturePointer(e, context.RootPanel);
+            e.Handled = true;
+            return StateTransitionResult.TransitionTo(dragState);
+        }
 
         e.Handled = true;
         return StateTransitionResult.Stay();
