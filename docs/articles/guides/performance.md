@@ -112,6 +112,28 @@ canvas.DisableDirectRendering();
 
 > **When to use:** Enable direct rendering when you need smooth interactions with 500+ nodes and don't require embedded controls (buttons, text inputs) inside nodes. Most workflow and diagram applications work perfectly in this mode.
 
+## Spatial Indexing (Quadtree)
+
+FlowGraph uses a Quadtree spatial index for O(log N) hit testing performance. This is automatically enabled and provides significant improvements for graphs with 100+ elements.
+
+### How It Works
+
+Instead of checking every node/shape when you click or hover, the Quadtree partitions the canvas into regions, allowing FlowGraph to quickly narrow down which elements are near the cursor.
+
+| Graph Size    | Linear Search | Quadtree    |
+| ------------- | ------------- | ----------- |
+| 100 elements  | ~100 checks   | ~7 checks   |
+| 1000 elements | ~1000 checks  | ~10 checks  |
+| 10000 elements| ~10000 checks | ~13 checks  |
+
+### Benefits
+
+- **Faster hit testing** - Click and hover detection scales logarithmically
+- **Smoother interactions** - Less CPU work during mouse movement
+- **Automatic** - No configuration needed, works out of the box
+
+The spatial index automatically updates when nodes are added, removed, or moved.
+
 ## Batch Loading
 
 When initially loading a large graph, use batch operations to suppress individual change notifications:

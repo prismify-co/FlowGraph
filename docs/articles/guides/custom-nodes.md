@@ -19,14 +19,14 @@ public class CustomNodeRenderer : DefaultNodeRenderer
     public override Control CreateNodeVisual(Node node, NodeRenderContext context)
     {
         var control = base.CreateNodeVisual(node, context);
-        
+
         if (control is Border border)
         {
             border.Background = Background;
             border.BorderBrush = Border;
             border.CornerRadius = new CornerRadius(12);
         }
-        
+
         return control;
     }
 
@@ -52,20 +52,20 @@ public class MyNodeRenderer : StyledNodeRendererBase
 {
     // Use vector geometry for scalable icons
     private static readonly Geometry Icon = Geometry.Parse("M12 2L2 7l10 5 10-5-10-5z");
-    
+
     protected override Geometry? IconGeometry => Icon;
     protected override string DefaultLabel => "My Node";
-    
-    protected override IBrush GetNodeBackground(ThemeResources theme) => 
+
+    protected override IBrush GetNodeBackground(ThemeResources theme) =>
         new SolidColorBrush(Color.Parse("#FFF3E0"));
-    
-    protected override IBrush GetNodeBorder(ThemeResources theme) => 
+
+    protected override IBrush GetNodeBorder(ThemeResources theme) =>
         new SolidColorBrush(Color.Parse("#FF9800"));
-    
-    protected override IBrush GetIconForeground(ThemeResources theme) => 
+
+    protected override IBrush GetIconForeground(ThemeResources theme) =>
         new SolidColorBrush(Color.Parse("#E65100"));
-    
-    protected override IBrush GetTextForeground(ThemeResources theme) => 
+
+    protected override IBrush GetTextForeground(ThemeResources theme) =>
         new SolidColorBrush(Color.Parse("#E65100"));
 }
 ```

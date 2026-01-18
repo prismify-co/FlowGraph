@@ -16,6 +16,7 @@ FlowGraph is a .NET library for building node-based editors, inspired by [React 
 
 - Pan, zoom, and viewport controls
 - Draggable, resizable nodes with custom renderers
+- Configurable resize handles per node
 - Multiple edge types (Bezier, Straight, Step)
 - Edge locking and port tooltips
 - Connection validation
@@ -28,6 +29,7 @@ FlowGraph is a .NET library for building node-based editors, inspired by [React 
 - JSON serialization
 - Hierarchical grid backgrounds
 - Direct GPU rendering for large graphs
+- Quadtree spatial indexing for O(log N) hit testing
 
 ## Installation
 
