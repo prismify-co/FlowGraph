@@ -14,6 +14,7 @@ namespace FlowGraph.Avalonia.Input.States;
 public class BoxSelectingState : InputStateBase
 {
     private readonly AvaloniaPoint _startCanvas;
+    private readonly AvaloniaPoint _startViewport; // Store viewport coords to avoid recalculation during pan
     private AvaloniaPoint _endCanvas;
     private AvaloniaPoint _endViewport;
     private readonly Rectangle _selectionBox;
@@ -27,17 +28,24 @@ public class BoxSelectingState : InputStateBase
     public BoxSelectingState(AvaloniaPoint startCanvasPoint, FlowCanvasSettings settings, ViewportState viewport, ThemeResources? theme = null)
     {
         _startCanvas = startCanvasPoint;
+        _startViewport = viewport.CanvasToViewport(startCanvasPoint); // Cache viewport coords
         _endCanvas = startCanvasPoint;
-        _endViewport = viewport.CanvasToViewport(startCanvasPoint);
+        _endViewport = _startViewport; // Initialize to start position
         _settings = settings;
         _viewport = viewport;
+
+        System.Diagnostics.Debug.WriteLine($"[BoxSelect] Created: StartCanvas=({_startCanvas.X:F1},{_startCanvas.Y:F1}) StartViewport=({_startViewport.X:F1},{_startViewport.Y:F1}) Viewport: Offset=({viewport.OffsetX:F1},{viewport.OffsetY:F1}) Zoom={viewport.Zoom:F2}");
+
 
         _selectionBox = new Rectangle
         {
             Stroke = theme?.SelectionBoxStroke ?? new SolidColorBrush(Color.Parse("#0078D4")),
             StrokeThickness = 1,
             Fill = theme?.SelectionBoxFill ?? new SolidColorBrush(Color.FromArgb(40, 0, 120, 212)),
-            IsHitTestVisible = false
+            IsHitTestVisible = false,
+            // Required for Margin-based positioning in Panel (Direct Rendering mode)
+            HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Left,
+            VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Top
         };
     }
 
@@ -105,12 +113,14 @@ public class BoxSelectingState : InputStateBase
         if (_isDirectRenderingMode)
         {
             // Direct Rendering mode: container is RootPanel (untransformed)
-            // Use viewport coordinates directly
-            var startViewport = _viewport.CanvasToViewport(_startCanvas);
-            left = Math.Min(startViewport.X, _endViewport.X);
-            top = Math.Min(startViewport.Y, _endViewport.Y);
-            width = Math.Abs(_endViewport.X - startViewport.X);
-            height = Math.Abs(_endViewport.Y - startViewport.Y);
+            // Use cached viewport coordinates (doesn't change during pan)
+            left = Math.Min(_startViewport.X, _endViewport.X);
+            top = Math.Min(_startViewport.Y, _endViewport.Y);
+            width = Math.Abs(_endViewport.X - _startViewport.X);
+            height = Math.Abs(_endViewport.Y - _startViewport.Y);
+
+            // RootPanel is a Panel, not Canvas, so use Margin instead of Canvas.SetLeft/SetTop
+            _selectionBox.Margin = new Thickness(left, top, 0, 0);
         }
         else
         {
@@ -120,10 +130,12 @@ public class BoxSelectingState : InputStateBase
             top = Math.Min(_startCanvas.Y, _endCanvas.Y);
             width = Math.Abs(_endCanvas.X - _startCanvas.X);
             height = Math.Abs(_endCanvas.Y - _startCanvas.Y);
+
+            // MainCanvas is a Canvas, so use Canvas attached properties
+            Canvas.SetLeft(_selectionBox, left);
+            Canvas.SetTop(_selectionBox, top);
         }
 
-        Canvas.SetLeft(_selectionBox, left);
-        Canvas.SetTop(_selectionBox, top);
         _selectionBox.Width = width;
         _selectionBox.Height = height;
     }

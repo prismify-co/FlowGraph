@@ -34,9 +34,11 @@ public class PanningState : InputStateBase
         var deltaX = currentPoint.X - _startPoint.X;
         var deltaY = currentPoint.Y - _startPoint.Y;
 
-        context.Viewport.SetOffset(_startOffsetX + deltaX, _startOffsetY + deltaY);
+        // Use SetOffsetDirect to avoid firing events during pan (reduces overhead)
+        // We'll manually apply the transform below
+        context.Viewport.SetOffsetDirect(_startOffsetX + deltaX, _startOffsetY + deltaY);
 
-        // Apply transform to canvas instead of full re-render
+        // Apply transform to canvas - this is O(1) update
         context.ApplyViewportTransform();
 
         e.Handled = true;
@@ -45,6 +47,10 @@ public class PanningState : InputStateBase
 
     public override StateTransitionResult HandlePointerReleased(InputStateContext context, PointerReleasedEventArgs e)
     {
+        // Fire the viewport changed event now that panning is complete
+        // This notifies any subscribers (like viewport bounds caching) of the final position
+        context.Viewport.NotifyViewportChanged();
+
         ReleasePointer(e);
         e.Handled = true;
         return StateTransitionResult.TransitionTo(IdleState.Instance);

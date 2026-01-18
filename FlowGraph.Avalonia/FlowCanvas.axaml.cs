@@ -1012,15 +1012,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         }
         else if (offsetChanged)
         {
-            // Pan-only change - update transform and grid
+            // Pan-only change - just update the stored offset values
+            // Grid and custom backgrounds use their own transforms for smooth O(1) panning
             _lastOffsetX = _viewport.OffsetX;
             _lastOffsetY = _viewport.OffsetY;
-
-            // Grid background is on separate untransformed canvas, must re-render
-            RenderGrid();
-
-            // Update custom background renderers (they render to GridCanvas which has no transform)
-            RenderCustomBackgrounds();
         }
     }
 
