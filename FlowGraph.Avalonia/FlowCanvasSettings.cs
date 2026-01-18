@@ -210,6 +210,13 @@ public class FlowCanvasSettings
     public double GroupBackgroundOpacity { get; set; } = 0.1;
 
     /// <summary>
+    /// Whether to show a distinct header background on groups.
+    /// When true, the header area has a separate background color for visual separation.
+    /// When false (default), the header blends with the group background.
+    /// </summary>
+    public bool ShowGroupHeaderBackground { get; set; } = false;
+
+    /// <summary>
     /// Whether to use proxy ports when groups are collapsed.
     /// When true, edges that cross group boundaries are re-routed to proxy ports
     /// on the collapsed group, maintaining visual connectivity.

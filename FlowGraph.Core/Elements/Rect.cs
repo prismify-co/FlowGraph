@@ -48,6 +48,13 @@ public readonly record struct Rect(double X, double Y, double Width, double Heig
       point.Y >= Y && point.Y <= Bottom;
 
   /// <summary>
+  /// Determines whether this rectangle fully contains another rectangle.
+  /// </summary>
+  public bool Contains(Rect other) =>
+      other.Left >= Left && other.Right <= Right &&
+      other.Top >= Top && other.Bottom <= Bottom;
+
+  /// <summary>
   /// Determines whether this rectangle intersects with another rectangle.
   /// </summary>
   public bool Intersects(Rect other) =>

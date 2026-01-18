@@ -27,15 +27,21 @@ Based on competitor analysis of **Nodify-Avalonia** and **Blazor.Diagrams**.
 
 ### Medium Priority - Visual Polish
 
-- [ ] **Group Header Customization**
-  - `FlowCanvasTheme.GroupHeaderBackground` property
+- [x] **Group Header Customization** ✅ COMPLETED
+  - `FlowCanvasTheme.GroupHeaderBackground` property (already existed)
+  - `ShowGroupHeaderBackground` setting in `FlowCanvasSettings` (default: false)
   - Distinct visual separation between header and content area
-  - Option for header-only drag area vs entire group drag
+  - Supported in both GroupNodeRenderer and DirectCanvasRenderer
+  - Files: `FlowCanvasSettings.cs`, `GroupNodeRenderer.cs`, `DirectCanvasRenderer.GroupRendering.cs`
 
-- [ ] **Selection Helpers for Groups**
-  - `SelectNodesInArea(Rect bounds)` method
-  - `UnselectNodesInArea(Rect bounds)` method
-  - Useful for group header click → select all children behavior
+- [x] **Selection Helpers for Groups** ✅ COMPLETED
+  - `SelectNodesInArea(Rect bounds, bool fullyContained)` method
+  - `UnselectNodesInArea(Rect bounds, bool fullyContained)` method
+  - `SelectGroupChildren(string groupId)` method
+  - `GetSelectedNodes()` and `GetSelectedEdges()` methods
+  - `ClearSelection()` method
+  - Added `Rect.Contains(Rect)` for containment checks
+  - Files: `Graph.cs`, `Rect.cs`
 
 ### Low Priority - Nice to Have
 

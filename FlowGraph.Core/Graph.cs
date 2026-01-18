@@ -492,4 +492,117 @@ public class Graph
     public bool ContainsEdge(string edgeId) => Elements.FindById<Edge>(edgeId) != null;
 
     #endregion
+
+    #region Selection Operations
+
+    /// <summary>
+    /// Selects all nodes that intersect with the specified rectangular area.
+    /// </summary>
+    /// <param name="bounds">The rectangular area in canvas coordinates.</param>
+    /// <param name="fullyContained">If true, only selects nodes fully contained within the bounds. 
+    /// If false (default), selects nodes that intersect with the bounds.</param>
+    /// <returns>The list of nodes that were selected.</returns>
+    public IReadOnlyList<Node> SelectNodesInArea(Rect bounds, bool fullyContained = false)
+    {
+        var selected = new List<Node>();
+        
+        foreach (var node in Elements.Nodes)
+        {
+            var nodeWidth = node.Width ?? GraphDefaults.NodeWidth;
+            var nodeHeight = node.Height ?? GraphDefaults.NodeHeight;
+            var nodeBounds = new Rect(node.Position.X, node.Position.Y, nodeWidth, nodeHeight);
+            
+            bool shouldSelect = fullyContained
+                ? bounds.Contains(nodeBounds)
+                : bounds.Intersects(nodeBounds);
+            
+            if (shouldSelect)
+            {
+                node.IsSelected = true;
+                selected.Add(node);
+            }
+        }
+        
+        return selected;
+    }
+
+    /// <summary>
+    /// Unselects all nodes that intersect with the specified rectangular area.
+    /// </summary>
+    /// <param name="bounds">The rectangular area in canvas coordinates.</param>
+    /// <param name="fullyContained">If true, only unselects nodes fully contained within the bounds.
+    /// If false (default), unselects nodes that intersect with the bounds.</param>
+    /// <returns>The list of nodes that were unselected.</returns>
+    public IReadOnlyList<Node> UnselectNodesInArea(Rect bounds, bool fullyContained = false)
+    {
+        var unselected = new List<Node>();
+        
+        foreach (var node in Elements.Nodes.Where(n => n.IsSelected))
+        {
+            var nodeWidth = node.Width ?? GraphDefaults.NodeWidth;
+            var nodeHeight = node.Height ?? GraphDefaults.NodeHeight;
+            var nodeBounds = new Rect(node.Position.X, node.Position.Y, nodeWidth, nodeHeight);
+            
+            bool shouldUnselect = fullyContained
+                ? bounds.Contains(nodeBounds)
+                : bounds.Intersects(nodeBounds);
+            
+            if (shouldUnselect)
+            {
+                node.IsSelected = false;
+                unselected.Add(node);
+            }
+        }
+        
+        return unselected;
+    }
+
+    /// <summary>
+    /// Gets all currently selected nodes.
+    /// </summary>
+    /// <returns>Enumerable of selected nodes.</returns>
+    public IEnumerable<Node> GetSelectedNodes() => Elements.Nodes.Where(n => n.IsSelected);
+
+    /// <summary>
+    /// Gets all currently selected edges.
+    /// </summary>
+    /// <returns>Enumerable of selected edges.</returns>
+    public IEnumerable<Edge> GetSelectedEdges() => Elements.Edges.Where(e => e.IsSelected);
+
+    /// <summary>
+    /// Clears the selection of all nodes and edges.
+    /// </summary>
+    public void ClearSelection()
+    {
+        foreach (var node in Elements.Nodes.Where(n => n.IsSelected))
+        {
+            node.IsSelected = false;
+        }
+        
+        foreach (var edge in Elements.Edges.Where(e => e.IsSelected))
+        {
+            edge.IsSelected = false;
+        }
+    }
+
+    /// <summary>
+    /// Selects all children of a group node.
+    /// </summary>
+    /// <param name="groupId">The ID of the group node.</param>
+    /// <returns>The list of child nodes that were selected.</returns>
+    public IReadOnlyList<Node> SelectGroupChildren(string groupId)
+    {
+        var selected = new List<Node>();
+        var children = this.GetGroupChildren(groupId);
+        
+        foreach (var child in children)
+        {
+            child.IsSelected = true;
+            selected.Add(child);
+        }
+        
+        return selected;
+    }
+
+    #endregion
 }

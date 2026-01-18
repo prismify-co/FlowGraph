@@ -20,6 +20,15 @@ public partial class DirectCanvasRenderer
     var bgGeometry = CreateRoundedRectGeometry(screenBounds, cornerRadius);
     context.DrawGeometry(_theme!.GroupBackground, null, bgGeometry);
 
+    // Header background (if enabled)
+    if (_settings.ShowGroupHeaderBackground)
+    {
+      var headerHeight = CanvasRenderModel.GroupHeaderHeight * zoom;
+      var headerBounds = new Rect(screenBounds.X, screenBounds.Y, screenBounds.Width, headerHeight);
+      var headerGeometry = CreateRoundedRectGeometry(headerBounds, cornerRadius);
+      context.DrawGeometry(_theme.GroupHeaderBackground, null, headerGeometry);
+    }
+
     // Border
     var borderBrush = group.IsSelected ? _theme.NodeSelectedBorder : _theme.GroupBorder;
     var borderPen = new Pen(borderBrush, CanvasRenderModel.GroupDashedStrokeThickness * zoom);

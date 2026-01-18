@@ -86,6 +86,14 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
 
         container.Children.Add(backgroundRect);
         container.Children.Add(border);
+
+        // Add distinct header background if enabled
+        if (context.Settings.ShowGroupHeaderBackground)
+        {
+            var headerBackground = CreateHeaderBackground(width, context);
+            container.Children.Add(headerBackground);
+        }
+
         container.Children.Add(headerPanel);
 
         // Add visible resize indicator if enabled and node is resizable
@@ -96,6 +104,24 @@ public class GroupNodeRenderer : INodeRenderer, IEditableNodeRenderer
         }
 
         return container;
+    }
+
+    /// <summary>
+    /// Creates a distinct background for the group header area.
+    /// </summary>
+    private Rectangle CreateHeaderBackground(double width, NodeRenderContext context)
+    {
+        return new Rectangle
+        {
+            Width = width,
+            Height = HeaderHeight,
+            Fill = context.Theme.GroupHeaderBackground,
+            RadiusX = BorderRadius,
+            RadiusY = BorderRadius,
+            VerticalAlignment = VerticalAlignment.Top,
+            // Clip the bottom corners to create a header that blends into the body
+            Clip = new RectangleGeometry(new global::Avalonia.Rect(0, 0, width, HeaderHeight))
+        };
     }
 
     private StackPanel CreateHeaderPanel(Node node, NodeRenderContext context)
