@@ -6,37 +6,60 @@ namespace FlowGraph.Core.Input;
 /// <summary>
 /// The type of element hit during a graph hit test.
 /// </summary>
+/// <remarks>
+/// <para>
+/// Uses <see cref="FlagsAttribute"/> to enable efficient bitwise operations
+/// for processors that handle multiple element types. This allows O(1) type
+/// checking instead of list iteration on high-frequency events like PointerMoved.
+/// </para>
+/// <para>
+/// Example: A processor handling both Node and Group can use:
+/// <code>HitTargetTypes.Node | HitTargetTypes.Group</code>
+/// </para>
+/// </remarks>
+[Flags]
 public enum HitTargetType
 {
     /// <summary>Nothing was hit (empty canvas space).</summary>
-    None,
+    None = 0,
     
     /// <summary>Empty canvas space was hit.</summary>
-    Canvas,
+    Canvas = 1 << 0,
     
     /// <summary>A node was hit.</summary>
-    Node,
+    Node = 1 << 1,
     
     /// <summary>An edge/connection was hit.</summary>
-    Edge,
+    Edge = 1 << 2,
     
     /// <summary>A port on a node was hit.</summary>
-    Port,
+    Port = 1 << 3,
     
     /// <summary>A resize handle was hit.</summary>
-    ResizeHandle,
+    ResizeHandle = 1 << 4,
     
     /// <summary>A group/container was hit.</summary>
-    Group,
+    Group = 1 << 5,
     
     /// <summary>A waypoint on an edge was hit.</summary>
-    Waypoint,
+    Waypoint = 1 << 6,
     
     /// <summary>A shape (non-node visual element) was hit.</summary>
-    Shape,
+    Shape = 1 << 7,
     
     /// <summary>A custom element type was hit.</summary>
-    Custom
+    Custom = 1 << 8,
+    
+    // Common combinations for processor registration
+    
+    /// <summary>All element types (for catch-all processors).</summary>
+    All = Canvas | Node | Edge | Port | ResizeHandle | Group | Waypoint | Shape | Custom,
+    
+    /// <summary>All draggable elements (nodes, shapes, groups).</summary>
+    Draggable = Node | Shape | Group,
+    
+    /// <summary>All selectable elements.</summary>
+    Selectable = Node | Edge | Shape | Group
 }
 
 /// <summary>
