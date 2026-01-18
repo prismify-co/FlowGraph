@@ -197,7 +197,7 @@ public class PerformanceDemoPage : IDemoPage
         var nodesList = new List<Node>(nodeCount);
         double minX = double.MaxValue, minY = double.MaxValue;
         double maxX = double.MinValue, maxY = double.MinValue;
-        
+
         for (int i = 0; i < nodeCount; i++)
         {
             var col = i % cols;
@@ -226,7 +226,7 @@ public class PerformanceDemoPage : IDemoPage
 
             var x = col * spacingX + offsetX;
             var y = row * spacingY + offsetY;
-            
+
             // Track bounds during generation
             minX = Math.Min(minX, x);
             minY = Math.Min(minY, y);
@@ -244,17 +244,17 @@ public class PerformanceDemoPage : IDemoPage
 
         // Generate edges using spatial grid for O(1) neighbor lookup instead of O(n) per node
         var edgesList = new List<Edge>();
-        
+
         // Build spatial grid: each cell contains nodes in that grid position
         var gridCellSize = Math.Max(spacingX, spacingY);
         var grid = new Dictionary<(int, int), List<Node>>();
-        
+
         foreach (var node in nodesList.Where(n => n.Inputs.Count > 0))
         {
             var cellX = (int)(node.Position.X / gridCellSize);
             var cellY = (int)(node.Position.Y / gridCellSize);
             var key = (cellX, cellY);
-            
+
             if (!grid.ContainsKey(key))
                 grid[key] = new List<Node>();
             grid[key].Add(node);
@@ -265,7 +265,7 @@ public class PerformanceDemoPage : IDemoPage
         {
             var cellX = (int)(node.Position.X / gridCellSize);
             var cellY = (int)(node.Position.Y / gridCellSize);
-            
+
             // Check current cell and 8 neighboring cells
             var candidates = new List<Node>();
             for (int dx = -1; dx <= 1; dx++)
@@ -277,7 +277,7 @@ public class PerformanceDemoPage : IDemoPage
                         candidates.AddRange(cellNodes);
                 }
             }
-            
+
             // Filter to nearby nodes (within 1.5x spacing) and pick 1-2 random targets
             var nearbyNodes = candidates
                 .Where(n => n.Id != node.Id)
@@ -303,24 +303,24 @@ public class PerformanceDemoPage : IDemoPage
         // Post-process: Connect orphan nodes to ensure full graph coverage
         var connectedAsSource = new HashSet<string>(edgesList.Select(e => e.Source));
         var connectedAsTarget = new HashSet<string>(edgesList.Select(e => e.Target));
-        
+
         // Find orphan nodes (nodes with no incoming AND no outgoing edges)
         var orphanNodes = nodesList
             .Where(n => !connectedAsSource.Contains(n.Id) && !connectedAsTarget.Contains(n.Id))
             .ToList();
-        
+
         foreach (var orphan in orphanNodes)
         {
             // Find nearest compatible node to connect to
             Node? bestTarget = null;
             double bestDist = double.MaxValue;
-            
+
             if (orphan.Outputs.Count > 0)
             {
                 // Orphan has outputs - find nearest node with inputs
                 foreach (var candidate in nodesList.Where(n => n.Id != orphan.Id && n.Inputs.Count > 0))
                 {
-                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) + 
+                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) +
                                Math.Abs(candidate.Position.Y - orphan.Position.Y);
                     if (dist < bestDist)
                     {
@@ -328,7 +328,7 @@ public class PerformanceDemoPage : IDemoPage
                         bestTarget = candidate;
                     }
                 }
-                
+
                 if (bestTarget != null)
                 {
                     edgesList.Add(new Edge
@@ -346,7 +346,7 @@ public class PerformanceDemoPage : IDemoPage
                 // Orphan has inputs only - find nearest node with outputs
                 foreach (var candidate in nodesList.Where(n => n.Id != orphan.Id && n.Outputs.Count > 0))
                 {
-                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) + 
+                    var dist = Math.Abs(candidate.Position.X - orphan.Position.X) +
                                Math.Abs(candidate.Position.Y - orphan.Position.Y);
                     if (dist < bestDist)
                     {
@@ -354,7 +354,7 @@ public class PerformanceDemoPage : IDemoPage
                         bestTarget = candidate;
                     }
                 }
-                
+
                 if (bestTarget != null)
                 {
                     edgesList.Add(new Edge
@@ -379,7 +379,7 @@ public class PerformanceDemoPage : IDemoPage
 
         var collectionAddTime = sw.ElapsedMilliseconds;
         sw.Restart();
-        
+
         // Debug: Log graph layout stats
         Debug.WriteLine($"[StressTest] Generated graph: {nodeCount} nodes, {edgesList.Count} edges");
         Debug.WriteLine($"[StressTest] Canvas bounds: X=[{minX:F0} to {maxX:F0}] Y=[{minY:F0} to {maxY:F0}] = {maxX - minX:F0}x{maxY - minY:F0}");
