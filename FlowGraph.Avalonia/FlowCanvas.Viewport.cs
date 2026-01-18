@@ -36,27 +36,27 @@ public partial class FlowCanvas
     }
 
     /// <summary>
-    /// Zooms in by one step, keeping the graph centered.
+    /// Zooms in by one step, keeping the viewport centered.
     /// </summary>
     public void ZoomIn()
     {
-        _viewport.ZoomIn(GetGraphCenterInScreenCoords());
+        _viewport.ZoomIn(GetViewportCenter());
     }
 
     /// <summary>
-    /// Zooms out by one step, keeping the graph centered.
+    /// Zooms out by one step, keeping the viewport centered.
     /// </summary>
     public void ZoomOut()
     {
-        _viewport.ZoomOut(GetGraphCenterInScreenCoords());
+        _viewport.ZoomOut(GetViewportCenter());
     }
 
     /// <summary>
-    /// Resets zoom to 100%, keeping the graph centered.
+    /// Resets zoom to 100%, keeping the viewport centered.
     /// </summary>
     public void ResetZoom()
     {
-        _viewport.SetZoom(1.0, GetGraphCenterInScreenCoords());
+        _viewport.SetZoom(1.0, GetViewportCenter());
     }
 
     /// <summary>
@@ -124,6 +124,14 @@ public partial class FlowCanvas
     #endregion
 
     #region Viewport Helpers
+
+    /// <summary>
+    /// Gets the center of the viewport in screen coordinates.
+    /// </summary>
+    private AvaloniaPoint GetViewportCenter()
+    {
+        return new AvaloniaPoint(Bounds.Width / 2, Bounds.Height / 2);
+    }
 
     private AvaloniaPoint? GetGraphCenterInScreenCoords()
     {
