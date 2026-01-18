@@ -61,6 +61,10 @@ public partial class DirectCanvasRenderer : Control, IRenderLayer
     private readonly Typeface _typeface = new("Segoe UI");
 
     // Spatial index for fast hit testing
+    // TODO: Replace flat list with Quadtree for O(log N) hit testing at 100+ visible nodes.
+    //       Current implementation uses viewport culling which helps, but still scans all
+    //       visible nodes linearly. A true spatial partition would maintain 60fps+ even with
+    //       massive visible node counts. See: https://en.wikipedia.org/wiki/Quadtree
     private List<(Node node, double x, double y, double width, double height)>? _nodeIndex;
     private bool _indexDirty = true;
     private Graph? _lastIndexedGraph; // Track which graph instance was indexed
