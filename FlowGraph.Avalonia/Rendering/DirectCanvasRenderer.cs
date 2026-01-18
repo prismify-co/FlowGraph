@@ -496,17 +496,34 @@ public partial class DirectCanvasRenderer : Control, IRenderLayer
             System.Diagnostics.Debug.WriteLine($"[DirectRenderer.Render] Edges: drew={edgesDrawn}, skippedBothOutside={edgesSkipped_BothOutside}, missingSource={edgesMissingSource}, missingTarget={edgesMissingTarget}");
         }
 
-        // Draw regular nodes
+        // Draw regular nodes (non-dragging first, then dragging nodes on top)
         var nodesDrawn = 0;
         var nodesSkippedGroup = 0;
         var nodesSkippedVisibility = 0;
         var nodesSkippedBounds = 0;
+        var draggingNodes = new List<Node>();
+
+        // First pass: draw non-dragging nodes
         foreach (var node in _graph.Elements.Nodes)
         {
             if (node.IsGroup) { nodesSkippedGroup++; continue; }
             if (!IsNodeVisibleFast(node)) { nodesSkippedVisibility++; continue; } // Use O(1) lookup instead of O(n)
             if (!IsInVisibleBounds(node, zoom, offsetX, offsetY, viewBounds)) { nodesSkippedBounds++; continue; }
 
+            // Defer dragging nodes to render on top
+            if (node.IsDragging)
+            {
+                draggingNodes.Add(node);
+                continue;
+            }
+
+            DrawNode(context, node, zoom, offsetX, offsetY, showLabels, showPorts, useSimplifiedNodes);
+            nodesDrawn++;
+        }
+
+        // Second pass: draw dragging nodes on top
+        foreach (var node in draggingNodes)
+        {
             DrawNode(context, node, zoom, offsetX, offsetY, showLabels, showPorts, useSimplifiedNodes);
             nodesDrawn++;
         }

@@ -157,6 +157,10 @@ public partial class FlowCanvas
                 // Highlight state affects visual appearance (border color/thickness)
                 _renderService.UpdateNodeSelection(node);
                 break;
+            case nameof(Node.IsDragging):
+                // Bring dragging nodes to front so they appear above other nodes
+                UpdateNodeDraggingZIndex(node);
+                break;
             case nameof(Node.Width):
             case nameof(Node.Height):
                 // Use the batched update for efficiency (handles edges too)
@@ -455,6 +459,47 @@ public partial class FlowCanvas
         if (Graph == null) return;
         _edgeFlowManager?.SyncAnimations(Graph.Edges);
         _edgeEffectsManager?.SyncEffects(Graph.Edges);
+    }
+
+    /// <summary>
+    /// Default ZIndex for nodes to restore when drag ends.
+    /// </summary>
+    private const int DefaultNodeZIndex = 0;
+
+    /// <summary>
+    /// Elevated ZIndex for nodes being dragged so they appear above other nodes.
+    /// </summary>
+    private const int DraggingNodeZIndex = 1000;
+
+    /// <summary>
+    /// Updates the ZIndex of a node based on its dragging state.
+    /// Dragging nodes are brought to front so they appear above other nodes.
+    /// </summary>
+    private void UpdateNodeDraggingZIndex(Node node)
+    {
+        // For direct rendering, invalidate to trigger re-render with updated order
+        if (_useDirectRendering)
+        {
+            _directRenderer?.InvalidateVisual();
+            return;
+        }
+
+        // For visual tree mode, update the ZIndex on the control
+        var visual = _graphRenderer.GetNodeVisual(node.Id);
+        if (visual != null)
+        {
+            visual.ZIndex = node.IsDragging ? DraggingNodeZIndex : DefaultNodeZIndex;
+        }
+
+        // Also update port visuals (they should move with the node)
+        foreach (var port in node.Inputs.Concat(node.Outputs))
+        {
+            var portVisual = _graphRenderer.GetPortVisual(node.Id, port.Id);
+            if (portVisual != null)
+            {
+                portVisual.ZIndex = node.IsDragging ? DraggingNodeZIndex : DefaultNodeZIndex;
+            }
+        }
     }
 
     #endregion

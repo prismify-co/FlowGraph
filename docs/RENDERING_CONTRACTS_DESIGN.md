@@ -680,14 +680,14 @@ public static class CanvasBackendFactory
 
 ### 6.1 Current State Analysis
 
-| Component               | Current Behavior   | Target Behavior              |
-| ----------------------- | ------------------ | ---------------------------- |
-| `NodeVisualManager`     | ✅ Canvas coords   | ✅ Keep as-is                |
-| `EdgeVisualManager`     | ✅ Canvas coords   | ✅ Keep as-is                |
-| `ResizeHandleManager`   | ✅ Canvas coords   | ✅ Keep as-is                |
-| `ShapeVisualManager`    | ❌ Screen coords   | ⚠️ Fix to canvas coords      |
-| `DirectCanvasRenderer`  | ⚠️ Self-transforms | ✅ Mark as `SelfTransformed` |
-| `RenderContext`         | ⚠️ Implicit space  | ✅ Explicit via attributes   |
+| Component              | Current Behavior   | Target Behavior              |
+| ---------------------- | ------------------ | ---------------------------- |
+| `NodeVisualManager`    | ✅ Canvas coords   | ✅ Keep as-is                |
+| `EdgeVisualManager`    | ✅ Canvas coords   | ✅ Keep as-is                |
+| `ResizeHandleManager`  | ✅ Canvas coords   | ✅ Keep as-is                |
+| `ShapeVisualManager`   | ❌ Screen coords   | ⚠️ Fix to canvas coords      |
+| `DirectCanvasRenderer` | ⚠️ Self-transforms | ✅ Mark as `SelfTransformed` |
+| `RenderContext`        | ⚠️ Implicit space  | ✅ Explicit via attributes   |
 
 ### 6.2 Phase 1: Documentation & Attributes
 
