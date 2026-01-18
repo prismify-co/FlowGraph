@@ -171,6 +171,7 @@ public partial class DirectCanvasRenderer
 
   /// <summary>
   /// Performs hit testing to find a node at the given screen coordinates.
+  /// Uses quadtree for O(log N) spatial query instead of linear scan.
   /// </summary>
   /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
   /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
@@ -182,37 +183,40 @@ public partial class DirectCanvasRenderer
     if (_indexDirty)
       RebuildSpatialIndex();
 
-    if (_nodeIndex == null) return null;
+    if (_nodeQuadtree == null) return null;
 
     var ctx = CreateHitTestContext(screenX, screenY);
     if (ctx == null) return null;
     var context = ctx.Value;
 
-    // Check regular nodes first (they're on top)
-    for (int i = _nodeIndex.Count - 1; i >= 0; i--)
+    // Query quadtree for nodes at this point - O(log N) instead of O(N)
+    Node? bestHit = null;
+    foreach (var (node, bounds) in _nodeQuadtree.QueryPoint(context.CanvasPoint))
     {
-      var (node, nx, ny, nw, nh) = _nodeIndex[i];
-
-      // VIEWPORT CULLING: Skip nodes outside visible area
-      if (!context.IsNodeIndexEntryVisible(nx, ny, nw, nh))
+      // Skip if outside visible viewport (shouldn't happen with point query, but safety check)
+      if (!context.IsNodeIndexEntryVisible(bounds.X, bounds.Y, bounds.Width, bounds.Height))
         continue;
 
-      var bounds = new Rect(nx, ny, nw, nh);
+      // Get screen dimensions for zoom-adaptive click detection
+      var (_, _, screenW, screenH) = context.GetScreenBounds(bounds.X, bounds.Y, bounds.Width, bounds.Height);
 
-      if (bounds.Contains(context.CanvasPoint))
-      {
-        // Get screen dimensions for zoom-adaptive click detection
-        var (_, _, screenW, screenH) = context.GetScreenBounds(nx, ny, nw, nh);
+      // Check if click passes zoom-adaptive proximity test
+      if (!IsClickValidForNodeSize(context.CanvasPoint, bounds.X, bounds.Y, bounds.Width, bounds.Height, screenW, screenH, node.Id))
+        continue;
 
-        // Check if click passes zoom-adaptive proximity test
-        if (!IsClickValidForNodeSize(context.CanvasPoint, nx, ny, nw, nh, screenW, screenH, node.Id))
-          continue;
-
+      // Regular nodes take priority over groups (return first regular node found)
+      if (!node.IsGroup)
         return node;
-      }
+
+      // Track group hit for fallback
+      bestHit ??= node;
     }
 
-    // Check groups (they're behind regular nodes)
+    // Return group if no regular node was hit
+    if (bestHit != null)
+      return bestHit;
+
+    // Check groups separately (they may not be in quadtree if IsGroup was set after insertion)
     if (_nodeById != null)
     {
       foreach (var kvp in _nodeById)
@@ -275,6 +279,7 @@ public partial class DirectCanvasRenderer
 
   /// <summary>
   /// Performs hit testing to find a port at the given screen coordinates.
+  /// Uses quadtree range query for O(log N) spatial lookup.
   /// </summary>
   /// <param name="screenX">X coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
   /// <param name="screenY">Y coordinate relative to the root panel (not canvas). Will be converted internally via ScreenToCanvas.</param>
@@ -285,24 +290,29 @@ public partial class DirectCanvasRenderer
     if (_graph == null) return null;
 
     if (_indexDirty) RebuildSpatialIndex();
-    if (_nodeIndex == null) return null;
+    if (_nodeQuadtree == null) return null;
 
     var ctx = CreateHitTestContext(screenX, screenY);
     if (ctx == null) return null;
     var context = ctx.Value;
-    var portBuffer = _settings.PortSize * context.Zoom;
 
-    // Check regular nodes - with viewport culling
+    // Ports extend beyond node bounds, so query a range around the point
+    // Port hit radius in canvas space
+    var portHitRadius = (_settings.PortSize + 4) / context.Zoom;
+    var queryBounds = new Rect(
+        context.CanvasPoint.X - portHitRadius,
+        context.CanvasPoint.Y - portHitRadius,
+        portHitRadius * 2,
+        portHitRadius * 2);
+
+    // Check regular nodes from quadtree - O(log N + k)
     int nodesChecked = 0;
-    int nodesSkippedViewport = 0;
-    foreach (var (node, nx, ny, nw, nh) in _nodeIndex)
+    foreach (var (node, bounds) in _nodeQuadtree.QueryRange(queryBounds))
     {
-      // VIEWPORT CULLING: Quick bounds check using cached spatial index data
-      if (!context.IsNodeIndexEntryVisible(nx, ny, nw, nh, portBuffer))
-      {
-        nodesSkippedViewport++;
+      // Extend bounds check to include port area
+      var portBuffer = _settings.PortSize * context.Zoom;
+      if (!context.IsNodeIndexEntryVisible(bounds.X, bounds.Y, bounds.Width, bounds.Height, portBuffer))
         continue;
-      }
 
       nodesChecked++;
       // Check input ports
@@ -326,7 +336,7 @@ public partial class DirectCanvasRenderer
       }
     }
 
-    // Check group ports
+    // Check group ports (groups may not be in quadtree)
     int groupsChecked = 0;
     int groupsSkippedViewport = 0;
     foreach (var group in _graph.Elements.Nodes.Where(n => n.IsGroup))

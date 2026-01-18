@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using FlowGraph.Avalonia.Rendering.NodeRenderers;
+using FlowGraph.Avalonia.Rendering.Spatial;
 using FlowGraph.Core;
 using FlowGraph.Core.Events;
 using FlowGraph.Core.Rendering;
@@ -60,14 +61,13 @@ public partial class DirectCanvasRenderer : Control, IRenderLayer
     // Typeface for labels
     private readonly Typeface _typeface = new("Segoe UI");
 
-    // Spatial index for fast hit testing
-    // TODO: Replace flat list with Quadtree for O(log N) hit testing at 100+ visible nodes.
-    //       Current implementation uses viewport culling which helps, but still scans all
-    //       visible nodes linearly. A true spatial partition would maintain 60fps+ even with
-    //       massive visible node counts. See: https://en.wikipedia.org/wiki/Quadtree
-    private List<(Node node, double x, double y, double width, double height)>? _nodeIndex;
+    // Quadtree spatial index for O(log N) hit testing
+    private Quadtree<Node>? _nodeQuadtree;
     private bool _indexDirty = true;
     private Graph? _lastIndexedGraph; // Track which graph instance was indexed
+
+    // Default canvas bounds for quadtree (expanded as needed)
+    private const double DefaultCanvasSize = 100000;
 
     // Port hover state tracking
     private (string nodeId, string portId)? _hoveredPort;
@@ -322,12 +322,18 @@ public partial class DirectCanvasRenderer : Control, IRenderLayer
 
         if (_graph == null)
         {
-            _nodeIndex = null;
+            _nodeQuadtree = null;
             _lastIndexedGraph = null;
             return;
         }
 
-        _nodeIndex = new List<(Node, double, double, double, double)>(_graph.Elements.NodeCount);
+        // Create quadtree with large bounds (canvas space can be very large)
+        // Center at origin with DefaultCanvasSize in each direction
+        var quadtreeBounds = new Rect(
+            -DefaultCanvasSize, -DefaultCanvasSize,
+            DefaultCanvasSize * 2, DefaultCanvasSize * 2);
+
+        _nodeQuadtree = new Quadtree<Node>(quadtreeBounds, maxItemsPerNode: 8, maxDepth: 12);
 
         int totalNodes = 0;
         int visibleNodes = 0;
@@ -339,14 +345,14 @@ public partial class DirectCanvasRenderer : Control, IRenderLayer
 
             visibleNodes++;
             var bounds = _model.GetNodeBounds(node);
-            _nodeIndex.Add((node, bounds.X, bounds.Y, bounds.Width, bounds.Height));
+            _nodeQuadtree.Insert(node, bounds);
         }
 
         _lastIndexedGraph = _graph;
         _indexDirty = false;
 
         sw.Stop();
-        System.Diagnostics.Debug.WriteLine($"[SpatialIndex] Rebuilt in {sw.ElapsedMilliseconds}ms | Total:{totalNodes}, Indexed:{visibleNodes}");
+        System.Diagnostics.Debug.WriteLine($"[Quadtree] Rebuilt in {sw.ElapsedMilliseconds}ms | Total:{totalNodes}, Indexed:{visibleNodes}");
     }
 
     /// <summary>
