@@ -56,7 +56,7 @@ public class InteractiveDemoPage : IDemoPage
         DockPanel.SetDock(statusBar, Dock.Bottom);
         mainPanel.Children.Add(statusBar);
 
-        // Canvas with background
+        // Canvas with background and controls
         var canvasPanel = new Panel();
 
         _background = new FlowBackground
@@ -86,6 +86,28 @@ public class InteractiveDemoPage : IDemoPage
         _background.TargetCanvas = _canvas;
         canvasPanel.Children.Add(_canvas);
 
+        // Add FlowControls panel (positioned bottom-left)
+        var flowControls = new FlowControls
+        {
+            TargetCanvas = _canvas,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(flowControls);
+
+        // Add FlowMinimap (positioned bottom-right)
+        var minimap = new FlowMinimap
+        {
+            TargetCanvas = _canvas,
+            Width = 150,
+            Height = 100,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(minimap);
+
         var canvasContainer = CreateCanvasContainer(canvasPanel);
         mainPanel.Children.Add(canvasContainer);
 
@@ -111,8 +133,6 @@ public class InteractiveDemoPage : IDemoPage
         panel.Children.Add(CreateButton("Dots", () => SetBackground(BackgroundVariant.Dots)));
         panel.Children.Add(CreateButton("Lines", () => SetBackground(BackgroundVariant.Lines)));
         panel.Children.Add(CreateButton("Cross", () => SetBackground(BackgroundVariant.Cross)));
-        panel.Children.Add(CreateButton("Fit to View", () => _canvas?.FitToView()));
-        panel.Children.Add(CreateButton("Reset Zoom", () => _canvas?.ResetZoom()));
 
         return panel;
     }

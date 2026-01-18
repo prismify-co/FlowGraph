@@ -49,7 +49,7 @@ public class ShapesDemoPage : IDemoPage
         DockPanel.SetDock(statusBar, Dock.Bottom);
         mainPanel.Children.Add(statusBar);
 
-        // Canvas with background
+        // Canvas with background and controls
         var canvasPanel = new Panel();
 
         _background = new FlowBackground
@@ -76,6 +76,28 @@ public class ShapesDemoPage : IDemoPage
         _background.TargetCanvas = _canvas;
         canvasPanel.Children.Add(_canvas);
 
+        // Add FlowControls panel (positioned bottom-left)
+        var flowControls = new FlowControls
+        {
+            TargetCanvas = _canvas,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(flowControls);
+
+        // Add FlowMinimap (positioned bottom-right)
+        var minimap = new FlowMinimap
+        {
+            TargetCanvas = _canvas,
+            Width = 150,
+            Height = 100,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(minimap);
+
         var canvasContainer = CreateCanvasContainer(canvasPanel);
         mainPanel.Children.Add(canvasContainer);
 
@@ -95,7 +117,6 @@ public class ShapesDemoPage : IDemoPage
         panel.Children.Add(CreateButton("Add Ellipse", AddEllipse));
         panel.Children.Add(CreateButton("Add Line", AddLine));
         panel.Children.Add(CreateButton("Add Text", AddText));
-        panel.Children.Add(CreateButton("Fit to View", () => _canvas?.FitToView()));
         panel.Children.Add(CreateButton("Clear Shapes", ClearShapes));
 
         return panel;

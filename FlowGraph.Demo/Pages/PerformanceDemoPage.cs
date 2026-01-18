@@ -55,7 +55,7 @@ public class PerformanceDemoPage : IDemoPage
         DockPanel.SetDock(statusBar, Dock.Bottom);
         mainPanel.Children.Add(statusBar);
 
-        // Canvas with background
+        // Canvas with background and controls
         var canvasPanel = new Panel();
 
         _background = new FlowBackground
@@ -92,6 +92,28 @@ public class PerformanceDemoPage : IDemoPage
         _background.TargetCanvas = _canvas;
         canvasPanel.Children.Add(_canvas);
 
+        // Add FlowControls panel (positioned bottom-left)
+        var flowControls = new FlowControls
+        {
+            TargetCanvas = _canvas,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(flowControls);
+
+        // Add FlowMinimap (positioned bottom-right)
+        var minimap = new FlowMinimap
+        {
+            TargetCanvas = _canvas,
+            Width = 150,
+            Height = 100,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(16)
+        };
+        canvasPanel.Children.Add(minimap);
+
         var canvasContainer = CreateCanvasContainer(canvasPanel);
         mainPanel.Children.Add(canvasContainer);
 
@@ -111,7 +133,6 @@ public class PerformanceDemoPage : IDemoPage
         panel.Children.Add(CreateButton("500 Nodes", () => GenerateStressTestGraph(500)));
         panel.Children.Add(CreateButton("1K Nodes", () => GenerateStressTestGraph(1000)));
         panel.Children.Add(CreateButton("5K Nodes", () => GenerateStressTestGraph(5000)));
-        panel.Children.Add(CreateButton("Fit to View", () => _canvas?.FitToView()));
         panel.Children.Add(CreateButton("Clear", ClearGraph));
 
         return panel;

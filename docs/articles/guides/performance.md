@@ -120,11 +120,11 @@ FlowGraph uses a Quadtree spatial index for O(log N) hit testing performance. Th
 
 Instead of checking every node/shape when you click or hover, the Quadtree partitions the canvas into regions, allowing FlowGraph to quickly narrow down which elements are near the cursor.
 
-| Graph Size    | Linear Search | Quadtree    |
-| ------------- | ------------- | ----------- |
-| 100 elements  | ~100 checks   | ~7 checks   |
-| 1000 elements | ~1000 checks  | ~10 checks  |
-| 10000 elements| ~10000 checks | ~13 checks  |
+| Graph Size     | Linear Search | Quadtree   |
+| -------------- | ------------- | ---------- |
+| 100 elements   | ~100 checks   | ~7 checks  |
+| 1000 elements  | ~1000 checks  | ~10 checks |
+| 10000 elements | ~10000 checks | ~13 checks |
 
 ### Benefits
 
