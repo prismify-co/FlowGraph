@@ -19,13 +19,14 @@ public static class EdgePathHelper
     /// <summary>
     /// Creates a path geometry between two points based on the edge type.
     /// </summary>
-    public static PathGeometry CreatePath(AvaloniaPoint start, AvaloniaPoint end, EdgeType edgeType)
+    /// <param name="cornerRadius">Corner radius for SmoothStep edges. Uses default if not specified.</param>
+    public static PathGeometry CreatePath(AvaloniaPoint start, AvaloniaPoint end, EdgeType edgeType, double cornerRadius = DefaultCornerRadius)
     {
         return edgeType switch
         {
             EdgeType.Straight => CreateStraightPath(start, end),
             EdgeType.Step => CreateStepPath(start, end),
-            EdgeType.SmoothStep => CreateSmoothStepPath(start, end),
+            EdgeType.SmoothStep => CreateSmoothStepPath(start, end, cornerRadius),
             _ => CreateBezierPath(start, end)
         };
     }
@@ -33,15 +34,17 @@ public static class EdgePathHelper
     /// <summary>
     /// Creates a path geometry through waypoints based on the edge type.
     /// </summary>
+    /// <param name="cornerRadius">Corner radius for SmoothStep edges. Uses default if not specified.</param>
     public static PathGeometry CreatePathWithWaypoints(
         AvaloniaPoint start,
         AvaloniaPoint end,
         IReadOnlyList<CorePoint>? waypoints,
-        EdgeType edgeType)
+        EdgeType edgeType,
+        double cornerRadius = DefaultCornerRadius)
     {
         if (waypoints == null || waypoints.Count == 0)
         {
-            return CreatePath(start, end, edgeType);
+            return CreatePath(start, end, edgeType, cornerRadius);
         }
 
         // Convert waypoints to Avalonia points
@@ -53,7 +56,7 @@ public static class EdgePathHelper
         {
             EdgeType.Straight => CreateMultiSegmentStraightPath(allPoints),
             EdgeType.Step => CreateMultiSegmentStepPath(allPoints),
-            EdgeType.SmoothStep => CreateMultiSegmentSmoothPath(allPoints),
+            EdgeType.SmoothStep => CreateMultiSegmentSmoothPath(allPoints, cornerRadius),
             _ => CreateMultiSegmentBezierPath(allPoints)
         };
     }

@@ -134,6 +134,10 @@ public partial class EdgeVisualManager
       return RenderCustomEdge(canvas, edge, graph, theme, customRenderer, sourceNode, targetNode, startPoint, endPoint, viewportZoom);
     }
 
+    // Get corner radius from settings for SmoothStep edges
+    var settings = _renderContext.Settings;
+    var cornerRadius = settings.RoutingOptions.CornerRadius;
+
     // Create path based on edge type - use waypoints if available
     PathGeometry pathGeometry;
     var waypoints = edge.Waypoints;  // Get once to avoid multiple ToList() calls
@@ -148,17 +152,17 @@ public partial class EdgeVisualManager
           startPoint,
           endPoint,
           transformedWaypoints,
-          edge.Type);
+          edge.Type,
+          cornerRadius);
     }
     else
     {
-      pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type);
+      pathGeometry = EdgePathHelper.CreatePath(startPoint, endPoint, edge.Type, cornerRadius);
     }
 
     // Get styling from EdgeStyle or defaults
     var strokeBrush = GetEdgeStrokeBrush(edge, theme, edge.IsSelected);
     var strokeWidth = GetEdgeStrokeWidth(edge, edge.IsSelected);
-    var settings = _renderContext.Settings;
 
     // Clone the geometry for visible path to prevent shared state issues
     var visiblePathGeometry = pathGeometry.Clone();
