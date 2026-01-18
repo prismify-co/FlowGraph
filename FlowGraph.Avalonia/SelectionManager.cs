@@ -61,7 +61,7 @@ public class SelectionManager
     public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
 
     /// <summary>
-    /// Selects all nodes in the graph.
+    /// Selects all selectable elements (nodes, edges, and shapes) in the graph.
     /// </summary>
     public void SelectAll()
     {
@@ -70,13 +70,30 @@ public class SelectionManager
 
         foreach (var node in graph.Elements.Nodes)
         {
-            // Only select nodes that are selectable
             if (node.IsSelectable)
             {
                 node.IsSelected = true;
             }
         }
 
+        foreach (var edge in graph.Elements.Edges)
+        {
+            if (edge.IsSelectable)
+            {
+                edge.IsSelected = true;
+            }
+        }
+
+        foreach (var shape in graph.Elements.Shapes)
+        {
+            if (shape.IsSelectable)
+            {
+                shape.IsSelected = true;
+                _getRenderer()?.UpdateShapeSelection(shape.Id, true);
+            }
+        }
+
+        EdgeRerenderRequested?.Invoke(this, EventArgs.Empty);
         RaiseSelectionChangedIfNeeded();
     }
 
@@ -112,18 +129,21 @@ public class SelectionManager
     }
 
     /// <summary>
-    /// Deletes all selected nodes and edges.
+    /// Deletes all selected nodes, edges, and shapes.
     /// </summary>
     public void DeleteSelected()
     {
         var graph = _context.Graph;
         if (graph == null) return;
 
-        // Only delete edges that are deletable (or all edges for simplicity, since Edge doesn't have IsDeletable yet)
+        // Collect selected edges
         var selectedEdges = graph.Elements.Edges.Where(e => e.IsSelected).ToList();
 
         // Only delete nodes that are deletable
         var selectedNodes = graph.Elements.Nodes.Where(n => n.IsSelected && n.IsDeletable).ToList();
+
+        // Collect selected shapes (shapes don't have IsDeletable, assume all are deletable)
+        var selectedShapes = graph.Elements.Shapes.Where(s => s.IsSelected).ToList();
 
         // Also filter edges - don't delete edges connected to non-deletable nodes
         var nonDeletableNodeIds = graph.Elements.Nodes.Where(n => !n.IsDeletable).Select(n => n.Id).ToHashSet();
@@ -131,7 +151,7 @@ public class SelectionManager
             .Where(e => !nonDeletableNodeIds.Contains(e.Source) && !nonDeletableNodeIds.Contains(e.Target))
             .ToList();
 
-        if (selectedEdges.Count == 0 && selectedNodes.Count == 0)
+        if (selectedEdges.Count == 0 && selectedNodes.Count == 0 && selectedShapes.Count == 0)
             return;
 
         var commands = new List<IGraphCommand>();
@@ -146,13 +166,20 @@ public class SelectionManager
             commands.Add(new RemoveNodesCommand(graph, selectedNodes));
         }
 
-        var description = (selectedNodes.Count, selectedEdges.Count) switch
+        if (selectedShapes.Count > 0)
         {
-            ( > 0, > 0) => $"Delete {selectedNodes.Count} nodes and {selectedEdges.Count} connections",
-            ( > 0, 0) => selectedNodes.Count == 1 ? "Delete node" : $"Delete {selectedNodes.Count} nodes",
-            (0, > 0) => selectedEdges.Count == 1 ? "Delete connection" : $"Delete {selectedEdges.Count} connections",
-            _ => "Delete"
-        };
+            commands.Add(new RemoveElementsCommand(graph, selectedShapes.Cast<Core.Elements.ICanvasElement>().ToList()));
+        }
+
+        var parts = new List<string>();
+        if (selectedNodes.Count > 0)
+            parts.Add(selectedNodes.Count == 1 ? "1 node" : $"{selectedNodes.Count} nodes");
+        if (selectedEdges.Count > 0)
+            parts.Add(selectedEdges.Count == 1 ? "1 connection" : $"{selectedEdges.Count} connections");
+        if (selectedShapes.Count > 0)
+            parts.Add(selectedShapes.Count == 1 ? "1 shape" : $"{selectedShapes.Count} shapes");
+
+        var description = $"Delete {string.Join(" and ", parts)}";
 
         _commandHistory.Execute(new CompositeCommand(description, commands));
         RaiseSelectionChangedIfNeeded();

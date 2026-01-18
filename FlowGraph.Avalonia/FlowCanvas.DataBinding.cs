@@ -55,6 +55,7 @@ public partial class FlowCanvas
             oldGraph.ShapesChanged -= OnShapesChanged;
             UnsubscribeFromNodeChanges(oldGraph);
             UnsubscribeFromEdgeChanges(oldGraph);
+            UnsubscribeFromShapeChanges(oldGraph);
         }
 
         // Update the InputDispatcher with the new graph (for behavior attachment)
@@ -67,6 +68,7 @@ public partial class FlowCanvas
             newGraph.ShapesChanged += OnShapesChanged;
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
+            SubscribeToShapeChanges(newGraph);
 
             CenterOnGraph();
             ApplyViewportTransforms();
@@ -124,6 +126,22 @@ public partial class FlowCanvas
         foreach (var edge in graph.Edges)
         {
             edge.PropertyChanged -= OnEdgePropertyChanged;
+        }
+    }
+
+    private void SubscribeToShapeChanges(Graph graph)
+    {
+        foreach (var shape in graph.Elements.Shapes)
+        {
+            shape.PropertyChanged += OnShapePropertyChanged;
+        }
+    }
+
+    private void UnsubscribeFromShapeChanges(Graph graph)
+    {
+        foreach (var shape in graph.Elements.Shapes)
+        {
+            shape.PropertyChanged -= OnShapePropertyChanged;
         }
     }
 
@@ -466,6 +484,40 @@ public partial class FlowCanvas
 
     private void OnShapesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        // Subscribe/unsubscribe from shape property changes
+        if (e.OldItems != null)
+        {
+            foreach (var item in e.OldItems)
+            {
+                if (item is Core.Elements.Shapes.ShapeElement shape)
+                    shape.PropertyChanged -= OnShapePropertyChanged;
+            }
+        }
+
+        if (e.NewItems != null)
+        {
+            foreach (var item in e.NewItems)
+            {
+                if (item is Core.Elements.Shapes.ShapeElement shape)
+                    shape.PropertyChanged += OnShapePropertyChanged;
+            }
+        }
+
+        // For Reset action, re-subscribe to all shapes
+        if (e.Action == NotifyCollectionChangedAction.Reset && Graph != null)
+        {
+            // Unsubscribe from all first to avoid duplicates
+            foreach (var shape in Graph.Elements.Shapes)
+            {
+                shape.PropertyChanged -= OnShapePropertyChanged;
+            }
+            // Then subscribe to all
+            foreach (var shape in Graph.Elements.Shapes)
+            {
+                shape.PropertyChanged += OnShapePropertyChanged;
+            }
+        }
+
         // In DirectRendering mode, just invalidate - DirectCanvasRenderer handles everything
         if (_useDirectRendering)
         {
@@ -516,6 +568,49 @@ public partial class FlowCanvas
                     {
                         _shapeVisualManager.AddOrUpdateShape(shape);
                     }
+                    break;
+            }
+        }
+    }
+
+    private void OnShapePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (sender is not Core.Elements.Shapes.ShapeElement shape) return;
+
+        // In direct rendering mode, invalidate for visual changes
+        if (_useDirectRendering && _directRenderer != null)
+        {
+            if (e.PropertyName is nameof(Core.Elements.Shapes.ShapeElement.IsSelected)
+                or nameof(Core.Elements.Shapes.ShapeElement.Position)
+                or nameof(Core.Elements.Shapes.ShapeElement.Width)
+                or nameof(Core.Elements.Shapes.ShapeElement.Height)
+                or nameof(Core.Elements.Shapes.ShapeElement.Fill)
+                or nameof(Core.Elements.Shapes.ShapeElement.Stroke)
+                or nameof(Core.Elements.Shapes.ShapeElement.Label))
+            {
+                _directRenderer.InvalidateVisual();
+            }
+            return;
+        }
+
+        // Normal rendering mode - update shape visual
+        if (_shapeVisualManager != null)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Core.Elements.Shapes.ShapeElement.IsSelected):
+                    _shapeVisualManager.UpdateSelection(shape.Id, shape.IsSelected);
+                    break;
+                case nameof(Core.Elements.Shapes.ShapeElement.Position):
+                case nameof(Core.Elements.Shapes.ShapeElement.Width):
+                case nameof(Core.Elements.Shapes.ShapeElement.Height):
+                case nameof(Core.Elements.Shapes.ShapeElement.Fill):
+                case nameof(Core.Elements.Shapes.ShapeElement.Stroke):
+                case nameof(Core.Elements.Shapes.ShapeElement.Label):
+                case nameof(Core.Elements.Shapes.ShapeElement.Rotation):
+                case nameof(Core.Elements.Shapes.ShapeElement.Opacity):
+                    // Re-render the shape with updated properties
+                    _shapeVisualManager.AddOrUpdateShape(shape);
                     break;
             }
         }
