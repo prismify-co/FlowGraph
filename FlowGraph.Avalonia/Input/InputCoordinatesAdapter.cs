@@ -63,7 +63,6 @@ public sealed class InputCoordinatesAdapter : IInputCoordinates
             // We need to transform to canvas coordinates
             var viewportPos = e.GetPosition(_rootPanel);
             var canvasPos = _viewport.ViewportToCanvas(viewportPos);
-            System.Diagnostics.Debug.WriteLine($"[CoordAdapter.GetCanvasPos] DirectMode: ViewportPos=({viewportPos.X:F1},{viewportPos.Y:F1}) → CanvasPos=({canvasPos.X:F1},{canvasPos.Y:F1}) using Offset=({_viewport.OffsetX:F1},{_viewport.OffsetY:F1}) Zoom={_viewport.Zoom:F2}");
             return new CanvasPoint(canvasPos.X, canvasPos.Y);
         }
         else if (_mainCanvas != null)

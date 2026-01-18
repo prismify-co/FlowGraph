@@ -21,7 +21,7 @@ public class BoxSelectingState : InputStateBase
     private Panel? _container;
     private readonly FlowCanvasSettings _settings;
     private readonly ViewportState _viewport;
-    private bool _isDirectRenderingMode;
+    private ViewportOverlayPositioner? _positioner;
 
     public override string Name => "BoxSelecting";
 
@@ -34,18 +34,12 @@ public class BoxSelectingState : InputStateBase
         _settings = settings;
         _viewport = viewport;
 
-        System.Diagnostics.Debug.WriteLine($"[BoxSelect] Created: StartCanvas=({_startCanvas.X:F1},{_startCanvas.Y:F1}) StartViewport=({_startViewport.X:F1},{_startViewport.Y:F1}) Viewport: Offset=({viewport.OffsetX:F1},{viewport.OffsetY:F1}) Zoom={viewport.Zoom:F2}");
-
-
         _selectionBox = new Rectangle
         {
             Stroke = theme?.SelectionBoxStroke ?? new SolidColorBrush(Color.Parse("#0078D4")),
             StrokeThickness = 1,
             Fill = theme?.SelectionBoxFill ?? new SolidColorBrush(Color.FromArgb(40, 0, 120, 212)),
-            IsHitTestVisible = false,
-            // Required for Margin-based positioning in Panel (Direct Rendering mode)
-            HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Left,
-            VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Top
+            IsHitTestVisible = false
         };
     }
 
@@ -53,9 +47,10 @@ public class BoxSelectingState : InputStateBase
     {
         // In Direct Rendering mode, add to RootPanel (untransformed) and use viewport coordinates
         // In Visual Tree mode, add to MainCanvas (transformed) and use canvas coordinates
-        _isDirectRenderingMode = context.DirectRenderer != null;
+        _positioner = ViewportOverlayPositioner.Create(context.DirectRenderer);
+        _positioner.PrepareForPositioning(_selectionBox);
 
-        if (_isDirectRenderingMode && context.RootPanel != null)
+        if (context.DirectRenderer != null && context.RootPanel != null)
         {
             _container = context.RootPanel;
         }
@@ -109,8 +104,9 @@ public class BoxSelectingState : InputStateBase
     private void UpdateSelectionBoxVisual()
     {
         double left, top, width, height;
+        var isDirectMode = _positioner != null && _container is not Canvas;
 
-        if (_isDirectRenderingMode)
+        if (isDirectMode)
         {
             // Direct Rendering mode: container is RootPanel (untransformed)
             // Use cached viewport coordinates (doesn't change during pan)
@@ -118,9 +114,6 @@ public class BoxSelectingState : InputStateBase
             top = Math.Min(_startViewport.Y, _endViewport.Y);
             width = Math.Abs(_endViewport.X - _startViewport.X);
             height = Math.Abs(_endViewport.Y - _startViewport.Y);
-
-            // RootPanel is a Panel, not Canvas, so use Margin instead of Canvas.SetLeft/SetTop
-            _selectionBox.Margin = new Thickness(left, top, 0, 0);
         }
         else
         {
@@ -130,12 +123,10 @@ public class BoxSelectingState : InputStateBase
             top = Math.Min(_startCanvas.Y, _endCanvas.Y);
             width = Math.Abs(_endCanvas.X - _startCanvas.X);
             height = Math.Abs(_endCanvas.Y - _startCanvas.Y);
-
-            // MainCanvas is a Canvas, so use Canvas attached properties
-            Canvas.SetLeft(_selectionBox, left);
-            Canvas.SetTop(_selectionBox, top);
         }
 
+        // Use positioner for consistent positioning across container types
+        _positioner?.SetPosition(_selectionBox, left, top);
         _selectionBox.Width = width;
         _selectionBox.Height = height;
     }
