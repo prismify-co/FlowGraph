@@ -539,11 +539,10 @@ public partial class FlowCanvas
             else
             {
                 // In visual tree mode, get canvas position for hit testing
-                // GetPosition(mainCanvas) automatically applies inverse transform
-                var canvasPosForHit = _mainCanvas != null
-                    ? e.GetPosition(_mainCanvas)
-                    : default;
-                hitElement = _mainCanvas?.InputHitTest(canvasPosForHit) as Control;
+                // Use the adapter to get canvas coordinates - it handles the transform automatically
+                var canvasPosHit = _inputContext.Coordinates.GetPointerCanvasPosition(e);
+                var hitTestPoint = new global::Avalonia.Point(canvasPosHit.X, canvasPosHit.Y);
+                hitElement = _mainCanvas?.InputHitTest(hitTestPoint) as Control;
             }
 
             var hitNode = Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(hitElement?.Tag);
