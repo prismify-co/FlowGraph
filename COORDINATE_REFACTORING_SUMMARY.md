@@ -40,7 +40,9 @@ FlowCanvas.Input.cs
 ## Changes Made
 
 ### 1. Context Menu Coordinate Handling
+
 **Before:**
+
 ```cs
 var screenPos = e.GetPosition(_rootPanel);
 var canvasPos = _viewport.ViewportToCanvas(screenPos);
@@ -48,6 +50,7 @@ var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
 ```
 
 **After:**
+
 ```cs
 // Use the coordinate adapter to get canvas position - it handles both rendering modes
 var canvasPos = _inputContext.Coordinates.GetPointerCanvasPosition(e);
@@ -55,7 +58,9 @@ var canvasPoint = new Core.Point(canvasPos.X, canvasPos.Y);
 ```
 
 ### 2. Hit Testing Coordinate Handling
+
 **Before:**
+
 ```cs
 if (_useDirectRendering && _directRenderer != null)
 {
@@ -71,6 +76,7 @@ else
 ```
 
 **After:**
+
 ```cs
 if (_useDirectRendering && _directRenderer != null)
 {
@@ -90,13 +96,16 @@ else
 ```
 
 ### 3. Hover Detection Coordinate Handling
+
 **Before:**
+
 ```cs
 var screenPos = e.GetPosition(_rootPanel);
 var resizeHit = _directRenderer.HitTestResizeHandle(screenPos.X, screenPos.Y);
 ```
 
 **After:**
+
 ```cs
 // Get viewport position for DirectRenderer - it expects screen coordinates
 var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
@@ -104,13 +113,16 @@ var resizeHit = _directRenderer.HitTestResizeHandle(viewportPos.X, viewportPos.Y
 ```
 
 ### 4. Pointer Pressed Coordinate Handling
+
 **Before:**
+
 ```cs
 var screenPos = e.GetPosition(_rootPanel);
 var rightClickHit = PerformDirectRenderingHitTest(screenPos.X, screenPos.Y);
 ```
 
 **After:**
+
 ```cs
 var viewportPos = _inputContext.Coordinates.GetPointerViewportPosition(e);
 var rightClickHit = PerformDirectRenderingHitTest(viewportPos.X, viewportPos.Y);
