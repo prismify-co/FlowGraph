@@ -92,10 +92,10 @@ public partial class FlowCanvas
         }
         else
         {
-            // Get position relative to _rootPanel (screen coordinates)
-            // Then convert to canvas coordinates using the viewport
-            var screenPosRaw = e.GetPosition(_rootPanel);
-            var canvasPos = _viewport.ViewportToCanvas(new global::Avalonia.Point(screenPosRaw.X, screenPosRaw.Y));;
+            // For hit testing shapes in retained mode with MatrixTransform:
+            // Get position relative to _mainCanvas, which automatically gives us canvas coordinates
+            // because Avalonia applies the inverse of the RenderTransform
+            var canvasPos = e.GetPosition(_mainCanvas);
 
             // For hit testing, we need to find which element is at this canvas position
             // First check if any shape contains this point (shapes use coordinate-based hit testing
@@ -110,7 +110,6 @@ public partial class FlowCanvas
                     if (bounds.Contains(new Core.Point(canvasPos.X, canvasPos.Y)))
                     {
                         hitElement_shape = _shapeVisualManager.GetVisual(shape.Id);
-                        Debug.WriteLine($"[Input] Shape hit: {shape.Id} at bounds ({bounds.X:F0},{bounds.Y:F0},{bounds.Width:F0}x{bounds.Height:F0})");
                         break;
                     }
                 }

@@ -9,7 +9,7 @@ using AvaloniaPoint = Avalonia.Point;
 namespace FlowGraph.Avalonia.Input.States;
 
 /// <summary>
-/// State for box selection of multiple nodes.
+/// State for box selection of multiple elements (nodes and shapes).
 /// </summary>
 public class BoxSelectingState : InputStateBase
 {
@@ -71,7 +71,7 @@ public class BoxSelectingState : InputStateBase
         // Get both viewport and canvas positions using typed coordinate system
         var typedViewport = GetTypedViewportPosition(context, e);
         var typedCanvas = GetTypedCanvasPosition(context, e);
-        
+
         _endViewport = new AvaloniaPoint(typedViewport.X, typedViewport.Y);
         _endCanvas = new AvaloniaPoint(typedCanvas.X, typedCanvas.Y);
 
@@ -140,6 +140,7 @@ public class BoxSelectingState : InputStateBase
             Math.Abs(_endCanvas.Y - _startCanvas.Y)
         );
 
+        // Select nodes
         foreach (var node in graph.Elements.Nodes)
         {
             // Skip non-selectable nodes
@@ -172,6 +173,47 @@ public class BoxSelectingState : InputStateBase
                 // OPTIMIZED: Only change if different (avoids property change notifications)
                 if (node.IsSelected != shouldSelect)
                     node.IsSelected = shouldSelect;
+            }
+        }
+
+        // Select shapes (comments, sticky notes, etc.)
+        foreach (var shape in graph.Elements.Shapes)
+        {
+            // Skip non-selectable or invisible shapes
+            if (!shape.IsSelectable || !shape.IsVisible)
+            {
+                continue;
+            }
+
+            var bounds = shape.GetBounds();
+            var shapeRect = new Rect(
+                bounds.X,
+                bounds.Y,
+                bounds.Width,
+                bounds.Height
+            );
+
+            bool shouldSelect = _settings.SelectionMode == SelectionMode.Full
+                ? selectionRect.Contains(shapeRect)
+                : selectionRect.Intersects(shapeRect);
+
+            if (addToSelection)
+            {
+                // OPTIMIZED: Only change if needed (avoids property change notifications)
+                if (shouldSelect && !shape.IsSelected)
+                {
+                    shape.IsSelected = true;
+                    context.ShapeVisualManager?.UpdateSelection(shape.Id, true);
+                }
+            }
+            else
+            {
+                // OPTIMIZED: Only change if different (avoids property change notifications)
+                if (shape.IsSelected != shouldSelect)
+                {
+                    shape.IsSelected = shouldSelect;
+                    context.ShapeVisualManager?.UpdateSelection(shape.Id, shouldSelect);
+                }
             }
         }
 
