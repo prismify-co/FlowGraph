@@ -19,6 +19,9 @@ public static class EdgePathHelper
     /// <summary>
     /// Creates a path geometry between two points based on the edge type.
     /// </summary>
+    /// <param name="start">The start point of the path.</param>
+    /// <param name="end">The end point of the path.</param>
+    /// <param name="edgeType">The type of edge path to create.</param>
     /// <param name="cornerRadius">Corner radius for SmoothStep edges. Uses default if not specified.</param>
     public static PathGeometry CreatePath(AvaloniaPoint start, AvaloniaPoint end, EdgeType edgeType, double cornerRadius = DefaultCornerRadius)
     {
@@ -34,6 +37,10 @@ public static class EdgePathHelper
     /// <summary>
     /// Creates a path geometry through waypoints based on the edge type.
     /// </summary>
+    /// <param name="start">The start point of the path.</param>
+    /// <param name="end">The end point of the path.</param>
+    /// <param name="waypoints">Optional intermediate waypoints.</param>
+    /// <param name="edgeType">The type of edge path to create.</param>
     /// <param name="cornerRadius">Corner radius for SmoothStep edges. Uses default if not specified.</param>
     public static PathGeometry CreatePathWithWaypoints(
         AvaloniaPoint start,
