@@ -172,9 +172,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </remarks>
     public CanvasPoint GetTypedCanvasPosition(global::Avalonia.Input.PointerEventArgs e)
     {
-        #pragma warning disable CS0618 // We're the new typed wrapper calling the old method
+#pragma warning disable CS0618 // We're the new typed wrapper calling the old method
         var avaloniaPoint = GetCanvasPosition(e);
-        #pragma warning restore CS0618
+#pragma warning restore CS0618
         return new CanvasPoint(avaloniaPoint.X, avaloniaPoint.Y);
     }
 
@@ -195,9 +195,9 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// </remarks>
     public ViewportPoint GetTypedViewportPosition(global::Avalonia.Input.PointerEventArgs e)
     {
-        #pragma warning disable CS0618 // We're the new typed wrapper calling the old method
+#pragma warning disable CS0618 // We're the new typed wrapper calling the old method
         var avaloniaPoint = GetViewportPosition(e);
-        #pragma warning restore CS0618
+#pragma warning restore CS0618
         return new ViewportPoint(avaloniaPoint.X, avaloniaPoint.Y);
     }
 
@@ -246,10 +246,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     /// <para>For pointer events, use <see cref="GetCanvasPosition(global::Avalonia.Input.PointerEventArgs)"/> instead.</para>
     /// </remarks>
     [System.Obsolete("For pointer events, use GetCanvasPosition(e) instead. This method is for viewport coordinate conversion only.")]
-    #pragma warning disable CS0618 // Suppress obsolete warning for internal call
+#pragma warning disable CS0618 // Suppress obsolete warning for internal call
     public global::Avalonia.Point ScreenToCanvas(global::Avalonia.Point screenPoint)
         => ScreenToCanvas(screenPoint.X, screenPoint.Y);
-    #pragma warning restore CS0618
+#pragma warning restore CS0618
 
     /// <summary>
     /// Gets the visible bounds in canvas coordinates.
@@ -259,10 +259,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     {
         get
         {
-            #pragma warning disable CS0618 // ScreenToCanvas is obsolete for pointer events but valid for bounds
+#pragma warning disable CS0618 // ScreenToCanvas is obsolete for pointer events but valid for bounds
             var topLeft = ScreenToCanvas(0, 0);
             var bottomRight = ScreenToCanvas(Bounds.Width, Bounds.Height);
-            #pragma warning restore CS0618
+#pragma warning restore CS0618
             return new global::Avalonia.Rect(topLeft, bottomRight);
         }
     }
@@ -410,7 +410,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
             // Update input context to trigger redraws on viewport changes
             _inputContext.DirectRenderer = _directRenderer;
-            
+
             // Initialize hit tester for the InputDispatcher
             _hitTester = new DirectRendererHitTester(() => _directRenderer, _viewport);
             _inputDispatcher.SetHitTester(_hitTester);
@@ -683,7 +683,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Initialize input state machine
         _inputContext = new InputStateContext(Settings, _viewport, _graphRenderer);
         _inputStateMachine = new InputStateMachine(_inputContext);
-        
+
         // Initialize the new InputDispatcher (Phase 1: alongside existing state machine)
         _inputDispatcher = new InputDispatcher();
         RegisterDefaultProcessors();
@@ -789,7 +789,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputContext.EdgeDisconnected += OnEdgeDisconnected;
 
         // Forward label edit request with default inline editing behavior
-        _inputContext.NodeLabelEditRequested += (_, e) => 
+        _inputContext.NodeLabelEditRequested += (_, e) =>
         {
             NodeLabelEditRequested?.Invoke(this, e);
             // If not handled externally, start inline editing
@@ -799,7 +799,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
                 e.Handled = true;
             }
         };
-        _inputContext.EdgeLabelEditRequested += (_, e) => 
+        _inputContext.EdgeLabelEditRequested += (_, e) =>
         {
             EdgeLabelEditRequested?.Invoke(this, e);
             if (!e.Handled)
@@ -808,7 +808,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
                 e.Handled = true;
             }
         };
-        _inputContext.ShapeTextEditRequested += (_, e) => 
+        _inputContext.ShapeTextEditRequested += (_, e) =>
         {
             ShapeTextEditRequested?.Invoke(this, e);
             if (!e.Handled)
@@ -838,7 +838,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _groupManager.GroupRerenderRequested += (s, groupId) => RenderElements();
         _groupManager.NodesAddedToGroup += (s, e) => RenderElements();
     }
-    
+
     /// <summary>
     /// Registers the default input processors for the new InputDispatcher.
     /// </summary>
@@ -862,7 +862,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _inputDispatcher.RegisterProcessor(new ResizeHandleProcessor());
         _inputDispatcher.RegisterProcessor(new NodeProcessor());
         _inputDispatcher.RegisterProcessor(new CanvasProcessor());
-        
+
         // TODO: Add remaining processors in Phase 2
         // _inputDispatcher.RegisterProcessor(new PortProcessor());
         // _inputDispatcher.RegisterProcessor(new EdgeProcessor());

@@ -22,73 +22,73 @@ namespace FlowGraph.Avalonia.Input.Processors;
 /// </remarks>
 public class CanvasProcessor : InputProcessorBase
 {
-    public override HitTargetType HandledTypes => HitTargetType.Canvas | HitTargetType.None;
-    
-    public override int Priority => InputProcessorPriority.Canvas;
-    
-    public override string Name => "CanvasProcessor";
-    
-    public override InputProcessorResult HandlePointerPressed(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerPressedEventArgs e)
+  public override HitTargetType HandledTypes => HitTargetType.Canvas | HitTargetType.None;
+
+  public override int Priority => InputProcessorPriority.Canvas;
+
+  public override string Name => "CanvasProcessor";
+
+  public override InputProcessorResult HandlePointerPressed(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerPressedEventArgs e)
+  {
+    var point = e.GetCurrentPoint(context.RootPanel);
+    var canvasPos = new AvaloniaPoint(hit.CanvasPosition.X, hit.CanvasPosition.Y);
+    var viewportPos = context.CanvasToViewport(canvasPos);
+
+    // Middle mouse button: always start panning (allowed in read-only mode)
+    if (point.Properties.IsMiddleButtonPressed)
     {
-        var point = e.GetCurrentPoint(context.RootPanel);
-        var canvasPos = new AvaloniaPoint(hit.CanvasPosition.X, hit.CanvasPosition.Y);
-        var viewportPos = context.CanvasToViewport(canvasPos);
-        
-        // Middle mouse button: always start panning (allowed in read-only mode)
-        if (point.Properties.IsMiddleButtonPressed)
-        {
-            var panState = new PanningState(viewportPos, context.Viewport);
-            CapturePointer(e, context.RootPanel);
-            return InputProcessorResult.TransitionTo(panState);
-        }
-        
-        // Left click on canvas
-        if (point.Properties.IsLeftButtonPressed)
-        {
-            return HandleLeftClick(context, e, viewportPos, canvasPos);
-        }
-        
-        return InputProcessorResult.NotHandled;
+      var panState = new PanningState(viewportPos, context.Viewport);
+      CapturePointer(e, context.RootPanel);
+      return InputProcessorResult.TransitionTo(panState);
     }
-    
-    private static InputProcessorResult HandleLeftClick(
-        InputStateContext context,
-        PointerPressedEventArgs e,
-        AvaloniaPoint viewportPos,
-        AvaloniaPoint canvasPos)
+
+    // Left click on canvas
+    if (point.Properties.IsLeftButtonPressed)
     {
-        bool ctrlHeld = IsCtrlHeld(e);
-        
-        // If not Ctrl-clicking, deselect all via the context event
-        // This lets FlowCanvas handle the actual deselection through SelectionManager
-        if (!ctrlHeld)
-        {
-            context.RaiseDeselectAll();
-        }
-        
-        // Start box selection if PanOnDrag is disabled
-        // Otherwise, this is just a deselect click followed by pan
-        if (!context.Settings.PanOnDrag)
-        {
-            var boxState = new BoxSelectingState(canvasPos, context.Settings, context.Viewport);
-            CapturePointer(e, context.RootPanel);
-            return InputProcessorResult.TransitionTo(boxState);
-        }
-        
-        // Left-click-drag pans mode: check for shift for box selection
-        if (IsShiftHeld(e))
-        {
-            var boxState = new BoxSelectingState(canvasPos, context.Settings, context.Viewport);
-            CapturePointer(e, context.RootPanel);
-            return InputProcessorResult.TransitionTo(boxState);
-        }
-        
-        // Start panning
-        var panState = new PanningState(viewportPos, context.Viewport);
-        CapturePointer(e, context.RootPanel);
-        return InputProcessorResult.TransitionTo(panState);
+      return HandleLeftClick(context, e, viewportPos, canvasPos);
     }
+
+    return InputProcessorResult.NotHandled;
+  }
+
+  private static InputProcessorResult HandleLeftClick(
+      InputStateContext context,
+      PointerPressedEventArgs e,
+      AvaloniaPoint viewportPos,
+      AvaloniaPoint canvasPos)
+  {
+    bool ctrlHeld = IsCtrlHeld(e);
+
+    // If not Ctrl-clicking, deselect all via the context event
+    // This lets FlowCanvas handle the actual deselection through SelectionManager
+    if (!ctrlHeld)
+    {
+      context.RaiseDeselectAll();
+    }
+
+    // Start box selection if PanOnDrag is disabled
+    // Otherwise, this is just a deselect click followed by pan
+    if (!context.Settings.PanOnDrag)
+    {
+      var boxState = new BoxSelectingState(canvasPos, context.Settings, context.Viewport);
+      CapturePointer(e, context.RootPanel);
+      return InputProcessorResult.TransitionTo(boxState);
+    }
+
+    // Left-click-drag pans mode: check for shift for box selection
+    if (IsShiftHeld(e))
+    {
+      var boxState = new BoxSelectingState(canvasPos, context.Settings, context.Viewport);
+      CapturePointer(e, context.RootPanel);
+      return InputProcessorResult.TransitionTo(boxState);
+    }
+
+    // Start panning
+    var panState = new PanningState(viewportPos, context.Viewport);
+    CapturePointer(e, context.RootPanel);
+    return InputProcessorResult.TransitionTo(panState);
+  }
 }

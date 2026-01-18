@@ -11,20 +11,20 @@ namespace FlowGraph.Avalonia.Input;
 /// <param name="Handled">Whether this input was handled (stops propagation to lower-priority processors).</param>
 public record InputProcessorResult(IInputState? NewState, bool Handled)
 {
-    /// <summary>
-    /// The processor did not handle this input. Continue to next processor.
-    /// </summary>
-    public static InputProcessorResult NotHandled { get; } = new(null, false);
-    
-    /// <summary>
-    /// The processor handled this input but state remains unchanged.
-    /// </summary>
-    public static InputProcessorResult HandledStay { get; } = new(null, true);
-    
-    /// <summary>
-    /// The processor handled this input and wants to transition to a new state.
-    /// </summary>
-    public static InputProcessorResult TransitionTo(IInputState newState) => new(newState, true);
+  /// <summary>
+  /// The processor did not handle this input. Continue to next processor.
+  /// </summary>
+  public static InputProcessorResult NotHandled { get; } = new(null, false);
+
+  /// <summary>
+  /// The processor handled this input but state remains unchanged.
+  /// </summary>
+  public static InputProcessorResult HandledStay { get; } = new(null, true);
+
+  /// <summary>
+  /// The processor handled this input and wants to transition to a new state.
+  /// </summary>
+  public static InputProcessorResult TransitionTo(IInputState newState) => new(newState, true);
 }
 
 /// <summary>
@@ -65,59 +65,59 @@ public record InputProcessorResult(IInputState? NewState, bool Handled)
 /// </remarks>
 public interface IInputProcessor
 {
-    /// <summary>
-    /// The hit target types this processor handles (bitmask).
-    /// Use bitwise OR to handle multiple types: <c>HitTargetType.Node | HitTargetType.Group</c>
-    /// </summary>
-    HitTargetType HandledTypes { get; }
-    
-    /// <summary>
-    /// Priority for checking this processor. Higher = checked first.
-    /// </summary>
-    int Priority { get; }
-    
-    /// <summary>
-    /// Display name for debugging.
-    /// </summary>
-    string Name { get; }
-    
-    /// <summary>
-    /// Checks if this processor handles the given target type.
-    /// Default implementation uses bitwise AND for O(1) checking.
-    /// </summary>
-    bool CanHandle(HitTargetType targetType) => (HandledTypes & targetType) != 0;
+  /// <summary>
+  /// The hit target types this processor handles (bitmask).
+  /// Use bitwise OR to handle multiple types: <c>HitTargetType.Node | HitTargetType.Group</c>
+  /// </summary>
+  HitTargetType HandledTypes { get; }
 
-    #region Pointer Events
-    
-    /// <summary>
-    /// Handles pointer pressed on an element this processor is responsible for.
-    /// </summary>
-    /// <param name="context">The input state context.</param>
-    /// <param name="hit">The hit test result (guaranteed to be a type from <see cref="HandledTypes"/>).</param>
-    /// <param name="e">The Avalonia pointer event.</param>
-    /// <returns>Result indicating whether handled and any state transition.</returns>
-    InputProcessorResult HandlePointerPressed(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerPressedEventArgs e);
-    
-    /// <summary>
-    /// Handles pointer moved. Called during idle state for hover effects.
-    /// </summary>
-    InputProcessorResult HandlePointerMoved(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerEventArgs e);
-    
-    /// <summary>
-    /// Handles pointer released. Rarely needed at processor level.
-    /// </summary>
-    InputProcessorResult HandlePointerReleased(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerReleasedEventArgs e);
-    
-    #endregion
+  /// <summary>
+  /// Priority for checking this processor. Higher = checked first.
+  /// </summary>
+  int Priority { get; }
+
+  /// <summary>
+  /// Display name for debugging.
+  /// </summary>
+  string Name { get; }
+
+  /// <summary>
+  /// Checks if this processor handles the given target type.
+  /// Default implementation uses bitwise AND for O(1) checking.
+  /// </summary>
+  bool CanHandle(HitTargetType targetType) => (HandledTypes & targetType) != 0;
+
+  #region Pointer Events
+
+  /// <summary>
+  /// Handles pointer pressed on an element this processor is responsible for.
+  /// </summary>
+  /// <param name="context">The input state context.</param>
+  /// <param name="hit">The hit test result (guaranteed to be a type from <see cref="HandledTypes"/>).</param>
+  /// <param name="e">The Avalonia pointer event.</param>
+  /// <returns>Result indicating whether handled and any state transition.</returns>
+  InputProcessorResult HandlePointerPressed(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerPressedEventArgs e);
+
+  /// <summary>
+  /// Handles pointer moved. Called during idle state for hover effects.
+  /// </summary>
+  InputProcessorResult HandlePointerMoved(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerEventArgs e);
+
+  /// <summary>
+  /// Handles pointer released. Rarely needed at processor level.
+  /// </summary>
+  InputProcessorResult HandlePointerReleased(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerReleasedEventArgs e);
+
+  #endregion
 }
 
 /// <summary>
@@ -125,65 +125,65 @@ public interface IInputProcessor
 /// </summary>
 public abstract class InputProcessorBase : IInputProcessor
 {
-    public abstract HitTargetType HandledTypes { get; }
-    public abstract int Priority { get; }
-    public abstract string Name { get; }
-    
-    /// <summary>
-    /// Checks if this processor handles the given target type (O(1) bitmask check).
-    /// </summary>
-    public bool CanHandle(HitTargetType targetType) => (HandledTypes & targetType) != 0;
-    
-    public virtual InputProcessorResult HandlePointerPressed(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerPressedEventArgs e)
-        => InputProcessorResult.NotHandled;
-    
-    public virtual InputProcessorResult HandlePointerMoved(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerEventArgs e)
-        => InputProcessorResult.NotHandled;
-    
-    public virtual InputProcessorResult HandlePointerReleased(
-        InputStateContext context,
-        GraphHitTestResult hit,
-        PointerReleasedEventArgs e)
-        => InputProcessorResult.NotHandled;
-    
-    #region Helpers
-    
-    /// <summary>
-    /// Captures the pointer on the root panel for drag operations.
-    /// </summary>
-    protected static void CapturePointer(PointerEventArgs e, Control? target)
+  public abstract HitTargetType HandledTypes { get; }
+  public abstract int Priority { get; }
+  public abstract string Name { get; }
+
+  /// <summary>
+  /// Checks if this processor handles the given target type (O(1) bitmask check).
+  /// </summary>
+  public bool CanHandle(HitTargetType targetType) => (HandledTypes & targetType) != 0;
+
+  public virtual InputProcessorResult HandlePointerPressed(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerPressedEventArgs e)
+      => InputProcessorResult.NotHandled;
+
+  public virtual InputProcessorResult HandlePointerMoved(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerEventArgs e)
+      => InputProcessorResult.NotHandled;
+
+  public virtual InputProcessorResult HandlePointerReleased(
+      InputStateContext context,
+      GraphHitTestResult hit,
+      PointerReleasedEventArgs e)
+      => InputProcessorResult.NotHandled;
+
+  #region Helpers
+
+  /// <summary>
+  /// Captures the pointer on the root panel for drag operations.
+  /// </summary>
+  protected static void CapturePointer(PointerEventArgs e, Control? target)
+  {
+    if (target != null)
     {
-        if (target != null)
-        {
-            e.Pointer.Capture(target);
-        }
+      e.Pointer.Capture(target);
     }
-    
-    /// <summary>
-    /// Checks if Ctrl modifier is held.
-    /// </summary>
-    protected static bool IsCtrlHeld(PointerEventArgs e) 
-        => e.KeyModifiers.HasFlag(KeyModifiers.Control);
-    
-    /// <summary>
-    /// Checks if Shift modifier is held.
-    /// </summary>
-    protected static bool IsShiftHeld(PointerEventArgs e) 
-        => e.KeyModifiers.HasFlag(KeyModifiers.Shift);
-    
-    /// <summary>
-    /// Checks if this is a double-click.
-    /// </summary>
-    protected static bool IsDoubleClick(PointerPressedEventArgs e) 
-        => e.ClickCount == 2;
-    
-    #endregion
+  }
+
+  /// <summary>
+  /// Checks if Ctrl modifier is held.
+  /// </summary>
+  protected static bool IsCtrlHeld(PointerEventArgs e)
+      => e.KeyModifiers.HasFlag(KeyModifiers.Control);
+
+  /// <summary>
+  /// Checks if Shift modifier is held.
+  /// </summary>
+  protected static bool IsShiftHeld(PointerEventArgs e)
+      => e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+
+  /// <summary>
+  /// Checks if this is a double-click.
+  /// </summary>
+  protected static bool IsDoubleClick(PointerPressedEventArgs e)
+      => e.ClickCount == 2;
+
+  #endregion
 }
 
 /// <summary>
@@ -191,27 +191,27 @@ public abstract class InputProcessorBase : IInputProcessor
 /// </summary>
 public static class InputProcessorPriority
 {
-    /// <summary>Resize handles - highest priority, small targets always on top.</summary>
-    public const int ResizeHandle = 100;
-    
-    /// <summary>Ports - small targets need priority over nodes.</summary>
-    public const int Port = 90;
-    
-    /// <summary>Nodes - standard graph elements.</summary>
-    public const int Node = 80;
-    
-    /// <summary>Edge endpoints - handles for reconnection.</summary>
-    public const int EdgeEndpoint = 75;
-    
-    /// <summary>Edges - connection lines.</summary>
-    public const int Edge = 70;
-    
-    /// <summary>Shapes - sticky notes, annotations, etc.</summary>
-    public const int Shape = 60;
-    
-    /// <summary>Groups - behind their contents.</summary>
-    public const int Group = 50;
-    
-    /// <summary>Canvas - empty space, lowest priority fallback.</summary>
-    public const int Canvas = 0;
+  /// <summary>Resize handles - highest priority, small targets always on top.</summary>
+  public const int ResizeHandle = 100;
+
+  /// <summary>Ports - small targets need priority over nodes.</summary>
+  public const int Port = 90;
+
+  /// <summary>Nodes - standard graph elements.</summary>
+  public const int Node = 80;
+
+  /// <summary>Edge endpoints - handles for reconnection.</summary>
+  public const int EdgeEndpoint = 75;
+
+  /// <summary>Edges - connection lines.</summary>
+  public const int Edge = 70;
+
+  /// <summary>Shapes - sticky notes, annotations, etc.</summary>
+  public const int Shape = 60;
+
+  /// <summary>Groups - behind their contents.</summary>
+  public const int Group = 50;
+
+  /// <summary>Canvas - empty space, lowest priority fallback.</summary>
+  public const int Canvas = 0;
 }

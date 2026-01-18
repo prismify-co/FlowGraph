@@ -3,6 +3,7 @@
 ## Executive Summary
 
 This document proposes a **hybrid input architecture** that combines:
+
 - **InputProcessor pattern** (Nodify-inspired) as the core state machine
 - **Behavior pattern** (Blazor.Diagrams-inspired) as an optional extensibility layer
 
@@ -39,7 +40,8 @@ FlowCanvas.Input.cs                 InputStateMachine
 ```
 
 **The Problem:** Every new element type or sub-element requires:
-1. New pattern in `IdleState` 
+
+1. New pattern in `IdleState`
 2. New handler method
 3. Easy to forget (the resize handle bug we just fixed)
 
@@ -96,13 +98,13 @@ public interface IInputProcessor
     /// The hit target type(s) this processor handles.
     /// </summary>
     IReadOnlyList<HitTargetType> HandledTypes { get; }
-    
+
     /// <summary>
     /// Priority for handling. Higher = checked first.
     /// Resize handles > Ports > Nodes > Edges > Canvas
     /// </summary>
     int Priority { get; }
-    
+
     /// <summary>
     /// Handles pointer pressed on this element type.
     /// </summary>
@@ -110,7 +112,7 @@ public interface IInputProcessor
         InputStateContext context,
         GraphHitTestResult hitResult,
         PointerPressedEventArgs e);
-    
+
     // Similar for Move, Release, etc.
 }
 
@@ -133,17 +135,17 @@ public interface IBehavior
     /// Display name for debugging/UI.
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// Whether this behavior is currently active.
     /// </summary>
     bool IsEnabled { get; set; }
-    
+
     /// <summary>
     /// Called before standard processing. Can intercept.
     /// </summary>
     BehaviorResult OnPointerPressed(IGraphInputEvent e);
-    
+
     /// <summary>
     /// Called after standard processing completes.
     /// </summary>
@@ -168,7 +170,7 @@ public class GraphHitTestResult
     public HitTargetType TargetType { get; init; }
     public object? Target { get; init; }
     public Point CanvasPosition { get; init; }
-    
+
     // Typed accessors
     public Node? Node => ...;
     public Edge? Edge => ...;
@@ -190,13 +192,13 @@ public class InputDispatcher
     private readonly IGraphHitTester _hitTester;
     private readonly List<IInputProcessor> _processors;
     private readonly List<IBehavior> _behaviors;
-    
+
     public InputDispatcher(IGraphHitTester hitTester)
     {
         _hitTester = hitTester;
         _processors = new List<IInputProcessor>();
         _behaviors = new List<IBehavior>();
-        
+
         // Register built-in processors in priority order
         RegisterProcessor(new ResizeHandleProcessor());  // Priority: 100
         RegisterProcessor(new PortProcessor());           // Priority: 90
@@ -205,7 +207,7 @@ public class InputDispatcher
         RegisterProcessor(new ShapeProcessor());          // Priority: 60
         RegisterProcessor(new CanvasProcessor());         // Priority: 0
     }
-    
+
     public StateTransitionResult Dispatch(
         InputStateContext context,
         PointerPressedEventArgs e,
@@ -213,35 +215,35 @@ public class InputDispatcher
     {
         // 1. Hit test using framework-agnostic interface
         var hitResult = _hitTester.HitTest(canvasPosition);
-        
+
         // 2. Let behaviors intercept first
         foreach (var behavior in _behaviors.Where(b => b.IsEnabled))
         {
             var behaviorResult = behavior.OnPointerPressed(
                 new GraphInputEvent(hitResult, e.KeyModifiers));
-            
+
             if (behaviorResult.SuppressDefault)
                 return StateTransitionResult.Stay(behaviorResult.Handled);
         }
-        
+
         // 3. Find processor for this hit type
         var processor = _processors
             .OrderByDescending(p => p.Priority)
             .FirstOrDefault(p => p.HandledTypes.Contains(hitResult.TargetType));
-        
+
         if (processor == null)
             return StateTransitionResult.Unhandled();
-        
+
         // 4. Let processor handle
         var result = processor.HandlePointerPressed(context, hitResult, e);
-        
+
         // 5. Notify behaviors of completion
         foreach (var behavior in _behaviors.Where(b => b.IsEnabled))
         {
             behavior.OnPointerPressedComplete(
                 new GraphInputEvent(hitResult, e.KeyModifiers));
         }
-        
+
         return new StateTransitionResult(result.NewState, result.Handled);
     }
 }
@@ -257,7 +259,7 @@ public class NodeProcessor : IInputProcessor
 {
     public IReadOnlyList<HitTargetType> HandledTypes => new[] { HitTargetType.Node };
     public int Priority => 80;
-    
+
     public InputProcessorResult HandlePointerPressed(
         InputStateContext context,
         GraphHitTestResult hit,
@@ -265,24 +267,24 @@ public class NodeProcessor : IInputProcessor
     {
         var node = hit.Node!;  // Safe - we only handle Node hits
         var graph = context.Graph;
-        
+
         if (e.ClickCount == 2 && context.Settings.EnableNodeLabelEditing)
         {
             // Double-click: edit label
             context.RaiseNodeLabelEditRequested(node, hit.CanvasPosition);
             return new InputProcessorResult(null, Handled: true);
         }
-        
+
         // Handle selection
         HandleSelection(context, node, e.KeyModifiers);
-        
+
         // Start drag if selected and draggable
         if (node.IsSelected && node.IsDraggable && !context.Settings.IsReadOnly)
         {
             var dragState = new DraggingState(graph, ...);
             return new InputProcessorResult(dragState, Handled: true);
         }
-        
+
         return new InputProcessorResult(null, Handled: true);
     }
 }
@@ -295,7 +297,7 @@ public class ResizeHandleProcessor : IInputProcessor
     // Handles BOTH node and shape resize handles!
     public IReadOnlyList<HitTargetType> HandledTypes => new[] { HitTargetType.ResizeHandle };
     public int Priority => 100;  // Highest - always check first
-    
+
     public InputProcessorResult HandlePointerPressed(
         InputStateContext context,
         GraphHitTestResult hit,
@@ -303,9 +305,9 @@ public class ResizeHandleProcessor : IInputProcessor
     {
         if (context.Settings.IsReadOnly)
             return new InputProcessorResult(null, Handled: false);
-        
+
         var handlePosition = hit.ResizeHandle!.Value;
-        
+
         // Check if it's a node or shape resize
         if (hit.ResizeHandleOwner != null)
         {
@@ -314,14 +316,14 @@ public class ResizeHandleProcessor : IInputProcessor
             var state = new ResizingState(node, handlePosition, ...);
             return new InputProcessorResult(state, Handled: true);
         }
-        
+
         // Shape resize - need to extend GraphHitTestResult for shapes
         if (hit.Target is ShapeResizeHandleHitInfo shapeInfo)
         {
             var state = new ResizingShapeState(shapeInfo.Shape, handlePosition, ...);
             return new InputProcessorResult(state, Handled: true);
         }
-        
+
         return new InputProcessorResult(null, Handled: false);
     }
 }
@@ -335,7 +337,7 @@ public class MarqueeSelectionBehavior : IBehavior
 {
     public string Name => "Marquee Selection";
     public bool IsEnabled { get; set; } = true;
-    
+
     public BehaviorResult OnPointerPressed(IGraphInputEvent e)
     {
         // Only intercept Alt+Click on canvas
@@ -345,7 +347,7 @@ public class MarqueeSelectionBehavior : IBehavior
             StartMarquee(e.CanvasPosition);
             return new BehaviorResult(Handled: true, SuppressDefault: true);
         }
-        
+
         return new BehaviorResult(Handled: false);
     }
 }
@@ -355,13 +357,13 @@ public class SnapToGridBehavior : IBehavior
 {
     public string Name => "Snap to Grid";
     public bool IsEnabled { get; set; } = true;
-    
+
     public BehaviorResult OnPointerPressed(IGraphInputEvent e)
     {
         // Don't intercept, just observe
         return new BehaviorResult(Handled: false);
     }
-    
+
     public void OnPointerPressedComplete(IGraphInputEvent e)
     {
         // After node click, we might want to show snap guides
@@ -407,13 +409,13 @@ public class SnapToGridBehavior : IBehavior
 
 ## Benefits of This Design
 
-| Aspect | Current | Proposed |
-|--------|---------|----------|
-| **Adding new element type** | Add pattern + handler | Implement IInputProcessor |
-| **Forgetting a pattern** | Silent failure | Won't compile (must register) |
-| **Custom user behaviors** | Subclass states | Add IBehavior |
-| **Testing** | Mock entire states | Mock individual processors |
-| **Hit testing** | Duplicated in states | Centralized in IGraphHitTester |
+| Aspect                      | Current               | Proposed                       |
+| --------------------------- | --------------------- | ------------------------------ |
+| **Adding new element type** | Add pattern + handler | Implement IInputProcessor      |
+| **Forgetting a pattern**    | Silent failure        | Won't compile (must register)  |
+| **Custom user behaviors**   | Subclass states       | Add IBehavior                  |
+| **Testing**                 | Mock entire states    | Mock individual processors     |
+| **Hit testing**             | Duplicated in states  | Centralized in IGraphHitTester |
 
 ---
 
@@ -434,7 +436,7 @@ public enum HitTargetType
     Port = 1 << 3,
     ResizeHandle = 1 << 4,
     // etc.
-    
+
     // Common combinations for processor registration
     All = Canvas | Node | Edge | Port | ...,
     Draggable = Node | Shape | Group,
@@ -443,6 +445,7 @@ public enum HitTargetType
 ```
 
 **Benefit:** O(1) type checking via bitwise AND instead of O(N) list iteration:
+
 ```csharp
 // Before: O(N) list iteration
 processor.HandledTypes.Contains(hitResult.TargetType)
@@ -458,10 +461,10 @@ public class InputDispatcher
 {
     // Sorted once on registration
     private readonly List<IInputProcessor> _processors;
-    
+
     // O(1) lookup by target type
     private readonly Dictionary<HitTargetType, IInputProcessor> _processorLookup;
-    
+
     private void RebuildLookupIfNeeded()
     {
         // Map each HitTargetType to its highest-priority processor
@@ -487,7 +490,7 @@ public interface IBehavior
     /// If null/empty, active in all states.
     /// </summary>
     IReadOnlySet<string>? ActiveInStates { get; }
-    
+
     bool IsActiveInState(string stateName) =>
         ActiveInStates == null || ActiveInStates.Contains(stateName);
 }
@@ -499,6 +502,7 @@ are skipped entirely in other states, avoiding unnecessary iteration on high-fre
 ### 4. Pointer Capture for Drag Operations
 
 When a processor starts a drag operation, it **MUST** capture the pointer:
+
 ```csharp
 e.Pointer.Capture(context.RootPanel);
 ```
@@ -533,4 +537,3 @@ the interaction state continues receiving events regardless of visual bounds.
 3. Create skeleton interfaces
 4. Implement Phase 1 alongside existing code
 5. A/B test before committing to migration
-
