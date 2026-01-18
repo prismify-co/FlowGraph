@@ -519,24 +519,24 @@ public class Graph
     public IReadOnlyList<Node> SelectNodesInArea(Rect bounds, bool fullyContained = false)
     {
         var selected = new List<Node>();
-        
+
         foreach (var node in Elements.Nodes)
         {
             var nodeWidth = node.Width ?? GraphDefaults.NodeWidth;
             var nodeHeight = node.Height ?? GraphDefaults.NodeHeight;
             var nodeBounds = new Rect(node.Position.X, node.Position.Y, nodeWidth, nodeHeight);
-            
+
             bool shouldSelect = fullyContained
                 ? bounds.Contains(nodeBounds)
                 : bounds.Intersects(nodeBounds);
-            
+
             if (shouldSelect)
             {
                 node.IsSelected = true;
                 selected.Add(node);
             }
         }
-        
+
         return selected;
     }
 
@@ -550,24 +550,24 @@ public class Graph
     public IReadOnlyList<Node> UnselectNodesInArea(Rect bounds, bool fullyContained = false)
     {
         var unselected = new List<Node>();
-        
+
         foreach (var node in Elements.Nodes.Where(n => n.IsSelected))
         {
             var nodeWidth = node.Width ?? GraphDefaults.NodeWidth;
             var nodeHeight = node.Height ?? GraphDefaults.NodeHeight;
             var nodeBounds = new Rect(node.Position.X, node.Position.Y, nodeWidth, nodeHeight);
-            
+
             bool shouldUnselect = fullyContained
                 ? bounds.Contains(nodeBounds)
                 : bounds.Intersects(nodeBounds);
-            
+
             if (shouldUnselect)
             {
                 node.IsSelected = false;
                 unselected.Add(node);
             }
         }
-        
+
         return unselected;
     }
 
@@ -592,7 +592,7 @@ public class Graph
         {
             node.IsSelected = false;
         }
-        
+
         foreach (var edge in Elements.Edges.Where(e => e.IsSelected))
         {
             edge.IsSelected = false;
@@ -608,13 +608,13 @@ public class Graph
     {
         var selected = new List<Node>();
         var children = this.GetGroupChildren(groupId);
-        
+
         foreach (var child in children)
         {
             child.IsSelected = true;
             selected.Add(child);
         }
-        
+
         return selected;
     }
 
