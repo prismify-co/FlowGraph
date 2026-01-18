@@ -5,14 +5,21 @@ using Avalonia.Markup.Xaml;
 
 namespace FlowGraph.Avalonia.Controls;
 
+/// <summary>
+/// A panel with zoom and viewport control buttons for FlowCanvas.
+/// </summary>
+/// <remarks>
+/// Community edition includes: Zoom In, Zoom Out, Fit to View, Reset Zoom.
+/// The ButtonPanel is accessible for adding custom buttons in derived classes.
+/// </remarks>
 public partial class FlowControls : UserControl
 {
     public static readonly StyledProperty<FlowCanvas?> TargetCanvasProperty =
         AvaloniaProperty.Register<FlowControls, FlowCanvas?>(nameof(TargetCanvas));
 
-    public static readonly StyledProperty<FlowDiagnostics?> DiagnosticsPanelProperty =
-        AvaloniaProperty.Register<FlowControls, FlowDiagnostics?>(nameof(DiagnosticsPanel));
-
+    /// <summary>
+    /// The FlowCanvas this control panel operates on.
+    /// </summary>
     public FlowCanvas? TargetCanvas
     {
         get => GetValue(TargetCanvasProperty);
@@ -20,20 +27,9 @@ public partial class FlowControls : UserControl
     }
 
     /// <summary>
-    /// The diagnostics panel to show/hide with the debug toggle button.
+    /// The panel containing the control buttons. Can be used to add custom buttons.
     /// </summary>
-    public FlowDiagnostics? DiagnosticsPanel
-    {
-        get => GetValue(DiagnosticsPanelProperty);
-        set => SetValue(DiagnosticsPanelProperty, value);
-    }
-
-    private Button? _zoomInButton;
-    private Button? _zoomOutButton;
-    private Button? _fitViewButton;
-    private Button? _centerButton;
-    private Button? _resetZoomButton;
-    private Button? _debugToggleButton;
+    protected StackPanel? ControlButtonPanel => ButtonPanel;
 
     public FlowControls()
     {
@@ -44,57 +40,18 @@ public partial class FlowControls : UserControl
     {
         AvaloniaXamlLoader.Load(this);
 
-        _zoomInButton = this.FindControl<Button>("ZoomInButton");
-        _zoomOutButton = this.FindControl<Button>("ZoomOutButton");
-        _fitViewButton = this.FindControl<Button>("FitViewButton");
-        _centerButton = this.FindControl<Button>("CenterButton");
-        _resetZoomButton = this.FindControl<Button>("ResetZoomButton");
-        _debugToggleButton = this.FindControl<Button>("DebugToggleButton");
+        var zoomInButton = this.FindControl<Button>("ZoomInButton");
+        var zoomOutButton = this.FindControl<Button>("ZoomOutButton");
+        var fitViewButton = this.FindControl<Button>("FitViewButton");
+        var resetZoomButton = this.FindControl<Button>("ResetZoomButton");
 
-        if (_zoomInButton != null)
-            _zoomInButton.Click += OnZoomInClick;
-        if (_zoomOutButton != null)
-            _zoomOutButton.Click += OnZoomOutClick;
-        if (_fitViewButton != null)
-            _fitViewButton.Click += OnFitViewClick;
-        if (_centerButton != null)
-            _centerButton.Click += OnCenterClick;
-        if (_resetZoomButton != null)
-            _resetZoomButton.Click += OnResetZoomClick;
-        if (_debugToggleButton != null)
-            _debugToggleButton.Click += OnDebugToggleClick;
-    }
-
-    private void OnZoomInClick(object? sender, RoutedEventArgs e)
-    {
-        TargetCanvas?.ZoomIn();
-    }
-
-    private void OnZoomOutClick(object? sender, RoutedEventArgs e)
-    {
-        TargetCanvas?.ZoomOut();
-    }
-
-    private void OnFitViewClick(object? sender, RoutedEventArgs e)
-    {
-        TargetCanvas?.FitToView();
-    }
-
-    private void OnCenterClick(object? sender, RoutedEventArgs e)
-    {
-        TargetCanvas?.CenterOnGraph();
-    }
-
-    private void OnResetZoomClick(object? sender, RoutedEventArgs e)
-    {
-        TargetCanvas?.ResetZoom();
-    }
-
-    private void OnDebugToggleClick(object? sender, RoutedEventArgs e)
-    {
-        if (DiagnosticsPanel != null)
-        {
-            DiagnosticsPanel.IsVisible = !DiagnosticsPanel.IsVisible;
-        }
+        if (zoomInButton != null)
+            zoomInButton.Click += (_, _) => TargetCanvas?.ZoomIn();
+        if (zoomOutButton != null)
+            zoomOutButton.Click += (_, _) => TargetCanvas?.ZoomOut();
+        if (fitViewButton != null)
+            fitViewButton.Click += (_, _) => TargetCanvas?.FitToView();
+        if (resetZoomButton != null)
+            resetZoomButton.Click += (_, _) => TargetCanvas?.ResetZoom();
     }
 }
