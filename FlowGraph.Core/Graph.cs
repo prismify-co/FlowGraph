@@ -42,9 +42,10 @@ public class Graph
     private void OnElementsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         // For Add/Remove actions, we can determine which typed event to raise
-        // For Reset, we raise both events since we don't know what changed
+        // For Reset, we raise all events since we don't know what changed
         bool hasNodeChanges = false;
         bool hasEdgeChanges = false;
+        bool hasShapeChanges = false;
 
         switch (e.Action)
         {
@@ -57,6 +58,7 @@ public class Graph
                         ManageNodeBoundsSubscriptions(node, subscribe: true);
                     }
                     else if (item is Edge) hasEdgeChanges = true;
+                    else if (item is Elements.Shapes.ShapeElement) hasShapeChanges = true;
                 }
                 break;
 
@@ -69,13 +71,15 @@ public class Graph
                         ManageNodeBoundsSubscriptions(node, subscribe: false);
                     }
                     else if (item is Edge) hasEdgeChanges = true;
+                    else if (item is Elements.Shapes.ShapeElement) hasShapeChanges = true;
                 }
                 break;
 
             case NotifyCollectionChangedAction.Reset:
-                // For Reset, raise both events since we can't tell what changed
+                // For Reset, raise all events since we can't tell what changed
                 hasNodeChanges = true;
                 hasEdgeChanges = true;
+                hasShapeChanges = true;
                 // Note: Reset typically means the collection was cleared or replaced entirely.
                 // Previous node subscriptions become orphaned (harmless), and we need to
                 // subscribe to whatever nodes remain. This is handled in ManageNodeBoundsSubscriptions
@@ -94,6 +98,7 @@ public class Graph
                             ManageNodeBoundsSubscriptions(node, subscribe: false);
                         }
                         else if (item is Edge) hasEdgeChanges = true;
+                        else if (item is Elements.Shapes.ShapeElement) hasShapeChanges = true;
                     }
                 }
                 if (e.NewItems != null)
@@ -106,6 +111,7 @@ public class Graph
                             ManageNodeBoundsSubscriptions(node, subscribe: true);
                         }
                         else if (item is Edge) hasEdgeChanges = true;
+                        else if (item is Elements.Shapes.ShapeElement) hasShapeChanges = true;
                     }
                 }
                 break;
@@ -115,6 +121,8 @@ public class Graph
             NodesChanged?.Invoke(this, e);
         if (hasEdgeChanges)
             EdgesChanged?.Invoke(this, e);
+        if (hasShapeChanges)
+            ShapesChanged?.Invoke(this, e);
     }
 
     #region Collections
@@ -164,6 +172,12 @@ public class Graph
     /// This is a convenience event derived from <see cref="Elements"/>.CollectionChanged.
     /// </summary>
     public event NotifyCollectionChangedEventHandler? EdgesChanged;
+
+    /// <summary>
+    /// Event raised when shapes are added, removed, or the collection is reset.
+    /// This is a convenience event derived from <see cref="Elements"/>.CollectionChanged.
+    /// </summary>
+    public event NotifyCollectionChangedEventHandler? ShapesChanged;
 
     /// <summary>
     /// Event raised when any node's bounds (position or size) change.

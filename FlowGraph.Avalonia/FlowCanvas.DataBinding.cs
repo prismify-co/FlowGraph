@@ -52,6 +52,7 @@ public partial class FlowCanvas
         {
             oldGraph.NodesChanged -= OnNodesChanged;
             oldGraph.EdgesChanged -= OnEdgesChanged;
+            oldGraph.ShapesChanged -= OnShapesChanged;
             UnsubscribeFromNodeChanges(oldGraph);
             UnsubscribeFromEdgeChanges(oldGraph);
         }
@@ -63,6 +64,7 @@ public partial class FlowCanvas
         {
             newGraph.NodesChanged += OnNodesChanged;
             newGraph.EdgesChanged += OnEdgesChanged;
+            newGraph.ShapesChanged += OnShapesChanged;
             SubscribeToNodeChanges(newGraph);
             SubscribeToEdgeChanges(newGraph);
 
@@ -460,6 +462,63 @@ public partial class FlowCanvas
 
         // Sync edge flow animations after any edge change
         SyncEdgeFlowAnimations();
+    }
+
+    private void OnShapesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // In DirectRendering mode, just invalidate - DirectCanvasRenderer handles everything
+        if (_useDirectRendering)
+        {
+            _directRenderer?.InvalidateVisual();
+            return;
+        }
+
+        // Handle shape changes for visual tree mode
+        if (_shapeVisualManager != null && Graph != null)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add when e.NewItems != null:
+                    // Add new shape visuals
+                    foreach (var item in e.NewItems)
+                    {
+                        if (item is Core.Elements.Shapes.ShapeElement shape)
+                        {
+                            _shapeVisualManager.AddOrUpdateShape(shape);
+                        }
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove when e.OldItems != null:
+                    // Remove shape visuals
+                    foreach (var item in e.OldItems)
+                    {
+                        if (item is Core.Elements.Shapes.ShapeElement shape)
+                        {
+                            _shapeVisualManager.RemoveShape(shape.Id);
+                        }
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    // Full re-render of shapes
+                    _shapeVisualManager.Clear();
+                    foreach (var shape in Graph.Elements.Shapes)
+                    {
+                        _shapeVisualManager.AddOrUpdateShape(shape);
+                    }
+                    break;
+
+                default:
+                    // For other actions, re-render all shapes
+                    _shapeVisualManager.Clear();
+                    foreach (var shape in Graph.Elements.Shapes)
+                    {
+                        _shapeVisualManager.AddOrUpdateShape(shape);
+                    }
+                    break;
+            }
+        }
     }
 
     /// <summary>
