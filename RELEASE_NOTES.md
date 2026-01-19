@@ -18,6 +18,10 @@
 
 ### Bug Fixes
 
+- **Zoom Centering** - Fixed zoom drifting toward top-left when using toolbar buttons
+  - Root cause: Missing `RenderTransformOrigin="0,0"` on MainCanvas
+  - Avalonia defaults to (0.5, 0.5), causing transforms to apply around center instead of top-left
+  - Now uses `TransformGroup` with separate `ScaleTransform` + `TranslateTransform` (like Nodify-Avalonia)
 - **Box Selection in Direct Rendering Mode** - Fixed positioning issues with selection rectangle
 - **Shape Selection in Retained Mode** - Fixed shape selection not working correctly
 - **Shape Visual Updates** - Shapes now update correctly during resize and selection changes
@@ -28,12 +32,14 @@
 - **InputDispatcher Architecture** - New hybrid InputProcessor + Behavior pattern for cleaner input handling
 - **InputCoordinatesAdapter** - Consistent coordinate transformations across rendering modes
 - **ViewportOverlayPositioner** - Prevents Panel/Canvas positioning bugs for overlay elements
+- **ViewportState.ApplyToTransformGroup()** - New abstraction for applying zoom/offset to ScaleTransform + TranslateTransform
 
 ### API Additions
 
 - `ResizeHandleMode` enum in `FlowGraph.Core` namespace
 - `Node.AllowedResizeHandles` property with `NodeDefinition` support
 - `Graph.ShapesChanged` event for dynamic shape updates
+- `ViewportState.ApplyToTransformGroup(ScaleTransform, TranslateTransform)` method
 
 ---
 

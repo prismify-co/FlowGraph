@@ -338,6 +338,24 @@ public class ViewportState : IViewportState
         transform.Matrix = matrix;
     }
 
+    /// <summary>
+    /// Applies the viewport transforms to separate ScaleTransform and TranslateTransform.
+    /// This is the preferred method as it avoids issues with MatrixTransform not triggering re-renders.
+    /// The transforms should be applied in order: Scale first, then Translate.
+    /// </summary>
+    /// <remarks>
+    /// <para>The transform order produces: screenPos = canvasPos * zoom + offset</para>
+    /// <para>This matches the coordinate system used by <see cref="CanvasToViewport"/> and <see cref="ViewportToCanvas"/>.</para>
+    /// <para>Note: The Canvas must have <c>RenderTransformOrigin="0,0"</c> for correct behavior.</para>
+    /// </remarks>
+    public void ApplyToTransformGroup(ScaleTransform scale, TranslateTransform translate)
+    {
+        scale.ScaleX = Zoom;
+        scale.ScaleY = Zoom;
+        translate.X = OffsetX;
+        translate.Y = OffsetY;
+    }
+
     private void OnViewportChanged()
     {
         ViewportChanged?.Invoke(this, EventArgs.Empty);

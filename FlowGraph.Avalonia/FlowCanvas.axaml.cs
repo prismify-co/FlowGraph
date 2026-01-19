@@ -963,7 +963,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private static int _fullRenderCount = 0;
 
     /// <summary>
-    /// Internal method to just apply the transforms without debug markers.
+    /// Internal method to apply the viewport transforms to MainCanvas.
     /// Used by InputStateContext callback.
     /// </summary>
     private void ApplyViewportTransformsInternal()
@@ -973,15 +973,18 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // See: https://github.com/AvaloniaUI/Avalonia/issues/15097
         if (_mainCanvas != null)
         {
-            var scaleTransform = new ScaleTransform(_viewport.Zoom, _viewport.Zoom);
-            var translateTransform = new TranslateTransform(_viewport.OffsetX, _viewport.OffsetY);
+            var scaleTransform = new ScaleTransform();
+            var translateTransform = new TranslateTransform();
             
+            // Use ViewportState abstraction to apply zoom/offset values
+            _viewport.ApplyToTransformGroup(scaleTransform, translateTransform);
+
             var transformGroup = new TransformGroup();
             transformGroup.Children.Add(scaleTransform);
             transformGroup.Children.Add(translateTransform);
-            
+
             _mainCanvas.RenderTransform = transformGroup;
-            
+
             // Update our references
             _viewportScaleTransform = scaleTransform;
             _viewportTranslateTransform = translateTransform;
