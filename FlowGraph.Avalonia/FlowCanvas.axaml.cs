@@ -975,7 +975,7 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         {
             var scaleTransform = new ScaleTransform();
             var translateTransform = new TranslateTransform();
-            
+
             // Use ViewportState abstraction to apply zoom/offset values
             _viewport.ApplyToTransformGroup(scaleTransform, translateTransform);
 
