@@ -608,7 +608,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
     private Canvas? _mainCanvas;
     private Canvas? _gridCanvas;
     private Panel? _rootPanel;
-    private MatrixTransform? _viewportTransform;
+    private ScaleTransform? _viewportScaleTransform;
+    private TranslateTransform? _viewportTranslateTransform;
 
     // Components
     private ViewportState _viewport = null!;
@@ -897,10 +898,11 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         _gridCanvas = this.FindControl<Canvas>("GridCanvas");
         _rootPanel = this.FindControl<Panel>("RootPanel");
 
-        // Get the MatrixTransform from MainCanvas.RenderTransform
-        if (_mainCanvas?.RenderTransform is MatrixTransform mt)
+        // Get the ScaleTransform and TranslateTransform from MainCanvas.RenderTransform
+        if (_mainCanvas?.RenderTransform is TransformGroup tg && tg.Children.Count >= 2)
         {
-            _viewportTransform = mt;
+            _viewportScaleTransform = tg.Children[0] as ScaleTransform;
+            _viewportTranslateTransform = tg.Children[1] as TranslateTransform;
         }
 
         _theme = new ThemeResources(this);
@@ -915,10 +917,10 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
         // Update input context with UI elements
         _inputContext.RootPanel = _rootPanel;
         _inputContext.MainCanvas = _mainCanvas;
-        _inputContext.ViewportTransform = _viewportTransform;
         _inputContext.Theme = _theme;
         _inputContext.ConnectionValidator = ConnectionValidator;
         _inputContext.SnapProvider = SnapProvider;
+        _inputContext.ApplyViewportTransformCallback = ApplyViewportTransformsInternal;
 
         // Initialize shape visual manager now that canvas is available
         if (_mainCanvas != null)
@@ -960,6 +962,32 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
 
     private static int _fullRenderCount = 0;
 
+    /// <summary>
+    /// Internal method to just apply the transforms without debug markers.
+    /// Used by InputStateContext callback.
+    /// </summary>
+    private void ApplyViewportTransformsInternal()
+    {
+        // WORKAROUND for Avalonia issue #15097: Create new transform instances
+        // Modifying existing transform properties doesn't always trigger re-render
+        // See: https://github.com/AvaloniaUI/Avalonia/issues/15097
+        if (_mainCanvas != null)
+        {
+            var scaleTransform = new ScaleTransform(_viewport.Zoom, _viewport.Zoom);
+            var translateTransform = new TranslateTransform(_viewport.OffsetX, _viewport.OffsetY);
+            
+            var transformGroup = new TransformGroup();
+            transformGroup.Children.Add(scaleTransform);
+            transformGroup.Children.Add(translateTransform);
+            
+            _mainCanvas.RenderTransform = transformGroup;
+            
+            // Update our references
+            _viewportScaleTransform = scaleTransform;
+            _viewportTranslateTransform = translateTransform;
+        }
+    }
+
     private void ApplyViewportTransforms()
     {
         _graphRenderer.SetViewport(_viewport);
@@ -970,11 +998,8 @@ public partial class FlowCanvas : UserControl, IFlowCanvasContext
                             Math.Abs(_lastOffsetY - _viewport.OffsetY) > 0.1;
 
         // Phase 2: Transform-based pan/zoom with retained mode
-        // Apply the viewport transform to MainCanvas for instant pan/zoom
-        if (_viewportTransform != null)
-        {
-            _viewport.ApplyToTransforms(_viewportTransform);
-        }
+        // Apply the viewport transform to MainCanvas using separate Scale + Translate (like Nodify)
+        ApplyViewportTransformsInternal();
 
         // DirectRendering mode bypasses visual tree, so we need to trigger a redraw
         if (_useDirectRendering && _directRenderer != null && (zoomChanged || offsetChanged))

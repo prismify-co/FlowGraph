@@ -36,27 +36,31 @@ public partial class FlowCanvas
     }
 
     /// <summary>
-    /// Zooms in by one step, keeping the viewport centered.
+    /// Zooms in by one step, keeping the viewport center fixed.
     /// </summary>
     public void ZoomIn()
     {
-        _viewport.ZoomIn(GetViewportCenter());
+        // Zoom toward the viewport center - what's in the middle of the screen stays there
+        var center = GetViewportCenter();
+        _viewport.ZoomIn(center);
     }
 
     /// <summary>
-    /// Zooms out by one step, keeping the viewport centered.
+    /// Zooms out by one step, keeping the viewport center fixed.
     /// </summary>
     public void ZoomOut()
     {
-        _viewport.ZoomOut(GetViewportCenter());
+        var center = GetViewportCenter();
+        _viewport.ZoomOut(center);
     }
 
     /// <summary>
-    /// Resets zoom to 100%, keeping the viewport centered.
+    /// Resets zoom to 100%, keeping the viewport center fixed.
     /// </summary>
     public void ResetZoom()
     {
-        _viewport.SetZoom(1.0, GetViewportCenter());
+        var center = GetViewportCenter();
+        _viewport.SetZoom(1.0, center);
     }
 
     /// <summary>
@@ -70,21 +74,21 @@ public partial class FlowCanvas
     public void FitToView()
     {
         if (Graph == null) return;
-        
+
         // Need at least one node or shape to fit
         if (!Graph.Elements.Nodes.Any() && !Graph.Elements.Shapes.Any()) return;
 
         var graphBounds = CalculateGraphBounds();
         if (graphBounds.Width <= 0 || graphBounds.Height <= 0)
             return;
-            
+
         var viewSize = Bounds.Size;
-        
+
         if (viewSize.Width <= 0 || viewSize.Height <= 0)
             return;
 
         _viewport.FitToBounds(graphBounds, viewSize, Settings.FitToViewPadding);
-        
+
         // Explicitly apply transforms - the ViewportChanged event may not trigger 
         // ApplyViewportTransforms if we're in certain states (e.g., during graph loading)
         ApplyViewportTransforms();
@@ -102,7 +106,7 @@ public partial class FlowCanvas
         var bounds = CalculateGraphBounds();
         if (bounds.Width <= 0 || bounds.Height <= 0)
             return;
-            
+
         var center = new AvaloniaPoint(
             bounds.X + bounds.Width / 2,
             bounds.Y + bounds.Height / 2);
@@ -126,11 +130,13 @@ public partial class FlowCanvas
     #region Viewport Helpers
 
     /// <summary>
-    /// Gets the center of the viewport in screen coordinates.
+    /// Gets the center of the viewport in screen coordinates (relative to this control).
     /// </summary>
     private AvaloniaPoint GetViewportCenter()
     {
-        return new AvaloniaPoint(Bounds.Width / 2, Bounds.Height / 2);
+        // Use Bounds.Size (not Bounds.X/Y) since we want the center relative to this control
+        var size = Bounds.Size;
+        return new AvaloniaPoint(size.Width / 2, size.Height / 2);
     }
 
     private AvaloniaPoint? GetGraphCenterInScreenCoords()
@@ -154,7 +160,7 @@ public partial class FlowCanvas
         // Include all elements: nodes and shapes
         var hasNodes = Graph.Elements.Nodes.Any();
         var hasShapes = Graph.Elements.Shapes.Any();
-        
+
         if (!hasNodes && !hasShapes)
             return default;
 

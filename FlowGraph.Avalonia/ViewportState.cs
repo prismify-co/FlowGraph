@@ -108,6 +108,7 @@ public class ViewportState : IViewportState
         OffsetY = center.Y - (center.Y - OffsetY) * zoomFactor;
 
         Zoom = newZoom;
+
         ClampToBounds();
         OnViewportChanged();
     }

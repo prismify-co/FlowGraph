@@ -52,9 +52,12 @@
 
   <Panel Name="RootPanel" Background="{DynamicResource FlowCanvasBackground}">
     <Canvas Name="GridCanvas" ClipToBounds="False"/>
-    <Canvas Name="MainCanvas" ClipToBounds="False">
+    <Canvas Name="MainCanvas" ClipToBounds="False" RenderTransformOrigin="0,0">
       <Canvas.RenderTransform>
-        <MatrixTransform/>
+        <TransformGroup>
+          <ScaleTransform/>
+          <TranslateTransform/>
+        </TransformGroup>
       </Canvas.RenderTransform>
     </Canvas>
   </Panel>

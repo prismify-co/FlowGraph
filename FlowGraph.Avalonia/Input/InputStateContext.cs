@@ -69,7 +69,10 @@ public class InputStateContext
         set { _mainCanvas = value; InvalidateAdapters(); }
     }
 
-    public MatrixTransform? ViewportTransform { get; set; }
+    /// <summary>
+    /// Callback to apply viewport transforms. Set by FlowCanvas.
+    /// </summary>
+    public Action? ApplyViewportTransformCallback { get; set; }
 
     public DirectCanvasRenderer? DirectRenderer
     {
@@ -307,10 +310,8 @@ public class InputStateContext
     /// </summary>
     public void ApplyViewportTransform()
     {
-        if (ViewportTransform != null)
-        {
-            _viewport.ApplyToTransforms(ViewportTransform);
-        }
+        // Use the callback to apply transforms (set by FlowCanvas)
+        ApplyViewportTransformCallback?.Invoke();
 
         // DirectRendering mode bypasses visual tree, so we need to trigger a redraw
         if (DirectRenderer != null)
