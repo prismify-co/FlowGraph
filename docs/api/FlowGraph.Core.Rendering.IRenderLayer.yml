@@ -1,0 +1,354 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Rendering.IRenderLayer
+  commentId: T:FlowGraph.Core.Rendering.IRenderLayer
+  id: IRenderLayer
+  parent: FlowGraph.Core.Rendering
+  children:
+  - FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+  - FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible
+  - FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+  - FlowGraph.Core.Rendering.IRenderLayer.LayerId
+  - FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+  - FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+  langs:
+  - csharp
+  - vb
+  name: IRenderLayer
+  nameWithType: IRenderLayer
+  fullName: FlowGraph.Core.Rendering.IRenderLayer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IRenderLayer
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 100
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Represents a rendering layer in the graph canvas.
+
+    Layers control Z-ordering and transform behavior for groups of elements.
+
+
+    <p>
+
+    <b>Inspired by:</b>
+
+    <ul><li>react-diagrams: Multiple layer types (LinkLayer, NodeLayer) with transform flags</li><li>Konva.js: Stage → Layer → Group → Shape hierarchy</li><li>Photoshop/Figma: Layer-based compositing model</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IRenderLayer
+    content.vb: Public Interface IRenderLayer
+- uid: FlowGraph.Core.Rendering.IRenderLayer.LayerId
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.LayerId
+  id: LayerId
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: LayerId
+  nameWithType: IRenderLayer.LayerId
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.LayerId
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LayerId
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 105
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Unique identifier for this layer.
+  example: []
+  syntax:
+    content: string LayerId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property LayerId As String
+  overload: FlowGraph.Core.Rendering.IRenderLayer.LayerId*
+- uid: FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+  id: DisplayName
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: DisplayName
+  nameWithType: IRenderLayer.DisplayName
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DisplayName
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 110
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Display name for debugging and UI purposes.
+  example: []
+  syntax:
+    content: string DisplayName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property DisplayName As String
+  overload: FlowGraph.Core.Rendering.IRenderLayer.DisplayName*
+- uid: FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+  id: ZIndex
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: ZIndex
+  nameWithType: IRenderLayer.ZIndex
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ZIndex
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 124
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    The Z-order of this layer (lower = behind, higher = in front).
+
+
+    <p><b>Standard Z-order ranges:</b></p>
+
+    <ul><li>0-99: Background layers (grid, guides)</li><li>100-199: Edge layers</li><li>200-299: Node layers</li><li>300-399: Selection/interaction layers</li><li>400+: Overlay layers (tooltips, menus)</li></ul>
+  example: []
+  syntax:
+    content: int ZIndex { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property ZIndex As Integer
+  overload: FlowGraph.Core.Rendering.IRenderLayer.ZIndex*
+- uid: FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+  id: TransformMode
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: TransformMode
+  nameWithType: IRenderLayer.TransformMode
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TransformMode
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 129
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: How this layer participates in viewport transformations.
+  example: []
+  syntax:
+    content: LayerTransformMode TransformMode { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Rendering.LayerTransformMode
+    content.vb: ReadOnly Property TransformMode As LayerTransformMode
+  overload: FlowGraph.Core.Rendering.IRenderLayer.TransformMode*
+- uid: FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+  id: IsVisible
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: IsVisible
+  nameWithType: IRenderLayer.IsVisible
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsVisible
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 134
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Whether the layer is currently visible.
+  example: []
+  syntax:
+    content: bool IsVisible { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsVisible As Boolean
+  overload: FlowGraph.Core.Rendering.IRenderLayer.IsVisible*
+- uid: FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible
+  commentId: P:FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible
+  id: IsHitTestVisible
+  parent: FlowGraph.Core.Rendering.IRenderLayer
+  langs:
+  - csharp
+  - vb
+  name: IsHitTestVisible
+  nameWithType: IRenderLayer.IsHitTestVisible
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsHitTestVisible
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 139
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Whether hit testing should include elements in this layer.
+  example: []
+  syntax:
+    content: bool IsHitTestVisible { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsHitTestVisible As Boolean
+  overload: FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible*
+references:
+- uid: FlowGraph.Core.Rendering
+  commentId: N:FlowGraph.Core.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Core.Rendering
+  nameWithType: FlowGraph.Core.Rendering
+  fullName: FlowGraph.Core.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+- uid: FlowGraph.Core.Rendering.IRenderLayer.LayerId*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.LayerId
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_LayerId
+  name: LayerId
+  nameWithType: IRenderLayer.LayerId
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.LayerId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Rendering.IRenderLayer.DisplayName*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_DisplayName
+  name: DisplayName
+  nameWithType: IRenderLayer.DisplayName
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.DisplayName
+- uid: FlowGraph.Core.Rendering.IRenderLayer.ZIndex*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_ZIndex
+  name: ZIndex
+  nameWithType: IRenderLayer.ZIndex
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.ZIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Rendering.IRenderLayer.TransformMode*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_TransformMode
+  name: TransformMode
+  nameWithType: IRenderLayer.TransformMode
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.TransformMode
+- uid: FlowGraph.Core.Rendering.LayerTransformMode
+  commentId: T:FlowGraph.Core.Rendering.LayerTransformMode
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.LayerTransformMode.html
+  name: LayerTransformMode
+  nameWithType: LayerTransformMode
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode
+- uid: FlowGraph.Core.Rendering.IRenderLayer.IsVisible*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_IsVisible
+  name: IsVisible
+  nameWithType: IRenderLayer.IsVisible
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.IsVisible
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible*
+  commentId: Overload:FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible
+  href: FlowGraph.Core.Rendering.IRenderLayer.html#FlowGraph_Core_Rendering_IRenderLayer_IsHitTestVisible
+  name: IsHitTestVisible
+  nameWithType: IRenderLayer.IsHitTestVisible
+  fullName: FlowGraph.Core.Rendering.IRenderLayer.IsHitTestVisible

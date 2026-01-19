@@ -1,0 +1,408 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Input.ISnapProvider
+  commentId: T:FlowGraph.Avalonia.Input.ISnapProvider
+  id: ISnapProvider
+  parent: FlowGraph.Avalonia.Input
+  children:
+  - FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Boolean)
+  - FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  langs:
+  - csharp
+  - vb
+  name: ISnapProvider
+  nameWithType: ISnapProvider
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/ISnapProvider.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ISnapProvider
+    path: ../FlowGraph.Avalonia/Input/ISnapProvider.cs
+    startLine: 15
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Interface for providing snap offsets during node drag operations.
+
+    External systems (like helper lines, guides, magnetic snapping) can implement
+
+    this interface to influence node positions during drag without directly
+
+    modifying node positions themselves.
+  remarks: >-
+    This follows the "single authority" pattern where the drag system remains
+
+    the sole authority for setting node positions. Snap providers suggest offsets,
+
+    and the drag system decides whether and how to apply them.
+  example: []
+  syntax:
+    content: public interface ISnapProvider
+    content.vb: Public Interface ISnapProvider
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  id: GetSnapOffset(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.Input.ISnapProvider
+  langs:
+  - csharp
+  - vb
+  name: GetSnapOffset(IReadOnlyList<Node>, Point)
+  nameWithType: ISnapProvider.GetSnapOffset(IReadOnlyList<Node>, Point)
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset(System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>, FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/ISnapProvider.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetSnapOffset
+    path: ../FlowGraph.Avalonia/Input/ISnapProvider.cs
+    startLine: 27
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Calculate a snap offset for nodes being dragged.
+  example: []
+  syntax:
+    content: Point? GetSnapOffset(IReadOnlyList<Node> nodes, Point proposedPosition)
+    parameters:
+    - id: nodes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+      description: The nodes currently being dragged.
+    - id: proposedPosition
+      type: FlowGraph.Core.Point
+      description: >-
+        The position the drag system is proposing for the primary node
+            (after applying delta from drag start and any grid snapping).
+    return:
+      type: System.Nullable{FlowGraph.Core.Point}
+      description: >-
+        A snap offset to apply to all dragged nodes, or null if no snapping should occur.
+
+        The offset is relative to the proposed position (e.g., return (5, 0) to shift 5 pixels right).
+    content.vb: Function GetSnapOffset(nodes As IReadOnlyList(Of Node), proposedPosition As Point) As Point?
+  overload: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset*
+  nameWithType.vb: ISnapProvider.GetSnapOffset(IReadOnlyList(Of Node), Point)
+  fullName.vb: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset(System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), FlowGraph.Core.Point)
+  name.vb: GetSnapOffset(IReadOnlyList(Of Node), Point)
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  id: OnDragStart(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.Input.ISnapProvider
+  langs:
+  - csharp
+  - vb
+  name: OnDragStart(IReadOnlyList<Node>, Point)
+  nameWithType: ISnapProvider.OnDragStart(IReadOnlyList<Node>, Point)
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart(System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>, FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/ISnapProvider.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnDragStart
+    path: ../FlowGraph.Avalonia/Input/ISnapProvider.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Called when a drag operation starts.
+  example: []
+  syntax:
+    content: void OnDragStart(IReadOnlyList<Node> nodes, Point startPosition)
+    parameters:
+    - id: nodes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+      description: The nodes being dragged.
+    - id: startPosition
+      type: FlowGraph.Core.Point
+      description: The starting canvas position of the drag.
+    content.vb: Sub OnDragStart(nodes As IReadOnlyList(Of Node), startPosition As Point)
+  overload: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart*
+  nameWithType.vb: ISnapProvider.OnDragStart(IReadOnlyList(Of Node), Point)
+  fullName.vb: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart(System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), FlowGraph.Core.Point)
+  name.vb: OnDragStart(IReadOnlyList(Of Node), Point)
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Boolean)
+  id: OnDragEnd(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Boolean)
+  parent: FlowGraph.Avalonia.Input.ISnapProvider
+  langs:
+  - csharp
+  - vb
+  name: OnDragEnd(IReadOnlyList<Node>, bool)
+  nameWithType: ISnapProvider.OnDragEnd(IReadOnlyList<Node>, bool)
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd(System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/ISnapProvider.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnDragEnd
+    path: ../FlowGraph.Avalonia/Input/ISnapProvider.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Called when a drag operation ends.
+  example: []
+  syntax:
+    content: void OnDragEnd(IReadOnlyList<Node> nodes, bool cancelled)
+    parameters:
+    - id: nodes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+      description: The nodes that were dragged.
+    - id: cancelled
+      type: System.Boolean
+      description: Whether the drag was cancelled.
+    content.vb: Sub OnDragEnd(nodes As IReadOnlyList(Of Node), cancelled As Boolean)
+  overload: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd*
+  nameWithType.vb: ISnapProvider.OnDragEnd(IReadOnlyList(Of Node), Boolean)
+  fullName.vb: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd(System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), Boolean)
+  name.vb: OnDragEnd(IReadOnlyList(Of Node), Boolean)
+references:
+- uid: FlowGraph.Avalonia.Input
+  commentId: N:FlowGraph.Avalonia.Input
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Input
+  nameWithType: FlowGraph.Avalonia.Input
+  fullName: FlowGraph.Avalonia.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset*
+  commentId: Overload:FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset
+  href: FlowGraph.Avalonia.Input.ISnapProvider.html#FlowGraph_Avalonia_Input_ISnapProvider_GetSnapOffset_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__FlowGraph_Core_Point_
+  name: GetSnapOffset
+  nameWithType: ISnapProvider.GetSnapOffset
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.GetSnapOffset
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Node>
+  nameWithType: IReadOnlyList<Node>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>
+  nameWithType.vb: IReadOnlyList(Of Node)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node)
+  name.vb: IReadOnlyList(Of Node)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: System.Nullable{FlowGraph.Core.Point}
+  commentId: T:System.Nullable{FlowGraph.Core.Point}
+  parent: System
+  definition: System.Nullable`1
+  href: FlowGraph.Core.Point.html
+  name: Point?
+  nameWithType: Point?
+  fullName: FlowGraph.Core.Point?
+  spec.csharp:
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '?'
+  spec.vb:
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: '?'
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart*
+  commentId: Overload:FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart
+  href: FlowGraph.Avalonia.Input.ISnapProvider.html#FlowGraph_Avalonia_Input_ISnapProvider_OnDragStart_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__FlowGraph_Core_Point_
+  name: OnDragStart
+  nameWithType: ISnapProvider.OnDragStart
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.OnDragStart
+- uid: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd*
+  commentId: Overload:FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd
+  href: FlowGraph.Avalonia.Input.ISnapProvider.html#FlowGraph_Avalonia_Input_ISnapProvider_OnDragEnd_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Boolean_
+  name: OnDragEnd
+  nameWithType: ISnapProvider.OnDragEnd
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider.OnDragEnd
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

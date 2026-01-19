@@ -6,7 +6,9 @@ items:
   parent: FlowGraph.Core.Elements.Shapes
   children:
   - FlowGraph.Core.Elements.Shapes.ShapeElement.#ctor(System.String)
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
   - FlowGraph.Core.Elements.Shapes.ShapeElement.Fill
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
   - FlowGraph.Core.Elements.Shapes.ShapeElement.Label
   - FlowGraph.Core.Elements.Shapes.ShapeElement.Opacity
   - FlowGraph.Core.Elements.Shapes.ShapeElement.Rotation
@@ -22,7 +24,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ShapeElement
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
@@ -74,6 +76,7 @@ items:
   - System.Object
   - FlowGraph.Core.Elements.CanvasElement
   derivedClasses:
+  - FlowGraph.Core.Elements.Shapes.CommentElement
   - FlowGraph.Core.Elements.Shapes.EllipseElement
   - FlowGraph.Core.Elements.Shapes.LineElement
   - FlowGraph.Core.Elements.Shapes.RectangleElement
@@ -84,6 +87,7 @@ items:
   inheritedMembers:
   - FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
   - FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
   - FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
   - FlowGraph.Core.Elements.CanvasElement.ZIndexNodes
   - FlowGraph.Core.Elements.CanvasElement.PropertyChanged
@@ -93,6 +97,7 @@ items:
   - FlowGraph.Core.Elements.CanvasElement.Width
   - FlowGraph.Core.Elements.CanvasElement.Height
   - FlowGraph.Core.Elements.CanvasElement.IsSelected
+  - FlowGraph.Core.Elements.CanvasElement.IsSelectable
   - FlowGraph.Core.Elements.CanvasElement.IsVisible
   - FlowGraph.Core.Elements.CanvasElement.ZIndex
   - FlowGraph.Core.Elements.CanvasElement.GetBounds
@@ -119,11 +124,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 46
+    startLine: 47
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -154,11 +159,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Fill
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 57
+    startLine: 58
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -186,11 +191,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Stroke
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 76
+    startLine: 77
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -218,11 +223,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: StrokeWidth
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 92
+    startLine: 93
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -249,11 +254,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Opacity
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 108
+    startLine: 109
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -280,11 +285,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Rotation
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 124
+    startLine: 125
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -311,11 +316,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
-    startLine: 140
+    startLine: 141
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements.Shapes
@@ -328,6 +333,81 @@ items:
       type: System.String
     content.vb: Public Property Label As String
   overload: FlowGraph.Core.Elements.Shapes.ShapeElement.Label*
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  id: IsResizable
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  langs:
+  - csharp
+  - vb
+  name: IsResizable
+  nameWithType: ShapeElement.IsResizable
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsResizable
+    path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
+    startLine: 161
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets whether the shape can be resized by the user.
+  remarks: >-
+    When true and the shape is selected, resize handles will be displayed
+
+    allowing the user to drag and resize the shape.
+  example: []
+  syntax:
+    content: public bool IsResizable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsResizable As Boolean
+  overload: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable*
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  id: AllowedResizeHandles
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  langs:
+  - csharp
+  - vb
+  name: AllowedResizeHandles
+  nameWithType: ShapeElement.AllowedResizeHandles
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/ShapeElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AllowedResizeHandles
+    path: ../FlowGraph.Core/Elements/Shapes/ShapeElement.cs
+    startLine: 183
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: >-
+    Gets the resize handle positions that should be shown for this shape.
+
+    Override in derived classes to customize which handles appear.
+  remarks: >-
+    Default implementation returns all 8 handles (corners + edges).
+
+    Shapes with non-rectangular geometry (cylinders, circles, etc.)
+
+    should override this to return only meaningful handles.
+  example: []
+  syntax:
+    content: public virtual ResizeHandleMode AllowedResizeHandles { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.ResizeHandleMode
+    content.vb: Public Overridable ReadOnly Property AllowedResizeHandles As ResizeHandleMode
+  overload: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles*
 references:
 - uid: FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
   commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
@@ -414,6 +494,13 @@ references:
   name: ZIndexBackground
   nameWithType: CanvasElement.ZIndexBackground
   fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexGroups
+  name: ZIndexGroups
+  nameWithType: CanvasElement.ZIndexGroups
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
 - uid: FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
   commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
   parent: FlowGraph.Core.Elements.CanvasElement
@@ -477,6 +564,13 @@ references:
   name: IsSelected
   nameWithType: CanvasElement.IsSelected
   fullName: FlowGraph.Core.Elements.CanvasElement.IsSelected
+- uid: FlowGraph.Core.Elements.CanvasElement.IsSelectable
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.IsSelectable
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelectable
+  name: IsSelectable
+  nameWithType: CanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.CanvasElement.IsSelectable
 - uid: FlowGraph.Core.Elements.CanvasElement.IsVisible
   commentId: P:FlowGraph.Core.Elements.CanvasElement.IsVisible
   parent: FlowGraph.Core.Elements.CanvasElement
@@ -910,3 +1004,55 @@ references:
   name: Label
   nameWithType: ShapeElement.Label
   fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Label
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_IsResizable
+  name: IsResizable
+  nameWithType: ShapeElement.IsResizable
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_AllowedResizeHandles
+  name: AllowedResizeHandles
+  nameWithType: ShapeElement.AllowedResizeHandles
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+- uid: FlowGraph.Core.ResizeHandleMode
+  commentId: T:FlowGraph.Core.ResizeHandleMode
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.ResizeHandleMode.html
+  name: ResizeHandleMode
+  nameWithType: ResizeHandleMode
+  fullName: FlowGraph.Core.ResizeHandleMode
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html

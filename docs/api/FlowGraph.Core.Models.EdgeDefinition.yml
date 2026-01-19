@@ -9,6 +9,7 @@ items:
   - FlowGraph.Core.Models.EdgeDefinition.EffectiveLabel
   - FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
   - FlowGraph.Core.Models.EdgeDefinition.Id
+  - FlowGraph.Core.Models.EdgeDefinition.IsLocked
   - FlowGraph.Core.Models.EdgeDefinition.Label
   - FlowGraph.Core.Models.EdgeDefinition.LabelInfo
   - FlowGraph.Core.Models.EdgeDefinition.MarkerEnd
@@ -18,6 +19,7 @@ items:
   - FlowGraph.Core.Models.EdgeDefinition.RoutingMode
   - FlowGraph.Core.Models.EdgeDefinition.Source
   - FlowGraph.Core.Models.EdgeDefinition.SourcePort
+  - FlowGraph.Core.Models.EdgeDefinition.Style
   - FlowGraph.Core.Models.EdgeDefinition.Target
   - FlowGraph.Core.Models.EdgeDefinition.TargetPort
   - FlowGraph.Core.Models.EdgeDefinition.Type
@@ -25,6 +27,7 @@ items:
   - FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(FlowGraph.Core.Models.LabelInfo)
   - FlowGraph.Core.Models.EdgeDefinition.WithLabelInfo(System.String,FlowGraph.Core.Models.LabelAnchor,System.Double,System.Double)
   - FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode(FlowGraph.Core.Models.EdgeRoutingMode)
+  - FlowGraph.Core.Models.EdgeDefinition.WithStyle(FlowGraph.Core.Models.EdgeStyle)
   - FlowGraph.Core.Models.EdgeDefinition.WithType(FlowGraph.Core.EdgeType)
   langs:
   - csharp
@@ -36,7 +39,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeDefinition
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -83,7 +86,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -114,7 +117,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Source
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -145,7 +148,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Target
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -176,7 +179,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SourcePort
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -207,7 +210,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TargetPort
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -238,7 +241,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -269,7 +272,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerStart
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -300,7 +303,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerEnd
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -331,7 +334,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -366,7 +369,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: LabelInfo
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -401,7 +404,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EffectiveLabel
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -432,7 +435,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AutoRoute
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -469,7 +472,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RoutingMode
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
@@ -487,6 +490,78 @@ items:
       type: FlowGraph.Core.Models.EdgeRoutingMode
     content.vb: Public Property RoutingMode As EdgeRoutingMode
   overload: FlowGraph.Core.Models.EdgeDefinition.RoutingMode*
+- uid: FlowGraph.Core.Models.EdgeDefinition.IsLocked
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.IsLocked
+  id: IsLocked
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsLocked
+  nameWithType: EdgeDefinition.IsLocked
+  fullName: FlowGraph.Core.Models.EdgeDefinition.IsLocked
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsLocked
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 108
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether this edge is locked, preventing deletion and reconnection via UI.
+  remarks: >-
+    When true, the edge cannot be deleted or reconnected through user interaction.
+
+    Programmatic changes are still allowed. Useful for critical connections
+
+    that should not be accidentally modified.
+  example: []
+  syntax:
+    content: public bool IsLocked { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLocked As Boolean
+  overload: FlowGraph.Core.Models.EdgeDefinition.IsLocked*
+- uid: FlowGraph.Core.Models.EdgeDefinition.Style
+  commentId: P:FlowGraph.Core.Models.EdgeDefinition.Style
+  id: Style
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: Style
+  nameWithType: EdgeDefinition.Style
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Style
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Style
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Visual style for the edge including colors, dash patterns, and effects.
+  remarks: >-
+    When null, the edge uses theme defaults. Set to customize individual edges
+
+    or use preset styles like <xref href="FlowGraph.Core.Models.EdgeStyle.Success" data-throw-if-not-resolved="false"></xref> or <xref href="FlowGraph.Core.Models.EdgeStyle.Error" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public EdgeStyle? Style { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Property Style As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeDefinition.Style*
 - uid: FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
   commentId: P:FlowGraph.Core.Models.EdgeDefinition.EffectiveRoutingMode
   id: EffectiveRoutingMode
@@ -501,11 +576,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EffectiveRoutingMode
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 108
+    startLine: 127
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -539,11 +614,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ReconnectTarget
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 115
+    startLine: 134
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -577,11 +652,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ReconnectSource
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 121
+    startLine: 140
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -615,11 +690,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithLabel
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 127
+    startLine: 146
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -651,11 +726,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithLabelInfo
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 134
+    startLine: 153
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -688,11 +763,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithLabelInfo
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 144
+    startLine: 163
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -734,11 +809,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithType
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 150
+    startLine: 169
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -767,11 +842,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/EdgeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithRoutingMode
     path: ../FlowGraph.Core/Models/EdgeDefinition.cs
-    startLine: 156
+    startLine: 175
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -786,6 +861,42 @@ items:
       type: FlowGraph.Core.Models.EdgeDefinition
     content.vb: Public Function WithRoutingMode(mode As EdgeRoutingMode) As EdgeDefinition
   overload: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode*
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithStyle(FlowGraph.Core.Models.EdgeStyle)
+  commentId: M:FlowGraph.Core.Models.EdgeDefinition.WithStyle(FlowGraph.Core.Models.EdgeStyle)
+  id: WithStyle(FlowGraph.Core.Models.EdgeStyle)
+  parent: FlowGraph.Core.Models.EdgeDefinition
+  langs:
+  - csharp
+  - vb
+  name: WithStyle(EdgeStyle?)
+  nameWithType: EdgeDefinition.WithStyle(EdgeStyle?)
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithStyle(FlowGraph.Core.Models.EdgeStyle?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithStyle
+    path: ../FlowGraph.Core/Models/EdgeDefinition.cs
+    startLine: 181
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a new definition with a different visual style.
+  example: []
+  syntax:
+    content: public EdgeDefinition WithStyle(EdgeStyle? style)
+    parameters:
+    - id: style
+      type: FlowGraph.Core.Models.EdgeStyle
+    return:
+      type: FlowGraph.Core.Models.EdgeDefinition
+    content.vb: Public Function WithStyle(style As EdgeStyle) As EdgeDefinition
+  overload: FlowGraph.Core.Models.EdgeDefinition.WithStyle*
+  nameWithType.vb: EdgeDefinition.WithStyle(EdgeStyle)
+  fullName.vb: FlowGraph.Core.Models.EdgeDefinition.WithStyle(FlowGraph.Core.Models.EdgeStyle)
+  name.vb: WithStyle(EdgeStyle)
 references:
 - uid: FlowGraph.Core.Models
   commentId: N:FlowGraph.Core.Models
@@ -1283,6 +1394,37 @@ references:
   name: EdgeRoutingMode
   nameWithType: EdgeRoutingMode
   fullName: FlowGraph.Core.Models.EdgeRoutingMode
+- uid: FlowGraph.Core.Models.EdgeDefinition.IsLocked*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.IsLocked
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_IsLocked
+  name: IsLocked
+  nameWithType: EdgeDefinition.IsLocked
+  fullName: FlowGraph.Core.Models.EdgeDefinition.IsLocked
+- uid: FlowGraph.Core.Models.EdgeStyle.Success
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Success
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Success
+  name: Success
+  nameWithType: EdgeStyle.Success
+  fullName: FlowGraph.Core.Models.EdgeStyle.Success
+- uid: FlowGraph.Core.Models.EdgeStyle.Error
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Error
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Error
+  name: Error
+  nameWithType: EdgeStyle.Error
+  fullName: FlowGraph.Core.Models.EdgeStyle.Error
+- uid: FlowGraph.Core.Models.EdgeDefinition.Style*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.Style
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_Style
+  name: Style
+  nameWithType: EdgeDefinition.Style
+  fullName: FlowGraph.Core.Models.EdgeDefinition.Style
+- uid: FlowGraph.Core.Models.EdgeStyle
+  commentId: T:FlowGraph.Core.Models.EdgeStyle
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeStyle.html
+  name: EdgeStyle
+  nameWithType: EdgeStyle
+  fullName: FlowGraph.Core.Models.EdgeStyle
 - uid: FlowGraph.Core.Models.EdgeDefinition.AutoRoute
   commentId: P:FlowGraph.Core.Models.EdgeDefinition.AutoRoute
   href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_AutoRoute
@@ -1356,3 +1498,9 @@ references:
   name: WithRoutingMode
   nameWithType: EdgeDefinition.WithRoutingMode
   fullName: FlowGraph.Core.Models.EdgeDefinition.WithRoutingMode
+- uid: FlowGraph.Core.Models.EdgeDefinition.WithStyle*
+  commentId: Overload:FlowGraph.Core.Models.EdgeDefinition.WithStyle
+  href: FlowGraph.Core.Models.EdgeDefinition.html#FlowGraph_Core_Models_EdgeDefinition_WithStyle_FlowGraph_Core_Models_EdgeStyle_
+  name: WithStyle
+  nameWithType: EdgeDefinition.WithStyle
+  fullName: FlowGraph.Core.Models.EdgeDefinition.WithStyle

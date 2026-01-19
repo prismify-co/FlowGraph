@@ -1,0 +1,759 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  commentId: T:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  id: ITypedCoordinateTransformer
+  parent: FlowGraph.Core.Coordinates
+  children:
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportRect)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasRect)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+  langs:
+  - csharp
+  - vb
+  name: ITypedCoordinateTransformer
+  nameWithType: ITypedCoordinateTransformer
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ITypedCoordinateTransformer
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    Type-safe coordinate transformer that converts between canvas and viewport coordinate spaces.
+
+
+    <p>
+
+    This interface provides compile-time type safety for coordinate conversions by using
+
+    distinct types for canvas and viewport coordinates. This prevents accidental mixing
+
+    of coordinate spaces, which is a common source of bugs in pan/zoom implementations.
+
+    </p>
+
+
+    <p>
+
+    <b>Coordinate Space Relationships:</b>
+
+
+    <pre><code class="lang-csharp">Viewport → Canvas:  canvas = (viewport - offset) / zoom
+
+    Canvas → Viewport:  viewport = canvas * zoom + offset</code></pre>
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Type-safe - compiler prevents passing viewport where canvas expected
+
+    ViewportPoint viewportPos = coordinates.GetPointerViewportPosition(e);
+
+    CanvasPoint canvasPos = transformer.ToCanvas(viewportPos);
+
+
+    // Render something at the canvas position
+
+    ViewportPoint renderPos = transformer.ToViewport(canvasPos);
+
+    context.DrawEllipse(brush, pen, renderPos.ToAvalonia(), 5, 5);</code></pre>
+  syntax:
+    content: public interface ITypedCoordinateTransformer
+    content.vb: Public Interface ITypedCoordinateTransformer
+  extensionMethods:
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ViewportRect)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  - FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+  commentId: P:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+  id: Zoom
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: Zoom
+  nameWithType: ITypedCoordinateTransformer.Zoom
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Zoom
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: The current zoom level (1.0 = 100%).
+  example: []
+  syntax:
+    content: double Zoom { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property Zoom As Double
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+  commentId: P:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+  id: OffsetX
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: ITypedCoordinateTransformer.OffsetX
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetX
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 40
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: The X component of the viewport offset.
+  example: []
+  syntax:
+    content: double OffsetX { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property OffsetX As Double
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+  commentId: P:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+  id: OffsetY
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: ITypedCoordinateTransformer.OffsetY
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetY
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: The Y component of the viewport offset.
+  example: []
+  syntax:
+    content: double OffsetY { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property OffsetY As Double
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  id: ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToCanvas(ViewportPoint)
+  nameWithType: ITypedCoordinateTransformer.ToCanvas(ViewportPoint)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvas
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Converts a viewport point to canvas coordinates.
+  example: []
+  syntax:
+    content: CanvasPoint ToCanvas(ViewportPoint viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+      description: Point in viewport space.
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+      description: Equivalent point in canvas space.
+    content.vb: Function ToCanvas(viewport As ViewportPoint) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  id: ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToViewport(CanvasPoint)
+  nameWithType: ITypedCoordinateTransformer.ToViewport(CanvasPoint)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewport
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Converts a canvas point to viewport coordinates.
+  example: []
+  syntax:
+    content: ViewportPoint ToViewport(CanvasPoint canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+      description: Point in canvas space.
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+      description: Equivalent point in viewport space.
+    content.vb: Function ToViewport(canvas As CanvasPoint) As ViewportPoint
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  id: ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToCanvas(ViewportVector)
+  nameWithType: ITypedCoordinateTransformer.ToCanvas(ViewportVector)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvas
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 71
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    Converts a viewport vector to canvas space.
+
+    Only applies zoom, not offset (since vectors are relative).
+  example: []
+  syntax:
+    content: CanvasVector ToCanvas(ViewportVector viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    content.vb: Function ToCanvas(viewport As ViewportVector) As CanvasVector
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  id: ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToViewport(CanvasVector)
+  nameWithType: ITypedCoordinateTransformer.ToViewport(CanvasVector)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewport
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 77
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    Converts a canvas vector to viewport space.
+
+    Only applies zoom, not offset (since vectors are relative).
+  example: []
+  syntax:
+    content: ViewportVector ToViewport(CanvasVector canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    content.vb: Function ToViewport(canvas As CanvasVector) As ViewportVector
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportRect)
+  id: ToCanvas(FlowGraph.Core.Coordinates.ViewportRect)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToCanvas(ViewportRect)
+  nameWithType: ITypedCoordinateTransformer.ToCanvas(ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas(FlowGraph.Core.Coordinates.ViewportRect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvas
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 86
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Converts a viewport rectangle to canvas space.
+  example: []
+  syntax:
+    content: CanvasRect ToCanvas(ViewportRect viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportRect
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasRect
+    content.vb: Function ToCanvas(viewport As ViewportRect) As CanvasRect
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas*
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasRect)
+  commentId: M:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasRect)
+  id: ToViewport(FlowGraph.Core.Coordinates.CanvasRect)
+  parent: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ToViewport(CanvasRect)
+  nameWithType: ITypedCoordinateTransformer.ToViewport(CanvasRect)
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport(FlowGraph.Core.Coordinates.CanvasRect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewport
+    path: ../FlowGraph.Core/Coordinates/ITypedCoordinateTransformer.cs
+    startLine: 91
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Converts a canvas rectangle to viewport space.
+  example: []
+  syntax:
+    content: ViewportRect ToViewport(CanvasRect canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasRect
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportRect
+    content.vb: Function ToViewport(canvas As CanvasRect) As ViewportRect
+  overload: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport*
+references:
+- uid: FlowGraph.Core.Coordinates
+  commentId: N:FlowGraph.Core.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Core.Coordinates
+  nameWithType: FlowGraph.Core.Coordinates
+  fullName: FlowGraph.Core.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+  parent: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+  definition: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  name: GetVisibleCanvasRect(ITypedCoordinateTransformer, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(ITypedCoordinateTransformer, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  parent: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+  definition: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  name: IsVisible(ITypedCoordinateTransformer, CanvasPoint, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.IsVisible(ITypedCoordinateTransformer, CanvasPoint, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+  parent: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+  definition: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  name: IsVisible(ITypedCoordinateTransformer, CanvasRect, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.IsVisible(ITypedCoordinateTransformer, CanvasRect, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.CanvasRect, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasRect
+    name: CanvasRect
+    href: FlowGraph.Core.Coordinates.CanvasRect.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasRect
+    name: CanvasRect
+    href: FlowGraph.Core.Coordinates.CanvasRect.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  name: GetVisibleCanvasRect(ITypedCoordinateTransformer, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(ITypedCoordinateTransformer, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.GetVisibleCanvasRect(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.ViewportRect)
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_GetVisibleCanvasRect_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+  commentId: T:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html
+  name: TypedCoordinateTransformerExtensions
+  nameWithType: TypedCoordinateTransformerExtensions
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+- uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  name: IsVisible(ITypedCoordinateTransformer, CanvasPoint, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.IsVisible(ITypedCoordinateTransformer, CanvasPoint, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+  href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  name: IsVisible(ITypedCoordinateTransformer, CanvasRect, ViewportRect)
+  nameWithType: TypedCoordinateTransformerExtensions.IsVisible(ITypedCoordinateTransformer, CanvasRect, ViewportRect)
+  fullName: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer, FlowGraph.Core.Coordinates.CanvasRect, FlowGraph.Core.Coordinates.ViewportRect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasRect
+    name: CanvasRect
+    href: FlowGraph.Core.Coordinates.CanvasRect.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.IsVisible(FlowGraph.Core.Coordinates.ITypedCoordinateTransformer,FlowGraph.Core.Coordinates.CanvasRect,FlowGraph.Core.Coordinates.ViewportRect)
+    name: IsVisible
+    href: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html#FlowGraph_Core_Coordinates_TypedCoordinateTransformerExtensions_IsVisible_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_FlowGraph_Core_Coordinates_CanvasRect_FlowGraph_Core_Coordinates_ViewportRect_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasRect
+    name: CanvasRect
+    href: FlowGraph.Core.Coordinates.CanvasRect.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    href: FlowGraph.Core.Coordinates.ViewportRect.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom*
+  commentId: Overload:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html#FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_Zoom
+  name: Zoom
+  nameWithType: ITypedCoordinateTransformer.Zoom
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.Zoom
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX*
+  commentId: Overload:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html#FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_OffsetX
+  name: OffsetX
+  nameWithType: ITypedCoordinateTransformer.OffsetX
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetX
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY*
+  commentId: Overload:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html#FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_OffsetY
+  name: OffsetY
+  nameWithType: ITypedCoordinateTransformer.OffsetY
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.OffsetY
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas*
+  commentId: Overload:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html#FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToCanvas
+  nameWithType: ITypedCoordinateTransformer.ToCanvas
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToCanvas
+- uid: FlowGraph.Core.Coordinates.ViewportPoint
+  commentId: T:FlowGraph.Core.Coordinates.ViewportPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  name: ViewportPoint
+  nameWithType: ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint
+- uid: FlowGraph.Core.Coordinates.CanvasPoint
+  commentId: T:FlowGraph.Core.Coordinates.CanvasPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  name: CanvasPoint
+  nameWithType: CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport*
+  commentId: Overload:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html#FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToViewport
+  nameWithType: ITypedCoordinateTransformer.ToViewport
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.ToViewport
+- uid: FlowGraph.Core.Coordinates.ViewportVector
+  commentId: T:FlowGraph.Core.Coordinates.ViewportVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportVector.html
+  name: ViewportVector
+  nameWithType: ViewportVector
+  fullName: FlowGraph.Core.Coordinates.ViewportVector
+- uid: FlowGraph.Core.Coordinates.CanvasVector
+  commentId: T:FlowGraph.Core.Coordinates.CanvasVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasVector.html
+  name: CanvasVector
+  nameWithType: CanvasVector
+  fullName: FlowGraph.Core.Coordinates.CanvasVector
+- uid: FlowGraph.Core.Coordinates.ViewportRect
+  commentId: T:FlowGraph.Core.Coordinates.ViewportRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportRect.html
+  name: ViewportRect
+  nameWithType: ViewportRect
+  fullName: FlowGraph.Core.Coordinates.ViewportRect
+- uid: FlowGraph.Core.Coordinates.CanvasRect
+  commentId: T:FlowGraph.Core.Coordinates.CanvasRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasRect.html
+  name: CanvasRect
+  nameWithType: CanvasRect
+  fullName: FlowGraph.Core.Coordinates.CanvasRect

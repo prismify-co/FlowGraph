@@ -1,0 +1,1233 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  commentId: T:FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  id: InputCoordinatesAdapter
+  parent: FlowGraph.Avalonia.Input
+  children:
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor(FlowGraph.Avalonia.ViewportState,Avalonia.Controls.Panel,Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  - FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+  langs:
+  - csharp
+  - vb
+  name: InputCoordinatesAdapter
+  nameWithType: InputCoordinatesAdapter
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InputCoordinatesAdapter
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 22
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Implementation of <xref href="FlowGraph.Avalonia.Input.IInputCoordinates" data-throw-if-not-resolved="false"></xref> that abstracts away
+
+    rendering mode differences for coordinate handling.
+
+
+    <p>
+
+    This adapter automatically detects the current rendering mode and uses
+
+    the appropriate coordinate conversion strategy:
+
+    <ul><li>Visual Tree mode: GetPosition(MainCanvas) already returns canvas coordinates</li><li>Direct Rendering mode: GetPosition(RootPanel) returns viewport coordinates, requires transform</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class InputCoordinatesAdapter : IInputCoordinates'
+    content.vb: Public NotInheritable Class InputCoordinatesAdapter Implements IInputCoordinates
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor(FlowGraph.Avalonia.ViewportState,Avalonia.Controls.Panel,Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor(FlowGraph.Avalonia.ViewportState,Avalonia.Controls.Panel,Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  id: '#ctor(FlowGraph.Avalonia.ViewportState,Avalonia.Controls.Panel,Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)'
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: InputCoordinatesAdapter(ViewportState, Panel?, Canvas?, DirectCanvasRenderer?)
+  nameWithType: InputCoordinatesAdapter.InputCoordinatesAdapter(ViewportState, Panel?, Canvas?, DirectCanvasRenderer?)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.InputCoordinatesAdapter(FlowGraph.Avalonia.ViewportState, Avalonia.Controls.Panel?, Avalonia.Controls.Canvas?, FlowGraph.Avalonia.Rendering.DirectCanvasRenderer?)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Creates a new InputCoordinatesAdapter.
+  example: []
+  syntax:
+    content: public InputCoordinatesAdapter(ViewportState viewport, Panel? rootPanel, Canvas? mainCanvas, DirectCanvasRenderer? directRenderer)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Avalonia.ViewportState
+      description: The viewport state for coordinate transforms.
+    - id: rootPanel
+      type: Avalonia.Controls.Panel
+      description: The root panel (untransformed container).
+    - id: mainCanvas
+      type: Avalonia.Controls.Canvas
+      description: The main canvas (transformed container).
+    - id: directRenderer
+      type: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+      description: The direct renderer, if in direct rendering mode.
+    content.vb: Public Sub New(viewport As ViewportState, rootPanel As Panel, mainCanvas As Canvas, directRenderer As DirectCanvasRenderer)
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor*
+  nameWithType.vb: InputCoordinatesAdapter.New(ViewportState, Panel, Canvas, DirectCanvasRenderer)
+  fullName.vb: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.New(FlowGraph.Avalonia.ViewportState, Avalonia.Controls.Panel, Avalonia.Controls.Canvas, FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  name.vb: New(ViewportState, Panel, Canvas, DirectCanvasRenderer)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+  commentId: P:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+  id: IsDirectRenderingMode
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: IsDirectRenderingMode
+  nameWithType: InputCoordinatesAdapter.IsDirectRenderingMode
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDirectRenderingMode
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Whether we're currently in Direct Rendering mode.
+  example: []
+  syntax:
+    content: public bool IsDirectRenderingMode { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsDirectRenderingMode As Boolean
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode*
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+  commentId: P:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+  id: Zoom
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: Zoom
+  nameWithType: InputCoordinatesAdapter.Zoom
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Zoom
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Gets the current zoom level.
+  example: []
+  syntax:
+    content: public double Zoom { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property Zoom As Double
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.Zoom
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  id: GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetPointerCanvasPosition(PointerEventArgs)
+  nameWithType: InputCoordinatesAdapter.GetPointerCanvasPosition(PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPointerCanvasPosition
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Gets the current pointer position in canvas coordinates.
+
+
+    <p>
+
+    This is the primary method for getting pointer position during interactions.
+
+    Use for hit testing, node positioning, edge endpoints, selection bounds, etc.
+
+    </p>
+
+
+    <p>
+
+    Works correctly regardless of rendering mode:
+
+    <ul><li>Visual Tree mode: Uses GetPosition(MainCanvas) which applies inverse transform</li><li>Direct Rendering mode: Uses GetPosition(RootPanel) + manual inverse transform</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public CanvasPoint GetPointerCanvasPosition(PointerEventArgs e)
+    parameters:
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+      description: The pointer event.
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+      description: Pointer position in canvas coordinates.
+    content.vb: Public Function GetPointerCanvasPosition(e As PointerEventArgs) As CanvasPoint
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  id: GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetPointerViewportPosition(PointerEventArgs)
+  nameWithType: InputCoordinatesAdapter.GetPointerViewportPosition(PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPointerViewportPosition
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 82
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Gets the current pointer position in viewport coordinates.
+
+
+    <p>
+
+    Use for operations that work in screen space:
+
+    <ul><li>Auto-pan edge detection</li><li>Fixed overlay positioning</li><li>Tooltip placement</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public ViewportPoint GetPointerViewportPosition(PointerEventArgs e)
+    parameters:
+    - id: e
+      type: Avalonia.Input.PointerEventArgs
+      description: The pointer event.
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+      description: Pointer position in viewport coordinates.
+    content.vb: Public Function GetPointerViewportPosition(e As PointerEventArgs) As ViewportPoint
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect
+  id: GetVisibleCanvasRect
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetVisibleCanvasRect()
+  nameWithType: InputCoordinatesAdapter.GetVisibleCanvasRect()
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetVisibleCanvasRect
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Gets the visible area in canvas coordinates.
+
+
+    <p>
+
+    This represents the portion of the canvas that is currently visible in the viewport.
+
+    Useful for:
+
+    <ul><li>Viewport culling during rendering</li><li>Determining if a node is visible</li><li>Calculating visible bounds for layout operations</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public CanvasRect GetVisibleCanvasRect()
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasRect
+    content.vb: Public Function GetVisibleCanvasRect() As CanvasRect
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds
+  id: GetViewportBounds
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetViewportBounds()
+  nameWithType: InputCoordinatesAdapter.GetViewportBounds()
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetViewportBounds
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Gets the viewport bounds (size of the visible area).
+
+
+    <p>
+
+    Returns a rect at (0,0) with the viewport's width and height.
+
+    Use for auto-pan edge detection.
+
+    </p>
+  example: []
+  syntax:
+    content: public ViewportRect GetViewportBounds()
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportRect
+    content.vb: Public Function GetViewportBounds() As ViewportRect
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  id: ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: ToViewport(CanvasPoint)
+  nameWithType: InputCoordinatesAdapter.ToViewport(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewport
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 118
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Converts a canvas point to viewport coordinates.
+  example: []
+  syntax:
+    content: public ViewportPoint ToViewport(CanvasPoint canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    content.vb: Public Function ToViewport(canvas As CanvasPoint) As ViewportPoint
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  id: ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: ToCanvas(ViewportPoint)
+  nameWithType: InputCoordinatesAdapter.ToCanvas(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvas
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 125
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Converts a viewport point to canvas coordinates.
+  example: []
+  syntax:
+    content: public CanvasPoint ToCanvas(ViewportPoint viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Function ToCanvas(viewport As ViewportPoint) As CanvasPoint
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  id: ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: ToViewport(CanvasVector)
+  nameWithType: InputCoordinatesAdapter.ToViewport(CanvasVector)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewport
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 132
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Converts a canvas vector (delta) to viewport space.
+  example: []
+  syntax:
+    content: public ViewportVector ToViewport(CanvasVector canvasDelta)
+    parameters:
+    - id: canvasDelta
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    content.vb: Public Function ToViewport(canvasDelta As CanvasVector) As ViewportVector
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  id: ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  parent: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+  langs:
+  - csharp
+  - vb
+  name: ToCanvas(ViewportVector)
+  nameWithType: InputCoordinatesAdapter.ToCanvas(ViewportVector)
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvas
+    path: ../FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs
+    startLine: 139
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Converts a viewport vector (delta) to canvas space.
+  example: []
+  syntax:
+    content: public CanvasVector ToCanvas(ViewportVector viewportDelta)
+    parameters:
+    - id: viewportDelta
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    content.vb: Public Function ToCanvas(viewportDelta As ViewportVector) As CanvasVector
+  overload: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas*
+  implements:
+  - FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+references:
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates
+  commentId: T:FlowGraph.Avalonia.Input.IInputCoordinates
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html
+  name: IInputCoordinates
+  nameWithType: IInputCoordinates
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates
+- uid: FlowGraph.Avalonia.Input
+  commentId: N:FlowGraph.Avalonia.Input
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Input
+  nameWithType: FlowGraph.Avalonia.Input
+  fullName: FlowGraph.Avalonia.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter__ctor_FlowGraph_Avalonia_ViewportState_Avalonia_Controls_Panel_Avalonia_Controls_Canvas_FlowGraph_Avalonia_Rendering_DirectCanvasRenderer_
+  name: InputCoordinatesAdapter
+  nameWithType: InputCoordinatesAdapter.InputCoordinatesAdapter
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.InputCoordinatesAdapter
+  nameWithType.vb: InputCoordinatesAdapter.New
+  fullName.vb: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.New
+  name.vb: New
+- uid: FlowGraph.Avalonia.ViewportState
+  commentId: T:FlowGraph.Avalonia.ViewportState
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.ViewportState.html
+  name: ViewportState
+  nameWithType: ViewportState
+  fullName: FlowGraph.Avalonia.ViewportState
+- uid: Avalonia.Controls.Panel
+  commentId: T:Avalonia.Controls.Panel
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Panel
+  nameWithType: Panel
+  fullName: Avalonia.Controls.Panel
+- uid: Avalonia.Controls.Canvas
+  commentId: T:Avalonia.Controls.Canvas
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Canvas
+  nameWithType: Canvas
+  fullName: Avalonia.Controls.Canvas
+- uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  name: DirectCanvasRenderer
+  nameWithType: DirectCanvasRenderer
+  fullName: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_IsDirectRenderingMode
+  name: IsDirectRenderingMode
+  nameWithType: InputCoordinatesAdapter.IsDirectRenderingMode
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_Zoom
+  name: Zoom
+  nameWithType: InputCoordinatesAdapter.Zoom
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.Zoom
+  commentId: P:FlowGraph.Avalonia.Input.IInputCoordinates.Zoom
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_Zoom
+  name: Zoom
+  nameWithType: IInputCoordinates.Zoom
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.Zoom
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerCanvasPosition_Avalonia_Input_PointerEventArgs_
+  name: GetPointerCanvasPosition
+  nameWithType: InputCoordinatesAdapter.GetPointerCanvasPosition
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerCanvasPosition_Avalonia_Input_PointerEventArgs_
+  name: GetPointerCanvasPosition(PointerEventArgs)
+  nameWithType: IInputCoordinates.GetPointerCanvasPosition(PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+    name: GetPointerCanvasPosition
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerCanvasPosition_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)
+    name: GetPointerCanvasPosition
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerCanvasPosition_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: Avalonia.Input.PointerEventArgs
+  commentId: T:Avalonia.Input.PointerEventArgs
+  parent: Avalonia.Input
+  isExternal: true
+  name: PointerEventArgs
+  nameWithType: PointerEventArgs
+  fullName: Avalonia.Input.PointerEventArgs
+- uid: FlowGraph.Core.Coordinates.CanvasPoint
+  commentId: T:FlowGraph.Core.Coordinates.CanvasPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  name: CanvasPoint
+  nameWithType: CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint
+- uid: Avalonia.Input
+  commentId: N:Avalonia.Input
+  isExternal: true
+  name: Avalonia.Input
+  nameWithType: Avalonia.Input
+  fullName: Avalonia.Input
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Input
+    name: Input
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Input
+    name: Input
+    isExternal: true
+- uid: FlowGraph.Core.Coordinates
+  commentId: N:FlowGraph.Core.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Core.Coordinates
+  nameWithType: FlowGraph.Core.Coordinates
+  fullName: FlowGraph.Core.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerViewportPosition_Avalonia_Input_PointerEventArgs_
+  name: GetPointerViewportPosition
+  nameWithType: InputCoordinatesAdapter.GetPointerViewportPosition
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerViewportPosition_Avalonia_Input_PointerEventArgs_
+  name: GetPointerViewportPosition(PointerEventArgs)
+  nameWithType: IInputCoordinates.GetPointerViewportPosition(PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+    name: GetPointerViewportPosition
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerViewportPosition_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)
+    name: GetPointerViewportPosition
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetPointerViewportPosition_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ViewportPoint
+  commentId: T:FlowGraph.Core.Coordinates.ViewportPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  name: ViewportPoint
+  nameWithType: ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetVisibleCanvasRect
+  name: GetVisibleCanvasRect
+  nameWithType: InputCoordinatesAdapter.GetVisibleCanvasRect
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetVisibleCanvasRect
+  name: GetVisibleCanvasRect()
+  nameWithType: IInputCoordinates.GetVisibleCanvasRect()
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetVisibleCanvasRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetVisibleCanvasRect
+    name: GetVisibleCanvasRect
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetVisibleCanvasRect
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Coordinates.CanvasRect
+  commentId: T:FlowGraph.Core.Coordinates.CanvasRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasRect.html
+  name: CanvasRect
+  nameWithType: CanvasRect
+  fullName: FlowGraph.Core.Coordinates.CanvasRect
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetViewportBounds
+  name: GetViewportBounds
+  nameWithType: InputCoordinatesAdapter.GetViewportBounds
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetViewportBounds
+  name: GetViewportBounds()
+  nameWithType: IInputCoordinates.GetViewportBounds()
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds
+    name: GetViewportBounds
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetViewportBounds
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.GetViewportBounds
+    name: GetViewportBounds
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_GetViewportBounds
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ViewportRect
+  commentId: T:FlowGraph.Core.Coordinates.ViewportRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportRect.html
+  name: ViewportRect
+  nameWithType: ViewportRect
+  fullName: FlowGraph.Core.Coordinates.ViewportRect
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToViewport
+  nameWithType: InputCoordinatesAdapter.ToViewport
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToViewport(CanvasPoint)
+  nameWithType: IInputCoordinates.ToViewport(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToViewport
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToViewport
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas
+  href: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.html#FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToCanvas
+  nameWithType: InputCoordinatesAdapter.ToCanvas
+  fullName: FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToCanvas(ViewportPoint)
+  nameWithType: IInputCoordinates.ToCanvas(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToCanvas
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToCanvas
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasVector_
+  name: ToViewport(CanvasVector)
+  nameWithType: IInputCoordinates.ToViewport(CanvasVector)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+    name: ToViewport
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasVector_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasVector
+    name: CanvasVector
+    href: FlowGraph.Core.Coordinates.CanvasVector.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)
+    name: ToViewport
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToViewport_FlowGraph_Core_Coordinates_CanvasVector_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasVector
+    name: CanvasVector
+    href: FlowGraph.Core.Coordinates.CanvasVector.html
+  - name: )
+- uid: FlowGraph.Core.Coordinates.CanvasVector
+  commentId: T:FlowGraph.Core.Coordinates.CanvasVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasVector.html
+  name: CanvasVector
+  nameWithType: CanvasVector
+  fullName: FlowGraph.Core.Coordinates.CanvasVector
+- uid: FlowGraph.Core.Coordinates.ViewportVector
+  commentId: T:FlowGraph.Core.Coordinates.ViewportVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportVector.html
+  name: ViewportVector
+  nameWithType: ViewportVector
+  fullName: FlowGraph.Core.Coordinates.ViewportVector
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  parent: FlowGraph.Avalonia.Input.IInputCoordinates
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportVector_
+  name: ToCanvas(ViewportVector)
+  nameWithType: IInputCoordinates.ToCanvas(ViewportVector)
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+    name: ToCanvas
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportVector_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportVector
+    name: ViewportVector
+    href: FlowGraph.Core.Coordinates.ViewportVector.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)
+    name: ToCanvas
+    href: FlowGraph.Avalonia.Input.IInputCoordinates.html#FlowGraph_Avalonia_Input_IInputCoordinates_ToCanvas_FlowGraph_Core_Coordinates_ViewportVector_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportVector
+    name: ViewportVector
+    href: FlowGraph.Core.Coordinates.ViewportVector.html
+  - name: )

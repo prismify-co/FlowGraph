@@ -12,6 +12,7 @@ items:
   - FlowGraph.Core.Models.PortDefinition.MaxConnections
   - FlowGraph.Core.Models.PortDefinition.Position
   - FlowGraph.Core.Models.PortDefinition.ToPort
+  - FlowGraph.Core.Models.PortDefinition.Tooltip
   - FlowGraph.Core.Models.PortDefinition.Type
   langs:
   - csharp
@@ -23,7 +24,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortDefinition
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -68,7 +69,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -99,7 +100,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -133,7 +134,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -164,7 +165,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Position
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -198,7 +199,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MaxConnections
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -232,7 +233,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsRequired
     path: ../FlowGraph.Core/Models/PortDefinition.cs
@@ -249,6 +250,41 @@ items:
       type: System.Boolean
     content.vb: Public Property IsRequired As Boolean
   overload: FlowGraph.Core.Models.PortDefinition.IsRequired*
+- uid: FlowGraph.Core.Models.PortDefinition.Tooltip
+  commentId: P:FlowGraph.Core.Models.PortDefinition.Tooltip
+  id: Tooltip
+  parent: FlowGraph.Core.Models.PortDefinition
+  langs:
+  - csharp
+  - vb
+  name: Tooltip
+  nameWithType: PortDefinition.Tooltip
+  fullName: FlowGraph.Core.Models.PortDefinition.Tooltip
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/PortDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Tooltip
+    path: ../FlowGraph.Core/Models/PortDefinition.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Optional tooltip text shown when hovering over the port.
+  remarks: >-
+    Provides additional context about the port's purpose, expected data type,
+
+    or usage guidelines. Rendered as a native tooltip on hover.
+  example: []
+  syntax:
+    content: public string? Tooltip { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Tooltip As String
+  overload: FlowGraph.Core.Models.PortDefinition.Tooltip*
 - uid: FlowGraph.Core.Models.PortDefinition.FromPort(FlowGraph.Core.Port)
   commentId: M:FlowGraph.Core.Models.PortDefinition.FromPort(FlowGraph.Core.Port)
   id: FromPort(FlowGraph.Core.Port)
@@ -263,11 +299,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: FromPort
     path: ../FlowGraph.Core/Models/PortDefinition.cs
-    startLine: 48
+    startLine: 57
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -296,11 +332,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/PortDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ToPort
     path: ../FlowGraph.Core/Models/PortDefinition.cs
-    startLine: 59
+    startLine: 68
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -744,6 +780,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Models.PortDefinition.Tooltip*
+  commentId: Overload:FlowGraph.Core.Models.PortDefinition.Tooltip
+  href: FlowGraph.Core.Models.PortDefinition.html#FlowGraph_Core_Models_PortDefinition_Tooltip
+  name: Tooltip
+  nameWithType: PortDefinition.Tooltip
+  fullName: FlowGraph.Core.Models.PortDefinition.Tooltip
 - uid: FlowGraph.Core.Models.PortDefinition.FromPort*
   commentId: Overload:FlowGraph.Core.Models.PortDefinition.FromPort
   href: FlowGraph.Core.Models.PortDefinition.html#FlowGraph_Core_Models_PortDefinition_FromPort_FlowGraph_Core_Port_

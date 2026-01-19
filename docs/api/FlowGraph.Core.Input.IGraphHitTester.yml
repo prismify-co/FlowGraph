@@ -1,0 +1,458 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Input.IGraphHitTester
+  commentId: T:FlowGraph.Core.Input.IGraphHitTester
+  id: IGraphHitTester
+  parent: FlowGraph.Core.Input
+  children:
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  - FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  langs:
+  - csharp
+  - vb
+  name: IGraphHitTester
+  nameWithType: IGraphHitTester
+  fullName: FlowGraph.Core.Input.IGraphHitTester
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IGraphHitTester
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 265
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Hit tester for the entire graph surface.
+
+    Aggregates hit tests across all element types with proper priority ordering.
+
+
+    <p>
+
+    <b>Hit Test Priority Order (first match wins):</b>
+
+    <ol><li>Resize handles (highest priority - always on top)</li><li>Ports (small targets need priority)</li><li>Nodes (front to back by Z-order)</li><li>Edges (may need tolerance-based hit testing)</li><li>Groups (behind their contents)</li><li>Canvas (empty space, lowest priority)</li></ol>
+
+    </p>
+
+
+    <p>
+
+    <b>Inspired by:</b>
+
+    <ul><li>react-diagrams: DiagramEngine.getModelAtPosition() with type filtering</li><li>Konva.js: Stage.getIntersection() returning topmost shape</li><li>draw.io/mxGraph: mxGraph.getCellAt() with priority handling</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IGraphHitTester
+    content.vb: Public Interface IGraphHitTester
+- uid: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  commentId: P:FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  id: InputCoordinateSpace
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  langs:
+  - csharp
+  - vb
+  name: InputCoordinateSpace
+  nameWithType: IGraphHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InputCoordinateSpace
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 276
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    The coordinate space expected for hit test inputs.
+
+
+    <p>
+
+    Standard implementations expect <xref href="FlowGraph.Core.Rendering.CoordinateSpace.Canvas" data-throw-if-not-resolved="false"></xref> coordinates.
+
+    Callers using screen coordinates (e.g., from pointer events) must convert
+
+    using <xref href="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> first.
+
+    </p>
+  example: []
+  syntax:
+    content: CoordinateSpace InputCoordinateSpace { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Rendering.CoordinateSpace
+    content.vb: ReadOnly Property InputCoordinateSpace As CoordinateSpace
+  overload: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace*
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  id: HitTest(FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point)
+  nameWithType: IGraphHitTester.HitTest(Point)
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 289
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Performs a comprehensive hit test against all graph elements.
+  example: []
+  syntax:
+    content: GraphHitTestResult HitTest(Point position)
+    parameters:
+    - id: position
+      type: FlowGraph.Core.Point
+      description: >-
+        Position to test in the coordinate space specified by 
+
+        <xref href="FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: >-
+        The hit test result identifying what was hit. If nothing specific was hit,
+
+        returns a result with <xref href="FlowGraph.Core.Input.HitTargetType.Canvas" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Function HitTest(position As Point) As GraphHitTestResult
+  overload: FlowGraph.Core.Input.IGraphHitTester.HitTest*
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  id: HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point, double, double, double)
+  nameWithType: IGraphHitTester.HitTest(Point, double, double, double)
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, double, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 299
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Performs a hit test with custom tolerance values.
+  example: []
+  syntax:
+    content: GraphHitTestResult HitTest(Point position, double nodeTolerance = 0, double edgeTolerance = 5, double portTolerance = 8)
+    parameters:
+    - id: position
+      type: FlowGraph.Core.Point
+      description: Position to test.
+    - id: nodeTolerance
+      type: System.Double
+      description: Extra tolerance for node bounds.
+    - id: edgeTolerance
+      type: System.Double
+      description: Extra tolerance for edge paths.
+    - id: portTolerance
+      type: System.Double
+      description: Extra tolerance for port targets.
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: The hit test result.
+    content.vb: Function HitTest(position As Point, nodeTolerance As Double = 0, edgeTolerance As Double = 5, portTolerance As Double = 8) As GraphHitTestResult
+  overload: FlowGraph.Core.Input.IGraphHitTester.HitTest*
+  nameWithType.vb: IGraphHitTester.HitTest(Point, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, Double, Double, Double)
+  name.vb: HitTest(Point, Double, Double, Double)
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  id: HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point, params HitTargetType[])
+  nameWithType: IGraphHitTester.HitTest(Point, params HitTargetType[])
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, params FlowGraph.Core.Input.HitTargetType[])
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 311
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Performs a hit test filtering to specific element types.
+  example: []
+  syntax:
+    content: GraphHitTestResult HitTest(Point position, params HitTargetType[] targetTypes)
+    parameters:
+    - id: position
+      type: FlowGraph.Core.Point
+      description: Position to test.
+    - id: targetTypes
+      type: FlowGraph.Core.Input.HitTargetType[]
+      description: Which element types to consider.
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: The hit test result, only matching specified types.
+    content.vb: Function HitTest(position As Point, ParamArray targetTypes As HitTargetType()) As GraphHitTestResult
+  overload: FlowGraph.Core.Input.IGraphHitTester.HitTest*
+  nameWithType.vb: IGraphHitTester.HitTest(Point, ParamArray HitTargetType())
+  fullName.vb: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, ParamArray FlowGraph.Core.Input.HitTargetType())
+  name.vb: HitTest(Point, ParamArray HitTargetType())
+references:
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+  commentId: F:FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+  href: FlowGraph.Core.Rendering.CoordinateSpace.html#FlowGraph_Core_Rendering_CoordinateSpace_Canvas
+  name: Canvas
+  nameWithType: CoordinateSpace.Canvas
+  fullName: FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  isExternal: true
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  name: ScreenToCanvas(double, double)
+  nameWithType: ICoordinateTransformer.ScreenToCanvas(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(double, double)
+  nameWithType.vb: ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  name.vb: ScreenToCanvas(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace*
+  commentId: Overload:FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_InputCoordinateSpace
+  name: InputCoordinateSpace
+  nameWithType: IGraphHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+- uid: FlowGraph.Core.Rendering.CoordinateSpace
+  commentId: T:FlowGraph.Core.Rendering.CoordinateSpace
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.CoordinateSpace.html
+  name: CoordinateSpace
+  nameWithType: CoordinateSpace
+  fullName: FlowGraph.Core.Rendering.CoordinateSpace
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+  commentId: T:FlowGraph.Core.Rendering.ICoordinateTransformer
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  name: ICoordinateTransformer
+  nameWithType: ICoordinateTransformer
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer
+- uid: FlowGraph.Core.Rendering
+  commentId: N:FlowGraph.Core.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Core.Rendering
+  nameWithType: FlowGraph.Core.Rendering
+  fullName: FlowGraph.Core.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+- uid: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  commentId: P:FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_InputCoordinateSpace
+  name: InputCoordinateSpace
+  nameWithType: IGraphHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+- uid: FlowGraph.Core.Input.HitTargetType.Canvas
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Canvas
+  href: FlowGraph.Core.Input.HitTargetType.html#FlowGraph_Core_Input_HitTargetType_Canvas
+  name: Canvas
+  nameWithType: HitTargetType.Canvas
+  fullName: FlowGraph.Core.Input.HitTargetType.Canvas
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest*
+  commentId: Overload:FlowGraph.Core.Input.IGraphHitTester.HitTest
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_
+  name: HitTest
+  nameWithType: IGraphHitTester.HitTest
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core.Input.GraphHitTestResult
+  commentId: T:FlowGraph.Core.Input.GraphHitTestResult
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.GraphHitTestResult.html
+  name: GraphHitTestResult
+  nameWithType: GraphHitTestResult
+  fullName: FlowGraph.Core.Input.GraphHitTestResult
+- uid: FlowGraph.Core.Input.IGraphHitTester
+  commentId: T:FlowGraph.Core.Input.IGraphHitTester
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.IGraphHitTester.html
+  name: IGraphHitTester
+  nameWithType: IGraphHitTester
+  fullName: FlowGraph.Core.Input.IGraphHitTester
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Input.HitTargetType[]
+  isExternal: true
+  href: FlowGraph.Core.Input.HitTargetType.html
+  name: HitTargetType[]
+  nameWithType: HitTargetType[]
+  fullName: FlowGraph.Core.Input.HitTargetType[]
+  nameWithType.vb: HitTargetType()
+  fullName.vb: FlowGraph.Core.Input.HitTargetType()
+  name.vb: HitTargetType()
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: (
+  - name: )

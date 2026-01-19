@@ -9,6 +9,7 @@ items:
   - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnGraphChanged(FlowGraph.Core.Graph)
   - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.OnViewportChanged(FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
   - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
+  - FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
   langs:
   - csharp
   - vb
@@ -19,11 +20,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IBackgroundRenderer
     path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-    startLine: 31
+    startLine: 58
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
@@ -49,6 +50,14 @@ items:
     Each renderer receives the full graph context and can access node positions.
 
     </p>
+
+    <p>
+
+    <b>Important:</b> Set <xref href="FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget" data-throw-if-not-resolved="false"></xref> appropriately:
+
+    <ul><li><xref href="FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas" data-throw-if-not-resolved="false"></xref>: For fixed backgrounds (default). Use CanvasToScreen() for coordinates.</li><li><xref href="FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas" data-throw-if-not-resolved="false"></xref>: For diagram decorations that should zoom/pan with nodes. Use canvas coordinates directly.</li></ul>
+
+    </p>
   example:
   - >-
     <pre><code class="lang-csharp">// Register a background renderer
@@ -62,6 +71,42 @@ items:
   syntax:
     content: public interface IBackgroundRenderer
     content.vb: Public Interface IBackgroundRenderer
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  commentId: P:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  id: RenderTarget
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderTarget
+  nameWithType: IBackgroundRenderer.RenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RenderTarget
+    path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
+    startLine: 65
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  summary: >-
+    Gets the target canvas for this renderer.
+
+    Default is GridCanvas (for backward compatibility).
+
+    Override to return MainCanvas for diagram elements that should zoom/pan with nodes.
+  example: []
+  syntax:
+    content: BackgroundRenderTarget RenderTarget { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget
+    content.vb: ReadOnly Property RenderTarget As BackgroundRenderTarget
+  overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget*
 - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
   commentId: M:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
   id: Render(Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext)
@@ -76,11 +121,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Render
     path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-    startLine: 38
+    startLine: 72
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
@@ -111,11 +156,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnGraphChanged
     path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-    startLine: 44
+    startLine: 78
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
@@ -146,11 +191,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnViewportChanged
     path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-    startLine: 50
+    startLine: 84
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
@@ -178,11 +223,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Cleanup
     path: ../FlowGraph.Avalonia/Rendering/BackgroundRenderers/IBackgroundRenderer.cs
-    startLine: 57
+    startLine: 91
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.BackgroundRenderers
@@ -200,6 +245,24 @@ items:
     content.vb: Sub Cleanup(canvas As Canvas)
   overload: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Cleanup*
 references:
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  commentId: P:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_RenderTarget
+  name: RenderTarget
+  nameWithType: IBackgroundRenderer.RenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas
+  commentId: F:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderTarget_GridCanvas
+  name: GridCanvas
+  nameWithType: BackgroundRenderTarget.GridCanvas
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.GridCanvas
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas
+  commentId: F:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderTarget_MainCanvas
+  name: MainCanvas
+  nameWithType: BackgroundRenderTarget.MainCanvas
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.MainCanvas
 - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.BackgroundRenderers
   href: FlowGraph.html
@@ -238,6 +301,19 @@ references:
   - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
     name: BackgroundRenderers
     href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.html
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_RenderTarget
+  name: RenderTarget
+  nameWithType: IBackgroundRenderer.RenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.RenderTarget
+- uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget
+  commentId: T:FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget
+  parent: FlowGraph.Avalonia.Rendering.BackgroundRenderers
+  href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget.html
+  name: BackgroundRenderTarget
+  nameWithType: BackgroundRenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget
 - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render*
   commentId: Overload:FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.Render
   href: FlowGraph.Avalonia.Rendering.BackgroundRenderers.IBackgroundRenderer.html#FlowGraph_Avalonia_Rendering_BackgroundRenderers_IBackgroundRenderer_Render_Avalonia_Controls_Canvas_FlowGraph_Avalonia_Rendering_BackgroundRenderers_BackgroundRenderContext_

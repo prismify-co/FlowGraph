@@ -10,19 +10,32 @@ items:
   - FlowGraph.Avalonia.Rendering.ThemeResources.EdgeSelectedStroke
   - FlowGraph.Avalonia.Rendering.ThemeResources.EdgeStroke
   - FlowGraph.Avalonia.Rendering.ThemeResources.GetBrush(System.String,System.String)
+  - FlowGraph.Avalonia.Rendering.ThemeResources.GetColor(System.String,System.String)
   - FlowGraph.Avalonia.Rendering.ThemeResources.GetResource``1(System.String,``0)
   - FlowGraph.Avalonia.Rendering.ThemeResources.GridColor
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupBodyBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupBorder
+  - FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderHover
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText
   - FlowGraph.Avalonia.Rendering.ThemeResources.GroupLabelText
+  - FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+  - FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+  - FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
   - FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBorder
   - FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeIcon
   - FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeText
+  - FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
+  - FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+  - FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+  - FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.InvalidateThemeCache
   - FlowGraph.Avalonia.Rendering.ThemeResources.IsLightTheme
   - FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground
@@ -30,7 +43,9 @@ items:
   - FlowGraph.Avalonia.Rendering.ThemeResources.MinimapViewportStroke
   - FlowGraph.Avalonia.Rendering.ThemeResources.NodeBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.NodeBorder
+  - FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
   - FlowGraph.Avalonia.Rendering.ThemeResources.NodeSelectedBorder
+  - FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
   - FlowGraph.Avalonia.Rendering.ThemeResources.NodeText
   - FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBackground
   - FlowGraph.Avalonia.Rendering.ThemeResources.OutputNodeBorder
@@ -45,6 +60,8 @@ items:
   - FlowGraph.Avalonia.Rendering.ThemeResources.PortValidConnection
   - FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxFill
   - FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke
+  - FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+  - FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
   - FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(System.String)
   - FlowGraph.Avalonia.Rendering.ThemeResources.TryGetResource``1(System.String)
   langs:
@@ -57,7 +74,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ThemeResources
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -116,7 +133,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -148,7 +165,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetResource
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -188,7 +205,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TryGetResource
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -226,7 +243,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBrush
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -264,7 +281,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TryGetBrush
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
@@ -286,6 +303,44 @@ items:
   nameWithType.vb: ThemeResources.TryGetBrush(String)
   fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush(String)
   name.vb: TryGetBrush(String)
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor(System.String,System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.ThemeResources.GetColor(System.String,System.String)
+  id: GetColor(System.String,System.String)
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: GetColor(string, string)
+  nameWithType: ThemeResources.GetColor(string, string)
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor(string, string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetColor
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 89
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets a color resource with a fallback value.
+  example: []
+  syntax:
+    content: public Color GetColor(string key, string fallbackColor)
+    parameters:
+    - id: key
+      type: System.String
+    - id: fallbackColor
+      type: System.String
+    return:
+      type: Avalonia.Media.Color
+    content.vb: Public Function GetColor(key As String, fallbackColor As String) As Color
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor*
+  nameWithType.vb: ThemeResources.GetColor(String, String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor(String, String)
+  name.vb: GetColor(String, String)
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.Background
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.Background
   id: Background
@@ -300,11 +355,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Background
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 88
+    startLine: 101
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -329,11 +384,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GridColor
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 91
+    startLine: 104
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -358,11 +413,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 98
+    startLine: 111
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -387,11 +442,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 101
+    startLine: 114
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -416,11 +471,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeSelectedBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 103
+    startLine: 116
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -431,6 +486,40 @@ items:
       type: Avalonia.Media.IBrush
     content.vb: Public ReadOnly Property NodeSelectedBorder As IBrush
   overload: FlowGraph.Avalonia.Rendering.ThemeResources.NodeSelectedBorder*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
+  id: NodeHighlightedBorder
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: NodeHighlightedBorder
+  nameWithType: ThemeResources.NodeHighlightedBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeHighlightedBorder
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 122
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Border color for highlighted nodes (e.g., search results, analysis feedback).
+
+    Default is yellow/amber for visibility.
+  example: []
+  syntax:
+    content: public IBrush NodeHighlightedBorder { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property NodeHighlightedBorder As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder*
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeText
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.NodeText
   id: NodeText
@@ -445,11 +534,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 105
+    startLine: 124
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -460,6 +549,37 @@ items:
       type: Avalonia.Media.IBrush
     content.vb: Public ReadOnly Property NodeText As IBrush
   overload: FlowGraph.Avalonia.Rendering.ThemeResources.NodeText*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
+  id: NodeShadow
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: NodeShadow
+  nameWithType: ThemeResources.NodeShadow
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NodeShadow
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 130
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Shadow color for default nodes.
+  example: []
+  syntax:
+    content: public Color NodeShadow { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.Color
+    content.vb: Public ReadOnly Property NodeShadow As Color
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow*
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground
   id: InputNodeBackground
@@ -474,11 +594,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 112
+    startLine: 137
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -503,11 +623,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 115
+    startLine: 140
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -532,11 +652,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 117
+    startLine: 142
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -561,11 +681,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputNodeIcon
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 120
+    startLine: 145
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -590,11 +710,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 126
+    startLine: 151
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -619,11 +739,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 129
+    startLine: 154
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -648,11 +768,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 131
+    startLine: 156
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -677,11 +797,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OutputNodeIcon
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 134
+    startLine: 159
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -706,11 +826,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 140
+    startLine: 165
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -735,11 +855,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeSelectedStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 142
+    startLine: 167
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -764,11 +884,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 148
+    startLine: 173
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -793,11 +913,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 150
+    startLine: 175
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -822,11 +942,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortHover
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 153
+    startLine: 178
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -851,11 +971,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortHoverBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 158
+    startLine: 183
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -882,11 +1002,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortHoverBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 163
+    startLine: 188
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -913,11 +1033,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortValidConnection
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 165
+    startLine: 190
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -942,11 +1062,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortInvalidConnection
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 167
+    startLine: 192
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -971,11 +1091,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 173
+    startLine: 198
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1000,11 +1120,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBorder
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 176
+    startLine: 201
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1029,11 +1149,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupLabelText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 179
+    startLine: 204
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1058,11 +1178,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 182
+    startLine: 207
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1073,6 +1193,68 @@ items:
       type: Avalonia.Media.IBrush
     content.vb: Public ReadOnly Property GroupHeaderBackground As IBrush
   overload: FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+  id: GroupButtonBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: GroupButtonBackground
+  nameWithType: ThemeResources.GroupButtonBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupButtonBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 213
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Background for group collapse/expand button.
+  example: []
+  syntax:
+    content: public IBrush GroupButtonBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property GroupButtonBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
+  id: GroupButtonHover
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: GroupButtonHover
+  nameWithType: ThemeResources.GroupButtonHover
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupButtonHover
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 219
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Hover background for group collapse/expand button.
+  example: []
+  syntax:
+    content: public IBrush GroupButtonHover { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property GroupButtonHover As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover*
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText
   id: GroupHeaderText
@@ -1087,11 +1269,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderText
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 186
+    startLine: 223
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1116,11 +1298,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupHeaderHover
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 187
+    startLine: 224
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1145,11 +1327,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupBodyBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 188
+    startLine: 225
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1174,11 +1356,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionBoxFill
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 194
+    startLine: 231
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1203,11 +1385,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionBoxStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 196
+    startLine: 233
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1218,6 +1400,381 @@ items:
       type: Avalonia.Media.IBrush
     content.vb: Public ReadOnly Property SelectionBoxStroke As IBrush
   overload: FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+  id: ToolbarBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: ToolbarBackground
+  nameWithType: ThemeResources.ToolbarBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToolbarBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 242
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Background for toolbars and floating UI elements.
+  example: []
+  syntax:
+    content: public IBrush ToolbarBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property ToolbarBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
+  id: ToolbarBorder
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: ToolbarBorder
+  nameWithType: ThemeResources.ToolbarBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToolbarBorder
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 248
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Border for toolbars and floating UI elements.
+  example: []
+  syntax:
+    content: public IBrush ToolbarBorder { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property ToolbarBorder As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+  id: HeaderedNodeHeaderText
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: HeaderedNodeHeaderText
+  nameWithType: ThemeResources.HeaderedNodeHeaderText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderedNodeHeaderText
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 258
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Header text color for headered nodes.
+  example: []
+  syntax:
+    content: public IBrush HeaderedNodeHeaderText { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property HeaderedNodeHeaderText As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+  id: HeaderedNodeHeaderBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: HeaderedNodeHeaderBackground
+  nameWithType: ThemeResources.HeaderedNodeHeaderBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderedNodeHeaderBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 264
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Header background color for headered nodes (semi-transparent glassy effect).
+  example: []
+  syntax:
+    content: public IBrush HeaderedNodeHeaderBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property HeaderedNodeHeaderBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+  id: HeaderedNodeBodyBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: HeaderedNodeBodyBackground
+  nameWithType: ThemeResources.HeaderedNodeBodyBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderedNodeBodyBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 270
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Body background color for headered nodes.
+  example: []
+  syntax:
+    content: public IBrush HeaderedNodeBodyBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property HeaderedNodeBodyBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+  id: HeaderedNodeBorder
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: HeaderedNodeBorder
+  nameWithType: ThemeResources.HeaderedNodeBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderedNodeBorder
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 276
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Border color for headered nodes.
+  example: []
+  syntax:
+    content: public IBrush HeaderedNodeBorder { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property HeaderedNodeBorder As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
+  id: HeaderedNodeShadow
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: HeaderedNodeShadow
+  nameWithType: ThemeResources.HeaderedNodeShadow
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HeaderedNodeShadow
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 282
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Shadow color for headered nodes.
+  example: []
+  syntax:
+    content: public Color HeaderedNodeShadow { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.Color
+    content.vb: Public ReadOnly Property HeaderedNodeShadow As Color
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
+  id: InteractiveValueBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: InteractiveValueBackground
+  nameWithType: ThemeResources.InteractiveValueBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InteractiveValueBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 292
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Background for value display containers (output nodes, etc.).
+  example: []
+  syntax:
+    content: public IBrush InteractiveValueBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property InteractiveValueBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+  id: InteractiveMutedText
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: InteractiveMutedText
+  nameWithType: ThemeResources.InteractiveMutedText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InteractiveMutedText
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 298
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Foreground for muted/placeholder text in interactive nodes.
+  example: []
+  syntax:
+    content: public IBrush InteractiveMutedText { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property InteractiveMutedText As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+  id: InteractivePreviewBackground
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: InteractivePreviewBackground
+  nameWithType: ThemeResources.InteractivePreviewBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InteractivePreviewBackground
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 304
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Background for preview areas in interactive nodes.
+  example: []
+  syntax:
+    content: public IBrush InteractivePreviewBackground { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property InteractivePreviewBackground As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+  id: InteractivePreviewText
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: InteractivePreviewText
+  nameWithType: ThemeResources.InteractivePreviewText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InteractivePreviewText
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 310
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Foreground for preview placeholder text.
+  example: []
+  syntax:
+    content: public IBrush InteractivePreviewText { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property InteractivePreviewText As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText*
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
+  commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
+  id: InteractiveAccent
+  parent: FlowGraph.Avalonia.Rendering.ThemeResources
+  langs:
+  - csharp
+  - vb
+  name: InteractiveAccent
+  nameWithType: ThemeResources.InteractiveAccent
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InteractiveAccent
+    path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
+    startLine: 317
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Accent color for interactive controls (radio buttons, checkboxes, etc.).
+
+    Falls back to PrimaryBrush from ShadUI theme, then to a default blue.
+  example: []
+  syntax:
+    content: public IBrush InteractiveAccent { get; }
+    parameters: []
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Public ReadOnly Property InteractiveAccent As IBrush
+  overload: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent*
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground
   commentId: P:FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground
   id: MinimapBackground
@@ -1232,11 +1789,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapBackground
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 202
+    startLine: 338
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1261,11 +1818,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapViewportFill
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 205
+    startLine: 341
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1290,11 +1847,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MinimapViewportStroke
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 207
+    startLine: 343
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1319,11 +1876,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsLightTheme
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 217
+    startLine: 353
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1353,11 +1910,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ThemeResources.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InvalidateThemeCache
     path: ../FlowGraph.Avalonia/Rendering/ThemeResources.cs
-    startLine: 234
+    startLine: 370
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -1734,6 +2291,19 @@ references:
   name: TryGetBrush
   nameWithType: ThemeResources.TryGetBrush
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.TryGetBrush
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.GetColor
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_GetColor_System_String_System_String_
+  name: GetColor
+  nameWithType: ThemeResources.GetColor
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GetColor
+- uid: Avalonia.Media.Color
+  commentId: T:Avalonia.Media.Color
+  parent: Avalonia.Media
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Avalonia.Media.Color
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.Background*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.Background
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_Background
@@ -1764,12 +2334,24 @@ references:
   name: NodeSelectedBorder
   nameWithType: ThemeResources.NodeSelectedBorder
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeSelectedBorder
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_NodeHighlightedBorder
+  name: NodeHighlightedBorder
+  nameWithType: ThemeResources.NodeHighlightedBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeHighlightedBorder
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeText*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.NodeText
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_NodeText
   name: NodeText
   nameWithType: ThemeResources.NodeText
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeText
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_NodeShadow
+  name: NodeShadow
+  nameWithType: ThemeResources.NodeShadow
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.NodeShadow
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InputNodeBackground
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InputNodeBackground
@@ -1896,6 +2478,18 @@ references:
   name: GroupHeaderBackground
   nameWithType: ThemeResources.GroupHeaderBackground
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_GroupButtonBackground
+  name: GroupButtonBackground
+  nameWithType: ThemeResources.GroupButtonBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_GroupButtonHover
+  name: GroupButtonHover
+  nameWithType: ThemeResources.GroupButtonHover
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.GroupButtonHover
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.GroupHeaderText
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_GroupHeaderText
@@ -1926,6 +2520,78 @@ references:
   name: SelectionBoxStroke
   nameWithType: ThemeResources.SelectionBoxStroke
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources.SelectionBoxStroke
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_ToolbarBackground
+  name: ToolbarBackground
+  nameWithType: ThemeResources.ToolbarBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_ToolbarBorder
+  name: ToolbarBorder
+  nameWithType: ThemeResources.ToolbarBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.ToolbarBorder
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_HeaderedNodeHeaderText
+  name: HeaderedNodeHeaderText
+  nameWithType: ThemeResources.HeaderedNodeHeaderText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderText
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_HeaderedNodeHeaderBackground
+  name: HeaderedNodeHeaderBackground
+  nameWithType: ThemeResources.HeaderedNodeHeaderBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeHeaderBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_HeaderedNodeBodyBackground
+  name: HeaderedNodeBodyBackground
+  nameWithType: ThemeResources.HeaderedNodeBodyBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBodyBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_HeaderedNodeBorder
+  name: HeaderedNodeBorder
+  nameWithType: ThemeResources.HeaderedNodeBorder
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeBorder
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_HeaderedNodeShadow
+  name: HeaderedNodeShadow
+  nameWithType: ThemeResources.HeaderedNodeShadow
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.HeaderedNodeShadow
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InteractiveValueBackground
+  name: InteractiveValueBackground
+  nameWithType: ThemeResources.InteractiveValueBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveValueBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InteractiveMutedText
+  name: InteractiveMutedText
+  nameWithType: ThemeResources.InteractiveMutedText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveMutedText
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InteractivePreviewBackground
+  name: InteractivePreviewBackground
+  nameWithType: ThemeResources.InteractivePreviewBackground
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewBackground
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InteractivePreviewText
+  name: InteractivePreviewText
+  nameWithType: ThemeResources.InteractivePreviewText
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractivePreviewText
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_InteractiveAccent
+  name: InteractiveAccent
+  nameWithType: ThemeResources.InteractiveAccent
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources.InteractiveAccent
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ThemeResources.MinimapBackground
   href: FlowGraph.Avalonia.Rendering.ThemeResources.html#FlowGraph_Avalonia_Rendering_ThemeResources_MinimapBackground

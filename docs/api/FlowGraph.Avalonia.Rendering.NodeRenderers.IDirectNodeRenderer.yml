@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IDirectNodeRenderer
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
@@ -29,11 +29,11 @@ items:
 
     Implement this interface in addition to <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer" data-throw-if-not-resolved="false"></xref> to provide
 
-    custom drawing logic for the high-performance DirectGraphRenderer mode.
+    custom drawing logic for the high-performance DirectCanvasRenderer mode.
   remarks: >-
     <p>
 
-    When DirectGraphRenderer renders a node, it first checks if the node's renderer
+    When DirectCanvasRenderer renders a node, it first checks if the node's renderer
 
     implements IDirectNodeRenderer. If so, it delegates to <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.IDirectNodeRenderer.DrawNode(Avalonia.Media.DrawingContext%2cFlowGraph.Core.Node%2cFlowGraph.Avalonia.Rendering.NodeRenderers.DirectNodeRenderContext)" data-throw-if-not-resolved="false"></xref>.
 
@@ -49,7 +49,7 @@ items:
 
     - Draw node label (unless editingNodeId matches)
 
-    - NOT draw ports (handled by DirectGraphRenderer for consistency)
+    - NOT draw ports (handled by DirectCanvasRenderer for consistency)
 
     </p>
   example:
@@ -91,7 +91,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DrawNode
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDirectNodeRenderer.cs

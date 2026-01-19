@@ -5,7 +5,7 @@ items:
   id: GraphGroupExtensions
   parent: FlowGraph.Core
   children:
-  - FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+  - FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Nullable{System.Double},System.Double,System.Double,System.Double)
   - FlowGraph.Core.GraphGroupExtensions.GetAncestorGroups(FlowGraph.Core.Graph,FlowGraph.Core.Node)
   - FlowGraph.Core.GraphGroupExtensions.GetEdgesCrossingGroup(FlowGraph.Core.Graph,System.String)
   - FlowGraph.Core.GraphGroupExtensions.GetEdgesInternalToGroup(FlowGraph.Core.Graph,System.String)
@@ -27,7 +27,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphGroupExtensions
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -65,7 +65,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupChildren
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroupChildrenRecursive
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetParentGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -179,7 +179,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetAncestorGroups
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDescendantOf
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -256,7 +256,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetGroups
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetTopLevelNodes
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -309,22 +309,22 @@ items:
       type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Node}
     content.vb: Public Shared Function GetTopLevelNodes(graph As Graph) As IEnumerable(Of Node)
   overload: FlowGraph.Core.GraphGroupExtensions.GetTopLevelNodes*
-- uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
-  commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
-  id: CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Double,System.Double,System.Double,System.Double)
+- uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Nullable{System.Double},System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Nullable{System.Double},System.Double,System.Double,System.Double)
+  id: CalculateGroupBounds(FlowGraph.Core.Graph,System.String,System.Nullable{System.Double},System.Double,System.Double,System.Double)
   isExtensionMethod: true
   parent: FlowGraph.Core.GraphGroupExtensions
   langs:
   - csharp
   - vb
-  name: CalculateGroupBounds(Graph, string, double, double, double, double)
-  nameWithType: GraphGroupExtensions.CalculateGroupBounds(Graph, string, double, double, double, double)
-  fullName: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, string, double, double, double, double)
+  name: CalculateGroupBounds(Graph, string, double?, double, double, double)
+  nameWithType: GraphGroupExtensions.CalculateGroupBounds(Graph, string, double?, double, double, double)
+  fullName: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, string, double?, double, double, double)
   type: Method
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CalculateGroupBounds
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
@@ -335,7 +335,7 @@ items:
   summary: Calculates the bounding box of a group based on its children.
   example: []
   syntax:
-    content: public static (Point topLeft, double width, double height) CalculateGroupBounds(this Graph graph, string groupId, double padding = 20, double headerHeight = 30, double defaultNodeWidth = 150, double defaultNodeHeight = 80)
+    content: public static (Point topLeft, double width, double height) CalculateGroupBounds(this Graph graph, string groupId, double? padding = null, double headerHeight = 30, double defaultNodeWidth = 150, double defaultNodeHeight = 80)
     parameters:
     - id: graph
       type: FlowGraph.Core.Graph
@@ -344,8 +344,8 @@ items:
       type: System.String
       description: The group ID.
     - id: padding
-      type: System.Double
-      description: Padding around children. Defaults to <xref href="FlowGraph.Core.GraphDefaults.GroupPadding" data-throw-if-not-resolved="false"></xref>.
+      type: System.Nullable{System.Double}
+      description: Padding around children. If null, uses the group's GroupPadding property or <xref href="FlowGraph.Core.GraphDefaults.GroupPadding" data-throw-if-not-resolved="false"></xref>.
     - id: headerHeight
       type: System.Double
       description: Height of group header. Defaults to <xref href="FlowGraph.Core.GraphDefaults.GroupHeaderHeight" data-throw-if-not-resolved="false"></xref>.
@@ -357,11 +357,11 @@ items:
       description: Default node height. Defaults to <xref href="FlowGraph.Core.GraphDefaults.NodeHeight" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.ValueTuple{FlowGraph.Core.Point,System.Double,System.Double}
-    content.vb: Public Shared Function CalculateGroupBounds(graph As Graph, groupId As String, padding As Double = 20, headerHeight As Double = 30, defaultNodeWidth As Double = 150, defaultNodeHeight As Double = 80) As (topLeft As Point, width As Double, height As Double)
+    content.vb: Public Shared Function CalculateGroupBounds(graph As Graph, groupId As String, padding As Double? = Nothing, headerHeight As Double = 30, defaultNodeWidth As Double = 150, defaultNodeHeight As Double = 80) As (topLeft As Point, width As Double, height As Double)
   overload: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds*
-  nameWithType.vb: GraphGroupExtensions.CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
-  fullName.vb: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, String, Double, Double, Double, Double)
-  name.vb: CalculateGroupBounds(Graph, String, Double, Double, Double, Double)
+  nameWithType.vb: GraphGroupExtensions.CalculateGroupBounds(Graph, String, Double?, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds(FlowGraph.Core.Graph, String, Double?, Double, Double, Double)
+  name.vb: CalculateGroupBounds(Graph, String, Double?, Double, Double, Double)
 - uid: FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
   commentId: M:FlowGraph.Core.GraphGroupExtensions.IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
   id: IsEdgeInternalToGroup(FlowGraph.Core.Graph,FlowGraph.Core.Edge,System.String)
@@ -377,11 +377,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEdgeInternalToGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 129
+    startLine: 133
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -418,11 +418,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEdgeCrossingGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 148
+    startLine: 152
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -459,11 +459,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgesCrossingGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 167
+    startLine: 171
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -498,11 +498,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/GraphGroupExtensions.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgesInternalToGroup
     path: ../FlowGraph.Core/GraphGroupExtensions.cs
-    startLine: 175
+    startLine: 179
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -984,10 +984,33 @@ references:
   fullName: FlowGraph.Core.GraphDefaults.NodeHeight
 - uid: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds*
   commentId: Overload:FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds
-  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Double_System_Double_System_Double_System_Double_
+  href: FlowGraph.Core.GraphGroupExtensions.html#FlowGraph_Core_GraphGroupExtensions_CalculateGroupBounds_FlowGraph_Core_Graph_System_String_System_Nullable_System_Double__System_Double_System_Double_System_Double_
   name: CalculateGroupBounds
   nameWithType: GraphGroupExtensions.CalculateGroupBounds
   fullName: FlowGraph.Core.GraphGroupExtensions.CalculateGroupBounds
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
 - uid: System.Double
   commentId: T:System.Double
   parent: System
@@ -1075,6 +1098,34 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
   - name: )
 - uid: System.ValueTuple`3
   commentId: T:System.ValueTuple`3

@@ -1,0 +1,1238 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Coordinates.CanvasPoint
+  commentId: T:FlowGraph.Core.Coordinates.CanvasPoint
+  id: CanvasPoint
+  parent: FlowGraph.Core.Coordinates
+  children:
+  - FlowGraph.Core.Coordinates.CanvasPoint.#ctor(System.Double,System.Double)
+  - FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Core.Coordinates.CanvasPoint.FromCore(FlowGraph.Core.Point)
+  - FlowGraph.Core.Coordinates.CanvasPoint.FromNode(FlowGraph.Core.Node)
+  - FlowGraph.Core.Coordinates.CanvasPoint.Lerp(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint,System.Double)
+  - FlowGraph.Core.Coordinates.CanvasPoint.Rounded
+  - FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid(System.Double)
+  - FlowGraph.Core.Coordinates.CanvasPoint.ToCore
+  - FlowGraph.Core.Coordinates.CanvasPoint.ToString
+  - FlowGraph.Core.Coordinates.CanvasPoint.X
+  - FlowGraph.Core.Coordinates.CanvasPoint.Y
+  - FlowGraph.Core.Coordinates.CanvasPoint.Zero
+  - FlowGraph.Core.Coordinates.CanvasPoint.op_Addition(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  - FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  langs:
+  - csharp
+  - vb
+  name: CanvasPoint
+  nameWithType: CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint
+  type: Struct
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasPoint
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    A point in canvas coordinate space (logical graph coordinates).
+
+
+    <p>
+
+    Canvas coordinates represent the logical position of elements in the graph.
+
+    Node positions, port centers, edge endpoints all use canvas coordinates.
+
+    These values are stable regardless of zoom/pan - a node at (100, 200) stays
+
+    at (100, 200) even when the user zooms or pans.
+
+    </p>
+
+
+    <p>
+
+    <b>When to use:</b>
+
+    <ul><li>Node positions (node.Position)</li><li>Port centers calculated from node geometry</li><li>Edge start/end points</li><li>Hit testing against graph elements</li><li>Selection bounds in graph space</li></ul>
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">var nodePosition = CanvasPoint.FromNode(node);
+
+    var portCenter = renderModel.GetPortPosition(node, port, isOutput);
+
+
+    // Type-safe - compiler prevents mixing with ViewportPoint
+
+    CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);</code></pre>
+  syntax:
+    content: 'public readonly record struct CanvasPoint : IEquatable<CanvasPoint>'
+    content.vb: Public Structure CanvasPoint Implements IEquatable(Of CanvasPoint)
+  implements:
+  - System.IEquatable{FlowGraph.Core.Coordinates.CanvasPoint}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - FlowGraph.Core.Coordinates.CanvasPoint.FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.#ctor(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.#ctor(System.Double,System.Double)
+  id: '#ctor(System.Double,System.Double)'
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: CanvasPoint(double, double)
+  nameWithType: CanvasPoint.CanvasPoint(double, double)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.CanvasPoint(double, double)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    A point in canvas coordinate space (logical graph coordinates).
+
+
+    <p>
+
+    Canvas coordinates represent the logical position of elements in the graph.
+
+    Node positions, port centers, edge endpoints all use canvas coordinates.
+
+    These values are stable regardless of zoom/pan - a node at (100, 200) stays
+
+    at (100, 200) even when the user zooms or pans.
+
+    </p>
+
+
+    <p>
+
+    <b>When to use:</b>
+
+    <ul><li>Node positions (node.Position)</li><li>Port centers calculated from node geometry</li><li>Edge start/end points</li><li>Hit testing against graph elements</li><li>Selection bounds in graph space</li></ul>
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">var nodePosition = CanvasPoint.FromNode(node);
+
+    var portCenter = renderModel.GetPortPosition(node, port, isOutput);
+
+
+    // Type-safe - compiler prevents mixing with ViewportPoint
+
+    CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);</code></pre>
+  syntax:
+    content: public CanvasPoint(double X, double Y)
+    parameters:
+    - id: X
+      type: System.Double
+    - id: Y
+      type: System.Double
+    content.vb: Public Sub New(X As Double, Y As Double)
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.#ctor*
+  nameWithType.vb: CanvasPoint.New(Double, Double)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.New(Double, Double)
+  name.vb: New(Double, Double)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.X
+  commentId: P:FlowGraph.Core.Coordinates.CanvasPoint.X
+  id: X
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: CanvasPoint.X
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.X
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: X
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  syntax:
+    content: public double X { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property X As Double
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.X*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Y
+  commentId: P:FlowGraph.Core.Coordinates.CanvasPoint.Y
+  id: Y
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: CanvasPoint.Y
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Y
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Y
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  syntax:
+    content: public double Y { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Y As Double
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.Y*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Zero
+  commentId: P:FlowGraph.Core.Coordinates.CanvasPoint.Zero
+  id: Zero
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: Zero
+  nameWithType: CanvasPoint.Zero
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Zero
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Zero
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 40
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: The origin point (0, 0) in canvas space.
+  example: []
+  syntax:
+    content: public static CanvasPoint Zero { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared ReadOnly Property Zero As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.Zero*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.FromNode(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.FromNode(FlowGraph.Core.Node)
+  id: FromNode(FlowGraph.Core.Node)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: FromNode(Node)
+  nameWithType: CanvasPoint.FromNode(Node)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.FromNode(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromNode
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Creates a canvas point from a node's position.
+  example: []
+  syntax:
+    content: public static CanvasPoint FromNode(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Function FromNode(node As Node) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.FromNode*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.FromCore(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.FromCore(FlowGraph.Core.Point)
+  id: FromCore(FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: FromCore(Point)
+  nameWithType: CanvasPoint.FromCore(Point)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.FromCore(FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromCore
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Creates a canvas point from the core Point type.
+  example: []
+  syntax:
+    content: public static CanvasPoint FromCore(Point point)
+    parameters:
+    - id: point
+      type: FlowGraph.Core.Point
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Function FromCore(point As Point) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.FromCore*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.ToCore
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.ToCore
+  id: ToCore
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: ToCore()
+  nameWithType: CanvasPoint.ToCore()
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.ToCore()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCore
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 55
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Converts to the core Point type.
+  example: []
+  syntax:
+    content: public Point ToCore()
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: Public Function ToCore() As Point
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.ToCore*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Addition(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.op_Addition(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  id: op_Addition(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: operator +(CanvasPoint, CanvasVector)
+  nameWithType: CanvasPoint.operator +(CanvasPoint, CanvasVector)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.operator +(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasVector)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Addition
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 60
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Adds a vector to this point, producing a new point.
+  example: []
+  syntax:
+    content: public static CanvasPoint operator +(CanvasPoint point, CanvasVector vector)
+    parameters:
+    - id: point
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    - id: vector
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Operator +(point As CanvasPoint, vector As CanvasVector) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.op_Addition*
+  nameWithType.vb: CanvasPoint.+(CanvasPoint, CanvasVector)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.+(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasVector)
+  name.vb: +(CanvasPoint, CanvasVector)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  id: op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasVector)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: operator -(CanvasPoint, CanvasVector)
+  nameWithType: CanvasPoint.operator -(CanvasPoint, CanvasVector)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.operator -(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasVector)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Subtraction
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 66
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Subtracts a vector from this point, producing a new point.
+  example: []
+  syntax:
+    content: public static CanvasPoint operator -(CanvasPoint point, CanvasVector vector)
+    parameters:
+    - id: point
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    - id: vector
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Operator -(point As CanvasPoint, vector As CanvasVector) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction*
+  nameWithType.vb: CanvasPoint.-(CanvasPoint, CanvasVector)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.-(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasVector)
+  name.vb: -(CanvasPoint, CanvasVector)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint)
+  id: op_Subtraction(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: operator -(CanvasPoint, CanvasPoint)
+  nameWithType: CanvasPoint.operator -(CanvasPoint, CanvasPoint)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.operator -(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Subtraction
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 72
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the vector between two points.
+  example: []
+  syntax:
+    content: public static CanvasVector operator -(CanvasPoint a, CanvasPoint b)
+    parameters:
+    - id: a
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    - id: b
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    content.vb: Public Shared Operator -(a As CanvasPoint, b As CanvasPoint) As CanvasVector
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction*
+  nameWithType.vb: CanvasPoint.-(CanvasPoint, CanvasPoint)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.-(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasPoint)
+  name.vb: -(CanvasPoint, CanvasPoint)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  id: DistanceTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: DistanceTo(CanvasPoint)
+  nameWithType: CanvasPoint.DistanceTo(CanvasPoint)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DistanceTo
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 78
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the distance to another point.
+  example: []
+  syntax:
+    content: public double DistanceTo(CanvasPoint other)
+    parameters:
+    - id: other
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    return:
+      type: System.Double
+    content.vb: Public Function DistanceTo(other As CanvasPoint) As Double
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  id: DistanceSquaredTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: DistanceSquaredTo(CanvasPoint)
+  nameWithType: CanvasPoint.DistanceSquaredTo(CanvasPoint)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DistanceSquaredTo
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 88
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the squared distance to another point (faster than DistanceTo).
+  example: []
+  syntax:
+    content: public double DistanceSquaredTo(CanvasPoint other)
+    parameters:
+    - id: other
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    return:
+      type: System.Double
+    content.vb: Public Function DistanceSquaredTo(other As CanvasPoint) As Double
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Rounded
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.Rounded
+  id: Rounded
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: Rounded()
+  nameWithType: CanvasPoint.Rounded()
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Rounded()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Rounded
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 98
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Returns a new point with both coordinates rounded to the nearest integer.
+  example: []
+  syntax:
+    content: public CanvasPoint Rounded()
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Function Rounded() As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.Rounded*
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid(System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid(System.Double)
+  id: SnappedToGrid(System.Double)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: SnappedToGrid(double)
+  nameWithType: CanvasPoint.SnappedToGrid(double)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid(double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SnappedToGrid
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 103
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Returns a new point snapped to a grid.
+  example: []
+  syntax:
+    content: public CanvasPoint SnappedToGrid(double gridSize)
+    parameters:
+    - id: gridSize
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Function SnappedToGrid(gridSize As Double) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid*
+  nameWithType.vb: CanvasPoint.SnappedToGrid(Double)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid(Double)
+  name.vb: SnappedToGrid(Double)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Lerp(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint,System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.Lerp(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint,System.Double)
+  id: Lerp(FlowGraph.Core.Coordinates.CanvasPoint,FlowGraph.Core.Coordinates.CanvasPoint,System.Double)
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: Lerp(CanvasPoint, CanvasPoint, double)
+  nameWithType: CanvasPoint.Lerp(CanvasPoint, CanvasPoint, double)
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Lerp(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasPoint, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Lerp
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 113
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Linearly interpolates between two points.
+  example: []
+  syntax:
+    content: public static CanvasPoint Lerp(CanvasPoint a, CanvasPoint b, double t)
+    parameters:
+    - id: a
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    - id: b
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    - id: t
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Function Lerp(a As CanvasPoint, b As CanvasPoint, t As Double) As CanvasPoint
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.Lerp*
+  nameWithType.vb: CanvasPoint.Lerp(CanvasPoint, CanvasPoint, Double)
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.Lerp(FlowGraph.Core.Coordinates.CanvasPoint, FlowGraph.Core.Coordinates.CanvasPoint, Double)
+  name.vb: Lerp(CanvasPoint, CanvasPoint, Double)
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.ToString
+  commentId: M:FlowGraph.Core.Coordinates.CanvasPoint.ToString
+  id: ToString
+  parent: FlowGraph.Core.Coordinates.CanvasPoint
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CanvasPoint.ToString()
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.ToString()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToString
+    path: ../FlowGraph.Core/Coordinates/CanvasCoordinates.cs
+    startLine: 121
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: FlowGraph.Core.Coordinates.CanvasPoint.ToString*
+references:
+- uid: FlowGraph.Core.Coordinates
+  commentId: N:FlowGraph.Core.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Core.Coordinates
+  nameWithType: FlowGraph.Core.Coordinates
+  fullName: FlowGraph.Core.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+- uid: System.IEquatable{FlowGraph.Core.Coordinates.CanvasPoint}
+  commentId: T:System.IEquatable{FlowGraph.Core.Coordinates.CanvasPoint}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<CanvasPoint>
+  nameWithType: IEquatable<CanvasPoint>
+  fullName: System.IEquatable<FlowGraph.Core.Coordinates.CanvasPoint>
+  nameWithType.vb: IEquatable(Of CanvasPoint)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Coordinates.CanvasPoint)
+  name.vb: IEquatable(Of CanvasPoint)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  definition: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToAvalonia(CanvasPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToAvalonia(CanvasPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  commentId: T:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  parent: FlowGraph.Avalonia.Coordinates
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html
+  name: AvaloniaCoordinateExtensions
+  nameWithType: AvaloniaCoordinateExtensions
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+- uid: FlowGraph.Avalonia.Coordinates
+  commentId: N:FlowGraph.Avalonia.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Coordinates
+  nameWithType: FlowGraph.Avalonia.Coordinates
+  fullName: FlowGraph.Avalonia.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.#ctor*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.#ctor
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint__ctor_System_Double_System_Double_
+  name: CanvasPoint
+  nameWithType: CanvasPoint.CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.CanvasPoint
+  nameWithType.vb: CanvasPoint.New
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.New
+  name.vb: New
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.X*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.X
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_X
+  name: X
+  nameWithType: CanvasPoint.X
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.X
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Y*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.Y
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_Y
+  name: Y
+  nameWithType: CanvasPoint.Y
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Y
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Zero*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.Zero
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_Zero
+  name: Zero
+  nameWithType: CanvasPoint.Zero
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Zero
+- uid: FlowGraph.Core.Coordinates.CanvasPoint
+  commentId: T:FlowGraph.Core.Coordinates.CanvasPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  name: CanvasPoint
+  nameWithType: CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.FromNode*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.FromNode
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_FromNode_FlowGraph_Core_Node_
+  name: FromNode
+  nameWithType: CanvasPoint.FromNode
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.FromNode
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.FromCore*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.FromCore
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_FromCore_FlowGraph_Core_Point_
+  name: FromCore
+  nameWithType: CanvasPoint.FromCore
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.FromCore
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.ToCore*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.ToCore
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_ToCore
+  name: ToCore
+  nameWithType: CanvasPoint.ToCore
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.ToCore
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Addition*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.op_Addition
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_op_Addition_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_CanvasVector_
+  name: operator +
+  nameWithType: CanvasPoint.operator +
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.operator +
+  nameWithType.vb: CanvasPoint.+
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Addition*
+    name: +
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_op_Addition_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_CanvasVector_
+- uid: FlowGraph.Core.Coordinates.CanvasVector
+  commentId: T:FlowGraph.Core.Coordinates.CanvasVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasVector.html
+  name: CanvasVector
+  nameWithType: CanvasVector
+  fullName: FlowGraph.Core.Coordinates.CanvasVector
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_op_Subtraction_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_CanvasVector_
+  name: operator -
+  nameWithType: CanvasPoint.operator -
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.operator -
+  nameWithType.vb: CanvasPoint.-
+  fullName.vb: FlowGraph.Core.Coordinates.CanvasPoint.-
+  name.vb: '-'
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint.op_Subtraction*
+    name: '-'
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_op_Subtraction_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_CanvasVector_
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_DistanceTo_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: DistanceTo
+  nameWithType: CanvasPoint.DistanceTo
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.DistanceTo
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_DistanceSquaredTo_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: DistanceSquaredTo
+  nameWithType: CanvasPoint.DistanceSquaredTo
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.DistanceSquaredTo
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Rounded*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.Rounded
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_Rounded
+  name: Rounded
+  nameWithType: CanvasPoint.Rounded
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Rounded
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_SnappedToGrid_System_Double_
+  name: SnappedToGrid
+  nameWithType: CanvasPoint.SnappedToGrid
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.SnappedToGrid
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.Lerp*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.Lerp
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_Lerp_FlowGraph_Core_Coordinates_CanvasPoint_FlowGraph_Core_Coordinates_CanvasPoint_System_Double_
+  name: Lerp
+  nameWithType: CanvasPoint.Lerp
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.Lerp
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Coordinates.CanvasPoint.ToString*
+  commentId: Overload:FlowGraph.Core.Coordinates.CanvasPoint.ToString
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html#FlowGraph_Core_Coordinates_CanvasPoint_ToString
+  name: ToString
+  nameWithType: CanvasPoint.ToString
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

@@ -1,0 +1,1559 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Input.BehaviorBase
+  commentId: T:FlowGraph.Core.Input.BehaviorBase
+  id: BehaviorBase
+  parent: FlowGraph.Core.Input
+  children:
+  - FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+  - FlowGraph.Core.Input.BehaviorBase.IsActiveInState(System.String)
+  - FlowGraph.Core.Input.BehaviorBase.IsEnabled
+  - FlowGraph.Core.Input.BehaviorBase.Name
+  - FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnAttached(FlowGraph.Core.Graph)
+  - FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  - FlowGraph.Core.Input.BehaviorBase.OnDetached
+  - FlowGraph.Core.Input.BehaviorBase.Priority
+  langs:
+  - csharp
+  - vb
+  name: BehaviorBase
+  nameWithType: BehaviorBase
+  fullName: FlowGraph.Core.Input.BehaviorBase
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BehaviorBase
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 273
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Base class for behaviors with default no-op implementations.
+  example: []
+  syntax:
+    content: 'public abstract class BehaviorBase : IBehavior'
+    content.vb: Public MustInherit Class BehaviorBase Implements IBehavior
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Core.Input.IBehavior
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Input.BehaviorBase.Name
+  commentId: P:FlowGraph.Core.Input.BehaviorBase.Name
+  id: Name
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: BehaviorBase.Name
+  fullName: FlowGraph.Core.Input.BehaviorBase.Name
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Name
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 275
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Display name for debugging and UI purposes.
+  example: []
+  syntax:
+    content: public abstract string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property Name As String
+  overload: FlowGraph.Core.Input.BehaviorBase.Name*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.Name
+- uid: FlowGraph.Core.Input.BehaviorBase.IsEnabled
+  commentId: P:FlowGraph.Core.Input.BehaviorBase.IsEnabled
+  id: IsEnabled
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: IsEnabled
+  nameWithType: BehaviorBase.IsEnabled
+  fullName: FlowGraph.Core.Input.BehaviorBase.IsEnabled
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEnabled
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 277
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Whether this behavior is currently active.
+
+    Disabled behaviors receive no events.
+  example: []
+  syntax:
+    content: public bool IsEnabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsEnabled As Boolean
+  overload: FlowGraph.Core.Input.BehaviorBase.IsEnabled*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.IsEnabled
+- uid: FlowGraph.Core.Input.BehaviorBase.Priority
+  commentId: P:FlowGraph.Core.Input.BehaviorBase.Priority
+  id: Priority
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: Priority
+  nameWithType: BehaviorBase.Priority
+  fullName: FlowGraph.Core.Input.BehaviorBase.Priority
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Priority
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 279
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Priority relative to other behaviors. Higher = called first.
+
+    Default behaviors use 0. Use negative for "always last" behaviors.
+  example: []
+  syntax:
+    content: public virtual int Priority { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property Priority As Integer
+  overload: FlowGraph.Core.Input.BehaviorBase.Priority*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.Priority
+- uid: FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+  commentId: P:FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+  id: ActiveInStates
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: ActiveInStates
+  nameWithType: BehaviorBase.ActiveInStates
+  fullName: FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ActiveInStates
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 285
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Override to restrict this behavior to specific states.
+
+    Return null (default) to be active in all states.
+  example: []
+  syntax:
+    content: public virtual IReadOnlySet<string>? ActiveInStates { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlySet{System.String}
+    content.vb: Public Overridable ReadOnly Property ActiveInStates As IReadOnlySet(Of String)
+  overload: FlowGraph.Core.Input.BehaviorBase.ActiveInStates*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.ActiveInStates
+- uid: FlowGraph.Core.Input.BehaviorBase.IsActiveInState(System.String)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.IsActiveInState(System.String)
+  id: IsActiveInState(System.String)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: IsActiveInState(string)
+  nameWithType: BehaviorBase.IsActiveInState(string)
+  fullName: FlowGraph.Core.Input.BehaviorBase.IsActiveInState(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsActiveInState
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 287
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Checks if this behavior should be invoked for the given state.
+
+    Default: active in all states if <xref href="FlowGraph.Core.Input.IBehavior.ActiveInStates" data-throw-if-not-resolved="false"></xref> is null/empty.
+  example: []
+  syntax:
+    content: public bool IsActiveInState(string stateName)
+    parameters:
+    - id: stateName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsActiveInState(stateName As String) As Boolean
+  overload: FlowGraph.Core.Input.BehaviorBase.IsActiveInState*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.IsActiveInState(System.String)
+  nameWithType.vb: BehaviorBase.IsActiveInState(String)
+  fullName.vb: FlowGraph.Core.Input.BehaviorBase.IsActiveInState(String)
+  name.vb: IsActiveInState(String)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnBeforePointerPressed(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnBeforePointerPressed(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnBeforePointerPressed
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 291
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Called before pointer pressed is processed.
+
+    Return <xref href="FlowGraph.Core.Input.BehaviorResult.HandledSuppress" data-throw-if-not-resolved="false"></xref> to prevent default handling.
+  example: []
+  syntax:
+    content: public virtual BehaviorResult OnBeforePointerPressed(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    return:
+      type: FlowGraph.Core.Input.BehaviorResult
+    content.vb: Public Overridable Function OnBeforePointerPressed(e As IGraphInputEvent) As BehaviorResult
+  overload: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAfterPointerPressed(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnAfterPointerPressed(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAfterPointerPressed
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 292
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called after pointer pressed has been processed.
+  example: []
+  syntax:
+    content: public virtual void OnAfterPointerPressed(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    content.vb: Public Overridable Sub OnAfterPointerPressed(e As IGraphInputEvent)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnBeforePointerMoved(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnBeforePointerMoved(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnBeforePointerMoved
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 294
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called before pointer moved is processed.
+  example: []
+  syntax:
+    content: public virtual BehaviorResult OnBeforePointerMoved(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    return:
+      type: FlowGraph.Core.Input.BehaviorResult
+    content.vb: Public Overridable Function OnBeforePointerMoved(e As IGraphInputEvent) As BehaviorResult
+  overload: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAfterPointerMoved(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnAfterPointerMoved(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAfterPointerMoved
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 295
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called after pointer moved has been processed.
+  example: []
+  syntax:
+    content: public virtual void OnAfterPointerMoved(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    content.vb: Public Overridable Sub OnAfterPointerMoved(e As IGraphInputEvent)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnBeforePointerReleased(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnBeforePointerReleased(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnBeforePointerReleased
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 297
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called before pointer released is processed.
+  example: []
+  syntax:
+    content: public virtual BehaviorResult OnBeforePointerReleased(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    return:
+      type: FlowGraph.Core.Input.BehaviorResult
+    content.vb: Public Overridable Function OnBeforePointerReleased(e As IGraphInputEvent) As BehaviorResult
+  overload: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAfterPointerReleased(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnAfterPointerReleased(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAfterPointerReleased
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 298
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called after pointer released has been processed.
+  example: []
+  syntax:
+    content: public virtual void OnAfterPointerReleased(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    content.vb: Public Overridable Sub OnAfterPointerReleased(e As IGraphInputEvent)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnBeforePointerWheel(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnBeforePointerWheel(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnBeforePointerWheel
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 300
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called before wheel/scroll is processed.
+  example: []
+  syntax:
+    content: public virtual BehaviorResult OnBeforePointerWheel(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    return:
+      type: FlowGraph.Core.Input.BehaviorResult
+    content.vb: Public Overridable Function OnBeforePointerWheel(e As IGraphInputEvent) As BehaviorResult
+  overload: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAfterPointerWheel(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnAfterPointerWheel(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAfterPointerWheel
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 301
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called after wheel/scroll has been processed.
+  example: []
+  syntax:
+    content: public virtual void OnAfterPointerWheel(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    content.vb: Public Overridable Sub OnAfterPointerWheel(e As IGraphInputEvent)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnBeforeKeyDown(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnBeforeKeyDown(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnBeforeKeyDown
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 303
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called before key down is processed.
+  example: []
+  syntax:
+    content: public virtual BehaviorResult OnBeforeKeyDown(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    return:
+      type: FlowGraph.Core.Input.BehaviorResult
+    content.vb: Public Overridable Function OnBeforeKeyDown(e As IGraphInputEvent) As BehaviorResult
+  overload: FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  id: OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAfterKeyDown(IGraphInputEvent)
+  nameWithType: BehaviorBase.OnAfterKeyDown(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAfterKeyDown
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 304
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called after key down has been processed.
+  example: []
+  syntax:
+    content: public virtual void OnAfterKeyDown(IGraphInputEvent e)
+    parameters:
+    - id: e
+      type: FlowGraph.Core.Input.IGraphInputEvent
+    content.vb: Public Overridable Sub OnAfterKeyDown(e As IGraphInputEvent)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAttached(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnAttached(FlowGraph.Core.Graph)
+  id: OnAttached(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnAttached(Graph)
+  nameWithType: BehaviorBase.OnAttached(Graph)
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAttached(FlowGraph.Core.Graph)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnAttached
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 306
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called when the behavior is attached to a graph canvas.
+  example: []
+  syntax:
+    content: public virtual void OnAttached(Graph graph)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+    content.vb: Public Overridable Sub OnAttached(graph As Graph)
+  overload: FlowGraph.Core.Input.BehaviorBase.OnAttached*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+- uid: FlowGraph.Core.Input.BehaviorBase.OnDetached
+  commentId: M:FlowGraph.Core.Input.BehaviorBase.OnDetached
+  id: OnDetached
+  parent: FlowGraph.Core.Input.BehaviorBase
+  langs:
+  - csharp
+  - vb
+  name: OnDetached()
+  nameWithType: BehaviorBase.OnDetached()
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnDetached()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnDetached
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 307
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Called when the behavior is detached from a graph canvas.
+  example: []
+  syntax:
+    content: public virtual void OnDetached()
+    content.vb: Public Overridable Sub OnDetached()
+  overload: FlowGraph.Core.Input.BehaviorBase.OnDetached*
+  implements:
+  - FlowGraph.Core.Input.IBehavior.OnDetached
+references:
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.Input.IBehavior
+  commentId: T:FlowGraph.Core.Input.IBehavior
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.IBehavior.html
+  name: IBehavior
+  nameWithType: IBehavior
+  fullName: FlowGraph.Core.Input.IBehavior
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Input.BehaviorBase.Name*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.Name
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_Name
+  name: Name
+  nameWithType: BehaviorBase.Name
+  fullName: FlowGraph.Core.Input.BehaviorBase.Name
+- uid: FlowGraph.Core.Input.IBehavior.Name
+  commentId: P:FlowGraph.Core.Input.IBehavior.Name
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_Name
+  name: Name
+  nameWithType: IBehavior.Name
+  fullName: FlowGraph.Core.Input.IBehavior.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Input.BehaviorBase.IsEnabled*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.IsEnabled
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_IsEnabled
+  name: IsEnabled
+  nameWithType: BehaviorBase.IsEnabled
+  fullName: FlowGraph.Core.Input.BehaviorBase.IsEnabled
+- uid: FlowGraph.Core.Input.IBehavior.IsEnabled
+  commentId: P:FlowGraph.Core.Input.IBehavior.IsEnabled
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_IsEnabled
+  name: IsEnabled
+  nameWithType: IBehavior.IsEnabled
+  fullName: FlowGraph.Core.Input.IBehavior.IsEnabled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Input.BehaviorBase.Priority*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.Priority
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_Priority
+  name: Priority
+  nameWithType: BehaviorBase.Priority
+  fullName: FlowGraph.Core.Input.BehaviorBase.Priority
+- uid: FlowGraph.Core.Input.IBehavior.Priority
+  commentId: P:FlowGraph.Core.Input.IBehavior.Priority
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_Priority
+  name: Priority
+  nameWithType: IBehavior.Priority
+  fullName: FlowGraph.Core.Input.IBehavior.Priority
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Input.BehaviorBase.ActiveInStates*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_ActiveInStates
+  name: ActiveInStates
+  nameWithType: BehaviorBase.ActiveInStates
+  fullName: FlowGraph.Core.Input.BehaviorBase.ActiveInStates
+- uid: FlowGraph.Core.Input.IBehavior.ActiveInStates
+  commentId: P:FlowGraph.Core.Input.IBehavior.ActiveInStates
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_ActiveInStates
+  name: ActiveInStates
+  nameWithType: IBehavior.ActiveInStates
+  fullName: FlowGraph.Core.Input.IBehavior.ActiveInStates
+- uid: System.Collections.Generic.IReadOnlySet{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlySet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlySet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<string>
+  nameWithType: IReadOnlySet<string>
+  fullName: System.Collections.Generic.IReadOnlySet<string>
+  nameWithType.vb: IReadOnlySet(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of String)
+  name.vb: IReadOnlySet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlySet`1
+  commentId: T:System.Collections.Generic.IReadOnlySet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<T>
+  nameWithType: IReadOnlySet<T>
+  fullName: System.Collections.Generic.IReadOnlySet<T>
+  nameWithType.vb: IReadOnlySet(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of T)
+  name.vb: IReadOnlySet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Core.Input.BehaviorBase.IsActiveInState*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.IsActiveInState
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_IsActiveInState_System_String_
+  name: IsActiveInState
+  nameWithType: BehaviorBase.IsActiveInState
+  fullName: FlowGraph.Core.Input.BehaviorBase.IsActiveInState
+- uid: FlowGraph.Core.Input.IBehavior.IsActiveInState(System.String)
+  commentId: M:FlowGraph.Core.Input.IBehavior.IsActiveInState(System.String)
+  parent: FlowGraph.Core.Input.IBehavior
+  isExternal: true
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_IsActiveInState_System_String_
+  name: IsActiveInState(string)
+  nameWithType: IBehavior.IsActiveInState(string)
+  fullName: FlowGraph.Core.Input.IBehavior.IsActiveInState(string)
+  nameWithType.vb: IBehavior.IsActiveInState(String)
+  fullName.vb: FlowGraph.Core.Input.IBehavior.IsActiveInState(String)
+  name.vb: IsActiveInState(String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.IsActiveInState(System.String)
+    name: IsActiveInState
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_IsActiveInState_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.IsActiveInState(System.String)
+    name: IsActiveInState
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_IsActiveInState_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorResult.HandledSuppress
+  commentId: P:FlowGraph.Core.Input.BehaviorResult.HandledSuppress
+  href: FlowGraph.Core.Input.BehaviorResult.html#FlowGraph_Core_Input_BehaviorResult_HandledSuppress
+  name: HandledSuppress
+  nameWithType: BehaviorResult.HandledSuppress
+  fullName: FlowGraph.Core.Input.BehaviorResult.HandledSuppress
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnBeforePointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerPressed
+  nameWithType: BehaviorBase.OnBeforePointerPressed
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerPressed
+- uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerPressed(IGraphInputEvent)
+  nameWithType: IBehavior.OnBeforePointerPressed(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerPressed
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerPressed
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.IGraphInputEvent
+  commentId: T:FlowGraph.Core.Input.IGraphInputEvent
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.IGraphInputEvent.html
+  name: IGraphInputEvent
+  nameWithType: IGraphInputEvent
+  fullName: FlowGraph.Core.Input.IGraphInputEvent
+- uid: FlowGraph.Core.Input.BehaviorResult
+  commentId: T:FlowGraph.Core.Input.BehaviorResult
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.BehaviorResult.html
+  name: BehaviorResult
+  nameWithType: BehaviorResult
+  fullName: FlowGraph.Core.Input.BehaviorResult
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAfterPointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerPressed
+  nameWithType: BehaviorBase.OnAfterPointerPressed
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerPressed
+- uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerPressed(IGraphInputEvent)
+  nameWithType: IBehavior.OnAfterPointerPressed(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerPressed
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerPressed(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerPressed
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerPressed_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnBeforePointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerMoved
+  nameWithType: BehaviorBase.OnBeforePointerMoved
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerMoved
+- uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerMoved(IGraphInputEvent)
+  nameWithType: IBehavior.OnBeforePointerMoved(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerMoved
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerMoved
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAfterPointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerMoved
+  nameWithType: BehaviorBase.OnAfterPointerMoved
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerMoved
+- uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerMoved(IGraphInputEvent)
+  nameWithType: IBehavior.OnAfterPointerMoved(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerMoved
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerMoved(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerMoved
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerMoved_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnBeforePointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerReleased
+  nameWithType: BehaviorBase.OnBeforePointerReleased
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerReleased
+- uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerReleased(IGraphInputEvent)
+  nameWithType: IBehavior.OnBeforePointerReleased(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerReleased
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerReleased
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAfterPointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerReleased
+  nameWithType: BehaviorBase.OnAfterPointerReleased
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerReleased
+- uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerReleased(IGraphInputEvent)
+  nameWithType: IBehavior.OnAfterPointerReleased(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerReleased
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerReleased(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerReleased
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerReleased_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnBeforePointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerWheel
+  nameWithType: BehaviorBase.OnBeforePointerWheel
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforePointerWheel
+- uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforePointerWheel(IGraphInputEvent)
+  nameWithType: IBehavior.OnBeforePointerWheel(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerWheel
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforePointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforePointerWheel
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforePointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAfterPointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerWheel
+  nameWithType: BehaviorBase.OnAfterPointerWheel
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterPointerWheel
+- uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterPointerWheel(IGraphInputEvent)
+  nameWithType: IBehavior.OnAfterPointerWheel(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerWheel
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterPointerWheel(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterPointerWheel
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterPointerWheel_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnBeforeKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforeKeyDown
+  nameWithType: BehaviorBase.OnBeforeKeyDown
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnBeforeKeyDown
+- uid: FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforeKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnBeforeKeyDown(IGraphInputEvent)
+  nameWithType: IBehavior.OnBeforeKeyDown(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforeKeyDown
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforeKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnBeforeKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnBeforeKeyDown
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnBeforeKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAfterKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterKeyDown
+  nameWithType: BehaviorBase.OnAfterKeyDown
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAfterKeyDown
+- uid: FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  name: OnAfterKeyDown(IGraphInputEvent)
+  nameWithType: IBehavior.OnAfterKeyDown(IGraphInputEvent)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterKeyDown
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAfterKeyDown(FlowGraph.Core.Input.IGraphInputEvent)
+    name: OnAfterKeyDown
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAfterKeyDown_FlowGraph_Core_Input_IGraphInputEvent_
+  - name: (
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    href: FlowGraph.Core.Input.IGraphInputEvent.html
+  - name: )
+- uid: FlowGraph.Core.Input.BehaviorBase.OnAttached*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnAttached
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnAttached_FlowGraph_Core_Graph_
+  name: OnAttached
+  nameWithType: BehaviorBase.OnAttached
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnAttached
+- uid: FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAttached_FlowGraph_Core_Graph_
+  name: OnAttached(Graph)
+  nameWithType: IBehavior.OnAttached(Graph)
+  fullName: FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+    name: OnAttached
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAttached_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnAttached(FlowGraph.Core.Graph)
+    name: OnAttached
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnAttached_FlowGraph_Core_Graph_
+  - name: (
+  - uid: FlowGraph.Core.Graph
+    name: Graph
+    href: FlowGraph.Core.Graph.html
+  - name: )
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Input.BehaviorBase.OnDetached*
+  commentId: Overload:FlowGraph.Core.Input.BehaviorBase.OnDetached
+  href: FlowGraph.Core.Input.BehaviorBase.html#FlowGraph_Core_Input_BehaviorBase_OnDetached
+  name: OnDetached
+  nameWithType: BehaviorBase.OnDetached
+  fullName: FlowGraph.Core.Input.BehaviorBase.OnDetached
+- uid: FlowGraph.Core.Input.IBehavior.OnDetached
+  commentId: M:FlowGraph.Core.Input.IBehavior.OnDetached
+  parent: FlowGraph.Core.Input.IBehavior
+  href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnDetached
+  name: OnDetached()
+  nameWithType: IBehavior.OnDetached()
+  fullName: FlowGraph.Core.Input.IBehavior.OnDetached()
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IBehavior.OnDetached
+    name: OnDetached
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnDetached
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IBehavior.OnDetached
+    name: OnDetached
+    href: FlowGraph.Core.Input.IBehavior.html#FlowGraph_Core_Input_IBehavior_OnDetached
+  - name: (
+  - name: )

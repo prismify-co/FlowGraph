@@ -1,0 +1,1597 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.CommentElement
+  id: CommentElement
+  parent: FlowGraph.Core.Elements.Shapes
+  children:
+  - FlowGraph.Core.Elements.Shapes.CommentElement.#ctor
+  - FlowGraph.Core.Elements.Shapes.CommentElement.#ctor(System.String)
+  - FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+  - FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+  - FlowGraph.Core.Elements.Shapes.CommentElement.Clone
+  - FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+  - FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+  - FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+  - FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+  - FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+  - FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+  - FlowGraph.Core.Elements.Shapes.CommentElement.Style
+  - FlowGraph.Core.Elements.Shapes.CommentElement.Text
+  - FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+  - FlowGraph.Core.Elements.Shapes.CommentElement.Type
+  - FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  langs:
+  - csharp
+  - vb
+  name: CommentElement
+  nameWithType: CommentElement
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CommentElement
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: A sticky note style comment element for annotations on the canvas.
+  remarks: >-
+    <p>
+
+    CommentElement provides a styled annotation with:
+
+    - Background fill with optional transparency
+
+    - Corner radius for rounded appearance
+
+    - Padding for text inset
+
+    - Optional shadow effect
+
+    - Resizable bounds
+
+    </p>
+
+    <p>
+
+    By default, comments render in a foreground layer (above nodes) using
+
+    <xref href="FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments" data-throw-if-not-resolved="false"></xref> (400), making them ideal for overlay annotations.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Create a sticky note comment
+
+    var comment = new CommentElement("comment-1")
+
+    {
+        Position = new Point(200, 150),
+        Width = 200,
+        Height = 100,
+        Text = "TODO: Refactor this section",
+        BackgroundColor = "#FFF9C4", // Light yellow
+        TextColor = "#5D4037",
+        CornerRadius = 4
+    };
+
+    graph.AddElement(comment);
+
+
+    // Create a warning annotation
+
+    var warning = new CommentElement("warning-1")
+
+    {
+        Position = new Point(400, 200),
+        Text = "⚠️ Deprecated API",
+        BackgroundColor = "#FFCDD2", // Light red
+        TextColor = "#C62828",
+        ShowShadow = true
+    };</code></pre>
+  syntax:
+    content: 'public class CommentElement : ShapeElement, ICanvasElement, INotifyPropertyChanged'
+    content.vb: Public Class CommentElement Inherits ShapeElement Implements ICanvasElement, INotifyPropertyChanged
+  inheritance:
+  - System.Object
+  - FlowGraph.Core.Elements.CanvasElement
+  - FlowGraph.Core.Elements.Shapes.ShapeElement
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement
+  - System.ComponentModel.INotifyPropertyChanged
+  inheritedMembers:
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.Fill
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.Stroke
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.StrokeWidth
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.Opacity
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.Rotation
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.Label
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  - FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
+  - FlowGraph.Core.Elements.CanvasElement.ZIndexNodes
+  - FlowGraph.Core.Elements.CanvasElement.PropertyChanged
+  - FlowGraph.Core.Elements.CanvasElement.Id
+  - FlowGraph.Core.Elements.CanvasElement.Position
+  - FlowGraph.Core.Elements.CanvasElement.Width
+  - FlowGraph.Core.Elements.CanvasElement.Height
+  - FlowGraph.Core.Elements.CanvasElement.IsSelected
+  - FlowGraph.Core.Elements.CanvasElement.IsSelectable
+  - FlowGraph.Core.Elements.CanvasElement.IsVisible
+  - FlowGraph.Core.Elements.CanvasElement.ZIndex
+  - FlowGraph.Core.Elements.CanvasElement.GetBounds
+  - FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged
+  - FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(System.String)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  commentId: F:FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  id: ZIndexComments
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ZIndexComments
+  nameWithType: CommentElement.ZIndexComments
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ZIndexComments
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Default Z-index for comment elements (above nodes).
+  example: []
+  syntax:
+    content: public const int ZIndexComments = 400
+    return:
+      type: System.Int32
+    content.vb: Public Const ZIndexComments As Integer = 400
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.#ctor
+  commentId: M:FlowGraph.Core.Elements.Shapes.CommentElement.#ctor
+  id: '#ctor'
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: CommentElement()
+  nameWithType: CommentElement.CommentElement()
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.CommentElement()
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 72
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Creates a new comment element with a generated ID.
+  example: []
+  syntax:
+    content: public CommentElement()
+    content.vb: Public Sub New()
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.#ctor*
+  nameWithType.vb: CommentElement.New()
+  fullName.vb: FlowGraph.Core.Elements.Shapes.CommentElement.New()
+  name.vb: New()
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.#ctor(System.String)
+  commentId: M:FlowGraph.Core.Elements.Shapes.CommentElement.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: CommentElement(string)
+  nameWithType: CommentElement.CommentElement(string)
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.CommentElement(string)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 80
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Creates a new comment element with the specified ID.
+  example: []
+  syntax:
+    content: public CommentElement(string id)
+    parameters:
+    - id: id
+      type: System.String
+      description: The unique identifier for this comment.
+    content.vb: Public Sub New(id As String)
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.#ctor*
+  nameWithType.vb: CommentElement.New(String)
+  fullName.vb: FlowGraph.Core.Elements.Shapes.CommentElement.New(String)
+  name.vb: New(String)
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Type
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.Type
+  id: Type
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: CommentElement.Type
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Type
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Type
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 88
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets the type identifier for this element.
+  remarks: >-
+    Used by renderer registries to select the appropriate renderer.
+
+    For nodes, this typically comes from the node definition's Type property.
+
+    For shapes, this identifies the shape type (line, rectangle, text, etc.).
+  example: []
+  syntax:
+    content: public override string Type { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Overrides ReadOnly Property Type As String
+  overridden: FlowGraph.Core.Elements.CanvasElement.Type
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.Type*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Text
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.Text
+  id: Text
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: CommentElement.Text
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Text
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Text
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 93
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the text content of the comment.
+  example: []
+  syntax:
+    content: public string Text { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.Text*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+  id: BackgroundColor
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: BackgroundColor
+  nameWithType: CommentElement.BackgroundColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BackgroundColor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 117
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the background color of the comment.
+  remarks: >-
+    Common sticky note colors:
+
+    - Yellow: #FFF9C4
+
+    - Blue: #BBDEFB
+
+    - Green: #C8E6C9
+
+    - Pink: #F8BBD9
+
+    - Orange: #FFE0B2
+  example: []
+  syntax:
+    content: public string BackgroundColor { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property BackgroundColor As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+  id: TextColor
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: TextColor
+  nameWithType: CommentElement.TextColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TextColor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 133
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the text color.
+  example: []
+  syntax:
+    content: public string TextColor { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TextColor As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.TextColor*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+  id: BorderColor
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: BorderColor
+  nameWithType: CommentElement.BorderColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BorderColor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 149
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the border color.
+  example: []
+  syntax:
+    content: public string BorderColor { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property BorderColor As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+  id: FontSize
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: FontSize
+  nameWithType: CommentElement.FontSize
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FontSize
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 165
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the font size in points.
+  example: []
+  syntax:
+    content: public double FontSize { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property FontSize As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.FontSize*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+  id: FontFamily
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: FontFamily
+  nameWithType: CommentElement.FontFamily
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FontFamily
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 181
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the font family name.
+  example: []
+  syntax:
+    content: public string FontFamily { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FontFamily As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+  id: FontWeight
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: FontWeight
+  nameWithType: CommentElement.FontWeight
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FontWeight
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 197
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the font weight.
+  example: []
+  syntax:
+    content: public FontWeight FontWeight { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Elements.Shapes.FontWeight
+    content.vb: Public Property FontWeight As FontWeight
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+  id: Padding
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: Padding
+  nameWithType: CommentElement.Padding
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Padding
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 213
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the padding between the border and text.
+  example: []
+  syntax:
+    content: public double Padding { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Padding As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.Padding*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+  id: CornerRadius
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: CornerRadius
+  nameWithType: CommentElement.CornerRadius
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CornerRadius
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 229
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the corner radius for rounded corners.
+  example: []
+  syntax:
+    content: public double CornerRadius { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property CornerRadius As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+  id: ShowShadow
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ShowShadow
+  nameWithType: CommentElement.ShowShadow
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShowShadow
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 245
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets whether to show a drop shadow.
+  example: []
+  syntax:
+    content: public bool ShowShadow { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ShowShadow As Boolean
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+  id: ShadowBlur
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ShadowBlur
+  nameWithType: CommentElement.ShadowBlur
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShadowBlur
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 261
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the shadow blur radius.
+  example: []
+  syntax:
+    content: public double ShadowBlur { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ShadowBlur As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+  id: ShadowOffsetX
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ShadowOffsetX
+  nameWithType: CommentElement.ShadowOffsetX
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShadowOffsetX
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 277
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the shadow X offset.
+  example: []
+  syntax:
+    content: public double ShadowOffsetX { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ShadowOffsetX As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+  id: ShadowOffsetY
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ShadowOffsetY
+  nameWithType: CommentElement.ShadowOffsetY
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShadowOffsetY
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 293
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the shadow Y offset.
+  example: []
+  syntax:
+    content: public double ShadowOffsetY { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ShadowOffsetY As Double
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+  id: ShadowColor
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: ShadowColor
+  nameWithType: CommentElement.ShadowColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShadowColor
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 309
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the shadow color.
+  example: []
+  syntax:
+    content: public string ShadowColor { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ShadowColor As String
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+  id: IsEditing
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: IsEditing
+  nameWithType: CommentElement.IsEditing
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEditing
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 328
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets whether the comment is currently being edited.
+  remarks: When true, the renderer should show an editable text area.
+  example: []
+  syntax:
+    content: public bool IsEditing { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsEditing As Boolean
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Style
+  commentId: P:FlowGraph.Core.Elements.Shapes.CommentElement.Style
+  id: Style
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: Style
+  nameWithType: CommentElement.Style
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Style
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Style
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 344
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Gets or sets the visual style of the comment.
+  example: []
+  syntax:
+    content: public CommentStyle Style { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Elements.Shapes.CommentStyle
+    content.vb: Public Property Style As CommentStyle
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.Style*
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Clone
+  commentId: M:FlowGraph.Core.Elements.Shapes.CommentElement.Clone
+  id: Clone
+  parent: FlowGraph.Core.Elements.Shapes.CommentElement
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: CommentElement.Clone()
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Clone()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/Shapes/CommentElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Clone
+    path: ../FlowGraph.Core/Elements/Shapes/CommentElement.cs
+    startLine: 402
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements.Shapes
+  summary: Creates a copy of this comment element with a new ID.
+  example: []
+  syntax:
+    content: public CommentElement Clone()
+    return:
+      type: FlowGraph.Core.Elements.Shapes.CommentElement
+      description: A new CommentElement with copied properties.
+    content.vb: Public Function Clone() As CommentElement
+  overload: FlowGraph.Core.Elements.Shapes.CommentElement.Clone*
+references:
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  commentId: F:FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ZIndexComments
+  name: ZIndexComments
+  nameWithType: CommentElement.ZIndexComments
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Core.Elements.CanvasElement
+  commentId: T:FlowGraph.Core.Elements.CanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.CanvasElement.html
+  name: CanvasElement
+  nameWithType: CanvasElement
+  fullName: FlowGraph.Core.Elements.CanvasElement
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: System.ComponentModel.INotifyPropertyChanged
+  commentId: T:System.ComponentModel.INotifyPropertyChanged
+  parent: System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged
+  name: INotifyPropertyChanged
+  nameWithType: INotifyPropertyChanged
+  fullName: System.ComponentModel.INotifyPropertyChanged
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.Fill
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.Fill
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Fill
+  name: Fill
+  nameWithType: ShapeElement.Fill
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Fill
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.Stroke
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.Stroke
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Stroke
+  name: Stroke
+  nameWithType: ShapeElement.Stroke
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Stroke
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.StrokeWidth
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.StrokeWidth
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_StrokeWidth
+  name: StrokeWidth
+  nameWithType: ShapeElement.StrokeWidth
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.StrokeWidth
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.Opacity
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.Opacity
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Opacity
+  name: Opacity
+  nameWithType: ShapeElement.Opacity
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Opacity
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.Rotation
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.Rotation
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Rotation
+  name: Rotation
+  nameWithType: ShapeElement.Rotation
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Rotation
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.Label
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.Label
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Label
+  name: Label
+  nameWithType: ShapeElement.Label
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.Label
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_IsResizable
+  name: IsResizable
+  nameWithType: ShapeElement.IsResizable
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.IsResizable
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  commentId: P:FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+  parent: FlowGraph.Core.Elements.Shapes.ShapeElement
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_AllowedResizeHandles
+  name: AllowedResizeHandles
+  nameWithType: ShapeElement.AllowedResizeHandles
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement.AllowedResizeHandles
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexBackground
+  name: ZIndexBackground
+  nameWithType: CanvasElement.ZIndexBackground
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexBackground
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexShapes
+  name: ZIndexShapes
+  nameWithType: CanvasElement.ZIndexShapes
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexShapes
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexGroups
+  name: ZIndexGroups
+  nameWithType: CanvasElement.ZIndexGroups
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexGroups
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexEdges
+  name: ZIndexEdges
+  nameWithType: CanvasElement.ZIndexEdges
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexEdges
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndexNodes
+  commentId: F:FlowGraph.Core.Elements.CanvasElement.ZIndexNodes
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexNodes
+  name: ZIndexNodes
+  nameWithType: CanvasElement.ZIndexNodes
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndexNodes
+- uid: FlowGraph.Core.Elements.CanvasElement.PropertyChanged
+  commentId: E:FlowGraph.Core.Elements.CanvasElement.PropertyChanged
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_PropertyChanged
+  name: PropertyChanged
+  nameWithType: CanvasElement.PropertyChanged
+  fullName: FlowGraph.Core.Elements.CanvasElement.PropertyChanged
+- uid: FlowGraph.Core.Elements.CanvasElement.Id
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.Id
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Id
+  name: Id
+  nameWithType: CanvasElement.Id
+  fullName: FlowGraph.Core.Elements.CanvasElement.Id
+- uid: FlowGraph.Core.Elements.CanvasElement.Position
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.Position
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Position
+  name: Position
+  nameWithType: CanvasElement.Position
+  fullName: FlowGraph.Core.Elements.CanvasElement.Position
+- uid: FlowGraph.Core.Elements.CanvasElement.Width
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.Width
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Width
+  name: Width
+  nameWithType: CanvasElement.Width
+  fullName: FlowGraph.Core.Elements.CanvasElement.Width
+- uid: FlowGraph.Core.Elements.CanvasElement.Height
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.Height
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Height
+  name: Height
+  nameWithType: CanvasElement.Height
+  fullName: FlowGraph.Core.Elements.CanvasElement.Height
+- uid: FlowGraph.Core.Elements.CanvasElement.IsSelected
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.IsSelected
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelected
+  name: IsSelected
+  nameWithType: CanvasElement.IsSelected
+  fullName: FlowGraph.Core.Elements.CanvasElement.IsSelected
+- uid: FlowGraph.Core.Elements.CanvasElement.IsSelectable
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.IsSelectable
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelectable
+  name: IsSelectable
+  nameWithType: CanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.CanvasElement.IsSelectable
+- uid: FlowGraph.Core.Elements.CanvasElement.IsVisible
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.IsVisible
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsVisible
+  name: IsVisible
+  nameWithType: CanvasElement.IsVisible
+  fullName: FlowGraph.Core.Elements.CanvasElement.IsVisible
+- uid: FlowGraph.Core.Elements.CanvasElement.ZIndex
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.ZIndex
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndex
+  name: ZIndex
+  nameWithType: CanvasElement.ZIndex
+  fullName: FlowGraph.Core.Elements.CanvasElement.ZIndex
+- uid: FlowGraph.Core.Elements.CanvasElement.GetBounds
+  commentId: M:FlowGraph.Core.Elements.CanvasElement.GetBounds
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_GetBounds
+  name: GetBounds()
+  nameWithType: CanvasElement.GetBounds()
+  fullName: FlowGraph.Core.Elements.CanvasElement.GetBounds()
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.CanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_GetBounds
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.CanvasElement.GetBounds
+    name: GetBounds
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_GetBounds
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged
+  commentId: M:FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnBoundsChanged
+  name: OnBoundsChanged()
+  nameWithType: CanvasElement.OnBoundsChanged()
+  fullName: FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged()
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged
+    name: OnBoundsChanged
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnBoundsChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.CanvasElement.OnBoundsChanged
+    name: OnBoundsChanged
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnBoundsChanged
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(System.String)
+  commentId: M:FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(System.String)
+  parent: FlowGraph.Core.Elements.CanvasElement
+  isExternal: true
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnPropertyChanged_System_String_
+  name: OnPropertyChanged(string)
+  nameWithType: CanvasElement.OnPropertyChanged(string)
+  fullName: FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(string)
+  nameWithType.vb: CanvasElement.OnPropertyChanged(String)
+  fullName.vb: FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(String)
+  name.vb: OnPropertyChanged(String)
+  spec.csharp:
+  - uid: FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(System.String)
+    name: OnPropertyChanged
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnPropertyChanged_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Elements.CanvasElement.OnPropertyChanged(System.String)
+    name: OnPropertyChanged
+    href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnPropertyChanged_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+- uid: System.ComponentModel
+  commentId: N:System.ComponentModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.ComponentModel
+  nameWithType: System.ComponentModel
+  fullName: System.ComponentModel
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.ComponentModel
+    name: ComponentModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.componentmodel
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.#ctor*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.#ctor
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement__ctor
+  name: CommentElement
+  nameWithType: CommentElement.CommentElement
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.CommentElement
+  nameWithType.vb: CommentElement.New
+  fullName.vb: FlowGraph.Core.Elements.Shapes.CommentElement.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Elements.CanvasElement.Type
+  commentId: P:FlowGraph.Core.Elements.CanvasElement.Type
+  parent: FlowGraph.Core.Elements.CanvasElement
+  href: FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Type
+  name: Type
+  nameWithType: CanvasElement.Type
+  fullName: FlowGraph.Core.Elements.CanvasElement.Type
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Type*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.Type
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_Type
+  name: Type
+  nameWithType: CommentElement.Type
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Type
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Text*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.Text
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_Text
+  name: Text
+  nameWithType: CommentElement.Text
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Text
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_BackgroundColor
+  name: BackgroundColor
+  nameWithType: CommentElement.BackgroundColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.TextColor*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_TextColor
+  name: TextColor
+  nameWithType: CommentElement.TextColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.TextColor
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_BorderColor
+  name: BorderColor
+  nameWithType: CommentElement.BorderColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontSize*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_FontSize
+  name: FontSize
+  nameWithType: CommentElement.FontSize
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontSize
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_FontFamily
+  name: FontFamily
+  nameWithType: CommentElement.FontFamily
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_FontWeight
+  name: FontWeight
+  nameWithType: CommentElement.FontWeight
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight
+- uid: FlowGraph.Core.Elements.Shapes.FontWeight
+  commentId: T:FlowGraph.Core.Elements.Shapes.FontWeight
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.FontWeight.html
+  name: FontWeight
+  nameWithType: FontWeight
+  fullName: FlowGraph.Core.Elements.Shapes.FontWeight
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Padding*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_Padding
+  name: Padding
+  nameWithType: CommentElement.Padding
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Padding
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_CornerRadius
+  name: CornerRadius
+  nameWithType: CommentElement.CornerRadius
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ShowShadow
+  name: ShowShadow
+  nameWithType: CommentElement.ShowShadow
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ShadowBlur
+  name: ShadowBlur
+  nameWithType: CommentElement.ShadowBlur
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetX
+  name: ShadowOffsetX
+  nameWithType: CommentElement.ShadowOffsetX
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetY
+  name: ShadowOffsetY
+  nameWithType: CommentElement.ShadowOffsetY
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ShadowColor
+  name: ShadowColor
+  nameWithType: CommentElement.ShadowColor
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_IsEditing
+  name: IsEditing
+  nameWithType: CommentElement.IsEditing
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Style*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.Style
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_Style
+  name: Style
+  nameWithType: CommentElement.Style
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Style
+- uid: FlowGraph.Core.Elements.Shapes.CommentStyle
+  commentId: T:FlowGraph.Core.Elements.Shapes.CommentStyle
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.CommentStyle.html
+  name: CommentStyle
+  nameWithType: CommentStyle
+  fullName: FlowGraph.Core.Elements.Shapes.CommentStyle
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement.Clone*
+  commentId: Overload:FlowGraph.Core.Elements.Shapes.CommentElement.Clone
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_Clone
+  name: Clone
+  nameWithType: CommentElement.Clone
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement.Clone
+- uid: FlowGraph.Core.Elements.Shapes.CommentElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.CommentElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.CommentElement.html
+  name: CommentElement
+  nameWithType: CommentElement
+  fullName: FlowGraph.Core.Elements.Shapes.CommentElement

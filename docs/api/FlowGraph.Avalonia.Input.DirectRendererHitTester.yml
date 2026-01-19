@@ -1,0 +1,1062 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  commentId: T:FlowGraph.Avalonia.Input.DirectRendererHitTester
+  id: DirectRendererHitTester
+  parent: FlowGraph.Avalonia.Input
+  children:
+  - FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor(System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},FlowGraph.Avalonia.ViewportState)
+  - FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  - FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  - FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+  langs:
+  - csharp
+  - vb
+  name: DirectRendererHitTester
+  nameWithType: DirectRendererHitTester
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DirectRendererHitTester
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Adapts <xref href="FlowGraph.Avalonia.Rendering.DirectCanvasRenderer" data-throw-if-not-resolved="false"></xref> hit testing to the <xref href="FlowGraph.Core.Input.IGraphHitTester" data-throw-if-not-resolved="false"></xref> interface.
+  remarks: >-
+    <p>
+
+    This adapter bridges the gap between the existing DirectCanvasRenderer hit testing
+
+    (which returns separate results per element type) and the new unified IGraphHitTester
+
+    interface (which returns a single GraphHitTestResult).
+
+    </p>
+
+    <p>
+
+    <b>Coordinate Space:</b>
+
+    DirectCanvasRenderer expects screen/viewport coordinates and converts internally.
+
+    This adapter expects canvas coordinates and converts to screen coordinates for the renderer.
+
+    </p>
+
+    <p>
+
+    <b>Priority Order (determines actual hit priority):</b>
+
+    <ol><li>Node resize handles (highest - small targets on selected nodes)</li><li>Shape resize handles (small targets on selected shapes)</li><li>Edge endpoint handles (for reconnection)</li><li>Ports (small targets)</li><li>Nodes</li><li>Edges</li><li>Shapes (lowest - background elements)</li></ol>
+
+    </p>
+
+    <p>
+
+    <b>Note:</b> Since this hit tester returns a single topmost result, the InputDispatcher
+
+    processor priorities are not used for determining which element is hit. Priority is
+
+    enforced entirely by this class's if/else chain ordering.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public class DirectRendererHitTester : IGraphHitTester'
+    content.vb: Public Class DirectRendererHitTester Implements IGraphHitTester
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Core.Input.IGraphHitTester
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor(System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},FlowGraph.Avalonia.ViewportState)
+  commentId: M:FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor(System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},FlowGraph.Avalonia.ViewportState)
+  id: '#ctor(System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},FlowGraph.Avalonia.ViewportState)'
+  parent: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  langs:
+  - csharp
+  - vb
+  name: DirectRendererHitTester(Func<DirectCanvasRenderer?>, ViewportState)
+  nameWithType: DirectRendererHitTester.DirectRendererHitTester(Func<DirectCanvasRenderer?>, ViewportState)
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.DirectRendererHitTester(System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer?>, FlowGraph.Avalonia.ViewportState)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Creates a new hit tester that wraps a DirectCanvasRenderer.
+  example: []
+  syntax:
+    content: public DirectRendererHitTester(Func<DirectCanvasRenderer?> getRenderer, ViewportState viewport)
+    parameters:
+    - id: getRenderer
+      type: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+      description: Function to get the current renderer (may be null if not initialized).
+    - id: viewport
+      type: FlowGraph.Avalonia.ViewportState
+      description: The viewport state for coordinate conversion.
+    content.vb: Public Sub New(getRenderer As Func(Of DirectCanvasRenderer), viewport As ViewportState)
+  overload: FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor*
+  nameWithType.vb: DirectRendererHitTester.New(Func(Of DirectCanvasRenderer), ViewportState)
+  fullName.vb: FlowGraph.Avalonia.Input.DirectRendererHitTester.New(System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer), FlowGraph.Avalonia.ViewportState)
+  name.vb: New(Func(Of DirectCanvasRenderer), ViewportState)
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+  commentId: P:FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+  id: InputCoordinateSpace
+  parent: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  langs:
+  - csharp
+  - vb
+  name: InputCoordinateSpace
+  nameWithType: DirectRendererHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InputCoordinateSpace
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 63
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    The coordinate space expected for hit test inputs.
+
+
+    <p>
+
+    Standard implementations expect <xref href="FlowGraph.Core.Rendering.CoordinateSpace.Canvas" data-throw-if-not-resolved="false"></xref> coordinates.
+
+    Callers using screen coordinates (e.g., from pointer events) must convert
+
+    using <xref href="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> first.
+
+    </p>
+  example: []
+  syntax:
+    content: public CoordinateSpace InputCoordinateSpace { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Rendering.CoordinateSpace
+    content.vb: Public ReadOnly Property InputCoordinateSpace As CoordinateSpace
+  overload: FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace*
+  implements:
+  - FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point)
+  id: HitTest(FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point)
+  nameWithType: DirectRendererHitTester.HitTest(Point)
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 66
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Performs a comprehensive hit test against all graph elements.
+  example: []
+  syntax:
+    content: public GraphHitTestResult HitTest(Point canvasPosition)
+    parameters:
+    - id: canvasPosition
+      type: FlowGraph.Core.Point
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: >-
+        The hit test result identifying what was hit. If nothing specific was hit,
+
+        returns a result with <xref href="FlowGraph.Core.Input.HitTargetType.Canvas" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Function HitTest(canvasPosition As Point) As GraphHitTestResult
+  overload: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest*
+  implements:
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  id: HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point, double, double, double)
+  nameWithType: DirectRendererHitTester.HitTest(Point, double, double, double)
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point, double, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 183
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Performs a hit test with custom tolerance values.
+  example: []
+  syntax:
+    content: public GraphHitTestResult HitTest(Point position, double nodeTolerance = 0, double edgeTolerance = 5, double portTolerance = 8)
+    parameters:
+    - id: position
+      type: FlowGraph.Core.Point
+      description: Position to test.
+    - id: nodeTolerance
+      type: System.Double
+      description: Extra tolerance for node bounds.
+    - id: edgeTolerance
+      type: System.Double
+      description: Extra tolerance for edge paths.
+    - id: portTolerance
+      type: System.Double
+      description: Extra tolerance for port targets.
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: The hit test result.
+    content.vb: Public Function HitTest(position As Point, nodeTolerance As Double = 0, edgeTolerance As Double = 5, portTolerance As Double = 8) As GraphHitTestResult
+  overload: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest*
+  implements:
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  nameWithType.vb: DirectRendererHitTester.HitTest(Point, Double, Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point, Double, Double, Double)
+  name.vb: HitTest(Point, Double, Double, Double)
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  commentId: M:FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  id: HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  parent: FlowGraph.Avalonia.Input.DirectRendererHitTester
+  langs:
+  - csharp
+  - vb
+  name: HitTest(Point, params HitTargetType[])
+  nameWithType: DirectRendererHitTester.HitTest(Point, params HitTargetType[])
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point, params FlowGraph.Core.Input.HitTargetType[])
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTest
+    path: ../FlowGraph.Avalonia/Input/DirectRendererHitTester.cs
+    startLine: 194
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Performs a hit test filtering to specific element types.
+  example: []
+  syntax:
+    content: public GraphHitTestResult HitTest(Point position, params HitTargetType[] targetTypes)
+    parameters:
+    - id: position
+      type: FlowGraph.Core.Point
+      description: Position to test.
+    - id: targetTypes
+      type: FlowGraph.Core.Input.HitTargetType[]
+      description: Which element types to consider.
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+      description: The hit test result, only matching specified types.
+    content.vb: Public Function HitTest(position As Point, ParamArray targetTypes As HitTargetType()) As GraphHitTestResult
+  overload: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest*
+  implements:
+  - FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  nameWithType.vb: DirectRendererHitTester.HitTest(Point, ParamArray HitTargetType())
+  fullName.vb: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest(FlowGraph.Core.Point, ParamArray FlowGraph.Core.Input.HitTargetType())
+  name.vb: HitTest(Point, ParamArray HitTargetType())
+references:
+- uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  name: DirectCanvasRenderer
+  nameWithType: DirectCanvasRenderer
+  fullName: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+- uid: FlowGraph.Core.Input.IGraphHitTester
+  commentId: T:FlowGraph.Core.Input.IGraphHitTester
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.IGraphHitTester.html
+  name: IGraphHitTester
+  nameWithType: IGraphHitTester
+  fullName: FlowGraph.Core.Input.IGraphHitTester
+- uid: FlowGraph.Avalonia.Input
+  commentId: N:FlowGraph.Avalonia.Input
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Input
+  nameWithType: FlowGraph.Avalonia.Input
+  fullName: FlowGraph.Avalonia.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Input
+    name: Input
+    href: FlowGraph.Avalonia.Input.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Input.DirectRendererHitTester.#ctor
+  href: FlowGraph.Avalonia.Input.DirectRendererHitTester.html#FlowGraph_Avalonia_Input_DirectRendererHitTester__ctor_System_Func_FlowGraph_Avalonia_Rendering_DirectCanvasRenderer__FlowGraph_Avalonia_ViewportState_
+  name: DirectRendererHitTester
+  nameWithType: DirectRendererHitTester.DirectRendererHitTester
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.DirectRendererHitTester
+  nameWithType.vb: DirectRendererHitTester.New
+  fullName.vb: FlowGraph.Avalonia.Input.DirectRendererHitTester.New
+  name.vb: New
+- uid: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<DirectCanvasRenderer>
+  nameWithType: Func<DirectCanvasRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer>
+  nameWithType.vb: Func(Of DirectCanvasRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  name.vb: Func(Of DirectCanvasRenderer)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  - name: )
+- uid: FlowGraph.Avalonia.ViewportState
+  commentId: T:FlowGraph.Avalonia.ViewportState
+  parent: FlowGraph.Avalonia
+  href: FlowGraph.Avalonia.ViewportState.html
+  name: ViewportState
+  nameWithType: ViewportState
+  fullName: FlowGraph.Avalonia.ViewportState
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia
+  commentId: N:FlowGraph.Avalonia
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia
+  nameWithType: FlowGraph.Avalonia
+  fullName: FlowGraph.Avalonia
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+- uid: FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+  commentId: F:FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+  href: FlowGraph.Core.Rendering.CoordinateSpace.html#FlowGraph_Core_Rendering_CoordinateSpace_Canvas
+  name: Canvas
+  nameWithType: CoordinateSpace.Canvas
+  fullName: FlowGraph.Core.Rendering.CoordinateSpace.Canvas
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  isExternal: true
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  name: ScreenToCanvas(double, double)
+  nameWithType: ICoordinateTransformer.ScreenToCanvas(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(double, double)
+  nameWithType.vb: ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  name.vb: ScreenToCanvas(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace*
+  commentId: Overload:FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+  href: FlowGraph.Avalonia.Input.DirectRendererHitTester.html#FlowGraph_Avalonia_Input_DirectRendererHitTester_InputCoordinateSpace
+  name: InputCoordinateSpace
+  nameWithType: DirectRendererHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.InputCoordinateSpace
+- uid: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  commentId: P:FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_InputCoordinateSpace
+  name: InputCoordinateSpace
+  nameWithType: IGraphHitTester.InputCoordinateSpace
+  fullName: FlowGraph.Core.Input.IGraphHitTester.InputCoordinateSpace
+- uid: FlowGraph.Core.Rendering.CoordinateSpace
+  commentId: T:FlowGraph.Core.Rendering.CoordinateSpace
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.CoordinateSpace.html
+  name: CoordinateSpace
+  nameWithType: CoordinateSpace
+  fullName: FlowGraph.Core.Rendering.CoordinateSpace
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+  commentId: T:FlowGraph.Core.Rendering.ICoordinateTransformer
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  name: ICoordinateTransformer
+  nameWithType: ICoordinateTransformer
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer
+- uid: FlowGraph.Core.Rendering
+  commentId: N:FlowGraph.Core.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Core.Rendering
+  nameWithType: FlowGraph.Core.Rendering
+  fullName: FlowGraph.Core.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+- uid: FlowGraph.Core.Input.HitTargetType.Canvas
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Canvas
+  href: FlowGraph.Core.Input.HitTargetType.html#FlowGraph_Core_Input_HitTargetType_Canvas
+  name: Canvas
+  nameWithType: HitTargetType.Canvas
+  fullName: FlowGraph.Core.Input.HitTargetType.Canvas
+- uid: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest*
+  commentId: Overload:FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest
+  href: FlowGraph.Avalonia.Input.DirectRendererHitTester.html#FlowGraph_Avalonia_Input_DirectRendererHitTester_HitTest_FlowGraph_Core_Point_
+  name: HitTest
+  nameWithType: DirectRendererHitTester.HitTest
+  fullName: FlowGraph.Avalonia.Input.DirectRendererHitTester.HitTest
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_
+  name: HitTest(Point)
+  nameWithType: IGraphHitTester.HitTest(Point)
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point)
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core.Input.GraphHitTestResult
+  commentId: T:FlowGraph.Core.Input.GraphHitTestResult
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.GraphHitTestResult.html
+  name: GraphHitTestResult
+  nameWithType: GraphHitTestResult
+  fullName: FlowGraph.Core.Input.GraphHitTestResult
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  isExternal: true
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_System_Double_System_Double_System_Double_
+  name: HitTest(Point, double, double, double)
+  nameWithType: IGraphHitTester.HitTest(Point, double, double, double)
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, double, double, double)
+  nameWithType.vb: IGraphHitTester.HitTest(Point, Double, Double, Double)
+  fullName.vb: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, Double, Double, Double)
+  name.vb: HitTest(Point, Double, Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,System.Double,System.Double,System.Double)
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_System_Double_System_Double_System_Double_
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  commentId: M:FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+  parent: FlowGraph.Core.Input.IGraphHitTester
+  href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_FlowGraph_Core_Input_HitTargetType___
+  name: HitTest(Point, params HitTargetType[])
+  nameWithType: IGraphHitTester.HitTest(Point, params HitTargetType[])
+  fullName: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, params FlowGraph.Core.Input.HitTargetType[])
+  nameWithType.vb: IGraphHitTester.HitTest(Point, ParamArray HitTargetType())
+  fullName.vb: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point, ParamArray FlowGraph.Core.Input.HitTargetType())
+  name.vb: HitTest(Point, ParamArray HitTargetType())
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_FlowGraph_Core_Input_HitTargetType___
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Input.IGraphHitTester.HitTest(FlowGraph.Core.Point,FlowGraph.Core.Input.HitTargetType[])
+    name: HitTest
+    href: FlowGraph.Core.Input.IGraphHitTester.html#FlowGraph_Core_Input_IGraphHitTester_HitTest_FlowGraph_Core_Point_FlowGraph_Core_Input_HitTargetType___
+  - name: (
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: (
+  - name: )
+  - name: )
+- uid: FlowGraph.Core.Input.HitTargetType[]
+  isExternal: true
+  href: FlowGraph.Core.Input.HitTargetType.html
+  name: HitTargetType[]
+  nameWithType: HitTargetType[]
+  fullName: FlowGraph.Core.Input.HitTargetType[]
+  nameWithType.vb: HitTargetType()
+  fullName.vb: FlowGraph.Core.Input.HitTargetType()
+  name.vb: HitTargetType()
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    href: FlowGraph.Core.Input.HitTargetType.html
+  - name: (
+  - name: )

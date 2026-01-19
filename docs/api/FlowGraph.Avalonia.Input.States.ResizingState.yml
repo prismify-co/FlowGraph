@@ -5,7 +5,7 @@ items:
   id: ResizingState
   parent: FlowGraph.Avalonia.Input.States
   children:
-  - FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
+  - FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
   - FlowGraph.Avalonia.Input.States.ResizingState.HandleKeyDown(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.KeyEventArgs)
   - FlowGraph.Avalonia.Input.States.ResizingState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
   - FlowGraph.Avalonia.Input.States.ResizingState.HandlePointerReleased(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerReleasedEventArgs)
@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ResizingState
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
@@ -45,11 +45,19 @@ items:
   - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerPressed(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerPressedEventArgs,Avalonia.Controls.Control)
   - FlowGraph.Avalonia.Input.InputStateBase.HandlePointerWheel(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerWheelEventArgs)
   - FlowGraph.Avalonia.Input.InputStateBase.Update(FlowGraph.Avalonia.Input.InputStateContext,System.Double)
-  - FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
   - FlowGraph.Avalonia.Input.InputStateBase.GetPointerPoint(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
-  - FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
   - FlowGraph.Avalonia.Input.InputStateBase.CapturePointer(Avalonia.Input.PointerEventArgs,Avalonia.Input.IInputElement)
   - FlowGraph.Avalonia.Input.InputStateBase.ReleasePointer(Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  - FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
@@ -71,7 +79,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Name
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
@@ -89,21 +97,21 @@ items:
     content.vb: Public Overrides ReadOnly Property Name As String
   overridden: FlowGraph.Avalonia.Input.InputStateBase.Name
   overload: FlowGraph.Avalonia.Input.States.ResizingState.Name*
-- uid: FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
-  commentId: M:FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
-  id: '#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)'
+- uid: FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  commentId: M:FlowGraph.Avalonia.Input.States.ResizingState.#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  id: '#ctor(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition,Avalonia.Point,FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)'
   parent: FlowGraph.Avalonia.Input.States.ResizingState
   langs:
   - csharp
   - vb
-  name: ResizingState(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, GraphRenderer)
-  nameWithType: ResizingState.ResizingState(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, GraphRenderer)
-  fullName: FlowGraph.Avalonia.Input.States.ResizingState.ResizingState(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ResizeHandlePosition, Avalonia.Point, FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.GraphRenderer)
+  name: ResizingState(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, CanvasElementManager)
+  nameWithType: ResizingState.ResizingState(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, CanvasElementManager)
+  fullName: FlowGraph.Avalonia.Input.States.ResizingState.ResizingState(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ResizeHandlePosition, Avalonia.Point, FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.CanvasElementManager)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
@@ -112,7 +120,7 @@ items:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input.States
   syntax:
-    content: public ResizingState(Node node, ResizeHandlePosition handlePosition, Point startPoint, FlowCanvasSettings settings, ViewportState viewport, GraphRenderer graphRenderer)
+    content: public ResizingState(Node node, ResizeHandlePosition handlePosition, Point startPoint, FlowCanvasSettings settings, ViewportState viewport, CanvasElementManager graphRenderer)
     parameters:
     - id: node
       type: FlowGraph.Core.Node
@@ -125,12 +133,12 @@ items:
     - id: viewport
       type: FlowGraph.Avalonia.ViewportState
     - id: graphRenderer
-      type: FlowGraph.Avalonia.Rendering.GraphRenderer
-    content.vb: Public Sub New(node As Node, handlePosition As ResizeHandlePosition, startPoint As Point, settings As FlowCanvasSettings, viewport As ViewportState, graphRenderer As GraphRenderer)
+      type: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    content.vb: Public Sub New(node As Node, handlePosition As ResizeHandlePosition, startPoint As Point, settings As FlowCanvasSettings, viewport As ViewportState, graphRenderer As CanvasElementManager)
   overload: FlowGraph.Avalonia.Input.States.ResizingState.#ctor*
-  nameWithType.vb: ResizingState.New(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, GraphRenderer)
-  fullName.vb: FlowGraph.Avalonia.Input.States.ResizingState.New(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ResizeHandlePosition, Avalonia.Point, FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.GraphRenderer)
-  name.vb: New(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, GraphRenderer)
+  nameWithType.vb: ResizingState.New(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, CanvasElementManager)
+  fullName.vb: FlowGraph.Avalonia.Input.States.ResizingState.New(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ResizeHandlePosition, Avalonia.Point, FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  name.vb: New(Node, ResizeHandlePosition, Point, FlowCanvasSettings, ViewportState, CanvasElementManager)
 - uid: FlowGraph.Avalonia.Input.States.ResizingState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
   commentId: M:FlowGraph.Avalonia.Input.States.ResizingState.HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
   id: HandlePointerMoved(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
@@ -145,7 +153,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandlePointerMoved
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
@@ -181,11 +189,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandlePointerReleased
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
-    startLine: 73
+    startLine: 82
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input.States
@@ -217,11 +225,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/States/ResizingState.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandleKeyDown
     path: ../FlowGraph.Avalonia/Input/States/ResizingState.cs
-    startLine: 98
+    startLine: 107
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input.States
@@ -483,18 +491,18 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
   - name: )
-- uid: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
-  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
   parent: FlowGraph.Avalonia.Input.InputStateBase
   isExternal: true
-  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
-  name: GetPosition(InputStateContext, PointerEventArgs)
-  nameWithType: InputStateBase.GetPosition(InputStateContext, PointerEventArgs)
-  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetScreenPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetScreenPosition(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetScreenPosition(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
   spec.csharp:
-  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
-    name: GetPosition
-    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetScreenPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetScreenPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
   - name: (
   - uid: FlowGraph.Avalonia.Input.InputStateContext
     name: InputStateContext
@@ -506,9 +514,45 @@ references:
     isExternal: true
   - name: )
   spec.vb:
-  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
-    name: GetPosition
-    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetScreenPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetScreenPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetScreenPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetCanvasPosition(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetCanvasPosition(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetCanvasPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetCanvasPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
   - name: (
   - uid: FlowGraph.Avalonia.Input.InputStateContext
     name: InputStateContext
@@ -555,18 +599,18 @@ references:
     name: PointerEventArgs
     isExternal: true
   - name: )
-- uid: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
-  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
   parent: FlowGraph.Avalonia.Input.InputStateBase
   isExternal: true
-  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTest_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
-  name: HitTest(InputStateContext, Point)
-  nameWithType: InputStateBase.HitTest(InputStateContext, Point)
-  fullName: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Point)
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestCanvas_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  name: HitTestCanvas(InputStateContext, Point)
+  nameWithType: InputStateBase.HitTestCanvas(InputStateContext, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Point)
   spec.csharp:
-  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
-    name: HitTest
-    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTest_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+    name: HitTestCanvas
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestCanvas_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
   - name: (
   - uid: FlowGraph.Avalonia.Input.InputStateContext
     name: InputStateContext
@@ -578,9 +622,45 @@ references:
     isExternal: true
   - name: )
   spec.vb:
-  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTest(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
-    name: HitTest
-    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTest_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestCanvas(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+    name: HitTestCanvas
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestCanvas_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestForPort_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  name: HitTestForPort(InputStateContext, Point)
+  nameWithType: InputStateBase.HitTestForPort(InputStateContext, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Point)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+    name: HitTestForPort
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestForPort_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.HitTestForPort(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Point)
+    name: HitTestForPort
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_HitTestForPort_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Point_
   - name: (
   - uid: FlowGraph.Avalonia.Input.InputStateContext
     name: InputStateContext
@@ -651,6 +731,180 @@ references:
   - name: (
   - uid: Avalonia.Input.PointerEventArgs
     name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetTypedCanvasPosition(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetTypedCanvasPosition(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetTypedCanvasPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedCanvasPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetTypedCanvasPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedCanvasPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedViewportPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  name: GetTypedViewportPosition(InputStateContext, PointerEventArgs)
+  nameWithType: InputStateBase.GetTypedViewportPosition(InputStateContext, PointerEventArgs)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext, Avalonia.Input.PointerEventArgs)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetTypedViewportPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedViewportPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.GetTypedViewportPosition(FlowGraph.Avalonia.Input.InputStateContext,Avalonia.Input.PointerEventArgs)
+    name: GetTypedViewportPosition
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_GetTypedViewportPosition_FlowGraph_Avalonia_Input_InputStateContext_Avalonia_Input_PointerEventArgs_
+  - name: (
+  - uid: FlowGraph.Avalonia.Input.InputStateContext
+    name: InputStateContext
+    href: FlowGraph.Avalonia.Input.InputStateContext.html
+  - name: ','
+  - name: " "
+  - uid: Avalonia.Input.PointerEventArgs
+    name: PointerEventArgs
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToAvaloniaPoint(CanvasPoint)
+  nameWithType: InputStateBase.ToAvaloniaPoint(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvaloniaPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.CanvasPoint)
+    name: ToAvaloniaPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_CanvasPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToAvaloniaPoint(ViewportPoint)
+  nameWithType: InputStateBase.ToAvaloniaPoint(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvaloniaPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToAvaloniaPoint(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvaloniaPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToAvaloniaPoint_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToCanvasPoint_Avalonia_Point_
+  name: ToCanvasPoint(Point)
+  nameWithType: InputStateBase.ToCanvasPoint(Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+    name: ToCanvasPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToCanvasPoint_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToCanvasPoint(Avalonia.Point)
+    name: ToCanvasPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToCanvasPoint_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToViewportPoint_Avalonia_Point_
+  name: ToViewportPoint(Point)
+  nameWithType: InputStateBase.ToViewportPoint(Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
+    name: ToViewportPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToViewportPoint_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Input.InputStateBase.ToViewportPoint(Avalonia.Point)
+    name: ToViewportPoint
+    href: FlowGraph.Avalonia.Input.InputStateBase.html#FlowGraph_Avalonia_Input_InputStateBase_ToViewportPoint_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
     isExternal: true
   - name: )
 - uid: System.Object.Equals(System.Object)
@@ -935,7 +1189,7 @@ references:
   name.vb: String
 - uid: FlowGraph.Avalonia.Input.States.ResizingState.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Input.States.ResizingState.#ctor
-  href: FlowGraph.Avalonia.Input.States.ResizingState.html#FlowGraph_Avalonia_Input_States_ResizingState__ctor_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ResizeHandlePosition_Avalonia_Point_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_ViewportState_FlowGraph_Avalonia_Rendering_GraphRenderer_
+  href: FlowGraph.Avalonia.Input.States.ResizingState.html#FlowGraph_Avalonia_Input_States_ResizingState__ctor_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ResizeHandlePosition_Avalonia_Point_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_ViewportState_FlowGraph_Avalonia_Rendering_CanvasElementManager_
   name: ResizingState
   nameWithType: ResizingState.ResizingState
   fullName: FlowGraph.Avalonia.Input.States.ResizingState.ResizingState
@@ -977,13 +1231,13 @@ references:
   name: ViewportState
   nameWithType: ViewportState
   fullName: FlowGraph.Avalonia.ViewportState
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderer
+- uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasElementManager
   parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
-  name: GraphRenderer
-  nameWithType: GraphRenderer
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderer
+  href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
+  name: CanvasElementManager
+  nameWithType: CanvasElementManager
+  fullName: FlowGraph.Avalonia.Rendering.CanvasElementManager
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html

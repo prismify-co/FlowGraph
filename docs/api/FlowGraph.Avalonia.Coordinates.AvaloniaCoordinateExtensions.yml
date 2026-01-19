@@ -1,0 +1,1155 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  commentId: T:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  id: AvaloniaCoordinateExtensions
+  parent: FlowGraph.Avalonia.Coordinates
+  children:
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasRect)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasVector)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportRect)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportVector)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint(Avalonia.Point)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect(Avalonia.Rect)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Point)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Size)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint(Avalonia.Point)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect(Avalonia.Rect)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Point)
+  - FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Size)
+  langs:
+  - csharp
+  - vb
+  name: AvaloniaCoordinateExtensions
+  nameWithType: AvaloniaCoordinateExtensions
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AvaloniaCoordinateExtensions
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Extension methods for converting between FlowGraph typed coordinates and Avalonia types.
+
+
+    <p>
+
+    These extension methods provide seamless integration between the type-safe coordinate
+
+    system and Avalonia's native types. Use these at the boundary between coordinate-safe
+
+    code and Avalonia-specific rendering/hit-testing code.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Get typed coordinate from input
+
+    CanvasPoint canvasPos = context.Coordinates.GetPointerCanvasPosition(e);
+
+
+    // Convert to Avalonia for rendering
+
+    context.DrawEllipse(brush, pen, canvasPos.ToAvalonia(), 5, 5);
+
+
+    // Convert from Avalonia hit test result
+
+    var hitPoint = e.GetPosition(mainCanvas);
+
+    var canvasHit = hitPoint.ToCanvasPoint();</code></pre>
+  syntax:
+    content: public static class AvaloniaCoordinateExtensions
+    content.vb: Public Module AvaloniaCoordinateExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(CanvasPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(CanvasPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 37
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts a CanvasPoint to an Avalonia Point.
+  example: []
+  syntax:
+    content: public static Point ToAvalonia(this CanvasPoint canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    return:
+      type: Avalonia.Point
+    content.vb: Public Shared Function ToAvalonia(canvas As CanvasPoint) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint(Avalonia.Point)
+  id: ToCanvasPoint(Avalonia.Point)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasPoint(Point)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasPoint(Point)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasPoint
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Converts an Avalonia Point to a CanvasPoint.
+
+    Use when you know the point is in canvas space (e.g., from GetPosition(MainCanvas)).
+  example: []
+  syntax:
+    content: public static CanvasPoint ToCanvasPoint(this Point point)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasPoint
+    content.vb: Public Shared Function ToCanvasPoint(point As Point) As CanvasPoint
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(ViewportPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 54
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts a ViewportPoint to an Avalonia Point.
+  example: []
+  syntax:
+    content: public static Point ToAvalonia(this ViewportPoint viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    return:
+      type: Avalonia.Point
+    content.vb: Public Shared Function ToAvalonia(viewport As ViewportPoint) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint(Avalonia.Point)
+  id: ToViewportPoint(Avalonia.Point)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportPoint(Point)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportPoint(Point)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportPoint
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Converts an Avalonia Point to a ViewportPoint.
+
+    Use when you know the point is in viewport space (e.g., from GetPosition(RootPanel)).
+  example: []
+  syntax:
+    content: public static ViewportPoint ToViewportPoint(this Point point)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    content.vb: Public Shared Function ToViewportPoint(point As Point) As ViewportPoint
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasVector)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasVector)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.CanvasVector)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(CanvasVector)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(CanvasVector)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 72
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Converts a CanvasVector to an Avalonia Point (treating vector as point).
+
+    Some Avalonia APIs use Point for both positions and deltas.
+  example: []
+  syntax:
+    content: public static Point ToAvalonia(this CanvasVector vector)
+    parameters:
+    - id: vector
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    return:
+      type: Avalonia.Point
+    content.vb: Public Shared Function ToAvalonia(vector As CanvasVector) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Point)
+  id: ToCanvasVector(Avalonia.Point)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasVector(Point)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasVector(Point)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasVector
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 78
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Point (used as delta) to a CanvasVector.
+  example: []
+  syntax:
+    content: public static CanvasVector ToCanvasVector(this Point point)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    content.vb: Public Shared Function ToCanvasVector(point As Point) As CanvasVector
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportVector)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.ViewportVector)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(ViewportVector)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(ViewportVector)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportVector)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 88
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts a ViewportVector to an Avalonia Point (treating vector as point).
+  example: []
+  syntax:
+    content: public static Point ToAvalonia(this ViewportVector vector)
+    parameters:
+    - id: vector
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    return:
+      type: Avalonia.Point
+    content.vb: Public Shared Function ToAvalonia(vector As ViewportVector) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Point)
+  id: ToViewportVector(Avalonia.Point)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportVector(Point)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportVector(Point)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportVector
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 94
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Point (used as delta) to a ViewportVector.
+  example: []
+  syntax:
+    content: public static ViewportVector ToViewportVector(this Point point)
+    parameters:
+    - id: point
+      type: Avalonia.Point
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    content.vb: Public Shared Function ToViewportVector(point As Point) As ViewportVector
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasRect)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasRect)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.CanvasRect)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(CanvasRect)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(CanvasRect)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.CanvasRect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts a CanvasRect to an Avalonia Rect.
+  example: []
+  syntax:
+    content: public static Rect ToAvalonia(this CanvasRect canvas)
+    parameters:
+    - id: canvas
+      type: FlowGraph.Core.Coordinates.CanvasRect
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Shared Function ToAvalonia(canvas As CanvasRect) As Rect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect(Avalonia.Rect)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect(Avalonia.Rect)
+  id: ToCanvasRect(Avalonia.Rect)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasRect(Rect)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasRect(Rect)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect(Avalonia.Rect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasRect
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Converts an Avalonia Rect to a CanvasRect.
+
+    Use when you know the rect is in canvas space.
+  example: []
+  syntax:
+    content: public static CanvasRect ToCanvasRect(this Rect rect)
+    parameters:
+    - id: rect
+      type: Avalonia.Rect
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasRect
+    content.vb: Public Shared Function ToCanvasRect(rect As Rect) As CanvasRect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportRect)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportRect)
+  id: ToAvalonia(FlowGraph.Core.Coordinates.ViewportRect)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToAvalonia(ViewportRect)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(ViewportRect)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportRect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToAvalonia
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 121
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts a ViewportRect to an Avalonia Rect.
+  example: []
+  syntax:
+    content: public static Rect ToAvalonia(this ViewportRect viewport)
+    parameters:
+    - id: viewport
+      type: FlowGraph.Core.Coordinates.ViewportRect
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Shared Function ToAvalonia(viewport As ViewportRect) As Rect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect(Avalonia.Rect)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect(Avalonia.Rect)
+  id: ToViewportRect(Avalonia.Rect)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportRect(Rect)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportRect(Rect)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect(Avalonia.Rect)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportRect
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 128
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: >-
+    Converts an Avalonia Rect to a ViewportRect.
+
+    Use when you know the rect is in viewport space.
+  example: []
+  syntax:
+    content: public static ViewportRect ToViewportRect(this Rect rect)
+    parameters:
+    - id: rect
+      type: Avalonia.Rect
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportRect
+    content.vb: Public Shared Function ToViewportRect(rect As Rect) As ViewportRect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Size)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Size)
+  id: ToCanvasVector(Avalonia.Size)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasVector(Size)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasVector(Size)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector(Avalonia.Size)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasVector
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 138
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Size to a CanvasVector (treating size as dimensions).
+  example: []
+  syntax:
+    content: public static CanvasVector ToCanvasVector(this Size size)
+    parameters:
+    - id: size
+      type: Avalonia.Size
+    return:
+      type: FlowGraph.Core.Coordinates.CanvasVector
+    content.vb: Public Shared Function ToCanvasVector(size As Size) As CanvasVector
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Size)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Size)
+  id: ToViewportVector(Avalonia.Size)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportVector(Size)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportVector(Size)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector(Avalonia.Size)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportVector
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 144
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Size to a ViewportVector (treating size as dimensions).
+  example: []
+  syntax:
+    content: public static ViewportVector ToViewportVector(this Size size)
+    parameters:
+    - id: size
+      type: Avalonia.Size
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    content.vb: Public Shared Function ToViewportVector(size As Size) As ViewportVector
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  id: ToCanvasSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasSpace(Point, ITypedCoordinateTransformer)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasSpace(Point, ITypedCoordinateTransformer)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Point, FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasSpace
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 157
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Point from viewport to canvas space using a transformer.
+  example: []
+  syntax:
+    content: public static Point ToCanvasSpace(this Point viewportPoint, ITypedCoordinateTransformer transformer)
+    parameters:
+    - id: viewportPoint
+      type: Avalonia.Point
+      description: Point in viewport coordinates.
+    - id: transformer
+      type: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+      description: The coordinate transformer.
+    return:
+      type: Avalonia.Point
+      description: Point in canvas coordinates.
+    content.vb: Public Shared Function ToCanvasSpace(viewportPoint As Point, transformer As ITypedCoordinateTransformer) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  id: ToViewportSpace(Avalonia.Point,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportSpace(Point, ITypedCoordinateTransformer)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportSpace(Point, ITypedCoordinateTransformer)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Point, FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportSpace
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 171
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Point from canvas to viewport space using a transformer.
+  example: []
+  syntax:
+    content: public static Point ToViewportSpace(this Point canvasPoint, ITypedCoordinateTransformer transformer)
+    parameters:
+    - id: canvasPoint
+      type: Avalonia.Point
+      description: Point in canvas coordinates.
+    - id: transformer
+      type: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+      description: The coordinate transformer.
+    return:
+      type: Avalonia.Point
+      description: Point in viewport coordinates.
+    content.vb: Public Shared Function ToViewportSpace(canvasPoint As Point, transformer As ITypedCoordinateTransformer) As Point
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  id: ToViewportSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToViewportSpace(Rect, ITypedCoordinateTransformer)
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportSpace(Rect, ITypedCoordinateTransformer)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace(Avalonia.Rect, FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToViewportSpace
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 182
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Rect from canvas to viewport space using a transformer.
+  example: []
+  syntax:
+    content: public static Rect ToViewportSpace(this Rect canvasRect, ITypedCoordinateTransformer transformer)
+    parameters:
+    - id: canvasRect
+      type: Avalonia.Rect
+    - id: transformer
+      type: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Shared Function ToViewportSpace(canvasRect As Rect, transformer As ITypedCoordinateTransformer) As Rect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace*
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  id: ToCanvasSpace(Avalonia.Rect,FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  isExtensionMethod: true
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToCanvasSpace(Rect, ITypedCoordinateTransformer)
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasSpace(Rect, ITypedCoordinateTransformer)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace(Avalonia.Rect, FlowGraph.Core.Coordinates.ITypedCoordinateTransformer)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToCanvasSpace
+    path: ../FlowGraph.Avalonia/Coordinates/AvaloniaCoordinateExtensions.cs
+    startLine: 193
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Coordinates
+  summary: Converts an Avalonia Rect from viewport to canvas space using a transformer.
+  example: []
+  syntax:
+    content: public static Rect ToCanvasSpace(this Rect viewportRect, ITypedCoordinateTransformer transformer)
+    parameters:
+    - id: viewportRect
+      type: Avalonia.Rect
+    - id: transformer
+      type: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    return:
+      type: Avalonia.Rect
+    content.vb: Public Shared Function ToCanvasSpace(viewportRect As Rect, transformer As ITypedCoordinateTransformer) As Rect
+  overload: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace*
+references:
+- uid: FlowGraph.Avalonia.Coordinates
+  commentId: N:FlowGraph.Avalonia.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Coordinates
+  nameWithType: FlowGraph.Avalonia.Coordinates
+  fullName: FlowGraph.Avalonia.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_CanvasPoint_
+  name: ToAvalonia
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+- uid: FlowGraph.Core.Coordinates.CanvasPoint
+  commentId: T:FlowGraph.Core.Coordinates.CanvasPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasPoint.html
+  name: CanvasPoint
+  nameWithType: CanvasPoint
+  fullName: FlowGraph.Core.Coordinates.CanvasPoint
+- uid: Avalonia.Point
+  commentId: T:Avalonia.Point
+  parent: Avalonia
+  isExternal: true
+  name: Point
+  nameWithType: Point
+  fullName: Avalonia.Point
+- uid: FlowGraph.Core.Coordinates
+  commentId: N:FlowGraph.Core.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Core.Coordinates
+  nameWithType: FlowGraph.Core.Coordinates
+  fullName: FlowGraph.Core.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+- uid: Avalonia
+  commentId: N:Avalonia
+  isExternal: true
+  name: Avalonia
+  nameWithType: Avalonia
+  fullName: Avalonia
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToCanvasPoint_Avalonia_Point_
+  name: ToCanvasPoint
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasPoint
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasPoint
+- uid: FlowGraph.Core.Coordinates.ViewportPoint
+  commentId: T:FlowGraph.Core.Coordinates.ViewportPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  name: ViewportPoint
+  nameWithType: ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToViewportPoint_Avalonia_Point_
+  name: ToViewportPoint
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportPoint
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportPoint
+- uid: FlowGraph.Core.Coordinates.CanvasVector
+  commentId: T:FlowGraph.Core.Coordinates.CanvasVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasVector.html
+  name: CanvasVector
+  nameWithType: CanvasVector
+  fullName: FlowGraph.Core.Coordinates.CanvasVector
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToCanvasVector_Avalonia_Point_
+  name: ToCanvasVector
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasVector
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasVector
+- uid: FlowGraph.Core.Coordinates.ViewportVector
+  commentId: T:FlowGraph.Core.Coordinates.ViewportVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportVector.html
+  name: ViewportVector
+  nameWithType: ViewportVector
+  fullName: FlowGraph.Core.Coordinates.ViewportVector
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToViewportVector_Avalonia_Point_
+  name: ToViewportVector
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportVector
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportVector
+- uid: FlowGraph.Core.Coordinates.CanvasRect
+  commentId: T:FlowGraph.Core.Coordinates.CanvasRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.CanvasRect.html
+  name: CanvasRect
+  nameWithType: CanvasRect
+  fullName: FlowGraph.Core.Coordinates.CanvasRect
+- uid: Avalonia.Rect
+  commentId: T:Avalonia.Rect
+  parent: Avalonia
+  isExternal: true
+  name: Rect
+  nameWithType: Rect
+  fullName: Avalonia.Rect
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToCanvasRect_Avalonia_Rect_
+  name: ToCanvasRect
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasRect
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasRect
+- uid: FlowGraph.Core.Coordinates.ViewportRect
+  commentId: T:FlowGraph.Core.Coordinates.ViewportRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportRect.html
+  name: ViewportRect
+  nameWithType: ViewportRect
+  fullName: FlowGraph.Core.Coordinates.ViewportRect
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToViewportRect_Avalonia_Rect_
+  name: ToViewportRect
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportRect
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportRect
+- uid: Avalonia.Size
+  commentId: T:Avalonia.Size
+  parent: Avalonia
+  isExternal: true
+  name: Size
+  nameWithType: Size
+  fullName: Avalonia.Size
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToCanvasSpace_Avalonia_Point_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_
+  name: ToCanvasSpace
+  nameWithType: AvaloniaCoordinateExtensions.ToCanvasSpace
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToCanvasSpace
+- uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  commentId: T:FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html
+  name: ITypedCoordinateTransformer
+  nameWithType: ITypedCoordinateTransformer
+  fullName: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace*
+  commentId: Overload:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToViewportSpace_Avalonia_Point_FlowGraph_Core_Coordinates_ITypedCoordinateTransformer_
+  name: ToViewportSpace
+  nameWithType: AvaloniaCoordinateExtensions.ToViewportSpace
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToViewportSpace

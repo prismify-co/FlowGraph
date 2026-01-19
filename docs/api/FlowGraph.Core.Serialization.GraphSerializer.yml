@@ -20,15 +20,31 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphSerializer
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 12
+    startLine: 22
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
   summary: Serializes and deserializes graphs to/from JSON.
+  remarks: >-
+    <p>
+
+    Supports two format versions:
+
+    </p>
+
+    <ul><li><b>Version 2 (default)</b>: Uses polymorphic <code>elements[]</code> array with "kind" discriminator</li><li><b>Version 1 (legacy)</b>: Uses separate <code>nodes[]</code>, <code>edges[]</code>, <code>shapes[]</code> arrays</li></ul>
+
+    <p>
+
+    Serialization always outputs Version 2 format. Deserialization supports both formats
+
+    for backward compatibility with older saved files.
+
+    </p>
   example: []
   syntax:
     content: public static class GraphSerializer
@@ -57,11 +73,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Serialize
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 34
+    startLine: 47
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -72,10 +88,13 @@ items:
     parameters:
     - id: graph
       type: FlowGraph.Core.Graph
+      description: The graph to serialize.
     - id: options
       type: System.Text.Json.JsonSerializerOptions
+      description: Optional JSON serializer options. Uses default if not specified.
     return:
       type: System.String
+      description: JSON string representation of the graph.
     content.vb: Public Shared Function Serialize(graph As Graph, options As JsonSerializerOptions = Nothing) As String
   overload: FlowGraph.Core.Serialization.GraphSerializer.Serialize*
   nameWithType.vb: GraphSerializer.Serialize(Graph, JsonSerializerOptions)
@@ -95,11 +114,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SerializeToFileAsync
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 43
+    startLine: 59
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -110,10 +129,13 @@ items:
     parameters:
     - id: graph
       type: FlowGraph.Core.Graph
+      description: The graph to serialize.
     - id: filePath
       type: System.String
+      description: Path to the output file.
     - id: options
       type: System.Text.Json.JsonSerializerOptions
+      description: Optional JSON serializer options. Uses default if not specified.
     return:
       type: System.Threading.Tasks.Task
     content.vb: Public Shared Function SerializeToFileAsync(graph As Graph, filePath As String, options As JsonSerializerOptions = Nothing) As Task
@@ -135,11 +157,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Deserialize
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 53
+    startLine: 72
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -150,10 +172,13 @@ items:
     parameters:
     - id: json
       type: System.String
+      description: JSON string to deserialize.
     - id: options
       type: System.Text.Json.JsonSerializerOptions
+      description: Optional JSON serializer options. Uses default if not specified.
     return:
       type: FlowGraph.Core.Graph
+      description: Deserialized graph, or null if deserialization fails.
     content.vb: Public Shared Function Deserialize(json As String, options As JsonSerializerOptions = Nothing) As Graph
   overload: FlowGraph.Core.Serialization.GraphSerializer.Deserialize*
   nameWithType.vb: GraphSerializer.Deserialize(String, JsonSerializerOptions)
@@ -173,11 +198,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DeserializeFromFileAsync
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 69
+    startLine: 91
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -188,10 +213,13 @@ items:
     parameters:
     - id: filePath
       type: System.String
+      description: Path to the JSON file.
     - id: options
       type: System.Text.Json.JsonSerializerOptions
+      description: Optional JSON serializer options. Uses default if not specified.
     return:
       type: System.Threading.Tasks.Task{FlowGraph.Core.Graph}
+      description: Deserialized graph, or null if deserialization fails.
     content.vb: Public Shared Function DeserializeFromFileAsync(filePath As String, options As JsonSerializerOptions = Nothing) As Task(Of Graph)
   overload: FlowGraph.Core.Serialization.GraphSerializer.DeserializeFromFileAsync*
   nameWithType.vb: GraphSerializer.DeserializeFromFileAsync(String, JsonSerializerOptions)
@@ -211,11 +239,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Serialization/GraphSerializer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TryValidate
     path: ../FlowGraph.Core/Serialization/GraphSerializer.cs
-    startLine: 79
+    startLine: 104
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Serialization
@@ -226,10 +254,13 @@ items:
     parameters:
     - id: json
       type: System.String
+      description: JSON string to validate.
     - id: errorMessage
       type: System.String
+      description: Error message if validation fails, null otherwise.
     return:
       type: System.Boolean
+      description: True if JSON is valid, false otherwise.
     content.vb: Public Shared Function TryValidate(json As String, errorMessage As String) As Boolean
   overload: FlowGraph.Core.Serialization.GraphSerializer.TryValidate*
   nameWithType.vb: GraphSerializer.TryValidate(String, String)

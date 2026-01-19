@@ -4,17 +4,26 @@ items:
   commentId: N:FlowGraph.Avalonia.Rendering
   id: FlowGraph.Avalonia.Rendering
   children:
+  - FlowGraph.Avalonia.Rendering.ArrowGeometryHelper
   - FlowGraph.Avalonia.Rendering.BezierHelper
-  - FlowGraph.Avalonia.Rendering.DirectGraphRenderer
+  - FlowGraph.Avalonia.Rendering.CanvasElementManager
+  - FlowGraph.Avalonia.Rendering.CanvasRenderModel
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService
+  - FlowGraph.Avalonia.Rendering.DesignTokens
+  - FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
   - FlowGraph.Avalonia.Rendering.EdgePathHelper
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager
-  - FlowGraph.Avalonia.Rendering.GraphRenderModel
-  - FlowGraph.Avalonia.Rendering.GraphRenderer
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  - FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle
+  - FlowGraph.Avalonia.Rendering.IRenderTarget
+  - FlowGraph.Avalonia.Rendering.ISelectionBoxHandle
   - FlowGraph.Avalonia.Rendering.NodeVisualManager
   - FlowGraph.Avalonia.Rendering.RenderContext
+  - FlowGraph.Avalonia.Rendering.RenderTargetAdapter
   - FlowGraph.Avalonia.Rendering.ResizeHandleManager
   - FlowGraph.Avalonia.Rendering.ResizeHandlePosition
   - FlowGraph.Avalonia.Rendering.ThemeResources
+  - FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner
   langs:
   - csharp
   - vb
@@ -25,6 +34,12 @@ items:
   assemblies:
   - FlowGraph.Avalonia
 references:
+- uid: FlowGraph.Avalonia.Rendering.ArrowGeometryHelper
+  commentId: T:FlowGraph.Avalonia.Rendering.ArrowGeometryHelper
+  href: FlowGraph.Avalonia.Rendering.ArrowGeometryHelper.html
+  name: ArrowGeometryHelper
+  nameWithType: ArrowGeometryHelper
+  fullName: FlowGraph.Avalonia.Rendering.ArrowGeometryHelper
 - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper
   commentId: T:FlowGraph.Avalonia.Rendering.EdgePathHelper
   href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html
@@ -37,12 +52,39 @@ references:
   name: BezierHelper
   nameWithType: BezierHelper
   fullName: FlowGraph.Avalonia.Rendering.BezierHelper
-- uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
-  commentId: T:FlowGraph.Avalonia.Rendering.DirectGraphRenderer
-  href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html
-  name: DirectGraphRenderer
-  nameWithType: DirectGraphRenderer
-  fullName: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
+- uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasElementManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
+  name: CanvasElementManager
+  nameWithType: CanvasElementManager
+  fullName: FlowGraph.Avalonia.Rendering.CanvasElementManager
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderModel
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasRenderModel
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderModel.html
+  name: CanvasRenderModel
+  nameWithType: CanvasRenderModel
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderModel
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html
+  name: CanvasRenderService
+  nameWithType: CanvasRenderService
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService
+- uid: FlowGraph.Avalonia.Rendering.DesignTokens
+  commentId: T:FlowGraph.Avalonia.Rendering.DesignTokens
+  href: FlowGraph.Avalonia.Rendering.DesignTokens.html
+  name: DesignTokens
+  nameWithType: DesignTokens
+  fullName: FlowGraph.Avalonia.Rendering.DesignTokens
+- uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  name: DirectCanvasRenderer
+  nameWithType: DirectCanvasRenderer
+  fullName: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager
   commentId: T:FlowGraph.Avalonia.Rendering.EdgeVisualManager
   parent: FlowGraph.Avalonia.Rendering
@@ -50,20 +92,34 @@ references:
   name: EdgeVisualManager
   nameWithType: EdgeVisualManager
   fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderer
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  commentId: T:FlowGraph.Avalonia.Rendering.ICanvasRenderService
   parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
-  name: GraphRenderer
-  nameWithType: GraphRenderer
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderer
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel
-  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderModel
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html
+  name: ICanvasRenderService
+  nameWithType: ICanvasRenderService
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+- uid: FlowGraph.Avalonia.Rendering.IRenderTarget
+  commentId: T:FlowGraph.Avalonia.Rendering.IRenderTarget
   parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html
-  name: GraphRenderModel
-  nameWithType: GraphRenderModel
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  href: FlowGraph.Avalonia.Rendering.IRenderTarget.html
+  name: IRenderTarget
+  nameWithType: IRenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.IRenderTarget
+- uid: FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle
+  commentId: T:FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle.html
+  name: IConnectionPreviewHandle
+  nameWithType: IConnectionPreviewHandle
+  fullName: FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle
+- uid: FlowGraph.Avalonia.Rendering.ISelectionBoxHandle
+  commentId: T:FlowGraph.Avalonia.Rendering.ISelectionBoxHandle
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ISelectionBoxHandle.html
+  name: ISelectionBoxHandle
+  nameWithType: ISelectionBoxHandle
+  fullName: FlowGraph.Avalonia.Rendering.ISelectionBoxHandle
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager
   commentId: T:FlowGraph.Avalonia.Rendering.NodeVisualManager
   parent: FlowGraph.Avalonia.Rendering
@@ -78,6 +134,12 @@ references:
   name: RenderContext
   nameWithType: RenderContext
   fullName: FlowGraph.Avalonia.Rendering.RenderContext
+- uid: FlowGraph.Avalonia.Rendering.RenderTargetAdapter
+  commentId: T:FlowGraph.Avalonia.Rendering.RenderTargetAdapter
+  href: FlowGraph.Avalonia.Rendering.RenderTargetAdapter.html
+  name: RenderTargetAdapter
+  nameWithType: RenderTargetAdapter
+  fullName: FlowGraph.Avalonia.Rendering.RenderTargetAdapter
 - uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager
   commentId: T:FlowGraph.Avalonia.Rendering.ResizeHandleManager
   parent: FlowGraph.Avalonia.Rendering
@@ -99,6 +161,13 @@ references:
   name: ThemeResources
   nameWithType: ThemeResources
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+- uid: FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner
+  commentId: T:FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner.html
+  name: ViewportOverlayPositioner
+  nameWithType: ViewportOverlayPositioner
+  fullName: FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner
 - uid: FlowGraph.Avalonia.Rendering
   commentId: N:FlowGraph.Avalonia.Rendering
   href: FlowGraph.html

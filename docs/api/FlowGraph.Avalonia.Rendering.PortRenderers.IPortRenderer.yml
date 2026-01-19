@@ -7,6 +7,10 @@ items:
   children:
   - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.CreatePortVisual(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
   - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize(FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,System.String)
+  - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.UpdateState(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState)
   langs:
   - csharp
@@ -18,7 +22,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IPortRenderer
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
@@ -48,7 +52,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreatePortVisual
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
@@ -89,7 +93,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateState
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
@@ -133,7 +137,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetSize
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
@@ -159,6 +163,170 @@ items:
       type: System.Nullable{System.Double}
     content.vb: Function GetSize(port As Port, node As Node, settings As FlowCanvasSettings) As Double?
   overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.GetSize*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  id: OnDetached(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: OnDetached(Control, Port, Node)
+  nameWithType: IPortRenderer.OnDetached(Control, Port, Node)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OnDetached
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 43
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Called when the port visual is being removed from the canvas.
+
+    Use this to stop animations and clean up resources.
+  example: []
+  syntax:
+    content: void OnDetached(Control visual, Port port, Node node)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The port's visual control being removed.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    content.vb: Sub OnDetached(visual As Control, port As Port, node As Node)
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  id: TriggerDataPulse(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: TriggerDataPulse(Control, Port, Node, PortRenderContext)
+  nameWithType: IPortRenderer.TriggerDataPulse(Control, Port, Node, PortRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerDataPulse
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Triggers a one-shot data pulse animation to indicate data flowing through the port.
+  example: []
+  syntax:
+    content: void TriggerDataPulse(Control visual, Port port, Node node, PortRenderContext context)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The port's visual control.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+      description: The rendering context.
+    content.vb: Sub TriggerDataPulse(visual As Control, port As Port, node As Node, context As PortRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,System.String)
+  id: TriggerError(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node,System.String)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: TriggerError(Control, Port, Node, string?)
+  nameWithType: IPortRenderer.TriggerError(Control, Port, Node, string?)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node, string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerError
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Triggers a one-shot error animation (e.g., shake effect) for validation failures.
+  example: []
+  syntax:
+    content: void TriggerError(Control visual, Port port, Node node, string? message)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The port's visual control.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: message
+      type: System.String
+      description: Optional error message.
+    content.vb: Sub TriggerError(visual As Control, port As Port, node As Node, message As String)
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError*
+  nameWithType.vb: IPortRenderer.TriggerError(Control, Port, Node, String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node, String)
+  name.vb: TriggerError(Control, Port, Node, String)
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  id: TriggerSuccess(Avalonia.Controls.Control,FlowGraph.Core.Port,FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer
+  langs:
+  - csharp
+  - vb
+  name: TriggerSuccess(Control, Port, Node)
+  nameWithType: IPortRenderer.TriggerSuccess(Control, Port, Node)
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess(Avalonia.Controls.Control, FlowGraph.Core.Port, FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerSuccess
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 69
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Triggers a one-shot success animation (e.g., flash effect) for successful connections.
+  example: []
+  syntax:
+    content: void TriggerSuccess(Control visual, Port port, Node node)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The port's visual control.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port data.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    content.vb: Sub TriggerSuccess(visual As Control, port As Port, node As Node)
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess*
 references:
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.PortRenderers
@@ -382,3 +550,38 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_OnDetached_Avalonia_Controls_Control_FlowGraph_Core_Port_FlowGraph_Core_Node_
+  name: OnDetached
+  nameWithType: IPortRenderer.OnDetached
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.OnDetached
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_TriggerDataPulse_Avalonia_Controls_Control_FlowGraph_Core_Port_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_
+  name: TriggerDataPulse
+  nameWithType: IPortRenderer.TriggerDataPulse
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerDataPulse
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_TriggerError_Avalonia_Controls_Control_FlowGraph_Core_Port_FlowGraph_Core_Node_System_String_
+  name: TriggerError
+  nameWithType: IPortRenderer.TriggerError
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerError
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.html#FlowGraph_Avalonia_Rendering_PortRenderers_IPortRenderer_TriggerSuccess_Avalonia_Controls_Control_FlowGraph_Core_Port_FlowGraph_Core_Node_
+  name: TriggerSuccess
+  nameWithType: IPortRenderer.TriggerSuccess
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.IPortRenderer.TriggerSuccess

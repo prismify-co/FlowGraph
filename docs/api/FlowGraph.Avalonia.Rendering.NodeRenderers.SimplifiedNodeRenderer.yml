@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SimplifiedNodeRenderer
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
@@ -64,11 +64,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateNodeVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 19
+    startLine: 14
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -104,11 +104,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSelection
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 49
+    startLine: 44
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -144,15 +144,61 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSize
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 61
+    startLine: 59
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
   summary: Updates the size of an existing node visual.
+  remarks: >-
+    <p>
+
+    <b>IMPORTANT:</b> Implementations MUST update ALL child elements within the visual,
+
+    not just the root container. Failing to update child elements will cause the visual
+
+    to appear unchanged during resize operations until a full re-render occurs.
+
+    </p>
+
+    <p>
+
+    For composite visuals (e.g., a Grid containing Rectangles, Borders, or Canvases),
+
+    iterate through children and update their Width/Height properties accordingly.
+
+    </p>
+
+    <example>
+
+
+    <pre><code class="lang-csharp">public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+
+    {
+        var scaledWidth = width * context.Scale;
+        var scaledHeight = height * context.Scale;
+
+        if (visual is Grid grid)
+        {
+            grid.Width = scaledWidth;
+            grid.Height = scaledHeight;
+
+            // CRITICAL: Also update all child elements
+            foreach (var child in grid.Children)
+            {
+                if (child is Rectangle rect)
+                {
+                    rect.Width = scaledWidth;
+                    rect.Height = scaledHeight;
+                }
+            }
+        }
+    }</code></pre>
+
+    </example>
   example: []
   syntax:
     content: public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
@@ -193,11 +239,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 70
+    startLine: 68
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -233,11 +279,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 72
+    startLine: 70
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -273,11 +319,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 74
+    startLine: 72
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -310,11 +356,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/SimplifiedNodeRenderer.cs
-    startLine: 76
+    startLine: 74
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers

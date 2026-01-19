@@ -11,23 +11,33 @@ items:
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeVisual(System.String)
-  - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortVisual(System.String,System.String)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual(System.String)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.Model
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.NodeRenderers
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.PortRenderers
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNode(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Int32,System.Int32,System.Boolean,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean})
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError(FlowGraph.Core.Node,FlowGraph.Core.Port,System.String)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess(FlowGraph.Core.Node,FlowGraph.Core.Port)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates(FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   langs:
   - csharp
@@ -38,12 +48,12 @@ items:
   type: Class
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeVisualManager
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 17
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+    startLine: 11
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -52,7 +62,11 @@ items:
 
     Responsible for creating, updating, and removing node/port UI elements.
 
-    Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectGraphRenderer.
+    Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectCanvasRenderer.
+  remarks: >-
+    This class is split across multiple files for organization:
+
+    <ul><li><xref href="FlowGraph.Avalonia.Rendering.NodeVisualManager" data-throw-if-not-resolved="false"></xref> - Core fields, constructor, basic accessors</li><li><code>NodeVisualManager.Ports.cs</code> - Port state management and animations</li><li><code>NodeVisualManager.Rendering.cs</code> - Node and port rendering methods</li><li><code>NodeVisualManager.Positioning.cs</code> - Position updates and coordinate calculations</li><li><code>NodeVisualManager.Editing.cs</code> - Inline label editing</li></ul>
   example: []
   syntax:
     content: public class NodeVisualManager
@@ -81,11 +95,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 34
+    startLine: 42
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -122,11 +136,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeRenderers
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 48
+    startLine: 58
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -153,11 +167,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortRenderers
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 53
+    startLine: 63
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -184,22 +198,22 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Model
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 58
+    startLine: 68
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
   summary: Gets the render model used for geometry calculations.
   example: []
   syntax:
-    content: public GraphRenderModel Model { get; }
+    content: public CanvasRenderModel Model { get; }
     parameters: []
     return:
-      type: FlowGraph.Avalonia.Rendering.GraphRenderModel
-    content.vb: Public ReadOnly Property Model As GraphRenderModel
+      type: FlowGraph.Avalonia.Rendering.CanvasRenderModel
+    content.vb: Public ReadOnly Property Model As CanvasRenderModel
   overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.Model*
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
@@ -215,11 +229,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSettings
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 64
+    startLine: 78
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -247,11 +261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetNodeVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 74
+    startLine: 88
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -285,11 +299,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetPortVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 85
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -312,6 +326,44 @@ items:
   nameWithType.vb: NodeVisualManager.GetPortVisual(String, String)
   fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortVisual(String, String)
   name.vb: GetPortVisual(String, String)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual(System.String)
+  id: HasNodeVisual(System.String)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: HasNodeVisual(string)
+  nameWithType: NodeVisualManager.HasNodeVisual(string)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasNodeVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
+    startLine: 109
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a node visual exists in tracking.
+  example: []
+  syntax:
+    content: public bool HasNodeVisual(string nodeId)
+    parameters:
+    - id: nodeId
+      type: System.String
+      description: The node ID to check.
+    return:
+      type: System.Boolean
+      description: True if the node visual exists.
+    content.vb: Public Function HasNodeVisual(nodeId As String) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual*
+  nameWithType.vb: NodeVisualManager.HasNodeVisual(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual(String)
+  name.vb: HasNodeVisual(String)
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear
   commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear
   id: Clear
@@ -326,11 +378,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Clear
     path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 94
+    startLine: 119
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -343,6 +395,835 @@ items:
     content: public void Clear()
     content.vb: Public Sub Clear()
   overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Node)
+  id: RemoveNodeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveNodeVisual(Canvas, Node)
+  nameWithType: NodeVisualManager.RemoveNodeVisual(Canvas, Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual(Avalonia.Controls.Canvas, FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveNodeVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
+    startLine: 132
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Removes a node visual and its port visuals from the canvas and tracking.
+  example: []
+  syntax:
+    content: public bool RemoveNodeVisual(Canvas canvas, Node node)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas containing the visual.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to remove.
+    return:
+      type: System.Boolean
+      description: True if the visual was found and removed.
+    content.vb: Public Function RemoveNodeVisual(canvas As Canvas, node As Node) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
+  id: BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: BeginEditLabel(Node, ThemeResources, Action<string>, Action)
+  nameWithType: NodeVisualManager.BeginEditLabel(Node, ThemeResources, Action<string>, Action)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources, System.Action<string>, System.Action)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginEditLabel
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+    startLine: 19
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Begins inline editing for a node's label.
+  example: []
+  syntax:
+    content: public bool BeginEditLabel(Node node, ThemeResources theme, Action<string> onCommit, Action onCancel)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to edit.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    - id: onCommit
+      type: System.Action{System.String}
+      description: Callback when editing is committed with the new label value.
+    - id: onCancel
+      type: System.Action
+      description: Callback when editing is cancelled.
+    return:
+      type: System.Boolean
+      description: True if edit mode was started successfully.
+    content.vb: Public Function BeginEditLabel(node As Node, theme As ThemeResources, onCommit As Action(Of String), onCancel As Action) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel*
+  nameWithType.vb: NodeVisualManager.BeginEditLabel(Node, ThemeResources, Action(Of String), Action)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources, System.Action(Of String), System.Action)
+  name.vb: BeginEditLabel(Node, ThemeResources, Action(Of String), Action)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: EndEditLabel(Node, ThemeResources)
+  nameWithType: NodeVisualManager.EndEditLabel(Node, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EndEditLabel
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Ends inline editing for a node's label.
+  example: []
+  syntax:
+    content: public void EndEditLabel(Node node, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node being edited.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    content.vb: Public Sub EndEditLabel(node As Node, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
+  id: IsEditingLabel(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: IsEditingLabel(Node)
+  nameWithType: NodeVisualManager.IsEditingLabel(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEditingLabel
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+    startLine: 68
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets whether a node is currently in edit mode.
+  example: []
+  syntax:
+    content: public bool IsEditingLabel(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to check.
+    return:
+      type: System.Boolean
+      description: True if the node is being edited.
+    content.vb: Public Function IsEditingLabel(node As Node) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)
+  id: SupportsEditing(System.String)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: SupportsEditing(string?)
+  nameWithType: NodeVisualManager.SupportsEditing(string?)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SupportsEditing
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Editing.cs
+    startLine: 85
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if a node's renderer supports inline editing.
+  example: []
+  syntax:
+    content: public bool SupportsEditing(string? nodeType)
+    parameters:
+    - id: nodeType
+      type: System.String
+      description: The node type to check.
+    return:
+      type: System.Boolean
+      description: True if the renderer supports editing.
+    content.vb: Public Function SupportsEditing(nodeType As String) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing*
+  nameWithType.vb: NodeVisualManager.SupportsEditing(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(String)
+  name.vb: SupportsEditing(String)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdatePortState(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdatePortState(Node, Port, PortVisualState, ThemeResources)
+  nameWithType: NodeVisualManager.UpdatePortState(Node, Port, PortVisualState, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState(FlowGraph.Core.Node, FlowGraph.Core.Port, FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdatePortState
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+    startLine: 17
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the visual state of a port using its renderer.
+  example: []
+  syntax:
+    content: public void UpdatePortState(Node node, Port port, PortVisualState state, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node containing the port.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port to update.
+    - id: state
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+      description: The new visual state.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: The current theme.
+    content.vb: Public Sub UpdatePortState(node As Node, port As Port, state As PortVisualState, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates(FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates(FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdateAllPortStates(FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateAllPortStates(Graph, ThemeResources)
+  nameWithType: NodeVisualManager.UpdateAllPortStates(Graph, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates(FlowGraph.Core.Graph, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateAllPortStates
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates the visual state of all ports in the graph based on their connection status.
+
+    This should be called after rendering to ensure animated ports start their animations.
+
+    Detects state changes to trigger one-shot animations (e.g., ripple on connect).
+  example: []
+  syntax:
+    content: public void UpdateAllPortStates(Graph graph, ThemeResources theme)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The graph containing the nodes and edges.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: The current theme.
+    content.vb: Public Sub UpdateAllPortStates(graph As Graph, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: TriggerPortDataPulse(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: TriggerPortDataPulse(Node, Port, ThemeResources)
+  nameWithType: NodeVisualManager.TriggerPortDataPulse(Node, Port, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse(FlowGraph.Core.Node, FlowGraph.Core.Port, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerPortDataPulse
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+    startLine: 113
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Triggers a data pulse animation on a specific port.
+  example: []
+  syntax:
+    content: public void TriggerPortDataPulse(Node node, Port port, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node containing the port.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port to trigger the pulse on.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: The current theme.
+    content.vb: Public Sub TriggerPortDataPulse(node As Node, port As Port, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError(FlowGraph.Core.Node,FlowGraph.Core.Port,System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError(FlowGraph.Core.Node,FlowGraph.Core.Port,System.String)
+  id: TriggerPortError(FlowGraph.Core.Node,FlowGraph.Core.Port,System.String)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: TriggerPortError(Node, Port, string?)
+  nameWithType: NodeVisualManager.TriggerPortError(Node, Port, string?)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError(FlowGraph.Core.Node, FlowGraph.Core.Port, string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerPortError
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+    startLine: 142
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Triggers an error animation on a specific port.
+  example: []
+  syntax:
+    content: public void TriggerPortError(Node node, Port port, string? message = null)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node containing the port.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port to show error on.
+    - id: message
+      type: System.String
+      description: Optional error message.
+    content.vb: Public Sub TriggerPortError(node As Node, port As Port, message As String = Nothing)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError*
+  nameWithType.vb: NodeVisualManager.TriggerPortError(Node, Port, String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError(FlowGraph.Core.Node, FlowGraph.Core.Port, String)
+  name.vb: TriggerPortError(Node, Port, String)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess(FlowGraph.Core.Node,FlowGraph.Core.Port)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess(FlowGraph.Core.Node,FlowGraph.Core.Port)
+  id: TriggerPortSuccess(FlowGraph.Core.Node,FlowGraph.Core.Port)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: TriggerPortSuccess(Node, Port)
+  nameWithType: NodeVisualManager.TriggerPortSuccess(Node, Port)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess(FlowGraph.Core.Node, FlowGraph.Core.Port)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TriggerPortSuccess
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Ports.cs
+    startLine: 154
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Triggers a success animation on a specific port.
+  example: []
+  syntax:
+    content: public void TriggerPortSuccess(Node node, Port port)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node containing the port.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port to show success on.
+    content.vb: Public Sub TriggerPortSuccess(node As Node, port As Port)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
+  id: UpdateNodePosition(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodePosition(Node)
+  nameWithType: NodeVisualManager.UpdateNodePosition(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodePosition
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 16
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the position of a node visual on the canvas.
+  example: []
+  syntax:
+    content: public void UpdateNodePosition(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node whose position changed.
+    content.vb: Public Sub UpdateNodePosition(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
+  id: UpdateAllNodePositions(FlowGraph.Core.Graph)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateAllNodePositions(Graph)
+  nameWithType: NodeVisualManager.UpdateAllNodePositions(Graph)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateAllNodePositions
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates all existing node visuals to their current screen positions.
+
+    This is an optimized path for viewport changes (pan/zoom) that avoids
+
+    recreating the visual tree. Only updates positions, not visual properties.
+
+    NOTE: With transform-based rendering, this method is no longer needed for viewport changes.
+
+    It's kept for compatibility but should only be called when nodes actually move in canvas space.
+  example: []
+  syntax:
+    content: public void UpdateAllNodePositions(Graph graph)
+    parameters:
+    - id: graph
+      type: FlowGraph.Core.Graph
+      description: The graph containing the nodes.
+    content.vb: Public Sub UpdateAllNodePositions(graph As Graph)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
+  id: UpdatePortPositions(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdatePortPositions(Node)
+  nameWithType: NodeVisualManager.UpdatePortPositions(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdatePortPositions
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the positions of all ports for a node using GraphRenderModel.
+  example: []
+  syntax:
+    content: public void UpdatePortPositions(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node whose ports need updating.
+    content.vb: Public Sub UpdatePortPositions(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeSelection(Node, ThemeResources)
+  nameWithType: NodeVisualManager.UpdateNodeSelection(Node, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeSelection
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 101
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the selection visual state of a node.
+  example: []
+  syntax:
+    content: public void UpdateNodeSelection(Node node, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    content.vb: Public Sub UpdateNodeSelection(node As Node, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdateNodeStyle(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeStyle(Node, ThemeResources)
+  nameWithType: NodeVisualManager.UpdateNodeStyle(Node, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeStyle
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 123
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the custom style of a node visual based on its Data property.
+  example: []
+  syntax:
+    content: public void UpdateNodeStyle(Node node, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    content.vb: Public Sub UpdateNodeStyle(node As Node, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeSize(Node, ThemeResources)
+  nameWithType: NodeVisualManager.UpdateNodeSize(Node, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeSize
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 145
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the size of a node visual.
+  example: []
+  syntax:
+    content: public void UpdateNodeSize(Node node, ThemeResources theme)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+      description: Theme resources for styling.
+    content.vb: Public Sub UpdateNodeSize(node As Node, theme As ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  id: GetPortViewportPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetPortViewportPosition(Node, Port, bool)
+  nameWithType: NodeVisualManager.GetPortViewportPosition(Node, Port, bool)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortViewportPosition
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 200
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the viewport position of a port using GraphRenderModel.
+  remarks: >-
+    <b>WARNING:</b> This returns viewport-relative coordinates, NOT screen/control coordinates.
+
+    For distance calculations with pointer events, prefer using <xref href="FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node%2cFlowGraph.Core.Port%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref>
+
+    and comparing in canvas space, since pointer events give canvas coords via <code>e.GetPosition(MainCanvas)</code>.
+  example: []
+  syntax:
+    content: public Point GetPortViewportPosition(Node node, Port port, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port.
+    - id: isOutput
+      type: System.Boolean
+      description: True if this is an output port.
+    return:
+      type: Avalonia.Point
+      description: The port position in viewport coordinates.
+    content.vb: Public Function GetPortViewportPosition(node As Node, port As Port, isOutput As Boolean) As Point
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition*
+  nameWithType.vb: NodeVisualManager.GetPortViewportPosition(Node, Port, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
+  name.vb: GetPortViewportPosition(Node, Port, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  id: GetPortScreenPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetPortScreenPosition(Node, Port, bool)
+  nameWithType: NodeVisualManager.GetPortScreenPosition(Node, Port, bool)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortScreenPosition
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 209
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the screen position of a port using GraphRenderModel.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use GetPortViewportPosition or GetPortCanvasPosition instead. 'Screen' terminology was ambiguous.")]
+
+      public Point GetPortScreenPosition(Node node, Port port, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    - id: port
+      type: FlowGraph.Core.Port
+    - id: isOutput
+      type: System.Boolean
+    return:
+      type: Avalonia.Point
+    content.vb: >-
+      <Obsolete("Use GetPortViewportPosition or GetPortCanvasPosition instead. 'Screen' terminology was ambiguous.")>
+
+      Public Function GetPortScreenPosition(node As Node, port As Port, isOutput As Boolean) As Point
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use GetPortViewportPosition or GetPortCanvasPosition instead. 'Screen' terminology was ambiguous.
+  nameWithType.vb: NodeVisualManager.GetPortScreenPosition(Node, Port, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
+  name.vb: GetPortScreenPosition(Node, Port, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  id: GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetPortCanvasPosition(Node, Port, bool)
+  nameWithType: NodeVisualManager.GetPortCanvasPosition(Node, Port, bool)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortCanvasPosition
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 221
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Gets the canvas position of a port using GraphRenderModel.
+
+    Use this for drawing visual elements on MainCanvas (which uses MatrixTransform).
+  example: []
+  syntax:
+    content: public Point GetPortCanvasPosition(Node node, Port port, bool isOutput)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The parent node.
+    - id: port
+      type: FlowGraph.Core.Port
+      description: The port.
+    - id: isOutput
+      type: System.Boolean
+      description: True if this is an output port.
+    return:
+      type: Avalonia.Point
+      description: The port position in canvas coordinates.
+    content.vb: Public Function GetPortCanvasPosition(node As Node, port As Port, isOutput As Boolean) As Point
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition*
+  nameWithType.vb: NodeVisualManager.GetPortCanvasPosition(Node, Port, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
+  name.vb: GetPortCanvasPosition(Node, Port, Boolean)
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
+  id: GetNodeDimensions(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetNodeDimensions(Node)
+  nameWithType: NodeVisualManager.GetNodeDimensions(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeDimensions
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 231
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the dimensions for a node using GraphRenderModel.
+  example: []
+  syntax:
+    content: public (double width, double height) GetNodeDimensions(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to get dimensions for.
+    return:
+      type: System.ValueTuple{System.Double,System.Double}
+      description: The width and height of the node.
+    content.vb: Public Function GetNodeDimensions(node As Node) As (width As Double, height As Double)
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions*
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
+  id: GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
+  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetPortYCanvas(double, int, int, double?)
+  nameWithType: NodeVisualManager.GetPortYCanvas(double, int, int, double?)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(double, int, int, double?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetPortYCanvas
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Positioning.cs
+    startLine: 245
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Calculates the Y position for a port in canvas coordinates using GraphRenderModel.
+  example: []
+  syntax:
+    content: public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts, double? nodeHeight = null)
+    parameters:
+    - id: nodeY
+      type: System.Double
+      description: Y position of the node.
+    - id: portIndex
+      type: System.Int32
+      description: Index of the port.
+    - id: totalPorts
+      type: System.Int32
+      description: Total number of ports.
+    - id: nodeHeight
+      type: System.Nullable{System.Double}
+      description: Optional node height override.
+    return:
+      type: System.Double
+      description: The Y position for the port.
+    content.vb: Public Function GetPortYCanvas(nodeY As Double, portIndex As Integer, totalPorts As Integer, nodeHeight As Double? = Nothing) As Double
+  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas*
+  nameWithType.vb: NodeVisualManager.GetPortYCanvas(Double, Integer, Integer, Double?)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(Double, Integer, Integer, Double?)
+  name.vb: GetPortYCanvas(Double, Integer, Integer, Double?)
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})
   commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})
   id: RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})
@@ -356,12 +1237,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderNodes
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 113
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+    startLine: 26
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -407,12 +1288,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderNode
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 158
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+    startLine: 71
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -454,12 +1335,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderPort
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 230
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+    startLine: 158
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -500,458 +1381,6 @@ items:
   nameWithType.vb: NodeVisualManager.RenderPort(Canvas, Node, Port, Integer, Integer, Boolean, ThemeResources, Action(Of Control, Node, Port, Boolean))
   fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort(Avalonia.Controls.Canvas, FlowGraph.Core.Node, FlowGraph.Core.Port, Integer, Integer, Boolean, FlowGraph.Avalonia.Rendering.ThemeResources, System.Action(Of Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean))
   name.vb: RenderPort(Canvas, Node, Port, Integer, Integer, Boolean, ThemeResources, Action(Of Control, Node, Port, Boolean))
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
-  id: UpdateNodePosition(FlowGraph.Core.Node)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: UpdateNodePosition(Node)
-  nameWithType: NodeVisualManager.UpdateNodePosition(Node)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition(FlowGraph.Core.Node)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: UpdateNodePosition
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 279
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Updates the position of a node visual on the canvas.
-  example: []
-  syntax:
-    content: public void UpdateNodePosition(Node node)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node whose position changed.
-    content.vb: Public Sub UpdateNodePosition(node As Node)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
-  id: UpdateAllNodePositions(FlowGraph.Core.Graph)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: UpdateAllNodePositions(Graph)
-  nameWithType: NodeVisualManager.UpdateAllNodePositions(Graph)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions(FlowGraph.Core.Graph)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: UpdateAllNodePositions
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 297
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: >-
-    Updates all existing node visuals to their current screen positions.
-
-    This is an optimized path for viewport changes (pan/zoom) that avoids
-
-    recreating the visual tree. Only updates positions, not visual properties.
-  example: []
-  syntax:
-    content: public void UpdateAllNodePositions(Graph graph)
-    parameters:
-    - id: graph
-      type: FlowGraph.Core.Graph
-      description: The graph containing the nodes.
-    content.vb: Public Sub UpdateAllNodePositions(graph As Graph)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
-  id: UpdatePortPositions(FlowGraph.Core.Node)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: UpdatePortPositions(Node)
-  nameWithType: NodeVisualManager.UpdatePortPositions(Node)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions(FlowGraph.Core.Node)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: UpdatePortPositions
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 320
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Updates the positions of all ports for a node using GraphRenderModel.
-  example: []
-  syntax:
-    content: public void UpdatePortPositions(Node node)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node whose ports need updating.
-    content.vb: Public Sub UpdatePortPositions(node As Node)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  id: UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: UpdateNodeSelection(Node, ThemeResources)
-  nameWithType: NodeVisualManager.UpdateNodeSelection(Node, ThemeResources)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: UpdateNodeSelection
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 362
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Updates the selection visual state of a node.
-  example: []
-  syntax:
-    content: public void UpdateNodeSelection(Node node, ThemeResources theme)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node to update.
-    - id: theme
-      type: FlowGraph.Avalonia.Rendering.ThemeResources
-      description: Theme resources for styling.
-    content.vb: Public Sub UpdateNodeSelection(node As Node, theme As ThemeResources)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  id: UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: UpdateNodeSize(Node, ThemeResources)
-  nameWithType: NodeVisualManager.UpdateNodeSize(Node, ThemeResources)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: UpdateNodeSize
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 384
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Updates the size of a node visual.
-  example: []
-  syntax:
-    content: public void UpdateNodeSize(Node node, ThemeResources theme)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node to update.
-    - id: theme
-      type: FlowGraph.Avalonia.Rendering.ThemeResources
-      description: Theme resources for styling.
-    content.vb: Public Sub UpdateNodeSize(node As Node, theme As ThemeResources)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
-  id: BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: BeginEditLabel(Node, ThemeResources, Action<string>, Action)
-  nameWithType: NodeVisualManager.BeginEditLabel(Node, ThemeResources, Action<string>, Action)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources, System.Action<string>, System.Action)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: BeginEditLabel
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 412
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Begins inline editing for a node's label.
-  example: []
-  syntax:
-    content: public bool BeginEditLabel(Node node, ThemeResources theme, Action<string> onCommit, Action onCancel)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node to edit.
-    - id: theme
-      type: FlowGraph.Avalonia.Rendering.ThemeResources
-      description: Theme resources for styling.
-    - id: onCommit
-      type: System.Action{System.String}
-      description: Callback when editing is committed with the new label value.
-    - id: onCancel
-      type: System.Action
-      description: Callback when editing is cancelled.
-    return:
-      type: System.Boolean
-      description: True if edit mode was started successfully.
-    content.vb: Public Function BeginEditLabel(node As Node, theme As ThemeResources, onCommit As Action(Of String), onCancel As Action) As Boolean
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel*
-  nameWithType.vb: NodeVisualManager.BeginEditLabel(Node, ThemeResources, Action(Of String), Action)
-  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources, System.Action(Of String), System.Action)
-  name.vb: BeginEditLabel(Node, ThemeResources, Action(Of String), Action)
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  id: EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: EndEditLabel(Node, ThemeResources)
-  nameWithType: NodeVisualManager.EndEditLabel(Node, ThemeResources)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: EndEditLabel
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 437
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Ends inline editing for a node's label.
-  example: []
-  syntax:
-    content: public void EndEditLabel(Node node, ThemeResources theme)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node being edited.
-    - id: theme
-      type: FlowGraph.Avalonia.Rendering.ThemeResources
-      description: Theme resources for styling.
-    content.vb: Public Sub EndEditLabel(node As Node, theme As ThemeResources)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
-  id: IsEditingLabel(FlowGraph.Core.Node)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: IsEditingLabel(Node)
-  nameWithType: NodeVisualManager.IsEditingLabel(Node)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel(FlowGraph.Core.Node)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: IsEditingLabel
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 461
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets whether a node is currently in edit mode.
-  example: []
-  syntax:
-    content: public bool IsEditingLabel(Node node)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node to check.
-    return:
-      type: System.Boolean
-      description: True if the node is being edited.
-    content.vb: Public Function IsEditingLabel(node As Node) As Boolean
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(System.String)
-  id: SupportsEditing(System.String)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: SupportsEditing(string?)
-  nameWithType: NodeVisualManager.SupportsEditing(string?)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(string?)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: SupportsEditing
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 478
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Checks if a node's renderer supports inline editing.
-  example: []
-  syntax:
-    content: public bool SupportsEditing(string? nodeType)
-    parameters:
-    - id: nodeType
-      type: System.String
-      description: The node type to check.
-    return:
-      type: System.Boolean
-      description: True if the renderer supports editing.
-    content.vb: Public Function SupportsEditing(nodeType As String) As Boolean
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing*
-  nameWithType.vb: NodeVisualManager.SupportsEditing(String)
-  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing(String)
-  name.vb: SupportsEditing(String)
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
-  id: GetPortPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: GetPortPosition(Node, Port, bool)
-  nameWithType: NodeVisualManager.GetPortPosition(Node, Port, bool)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: GetPortPosition
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 493
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets the screen position of a port using GraphRenderModel.
-  example: []
-  syntax:
-    content: public Point GetPortPosition(Node node, Port port, bool isOutput)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The parent node.
-    - id: port
-      type: FlowGraph.Core.Port
-      description: The port.
-    - id: isOutput
-      type: System.Boolean
-      description: True if this is an output port.
-    return:
-      type: Avalonia.Point
-      description: The port position in screen coordinates.
-    content.vb: Public Function GetPortPosition(node As Node, port As Port, isOutput As Boolean) As Point
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition*
-  nameWithType.vb: NodeVisualManager.GetPortPosition(Node, Port, Boolean)
-  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
-  name.vb: GetPortPosition(Node, Port, Boolean)
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
-  id: GetNodeDimensions(FlowGraph.Core.Node)
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: GetNodeDimensions(Node)
-  nameWithType: NodeVisualManager.GetNodeDimensions(Node)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions(FlowGraph.Core.Node)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: GetNodeDimensions
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 504
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets the dimensions for a node using GraphRenderModel.
-  example: []
-  syntax:
-    content: public (double width, double height) GetNodeDimensions(Node node)
-    parameters:
-    - id: node
-      type: FlowGraph.Core.Node
-      description: The node to get dimensions for.
-    return:
-      type: System.ValueTuple{System.Double,System.Double}
-      description: The width and height of the node.
-    content.vb: Public Function GetNodeDimensions(node As Node) As (width As Double, height As Double)
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions*
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
-  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
-  id: GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})
-  parent: FlowGraph.Avalonia.Rendering.NodeVisualManager
-  langs:
-  - csharp
-  - vb
-  name: GetPortYCanvas(double, int, int, double?)
-  nameWithType: NodeVisualManager.GetPortYCanvas(double, int, int, double?)
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(double, int, int, double?)
-  type: Method
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: GetPortYCanvas
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 518
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering
-  summary: Calculates the Y position for a port in canvas coordinates using GraphRenderModel.
-  example: []
-  syntax:
-    content: public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts, double? nodeHeight = null)
-    parameters:
-    - id: nodeY
-      type: System.Double
-      description: Y position of the node.
-    - id: portIndex
-      type: System.Int32
-      description: Index of the port.
-    - id: totalPorts
-      type: System.Int32
-      description: Total number of ports.
-    - id: nodeHeight
-      type: System.Nullable{System.Double}
-      description: Optional node height override.
-    return:
-      type: System.Double
-      description: The Y position for the port.
-    content.vb: Public Function GetPortYCanvas(nodeY As Double, portIndex As Integer, totalPorts As Integer, nodeHeight As Double? = Nothing) As Double
-  overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas*
-  nameWithType.vb: NodeVisualManager.GetPortYCanvas(Double, Integer, Integer, Double?)
-  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas(Double, Integer, Integer, Double?)
-  name.vb: GetPortYCanvas(Double, Integer, Integer, Double?)
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
   commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
   id: IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)
@@ -965,12 +1394,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsNodeVisible
-    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.cs
-    startLine: 538
+    path: ../FlowGraph.Avalonia/Rendering/NodeVisualManager.Rendering.cs
+    startLine: 215
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -994,6 +1423,13 @@ items:
     content.vb: Public Shared Function IsNodeVisible(graph As Graph, node As Node) As Boolean
   overload: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible*
 references:
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeVisualManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html
+  name: NodeVisualManager
+  nameWithType: NodeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager
 - uid: FlowGraph.Avalonia.Rendering
   commentId: N:FlowGraph.Avalonia.Rendering
   href: FlowGraph.html
@@ -1385,13 +1821,13 @@ references:
   name: Model
   nameWithType: NodeVisualManager.Model
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.Model
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderModel
-  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderModel
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderModel
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasRenderModel
   parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.GraphRenderModel.html
-  name: GraphRenderModel
-  nameWithType: GraphRenderModel
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderModel
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderModel.html
+  name: CanvasRenderModel
+  nameWithType: CanvasRenderModel
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderModel
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings*
   commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateSettings
   href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_
@@ -1479,18 +1915,35 @@ references:
   name: GetPortVisual
   nameWithType: NodeVisualManager.GetPortVisual
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortVisual
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_HasNodeVisual_System_String_
+  name: HasNodeVisual
+  nameWithType: NodeVisualManager.HasNodeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.HasNodeVisual
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear*
   commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear
   href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_Clear
   name: Clear
   nameWithType: NodeVisualManager.Clear
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.Clear
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderNodes_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__
-  name: RenderNodes
-  nameWithType: NodeVisualManager.RenderNodes
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_RemoveNodeVisual_Avalonia_Controls_Canvas_FlowGraph_Core_Node_
+  name: RemoveNodeVisual
+  nameWithType: NodeVisualManager.RemoveNodeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RemoveNodeVisual
 - uid: Avalonia.Controls.Canvas
   commentId: T:Avalonia.Controls.Canvas
   parent: Avalonia.Controls
@@ -1498,13 +1951,41 @@ references:
   name: Canvas
   nameWithType: Canvas
   fullName: Avalonia.Controls.Canvas
-- uid: FlowGraph.Core.Graph
-  commentId: T:FlowGraph.Core.Graph
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
   parent: FlowGraph.Core
-  href: FlowGraph.Core.Graph.html
-  name: Graph
-  nameWithType: Graph
-  fullName: FlowGraph.Core.Graph
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_BeginEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_System_String__System_Action_
+  name: BeginEditLabel
+  nameWithType: NodeVisualManager.BeginEditLabel
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel
 - uid: FlowGraph.Avalonia.Rendering.ThemeResources
   commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
   parent: FlowGraph.Avalonia.Rendering
@@ -1512,6 +1993,430 @@ references:
   name: ThemeResources
   nameWithType: ThemeResources
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+- uid: System.Action{System.String}
+  commentId: T:System.Action{System.String}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<string>
+  nameWithType: Action<string>
+  fullName: System.Action<string>
+  nameWithType.vb: Action(Of String)
+  fullName.vb: System.Action(Of String)
+  name.vb: Action(Of String)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_EndEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: EndEditLabel
+  nameWithType: NodeVisualManager.EndEditLabel
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_IsEditingLabel_FlowGraph_Core_Node_
+  name: IsEditingLabel
+  nameWithType: NodeVisualManager.IsEditingLabel
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_SupportsEditing_System_String_
+  name: SupportsEditing
+  nameWithType: NodeVisualManager.SupportsEditing
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdatePortState_FlowGraph_Core_Node_FlowGraph_Core_Port_FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdatePortState
+  nameWithType: NodeVisualManager.UpdatePortState
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortState
+- uid: FlowGraph.Core.Port
+  commentId: T:FlowGraph.Core.Port
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Port.html
+  name: Port
+  nameWithType: Port
+  fullName: FlowGraph.Core.Port
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  commentId: T:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html
+  name: PortVisualState
+  nameWithType: PortVisualState
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateAllPortStates_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdateAllPortStates
+  nameWithType: NodeVisualManager.UpdateAllPortStates
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllPortStates
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_TriggerPortDataPulse_FlowGraph_Core_Node_FlowGraph_Core_Port_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: TriggerPortDataPulse
+  nameWithType: NodeVisualManager.TriggerPortDataPulse
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortDataPulse
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_TriggerPortError_FlowGraph_Core_Node_FlowGraph_Core_Port_System_String_
+  name: TriggerPortError
+  nameWithType: NodeVisualManager.TriggerPortError
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortError
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_TriggerPortSuccess_FlowGraph_Core_Node_FlowGraph_Core_Port_
+  name: TriggerPortSuccess
+  nameWithType: NodeVisualManager.TriggerPortSuccess
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.TriggerPortSuccess
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodePosition_FlowGraph_Core_Node_
+  name: UpdateNodePosition
+  nameWithType: NodeVisualManager.UpdateNodePosition
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateAllNodePositions_FlowGraph_Core_Graph_
+  name: UpdateAllNodePositions
+  nameWithType: NodeVisualManager.UpdateAllNodePositions
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdatePortPositions_FlowGraph_Core_Node_
+  name: UpdatePortPositions
+  nameWithType: NodeVisualManager.UpdatePortPositions
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSelection_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdateNodeSelection
+  nameWithType: NodeVisualManager.UpdateNodeSelection
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeStyle_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdateNodeStyle
+  nameWithType: NodeVisualManager.UpdateNodeStyle
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeStyle
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSize_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: UpdateNodeSize
+  nameWithType: NodeVisualManager.UpdateNodeSize
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  name: GetPortCanvasPosition(Node, Port, bool)
+  nameWithType: NodeVisualManager.GetPortCanvasPosition(Node, Port, bool)
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, bool)
+  nameWithType.vb: NodeVisualManager.GetPortCanvasPosition(Node, Port, Boolean)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node, FlowGraph.Core.Port, Boolean)
+  name.vb: GetPortCanvasPosition(Node, Port, Boolean)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+    name: GetPortCanvasPosition
+    href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Port
+    name: Port
+    href: FlowGraph.Core.Port.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)
+    name: GetPortCanvasPosition
+    href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Port
+    name: Port
+    href: FlowGraph.Core.Port.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortViewportPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  name: GetPortViewportPosition
+  nameWithType: NodeVisualManager.GetPortViewportPosition
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortViewportPosition
+- uid: Avalonia.Point
+  commentId: T:Avalonia.Point
+  parent: Avalonia
+  isExternal: true
+  name: Point
+  nameWithType: Point
+  fullName: Avalonia.Point
+- uid: Avalonia
+  commentId: N:Avalonia
+  isExternal: true
+  name: Avalonia
+  nameWithType: Avalonia
+  fullName: Avalonia
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortScreenPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  name: GetPortScreenPosition
+  nameWithType: NodeVisualManager.GetPortScreenPosition
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortScreenPosition
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
+  name: GetPortCanvasPosition
+  nameWithType: NodeVisualManager.GetPortCanvasPosition
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortCanvasPosition
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetNodeDimensions_FlowGraph_Core_Node_
+  name: GetNodeDimensions
+  nameWithType: NodeVisualManager.GetNodeDimensions
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions
+- uid: System.ValueTuple{System.Double,System.Double}
+  commentId: T:System.ValueTuple{System.Double,System.Double}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: (double width, double height)
+  nameWithType: (double width, double height)
+  fullName: (double width, double height)
+  nameWithType.vb: (width As Double, height As Double)
+  fullName.vb: (width As Double, height As Double)
+  name.vb: (width As Double, height As Double)
+  spec.csharp:
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.width
+    name: width
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.width
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.height
+    name: height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.height
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Double,System.Double}.width
+    name: width
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.width
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.height
+    name: height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.height
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortYCanvas_System_Double_System_Int32_System_Int32_System_Nullable_System_Double__
+  name: GetPortYCanvas
+  nameWithType: NodeVisualManager.GetPortYCanvas
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes
+  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderNodes_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__
+  name: RenderNodes
+  nameWithType: NodeVisualManager.RenderNodes
+  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNodes
 - uid: System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node}
   commentId: T:System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node}
   parent: System
@@ -1555,28 +2460,6 @@ references:
     name: Node
     href: FlowGraph.Core.Node.html
   - name: )
-- uid: FlowGraph.Core
-  commentId: N:FlowGraph.Core
-  href: FlowGraph.html
-  name: FlowGraph.Core
-  nameWithType: FlowGraph.Core
-  fullName: FlowGraph.Core
-  spec.csharp:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Core
-    name: Core
-    href: FlowGraph.Core.html
-  spec.vb:
-  - uid: FlowGraph
-    name: FlowGraph
-    href: FlowGraph.html
-  - name: .
-  - uid: FlowGraph.Core
-    name: Core
-    href: FlowGraph.Core.html
 - uid: System.Action`2
   commentId: T:System.Action`2
   isExternal: true
@@ -1617,48 +2500,12 @@ references:
   name: RenderNode
   nameWithType: NodeVisualManager.RenderNode
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderNode
-- uid: FlowGraph.Core.Node
-  commentId: T:FlowGraph.Core.Node
-  parent: FlowGraph.Core
-  href: FlowGraph.Core.Node.html
-  name: Node
-  nameWithType: Node
-  fullName: FlowGraph.Core.Node
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort*
   commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort
   href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_RenderPort_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Int32_System_Int32_System_Boolean_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean__
   name: RenderPort
   nameWithType: NodeVisualManager.RenderPort
   fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.RenderPort
-- uid: FlowGraph.Core.Port
-  commentId: T:FlowGraph.Core.Port
-  parent: FlowGraph.Core
-  href: FlowGraph.Core.Port.html
-  name: Port
-  nameWithType: Port
-  fullName: FlowGraph.Core.Port
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
 - uid: System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean}
   commentId: T:System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean}
   parent: System
@@ -1769,300 +2616,6 @@ references:
   - name: ','
   - name: " "
   - name: T4
-  - name: )
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodePosition_FlowGraph_Core_Node_
-  name: UpdateNodePosition
-  nameWithType: NodeVisualManager.UpdateNodePosition
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodePosition
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateAllNodePositions_FlowGraph_Core_Graph_
-  name: UpdateAllNodePositions
-  nameWithType: NodeVisualManager.UpdateAllNodePositions
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateAllNodePositions
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdatePortPositions_FlowGraph_Core_Node_
-  name: UpdatePortPositions
-  nameWithType: NodeVisualManager.UpdatePortPositions
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdatePortPositions
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSelection_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
-  name: UpdateNodeSelection
-  nameWithType: NodeVisualManager.UpdateNodeSelection
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSelection
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_UpdateNodeSize_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
-  name: UpdateNodeSize
-  nameWithType: NodeVisualManager.UpdateNodeSize
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.UpdateNodeSize
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_BeginEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_System_String__System_Action_
-  name: BeginEditLabel
-  nameWithType: NodeVisualManager.BeginEditLabel
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.BeginEditLabel
-- uid: System.Action{System.String}
-  commentId: T:System.Action{System.String}
-  parent: System
-  definition: System.Action`1
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<string>
-  nameWithType: Action<string>
-  fullName: System.Action<string>
-  nameWithType.vb: Action(Of String)
-  fullName.vb: System.Action(Of String)
-  name.vb: Action(Of String)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: System.Action
-  commentId: T:System.Action
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action
-  name: Action
-  nameWithType: Action
-  fullName: System.Action
-- uid: System.Action`1
-  commentId: T:System.Action`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<T>
-  nameWithType: Action<T>
-  fullName: System.Action<T>
-  nameWithType.vb: Action(Of T)
-  fullName.vb: System.Action(Of T)
-  name.vb: Action(Of T)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_EndEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
-  name: EndEditLabel
-  nameWithType: NodeVisualManager.EndEditLabel
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.EndEditLabel
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_IsEditingLabel_FlowGraph_Core_Node_
-  name: IsEditingLabel
-  nameWithType: NodeVisualManager.IsEditingLabel
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsEditingLabel
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_SupportsEditing_System_String_
-  name: SupportsEditing
-  nameWithType: NodeVisualManager.SupportsEditing
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.SupportsEditing
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_
-  name: GetPortPosition
-  nameWithType: NodeVisualManager.GetPortPosition
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortPosition
-- uid: Avalonia.Point
-  commentId: T:Avalonia.Point
-  parent: Avalonia
-  isExternal: true
-  name: Point
-  nameWithType: Point
-  fullName: Avalonia.Point
-- uid: Avalonia
-  commentId: N:Avalonia
-  isExternal: true
-  name: Avalonia
-  nameWithType: Avalonia
-  fullName: Avalonia
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetNodeDimensions_FlowGraph_Core_Node_
-  name: GetNodeDimensions
-  nameWithType: NodeVisualManager.GetNodeDimensions
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetNodeDimensions
-- uid: System.ValueTuple{System.Double,System.Double}
-  commentId: T:System.ValueTuple{System.Double,System.Double}
-  parent: System
-  definition: System.ValueTuple`2
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: (double width, double height)
-  nameWithType: (double width, double height)
-  fullName: (double width, double height)
-  nameWithType.vb: (width As Double, height As Double)
-  fullName.vb: (width As Double, height As Double)
-  name.vb: (width As Double, height As Double)
-  spec.csharp:
-  - name: (
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: " "
-  - uid: System.ValueTuple{System.Double,System.Double}.width
-    name: width
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.width
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: " "
-  - uid: System.ValueTuple{System.Double,System.Double}.height
-    name: height
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.height
-  - name: )
-  spec.vb:
-  - name: (
-  - uid: System.ValueTuple{System.Double,System.Double}.width
-    name: width
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.width
-  - name: " "
-  - name: As
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.ValueTuple{System.Double,System.Double}.height
-    name: height
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.height
-  - name: " "
-  - name: As
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-- uid: System.ValueTuple`2
-  commentId: T:System.ValueTuple`2
-  name: (T1, T2)
-  nameWithType: (T1, T2)
-  fullName: (T1, T2)
-  spec.csharp:
-  - name: (
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: )
-  spec.vb:
-  - name: (
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: )
-- uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas
-  href: FlowGraph.Avalonia.Rendering.NodeVisualManager.html#FlowGraph_Avalonia_Rendering_NodeVisualManager_GetPortYCanvas_System_Double_System_Int32_System_Int32_System_Nullable_System_Double__
-  name: GetPortYCanvas
-  nameWithType: NodeVisualManager.GetPortYCanvas
-  fullName: FlowGraph.Avalonia.Rendering.NodeVisualManager.GetPortYCanvas
-- uid: System.Double
-  commentId: T:System.Double
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: double
-  nameWithType: double
-  fullName: double
-  nameWithType.vb: Double
-  fullName.vb: Double
-  name.vb: Double
-- uid: System.Nullable{System.Double}
-  commentId: T:System.Nullable{System.Double}
-  parent: System
-  definition: System.Nullable`1
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: double?
-  nameWithType: double?
-  fullName: double?
-  nameWithType.vb: Double?
-  fullName.vb: Double?
-  name.vb: Double?
-  spec.csharp:
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: '?'
-  spec.vb:
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: '?'
-- uid: System.Nullable`1
-  commentId: T:System.Nullable`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  name: Nullable<T>
-  nameWithType: Nullable<T>
-  fullName: System.Nullable<T>
-  nameWithType.vb: Nullable(Of T)
-  fullName.vb: System.Nullable(Of T)
-  name.vb: Nullable(Of T)
-  spec.csharp:
-  - uid: System.Nullable`1
-    name: Nullable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Nullable`1
-    name: Nullable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
   - name: )
 - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible*
   commentId: Overload:FlowGraph.Avalonia.Rendering.NodeVisualManager.IsNodeVisible

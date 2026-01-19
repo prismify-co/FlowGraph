@@ -6,11 +6,13 @@ items:
   parent: FlowGraph.Avalonia.Rendering.PortRenderers
   children:
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Index
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.IsOutput
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Settings
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Theme
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.TotalPorts
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
   langs:
   - csharp
   - vb
@@ -21,15 +23,27 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortRenderContext
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 40
+    startLine: 81
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
-  summary: Context information passed to port renderers.
+  summary: >-
+    Context information passed to port renderers.
+
+
+    <p><b>TRANSFORM-BASED RENDERING:</b></p>
+
+    <p>
+
+    <xref href="FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale" data-throw-if-not-resolved="false"></xref> is always 1.0 - create visuals at logical size.
+
+    The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom.
+
+    </p>
   example: []
   syntax:
     content: public class PortRenderContext
@@ -58,11 +72,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Theme
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 45
+    startLine: 86
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -89,11 +103,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 50
+    startLine: 91
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -120,15 +134,15 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Scale
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 55
+    startLine: 96
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
-  summary: Current zoom scale.
+  summary: Logical scale for visual sizing. Always 1.0 in transform-based rendering.
   example: []
   syntax:
     content: public required double Scale { get; init; }
@@ -137,6 +151,71 @@ items:
       type: System.Double
     content.vb: Public Property Scale As Double
   overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
+  id: ViewportZoom
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportZoom
+  nameWithType: PortRenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportZoom
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 101
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Actual viewport zoom level. Use for calculations, not visual sizing.
+  example: []
+  syntax:
+    content: public double ViewportZoom { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ViewportZoom As Double
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
+  id: InverseScale
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext
+  langs:
+  - csharp
+  - vb
+  name: InverseScale
+  nameWithType: PortRenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InverseScale
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 107
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Inverse scale for constant-size elements (1/ViewportZoom).
+
+    Apply as ScaleTransform to elements that should stay same screen size.
+  example: []
+  syntax:
+    content: public double InverseScale { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property InverseScale As Double
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale*
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.IsOutput
   commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.IsOutput
   id: IsOutput
@@ -151,11 +230,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsOutput
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 60
+    startLine: 112
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -182,11 +261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Index
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 65
+    startLine: 117
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -213,11 +292,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TotalPorts
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 70
+    startLine: 122
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -231,6 +310,12 @@ items:
     content.vb: Public Property TotalPorts As Integer
   overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.TotalPorts*
 references:
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_Scale
+  name: Scale
+  nameWithType: PortRenderContext.Scale
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.Scale
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.PortRenderers
   href: FlowGraph.html
@@ -601,6 +686,18 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_ViewportZoom
+  name: ViewportZoom
+  nameWithType: PortRenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.ViewportZoom
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_InverseScale
+  name: InverseScale
+  nameWithType: PortRenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.InverseScale
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.IsOutput*
   commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.IsOutput
   href: FlowGraph.Avalonia.Rendering.PortRenderers.PortRenderContext.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortRenderContext_IsOutput

@@ -5,10 +5,16 @@ items:
   id: PortVisualState
   parent: FlowGraph.Avalonia.Rendering.PortRenderers
   children:
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Default
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsConnected
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsDragging
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsHovered
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+  - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
   - FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsValidDropTarget
   langs:
   - csharp
@@ -20,11 +26,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PortVisualState
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 76
+    startLine: 128
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -59,11 +65,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsHovered
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 81
+    startLine: 133
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -90,11 +96,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsConnected
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 86
+    startLine: 138
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -121,11 +127,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsValidDropTarget
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 91
+    startLine: 143
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -152,11 +158,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDragging
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 96
+    startLine: 148
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -169,6 +175,204 @@ items:
       type: System.Boolean
     content.vb: Public Property IsDragging As Boolean
   overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsDragging*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+  id: Change
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: Change
+  nameWithType: PortVisualState.Change
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Change
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 154
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    The type of state change that just occurred, if any.
+
+    Use this to trigger one-shot animations (e.g., ripple on connect).
+  example: []
+  syntax:
+    content: public PortStateChange Change { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange
+    content.vb: Public Property Change As PortStateChange
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
+  id: ConnectionCount
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: ConnectionCount
+  nameWithType: PortVisualState.ConnectionCount
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ConnectionCount
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 160
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Number of edges connected to this port.
+
+    Useful for showing connection count badges or varying visual intensity.
+  example: []
+  syntax:
+    content: public int ConnectionCount { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ConnectionCount As Integer
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+  id: IsReceivingData
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: IsReceivingData
+  nameWithType: PortVisualState.IsReceivingData
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsReceivingData
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 166
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Whether data is currently being received on this port (for input ports).
+
+    Use this for data flow indicators/animations.
+  example: []
+  syntax:
+    content: public bool IsReceivingData { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsReceivingData As Boolean
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
+  id: IsSendingData
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: IsSendingData
+  nameWithType: PortVisualState.IsSendingData
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSendingData
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 172
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: >-
+    Whether data is currently being sent from this port (for output ports).
+
+    Use this for data flow indicators/animations.
+  example: []
+  syntax:
+    content: public bool IsSendingData { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSendingData As Boolean
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  id: HasError
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: HasError
+  nameWithType: PortVisualState.HasError
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasError
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 177
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Whether the port has a validation error.
+  example: []
+  syntax:
+    content: public bool HasError { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasError As Boolean
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError*
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+  id: ErrorMessage
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
+  langs:
+  - csharp
+  - vb
+  name: ErrorMessage
+  nameWithType: PortVisualState.ErrorMessage
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ErrorMessage
+    path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
+    startLine: 182
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.PortRenderers
+  summary: Optional error message when <xref href="FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError" data-throw-if-not-resolved="false"></xref> is true.
+  example: []
+  syntax:
+    content: public string? ErrorMessage { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ErrorMessage As String
+  overload: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage*
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Default
   commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Default
   id: Default
@@ -183,11 +387,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Default
     path: ../FlowGraph.Avalonia/Rendering/PortRenderers/IPortRenderer.cs
-    startLine: 101
+    startLine: 187
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.PortRenderers
@@ -572,6 +776,77 @@ references:
   name: IsDragging
   nameWithType: PortVisualState.IsDragging
   fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsDragging
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_Change
+  name: Change
+  nameWithType: PortVisualState.Change
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Change
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange
+  commentId: T:FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange
+  parent: FlowGraph.Avalonia.Rendering.PortRenderers
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange.html
+  name: PortStateChange
+  nameWithType: PortStateChange
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_ConnectionCount
+  name: ConnectionCount
+  nameWithType: PortVisualState.ConnectionCount
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ConnectionCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_IsReceivingData
+  name: IsReceivingData
+  nameWithType: PortVisualState.IsReceivingData
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsReceivingData
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_IsSendingData
+  name: IsSendingData
+  nameWithType: PortVisualState.IsSendingData
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.IsSendingData
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_HasError
+  name: HasError
+  nameWithType: PortVisualState.HasError
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  commentId: P:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_HasError
+  name: HasError
+  nameWithType: PortVisualState.HasError
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.HasError
+- uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+  href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_ErrorMessage
+  name: ErrorMessage
+  nameWithType: PortVisualState.ErrorMessage
+  fullName: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.ErrorMessage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Default*
   commentId: Overload:FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.Default
   href: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html#FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_Default

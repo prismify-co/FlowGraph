@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IDataNodeRenderer
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
@@ -43,6 +43,8 @@ items:
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer.CreateDataBoundVisual(FlowGraph.Core.Node,FlowGraph.Core.DataFlow.INodeProcessor,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.IDataNodeRenderer.CreateDataBoundVisual(FlowGraph.Core.Node,FlowGraph.Core.DataFlow.INodeProcessor,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   id: CreateDataBoundVisual(FlowGraph.Core.Node,FlowGraph.Core.DataFlow.INodeProcessor,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
@@ -57,7 +59,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateDataBoundVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
@@ -101,7 +103,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateFromPortValues
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
@@ -139,7 +141,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnProcessorAttached
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
@@ -177,7 +179,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnProcessorDetached
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/IDataNodeRenderer.cs
@@ -534,6 +536,59 @@ references:
     name: FlowCanvasSettings
     href: FlowGraph.Avalonia.FlowCanvasSettings.html
   - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateStyle_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: UpdateStyle(Control, Node, NodeRenderContext)
+  nameWithType: INodeRenderer.UpdateStyle(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: UpdateStyle
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateStyle_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+    name: UpdateStyle
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateStyle_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+    name: NodeRenderContext
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_HasCompositeVisual
+  name: HasCompositeVisual
+  nameWithType: INodeRenderer.HasCompositeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
   commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers

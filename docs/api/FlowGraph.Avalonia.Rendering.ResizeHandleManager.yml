@@ -10,6 +10,7 @@ items:
   - FlowGraph.Avalonia.Rendering.ResizeHandleManager.RemoveAllResizeHandles(Avalonia.Controls.Canvas)
   - FlowGraph.Avalonia.Rendering.ResizeHandleManager.RemoveResizeHandles(Avalonia.Controls.Canvas,System.String)
   - FlowGraph.Avalonia.Rendering.ResizeHandleManager.RenderResizeHandles(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Shapes.Rectangle,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition})
+  - FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles
   - FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateResizeHandlePositions(FlowGraph.Core.Node)
   langs:
   - csharp
@@ -21,7 +22,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ResizeHandleManager
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
@@ -61,7 +62,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
@@ -99,7 +100,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Clear
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
@@ -130,7 +131,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderResizeHandles
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
@@ -174,11 +175,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemoveResizeHandles
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-    startLine: 104
+    startLine: 100
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -212,11 +213,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemoveAllResizeHandles
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-    startLine: 120
+    startLine: 116
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -230,6 +231,37 @@ items:
       description: The canvas containing the handles.
     content.vb: Public Sub RemoveAllResizeHandles(canvas As Canvas)
   overload: FlowGraph.Avalonia.Rendering.ResizeHandleManager.RemoveAllResizeHandles*
+- uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles
+  commentId: M:FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles
+  id: UpdateAllResizeHandles
+  parent: FlowGraph.Avalonia.Rendering.ResizeHandleManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateAllResizeHandles()
+  nameWithType: ResizeHandleManager.UpdateAllResizeHandles()
+  fullName: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateAllResizeHandles
+    path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
+    startLine: 132
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates size and position of all tracked resize handles.
+
+    Called on zoom changes to recalculate InverseScale-based sizing.
+  example: []
+  syntax:
+    content: public void UpdateAllResizeHandles()
+    content.vb: Public Sub UpdateAllResizeHandles()
+  overload: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles*
 - uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateResizeHandlePositions(FlowGraph.Core.Node)
   commentId: M:FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateResizeHandlePositions(FlowGraph.Core.Node)
   id: UpdateResizeHandlePositions(FlowGraph.Core.Node)
@@ -244,11 +276,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateResizeHandlePositions
     path: ../FlowGraph.Avalonia/Rendering/ResizeHandleManager.cs
-    startLine: 136
+    startLine: 160
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -746,6 +778,12 @@ references:
   name: RemoveAllResizeHandles
   nameWithType: ResizeHandleManager.RemoveAllResizeHandles
   fullName: FlowGraph.Avalonia.Rendering.ResizeHandleManager.RemoveAllResizeHandles
+- uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles
+  href: FlowGraph.Avalonia.Rendering.ResizeHandleManager.html#FlowGraph_Avalonia_Rendering_ResizeHandleManager_UpdateAllResizeHandles
+  name: UpdateAllResizeHandles
+  nameWithType: ResizeHandleManager.UpdateAllResizeHandles
+  fullName: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateAllResizeHandles
 - uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateResizeHandlePositions*
   commentId: Overload:FlowGraph.Avalonia.Rendering.ResizeHandleManager.UpdateResizeHandlePositions
   href: FlowGraph.Avalonia.Rendering.ResizeHandleManager.html#FlowGraph_Avalonia_Rendering_ResizeHandleManager_UpdateResizeHandlePositions_FlowGraph_Core_Node_

@@ -1,0 +1,520 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Input.HitTargetType
+  commentId: T:FlowGraph.Core.Input.HitTargetType
+  id: HitTargetType
+  parent: FlowGraph.Core.Input
+  children:
+  - FlowGraph.Core.Input.HitTargetType.All
+  - FlowGraph.Core.Input.HitTargetType.Canvas
+  - FlowGraph.Core.Input.HitTargetType.Custom
+  - FlowGraph.Core.Input.HitTargetType.Draggable
+  - FlowGraph.Core.Input.HitTargetType.Edge
+  - FlowGraph.Core.Input.HitTargetType.Group
+  - FlowGraph.Core.Input.HitTargetType.Node
+  - FlowGraph.Core.Input.HitTargetType.None
+  - FlowGraph.Core.Input.HitTargetType.Port
+  - FlowGraph.Core.Input.HitTargetType.ResizeHandle
+  - FlowGraph.Core.Input.HitTargetType.Selectable
+  - FlowGraph.Core.Input.HitTargetType.Shape
+  - FlowGraph.Core.Input.HitTargetType.ShapeResizeHandle
+  - FlowGraph.Core.Input.HitTargetType.Waypoint
+  langs:
+  - csharp
+  - vb
+  name: HitTargetType
+  nameWithType: HitTargetType
+  fullName: FlowGraph.Core.Input.HitTargetType
+  type: Enum
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTargetType
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 19
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: The type of element hit during a graph hit test.
+  remarks: >-
+    <p>
+
+    Uses <xref href="System.FlagsAttribute" data-throw-if-not-resolved="false"></xref> to enable efficient bitwise operations
+
+    for processors that handle multiple element types. This allows O(1) type
+
+    checking instead of list iteration on high-frequency events like PointerMoved.
+
+    </p>
+
+    <p>
+
+    Example: A processor handling both Node and Group can use:
+
+    <pre><code class="lang-csharp">HitTargetTypes.Node | HitTargetTypes.Group</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum HitTargetType
+    content.vb: >-
+      <Flags>
+
+      Public Enum HitTargetType
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+- uid: FlowGraph.Core.Input.HitTargetType.None
+  commentId: F:FlowGraph.Core.Input.HitTargetType.None
+  id: None
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: HitTargetType.None
+  fullName: FlowGraph.Core.Input.HitTargetType.None
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: None
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 23
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Nothing was hit (empty canvas space).
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Canvas
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Canvas
+  id: Canvas
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Canvas
+  nameWithType: HitTargetType.Canvas
+  fullName: FlowGraph.Core.Input.HitTargetType.Canvas
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Canvas
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 26
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Empty canvas space was hit.
+  example: []
+  syntax:
+    content: Canvas = 1
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Node
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Node
+  id: Node
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Node
+  nameWithType: HitTargetType.Node
+  fullName: FlowGraph.Core.Input.HitTargetType.Node
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Node
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 29
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A node was hit.
+  example: []
+  syntax:
+    content: Node = 2
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Edge
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Edge
+  id: Edge
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Edge
+  nameWithType: HitTargetType.Edge
+  fullName: FlowGraph.Core.Input.HitTargetType.Edge
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Edge
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: An edge/connection was hit.
+  example: []
+  syntax:
+    content: Edge = 4
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Port
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Port
+  id: Port
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Port
+  nameWithType: HitTargetType.Port
+  fullName: FlowGraph.Core.Input.HitTargetType.Port
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Port
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 35
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A port on a node was hit.
+  example: []
+  syntax:
+    content: Port = 8
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.ResizeHandle
+  commentId: F:FlowGraph.Core.Input.HitTargetType.ResizeHandle
+  id: ResizeHandle
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: ResizeHandle
+  nameWithType: HitTargetType.ResizeHandle
+  fullName: FlowGraph.Core.Input.HitTargetType.ResizeHandle
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ResizeHandle
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A resize handle was hit.
+  example: []
+  syntax:
+    content: ResizeHandle = 16
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Group
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Group
+  id: Group
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Group
+  nameWithType: HitTargetType.Group
+  fullName: FlowGraph.Core.Input.HitTargetType.Group
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Group
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A group/container was hit.
+  example: []
+  syntax:
+    content: Group = 32
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Waypoint
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Waypoint
+  id: Waypoint
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Waypoint
+  nameWithType: HitTargetType.Waypoint
+  fullName: FlowGraph.Core.Input.HitTargetType.Waypoint
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Waypoint
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A waypoint on an edge was hit.
+  example: []
+  syntax:
+    content: Waypoint = 64
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Shape
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Shape
+  id: Shape
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Shape
+  nameWithType: HitTargetType.Shape
+  fullName: FlowGraph.Core.Input.HitTargetType.Shape
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Shape
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A shape (non-node visual element) was hit.
+  example: []
+  syntax:
+    content: Shape = 128
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.Custom
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Custom
+  id: Custom
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Custom
+  nameWithType: HitTargetType.Custom
+  fullName: FlowGraph.Core.Input.HitTargetType.Custom
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Custom
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A custom element type was hit.
+  example: []
+  syntax:
+    content: Custom = 256
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.ShapeResizeHandle
+  commentId: F:FlowGraph.Core.Input.HitTargetType.ShapeResizeHandle
+  id: ShapeResizeHandle
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: ShapeResizeHandle
+  nameWithType: HitTargetType.ShapeResizeHandle
+  fullName: FlowGraph.Core.Input.HitTargetType.ShapeResizeHandle
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeResizeHandle
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: A resize handle on a shape was hit.
+  example: []
+  syntax:
+    content: ShapeResizeHandle = 512
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+- uid: FlowGraph.Core.Input.HitTargetType.All
+  commentId: F:FlowGraph.Core.Input.HitTargetType.All
+  id: All
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: HitTargetType.All
+  fullName: FlowGraph.Core.Input.HitTargetType.All
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: All
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 58
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: All element types (for catch-all processors).
+  example: []
+  syntax:
+    content: All = Canvas | Port | ResizeHandle | Waypoint | Selectable | Custom | ShapeResizeHandle
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+    content.vb: All = Canvas Or Port Or ResizeHandle Or Waypoint Or Selectable Or Custom Or ShapeResizeHandle
+- uid: FlowGraph.Core.Input.HitTargetType.Draggable
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Draggable
+  id: Draggable
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Draggable
+  nameWithType: HitTargetType.Draggable
+  fullName: FlowGraph.Core.Input.HitTargetType.Draggable
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Draggable
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 61
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: All draggable elements (nodes, shapes, groups).
+  example: []
+  syntax:
+    content: Draggable = Node | Group | Shape
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+    content.vb: Draggable = Node Or Group Or Shape
+- uid: FlowGraph.Core.Input.HitTargetType.Selectable
+  commentId: F:FlowGraph.Core.Input.HitTargetType.Selectable
+  id: Selectable
+  parent: FlowGraph.Core.Input.HitTargetType
+  langs:
+  - csharp
+  - vb
+  name: Selectable
+  nameWithType: HitTargetType.Selectable
+  fullName: FlowGraph.Core.Input.HitTargetType.Selectable
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IGraphHitTester.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Selectable
+    path: ../FlowGraph.Core/Input/IGraphHitTester.cs
+    startLine: 64
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: All selectable elements.
+  example: []
+  syntax:
+    content: Selectable = Edge | Draggable
+    return:
+      type: FlowGraph.Core.Input.HitTargetType
+    content.vb: Selectable = Edge Or Draggable
+references:
+- uid: System.FlagsAttribute
+  commentId: T:System.FlagsAttribute
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.flagsattribute
+  name: FlagsAttribute
+  nameWithType: FlagsAttribute
+  fullName: System.FlagsAttribute
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Input.HitTargetType
+  commentId: T:FlowGraph.Core.Input.HitTargetType
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.HitTargetType.html
+  name: HitTargetType
+  nameWithType: HitTargetType
+  fullName: FlowGraph.Core.Input.HitTargetType

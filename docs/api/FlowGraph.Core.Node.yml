@@ -7,10 +7,13 @@ items:
   children:
   - FlowGraph.Core.Node.#ctor
   - FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
+  - FlowGraph.Core.Node.AllowedResizeHandles
+  - FlowGraph.Core.Node.BoundsChanged
   - FlowGraph.Core.Node.CreateStateSnapshot
   - FlowGraph.Core.Node.Data
   - FlowGraph.Core.Node.Definition
   - FlowGraph.Core.Node.GetBounds
+  - FlowGraph.Core.Node.GroupPadding
   - FlowGraph.Core.Node.Height
   - FlowGraph.Core.Node.Id
   - FlowGraph.Core.Node.Inputs
@@ -20,6 +23,7 @@ items:
   - FlowGraph.Core.Node.IsDraggable
   - FlowGraph.Core.Node.IsDragging
   - FlowGraph.Core.Node.IsGroup
+  - FlowGraph.Core.Node.IsHighlighted
   - FlowGraph.Core.Node.IsResizable
   - FlowGraph.Core.Node.IsSelectable
   - FlowGraph.Core.Node.IsSelected
@@ -30,6 +34,7 @@ items:
   - FlowGraph.Core.Node.Outputs
   - FlowGraph.Core.Node.ParentGroupId
   - FlowGraph.Core.Node.Position
+  - FlowGraph.Core.Node.PositionChanged
   - FlowGraph.Core.Node.PropertyChanged
   - FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)
   - FlowGraph.Core.Node.SetPosition(System.Double,System.Double)
@@ -48,11 +53,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Node
     path: ../FlowGraph.Core/Node.cs
-    startLine: 23
+    startLine: 24
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -114,11 +119,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PropertyChanged
     path: ../FlowGraph.Core/Node.cs
-    startLine: 33
+    startLine: 39
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -131,6 +136,70 @@ items:
     content.vb: Public Event PropertyChanged As PropertyChangedEventHandler
   implements:
   - System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+- uid: FlowGraph.Core.Node.PositionChanged
+  commentId: E:FlowGraph.Core.Node.PositionChanged
+  id: PositionChanged
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: PositionChanged
+  nameWithType: Node.PositionChanged
+  fullName: FlowGraph.Core.Node.PositionChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PositionChanged
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 45
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Raised when the node's position (X, Y) changes.
+
+    More efficient than PropertyChanged for position-specific listeners.
+  example: []
+  syntax:
+    content: public event EventHandler<PositionChangedEventArgs>? PositionChanged
+    return:
+      type: System.EventHandler{FlowGraph.Core.Events.PositionChangedEventArgs}
+    content.vb: Public Event PositionChanged As EventHandler(Of PositionChangedEventArgs)
+- uid: FlowGraph.Core.Node.BoundsChanged
+  commentId: E:FlowGraph.Core.Node.BoundsChanged
+  id: BoundsChanged
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: BoundsChanged
+  nameWithType: Node.BoundsChanged
+  fullName: FlowGraph.Core.Node.BoundsChanged
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BoundsChanged
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Raised when the node's bounds (position or size) change.
+
+    Useful for spatial index invalidation and layout systems.
+  example: []
+  syntax:
+    content: public event EventHandler<BoundsChangedEventArgs>? BoundsChanged
+    return:
+      type: System.EventHandler{FlowGraph.Core.Events.BoundsChangedEventArgs}
+    content.vb: Public Event BoundsChanged As EventHandler(Of BoundsChangedEventArgs)
 - uid: FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
   commentId: M:FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)
   id: '#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)'
@@ -145,11 +214,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Node.cs
-    startLine: 40
+    startLine: 58
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -183,11 +252,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Node.cs
-    startLine: 52
+    startLine: 71
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -214,11 +283,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Definition
     path: ../FlowGraph.Core/Node.cs
-    startLine: 67
+    startLine: 86
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -248,11 +317,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: State
     path: ../FlowGraph.Core/Node.cs
-    startLine: 105
+    startLine: 128
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -279,11 +348,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Node.cs
-    startLine: 131
+    startLine: 154
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -312,11 +381,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Node.cs
-    startLine: 136
+    startLine: 159
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -345,11 +414,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Node.cs
-    startLine: 145
+    startLine: 168
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -376,11 +445,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ParentGroupId
     path: ../FlowGraph.Core/Node.cs
-    startLine: 154
+    startLine: 177
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -407,11 +476,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsGroup
     path: ../FlowGraph.Core/Node.cs
-    startLine: 163
+    startLine: 186
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -424,6 +493,40 @@ items:
       type: System.Boolean
     content.vb: Public Property IsGroup As Boolean
   overload: FlowGraph.Core.Node.IsGroup*
+- uid: FlowGraph.Core.Node.GroupPadding
+  commentId: P:FlowGraph.Core.Node.GroupPadding
+  id: GroupPadding
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: GroupPadding
+  nameWithType: Node.GroupPadding
+  fullName: FlowGraph.Core.Node.GroupPadding
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupPadding
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 196
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Custom padding around group children when calculating group bounds.
+
+    Only applies when IsGroup is true. If null, uses the default from settings.
+  example: []
+  syntax:
+    content: public double? GroupPadding { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Property GroupPadding As Double?
+  overload: FlowGraph.Core.Node.GroupPadding*
 - uid: FlowGraph.Core.Node.Data
   commentId: P:FlowGraph.Core.Node.Data
   id: Data
@@ -438,11 +541,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Data
     path: ../FlowGraph.Core/Node.cs
-    startLine: 172
+    startLine: 205
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -469,11 +572,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelectable
     path: ../FlowGraph.Core/Node.cs
-    startLine: 185
+    startLine: 218
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -486,6 +589,8 @@ items:
       type: System.Boolean
     content.vb: Public Property IsSelectable As Boolean
   overload: FlowGraph.Core.Node.IsSelectable*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.IsSelectable
 - uid: FlowGraph.Core.Node.IsDraggable
   commentId: P:FlowGraph.Core.Node.IsDraggable
   id: IsDraggable
@@ -500,11 +605,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDraggable
     path: ../FlowGraph.Core/Node.cs
-    startLine: 194
+    startLine: 227
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -531,11 +636,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDeletable
     path: ../FlowGraph.Core/Node.cs
-    startLine: 203
+    startLine: 236
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -562,11 +667,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsConnectable
     path: ../FlowGraph.Core/Node.cs
-    startLine: 212
+    startLine: 245
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -593,11 +698,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsResizable
     path: ../FlowGraph.Core/Node.cs
-    startLine: 221
+    startLine: 254
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -610,6 +715,37 @@ items:
       type: System.Boolean
     content.vb: Public Property IsResizable As Boolean
   overload: FlowGraph.Core.Node.IsResizable*
+- uid: FlowGraph.Core.Node.AllowedResizeHandles
+  commentId: P:FlowGraph.Core.Node.AllowedResizeHandles
+  id: AllowedResizeHandles
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: AllowedResizeHandles
+  nameWithType: Node.AllowedResizeHandles
+  fullName: FlowGraph.Core.Node.AllowedResizeHandles
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AllowedResizeHandles
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 263
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Specifies which resize handles should be displayed when this node is selected.
+  example: []
+  syntax:
+    content: public ResizeHandleMode AllowedResizeHandles { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.ResizeHandleMode
+    content.vb: Public Property AllowedResizeHandles As ResizeHandleMode
+  overload: FlowGraph.Core.Node.AllowedResizeHandles*
 - uid: FlowGraph.Core.Node.Inputs
   commentId: P:FlowGraph.Core.Node.Inputs
   id: Inputs
@@ -624,11 +760,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Inputs
     path: ../FlowGraph.Core/Node.cs
-    startLine: 235
+    startLine: 277
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -658,11 +794,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Outputs
     path: ../FlowGraph.Core/Node.cs
-    startLine: 252
+    startLine: 294
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -692,11 +828,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Position
     path: ../FlowGraph.Core/Node.cs
-    startLine: 272
+    startLine: 314
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -725,11 +861,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Width
     path: ../FlowGraph.Core/Node.cs
-    startLine: 289
+    startLine: 331
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -758,11 +894,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Height
     path: ../FlowGraph.Core/Node.cs
-    startLine: 298
+    startLine: 340
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -791,11 +927,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelected
     path: ../FlowGraph.Core/Node.cs
-    startLine: 311
+    startLine: 353
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -810,6 +946,40 @@ items:
   overload: FlowGraph.Core.Node.IsSelected*
   implements:
   - FlowGraph.Core.Elements.ICanvasElement.IsSelected
+- uid: FlowGraph.Core.Node.IsHighlighted
+  commentId: P:FlowGraph.Core.Node.IsHighlighted
+  id: IsHighlighted
+  parent: FlowGraph.Core.Node
+  langs:
+  - csharp
+  - vb
+  name: IsHighlighted
+  nameWithType: Node.IsHighlighted
+  fullName: FlowGraph.Core.Node.IsHighlighted
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Node.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsHighlighted
+    path: ../FlowGraph.Core/Node.cs
+    startLine: 363
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: >-
+    Whether this node is highlighted for emphasis (e.g., search results, analysis feedback).
+
+    Unlike selection, highlighting is purely visual and doesn't affect operations.
+  example: []
+  syntax:
+    content: public bool IsHighlighted { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsHighlighted As Boolean
+  overload: FlowGraph.Core.Node.IsHighlighted*
 - uid: FlowGraph.Core.Node.IsDragging
   commentId: P:FlowGraph.Core.Node.IsDragging
   id: IsDragging
@@ -824,11 +994,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDragging
     path: ../FlowGraph.Core/Node.cs
-    startLine: 320
+    startLine: 372
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -855,11 +1025,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsCollapsed
     path: ../FlowGraph.Core/Node.cs
-    startLine: 329
+    startLine: 381
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -886,11 +1056,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsVisible
     path: ../FlowGraph.Core/Node.cs
-    startLine: 343
+    startLine: 395
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -922,11 +1092,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ZIndex
     path: ../FlowGraph.Core/Node.cs
-    startLine: 353
+    startLine: 405
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -958,11 +1128,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBounds
     path: ../FlowGraph.Core/Node.cs
-    startLine: 362
+    startLine: 414
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -990,11 +1160,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Move
     path: ../FlowGraph.Core/Node.cs
-    startLine: 378
+    startLine: 430
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1026,11 +1196,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetPosition
     path: ../FlowGraph.Core/Node.cs
-    startLine: 387
+    startLine: 439
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1062,11 +1232,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetSize
     path: ../FlowGraph.Core/Node.cs
-    startLine: 396
+    startLine: 448
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1098,11 +1268,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateStateSnapshot
     path: ../FlowGraph.Core/Node.cs
-    startLine: 405
+    startLine: 457
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1128,11 +1298,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RestoreState
     path: ../FlowGraph.Core/Node.cs
-    startLine: 422
+    startLine: 475
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1159,11 +1329,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Node.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnPropertyChanged
     path: ../FlowGraph.Core/Node.cs
-    startLine: 460
+    startLine: 555
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1786,6 +1956,100 @@ references:
   name: PropertyChangedEventHandler
   nameWithType: PropertyChangedEventHandler
   fullName: System.ComponentModel.PropertyChangedEventHandler
+- uid: System.EventHandler{FlowGraph.Core.Events.PositionChangedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Core.Events.PositionChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<PositionChangedEventArgs>
+  nameWithType: EventHandler<PositionChangedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Core.Events.PositionChangedEventArgs>
+  nameWithType.vb: EventHandler(Of PositionChangedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Core.Events.PositionChangedEventArgs)
+  name.vb: EventHandler(Of PositionChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Core.Events.PositionChangedEventArgs
+    name: PositionChangedEventArgs
+    href: FlowGraph.Core.Events.PositionChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Events.PositionChangedEventArgs
+    name: PositionChangedEventArgs
+    href: FlowGraph.Core.Events.PositionChangedEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: System.EventHandler{FlowGraph.Core.Events.BoundsChangedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Core.Events.BoundsChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<BoundsChangedEventArgs>
+  nameWithType: EventHandler<BoundsChangedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Core.Events.BoundsChangedEventArgs>
+  nameWithType.vb: EventHandler(Of BoundsChangedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Core.Events.BoundsChangedEventArgs)
+  name.vb: EventHandler(Of BoundsChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Core.Events.BoundsChangedEventArgs
+    name: BoundsChangedEventArgs
+    href: FlowGraph.Core.Events.BoundsChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Events.BoundsChangedEventArgs
+    name: BoundsChangedEventArgs
+    href: FlowGraph.Core.Events.BoundsChangedEventArgs.html
+  - name: )
 - uid: FlowGraph.Core.Node.#ctor*
   commentId: Overload:FlowGraph.Core.Node.#ctor
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node__ctor_FlowGraph_Core_Models_NodeDefinition_FlowGraph_Core_Models_INodeState_
@@ -1917,6 +2181,63 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Node.GroupPadding*
+  commentId: Overload:FlowGraph.Core.Node.GroupPadding
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_GroupPadding
+  name: GroupPadding
+  nameWithType: Node.GroupPadding
+  fullName: FlowGraph.Core.Node.GroupPadding
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: FlowGraph.Core.Node.Data*
   commentId: Overload:FlowGraph.Core.Node.Data
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Data
@@ -1929,6 +2250,13 @@ references:
   name: IsSelectable
   nameWithType: Node.IsSelectable
   fullName: FlowGraph.Core.Node.IsSelectable
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsSelectable
+  name: IsSelectable
+  nameWithType: ICanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
 - uid: FlowGraph.Core.Node.IsDraggable*
   commentId: Overload:FlowGraph.Core.Node.IsDraggable
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDraggable
@@ -1953,6 +2281,19 @@ references:
   name: IsResizable
   nameWithType: Node.IsResizable
   fullName: FlowGraph.Core.Node.IsResizable
+- uid: FlowGraph.Core.Node.AllowedResizeHandles*
+  commentId: Overload:FlowGraph.Core.Node.AllowedResizeHandles
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_AllowedResizeHandles
+  name: AllowedResizeHandles
+  nameWithType: Node.AllowedResizeHandles
+  fullName: FlowGraph.Core.Node.AllowedResizeHandles
+- uid: FlowGraph.Core.ResizeHandleMode
+  commentId: T:FlowGraph.Core.ResizeHandleMode
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.ResizeHandleMode.html
+  name: ResizeHandleMode
+  nameWithType: ResizeHandleMode
+  fullName: FlowGraph.Core.ResizeHandleMode
 - uid: FlowGraph.Core.Node.Inputs*
   commentId: Overload:FlowGraph.Core.Node.Inputs
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Inputs
@@ -2096,57 +2437,6 @@ references:
   name: Width
   nameWithType: ICanvasElement.Width
   fullName: FlowGraph.Core.Elements.ICanvasElement.Width
-- uid: System.Nullable{System.Double}
-  commentId: T:System.Nullable{System.Double}
-  parent: System
-  definition: System.Nullable`1
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: double?
-  nameWithType: double?
-  fullName: double?
-  nameWithType.vb: Double?
-  fullName.vb: Double?
-  name.vb: Double?
-  spec.csharp:
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: '?'
-  spec.vb:
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: '?'
-- uid: System.Nullable`1
-  commentId: T:System.Nullable`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  name: Nullable<T>
-  nameWithType: Nullable<T>
-  fullName: System.Nullable<T>
-  nameWithType.vb: Nullable(Of T)
-  fullName.vb: System.Nullable(Of T)
-  name.vb: Nullable(Of T)
-  spec.csharp:
-  - uid: System.Nullable`1
-    name: Nullable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Nullable`1
-    name: Nullable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: FlowGraph.Core.Node.Height*
   commentId: Overload:FlowGraph.Core.Node.Height
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Height
@@ -2173,6 +2463,12 @@ references:
   name: IsSelected
   nameWithType: ICanvasElement.IsSelected
   fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelected
+- uid: FlowGraph.Core.Node.IsHighlighted*
+  commentId: Overload:FlowGraph.Core.Node.IsHighlighted
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsHighlighted
+  name: IsHighlighted
+  nameWithType: Node.IsHighlighted
+  fullName: FlowGraph.Core.Node.IsHighlighted
 - uid: FlowGraph.Core.Node.IsDragging*
   commentId: Overload:FlowGraph.Core.Node.IsDragging
   href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_IsDragging

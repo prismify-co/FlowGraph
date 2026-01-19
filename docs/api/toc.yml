@@ -115,6 +115,18 @@ items:
   - uid: FlowGraph.Avalonia.SelectionMode
     name: SelectionMode
     type: Enum
+  - uid: FlowGraph.Avalonia.ShapeResizedEventArgs
+    name: ShapeResizedEventArgs
+    type: Class
+  - uid: FlowGraph.Avalonia.ShapeResizingEventArgs
+    name: ShapeResizingEventArgs
+    type: Class
+  - uid: FlowGraph.Avalonia.ShapeTextCommittedEventArgs
+    name: ShapeTextCommittedEventArgs
+    type: Class
+  - uid: FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs
+    name: ShapeTextEditRequestedEventArgs
+    type: Class
   - uid: FlowGraph.Avalonia.ViewportChangedEventArgs
     name: ViewportChangedEventArgs
     type: Class
@@ -149,14 +161,29 @@ items:
   - uid: FlowGraph.Avalonia.Animation.EdgeColorAnimation
     name: EdgeColorAnimation
     type: Class
+  - uid: FlowGraph.Avalonia.Animation.EdgeContinuousPulseAnimation
+    name: EdgeContinuousPulseAnimation
+    type: Class
+  - uid: FlowGraph.Avalonia.Animation.EdgeEffectsManager
+    name: EdgeEffectsManager
+    type: Class
   - uid: FlowGraph.Avalonia.Animation.EdgeFadeAnimation
     name: EdgeFadeAnimation
     type: Class
   - uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimation
     name: EdgeFlowAnimation
     type: Class
+  - uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+    name: EdgeFlowAnimationManager
+    type: Class
   - uid: FlowGraph.Avalonia.Animation.EdgePulseAnimation
     name: EdgePulseAnimation
+    type: Class
+  - uid: FlowGraph.Avalonia.Animation.EdgePulseGlowAnimation
+    name: EdgePulseGlowAnimation
+    type: Class
+  - uid: FlowGraph.Avalonia.Animation.EdgeRainbowAnimation
+    name: EdgeRainbowAnimation
     type: Class
   - uid: FlowGraph.Avalonia.Animation.GenericAnimation
     name: GenericAnimation
@@ -252,13 +279,53 @@ items:
   - uid: FlowGraph.Avalonia.Controls.PanelPosition
     name: PanelPosition
     type: Enum
+- uid: FlowGraph.Avalonia.Coordinates
+  name: FlowGraph.Avalonia.Coordinates
+  type: Namespace
+  items:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+    name: AvaloniaCoordinateExtensions
+    type: Class
 - uid: FlowGraph.Avalonia.Input
   name: FlowGraph.Avalonia.Input
   type: Namespace
   items:
+  - uid: FlowGraph.Avalonia.Input.DirectRendererHitTester
+    name: DirectRendererHitTester
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.EdgeEndpointHitInfo
+    name: EdgeEndpointHitInfo
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.ICollisionProvider
+    name: ICollisionProvider
+    type: Interface
+  - uid: FlowGraph.Avalonia.Input.IInputCoordinates
+    name: IInputCoordinates
+    type: Interface
+  - uid: FlowGraph.Avalonia.Input.IInputProcessor
+    name: IInputProcessor
+    type: Interface
   - uid: FlowGraph.Avalonia.Input.IInputState
     name: IInputState
     type: Interface
+  - uid: FlowGraph.Avalonia.Input.ISnapProvider
+    name: ISnapProvider
+    type: Interface
+  - uid: FlowGraph.Avalonia.Input.InputCoordinatesAdapter
+    name: InputCoordinatesAdapter
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.InputDispatcher
+    name: InputDispatcher
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.InputProcessorBase
+    name: InputProcessorBase
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.InputProcessorPriority
+    name: InputProcessorPriority
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.InputProcessorResult
+    name: InputProcessorResult
+    type: Class
   - uid: FlowGraph.Avalonia.Input.InputStateBase
     name: InputStateBase
     type: Class
@@ -273,6 +340,31 @@ items:
     type: Class
   - uid: FlowGraph.Avalonia.Input.StateTransitionResult
     name: StateTransitionResult
+    type: Class
+- uid: FlowGraph.Avalonia.Input.Processors
+  name: FlowGraph.Avalonia.Input.Processors
+  type: Namespace
+  items:
+  - uid: FlowGraph.Avalonia.Input.Processors.CanvasProcessor
+    name: CanvasProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.EdgeProcessor
+    name: EdgeProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.NodeProcessor
+    name: NodeProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.PortProcessor
+    name: PortProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.ResizeHandleProcessor
+    name: ResizeHandleProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.ShapeProcessor
+    name: ShapeProcessor
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.Processors.ShapeResizeHandleProcessor
+    name: ShapeResizeHandleProcessor
     type: Class
 - uid: FlowGraph.Avalonia.Input.States
   name: FlowGraph.Avalonia.Input.States
@@ -293,6 +385,9 @@ items:
   - uid: FlowGraph.Avalonia.Input.States.ConnectingState
     name: ConnectingState
     type: Class
+  - uid: FlowGraph.Avalonia.Input.States.DraggingShapesState
+    name: DraggingShapesState
+    type: Class
   - uid: FlowGraph.Avalonia.Input.States.DraggingState
     name: DraggingState
     type: Class
@@ -304,6 +399,9 @@ items:
     type: Class
   - uid: FlowGraph.Avalonia.Input.States.ReconnectingState
     name: ReconnectingState
+    type: Class
+  - uid: FlowGraph.Avalonia.Input.States.ResizingShapeState
+    name: ResizingShapeState
     type: Class
   - uid: FlowGraph.Avalonia.Input.States.ResizingState
     name: ResizingState
@@ -319,11 +417,26 @@ items:
   name: FlowGraph.Avalonia.Rendering
   type: Namespace
   items:
+  - uid: FlowGraph.Avalonia.Rendering.ArrowGeometryHelper
+    name: ArrowGeometryHelper
+    type: Class
   - uid: FlowGraph.Avalonia.Rendering.BezierHelper
     name: BezierHelper
     type: Class
-  - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
-    name: DirectGraphRenderer
+  - uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    name: CanvasElementManager
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.CanvasRenderModel
+    name: CanvasRenderModel
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.CanvasRenderService
+    name: CanvasRenderService
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.DesignTokens
+    name: DesignTokens
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper
     name: EdgePathHelper
@@ -331,17 +444,26 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager
     name: EdgeVisualManager
     type: Class
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderModel
-    name: GraphRenderModel
-    type: Class
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-    name: GraphRenderer
-    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+    name: ICanvasRenderService
+    type: Interface
+  - uid: FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle
+    name: IConnectionPreviewHandle
+    type: Interface
+  - uid: FlowGraph.Avalonia.Rendering.IRenderTarget
+    name: IRenderTarget
+    type: Interface
+  - uid: FlowGraph.Avalonia.Rendering.ISelectionBoxHandle
+    name: ISelectionBoxHandle
+    type: Interface
   - uid: FlowGraph.Avalonia.Rendering.NodeVisualManager
     name: NodeVisualManager
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.RenderContext
     name: RenderContext
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.RenderTargetAdapter
+    name: RenderTargetAdapter
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.ResizeHandleManager
     name: ResizeHandleManager
@@ -352,6 +474,9 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.ThemeResources
     name: ThemeResources
     type: Class
+  - uid: FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner
+    name: ViewportOverlayPositioner
+    type: Class
 - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers
   name: FlowGraph.Avalonia.Rendering.BackgroundRenderers
   type: Namespace
@@ -359,6 +484,9 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderContext
     name: BackgroundRenderContext
     type: Class
+  - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRenderTarget
+    name: BackgroundRenderTarget
+    type: Enum
   - uid: FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry
     name: BackgroundRendererRegistry
     type: Class
@@ -430,6 +558,9 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
     name: INodeRenderer
     type: Interface
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.IResizableNodeRenderer
+    name: IResizableNodeRenderer
+    type: Interface
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.InputNodeRenderer
     name: InputNodeRenderer
     type: Class
@@ -438,6 +569,9 @@ items:
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry
     name: NodeRendererRegistry
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeVisualHelper
+    name: NodeVisualHelper
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NumberInputNodeRenderer
     name: NumberInputNodeRenderer
@@ -453,6 +587,12 @@ items:
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.RadioButtonNodeRenderer
     name: RadioButtonNodeRenderer
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    name: ResizableVisual
+    type: Class
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+    name: ResizableVisual.ResizeMetadata
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.SimplifiedNodeRenderer
     name: SimplifiedNodeRenderer
@@ -494,6 +634,9 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortRendererRegistry
     name: PortRendererRegistry
     type: Class
+  - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortStateChange
+    name: PortStateChange
+    type: Enum
   - uid: FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState
     name: PortVisualState
     type: Class
@@ -501,6 +644,9 @@ items:
   name: FlowGraph.Avalonia.Rendering.ShapeRenderers
   type: Namespace
   items:
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.CommentRenderer
+    name: CommentRenderer
+    type: Class
   - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.EllipseRenderer
     name: EllipseRenderer
     type: Class
@@ -519,11 +665,21 @@ items:
   - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeRendererRegistry
     name: ShapeRendererRegistry
     type: Class
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeResizeHandleManager
+    name: ShapeResizeHandleManager
+    type: Class
   - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
     name: ShapeVisualManager
     type: Class
   - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.TextRenderer
     name: TextRenderer
+    type: Class
+- uid: FlowGraph.Avalonia.Rendering.Spatial
+  name: FlowGraph.Avalonia.Rendering.Spatial
+  type: Namespace
+  items:
+  - uid: FlowGraph.Avalonia.Rendering.Spatial.Quadtree`1
+    name: Quadtree<T>
     type: Class
 - uid: FlowGraph.Avalonia.Routing
   name: FlowGraph.Avalonia.Routing
@@ -567,9 +723,6 @@ items:
   name: FlowGraph.Core
   type: Namespace
   items:
-  - uid: FlowGraph.Core.BulkObservableCollection`1
-    name: BulkObservableCollection<T>
-    type: Class
   - uid: FlowGraph.Core.Edge
     name: Edge
     type: Class
@@ -588,6 +741,9 @@ items:
   - uid: FlowGraph.Core.GraphGroupExtensions
     name: GraphGroupExtensions
     type: Class
+  - uid: FlowGraph.Core.GroupMovementMode
+    name: GroupMovementMode
+    type: Enum
   - uid: FlowGraph.Core.Node
     name: Node
     type: Class
@@ -603,6 +759,9 @@ items:
   - uid: FlowGraph.Core.PortPositionExtensions
     name: PortPositionExtensions
     type: Class
+  - uid: FlowGraph.Core.ResizeHandleMode
+    name: ResizeHandleMode
+    type: Enum
 - uid: FlowGraph.Core.Commands
   name: FlowGraph.Core.Commands
   type: Namespace
@@ -676,6 +835,37 @@ items:
   - uid: FlowGraph.Core.Commands.UngroupNodesCommand
     name: UngroupNodesCommand
     type: Class
+- uid: FlowGraph.Core.Coordinates
+  name: FlowGraph.Core.Coordinates
+  type: Namespace
+  items:
+  - uid: FlowGraph.Core.Coordinates.CanvasPoint
+    name: CanvasPoint
+    type: Struct
+  - uid: FlowGraph.Core.Coordinates.CanvasRect
+    name: CanvasRect
+    type: Struct
+  - uid: FlowGraph.Core.Coordinates.CanvasVector
+    name: CanvasVector
+    type: Struct
+  - uid: FlowGraph.Core.Coordinates.ITypedCoordinateTransformer
+    name: ITypedCoordinateTransformer
+    type: Interface
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformer
+    name: TypedCoordinateTransformer
+    type: Class
+  - uid: FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions
+    name: TypedCoordinateTransformerExtensions
+    type: Class
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    type: Struct
+  - uid: FlowGraph.Core.Coordinates.ViewportRect
+    name: ViewportRect
+    type: Struct
+  - uid: FlowGraph.Core.Coordinates.ViewportVector
+    name: ViewportVector
+    type: Struct
 - uid: FlowGraph.Core.DataFlow
   name: FlowGraph.Core.DataFlow
   type: Namespace
@@ -812,10 +1002,19 @@ items:
   - uid: FlowGraph.Core.Elements.Rect
     name: Rect
     type: Struct
+  - uid: FlowGraph.Core.Elements.Size
+    name: Size
+    type: Struct
 - uid: FlowGraph.Core.Elements.Shapes
   name: FlowGraph.Core.Elements.Shapes
   type: Namespace
   items:
+  - uid: FlowGraph.Core.Elements.Shapes.CommentElement
+    name: CommentElement
+    type: Class
+  - uid: FlowGraph.Core.Elements.Shapes.CommentStyle
+    name: CommentStyle
+    type: Enum
   - uid: FlowGraph.Core.Elements.Shapes.EllipseElement
     name: EllipseElement
     type: Class
@@ -843,18 +1042,89 @@ items:
   - uid: FlowGraph.Core.Elements.Shapes.TextElement
     name: TextElement
     type: Class
+- uid: FlowGraph.Core.Events
+  name: FlowGraph.Core.Events
+  type: Namespace
+  items:
+  - uid: FlowGraph.Core.Events.BoundsChangedEventArgs
+    name: BoundsChangedEventArgs
+    type: Class
+  - uid: FlowGraph.Core.Events.NodeBoundsChangedEventArgs
+    name: NodeBoundsChangedEventArgs
+    type: Class
+  - uid: FlowGraph.Core.Events.PositionChangedEventArgs
+    name: PositionChangedEventArgs
+    type: Class
+- uid: FlowGraph.Core.Input
+  name: FlowGraph.Core.Input
+  type: Namespace
+  items:
+  - uid: FlowGraph.Core.Input.BehaviorBase
+    name: BehaviorBase
+    type: Class
+  - uid: FlowGraph.Core.Input.BehaviorResult
+    name: BehaviorResult
+    type: Class
+  - uid: FlowGraph.Core.Input.GraphHitTestResult
+    name: GraphHitTestResult
+    type: Class
+  - uid: FlowGraph.Core.Input.HitTargetType
+    name: HitTargetType
+    type: Enum
+  - uid: FlowGraph.Core.Input.HitTestResult`1
+    name: HitTestResult<TElement>
+    type: Class
+  - uid: FlowGraph.Core.Input.IBehavior
+    name: IBehavior
+    type: Interface
+  - uid: FlowGraph.Core.Input.IGraphHitTester
+    name: IGraphHitTester
+    type: Interface
+  - uid: FlowGraph.Core.Input.IGraphInputEvent
+    name: IGraphInputEvent
+    type: Interface
+  - uid: FlowGraph.Core.Input.IHitTestable`1
+    name: IHitTestable<TElement>
+    type: Interface
+  - uid: FlowGraph.Core.Input.InputModifiers
+    name: InputModifiers
+    type: Enum
+  - uid: FlowGraph.Core.Input.MouseButton
+    name: MouseButton
+    type: Enum
+  - uid: FlowGraph.Core.Input.PortHitInfo
+    name: PortHitInfo
+    type: Class
+  - uid: FlowGraph.Core.Input.ResizeHandleHitInfo
+    name: ResizeHandleHitInfo
+    type: Class
+  - uid: FlowGraph.Core.Input.ResizeHandlePosition
+    name: ResizeHandlePosition
+    type: Enum
+  - uid: FlowGraph.Core.Input.ShapeResizeHandleHitInfo
+    name: ShapeResizeHandleHitInfo
+    type: Class
 - uid: FlowGraph.Core.Models
   name: FlowGraph.Core.Models
   type: Namespace
   items:
+  - uid: FlowGraph.Core.Models.EdgeDashPattern
+    name: EdgeDashPattern
+    type: Enum
   - uid: FlowGraph.Core.Models.EdgeDefinition
     name: EdgeDefinition
     type: Class
+  - uid: FlowGraph.Core.Models.EdgeFlowDirection
+    name: EdgeFlowDirection
+    type: Enum
   - uid: FlowGraph.Core.Models.EdgeRoutingMode
     name: EdgeRoutingMode
     type: Enum
   - uid: FlowGraph.Core.Models.EdgeState
     name: EdgeState
+    type: Class
+  - uid: FlowGraph.Core.Models.EdgeStyle
+    name: EdgeStyle
     type: Class
   - uid: FlowGraph.Core.Models.IEdgeState
     name: IEdgeState
@@ -879,6 +1149,37 @@ items:
     type: Class
   - uid: FlowGraph.Core.Models.PortDefinition
     name: PortDefinition
+    type: Class
+- uid: FlowGraph.Core.Rendering
+  name: FlowGraph.Core.Rendering
+  type: Namespace
+  items:
+  - uid: FlowGraph.Core.Rendering.CoordinateSpace
+    name: CoordinateSpace
+    type: Enum
+  - uid: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+    name: CoordinateSpaceAttribute
+    type: Class
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+    name: CoordinateTransformerExtensions
+    type: Class
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    type: Interface
+  - uid: FlowGraph.Core.Rendering.IReadOnlyViewportState
+    name: IReadOnlyViewportState
+    type: Interface
+  - uid: FlowGraph.Core.Rendering.IRenderLayer
+    name: IRenderLayer
+    type: Interface
+  - uid: FlowGraph.Core.Rendering.IViewportState
+    name: IViewportState
+    type: Interface
+  - uid: FlowGraph.Core.Rendering.LayerTransformMode
+    name: LayerTransformMode
+    type: Enum
+  - uid: FlowGraph.Core.Rendering.StandardLayers
+    name: StandardLayers
     type: Class
 - uid: FlowGraph.Core.Routing
   name: FlowGraph.Core.Routing
@@ -921,43 +1222,47 @@ items:
   name: FlowGraph.Core.Serialization
   type: Namespace
   items:
-  - uid: FlowGraph.Core.Serialization.EdgeDto
-    name: EdgeDto
-    type: Class
-  - uid: FlowGraph.Core.Serialization.EdgeElementDto
-    name: EdgeElementDto
-    type: Class
-  - uid: FlowGraph.Core.Serialization.ElementDto
-    name: ElementDto
-    type: Class
-  - uid: FlowGraph.Core.Serialization.GraphDto
-    name: GraphDto
-    type: Class
   - uid: FlowGraph.Core.Serialization.GraphSerializationExtensions
     name: GraphSerializationExtensions
     type: Class
   - uid: FlowGraph.Core.Serialization.GraphSerializer
     name: GraphSerializer
     type: Class
-  - uid: FlowGraph.Core.Serialization.LabelInfoDto
+- uid: FlowGraph.Core.Serialization.Dtos
+  name: FlowGraph.Core.Serialization.Dtos
+  type: Namespace
+  items:
+  - uid: FlowGraph.Core.Serialization.Dtos.EdgeDto
+    name: EdgeDto
+    type: Class
+  - uid: FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+    name: EdgeElementDto
+    type: Class
+  - uid: FlowGraph.Core.Serialization.Dtos.ElementDto
+    name: ElementDto
+    type: Class
+  - uid: FlowGraph.Core.Serialization.Dtos.GraphDto
+    name: GraphDto
+    type: Class
+  - uid: FlowGraph.Core.Serialization.Dtos.LabelInfoDto
     name: LabelInfoDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.NodeDto
+  - uid: FlowGraph.Core.Serialization.Dtos.NodeDto
     name: NodeDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.NodeElementDto
+  - uid: FlowGraph.Core.Serialization.Dtos.NodeElementDto
     name: NodeElementDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.PointDto
+  - uid: FlowGraph.Core.Serialization.Dtos.PointDto
     name: PointDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.PortDto
+  - uid: FlowGraph.Core.Serialization.Dtos.PortDto
     name: PortDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.ShapeDto
+  - uid: FlowGraph.Core.Serialization.Dtos.ShapeDto
     name: ShapeDto
     type: Class
-  - uid: FlowGraph.Core.Serialization.ShapeElementDto
+  - uid: FlowGraph.Core.Serialization.Dtos.ShapeElementDto
     name: ShapeElementDto
     type: Class
 memberLayout: SamePage

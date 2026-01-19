@@ -11,6 +11,8 @@ items:
   - FlowGraph.Core.Edge.Definition
   - FlowGraph.Core.Edge.GetBounds
   - FlowGraph.Core.Edge.Id
+  - FlowGraph.Core.Edge.IsLocked
+  - FlowGraph.Core.Edge.IsSelectable
   - FlowGraph.Core.Edge.IsSelected
   - FlowGraph.Core.Edge.IsVisible
   - FlowGraph.Core.Edge.Label
@@ -23,6 +25,7 @@ items:
   - FlowGraph.Core.Edge.Source
   - FlowGraph.Core.Edge.SourcePort
   - FlowGraph.Core.Edge.State
+  - FlowGraph.Core.Edge.Style
   - FlowGraph.Core.Edge.Target
   - FlowGraph.Core.Edge.TargetPort
   - FlowGraph.Core.Edge.Type
@@ -38,7 +41,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Edge
     path: ../FlowGraph.Core/Edge.cs
@@ -103,7 +106,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PropertyChanged
     path: ../FlowGraph.Core/Edge.cs
@@ -134,7 +137,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Edge.cs
@@ -172,7 +175,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Core/Edge.cs
@@ -203,7 +206,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Definition
     path: ../FlowGraph.Core/Edge.cs
@@ -237,7 +240,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: State
     path: ../FlowGraph.Core/Edge.cs
@@ -268,7 +271,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Edge.cs
@@ -301,7 +304,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Source
     path: ../FlowGraph.Core/Edge.cs
@@ -332,7 +335,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Target
     path: ../FlowGraph.Core/Edge.cs
@@ -363,7 +366,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SourcePort
     path: ../FlowGraph.Core/Edge.cs
@@ -394,7 +397,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TargetPort
     path: ../FlowGraph.Core/Edge.cs
@@ -425,7 +428,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Edge.cs
@@ -456,7 +459,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerStart
     path: ../FlowGraph.Core/Edge.cs
@@ -487,7 +490,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MarkerEnd
     path: ../FlowGraph.Core/Edge.cs
@@ -518,7 +521,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Edge.cs
@@ -549,7 +552,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AutoRoute
     path: ../FlowGraph.Core/Edge.cs
@@ -566,6 +569,72 @@ items:
       type: System.Boolean
     content.vb: Public Property AutoRoute As Boolean
   overload: FlowGraph.Core.Edge.AutoRoute*
+- uid: FlowGraph.Core.Edge.Style
+  commentId: P:FlowGraph.Core.Edge.Style
+  id: Style
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: Style
+  nameWithType: Edge.Style
+  fullName: FlowGraph.Core.Edge.Style
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Style
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 200
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Visual style for the edge including colors, dash patterns, and effects.
+  example: []
+  syntax:
+    content: public EdgeStyle? Style { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Property Style As EdgeStyle
+  overload: FlowGraph.Core.Edge.Style*
+- uid: FlowGraph.Core.Edge.IsLocked
+  commentId: P:FlowGraph.Core.Edge.IsLocked
+  id: IsLocked
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: IsLocked
+  nameWithType: Edge.IsLocked
+  fullName: FlowGraph.Core.Edge.IsLocked
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsLocked
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 213
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this edge is locked, preventing deletion and reconnection via UI.
+  remarks: >-
+    When true, the edge cannot be deleted or reconnected through user interaction.
+
+    Programmatic changes are still allowed.
+  example: []
+  syntax:
+    content: public bool IsLocked { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLocked As Boolean
+  overload: FlowGraph.Core.Edge.IsLocked*
 - uid: FlowGraph.Core.Edge.IsSelected
   commentId: P:FlowGraph.Core.Edge.IsSelected
   id: IsSelected
@@ -580,11 +649,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelected
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 204
+    startLine: 226
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -599,6 +668,39 @@ items:
   overload: FlowGraph.Core.Edge.IsSelected*
   implements:
   - FlowGraph.Core.Elements.ICanvasElement.IsSelected
+- uid: FlowGraph.Core.Edge.IsSelectable
+  commentId: P:FlowGraph.Core.Edge.IsSelectable
+  id: IsSelectable
+  parent: FlowGraph.Core.Edge
+  langs:
+  - csharp
+  - vb
+  name: IsSelectable
+  nameWithType: Edge.IsSelectable
+  fullName: FlowGraph.Core.Edge.IsSelectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Edge.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSelectable
+    path: ../FlowGraph.Core/Edge.cs
+    startLine: 235
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core
+  summary: Whether this edge can be selected by user interaction.
+  example: []
+  syntax:
+    content: public bool IsSelectable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSelectable As Boolean
+  overload: FlowGraph.Core.Edge.IsSelectable*
+  implements:
+  - FlowGraph.Core.Elements.ICanvasElement.IsSelectable
 - uid: FlowGraph.Core.Edge.Waypoints
   commentId: P:FlowGraph.Core.Edge.Waypoints
   id: Waypoints
@@ -613,11 +715,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Waypoints
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 213
+    startLine: 240
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -644,11 +746,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsVisible
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 264
+    startLine: 291
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -680,11 +782,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ZIndex
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 274
+    startLine: 301
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -716,11 +818,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBounds
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 284
+    startLine: 311
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -751,11 +853,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Reconnect
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 306
+    startLine: 333
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -787,11 +889,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ReconnectSource
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 314
+    startLine: 341
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -823,11 +925,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Edge.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: OnPropertyChanged
     path: ../FlowGraph.Core/Edge.cs
-    startLine: 342
+    startLine: 369
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core
@@ -1489,6 +1591,25 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Edge.Style*
+  commentId: Overload:FlowGraph.Core.Edge.Style
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Style
+  name: Style
+  nameWithType: Edge.Style
+  fullName: FlowGraph.Core.Edge.Style
+- uid: FlowGraph.Core.Models.EdgeStyle
+  commentId: T:FlowGraph.Core.Models.EdgeStyle
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeStyle.html
+  name: EdgeStyle
+  nameWithType: EdgeStyle
+  fullName: FlowGraph.Core.Models.EdgeStyle
+- uid: FlowGraph.Core.Edge.IsLocked*
+  commentId: Overload:FlowGraph.Core.Edge.IsLocked
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsLocked
+  name: IsLocked
+  nameWithType: Edge.IsLocked
+  fullName: FlowGraph.Core.Edge.IsLocked
 - uid: FlowGraph.Core.Edge.IsSelected*
   commentId: Overload:FlowGraph.Core.Edge.IsSelected
   href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsSelected
@@ -1502,6 +1623,19 @@ references:
   name: IsSelected
   nameWithType: ICanvasElement.IsSelected
   fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelected
+- uid: FlowGraph.Core.Edge.IsSelectable*
+  commentId: Overload:FlowGraph.Core.Edge.IsSelectable
+  href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_IsSelectable
+  name: IsSelectable
+  nameWithType: Edge.IsSelectable
+  fullName: FlowGraph.Core.Edge.IsSelectable
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsSelectable
+  name: IsSelectable
+  nameWithType: ICanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
 - uid: FlowGraph.Core.Edge.Waypoints*
   commentId: Overload:FlowGraph.Core.Edge.Waypoints
   href: FlowGraph.Core.Edge.html#FlowGraph_Core_Edge_Waypoints

@@ -1,0 +1,745 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto
+  commentId: T:FlowGraph.Core.Serialization.Dtos.ElementDto
+  id: ElementDto
+  parent: FlowGraph.Core.Serialization.Dtos
+  children:
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge(FlowGraph.Core.Edge)
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode(FlowGraph.Core.Node)
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+  - FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement
+  langs:
+  - csharp
+  - vb
+  name: ElementDto
+  nameWithType: ElementDto
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ElementDto
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 10
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: >-
+    Polymorphic element DTO base class for Version 2 format.
+
+    Uses "kind" discriminator to identify element type.
+  example: []
+  syntax:
+    content: >-
+      [JsonDerivedType(typeof(NodeElementDto), "node")]
+
+      [JsonDerivedType(typeof(EdgeElementDto), "edge")]
+
+      [JsonDerivedType(typeof(ShapeElementDto), "shape")]
+
+      public abstract class ElementDto
+    content.vb: >-
+      <JsonDerivedType(GetType(NodeElementDto), "node")>
+
+      <JsonDerivedType(GetType(EdgeElementDto), "edge")>
+
+      <JsonDerivedType(GetType(ShapeElementDto), "shape")>
+
+      Public MustInherit Class ElementDto
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+  - FlowGraph.Core.Serialization.Dtos.NodeElementDto
+  - FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FlowGraph.Core.Serialization.Dtos.NodeElementDto
+    - type: System.String
+      value: node
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+    - type: System.String
+      value: edge
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+    - type: System.String
+      value: shape
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+  commentId: P:FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+  id: Id
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: ElementDto.Id
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Id
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 18
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: Element ID (unique within graph).
+  example: []
+  syntax:
+    content: public required string Id { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Id As String
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.Id*
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+  commentId: P:FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+  id: Kind
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: Kind
+  nameWithType: ElementDto.Kind
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Kind
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 24
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: >-
+    Element kind discriminator (e.g., "node", "edge", "shape.rectangle").
+
+    Used by JsonDerivedType for polymorphic deserialization.
+  example: []
+  syntax:
+    content: public required string Kind { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Kind As String
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.Kind*
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement
+  commentId: M:FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement
+  id: ToElement
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: ToElement()
+  nameWithType: ElementDto.ToElement()
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToElement
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 29
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: Converts this DTO to a canvas element.
+  example: []
+  syntax:
+    content: public abstract ICanvasElement? ToElement()
+    return:
+      type: FlowGraph.Core.Elements.ICanvasElement
+    content.vb: Public MustOverride Function ToElement() As ICanvasElement
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement*
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode(FlowGraph.Core.Node)
+  id: FromNode(FlowGraph.Core.Node)
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: FromNode(Node)
+  nameWithType: ElementDto.FromNode(Node)
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromNode
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 34
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: 'Factory method: creates NodeElementDto from a Node.'
+  example: []
+  syntax:
+    content: public static NodeElementDto FromNode(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+    return:
+      type: FlowGraph.Core.Serialization.Dtos.NodeElementDto
+    content.vb: Public Shared Function FromNode(node As Node) As NodeElementDto
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode*
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge(FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge(FlowGraph.Core.Edge)
+  id: FromEdge(FlowGraph.Core.Edge)
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: FromEdge(Edge)
+  nameWithType: ElementDto.FromEdge(Edge)
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge(FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromEdge
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 39
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: 'Factory method: creates EdgeElementDto from an Edge.'
+  example: []
+  syntax:
+    content: public static EdgeElementDto FromEdge(Edge edge)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+    return:
+      type: FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+    content.vb: Public Shared Function FromEdge(edge As Edge) As EdgeElementDto
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge*
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  commentId: M:FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  id: FromShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  parent: FlowGraph.Core.Serialization.Dtos.ElementDto
+  langs:
+  - csharp
+  - vb
+  name: FromShape(ShapeElement)
+  nameWithType: ElementDto.FromShape(ShapeElement)
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FromShape
+    path: ../FlowGraph.Core/Serialization/Dtos/ElementDto.cs
+    startLine: 44
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Serialization.Dtos
+  summary: 'Factory method: creates ShapeElementDto from a ShapeElement.'
+  example: []
+  syntax:
+    content: public static ShapeElementDto? FromShape(ShapeElement shape)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    return:
+      type: FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+    content.vb: Public Shared Function FromShape(shape As ShapeElement) As ShapeElementDto
+  overload: FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape*
+references:
+- uid: FlowGraph.Core.Serialization.Dtos
+  commentId: N:FlowGraph.Core.Serialization.Dtos
+  href: FlowGraph.html
+  name: FlowGraph.Core.Serialization.Dtos
+  nameWithType: FlowGraph.Core.Serialization.Dtos
+  fullName: FlowGraph.Core.Serialization.Dtos
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization
+    name: Serialization
+    href: FlowGraph.Core.Serialization.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization.Dtos
+    name: Dtos
+    href: FlowGraph.Core.Serialization.Dtos.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization
+    name: Serialization
+    href: FlowGraph.Core.Serialization.html
+  - name: .
+  - uid: FlowGraph.Core.Serialization.Dtos
+    name: Dtos
+    href: FlowGraph.Core.Serialization.Dtos.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.Id*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_Id
+  name: Id
+  nameWithType: ElementDto.Id
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.Id
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.Kind*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_Kind
+  name: Kind
+  nameWithType: ElementDto.Kind
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.Kind
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_ToElement
+  name: ToElement
+  nameWithType: ElementDto.ToElement
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.ToElement
+- uid: FlowGraph.Core.Elements.ICanvasElement
+  commentId: T:FlowGraph.Core.Elements.ICanvasElement
+  parent: FlowGraph.Core.Elements
+  href: FlowGraph.Core.Elements.ICanvasElement.html
+  name: ICanvasElement
+  nameWithType: ICanvasElement
+  fullName: FlowGraph.Core.Elements.ICanvasElement
+- uid: FlowGraph.Core.Elements
+  commentId: N:FlowGraph.Core.Elements
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements
+  nameWithType: FlowGraph.Core.Elements
+  fullName: FlowGraph.Core.Elements
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_FromNode_FlowGraph_Core_Node_
+  name: FromNode
+  nameWithType: ElementDto.FromNode
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromNode
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core.Serialization.Dtos.NodeElementDto
+  commentId: T:FlowGraph.Core.Serialization.Dtos.NodeElementDto
+  parent: FlowGraph.Core.Serialization.Dtos
+  href: FlowGraph.Core.Serialization.Dtos.NodeElementDto.html
+  name: NodeElementDto
+  nameWithType: NodeElementDto
+  fullName: FlowGraph.Core.Serialization.Dtos.NodeElementDto
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_FromEdge_FlowGraph_Core_Edge_
+  name: FromEdge
+  nameWithType: ElementDto.FromEdge
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromEdge
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+  commentId: T:FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+  parent: FlowGraph.Core.Serialization.Dtos
+  href: FlowGraph.Core.Serialization.Dtos.EdgeElementDto.html
+  name: EdgeElementDto
+  nameWithType: EdgeElementDto
+  fullName: FlowGraph.Core.Serialization.Dtos.EdgeElementDto
+- uid: FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape*
+  commentId: Overload:FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape
+  href: FlowGraph.Core.Serialization.Dtos.ElementDto.html#FlowGraph_Core_Serialization_Dtos_ElementDto_FromShape_FlowGraph_Core_Elements_Shapes_ShapeElement_
+  name: FromShape
+  nameWithType: ElementDto.FromShape
+  fullName: FlowGraph.Core.Serialization.Dtos.ElementDto.FromShape
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+  commentId: T:FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+  parent: FlowGraph.Core.Serialization.Dtos
+  href: FlowGraph.Core.Serialization.Dtos.ShapeElementDto.html
+  name: ShapeElementDto
+  nameWithType: ShapeElementDto
+  fullName: FlowGraph.Core.Serialization.Dtos.ShapeElementDto
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html

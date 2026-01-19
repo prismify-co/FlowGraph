@@ -1,0 +1,1271 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasRenderService
+  id: CanvasRenderService
+  parent: FlowGraph.Avalonia.Rendering
+  children:
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor(FlowGraph.Avalonia.Rendering.CanvasElementManager,System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action,System.Action,System.Func{FlowGraph.Avalonia.Rendering.ThemeResources})
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  langs:
+  - csharp
+  - vb
+  name: CanvasRenderService
+  nameWithType: CanvasRenderService
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasRenderService
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 12
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Unified graph render service that abstracts the difference between
+
+    retained mode (CanvasElementManager) and direct rendering mode (DirectCanvasRenderer).
+
+
+    This service ensures that all rendering operations work correctly regardless
+
+    of which rendering mode is active, solving the recurring issue of handlers
+
+    only implementing one rendering path.
+  example: []
+  syntax:
+    content: 'public class CanvasRenderService : ICanvasRenderService'
+    content.vb: Public Class CanvasRenderService Implements ICanvasRenderService
+  inheritance:
+  - System.Object
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor(FlowGraph.Avalonia.Rendering.CanvasElementManager,System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action,System.Action,System.Func{FlowGraph.Avalonia.Rendering.ThemeResources})
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor(FlowGraph.Avalonia.Rendering.CanvasElementManager,System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action,System.Action,System.Func{FlowGraph.Avalonia.Rendering.ThemeResources})
+  id: '#ctor(FlowGraph.Avalonia.Rendering.CanvasElementManager,System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action,System.Action,System.Func{FlowGraph.Avalonia.Rendering.ThemeResources})'
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: CanvasRenderService(CanvasElementManager, Func<DirectCanvasRenderer?>, Func<bool>, Action, Action, Func<ThemeResources>)
+  nameWithType: CanvasRenderService.CanvasRenderService(CanvasElementManager, Func<DirectCanvasRenderer?>, Func<bool>, Action, Action, Func<ThemeResources>)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.CanvasRenderService(FlowGraph.Avalonia.Rendering.CanvasElementManager, System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer?>, System.Func<bool>, System.Action, System.Action, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Creates a new GraphRenderService.
+  example: []
+  syntax:
+    content: public CanvasRenderService(CanvasElementManager retainedRenderer, Func<DirectCanvasRenderer?> getDirectRenderer, Func<bool> getIsDirectRenderingMode, Action renderEdgesAction, Action refreshAction, Func<ThemeResources> getTheme)
+    parameters:
+    - id: retainedRenderer
+      type: FlowGraph.Avalonia.Rendering.CanvasElementManager
+      description: The retained mode (visual tree) renderer.
+    - id: getDirectRenderer
+      type: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+      description: Function to get the direct renderer (may be null if not initialized).
+    - id: getIsDirectRenderingMode
+      type: System.Func{System.Boolean}
+      description: Function to check if direct rendering mode is active.
+    - id: renderEdgesAction
+      type: System.Action
+      description: Action to re-render edges.
+    - id: refreshAction
+      type: System.Action
+      description: Action to force a full refresh.
+    - id: getTheme
+      type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+      description: Function to get the current theme resources.
+    content.vb: Public Sub New(retainedRenderer As CanvasElementManager, getDirectRenderer As Func(Of DirectCanvasRenderer), getIsDirectRenderingMode As Func(Of Boolean), renderEdgesAction As Action, refreshAction As Action, getTheme As Func(Of ThemeResources))
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor*
+  nameWithType.vb: CanvasRenderService.New(CanvasElementManager, Func(Of DirectCanvasRenderer), Func(Of Boolean), Action, Action, Func(Of ThemeResources))
+  fullName.vb: FlowGraph.Avalonia.Rendering.CanvasRenderService.New(FlowGraph.Avalonia.Rendering.CanvasElementManager, System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer), System.Func(Of Boolean), System.Action, System.Action, System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources))
+  name.vb: New(CanvasElementManager, Func(Of DirectCanvasRenderer), Func(Of Boolean), Action, Action, Func(Of ThemeResources))
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+  commentId: P:FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+  id: IsDirectRenderingMode
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: IsDirectRenderingMode
+  nameWithType: CanvasRenderService.IsDirectRenderingMode
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsDirectRenderingMode
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets whether the renderer is currently in direct rendering mode.
+  example: []
+  syntax:
+    content: public bool IsDirectRenderingMode { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsDirectRenderingMode As Boolean
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.IsDirectRenderingMode
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  id: UpdateNodeSize(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeSize(Node)
+  nameWithType: CanvasRenderService.UpdateNodeSize(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeSize
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 50
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the visual size of a node. Works in both rendering modes.
+  example: []
+  syntax:
+    content: public void UpdateNodeSize(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    content.vb: Public Sub UpdateNodeSize(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  id: UpdateNodePosition(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodePosition(Node)
+  nameWithType: CanvasRenderService.UpdateNodePosition(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodePosition
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 66
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the visual position of a node. Works in both rendering modes.
+  example: []
+  syntax:
+    content: public void UpdateNodePosition(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    content.vb: Public Sub UpdateNodePosition(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  id: UpdateNodeSelection(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeSelection(Node)
+  nameWithType: CanvasRenderService.UpdateNodeSelection(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeSelection
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 81
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the selection state of a node. Works in both rendering modes.
+  example: []
+  syntax:
+    content: public void UpdateNodeSelection(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    content.vb: Public Sub UpdateNodeSelection(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  id: UpdateNodeStyle(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeStyle(Node)
+  nameWithType: CanvasRenderService.UpdateNodeStyle(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeStyle
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 96
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates the custom style of a node based on its Data property.
+
+    Call this when node.Data changes and may affect visual appearance.
+  example: []
+  syntax:
+    content: public void UpdateNodeStyle(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update.
+    content.vb: Public Sub UpdateNodeStyle(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  id: UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateResizeHandlePositions(Node)
+  nameWithType: CanvasRenderService.UpdateResizeHandlePositions(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateResizeHandlePositions
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Updates the resize handle positions for a node. Works in both rendering modes.
+  example: []
+  syntax:
+    content: public void UpdateResizeHandlePositions(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to update handles for.
+    content.vb: Public Sub UpdateResizeHandlePositions(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  id: UpdateNodeAfterMove(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeAfterMove(Node)
+  nameWithType: CanvasRenderService.UpdateNodeAfterMove(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeAfterMove
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 126
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates all visual aspects of a node after a move operation.
+
+    This is more efficient than calling individual update methods.
+
+    In direct mode, this triggers a single invalidation.
+
+    In retained mode, this updates position, handles, and edges.
+  example: []
+  syntax:
+    content: public void UpdateNodeAfterMove(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node that was moved.
+    content.vb: Public Sub UpdateNodeAfterMove(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  id: UpdateNodeAfterResize(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateNodeAfterResize(Node)
+  nameWithType: CanvasRenderService.UpdateNodeAfterResize(Node)
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateNodeAfterResize
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 144
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Updates all visual aspects of a node after a resize operation.
+
+    This is more efficient than calling individual update methods.
+
+    In direct mode, this triggers a single invalidation.
+
+    In retained mode, this updates size, position, handles, and edges.
+  example: []
+  syntax:
+    content: public void UpdateNodeAfterResize(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node that was resized.
+    content.vb: Public Sub UpdateNodeAfterResize(node As Node)
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh
+  id: Refresh
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: Refresh()
+  nameWithType: CanvasRenderService.Refresh()
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Refresh
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 163
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Forces an immediate refresh/re-render of all graph elements.
+
+    Use sparingly as this can be expensive.
+  example: []
+  syntax:
+    content: public void Refresh()
+    content.vb: Public Sub Refresh()
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate
+  id: Invalidate
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: Invalidate()
+  nameWithType: CanvasRenderService.Invalidate()
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Invalidate
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 169
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Invalidates the render and schedules a repaint.
+
+    For retained mode, this updates visuals. For direct mode, this triggers InvalidateVisual().
+  example: []
+  syntax:
+    content: public void Invalidate()
+    content.vb: Public Sub Invalidate()
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges
+  commentId: M:FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges
+  id: RenderEdges
+  parent: FlowGraph.Avalonia.Rendering.CanvasRenderService
+  langs:
+  - csharp
+  - vb
+  name: RenderEdges()
+  nameWithType: CanvasRenderService.RenderEdges()
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RenderEdges
+    path: ../FlowGraph.Avalonia/Rendering/CanvasRenderService.cs
+    startLine: 182
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Re-renders all edges. Call this after node position/size changes.
+  example: []
+  syntax:
+    content: public void RenderEdges()
+    content.vb: Public Sub RenderEdges()
+  overload: FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges*
+  implements:
+  - FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges
+references:
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  commentId: T:FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html
+  name: ICanvasRenderService
+  nameWithType: ICanvasRenderService
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.#ctor
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService__ctor_FlowGraph_Avalonia_Rendering_CanvasElementManager_System_Func_FlowGraph_Avalonia_Rendering_DirectCanvasRenderer__System_Func_System_Boolean__System_Action_System_Action_System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__
+  name: CanvasRenderService
+  nameWithType: CanvasRenderService.CanvasRenderService
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.CanvasRenderService
+  nameWithType.vb: CanvasRenderService.New
+  fullName.vb: FlowGraph.Avalonia.Rendering.CanvasRenderService.New
+  name.vb: New
+- uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasElementManager
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
+  name: CanvasElementManager
+  nameWithType: CanvasElementManager
+  fullName: FlowGraph.Avalonia.Rendering.CanvasElementManager
+- uid: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<DirectCanvasRenderer>
+  nameWithType: Func<DirectCanvasRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer>
+  nameWithType.vb: Func(Of DirectCanvasRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  name.vb: Func(Of DirectCanvasRenderer)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  - name: )
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<ThemeResources>
+  nameWithType: Func<ThemeResources>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>
+  nameWithType.vb: Func(Of ThemeResources)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources)
+  name.vb: Func(Of ThemeResources)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_IsDirectRenderingMode
+  name: IsDirectRenderingMode
+  nameWithType: CanvasRenderService.IsDirectRenderingMode
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.IsDirectRenderingMode
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.IsDirectRenderingMode
+  commentId: P:FlowGraph.Avalonia.Rendering.ICanvasRenderService.IsDirectRenderingMode
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_IsDirectRenderingMode
+  name: IsDirectRenderingMode
+  nameWithType: ICanvasRenderService.IsDirectRenderingMode
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.IsDirectRenderingMode
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodeSize_FlowGraph_Core_Node_
+  name: UpdateNodeSize
+  nameWithType: CanvasRenderService.UpdateNodeSize
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSize
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSize_FlowGraph_Core_Node_
+  name: UpdateNodeSize(Node)
+  nameWithType: ICanvasRenderService.UpdateNodeSize(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+    name: UpdateNodeSize
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSize_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSize(FlowGraph.Core.Node)
+    name: UpdateNodeSize
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSize_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodePosition_FlowGraph_Core_Node_
+  name: UpdateNodePosition
+  nameWithType: CanvasRenderService.UpdateNodePosition
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodePosition
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodePosition_FlowGraph_Core_Node_
+  name: UpdateNodePosition(Node)
+  nameWithType: ICanvasRenderService.UpdateNodePosition(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+    name: UpdateNodePosition
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodePosition_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodePosition(FlowGraph.Core.Node)
+    name: UpdateNodePosition
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodePosition_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodeSelection_FlowGraph_Core_Node_
+  name: UpdateNodeSelection
+  nameWithType: CanvasRenderService.UpdateNodeSelection
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeSelection
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSelection_FlowGraph_Core_Node_
+  name: UpdateNodeSelection(Node)
+  nameWithType: ICanvasRenderService.UpdateNodeSelection(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+    name: UpdateNodeSelection
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSelection_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeSelection(FlowGraph.Core.Node)
+    name: UpdateNodeSelection
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeSelection_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodeStyle_FlowGraph_Core_Node_
+  name: UpdateNodeStyle
+  nameWithType: CanvasRenderService.UpdateNodeStyle
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeStyle
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeStyle_FlowGraph_Core_Node_
+  name: UpdateNodeStyle(Node)
+  nameWithType: ICanvasRenderService.UpdateNodeStyle(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+    name: UpdateNodeStyle
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeStyle_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeStyle(FlowGraph.Core.Node)
+    name: UpdateNodeStyle
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeStyle_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateResizeHandlePositions_FlowGraph_Core_Node_
+  name: UpdateResizeHandlePositions
+  nameWithType: CanvasRenderService.UpdateResizeHandlePositions
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateResizeHandlePositions
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateResizeHandlePositions_FlowGraph_Core_Node_
+  name: UpdateResizeHandlePositions(Node)
+  nameWithType: ICanvasRenderService.UpdateResizeHandlePositions(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+    name: UpdateResizeHandlePositions
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateResizeHandlePositions_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateResizeHandlePositions(FlowGraph.Core.Node)
+    name: UpdateResizeHandlePositions
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateResizeHandlePositions_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodeAfterMove_FlowGraph_Core_Node_
+  name: UpdateNodeAfterMove
+  nameWithType: CanvasRenderService.UpdateNodeAfterMove
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterMove
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterMove_FlowGraph_Core_Node_
+  name: UpdateNodeAfterMove(Node)
+  nameWithType: ICanvasRenderService.UpdateNodeAfterMove(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+    name: UpdateNodeAfterMove
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterMove_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterMove(FlowGraph.Core.Node)
+    name: UpdateNodeAfterMove
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterMove_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_UpdateNodeAfterResize_FlowGraph_Core_Node_
+  name: UpdateNodeAfterResize
+  nameWithType: CanvasRenderService.UpdateNodeAfterResize
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.UpdateNodeAfterResize
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterResize_FlowGraph_Core_Node_
+  name: UpdateNodeAfterResize(Node)
+  nameWithType: ICanvasRenderService.UpdateNodeAfterResize(Node)
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+    name: UpdateNodeAfterResize
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterResize_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.UpdateNodeAfterResize(FlowGraph.Core.Node)
+    name: UpdateNodeAfterResize
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_UpdateNodeAfterResize_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_Refresh
+  name: Refresh
+  nameWithType: CanvasRenderService.Refresh
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.Refresh
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Refresh
+  name: Refresh()
+  nameWithType: ICanvasRenderService.Refresh()
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh
+    name: Refresh
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Refresh
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Refresh
+    name: Refresh
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Refresh
+  - name: (
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_Invalidate
+  name: Invalidate
+  nameWithType: CanvasRenderService.Invalidate
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.Invalidate
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Invalidate
+  name: Invalidate()
+  nameWithType: ICanvasRenderService.Invalidate()
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate
+    name: Invalidate
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Invalidate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.Invalidate
+    name: Invalidate
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_Invalidate
+  - name: (
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges
+  href: FlowGraph.Avalonia.Rendering.CanvasRenderService.html#FlowGraph_Avalonia_Rendering_CanvasRenderService_RenderEdges
+  name: RenderEdges
+  nameWithType: CanvasRenderService.RenderEdges
+  fullName: FlowGraph.Avalonia.Rendering.CanvasRenderService.RenderEdges
+- uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges
+  commentId: M:FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges
+  parent: FlowGraph.Avalonia.Rendering.ICanvasRenderService
+  href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_RenderEdges
+  name: RenderEdges()
+  nameWithType: ICanvasRenderService.RenderEdges()
+  fullName: FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges()
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges
+    name: RenderEdges
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_RenderEdges
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.ICanvasRenderService.RenderEdges
+    name: RenderEdges
+    href: FlowGraph.Avalonia.Rendering.ICanvasRenderService.html#FlowGraph_Avalonia_Rendering_ICanvasRenderService_RenderEdges
+  - name: (
+  - name: )

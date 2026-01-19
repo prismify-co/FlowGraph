@@ -5,13 +5,16 @@ items:
   id: LabelEditManager
   parent: FlowGraph.Avalonia
   children:
-  - FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
+  - FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action)
   - FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel(FlowGraph.Core.Edge)
   - FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText(FlowGraph.Core.Elements.Shapes.ShapeElement)
   - FlowGraph.Avalonia.LabelEditManager.EdgeLabelCommitted
   - FlowGraph.Avalonia.LabelEditManager.EndEditNodeLabel(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.LabelEditManager.IsEditingNodeLabel(FlowGraph.Core.Node)
+  - FlowGraph.Avalonia.LabelEditManager.IsEditingShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
   - FlowGraph.Avalonia.LabelEditManager.NodeLabelCommitted
+  - FlowGraph.Avalonia.LabelEditManager.ShapeTextCommitted
   langs:
   - csharp
   - vb
@@ -22,7 +25,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: LabelEditManager
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -62,7 +65,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeLabelCommitted
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -91,7 +94,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeLabelCommitted
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -106,21 +109,21 @@ items:
     return:
       type: System.EventHandler{FlowGraph.Avalonia.EdgeLabelCommittedEventArgs}
     content.vb: Public Event EdgeLabelCommitted As EventHandler(Of EdgeLabelCommittedEventArgs)
-- uid: FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
-  commentId: M:FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)
-  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer},System.Func{System.Boolean},System.Action)'
+- uid: FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{Avalonia.Controls.Canvas},System.Func{FlowGraph.Avalonia.ViewportState},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer},System.Func{System.Boolean},System.Action)'
   parent: FlowGraph.Avalonia.LabelEditManager
   langs:
   - csharp
   - vb
-  name: LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<GraphRenderer>, Func<DirectGraphRenderer?>, Func<bool>, Action)
-  nameWithType: LabelEditManager.LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<GraphRenderer>, Func<DirectGraphRenderer?>, Func<bool>, Action)
-  fullName: FlowGraph.Avalonia.LabelEditManager.LabelEditManager(System.Func<FlowGraph.Core.Graph?>, System.Func<Avalonia.Controls.Canvas?>, System.Func<FlowGraph.Avalonia.ViewportState>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources?>, System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>, System.Func<FlowGraph.Avalonia.Rendering.DirectGraphRenderer?>, System.Func<bool>, System.Action)
+  name: LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<CanvasElementManager>, Func<DirectCanvasRenderer?>, Func<bool>, Action)
+  nameWithType: LabelEditManager.LabelEditManager(Func<Graph?>, Func<Canvas?>, Func<ViewportState>, Func<ThemeResources?>, Func<CanvasElementManager>, Func<DirectCanvasRenderer?>, Func<bool>, Action)
+  fullName: FlowGraph.Avalonia.LabelEditManager.LabelEditManager(System.Func<FlowGraph.Core.Graph?>, System.Func<Avalonia.Controls.Canvas?>, System.Func<FlowGraph.Avalonia.ViewportState>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources?>, System.Func<FlowGraph.Avalonia.Rendering.CanvasElementManager>, System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer?>, System.Func<bool>, System.Action)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -131,7 +134,7 @@ items:
   summary: Creates a new label edit manager.
   example: []
   syntax:
-    content: public LabelEditManager(Func<Graph?> getGraph, Func<Canvas?> getMainCanvas, Func<ViewportState> getViewport, Func<ThemeResources?> getTheme, Func<GraphRenderer> getGraphRenderer, Func<DirectGraphRenderer?> getDirectRenderer, Func<bool> getIsDirectRendering, Action renderEdges)
+    content: public LabelEditManager(Func<Graph?> getGraph, Func<Canvas?> getMainCanvas, Func<ViewportState> getViewport, Func<ThemeResources?> getTheme, Func<CanvasElementManager> getGraphRenderer, Func<DirectCanvasRenderer?> getDirectRenderer, Func<bool> getIsDirectRendering, Action renderEdges)
     parameters:
     - id: getGraph
       type: System.Func{FlowGraph.Core.Graph}
@@ -142,18 +145,18 @@ items:
     - id: getTheme
       type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
     - id: getGraphRenderer
-      type: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+      type: System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
     - id: getDirectRenderer
-      type: System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
+      type: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
     - id: getIsDirectRendering
       type: System.Func{System.Boolean}
     - id: renderEdges
       type: System.Action
-    content.vb: Public Sub New(getGraph As Func(Of Graph), getMainCanvas As Func(Of Canvas), getViewport As Func(Of ViewportState), getTheme As Func(Of ThemeResources), getGraphRenderer As Func(Of GraphRenderer), getDirectRenderer As Func(Of DirectGraphRenderer), getIsDirectRendering As Func(Of Boolean), renderEdges As Action)
+    content.vb: Public Sub New(getGraph As Func(Of Graph), getMainCanvas As Func(Of Canvas), getViewport As Func(Of ViewportState), getTheme As Func(Of ThemeResources), getGraphRenderer As Func(Of CanvasElementManager), getDirectRenderer As Func(Of DirectCanvasRenderer), getIsDirectRendering As Func(Of Boolean), renderEdges As Action)
   overload: FlowGraph.Avalonia.LabelEditManager.#ctor*
-  nameWithType.vb: LabelEditManager.New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of GraphRenderer), Func(Of DirectGraphRenderer), Func(Of Boolean), Action)
-  fullName.vb: FlowGraph.Avalonia.LabelEditManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of Avalonia.Controls.Canvas), System.Func(Of FlowGraph.Avalonia.ViewportState), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer), System.Func(Of FlowGraph.Avalonia.Rendering.DirectGraphRenderer), System.Func(Of Boolean), System.Action)
-  name.vb: New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of GraphRenderer), Func(Of DirectGraphRenderer), Func(Of Boolean), Action)
+  nameWithType.vb: LabelEditManager.New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of CanvasElementManager), Func(Of DirectCanvasRenderer), Func(Of Boolean), Action)
+  fullName.vb: FlowGraph.Avalonia.LabelEditManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of Avalonia.Controls.Canvas), System.Func(Of FlowGraph.Avalonia.ViewportState), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), System.Func(Of FlowGraph.Avalonia.Rendering.CanvasElementManager), System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer), System.Func(Of Boolean), System.Action)
+  name.vb: New(Func(Of Graph), Func(Of Canvas), Func(Of ViewportState), Func(Of ThemeResources), Func(Of CanvasElementManager), Func(Of DirectCanvasRenderer), Func(Of Boolean), Action)
 - uid: FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
   commentId: M:FlowGraph.Avalonia.LabelEditManager.BeginEditNodeLabel(FlowGraph.Core.Node)
   id: BeginEditNodeLabel(FlowGraph.Core.Node)
@@ -168,7 +171,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginEditNodeLabel
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -203,7 +206,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EndEditNodeLabel
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -235,7 +238,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEditingNodeLabel
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -270,7 +273,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/LabelEditManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginEditEdgeLabel
     path: ../FlowGraph.Avalonia/LabelEditManager.cs
@@ -291,6 +294,103 @@ items:
       description: True if editing started successfully.
     content.vb: Public Function BeginEditEdgeLabel(edge As Edge) As Boolean
   overload: FlowGraph.Avalonia.LabelEditManager.BeginEditEdgeLabel*
+- uid: FlowGraph.Avalonia.LabelEditManager.ShapeTextCommitted
+  commentId: E:FlowGraph.Avalonia.LabelEditManager.ShapeTextCommitted
+  id: ShapeTextCommitted
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: ShapeTextCommitted
+  nameWithType: LabelEditManager.ShapeTextCommitted
+  fullName: FlowGraph.Avalonia.LabelEditManager.ShapeTextCommitted
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeTextCommitted
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 342
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Event raised when a shape's text has been committed.
+  example: []
+  syntax:
+    content: public event EventHandler<ShapeTextCommittedEventArgs>? ShapeTextCommitted
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.ShapeTextCommittedEventArgs}
+    content.vb: Public Event ShapeTextCommitted As EventHandler(Of ShapeTextCommittedEventArgs)
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  id: BeginEditShapeText(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: BeginEditShapeText(ShapeElement)
+  nameWithType: LabelEditManager.BeginEditShapeText(ShapeElement)
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BeginEditShapeText
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 351
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Begins inline editing for a shape's text (e.g., sticky notes).
+  example: []
+  syntax:
+    content: public bool BeginEditShapeText(ShapeElement shape)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+      description: The shape to edit.
+    return:
+      type: System.Boolean
+      description: True if editing started successfully.
+    content.vb: Public Function BeginEditShapeText(shape As ShapeElement) As Boolean
+  overload: FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText*
+- uid: FlowGraph.Avalonia.LabelEditManager.IsEditingShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  commentId: M:FlowGraph.Avalonia.LabelEditManager.IsEditingShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  id: IsEditingShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  parent: FlowGraph.Avalonia.LabelEditManager
+  langs:
+  - csharp
+  - vb
+  name: IsEditingShape(ShapeElement)
+  nameWithType: LabelEditManager.IsEditingShape(ShapeElement)
+  fullName: FlowGraph.Avalonia.LabelEditManager.IsEditingShape(FlowGraph.Core.Elements.Shapes.ShapeElement)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/LabelEditManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsEditingShape
+    path: ../FlowGraph.Avalonia/LabelEditManager.cs
+    startLine: 407
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets whether a shape is currently being edited.
+  example: []
+  syntax:
+    content: public bool IsEditingShape(ShapeElement shape)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsEditingShape(shape As ShapeElement) As Boolean
+  overload: FlowGraph.Avalonia.LabelEditManager.IsEditingShape*
 references:
 - uid: FlowGraph.Avalonia
   commentId: N:FlowGraph.Avalonia
@@ -647,7 +747,7 @@ references:
   - name: )
 - uid: FlowGraph.Avalonia.LabelEditManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.LabelEditManager.#ctor
-  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_Avalonia_Controls_Canvas__System_Func_FlowGraph_Avalonia_ViewportState__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__System_Func_FlowGraph_Avalonia_Rendering_GraphRenderer__System_Func_FlowGraph_Avalonia_Rendering_DirectGraphRenderer__System_Func_System_Boolean__System_Action_
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager__ctor_System_Func_FlowGraph_Core_Graph__System_Func_Avalonia_Controls_Canvas__System_Func_FlowGraph_Avalonia_ViewportState__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__System_Func_FlowGraph_Avalonia_Rendering_CanvasElementManager__System_Func_FlowGraph_Avalonia_Rendering_DirectCanvasRenderer__System_Func_System_Boolean__System_Action_
   name: LabelEditManager
   nameWithType: LabelEditManager.LabelEditManager
   fullName: FlowGraph.Avalonia.LabelEditManager.LabelEditManager
@@ -786,26 +886,26 @@ references:
     name: ThemeResources
     href: FlowGraph.Avalonia.Rendering.ThemeResources.html
   - name: )
-- uid: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
-  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+- uid: System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
   parent: System
   definition: System.Func`1
   href: https://learn.microsoft.com/dotnet/api/system.func-1
-  name: Func<GraphRenderer>
-  nameWithType: Func<GraphRenderer>
-  fullName: System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>
-  nameWithType.vb: Func(Of GraphRenderer)
-  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer)
-  name.vb: Func(Of GraphRenderer)
+  name: Func<CanvasElementManager>
+  nameWithType: Func<CanvasElementManager>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.CanvasElementManager>
+  nameWithType.vb: Func(Of CanvasElementManager)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  name.vb: Func(Of CanvasElementManager)
   spec.csharp:
   - uid: System.Func`1
     name: Func
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.func-1
   - name: <
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-    name: GraphRenderer
-    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    name: CanvasElementManager
+    href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
   - name: '>'
   spec.vb:
   - uid: System.Func`1
@@ -815,30 +915,30 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-    name: GraphRenderer
-    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    name: CanvasElementManager
+    href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
   - name: )
-- uid: System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
-  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.DirectGraphRenderer}
+- uid: System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.DirectCanvasRenderer}
   parent: System
   definition: System.Func`1
   href: https://learn.microsoft.com/dotnet/api/system.func-1
-  name: Func<DirectGraphRenderer>
-  nameWithType: Func<DirectGraphRenderer>
-  fullName: System.Func<FlowGraph.Avalonia.Rendering.DirectGraphRenderer>
-  nameWithType.vb: Func(Of DirectGraphRenderer)
-  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.DirectGraphRenderer)
-  name.vb: Func(Of DirectGraphRenderer)
+  name: Func<DirectCanvasRenderer>
+  nameWithType: Func<DirectCanvasRenderer>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.DirectCanvasRenderer>
+  nameWithType.vb: Func(Of DirectCanvasRenderer)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)
+  name.vb: Func(Of DirectCanvasRenderer)
   spec.csharp:
   - uid: System.Func`1
     name: Func
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.func-1
   - name: <
-  - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
-    name: DirectGraphRenderer
-    href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
   - name: '>'
   spec.vb:
   - uid: System.Func`1
@@ -848,9 +948,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: FlowGraph.Avalonia.Rendering.DirectGraphRenderer
-    name: DirectGraphRenderer
-    href: FlowGraph.Avalonia.Rendering.DirectGraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    name: DirectCanvasRenderer
+    href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
   - name: )
 - uid: System.Func{System.Boolean}
   commentId: T:System.Func{System.Boolean}
@@ -994,3 +1094,93 @@ references:
   name: Edge
   nameWithType: Edge
   fullName: FlowGraph.Core.Edge
+- uid: System.EventHandler{FlowGraph.Avalonia.ShapeTextCommittedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.ShapeTextCommittedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ShapeTextCommittedEventArgs>
+  nameWithType: EventHandler<ShapeTextCommittedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.ShapeTextCommittedEventArgs>
+  nameWithType.vb: EventHandler(Of ShapeTextCommittedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.ShapeTextCommittedEventArgs)
+  name.vb: EventHandler(Of ShapeTextCommittedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ShapeTextCommittedEventArgs
+    name: ShapeTextCommittedEventArgs
+    href: FlowGraph.Avalonia.ShapeTextCommittedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ShapeTextCommittedEventArgs
+    name: ShapeTextCommittedEventArgs
+    href: FlowGraph.Avalonia.ShapeTextCommittedEventArgs.html
+  - name: )
+- uid: FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_BeginEditShapeText_FlowGraph_Core_Elements_Shapes_ShapeElement_
+  name: BeginEditShapeText
+  nameWithType: LabelEditManager.BeginEditShapeText
+  fullName: FlowGraph.Avalonia.LabelEditManager.BeginEditShapeText
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+- uid: FlowGraph.Avalonia.LabelEditManager.IsEditingShape*
+  commentId: Overload:FlowGraph.Avalonia.LabelEditManager.IsEditingShape
+  href: FlowGraph.Avalonia.LabelEditManager.html#FlowGraph_Avalonia_LabelEditManager_IsEditingShape_FlowGraph_Core_Elements_Shapes_ShapeElement_
+  name: IsEditingShape
+  nameWithType: LabelEditManager.IsEditingShape
+  fullName: FlowGraph.Avalonia.LabelEditManager.IsEditingShape

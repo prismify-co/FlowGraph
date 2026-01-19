@@ -26,7 +26,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupNodeRenderer
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
@@ -44,7 +44,7 @@ items:
 
     IMPORTANT: This renderer uses constants from GraphRenderModel to ensure
 
-    100% visual parity with DirectGraphRenderer.
+    100% visual parity with DirectCanvasRenderer.
   example: []
   syntax:
     content: 'public class GroupNodeRenderer : IEditableNodeRenderer, INodeRenderer'
@@ -76,11 +76,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateNodeVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 41
+    startLine: 42
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -116,11 +116,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSelection
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 124
+    startLine: 158
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -156,15 +156,61 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSize
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 153
+    startLine: 192
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
   summary: Updates the size of an existing node visual.
+  remarks: >-
+    <p>
+
+    <b>IMPORTANT:</b> Implementations MUST update ALL child elements within the visual,
+
+    not just the root container. Failing to update child elements will cause the visual
+
+    to appear unchanged during resize operations until a full re-render occurs.
+
+    </p>
+
+    <p>
+
+    For composite visuals (e.g., a Grid containing Rectangles, Borders, or Canvases),
+
+    iterate through children and update their Width/Height properties accordingly.
+
+    </p>
+
+    <example>
+
+
+    <pre><code class="lang-csharp">public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+
+    {
+        var scaledWidth = width * context.Scale;
+        var scaledHeight = height * context.Scale;
+
+        if (visual is Grid grid)
+        {
+            grid.Width = scaledWidth;
+            grid.Height = scaledHeight;
+
+            // CRITICAL: Also update all child elements
+            foreach (var child in grid.Children)
+            {
+                if (child is Rectangle rect)
+                {
+                    rect.Width = scaledWidth;
+                    rect.Height = scaledHeight;
+                }
+            }
+        }
+    }</code></pre>
+
+    </example>
   example: []
   syntax:
     content: public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
@@ -205,11 +251,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateCollapsedState
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 172
+    startLine: 218
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -238,11 +284,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 192
+    startLine: 245
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -278,11 +324,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 197
+    startLine: 250
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -318,11 +364,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 204
+    startLine: 257
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -355,11 +401,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 206
+    startLine: 259
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -392,11 +438,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BeginEdit
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 264
+    startLine: 348
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -436,11 +482,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EndEdit
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 347
+    startLine: 431
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -473,11 +519,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsEditing
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/GroupNodeRenderer.cs
-    startLine: 373
+    startLine: 457
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers

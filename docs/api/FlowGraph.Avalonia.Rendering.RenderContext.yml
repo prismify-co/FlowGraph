@@ -8,7 +8,10 @@ items:
   - FlowGraph.Avalonia.Rendering.RenderContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
   - FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double,System.Double)
+  - FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(System.Double,System.Double)
   - FlowGraph.Avalonia.Rendering.RenderContext.GetVisibleBoundsWithBuffer
+  - FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
   - FlowGraph.Avalonia.Rendering.RenderContext.IsInVisibleBounds(System.Double,System.Double,System.Double,System.Double)
   - FlowGraph.Avalonia.Rendering.RenderContext.Scale
   - FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue(System.Double)
@@ -18,6 +21,9 @@ items:
   - FlowGraph.Avalonia.Rendering.RenderContext.Settings
   - FlowGraph.Avalonia.Rendering.RenderContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.RenderContext.Viewport
+  - FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(Avalonia.Point)
+  - FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(System.Double,System.Double)
+  - FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
   langs:
   - csharp
   - vb
@@ -28,11 +34,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderContext
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 10
+    startLine: 21
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -40,6 +46,19 @@ items:
     Shared rendering context containing settings, viewport state, and coordinate transformation utilities.
 
     Used by all visual managers to ensure consistent rendering behavior.
+
+
+    <p><b>TRANSFORM-BASED RENDERING (Phase 2):</b></p>
+
+    <p>
+
+    Renderers create visuals at "logical size" (unscaled). The MatrixTransform on MainCanvas
+
+    handles all zoom/pan transformations. This enables O(1) zoom operations.
+
+    </p>
+
+    <ul><li><xref href="FlowGraph.Avalonia.Rendering.RenderContext.Scale" data-throw-if-not-resolved="false"></xref> always returns 1.0 - use for visual sizing</li><li><xref href="FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom" data-throw-if-not-resolved="false"></xref> returns actual zoom - use for calculations</li><li><xref href="FlowGraph.Avalonia.Rendering.RenderContext.InverseScale" data-throw-if-not-resolved="false"></xref> returns 1/zoom - use for constant-size elements</li></ul>
   example: []
   syntax:
     content: public class RenderContext
@@ -68,11 +87,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 19
+    startLine: 30
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -103,11 +122,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 27
+    startLine: 38
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -134,11 +153,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSettings
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 33
+    startLine: 44
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -166,11 +185,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Viewport
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 41
+    startLine: 52
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -197,15 +216,38 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Scale
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 46
+    startLine: 71
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Gets the current zoom/scale factor.
+  summary: >-
+    Gets the logical scale factor for creating visuals.
+
+
+    <p><b>ALWAYS RETURNS 1.0</b></p>
+
+    <p>
+
+    In transform-based rendering, visuals are created at logical size (unscaled).
+
+    The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom operations
+
+    since visuals don't need to be recreated when zoom changes.
+
+    </p>
+
+
+    <p><b>Usage:</b> Use for visual sizing (Width, Height, FontSize, etc.)</p>
+
+    <p><b>For actual zoom:</b> Use <xref href="FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom" data-throw-if-not-resolved="false"></xref> instead.</p>
+  remarks: >-
+    This is a breaking change from the previous behavior where Scale returned viewport.Zoom.
+
+    Custom renderers that used context.Scale for calculations should switch to ViewportZoom.
   example: []
   syntax:
     content: public double Scale { get; }
@@ -214,6 +256,93 @@ items:
       type: System.Double
     content.vb: Public ReadOnly Property Scale As Double
   overload: FlowGraph.Avalonia.Rendering.RenderContext.Scale*
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  id: ViewportZoom
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportZoom
+  nameWithType: RenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportZoom
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 85
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Gets the actual viewport zoom level.
+
+
+    <p><b>Usage:</b></p>
+
+    <ul><li>Calculations that need to know the current zoom (e.g., level-of-detail decisions)</li><li>Hit testing calculations</li><li>Computing inverse scale for constant-size elements</li></ul>
+
+
+    <p><b>DO NOT USE</b> for visual sizing - use <xref href="FlowGraph.Avalonia.Rendering.RenderContext.Scale" data-throw-if-not-resolved="false"></xref> instead.</p>
+  example: []
+  syntax:
+    content: public double ViewportZoom { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property ViewportZoom As Double
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom*
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  id: InverseScale
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: InverseScale
+  nameWithType: RenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InverseScale
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 104
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Gets the inverse scale factor for elements that should stay constant screen size.
+
+
+    <p><b>Usage:</b> Apply as a ScaleTransform to elements like:</p>
+
+    <ul><li>Resize handles (should stay same size regardless of zoom)</li><li>Edge endpoint handles</li><li>Selection indicators</li></ul>
+
+
+    <example>
+
+
+    <pre><code class="lang-csharp">handle.RenderTransform = new ScaleTransform(context.InverseScale, context.InverseScale);
+
+    handle.RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative);</code></pre>
+
+    </example>
+  example: []
+  syntax:
+    content: public double InverseScale { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property InverseScale As Double
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale*
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.SetViewport(FlowGraph.Avalonia.ViewportState)
   commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.SetViewport(FlowGraph.Avalonia.ViewportState)
   id: SetViewport(FlowGraph.Avalonia.ViewportState)
@@ -228,11 +357,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SetViewport
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 52
+    startLine: 110
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -263,11 +392,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetVisibleBoundsWithBuffer
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 62
+    startLine: 120
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -297,11 +426,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsInVisibleBounds
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 97
+    startLine: 155
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -344,15 +473,30 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CanvasToScreen
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 128
+    startLine: 198
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Transforms a canvas coordinate to screen coordinate.
+  summary: >-
+    Transforms a canvas coordinate to screen coordinate.
+
+
+    <p><b>USAGE GUIDANCE:</b></p>
+
+    <ul><li><b>DO NOT USE</b> when positioning visual elements with Canvas.SetLeft/SetTop - 
+
+    elements on MainCanvas should be positioned in canvas coordinates, the MatrixTransform handles viewport conversion</li><li><b>DO USE</b> when rendering with DrawingContext (backgrounds, direct rendering) - 
+
+    DrawingContext needs screen coordinates</li><li><b>DO USE</b> for calculations that need to know screen-space dimensions (hit areas, label placement)</li></ul>
+
+
+    <p><b>CORRECT:</b> <code>drawingContext.DrawRectangle(brush, pen, CanvasToScreen(rect))</code></p>
+
+    <p><b>INCORRECT:</b> <code>Canvas.SetLeft(element, CanvasToScreen(x, y).X)</code> - causes double transform!</p>
   example: []
   syntax:
     content: public Point CanvasToScreen(double canvasX, double canvasY)
@@ -385,11 +529,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CanvasToScreen
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 154
+    startLine: 224
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -406,6 +550,83 @@ items:
       description: The corresponding screen coordinate.
     content.vb: Public Function CanvasToScreen(canvasPoint As Point) As Point
   overload: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen*
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(System.Double,System.Double)
+  id: CanvasToViewport(System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: CanvasToViewport(double, double)
+  nameWithType: RenderContext.CanvasToViewport(double, double)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToViewport
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 233
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Transforms canvas coordinates to viewport coordinates.
+
+    Alias for <xref href="FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> for API consistency.
+  example: []
+  syntax:
+    content: public Point CanvasToViewport(double canvasX, double canvasY)
+    parameters:
+    - id: canvasX
+      type: System.Double
+    - id: canvasY
+      type: System.Double
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function CanvasToViewport(canvasX As Double, canvasY As Double) As Point
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport*
+  nameWithType.vb: RenderContext.CanvasToViewport(Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(Double, Double)
+  name.vb: CanvasToViewport(Double, Double)
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(Avalonia.Point)
+  id: CanvasToViewport(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: CanvasToViewport(Point)
+  nameWithType: RenderContext.CanvasToViewport(Point)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToViewport
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 240
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Transforms a canvas point to viewport coordinates.
+
+    Alias for <xref href="FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)" data-throw-if-not-resolved="false"></xref> for API consistency.
+  example: []
+  syntax:
+    content: public Point CanvasToViewport(Point canvasPoint)
+    parameters:
+    - id: canvasPoint
+      type: Avalonia.Point
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function CanvasToViewport(canvasPoint As Point) As Point
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport*
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
   commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
   id: ScreenToCanvas(System.Double,System.Double)
@@ -420,15 +641,26 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScreenToCanvas
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 165
+    startLine: 259
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Transforms a screen coordinate to canvas coordinate.
+  summary: >-
+    Transforms a screen coordinate to canvas coordinate.
+
+
+    <p><b>USAGE GUIDANCE:</b></p>
+
+    <ul><li><b>PREFER</b> using <code>e.GetPosition(_mainCanvas)</code> for hit testing - gives canvas coords directly</li><li><b>DO USE</b> when you have screen coordinates (from GetPosition(_rootPanel)) and need canvas coords</li><li><b>DO USE</b> for inverse calculations from CanvasToScreen operations</li></ul>
+
+
+    <p><b>CORRECT:</b> <code>var canvasPos = e.GetPosition(_mainCanvas)</code> (no conversion needed)</p>
+
+    <p><b>ALSO CORRECT:</b> <code>var canvasPos = ScreenToCanvas(e.GetPosition(_rootPanel))</code></p>
   example: []
   syntax:
     content: public Point ScreenToCanvas(double screenX, double screenY)
@@ -461,11 +693,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScreenToCanvas
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 180
+    startLine: 274
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -482,6 +714,83 @@ items:
       description: The corresponding canvas coordinate.
     content.vb: Public Function ScreenToCanvas(screenPoint As Point) As Point
   overload: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas*
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(System.Double,System.Double)
+  id: ViewportToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportToCanvas(double, double)
+  nameWithType: RenderContext.ViewportToCanvas(double, double)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportToCanvas
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 283
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Transforms viewport coordinates to canvas coordinates.
+
+    Alias for <xref href="FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> for API consistency.
+  example: []
+  syntax:
+    content: public Point ViewportToCanvas(double viewportX, double viewportY)
+    parameters:
+    - id: viewportX
+      type: System.Double
+    - id: viewportY
+      type: System.Double
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function ViewportToCanvas(viewportX As Double, viewportY As Double) As Point
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas*
+  nameWithType.vb: RenderContext.ViewportToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(Double, Double)
+  name.vb: ViewportToCanvas(Double, Double)
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(Avalonia.Point)
+  id: ViewportToCanvas(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Rendering.RenderContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportToCanvas(Point)
+  nameWithType: RenderContext.ViewportToCanvas(Point)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/RenderContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportToCanvas
+    path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
+    startLine: 290
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: >-
+    Transforms a viewport point to canvas coordinates.
+
+    Alias for <xref href="FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)" data-throw-if-not-resolved="false"></xref> for API consistency.
+  example: []
+  syntax:
+    content: public Point ViewportToCanvas(Point viewportPoint)
+    parameters:
+    - id: viewportPoint
+      type: Avalonia.Point
+    return:
+      type: Avalonia.Point
+    content.vb: Public Function ViewportToCanvas(viewportPoint As Point) As Point
+  overload: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas*
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue(System.Double)
   commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue(System.Double)
   id: ScaleValue(System.Double)
@@ -496,31 +805,69 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/RenderContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ScaleValue
     path: ../FlowGraph.Avalonia/Rendering/RenderContext.cs
-    startLine: 190
+    startLine: 302
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Scales a value by the current zoom factor.
+  summary: >-
+    Scales a value by the logical scale factor (always 1.0).
+
+
+    <p><b>DEPRECATED:</b> This method now returns the input value unchanged.</p>
+
+    <p>In transform-based rendering, visual sizing should use unscaled values.</p>
+
+    <p>For calculations that need actual zoom, use <code>value * ViewportZoom</code>.</p>
   example: []
   syntax:
-    content: public double ScaleValue(double value)
+    content: >-
+      [Obsolete("Use raw values for visual sizing. For zoom-aware calculations, use value * ViewportZoom.")]
+
+      public double ScaleValue(double value)
     parameters:
     - id: value
       type: System.Double
       description: The value to scale.
     return:
       type: System.Double
-      description: The scaled value.
-    content.vb: Public Function ScaleValue(value As Double) As Double
+      description: The input value unchanged (Scale is always 1.0).
+    content.vb: >-
+      <Obsolete("Use raw values for visual sizing. For zoom-aware calculations, use value * ViewportZoom.")>
+
+      Public Function ScaleValue(value As Double) As Double
   overload: FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use raw values for visual sizing. For zoom-aware calculations, use value * ViewportZoom.
   nameWithType.vb: RenderContext.ScaleValue(Double)
   fullName.vb: FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue(Double)
   name.vb: ScaleValue(Double)
 references:
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.Scale
+  commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.Scale
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_Scale
+  name: Scale
+  nameWithType: RenderContext.Scale
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.Scale
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ViewportZoom
+  name: ViewportZoom
+  nameWithType: RenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  commentId: P:FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_InverseScale
+  name: InverseScale
+  nameWithType: RenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
 - uid: FlowGraph.Avalonia.Rendering
   commentId: N:FlowGraph.Avalonia.Rendering
   href: FlowGraph.html
@@ -868,6 +1215,18 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ViewportZoom
+  name: ViewportZoom
+  nameWithType: RenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportZoom
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_InverseScale
+  name: InverseScale
+  nameWithType: RenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.InverseScale
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.SetViewport*
   commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.SetViewport
   href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_SetViewport_FlowGraph_Avalonia_ViewportState_
@@ -923,12 +1282,158 @@ references:
   name: Point
   nameWithType: Point
   fullName: Avalonia.Point
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double,System.Double)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_System_Double_System_Double_
+  name: CanvasToScreen(double, double)
+  nameWithType: RenderContext.CanvasToScreen(double, double)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(double, double)
+  nameWithType.vb: RenderContext.CanvasToScreen(Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Double, Double)
+  name.vb: CanvasToScreen(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double,System.Double)
+    name: CanvasToScreen
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(System.Double,System.Double)
+    name: CanvasToScreen
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToViewport_System_Double_System_Double_
+  name: CanvasToViewport
+  nameWithType: RenderContext.CanvasToViewport
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToViewport
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_Avalonia_Point_
+  name: CanvasToScreen(Point)
+  nameWithType: RenderContext.CanvasToScreen(Point)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.CanvasToScreen(Avalonia.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_CanvasToScreen_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas*
   commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas
   href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_System_Double_System_Double_
   name: ScreenToCanvas
   nameWithType: RenderContext.ScreenToCanvas
   fullName: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_System_Double_System_Double_
+  name: ScreenToCanvas(double, double)
+  nameWithType: RenderContext.ScreenToCanvas(double, double)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(double, double)
+  nameWithType.vb: RenderContext.ScreenToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Double, Double)
+  name.vb: ScreenToCanvas(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(System.Double,System.Double)
+    name: ScreenToCanvas
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ViewportToCanvas_System_Double_System_Double_
+  name: ViewportToCanvas
+  nameWithType: RenderContext.ViewportToCanvas
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ViewportToCanvas
+- uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_Avalonia_Point_
+  name: ScreenToCanvas(Point)
+  nameWithType: RenderContext.ScreenToCanvas(Point)
+  fullName: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScreenToCanvas(Avalonia.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScreenToCanvas_Avalonia_Point_
+  - name: (
+  - uid: Avalonia.Point
+    name: Point
+    isExternal: true
+  - name: )
 - uid: FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue*
   commentId: Overload:FlowGraph.Avalonia.Rendering.RenderContext.ScaleValue
   href: FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ScaleValue_System_Double_

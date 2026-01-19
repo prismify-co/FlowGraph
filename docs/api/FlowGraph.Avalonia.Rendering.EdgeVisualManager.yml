@@ -8,10 +8,13 @@ items:
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.#ctor(FlowGraph.Avalonia.Rendering.RenderContext,FlowGraph.Avalonia.Rendering.NodeVisualManager,FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeEndpointHandles(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath(System.String)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeLabel(System.String)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(System.String)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisual(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual(System.String)
+  - FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Edge)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
   - FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)
@@ -24,12 +27,12 @@ items:
   type: Class
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.Styling.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeVisualManager
-    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 16
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.Styling.cs
+    startLine: 11
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -65,11 +68,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -106,11 +109,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeVisual
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 50
+    startLine: 51
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -144,11 +147,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeVisiblePath
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 60
+    startLine: 61
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -168,6 +171,44 @@ items:
   nameWithType.vb: EdgeVisualManager.GetEdgeVisiblePath(String)
   fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath(String)
   name.vb: GetEdgeVisiblePath(String)
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath(System.String)
+  id: GetEdgeGlowPath(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: GetEdgeGlowPath(string)
+  nameWithType: EdgeVisualManager.GetEdgeGlowPath(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgeGlowPath
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 71
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Gets the glow path for an edge.
+  example: []
+  syntax:
+    content: public Path? GetEdgeGlowPath(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID.
+    return:
+      type: Avalonia.Controls.Shapes.Path
+      description: The edge's glow path, or null if not found.
+    content.vb: Public Function GetEdgeGlowPath(edgeId As String) As Path
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath*
+  nameWithType.vb: EdgeVisualManager.GetEdgeGlowPath(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath(String)
+  name.vb: GetEdgeGlowPath(String)
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
   commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers(System.String)
   id: GetEdgeMarkers(System.String)
@@ -182,11 +223,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeMarkers
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 70
+    startLine: 81
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -220,11 +261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeLabel
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 80
+    startLine: 91
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -258,11 +299,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetEdgeEndpointHandles
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 90
+    startLine: 101
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -296,11 +337,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Clear
     path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 99
+    startLine: 110
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -313,6 +354,82 @@ items:
     content: public void Clear()
     content.vb: Public Sub Clear()
   overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear*
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Edge)
+  id: RemoveEdgeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Edge)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveEdgeVisual(Canvas, Edge)
+  nameWithType: EdgeVisualManager.RemoveEdgeVisual(Canvas, Edge)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual(Avalonia.Controls.Canvas, FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemoveEdgeVisual
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 126
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Removes an edge visual and all its components from the canvas and tracking.
+  example: []
+  syntax:
+    content: public bool RemoveEdgeVisual(Canvas canvas, Edge edge)
+    parameters:
+    - id: canvas
+      type: Avalonia.Controls.Canvas
+      description: The canvas containing the visual.
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to remove.
+    return:
+      type: System.Boolean
+      description: True if the visual was found and removed.
+    content.vb: Public Function RemoveEdgeVisual(canvas As Canvas, edge As Edge) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual*
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual(System.String)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual(System.String)
+  id: HasEdgeVisual(System.String)
+  parent: FlowGraph.Avalonia.Rendering.EdgeVisualManager
+  langs:
+  - csharp
+  - vb
+  name: HasEdgeVisual(string)
+  nameWithType: EdgeVisualManager.HasEdgeVisual(string)
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasEdgeVisual
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
+    startLine: 185
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering
+  summary: Checks if an edge visual exists in tracking.
+  example: []
+  syntax:
+    content: public bool HasEdgeVisual(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The edge ID to check.
+    return:
+      type: System.Boolean
+      description: True if the edge visual exists.
+    content.vb: Public Function HasEdgeVisual(edgeId As String) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual*
+  nameWithType.vb: EdgeVisualManager.HasEdgeVisual(String)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual(String)
+  name.vb: HasEdgeVisual(String)
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
   commentId: M:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
   id: RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)
@@ -326,12 +443,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderEdges
-    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 116
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+    startLine: 23
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -370,12 +487,12 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RenderEdge
-    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 190
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -414,16 +531,19 @@ items:
   type: Method
   source:
     remote:
-      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-      branch: develop
+      path: FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateEdgeSelection
-    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.cs
-    startLine: 335
+    path: ../FlowGraph.Avalonia/Rendering/EdgeVisualManager.Rendering.cs
+    startLine: 289
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
-  summary: Updates the selection visual state of an edge.
+  summary: >-
+    Updates the selection visual state of an edge.
+
+    Uses logical (unscaled) dimensions - MatrixTransform handles zoom.
   example: []
   syntax:
     content: public void UpdateEdgeSelection(Edge edge, ThemeResources theme)
@@ -832,6 +952,12 @@ references:
   name: GetEdgeVisiblePath
   nameWithType: EdgeVisualManager.GetEdgeVisiblePath
   fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeVisiblePath
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeGlowPath_System_String_
+  name: GetEdgeGlowPath
+  nameWithType: EdgeVisualManager.GetEdgeGlowPath
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeGlowPath
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.GetEdgeMarkers
   href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_GetEdgeMarkers_System_String_
@@ -1055,12 +1181,12 @@ references:
   name: Clear
   nameWithType: EdgeVisualManager.Clear
   fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.Clear
-- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
-  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdges_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_Avalonia_Controls_Shapes_Path_
-  name: RenderEdges
-  nameWithType: EdgeVisualManager.RenderEdges
-  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RemoveEdgeVisual_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_
+  name: RemoveEdgeVisual
+  nameWithType: EdgeVisualManager.RemoveEdgeVisual
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RemoveEdgeVisual
 - uid: Avalonia.Controls.Canvas
   commentId: T:Avalonia.Controls.Canvas
   parent: Avalonia.Controls
@@ -1068,20 +1194,24 @@ references:
   name: Canvas
   nameWithType: Canvas
   fullName: Avalonia.Controls.Canvas
-- uid: FlowGraph.Core.Graph
-  commentId: T:FlowGraph.Core.Graph
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
   parent: FlowGraph.Core
-  href: FlowGraph.Core.Graph.html
-  name: Graph
-  nameWithType: Graph
-  fullName: FlowGraph.Core.Graph
-- uid: FlowGraph.Avalonia.Rendering.ThemeResources
-  commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
-  parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.ThemeResources.html
-  name: ThemeResources
-  nameWithType: ThemeResources
-  fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: FlowGraph.Core
   commentId: N:FlowGraph.Core
   href: FlowGraph.html
@@ -1104,19 +1234,38 @@ references:
   - uid: FlowGraph.Core
     name: Core
     href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_HasEdgeVisual_System_String_
+  name: HasEdgeVisual
+  nameWithType: EdgeVisualManager.HasEdgeVisual
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.HasEdgeVisual
+- uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
+  href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdges_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_Avalonia_Controls_Shapes_Path_
+  name: RenderEdges
+  nameWithType: EdgeVisualManager.RenderEdges
+  fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdges
+- uid: FlowGraph.Core.Graph
+  commentId: T:FlowGraph.Core.Graph
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: FlowGraph.Core.Graph
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources
+  commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  name: ThemeResources
+  nameWithType: ThemeResources
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge
   href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_RenderEdge_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_
   name: RenderEdge
   nameWithType: EdgeVisualManager.RenderEdge
   fullName: FlowGraph.Avalonia.Rendering.EdgeVisualManager.RenderEdge
-- uid: FlowGraph.Core.Edge
-  commentId: T:FlowGraph.Core.Edge
-  parent: FlowGraph.Core
-  href: FlowGraph.Core.Edge.html
-  name: Edge
-  nameWithType: Edge
-  fullName: FlowGraph.Core.Edge
 - uid: FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgeVisualManager.UpdateEdgeSelection
   href: FlowGraph.Avalonia.Rendering.EdgeVisualManager.html#FlowGraph_Avalonia_Rendering_EdgeVisualManager_UpdateEdgeSelection_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_ThemeResources_

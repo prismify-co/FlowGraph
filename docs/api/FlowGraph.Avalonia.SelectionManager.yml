@@ -5,13 +5,14 @@ items:
   id: SelectionManager
   parent: FlowGraph.Avalonia
   children:
-  - FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
-  - FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  - FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  - FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
   - FlowGraph.Avalonia.SelectionManager.DeleteSelected
   - FlowGraph.Avalonia.SelectionManager.DeselectAll
   - FlowGraph.Avalonia.SelectionManager.EdgeRerenderRequested
   - FlowGraph.Avalonia.SelectionManager.GetSelectedEdges
   - FlowGraph.Avalonia.SelectionManager.GetSelectedNodes
+  - FlowGraph.Avalonia.SelectionManager.GetSelectedShapes
   - FlowGraph.Avalonia.SelectionManager.HandleEdgeClicked(FlowGraph.Core.Edge,System.Boolean)
   - FlowGraph.Avalonia.SelectionManager.HasSelection
   - FlowGraph.Avalonia.SelectionManager.NotifySelectionMayHaveChanged
@@ -27,11 +28,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionManager
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -50,38 +51,38 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
-  commentId: M:FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
-  id: '#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)'
+- uid: FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  commentId: M:FlowGraph.Avalonia.SelectionManager.#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  id: '#ctor(FlowGraph.Avalonia.IGraphContext,System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)'
   parent: FlowGraph.Avalonia.SelectionManager
   langs:
   - csharp
   - vb
-  name: SelectionManager(IGraphContext, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
-  nameWithType: SelectionManager.SelectionManager(IGraphContext, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
-  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager(FlowGraph.Avalonia.IGraphContext, System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>, FlowGraph.Core.Commands.CommandHistory)
+  name: SelectionManager(IGraphContext, Func<CanvasElementManager>, Func<ThemeResources>, CommandHistory)
+  nameWithType: SelectionManager.SelectionManager(IGraphContext, Func<CanvasElementManager>, Func<ThemeResources>, CommandHistory)
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager(FlowGraph.Avalonia.IGraphContext, System.Func<FlowGraph.Avalonia.Rendering.CanvasElementManager>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>, FlowGraph.Core.Commands.CommandHistory)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 27
+    startLine: 29
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
   summary: Creates a new selection manager.
   example: []
   syntax:
-    content: public SelectionManager(IGraphContext context, Func<GraphRenderer> getRenderer, Func<ThemeResources> getTheme, CommandHistory commandHistory)
+    content: public SelectionManager(IGraphContext context, Func<CanvasElementManager> getRenderer, Func<ThemeResources> getTheme, CommandHistory commandHistory)
     parameters:
     - id: context
       type: FlowGraph.Avalonia.IGraphContext
       description: The graph context providing access to the current graph.
     - id: getRenderer
-      type: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+      type: System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
       description: Function to get the graph renderer.
     - id: getTheme
       type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
@@ -89,30 +90,30 @@ items:
     - id: commandHistory
       type: FlowGraph.Core.Commands.CommandHistory
       description: The command history for undo/redo support.
-    content.vb: Public Sub New(context As IGraphContext, getRenderer As Func(Of GraphRenderer), getTheme As Func(Of ThemeResources), commandHistory As CommandHistory)
+    content.vb: Public Sub New(context As IGraphContext, getRenderer As Func(Of CanvasElementManager), getTheme As Func(Of ThemeResources), commandHistory As CommandHistory)
   overload: FlowGraph.Avalonia.SelectionManager.#ctor*
-  nameWithType.vb: SelectionManager.New(IGraphContext, Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
-  fullName.vb: FlowGraph.Avalonia.SelectionManager.New(FlowGraph.Avalonia.IGraphContext, System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), FlowGraph.Core.Commands.CommandHistory)
-  name.vb: New(IGraphContext, Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
-- uid: FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
-  commentId: M:FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
-  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)'
+  nameWithType.vb: SelectionManager.New(IGraphContext, Func(Of CanvasElementManager), Func(Of ThemeResources), CommandHistory)
+  fullName.vb: FlowGraph.Avalonia.SelectionManager.New(FlowGraph.Avalonia.IGraphContext, System.Func(Of FlowGraph.Avalonia.Rendering.CanvasElementManager), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), FlowGraph.Core.Commands.CommandHistory)
+  name.vb: New(IGraphContext, Func(Of CanvasElementManager), Func(Of ThemeResources), CommandHistory)
+- uid: FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  commentId: M:FlowGraph.Avalonia.SelectionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager},System.Func{FlowGraph.Avalonia.Rendering.ThemeResources},FlowGraph.Core.Commands.CommandHistory)'
   parent: FlowGraph.Avalonia.SelectionManager
   langs:
   - csharp
   - vb
-  name: SelectionManager(Func<Graph?>, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
-  nameWithType: SelectionManager.SelectionManager(Func<Graph?>, Func<GraphRenderer>, Func<ThemeResources>, CommandHistory)
-  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager(System.Func<FlowGraph.Core.Graph?>, System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>, FlowGraph.Core.Commands.CommandHistory)
+  name: SelectionManager(Func<Graph?>, Func<CanvasElementManager>, Func<ThemeResources>, CommandHistory)
+  nameWithType: SelectionManager.SelectionManager(Func<Graph?>, Func<CanvasElementManager>, Func<ThemeResources>, CommandHistory)
+  fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager(System.Func<FlowGraph.Core.Graph?>, System.Func<FlowGraph.Avalonia.Rendering.CanvasElementManager>, System.Func<FlowGraph.Avalonia.Rendering.ThemeResources>, FlowGraph.Core.Commands.CommandHistory)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 40
+    startLine: 42
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -120,12 +121,12 @@ items:
     content: >-
       [Obsolete("Use the constructor that accepts IGraphContext instead.")]
 
-      public SelectionManager(Func<Graph?> getGraph, Func<GraphRenderer> getRenderer, Func<ThemeResources> getTheme, CommandHistory commandHistory)
+      public SelectionManager(Func<Graph?> getGraph, Func<CanvasElementManager> getRenderer, Func<ThemeResources> getTheme, CommandHistory commandHistory)
     parameters:
     - id: getGraph
       type: System.Func{FlowGraph.Core.Graph}
     - id: getRenderer
-      type: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+      type: System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
     - id: getTheme
       type: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
     - id: commandHistory
@@ -133,7 +134,7 @@ items:
     content.vb: >-
       <Obsolete("Use the constructor that accepts IGraphContext instead.")>
 
-      Public Sub New(getGraph As Func(Of Graph), getRenderer As Func(Of GraphRenderer), getTheme As Func(Of ThemeResources), commandHistory As CommandHistory)
+      Public Sub New(getGraph As Func(Of Graph), getRenderer As Func(Of CanvasElementManager), getTheme As Func(Of ThemeResources), commandHistory As CommandHistory)
   overload: FlowGraph.Avalonia.SelectionManager.#ctor*
   attributes:
   - type: System.ObsoleteAttribute
@@ -141,9 +142,9 @@ items:
     arguments:
     - type: System.String
       value: Use the constructor that accepts IGraphContext instead.
-  nameWithType.vb: SelectionManager.New(Func(Of Graph), Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
-  fullName.vb: FlowGraph.Avalonia.SelectionManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), FlowGraph.Core.Commands.CommandHistory)
-  name.vb: New(Func(Of Graph), Func(Of GraphRenderer), Func(Of ThemeResources), CommandHistory)
+  nameWithType.vb: SelectionManager.New(Func(Of Graph), Func(Of CanvasElementManager), Func(Of ThemeResources), CommandHistory)
+  fullName.vb: FlowGraph.Avalonia.SelectionManager.New(System.Func(Of FlowGraph.Core.Graph), System.Func(Of FlowGraph.Avalonia.Rendering.CanvasElementManager), System.Func(Of FlowGraph.Avalonia.Rendering.ThemeResources), FlowGraph.Core.Commands.CommandHistory)
+  name.vb: New(Func(Of Graph), Func(Of CanvasElementManager), Func(Of ThemeResources), CommandHistory)
 - uid: FlowGraph.Avalonia.SelectionManager.EdgeRerenderRequested
   commentId: E:FlowGraph.Avalonia.SelectionManager.EdgeRerenderRequested
   id: EdgeRerenderRequested
@@ -158,11 +159,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeRerenderRequested
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 53
+    startLine: 55
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -187,11 +188,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionChanged
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 58
+    startLine: 60
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -216,15 +217,15 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectAll
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 63
+    startLine: 65
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
-  summary: Selects all nodes in the graph.
+  summary: Selects all selectable elements (nodes, edges, and shapes) in the graph.
   example: []
   syntax:
     content: public void SelectAll()
@@ -244,15 +245,15 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DeselectAll
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 83
+    startLine: 102
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
-  summary: Deselects all nodes and edges.
+  summary: Deselects all nodes, edges, and shapes.
   example: []
   syntax:
     content: public void DeselectAll()
@@ -272,15 +273,15 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DeleteSelected
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 106
+    startLine: 133
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
-  summary: Deletes all selected nodes and edges.
+  summary: Deletes all selected nodes, edges, and shapes.
   example: []
   syntax:
     content: public void DeleteSelected()
@@ -300,11 +301,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HandleEdgeClicked
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 153
+    startLine: 190
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -336,11 +337,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NotifySelectionMayHaveChanged
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 187
+    startLine: 224
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -364,11 +365,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetSelectedNodes
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 195
+    startLine: 232
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -394,11 +395,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetSelectedEdges
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 204
+    startLine: 241
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -410,6 +411,36 @@ items:
       type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
     content.vb: Public Function GetSelectedEdges() As IEnumerable(Of Edge)
   overload: FlowGraph.Avalonia.SelectionManager.GetSelectedEdges*
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedShapes
+  commentId: M:FlowGraph.Avalonia.SelectionManager.GetSelectedShapes
+  id: GetSelectedShapes
+  parent: FlowGraph.Avalonia.SelectionManager
+  langs:
+  - csharp
+  - vb
+  name: GetSelectedShapes()
+  nameWithType: SelectionManager.GetSelectedShapes()
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedShapes()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/SelectionManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetSelectedShapes
+    path: ../FlowGraph.Avalonia/SelectionManager.cs
+    startLine: 250
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Gets all selected shapes.
+  example: []
+  syntax:
+    content: public IEnumerable<ShapeElement> GetSelectedShapes()
+    return:
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    content.vb: Public Function GetSelectedShapes() As IEnumerable(Of ShapeElement)
+  overload: FlowGraph.Avalonia.SelectionManager.GetSelectedShapes*
 - uid: FlowGraph.Avalonia.SelectionManager.HasSelection
   commentId: P:FlowGraph.Avalonia.SelectionManager.HasSelection
   id: HasSelection
@@ -424,11 +455,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/SelectionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: HasSelection
     path: ../FlowGraph.Avalonia/SelectionManager.cs
-    startLine: 213
+    startLine: 259
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -703,7 +734,7 @@ references:
   fullName: System
 - uid: FlowGraph.Avalonia.SelectionManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.SelectionManager.#ctor
-  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager__ctor_FlowGraph_Avalonia_IGraphContext_System_Func_FlowGraph_Avalonia_Rendering_GraphRenderer__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__FlowGraph_Core_Commands_CommandHistory_
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager__ctor_FlowGraph_Avalonia_IGraphContext_System_Func_FlowGraph_Avalonia_Rendering_CanvasElementManager__System_Func_FlowGraph_Avalonia_Rendering_ThemeResources__FlowGraph_Core_Commands_CommandHistory_
   name: SelectionManager
   nameWithType: SelectionManager.SelectionManager
   fullName: FlowGraph.Avalonia.SelectionManager.SelectionManager
@@ -717,26 +748,26 @@ references:
   name: IGraphContext
   nameWithType: IGraphContext
   fullName: FlowGraph.Avalonia.IGraphContext
-- uid: System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
-  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.GraphRenderer}
+- uid: System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
+  commentId: T:System.Func{FlowGraph.Avalonia.Rendering.CanvasElementManager}
   parent: System
   definition: System.Func`1
   href: https://learn.microsoft.com/dotnet/api/system.func-1
-  name: Func<GraphRenderer>
-  nameWithType: Func<GraphRenderer>
-  fullName: System.Func<FlowGraph.Avalonia.Rendering.GraphRenderer>
-  nameWithType.vb: Func(Of GraphRenderer)
-  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.GraphRenderer)
-  name.vb: Func(Of GraphRenderer)
+  name: Func<CanvasElementManager>
+  nameWithType: Func<CanvasElementManager>
+  fullName: System.Func<FlowGraph.Avalonia.Rendering.CanvasElementManager>
+  nameWithType.vb: Func(Of CanvasElementManager)
+  fullName.vb: System.Func(Of FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  name.vb: Func(Of CanvasElementManager)
   spec.csharp:
   - uid: System.Func`1
     name: Func
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.func-1
   - name: <
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-    name: GraphRenderer
-    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    name: CanvasElementManager
+    href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
   - name: '>'
   spec.vb:
   - uid: System.Func`1
@@ -746,9 +777,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-    name: GraphRenderer
-    href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
+  - uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    name: CanvasElementManager
+    href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
   - name: )
 - uid: System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
   commentId: T:System.Func{FlowGraph.Avalonia.Rendering.ThemeResources}
@@ -1162,6 +1193,45 @@ references:
   - uid: FlowGraph.Core.Edge
     name: Edge
     href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: FlowGraph.Avalonia.SelectionManager.GetSelectedShapes*
+  commentId: Overload:FlowGraph.Avalonia.SelectionManager.GetSelectedShapes
+  href: FlowGraph.Avalonia.SelectionManager.html#FlowGraph_Avalonia_SelectionManager_GetSelectedShapes
+  name: GetSelectedShapes
+  nameWithType: SelectionManager.GetSelectedShapes
+  fullName: FlowGraph.Avalonia.SelectionManager.GetSelectedShapes
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.Shapes.ShapeElement}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Elements.Shapes.ShapeElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ShapeElement>
+  nameWithType: IEnumerable<ShapeElement>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Elements.Shapes.ShapeElement>
+  nameWithType.vb: IEnumerable(Of ShapeElement)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Elements.Shapes.ShapeElement)
+  name.vb: IEnumerable(Of ShapeElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+    name: ShapeElement
+    href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+    name: ShapeElement
+    href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
   - name: )
 - uid: FlowGraph.Avalonia.SelectionManager.HasSelection*
   commentId: Overload:FlowGraph.Avalonia.SelectionManager.HasSelection

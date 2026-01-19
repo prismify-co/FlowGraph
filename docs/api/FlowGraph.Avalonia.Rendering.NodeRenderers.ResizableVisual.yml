@@ -1,0 +1,1151 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  id: ResizableVisual
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(System.Object)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.MetadataKey
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode(System.Object)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize(Avalonia.Controls.Control,System.Double,System.Double)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild(Avalonia.Controls.Control,System.Action{Avalonia.Controls.Control,System.Double,System.Double})
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren(Avalonia.Controls.Control[])
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild(Avalonia.Controls.Control,Avalonia.Thickness)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode(FlowGraph.Core.Node)
+  langs:
+  - csharp
+  - vb
+  name: ResizableVisual
+  nameWithType: ResizableVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ResizableVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 37
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    A wrapper that tracks resizable child elements within a node visual.
+
+    When UpdateSize is called, all registered children are automatically updated.
+
+
+    Use this in CreateNodeVisual to ensure UpdateSize properly propagates to all children.
+  example:
+  - >-
+    <pre><code class="lang-csharp">public Control CreateNodeVisual(Node node, NodeRenderContext context)
+
+    {
+        var grid = new Grid { Width = 200, Height = 100 };
+        var background = new Rectangle { Width = 200, Height = 100 };
+        var border = new Rectangle { Width = 200, Height = 100 };
+
+        grid.Children.Add(background);
+        grid.Children.Add(border);
+
+        // Register children that need resizing - this is the key!
+        return ResizableVisual.Create(grid)
+            .WithFullSizeChild(background)
+            .WithFullSizeChild(border)
+            .Build();
+    }
+
+
+    public void UpdateSize(Control visual, Node node, NodeRenderContext context, double w, double h)
+
+    {
+        // One line - all registered children are automatically updated!
+        ResizableVisual.UpdateSize(visual, w * context.Scale, h * context.Scale);
+    }</code></pre>
+  syntax:
+    content: public class ResizableVisual
+    content.vb: Public Class ResizableVisual
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.MetadataKey
+  commentId: F:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.MetadataKey
+  id: MetadataKey
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: MetadataKey
+  nameWithType: ResizableVisual.MetadataKey
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.MetadataKey
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: MetadataKey
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Tag key used to store resize metadata on the visual.
+  example: []
+  syntax:
+    content: public const string MetadataKey = "__ResizableVisual"
+    return:
+      type: System.String
+    content.vb: Public Const MetadataKey As String = "__ResizableVisual"
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create(Avalonia.Controls.Control)
+  id: Create(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: Create(Control)
+  nameWithType: ResizableVisual.Create(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Create
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 77
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Creates a new ResizableVisual builder for the given root control.
+  example: []
+  syntax:
+    content: public static ResizableVisual Create(Control root)
+    parameters:
+    - id: root
+      type: Avalonia.Controls.Control
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Shared Function Create(root As Control) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild(Avalonia.Controls.Control)
+  id: WithFullSizeChild(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: WithFullSizeChild(Control)
+  nameWithType: ResizableVisual.WithFullSizeChild(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithFullSizeChild
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 82
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Registers a child that should be resized to match the full parent size.
+  example: []
+  syntax:
+    content: public ResizableVisual WithFullSizeChild(Control child)
+    parameters:
+    - id: child
+      type: Avalonia.Controls.Control
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Function WithFullSizeChild(child As Control) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren(Avalonia.Controls.Control[])
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren(Avalonia.Controls.Control[])
+  id: WithFullSizeChildren(Avalonia.Controls.Control[])
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: WithFullSizeChildren(params Control[])
+  nameWithType: ResizableVisual.WithFullSizeChildren(params Control[])
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren(params Avalonia.Controls.Control[])
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithFullSizeChildren
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 91
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Registers multiple children that should be resized to match the full parent size.
+  example: []
+  syntax:
+    content: public ResizableVisual WithFullSizeChildren(params Control[] children)
+    parameters:
+    - id: children
+      type: Avalonia.Controls.Control[]
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Function WithFullSizeChildren(ParamArray children As Control()) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren*
+  nameWithType.vb: ResizableVisual.WithFullSizeChildren(ParamArray Control())
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren(ParamArray Avalonia.Controls.Control())
+  name.vb: WithFullSizeChildren(ParamArray Control())
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild(Avalonia.Controls.Control,Avalonia.Thickness)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild(Avalonia.Controls.Control,Avalonia.Thickness)
+  id: WithInsetChild(Avalonia.Controls.Control,Avalonia.Thickness)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: WithInsetChild(Control, Thickness)
+  nameWithType: ResizableVisual.WithInsetChild(Control, Thickness)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild(Avalonia.Controls.Control, Avalonia.Thickness)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithInsetChild
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 102
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Registers a child with inset margins (content area sizing).
+  example: []
+  syntax:
+    content: public ResizableVisual WithInsetChild(Control child, Thickness insets)
+    parameters:
+    - id: child
+      type: Avalonia.Controls.Control
+      description: The child control.
+    - id: insets
+      type: Avalonia.Thickness
+      description: Thickness representing padding/margins to subtract from full size.
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Function WithInsetChild(child As Control, insets As Thickness) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild(Avalonia.Controls.Control,System.Action{Avalonia.Controls.Control,System.Double,System.Double})
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild(Avalonia.Controls.Control,System.Action{Avalonia.Controls.Control,System.Double,System.Double})
+  id: WithCustomChild(Avalonia.Controls.Control,System.Action{Avalonia.Controls.Control,System.Double,System.Double})
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: WithCustomChild(Control, Action<Control, double, double>)
+  nameWithType: ResizableVisual.WithCustomChild(Control, Action<Control, double, double>)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild(Avalonia.Controls.Control, System.Action<Avalonia.Controls.Control, double, double>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithCustomChild
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 113
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Registers a child with custom resize logic.
+  example: []
+  syntax:
+    content: public ResizableVisual WithCustomChild(Control child, Action<Control, double, double> updater)
+    parameters:
+    - id: child
+      type: Avalonia.Controls.Control
+      description: The child control.
+    - id: updater
+      type: System.Action{Avalonia.Controls.Control,System.Double,System.Double}
+      description: Action that receives (control, scaledWidth, scaledHeight).
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Function WithCustomChild(child As Control, updater As Action(Of Control, Double, Double)) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild*
+  nameWithType.vb: ResizableVisual.WithCustomChild(Control, Action(Of Control, Double, Double))
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild(Avalonia.Controls.Control, System.Action(Of Avalonia.Controls.Control, Double, Double))
+  name.vb: WithCustomChild(Control, Action(Of Control, Double, Double))
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode(FlowGraph.Core.Node)
+  id: WithNode(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: WithNode(Node)
+  nameWithType: ResizableVisual.WithNode(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode(FlowGraph.Core.Node)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithNode
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 124
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Associates a Node with this visual for event handling.
+
+    The node will be stored in the tag dictionary and can be retrieved via GetNodeFromTag.
+  example: []
+  syntax:
+    content: public ResizableVisual WithNode(Node node)
+    parameters:
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node to associate with this visual.
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    content.vb: Public Function WithNode(node As Node) As ResizableVisual
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build
+  id: Build
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: Build()
+  nameWithType: ResizableVisual.Build()
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Build
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 135
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Builds and returns the root control with resize metadata attached.
+  example: []
+  syntax:
+    content: public Control Build()
+    return:
+      type: Avalonia.Controls.Control
+    content.vb: Public Function Build() As Control
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize(Avalonia.Controls.Control,System.Double,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize(Avalonia.Controls.Control,System.Double,System.Double)
+  id: UpdateSize(Avalonia.Controls.Control,System.Double,System.Double)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: UpdateSize(Control, double, double)
+  nameWithType: ResizableVisual.UpdateSize(Control, double, double)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize(Avalonia.Controls.Control, double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateSize
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 179
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Updates the size of a visual and all its registered children.
+
+    Call this from INodeRenderer.UpdateSize.
+  example: []
+  syntax:
+    content: public static bool UpdateSize(Control visual, double scaledWidth, double scaledHeight)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The visual returned from CreateNodeVisual.
+    - id: scaledWidth
+      type: System.Double
+      description: Width in screen units (already multiplied by scale).
+    - id: scaledHeight
+      type: System.Double
+      description: Height in screen units (already multiplied by scale).
+    return:
+      type: System.Boolean
+      description: True if resize metadata was found and applied, false if fallback behavior was used.
+    content.vb: Public Shared Function UpdateSize(visual As Control, scaledWidth As Double, scaledHeight As Double) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize*
+  nameWithType.vb: ResizableVisual.UpdateSize(Control, Double, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize(Avalonia.Controls.Control, Double, Double)
+  name.vb: UpdateSize(Control, Double, Double)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata(Avalonia.Controls.Control)
+  id: GetMetadata(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: GetMetadata(Control)
+  nameWithType: ResizableVisual.GetMetadata(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetMetadata
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 218
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the resize metadata from a visual, if present.
+  example: []
+  syntax:
+    content: public static ResizableVisual.ResizeMetadata? GetMetadata(Control visual)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    return:
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+    content.vb: Public Shared Function GetMetadata(visual As Control) As ResizableVisual.ResizeMetadata
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata(Avalonia.Controls.Control)
+  id: HasResizeMetadata(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: HasResizeMetadata(Control)
+  nameWithType: ResizableVisual.HasResizeMetadata(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata(Avalonia.Controls.Control)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasResizeMetadata
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 233
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Checks if a visual has resize metadata attached.
+
+    Useful for validation/debugging.
+  example: []
+  syntax:
+    content: public static bool HasResizeMetadata(Control visual)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasResizeMetadata(visual As Control) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(System.Object)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(System.Object)
+  id: GetNodeFromTag(System.Object)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: GetNodeFromTag(object?)
+  nameWithType: ResizableVisual.GetNodeFromTag(object?)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(object?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetNodeFromTag
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 241
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Extracts the Node from a control's Tag, handling both direct assignment
+
+    and dictionary storage (used when ResizableVisual metadata is present).
+  example: []
+  syntax:
+    content: public static Node? GetNodeFromTag(object? tag)
+    parameters:
+    - id: tag
+      type: System.Object
+      description: The Tag value from a control.
+    return:
+      type: FlowGraph.Core.Node
+      description: The Node if found, null otherwise.
+    content.vb: Public Shared Function GetNodeFromTag(tag As Object) As Node
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag*
+  nameWithType.vb: ResizableVisual.GetNodeFromTag(Object)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag(Object)
+  name.vb: GetNodeFromTag(Object)
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode(System.Object)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode(System.Object)
+  id: TagContainsNode(System.Object)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  langs:
+  - csharp
+  - vb
+  name: TagContainsNode(object?)
+  nameWithType: ResizableVisual.TagContainsNode(object?)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode(object?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: TagContainsNode
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/ResizableVisual.cs
+    startLine: 267
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Checks if a control's Tag contains a Node (either directly or in dictionary).
+  example: []
+  syntax:
+    content: public static bool TagContainsNode(object? tag)
+    parameters:
+    - id: tag
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TagContainsNode(tag As Object) As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode*
+  nameWithType.vb: ResizableVisual.TagContainsNode(Object)
+  fullName.vb: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode(Object)
+  name.vb: TagContainsNode(Object)
+references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.NodeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.NodeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
+    name: NodeRenderers
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_Create_Avalonia_Controls_Control_
+  name: Create
+  nameWithType: ResizableVisual.Create
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Create
+- uid: Avalonia.Controls.Control
+  commentId: T:Avalonia.Controls.Control
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Control
+  nameWithType: Control
+  fullName: Avalonia.Controls.Control
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html
+  name: ResizableVisual
+  nameWithType: ResizableVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+- uid: Avalonia.Controls
+  commentId: N:Avalonia.Controls
+  isExternal: true
+  name: Avalonia.Controls
+  nameWithType: Avalonia.Controls
+  fullName: Avalonia.Controls
+  spec.csharp:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+  spec.vb:
+  - uid: Avalonia
+    name: Avalonia
+    isExternal: true
+  - name: .
+  - uid: Avalonia.Controls
+    name: Controls
+    isExternal: true
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_WithFullSizeChild_Avalonia_Controls_Control_
+  name: WithFullSizeChild
+  nameWithType: ResizableVisual.WithFullSizeChild
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChild
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_WithFullSizeChildren_Avalonia_Controls_Control___
+  name: WithFullSizeChildren
+  nameWithType: ResizableVisual.WithFullSizeChildren
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithFullSizeChildren
+- uid: Avalonia.Controls.Control[]
+  isExternal: true
+  name: Control[]
+  nameWithType: Control[]
+  fullName: Avalonia.Controls.Control[]
+  nameWithType.vb: Control()
+  fullName.vb: Avalonia.Controls.Control()
+  name.vb: Control()
+  spec.csharp:
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: (
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_WithInsetChild_Avalonia_Controls_Control_Avalonia_Thickness_
+  name: WithInsetChild
+  nameWithType: ResizableVisual.WithInsetChild
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithInsetChild
+- uid: Avalonia.Thickness
+  commentId: T:Avalonia.Thickness
+  parent: Avalonia
+  isExternal: true
+  name: Thickness
+  nameWithType: Thickness
+  fullName: Avalonia.Thickness
+- uid: Avalonia
+  commentId: N:Avalonia
+  isExternal: true
+  name: Avalonia
+  nameWithType: Avalonia
+  fullName: Avalonia
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_WithCustomChild_Avalonia_Controls_Control_System_Action_Avalonia_Controls_Control_System_Double_System_Double__
+  name: WithCustomChild
+  nameWithType: ResizableVisual.WithCustomChild
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithCustomChild
+- uid: System.Action{Avalonia.Controls.Control,System.Double,System.Double}
+  commentId: T:System.Action{Avalonia.Controls.Control,System.Double,System.Double}
+  parent: System
+  definition: System.Action`3
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<Control, double, double>
+  nameWithType: Action<Control, double, double>
+  fullName: System.Action<Avalonia.Controls.Control, double, double>
+  nameWithType.vb: Action(Of Control, Double, Double)
+  fullName.vb: System.Action(Of Avalonia.Controls.Control, Double, Double)
+  name.vb: Action(Of Control, Double, Double)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Action`3
+  commentId: T:System.Action`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<T1, T2, T3>
+  nameWithType: Action<T1, T2, T3>
+  fullName: System.Action<T1, T2, T3>
+  nameWithType.vb: Action(Of T1, T2, T3)
+  fullName.vb: System.Action(Of T1, T2, T3)
+  name.vb: Action(Of T1, T2, T3)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_WithNode_FlowGraph_Core_Node_
+  name: WithNode
+  nameWithType: ResizableVisual.WithNode
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.WithNode
+- uid: FlowGraph.Core.Node
+  commentId: T:FlowGraph.Core.Node
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Node.html
+  name: Node
+  nameWithType: Node
+  fullName: FlowGraph.Core.Node
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_Build
+  name: Build
+  nameWithType: ResizableVisual.Build
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.Build
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_UpdateSize_Avalonia_Controls_Control_System_Double_System_Double_
+  name: UpdateSize
+  nameWithType: ResizableVisual.UpdateSize
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.UpdateSize
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_GetMetadata_Avalonia_Controls_Control_
+  name: GetMetadata
+  nameWithType: ResizableVisual.GetMetadata
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetMetadata
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html
+  name: ResizableVisual.ResizeMetadata
+  nameWithType: ResizableVisual.ResizeMetadata
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    name: ResizableVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+    name: ResizeMetadata
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata.html
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+    name: ResizableVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata
+    name: ResizeMetadata
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.ResizeMetadata.html
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_HasResizeMetadata_Avalonia_Controls_Control_
+  name: HasResizeMetadata
+  nameWithType: ResizableVisual.HasResizeMetadata
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.HasResizeMetadata
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_GetNodeFromTag_System_Object_
+  name: GetNodeFromTag
+  nameWithType: ResizableVisual.GetNodeFromTag
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.GetNodeFromTag
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html#FlowGraph_Avalonia_Rendering_NodeRenderers_ResizableVisual_TagContainsNode_System_Object_
+  name: TagContainsNode
+  nameWithType: ResizableVisual.TagContainsNode
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.TagContainsNode

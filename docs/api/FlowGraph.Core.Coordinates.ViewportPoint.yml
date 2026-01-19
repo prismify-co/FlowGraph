@@ -1,0 +1,1079 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Coordinates.ViewportPoint
+  commentId: T:FlowGraph.Core.Coordinates.ViewportPoint
+  id: ViewportPoint
+  parent: FlowGraph.Core.Coordinates
+  children:
+  - FlowGraph.Core.Coordinates.ViewportPoint.#ctor(System.Double,System.Double)
+  - FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  - FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  - FlowGraph.Core.Coordinates.ViewportPoint.ToString
+  - FlowGraph.Core.Coordinates.ViewportPoint.X
+  - FlowGraph.Core.Coordinates.ViewportPoint.Y
+  - FlowGraph.Core.Coordinates.ViewportPoint.Zero
+  - FlowGraph.Core.Coordinates.ViewportPoint.op_Addition(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  - FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportPoint)
+  - FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  langs:
+  - csharp
+  - vb
+  name: ViewportPoint
+  nameWithType: ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint
+  type: Struct
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportPoint
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    A point in viewport coordinate space (screen/control coordinates).
+
+
+    <p>
+
+    Viewport coordinates represent positions within the visible canvas control.
+
+    (0,0) is the top-left of the canvas control, and values increase to the right and down.
+
+    These coordinates change as the user pans and zooms - a node at canvas (100, 200) will
+
+    appear at different viewport positions depending on the current zoom/pan state.
+
+    </p>
+
+
+    <p>
+
+    <b>When to use:</b>
+
+    <ul><li>Auto-pan edge detection (checking if cursor is near viewport edges)</li><li>Fixed UI positioning (tooltips, menus that don't pan/zoom)</li><li>Direct rendering to DrawingContext (after converting from canvas)</li><li>Viewport bounds calculations</li></ul>
+
+    </p>
+
+
+    <p>
+
+    <b>Important:</b> Viewport coordinates assume (0,0) is at the canvas control's origin.
+
+    If the canvas is embedded in a larger control with margins/toolbars, you may need
+
+    to account for offsets when converting from parent control coordinates.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public readonly record struct ViewportPoint : IEquatable<ViewportPoint>'
+    content.vb: Public Structure ViewportPoint Implements IEquatable(Of ViewportPoint)
+  implements:
+  - System.IEquatable{FlowGraph.Core.Coordinates.ViewportPoint}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - FlowGraph.Core.Coordinates.ViewportPoint.FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.#ctor(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.#ctor(System.Double,System.Double)
+  id: '#ctor(System.Double,System.Double)'
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: ViewportPoint(double, double)
+  nameWithType: ViewportPoint.ViewportPoint(double, double)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.ViewportPoint(double, double)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 30
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    A point in viewport coordinate space (screen/control coordinates).
+
+
+    <p>
+
+    Viewport coordinates represent positions within the visible canvas control.
+
+    (0,0) is the top-left of the canvas control, and values increase to the right and down.
+
+    These coordinates change as the user pans and zooms - a node at canvas (100, 200) will
+
+    appear at different viewport positions depending on the current zoom/pan state.
+
+    </p>
+
+
+    <p>
+
+    <b>When to use:</b>
+
+    <ul><li>Auto-pan edge detection (checking if cursor is near viewport edges)</li><li>Fixed UI positioning (tooltips, menus that don't pan/zoom)</li><li>Direct rendering to DrawingContext (after converting from canvas)</li><li>Viewport bounds calculations</li></ul>
+
+    </p>
+
+
+    <p>
+
+    <b>Important:</b> Viewport coordinates assume (0,0) is at the canvas control's origin.
+
+    If the canvas is embedded in a larger control with margins/toolbars, you may need
+
+    to account for offsets when converting from parent control coordinates.
+
+    </p>
+  example: []
+  syntax:
+    content: public ViewportPoint(double X, double Y)
+    parameters:
+    - id: X
+      type: System.Double
+    - id: Y
+      type: System.Double
+    content.vb: Public Sub New(X As Double, Y As Double)
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.#ctor*
+  nameWithType.vb: ViewportPoint.New(Double, Double)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.New(Double, Double)
+  name.vb: New(Double, Double)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.X
+  commentId: P:FlowGraph.Core.Coordinates.ViewportPoint.X
+  id: X
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: ViewportPoint.X
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.X
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: X
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  syntax:
+    content: public double X { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property X As Double
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.X*
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.Y
+  commentId: P:FlowGraph.Core.Coordinates.ViewportPoint.Y
+  id: Y
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: ViewportPoint.Y
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.Y
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Y
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 31
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  syntax:
+    content: public double Y { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Y As Double
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.Y*
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.Zero
+  commentId: P:FlowGraph.Core.Coordinates.ViewportPoint.Zero
+  id: Zero
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: Zero
+  nameWithType: ViewportPoint.Zero
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.Zero
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Zero
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 36
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: The origin point (0, 0) in viewport space.
+  example: []
+  syntax:
+    content: public static ViewportPoint Zero { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    content.vb: Public Shared ReadOnly Property Zero As ViewportPoint
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.Zero*
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Addition(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.op_Addition(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  id: op_Addition(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: operator +(ViewportPoint, ViewportVector)
+  nameWithType: ViewportPoint.operator +(ViewportPoint, ViewportVector)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.operator +(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportVector)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Addition
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Adds a vector to this point, producing a new point.
+  example: []
+  syntax:
+    content: public static ViewportPoint operator +(ViewportPoint point, ViewportVector vector)
+    parameters:
+    - id: point
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    - id: vector
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    content.vb: Public Shared Operator +(point As ViewportPoint, vector As ViewportVector) As ViewportPoint
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.op_Addition*
+  nameWithType.vb: ViewportPoint.+(ViewportPoint, ViewportVector)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.+(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportVector)
+  name.vb: +(ViewportPoint, ViewportVector)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  id: op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportVector)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: operator -(ViewportPoint, ViewportVector)
+  nameWithType: ViewportPoint.operator -(ViewportPoint, ViewportVector)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.operator -(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportVector)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Subtraction
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Subtracts a vector from this point, producing a new point.
+  example: []
+  syntax:
+    content: public static ViewportPoint operator -(ViewportPoint point, ViewportVector vector)
+    parameters:
+    - id: point
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    - id: vector
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    content.vb: Public Shared Operator -(point As ViewportPoint, vector As ViewportVector) As ViewportPoint
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction*
+  nameWithType.vb: ViewportPoint.-(ViewportPoint, ViewportVector)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.-(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportVector)
+  name.vb: -(ViewportPoint, ViewportVector)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportPoint)
+  id: op_Subtraction(FlowGraph.Core.Coordinates.ViewportPoint,FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: operator -(ViewportPoint, ViewportPoint)
+  nameWithType: ViewportPoint.operator -(ViewportPoint, ViewportPoint)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.operator -(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Operator
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: op_Subtraction
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the vector between two points.
+  example: []
+  syntax:
+    content: public static ViewportVector operator -(ViewportPoint a, ViewportPoint b)
+    parameters:
+    - id: a
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    - id: b
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+    content.vb: Public Shared Operator -(a As ViewportPoint, b As ViewportPoint) As ViewportVector
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction*
+  nameWithType.vb: ViewportPoint.-(ViewportPoint, ViewportPoint)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.-(FlowGraph.Core.Coordinates.ViewportPoint, FlowGraph.Core.Coordinates.ViewportPoint)
+  name.vb: -(ViewportPoint, ViewportPoint)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  id: DistanceTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: DistanceTo(ViewportPoint)
+  nameWithType: ViewportPoint.DistanceTo(ViewportPoint)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DistanceTo
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 59
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the distance to another point.
+  example: []
+  syntax:
+    content: public double DistanceTo(ViewportPoint other)
+    parameters:
+    - id: other
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    return:
+      type: System.Double
+    content.vb: Public Function DistanceTo(other As ViewportPoint) As Double
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo*
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  id: DistanceSquaredTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: DistanceSquaredTo(ViewportPoint)
+  nameWithType: ViewportPoint.DistanceSquaredTo(ViewportPoint)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo(FlowGraph.Core.Coordinates.ViewportPoint)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DistanceSquaredTo
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 69
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Calculates the squared distance to another point (faster than DistanceTo).
+  example: []
+  syntax:
+    content: public double DistanceSquaredTo(ViewportPoint other)
+    parameters:
+    - id: other
+      type: FlowGraph.Core.Coordinates.ViewportPoint
+    return:
+      type: System.Double
+    content.vb: Public Function DistanceSquaredTo(other As ViewportPoint) As Double
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo*
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  id: IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: IsNearEdge(ViewportRect, double)
+  nameWithType: ViewportPoint.IsNearEdge(ViewportRect, double)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsNearEdge
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 83
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: >-
+    Checks if this point is within a distance from an edge of a bounding box.
+
+    Useful for auto-pan edge detection.
+  example: []
+  syntax:
+    content: public bool IsNearEdge(ViewportRect bounds, double edgeDistance)
+    parameters:
+    - id: bounds
+      type: FlowGraph.Core.Coordinates.ViewportRect
+      description: The viewport bounds to check against.
+    - id: edgeDistance
+      type: System.Double
+      description: The distance from edge to trigger.
+    return:
+      type: System.Boolean
+      description: True if the point is within edgeDistance of any edge.
+    content.vb: Public Function IsNearEdge(bounds As ViewportRect, edgeDistance As Double) As Boolean
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge*
+  nameWithType.vb: ViewportPoint.IsNearEdge(ViewportRect, Double)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge(FlowGraph.Core.Coordinates.ViewportRect, Double)
+  name.vb: IsNearEdge(ViewportRect, Double)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  id: GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect,System.Double)
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: GetEdgePanDirection(ViewportRect, double)
+  nameWithType: ViewportPoint.GetEdgePanDirection(ViewportRect, double)
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetEdgePanDirection
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 97
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Gets the direction(s) in which this point is near the edge.
+  example: []
+  syntax:
+    content: public ViewportVector GetEdgePanDirection(ViewportRect bounds, double edgeDistance)
+    parameters:
+    - id: bounds
+      type: FlowGraph.Core.Coordinates.ViewportRect
+      description: The viewport bounds to check against.
+    - id: edgeDistance
+      type: System.Double
+      description: The distance from edge to trigger.
+    return:
+      type: FlowGraph.Core.Coordinates.ViewportVector
+      description: A vector indicating the pan direction (negative = pan in that direction).
+    content.vb: Public Function GetEdgePanDirection(bounds As ViewportRect, edgeDistance As Double) As ViewportVector
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection*
+  nameWithType.vb: ViewportPoint.GetEdgePanDirection(ViewportRect, Double)
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection(FlowGraph.Core.Coordinates.ViewportRect, Double)
+  name.vb: GetEdgePanDirection(ViewportRect, Double)
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.ToString
+  commentId: M:FlowGraph.Core.Coordinates.ViewportPoint.ToString
+  id: ToString
+  parent: FlowGraph.Core.Coordinates.ViewportPoint
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: ViewportPoint.ToString()
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.ToString()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ToString
+    path: ../FlowGraph.Core/Coordinates/ViewportCoordinates.cs
+    startLine: 111
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Coordinates
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: FlowGraph.Core.Coordinates.ViewportPoint.ToString*
+references:
+- uid: FlowGraph.Core.Coordinates
+  commentId: N:FlowGraph.Core.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Core.Coordinates
+  nameWithType: FlowGraph.Core.Coordinates
+  fullName: FlowGraph.Core.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Coordinates
+    name: Coordinates
+    href: FlowGraph.Core.Coordinates.html
+- uid: System.IEquatable{FlowGraph.Core.Coordinates.ViewportPoint}
+  commentId: T:System.IEquatable{FlowGraph.Core.Coordinates.ViewportPoint}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<ViewportPoint>
+  nameWithType: IEquatable<ViewportPoint>
+  fullName: System.IEquatable<FlowGraph.Core.Coordinates.ViewportPoint>
+  nameWithType.vb: IEquatable(Of ViewportPoint)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Coordinates.ViewportPoint)
+  name.vb: IEquatable(Of ViewportPoint)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  parent: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  definition: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToAvalonia(ViewportPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  commentId: M:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: ToAvalonia(ViewportPoint)
+  nameWithType: AvaloniaCoordinateExtensions.ToAvalonia(ViewportPoint)
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.ToAvalonia(FlowGraph.Core.Coordinates.ViewportPoint)
+    name: ToAvalonia
+    href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html#FlowGraph_Avalonia_Coordinates_AvaloniaCoordinateExtensions_ToAvalonia_FlowGraph_Core_Coordinates_ViewportPoint_
+  - name: (
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint
+    name: ViewportPoint
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  - name: )
+- uid: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  commentId: T:FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+  parent: FlowGraph.Avalonia.Coordinates
+  href: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions.html
+  name: AvaloniaCoordinateExtensions
+  nameWithType: AvaloniaCoordinateExtensions
+  fullName: FlowGraph.Avalonia.Coordinates.AvaloniaCoordinateExtensions
+- uid: FlowGraph.Avalonia.Coordinates
+  commentId: N:FlowGraph.Avalonia.Coordinates
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Coordinates
+  nameWithType: FlowGraph.Avalonia.Coordinates
+  fullName: FlowGraph.Avalonia.Coordinates
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Coordinates
+    name: Coordinates
+    href: FlowGraph.Avalonia.Coordinates.html
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.#ctor*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.#ctor
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint__ctor_System_Double_System_Double_
+  name: ViewportPoint
+  nameWithType: ViewportPoint.ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.ViewportPoint
+  nameWithType.vb: ViewportPoint.New
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.New
+  name.vb: New
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.X*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.X
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_X
+  name: X
+  nameWithType: ViewportPoint.X
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.X
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.Y*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.Y
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_Y
+  name: Y
+  nameWithType: ViewportPoint.Y
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.Y
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.Zero*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.Zero
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_Zero
+  name: Zero
+  nameWithType: ViewportPoint.Zero
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.Zero
+- uid: FlowGraph.Core.Coordinates.ViewportPoint
+  commentId: T:FlowGraph.Core.Coordinates.ViewportPoint
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html
+  name: ViewportPoint
+  nameWithType: ViewportPoint
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Addition*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.op_Addition
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_op_Addition_FlowGraph_Core_Coordinates_ViewportPoint_FlowGraph_Core_Coordinates_ViewportVector_
+  name: operator +
+  nameWithType: ViewportPoint.operator +
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.operator +
+  nameWithType.vb: ViewportPoint.+
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Addition*
+    name: +
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_op_Addition_FlowGraph_Core_Coordinates_ViewportPoint_FlowGraph_Core_Coordinates_ViewportVector_
+- uid: FlowGraph.Core.Coordinates.ViewportVector
+  commentId: T:FlowGraph.Core.Coordinates.ViewportVector
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportVector.html
+  name: ViewportVector
+  nameWithType: ViewportVector
+  fullName: FlowGraph.Core.Coordinates.ViewportVector
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_op_Subtraction_FlowGraph_Core_Coordinates_ViewportPoint_FlowGraph_Core_Coordinates_ViewportVector_
+  name: operator -
+  nameWithType: ViewportPoint.operator -
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.operator -
+  nameWithType.vb: ViewportPoint.-
+  fullName.vb: FlowGraph.Core.Coordinates.ViewportPoint.-
+  name.vb: '-'
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: FlowGraph.Core.Coordinates.ViewportPoint.op_Subtraction*
+    name: '-'
+    href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_op_Subtraction_FlowGraph_Core_Coordinates_ViewportPoint_FlowGraph_Core_Coordinates_ViewportVector_
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_DistanceTo_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: DistanceTo
+  nameWithType: ViewportPoint.DistanceTo
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.DistanceTo
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_DistanceSquaredTo_FlowGraph_Core_Coordinates_ViewportPoint_
+  name: DistanceSquaredTo
+  nameWithType: ViewportPoint.DistanceSquaredTo
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.DistanceSquaredTo
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_IsNearEdge_FlowGraph_Core_Coordinates_ViewportRect_System_Double_
+  name: IsNearEdge
+  nameWithType: ViewportPoint.IsNearEdge
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.IsNearEdge
+- uid: FlowGraph.Core.Coordinates.ViewportRect
+  commentId: T:FlowGraph.Core.Coordinates.ViewportRect
+  parent: FlowGraph.Core.Coordinates
+  href: FlowGraph.Core.Coordinates.ViewportRect.html
+  name: ViewportRect
+  nameWithType: ViewportRect
+  fullName: FlowGraph.Core.Coordinates.ViewportRect
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_GetEdgePanDirection_FlowGraph_Core_Coordinates_ViewportRect_System_Double_
+  name: GetEdgePanDirection
+  nameWithType: ViewportPoint.GetEdgePanDirection
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.GetEdgePanDirection
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Coordinates.ViewportPoint.ToString*
+  commentId: Overload:FlowGraph.Core.Coordinates.ViewportPoint.ToString
+  href: FlowGraph.Core.Coordinates.ViewportPoint.html#FlowGraph_Core_Coordinates_ViewportPoint_ToString
+  name: ToString
+  nameWithType: ViewportPoint.ToString
+  fullName: FlowGraph.Core.Coordinates.ViewportPoint.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

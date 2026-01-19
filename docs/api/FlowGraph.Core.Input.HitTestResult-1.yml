@@ -1,0 +1,694 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Input.HitTestResult`1
+  commentId: T:FlowGraph.Core.Input.HitTestResult`1
+  id: HitTestResult`1
+  parent: FlowGraph.Core.Input
+  children:
+  - FlowGraph.Core.Input.HitTestResult`1.CanvasPosition
+  - FlowGraph.Core.Input.HitTestResult`1.Distance
+  - FlowGraph.Core.Input.HitTestResult`1.Element
+  - FlowGraph.Core.Input.HitTestResult`1.IsHit
+  - FlowGraph.Core.Input.HitTestResult`1.LocalPosition
+  - FlowGraph.Core.Input.HitTestResult`1.NoHit(FlowGraph.Core.Point)
+  langs:
+  - csharp
+  - vb
+  name: HitTestResult<TElement>
+  nameWithType: HitTestResult<TElement>
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitTestResult
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 9
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Result of a hit test operation against a specific element type.
+  example: []
+  syntax:
+    content: public class HitTestResult<TElement>
+    typeParameters:
+    - id: TElement
+      description: The type of element that can be hit.
+    content.vb: Public Class HitTestResult(Of TElement)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: HitTestResult(Of TElement)
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement)
+  name.vb: HitTestResult(Of TElement)
+- uid: FlowGraph.Core.Input.HitTestResult`1.Element
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.Element
+  id: Element
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: Element
+  nameWithType: HitTestResult<TElement>.Element
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.Element
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Element
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 14
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: The element that was hit, or null/default if nothing was hit.
+  example: []
+  syntax:
+    content: public TElement? Element { get; init; }
+    parameters: []
+    return:
+      type: '{TElement}'
+    content.vb: Public Property Element As TElement
+  overload: FlowGraph.Core.Input.HitTestResult`1.Element*
+  nameWithType.vb: HitTestResult(Of TElement).Element
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).Element
+- uid: FlowGraph.Core.Input.HitTestResult`1.CanvasPosition
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.CanvasPosition
+  id: CanvasPosition
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: CanvasPosition
+  nameWithType: HitTestResult<TElement>.CanvasPosition
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.CanvasPosition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasPosition
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 19
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: The position where the hit occurred, in canvas coordinates.
+  example: []
+  syntax:
+    content: >-
+      [CoordinateSpace(CoordinateSpace.Canvas)]
+
+      public Point CanvasPosition { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: >-
+      <CoordinateSpace(CoordinateSpace.Canvas)>
+
+      Public Property CanvasPosition As Point
+  overload: FlowGraph.Core.Input.HitTestResult`1.CanvasPosition*
+  attributes:
+  - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+    ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+    arguments:
+    - type: FlowGraph.Core.Rendering.CoordinateSpace
+      value: 0
+  nameWithType.vb: HitTestResult(Of TElement).CanvasPosition
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).CanvasPosition
+- uid: FlowGraph.Core.Input.HitTestResult`1.LocalPosition
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.LocalPosition
+  id: LocalPosition
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: LocalPosition
+  nameWithType: HitTestResult<TElement>.LocalPosition
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.LocalPosition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LocalPosition
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 26
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    The position where the hit occurred, relative to the element's origin.
+
+    Only meaningful when <xref href="FlowGraph.Core.Input.HitTestResult%601.Element" data-throw-if-not-resolved="false"></xref> is not null.
+  example: []
+  syntax:
+    content: >-
+      [CoordinateSpace(CoordinateSpace.Local)]
+
+      public Point LocalPosition { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: >-
+      <CoordinateSpace(CoordinateSpace.Local)>
+
+      Public Property LocalPosition As Point
+  overload: FlowGraph.Core.Input.HitTestResult`1.LocalPosition*
+  attributes:
+  - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+    ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+    arguments:
+    - type: FlowGraph.Core.Rendering.CoordinateSpace
+      value: 3
+  nameWithType.vb: HitTestResult(Of TElement).LocalPosition
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).LocalPosition
+- uid: FlowGraph.Core.Input.HitTestResult`1.Distance
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.Distance
+  id: Distance
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: Distance
+  nameWithType: HitTestResult<TElement>.Distance
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.Distance
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Distance
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 33
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Distance from the exact hit point to the element's bounds or center.
+
+    Useful for edge hit testing where some tolerance is needed.
+  example: []
+  syntax:
+    content: public double Distance { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Distance As Double
+  overload: FlowGraph.Core.Input.HitTestResult`1.Distance*
+  nameWithType.vb: HitTestResult(Of TElement).Distance
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).Distance
+- uid: FlowGraph.Core.Input.HitTestResult`1.IsHit
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.IsHit
+  id: IsHit
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: IsHit
+  nameWithType: HitTestResult<TElement>.IsHit
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.IsHit
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsHit
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 38
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Whether an element was hit.
+  example: []
+  syntax:
+    content: public bool IsHit { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsHit As Boolean
+  overload: FlowGraph.Core.Input.HitTestResult`1.IsHit*
+  nameWithType.vb: HitTestResult(Of TElement).IsHit
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).IsHit
+- uid: FlowGraph.Core.Input.HitTestResult`1.NoHit(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Input.HitTestResult`1.NoHit(FlowGraph.Core.Point)
+  id: NoHit(FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Input.HitTestResult`1
+  langs:
+  - csharp
+  - vb
+  name: NoHit(Point)
+  nameWithType: HitTestResult<TElement>.NoHit(Point)
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.NoHit(FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IHitTestable.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: NoHit
+    path: ../FlowGraph.Core/Input/IHitTestable.cs
+    startLine: 43
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Creates an empty (no hit) result.
+  example: []
+  syntax:
+    content: public static HitTestResult<TElement> NoHit(Point canvasPosition)
+    parameters:
+    - id: canvasPosition
+      type: FlowGraph.Core.Point
+    return:
+      type: FlowGraph.Core.Input.HitTestResult`1
+    content.vb: Public Shared Function NoHit(canvasPosition As Point) As HitTestResult(Of TElement)
+  overload: FlowGraph.Core.Input.HitTestResult`1.NoHit*
+  nameWithType.vb: HitTestResult(Of TElement).NoHit(Point)
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).NoHit(FlowGraph.Core.Point)
+references:
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Input.HitTestResult`1.Element*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.Element
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_Element
+  name: Element
+  nameWithType: HitTestResult<TElement>.Element
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.Element
+  nameWithType.vb: HitTestResult(Of TElement).Element
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).Element
+- uid: '{TElement}'
+  commentId: '!:TElement'
+  definition: TElement
+  name: TElement
+  nameWithType: TElement
+  fullName: TElement
+- uid: TElement
+  commentId: '!:TElement'
+  name: TElement
+  nameWithType: TElement
+  fullName: TElement
+- uid: FlowGraph.Core.Input.HitTestResult`1.CanvasPosition*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.CanvasPosition
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_CanvasPosition
+  name: CanvasPosition
+  nameWithType: HitTestResult<TElement>.CanvasPosition
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.CanvasPosition
+  nameWithType.vb: HitTestResult(Of TElement).CanvasPosition
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).CanvasPosition
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Input.HitTestResult`1.Element
+  commentId: P:FlowGraph.Core.Input.HitTestResult`1.Element
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_Element
+  name: Element
+  nameWithType: HitTestResult<TElement>.Element
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.Element
+  nameWithType.vb: HitTestResult(Of TElement).Element
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).Element
+- uid: FlowGraph.Core.Input.HitTestResult`1.LocalPosition*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.LocalPosition
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_LocalPosition
+  name: LocalPosition
+  nameWithType: HitTestResult<TElement>.LocalPosition
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.LocalPosition
+  nameWithType.vb: HitTestResult(Of TElement).LocalPosition
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).LocalPosition
+- uid: FlowGraph.Core.Input.HitTestResult`1.Distance*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.Distance
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_Distance
+  name: Distance
+  nameWithType: HitTestResult<TElement>.Distance
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.Distance
+  nameWithType.vb: HitTestResult(Of TElement).Distance
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).Distance
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Input.HitTestResult`1.IsHit*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.IsHit
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_IsHit
+  name: IsHit
+  nameWithType: HitTestResult<TElement>.IsHit
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.IsHit
+  nameWithType.vb: HitTestResult(Of TElement).IsHit
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).IsHit
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Input.HitTestResult`1.NoHit*
+  commentId: Overload:FlowGraph.Core.Input.HitTestResult`1.NoHit
+  href: FlowGraph.Core.Input.HitTestResult-1.html#FlowGraph_Core_Input_HitTestResult_1_NoHit_FlowGraph_Core_Point_
+  name: NoHit
+  nameWithType: HitTestResult<TElement>.NoHit
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>.NoHit
+  nameWithType.vb: HitTestResult(Of TElement).NoHit
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement).NoHit
+- uid: FlowGraph.Core.Input.HitTestResult`1
+  commentId: T:FlowGraph.Core.Input.HitTestResult`1
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.HitTestResult-1.html
+  name: HitTestResult<TElement>
+  nameWithType: HitTestResult<TElement>
+  fullName: FlowGraph.Core.Input.HitTestResult<TElement>
+  nameWithType.vb: HitTestResult(Of TElement)
+  fullName.vb: FlowGraph.Core.Input.HitTestResult(Of TElement)
+  name.vb: HitTestResult(Of TElement)
+  spec.csharp:
+  - uid: FlowGraph.Core.Input.HitTestResult`1
+    name: HitTestResult
+    href: FlowGraph.Core.Input.HitTestResult-1.html
+  - name: <
+  - name: TElement
+  - name: '>'
+  spec.vb:
+  - uid: FlowGraph.Core.Input.HitTestResult`1
+    name: HitTestResult
+    href: FlowGraph.Core.Input.HitTestResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )

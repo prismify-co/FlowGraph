@@ -5,13 +5,16 @@ items:
   id: SelectionChangedEventArgs
   parent: FlowGraph.Avalonia
   children:
-  - FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge})
+  - FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement})
   - FlowGraph.Avalonia.SelectionChangedEventArgs.AddedEdges
   - FlowGraph.Avalonia.SelectionChangedEventArgs.AddedNodes
+  - FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
   - FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedEdges
   - FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedNodes
+  - FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
   - FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedEdges
   - FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedNodes
+  - FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
   langs:
   - csharp
   - vb
@@ -22,11 +25,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectionChangedEventArgs
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 227
+    startLine: 228
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -61,11 +64,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectedNodes
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 232
+    startLine: 233
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -92,11 +95,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectedEdges
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 237
+    startLine: 238
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -109,6 +112,37 @@ items:
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
     content.vb: Public ReadOnly Property SelectedEdges As IReadOnlyList(Of Edge)
   overload: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedEdges*
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
+  commentId: P:FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
+  id: SelectedShapes
+  parent: FlowGraph.Avalonia.SelectionChangedEventArgs
+  langs:
+  - csharp
+  - vb
+  name: SelectedShapes
+  nameWithType: SelectionChangedEventArgs.SelectedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelectedShapes
+    path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+    startLine: 243
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: The currently selected shapes.
+  example: []
+  syntax:
+    content: public IReadOnlyList<ShapeElement> SelectedShapes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    content.vb: Public ReadOnly Property SelectedShapes As IReadOnlyList(Of ShapeElement)
+  overload: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes*
 - uid: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedNodes
   commentId: P:FlowGraph.Avalonia.SelectionChangedEventArgs.AddedNodes
   id: AddedNodes
@@ -123,11 +157,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddedNodes
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 242
+    startLine: 248
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -154,11 +188,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemovedNodes
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 247
+    startLine: 253
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -185,11 +219,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddedEdges
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 252
+    startLine: 258
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -216,11 +250,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RemovedEdges
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 257
+    startLine: 263
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
@@ -233,30 +267,92 @@ items:
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
     content.vb: Public ReadOnly Property RemovedEdges As IReadOnlyList(Of Edge)
   overload: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedEdges*
-- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge})
-  commentId: M:FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge})
-  id: '#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge})'
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
+  commentId: P:FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
+  id: AddedShapes
   parent: FlowGraph.Avalonia.SelectionChangedEventArgs
   langs:
   - csharp
   - vb
-  name: SelectionChangedEventArgs(IReadOnlyList<Node>, IReadOnlyList<Edge>, IReadOnlyList<Node>?, IReadOnlyList<Node>?, IReadOnlyList<Edge>?, IReadOnlyList<Edge>?)
-  nameWithType: SelectionChangedEventArgs.SelectionChangedEventArgs(IReadOnlyList<Node>, IReadOnlyList<Edge>, IReadOnlyList<Node>?, IReadOnlyList<Node>?, IReadOnlyList<Edge>?, IReadOnlyList<Edge>?)
-  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectionChangedEventArgs(System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>?)
+  name: AddedShapes
+  nameWithType: SelectionChangedEventArgs.AddedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddedShapes
+    path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+    startLine: 268
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Shapes that were added to the selection.
+  example: []
+  syntax:
+    content: public IReadOnlyList<ShapeElement> AddedShapes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    content.vb: Public ReadOnly Property AddedShapes As IReadOnlyList(Of ShapeElement)
+  overload: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes*
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
+  commentId: P:FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
+  id: RemovedShapes
+  parent: FlowGraph.Avalonia.SelectionChangedEventArgs
+  langs:
+  - csharp
+  - vb
+  name: RemovedShapes
+  nameWithType: SelectionChangedEventArgs.RemovedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RemovedShapes
+    path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
+    startLine: 273
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia
+  summary: Shapes that were removed from the selection.
+  example: []
+  syntax:
+    content: public IReadOnlyList<ShapeElement> RemovedShapes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    content.vb: Public ReadOnly Property RemovedShapes As IReadOnlyList(Of ShapeElement)
+  overload: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes*
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement})
+  commentId: M:FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement})
+  id: '#ctor(System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement},System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement})'
+  parent: FlowGraph.Avalonia.SelectionChangedEventArgs
+  langs:
+  - csharp
+  - vb
+  name: SelectionChangedEventArgs(IReadOnlyList<Node>, IReadOnlyList<Edge>, IReadOnlyList<Node>?, IReadOnlyList<Node>?, IReadOnlyList<Edge>?, IReadOnlyList<Edge>?, IReadOnlyList<ShapeElement>?, IReadOnlyList<ShapeElement>?, IReadOnlyList<ShapeElement>?)
+  nameWithType: SelectionChangedEventArgs.SelectionChangedEventArgs(IReadOnlyList<Node>, IReadOnlyList<Edge>, IReadOnlyList<Node>?, IReadOnlyList<Node>?, IReadOnlyList<Edge>?, IReadOnlyList<Edge>?, IReadOnlyList<ShapeElement>?, IReadOnlyList<ShapeElement>?, IReadOnlyList<ShapeElement>?)
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectionChangedEventArgs(System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Node>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Edge>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Elements.Shapes.ShapeElement>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Elements.Shapes.ShapeElement>?, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Elements.Shapes.ShapeElement>?)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Events/CanvasEventArgs.cs
-    startLine: 259
+    startLine: 275
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia
   syntax:
-    content: public SelectionChangedEventArgs(IReadOnlyList<Node> selectedNodes, IReadOnlyList<Edge> selectedEdges, IReadOnlyList<Node>? addedNodes = null, IReadOnlyList<Node>? removedNodes = null, IReadOnlyList<Edge>? addedEdges = null, IReadOnlyList<Edge>? removedEdges = null)
+    content: public SelectionChangedEventArgs(IReadOnlyList<Node> selectedNodes, IReadOnlyList<Edge> selectedEdges, IReadOnlyList<Node>? addedNodes = null, IReadOnlyList<Node>? removedNodes = null, IReadOnlyList<Edge>? addedEdges = null, IReadOnlyList<Edge>? removedEdges = null, IReadOnlyList<ShapeElement>? selectedShapes = null, IReadOnlyList<ShapeElement>? addedShapes = null, IReadOnlyList<ShapeElement>? removedShapes = null)
     parameters:
     - id: selectedNodes
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Node}
@@ -270,11 +366,17 @@ items:
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
     - id: removedEdges
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Edge}
-    content.vb: Public Sub New(selectedNodes As IReadOnlyList(Of Node), selectedEdges As IReadOnlyList(Of Edge), addedNodes As IReadOnlyList(Of Node) = Nothing, removedNodes As IReadOnlyList(Of Node) = Nothing, addedEdges As IReadOnlyList(Of Edge) = Nothing, removedEdges As IReadOnlyList(Of Edge) = Nothing)
+    - id: selectedShapes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    - id: addedShapes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    - id: removedShapes
+      type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+    content.vb: Public Sub New(selectedNodes As IReadOnlyList(Of Node), selectedEdges As IReadOnlyList(Of Edge), addedNodes As IReadOnlyList(Of Node) = Nothing, removedNodes As IReadOnlyList(Of Node) = Nothing, addedEdges As IReadOnlyList(Of Edge) = Nothing, removedEdges As IReadOnlyList(Of Edge) = Nothing, selectedShapes As IReadOnlyList(Of ShapeElement) = Nothing, addedShapes As IReadOnlyList(Of ShapeElement) = Nothing, removedShapes As IReadOnlyList(Of ShapeElement) = Nothing)
   overload: FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor*
-  nameWithType.vb: SelectionChangedEventArgs.New(IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Node), IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Edge))
-  fullName.vb: FlowGraph.Avalonia.SelectionChangedEventArgs.New(System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge))
-  name.vb: New(IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Node), IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Edge))
+  nameWithType.vb: SelectionChangedEventArgs.New(IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Node), IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Edge), IReadOnlyList(Of ShapeElement), IReadOnlyList(Of ShapeElement), IReadOnlyList(Of ShapeElement))
+  fullName.vb: FlowGraph.Avalonia.SelectionChangedEventArgs.New(System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Node), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Edge), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Elements.Shapes.ShapeElement), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Elements.Shapes.ShapeElement), System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Elements.Shapes.ShapeElement))
+  name.vb: New(IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Node), IReadOnlyList(Of Node), IReadOnlyList(Of Edge), IReadOnlyList(Of Edge), IReadOnlyList(Of ShapeElement), IReadOnlyList(Of ShapeElement), IReadOnlyList(Of ShapeElement))
 references:
 - uid: FlowGraph.Avalonia
   commentId: N:FlowGraph.Avalonia
@@ -694,6 +796,45 @@ references:
     name: Edge
     href: FlowGraph.Core.Edge.html
   - name: )
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes*
+  commentId: Overload:FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
+  href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs_SelectedShapes
+  name: SelectedShapes
+  nameWithType: SelectionChangedEventArgs.SelectedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectedShapes
+- uid: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+  commentId: T:System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Elements.Shapes.ShapeElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ShapeElement>
+  nameWithType: IReadOnlyList<ShapeElement>
+  fullName: System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Elements.Shapes.ShapeElement>
+  nameWithType.vb: IReadOnlyList(Of ShapeElement)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Elements.Shapes.ShapeElement)
+  name.vb: IReadOnlyList(Of ShapeElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+    name: ShapeElement
+    href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+    name: ShapeElement
+    href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  - name: )
 - uid: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedNodes*
   commentId: Overload:FlowGraph.Avalonia.SelectionChangedEventArgs.AddedNodes
   href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs_AddedNodes
@@ -718,9 +859,21 @@ references:
   name: RemovedEdges
   nameWithType: SelectionChangedEventArgs.RemovedEdges
   fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedEdges
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes*
+  commentId: Overload:FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
+  href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs_AddedShapes
+  name: AddedShapes
+  nameWithType: SelectionChangedEventArgs.AddedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.AddedShapes
+- uid: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes*
+  commentId: Overload:FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
+  href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs_RemovedShapes
+  name: RemovedShapes
+  nameWithType: SelectionChangedEventArgs.RemovedShapes
+  fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.RemovedShapes
 - uid: FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor*
   commentId: Overload:FlowGraph.Avalonia.SelectionChangedEventArgs.#ctor
-  href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs__ctor_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__
+  href: FlowGraph.Avalonia.SelectionChangedEventArgs.html#FlowGraph_Avalonia_SelectionChangedEventArgs__ctor_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Node__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Edge__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Elements_Shapes_ShapeElement__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Elements_Shapes_ShapeElement__System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Elements_Shapes_ShapeElement__
   name: SelectionChangedEventArgs
   nameWithType: SelectionChangedEventArgs.SelectionChangedEventArgs
   fullName: FlowGraph.Avalonia.SelectionChangedEventArgs.SelectionChangedEventArgs

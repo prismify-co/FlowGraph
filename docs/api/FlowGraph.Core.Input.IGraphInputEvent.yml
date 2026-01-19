@@ -1,0 +1,466 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Input.IGraphInputEvent
+  commentId: T:FlowGraph.Core.Input.IGraphInputEvent
+  id: IGraphInputEvent
+  parent: FlowGraph.Core.Input
+  children:
+  - FlowGraph.Core.Input.IGraphInputEvent.Button
+  - FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+  - FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+  - FlowGraph.Core.Input.IGraphInputEvent.Handled
+  - FlowGraph.Core.Input.IGraphInputEvent.HitResult
+  - FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+  - FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+  - FlowGraph.Core.Input.IGraphInputEvent.WheelDelta
+  langs:
+  - csharp
+  - vb
+  name: IGraphInputEvent
+  nameWithType: IGraphInputEvent
+  fullName: FlowGraph.Core.Input.IGraphInputEvent
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IGraphInputEvent
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 22
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Framework-agnostic representation of a graph input event.
+
+    Wraps hit test results and modifier state without exposing UI framework types.
+  remarks: >-
+    <p>
+
+    This abstraction allows behaviors written against FlowGraph.Core to work
+
+    with any UI framework (Avalonia, WPF, MAUI, etc.) without modification.
+
+    </p>
+
+    <p>
+
+    <b>Design Rationale:</b>
+
+    <ul><li>Hit test results are already framework-agnostic (Point, Node, Edge, etc.)</li><li>Modifier keys map to a simple flags enum</li><li>Click count and button info are primitive types</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IGraphInputEvent
+    content.vb: Public Interface IGraphInputEvent
+- uid: FlowGraph.Core.Input.IGraphInputEvent.HitResult
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.HitResult
+  id: HitResult
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: HitResult
+  nameWithType: IGraphInputEvent.HitResult
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.HitResult
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HitResult
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 27
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: The result of hit testing at the input position.
+  example: []
+  syntax:
+    content: GraphHitTestResult HitResult { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Input.GraphHitTestResult
+    content.vb: ReadOnly Property HitResult As GraphHitTestResult
+  overload: FlowGraph.Core.Input.IGraphInputEvent.HitResult*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+  id: CanvasPosition
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: CanvasPosition
+  nameWithType: IGraphInputEvent.CanvasPosition
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasPosition
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Position in canvas coordinates where the input occurred.
+  example: []
+  syntax:
+    content: Point CanvasPosition { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: ReadOnly Property CanvasPosition As Point
+  overload: FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+  id: ViewportPosition
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: ViewportPosition
+  nameWithType: IGraphInputEvent.ViewportPosition
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportPosition
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 37
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Position in viewport/screen coordinates where the input occurred.
+  example: []
+  syntax:
+    content: Point ViewportPosition { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: ReadOnly Property ViewportPosition As Point
+  overload: FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+  id: Modifiers
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: Modifiers
+  nameWithType: IGraphInputEvent.Modifiers
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Modifiers
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 42
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Keyboard modifiers held during the input.
+  example: []
+  syntax:
+    content: InputModifiers Modifiers { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Input.InputModifiers
+    content.vb: ReadOnly Property Modifiers As InputModifiers
+  overload: FlowGraph.Core.Input.IGraphInputEvent.Modifiers*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Button
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.Button
+  id: Button
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: Button
+  nameWithType: IGraphInputEvent.Button
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Button
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Button
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Which mouse button triggered this event (for press/release events).
+  example: []
+  syntax:
+    content: MouseButton Button { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Input.MouseButton
+    content.vb: ReadOnly Property Button As MouseButton
+  overload: FlowGraph.Core.Input.IGraphInputEvent.Button*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+  id: ClickCount
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: ClickCount
+  nameWithType: IGraphInputEvent.ClickCount
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ClickCount
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Number of consecutive clicks (1 = single, 2 = double, etc.).
+  example: []
+  syntax:
+    content: int ClickCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property ClickCount As Integer
+  overload: FlowGraph.Core.Input.IGraphInputEvent.ClickCount*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Handled
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.Handled
+  id: Handled
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: Handled
+  nameWithType: IGraphInputEvent.Handled
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Handled
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Handled
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 58
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: >-
+    Gets or sets whether this event has been handled.
+
+    Setting to true prevents further processing.
+  example: []
+  syntax:
+    content: bool Handled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property Handled As Boolean
+  overload: FlowGraph.Core.Input.IGraphInputEvent.Handled*
+- uid: FlowGraph.Core.Input.IGraphInputEvent.WheelDelta
+  commentId: P:FlowGraph.Core.Input.IGraphInputEvent.WheelDelta
+  id: WheelDelta
+  parent: FlowGraph.Core.Input.IGraphInputEvent
+  langs:
+  - csharp
+  - vb
+  name: WheelDelta
+  nameWithType: IGraphInputEvent.WheelDelta
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.WheelDelta
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Input/IBehavior.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WheelDelta
+    path: ../FlowGraph.Core/Input/IBehavior.cs
+    startLine: 63
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Input
+  summary: Delta values for wheel/scroll events. Zero for press/release.
+  example: []
+  syntax:
+    content: Point WheelDelta { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: ReadOnly Property WheelDelta As Point
+  overload: FlowGraph.Core.Input.IGraphInputEvent.WheelDelta*
+references:
+- uid: FlowGraph.Core.Input
+  commentId: N:FlowGraph.Core.Input
+  href: FlowGraph.html
+  name: FlowGraph.Core.Input
+  nameWithType: FlowGraph.Core.Input
+  fullName: FlowGraph.Core.Input
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Input
+    name: Input
+    href: FlowGraph.Core.Input.html
+- uid: FlowGraph.Core.Input.IGraphInputEvent.HitResult*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.HitResult
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_HitResult
+  name: HitResult
+  nameWithType: IGraphInputEvent.HitResult
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.HitResult
+- uid: FlowGraph.Core.Input.GraphHitTestResult
+  commentId: T:FlowGraph.Core.Input.GraphHitTestResult
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.GraphHitTestResult.html
+  name: GraphHitTestResult
+  nameWithType: GraphHitTestResult
+  fullName: FlowGraph.Core.Input.GraphHitTestResult
+- uid: FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_CanvasPosition
+  name: CanvasPosition
+  nameWithType: IGraphInputEvent.CanvasPosition
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.CanvasPosition
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_ViewportPosition
+  name: ViewportPosition
+  nameWithType: IGraphInputEvent.ViewportPosition
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.ViewportPosition
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Modifiers*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_Modifiers
+  name: Modifiers
+  nameWithType: IGraphInputEvent.Modifiers
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Modifiers
+- uid: FlowGraph.Core.Input.InputModifiers
+  commentId: T:FlowGraph.Core.Input.InputModifiers
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.InputModifiers.html
+  name: InputModifiers
+  nameWithType: InputModifiers
+  fullName: FlowGraph.Core.Input.InputModifiers
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Button*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.Button
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_Button
+  name: Button
+  nameWithType: IGraphInputEvent.Button
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Button
+- uid: FlowGraph.Core.Input.MouseButton
+  commentId: T:FlowGraph.Core.Input.MouseButton
+  parent: FlowGraph.Core.Input
+  href: FlowGraph.Core.Input.MouseButton.html
+  name: MouseButton
+  nameWithType: MouseButton
+  fullName: FlowGraph.Core.Input.MouseButton
+- uid: FlowGraph.Core.Input.IGraphInputEvent.ClickCount*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_ClickCount
+  name: ClickCount
+  nameWithType: IGraphInputEvent.ClickCount
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.ClickCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Input.IGraphInputEvent.Handled*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.Handled
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_Handled
+  name: Handled
+  nameWithType: IGraphInputEvent.Handled
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.Handled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Input.IGraphInputEvent.WheelDelta*
+  commentId: Overload:FlowGraph.Core.Input.IGraphInputEvent.WheelDelta
+  href: FlowGraph.Core.Input.IGraphInputEvent.html#FlowGraph_Core_Input_IGraphInputEvent_WheelDelta
+  name: WheelDelta
+  nameWithType: IGraphInputEvent.WheelDelta
+  fullName: FlowGraph.Core.Input.IGraphInputEvent.WheelDelta

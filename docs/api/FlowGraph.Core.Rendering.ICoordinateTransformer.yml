@@ -1,0 +1,1487 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+  commentId: T:FlowGraph.Core.Rendering.ICoordinateTransformer
+  id: ICoordinateTransformer
+  parent: FlowGraph.Core.Rendering
+  children:
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(System.Double,System.Double)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+  langs:
+  - csharp
+  - vb
+  name: ICoordinateTransformer
+  nameWithType: ICoordinateTransformer
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer
+  type: Interface
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ICoordinateTransformer
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Provides bidirectional coordinate transformation between canvas and viewport space.
+
+
+    <p>
+
+    <b>Coordinate Spaces:</b>
+
+    <ul><li><b>Canvas Space:</b> Logical coordinates where graph elements live. 
+
+    Node positions (e.g., node.Position.X = 100) are in canvas space. 
+
+    These values are stable regardless of zoom/pan.</li><li><b>Viewport Space:</b> Coordinates within the viewport window (the visible area).
+
+    The viewport origin (0,0) is the top-left corner of the visible canvas area.
+
+    These coordinates change as the user zooms and pans.</li></ul>
+
+    </p>
+
+
+    <p>
+
+    <b>IMPORTANT - Viewport vs Control Coordinates:</b>
+
+    <ul><li>Viewport coordinates assume (0,0) is at the viewport's visual origin.</li><li>Control coordinates (e.g., from <code>e.GetPosition(RootPanel)</code>) may have an offset
+
+    if the canvas is not at (0,0) within the control (e.g., due to toolbars, margins).</li><li>For pointer events, prefer <code>e.GetPosition(MainCanvas)</code> which gives canvas coords directly,
+
+    or use the viewport position if you need to account for the transform manually.</li></ul>
+
+    </p>
+
+
+    <p>
+
+    <b>Transform Formulas:</b>
+
+
+    <pre><code class="lang-csharp">ViewportToCanvas: canvasPoint = (viewportPoint - offset) / zoom
+
+    CanvasToViewport: viewportPoint = canvasPoint * zoom + offset</code></pre>
+
+    </p>
+
+
+    <p>
+
+    <b>Inspired by:</b>
+
+    <ul><li>react-diagrams: CanvasEngine.getRelativeMousePoint(), getRelativePoint()</li><li>Konva.js: Stage.getPointerPosition() vs Node.getRelativePointerPosition()</li><li>AnyChart: scale.transform() / scale.inverseTransform()</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ICoordinateTransformer
+    content.vb: Public Interface ICoordinateTransformer
+  extensionMethods:
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Elements.Rect)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Point)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Elements.Rect)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Point)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Elements.Rect)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Point)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Elements.Rect)
+  - FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Point)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+  commentId: P:FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+  id: Zoom
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: Zoom
+  nameWithType: ICoordinateTransformer.Zoom
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Zoom
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: The current zoom level (1.0 = 100%, 2.0 = 200%, 0.5 = 50%).
+  example: []
+  syntax:
+    content: double Zoom { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property Zoom As Double
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom*
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+  commentId: P:FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+  id: OffsetX
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: ICoordinateTransformer.OffsetX
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetX
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: The X component of the current pan offset in viewport coordinates.
+  example: []
+  syntax:
+    content: double OffsetX { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property OffsetX As Double
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX*
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+  commentId: P:FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+  id: OffsetY
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: ICoordinateTransformer.OffsetY
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: OffsetY
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 62
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: The Y component of the current pan offset in viewport coordinates.
+  example: []
+  syntax:
+    content: double OffsetY { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property OffsetY As Double
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY*
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+  id: ViewportToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ViewportToCanvas(double, double)
+  nameWithType: ICoordinateTransformer.ViewportToCanvas(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportToCanvas
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 84
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Transforms a point from viewport space to canvas space.
+
+
+    <p><b>When to use:</b></p>
+
+    <ul><li>Converting viewport-relative positions to canvas coordinates</li><li>Inverse calculations from CanvasToViewport operations</li></ul>
+
+
+    <p><b>When NOT to use:</b></p>
+
+    <ul><li>For pointer events - prefer <code>e.GetPosition(MainCanvas)</code> which gives canvas coords directly</li><li>When the input is from RootPanel and canvas has an offset within RootPanel</li></ul>
+
+
+    <p><b>Formula:</b> <code>canvasPoint = (viewportPoint - offset) / zoom</code></p>
+  example: []
+  syntax:
+    content: Point ViewportToCanvas(double viewportX, double viewportY)
+    parameters:
+    - id: viewportX
+      type: System.Double
+      description: X coordinate in viewport space.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    - id: viewportY
+      type: System.Double
+      description: Y coordinate in viewport space.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    return:
+      type: FlowGraph.Core.Point
+      description: The equivalent point in canvas coordinates.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    content.vb: Function ViewportToCanvas(viewportX As Double, viewportY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas*
+  nameWithType.vb: ICoordinateTransformer.ViewportToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(Double, Double)
+  name.vb: ViewportToCanvas(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+  id: CanvasToViewport(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: CanvasToViewport(double, double)
+  nameWithType: ICoordinateTransformer.CanvasToViewport(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToViewport
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 110
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Transforms a point from canvas space to viewport space.
+
+
+    <p><b>When to use:</b></p>
+
+    <ul><li>Drawing directly to a DrawingContext (bypassing visual tree transforms)</li><li>Positioning overlay UI elements relative to the viewport</li><li>Calculating visible bounds in viewport space for culling</li></ul>
+
+
+    <p><b>When NOT to use:</b></p>
+
+    <ul><li>Positioning elements with Canvas.SetLeft/SetTop inside a transformed container 
+
+    - those should use canvas coordinates directly</li></ul>
+
+
+    <p><b>Formula:</b> <code>viewportPoint = canvasPoint * zoom + offset</code></p>
+  example: []
+  syntax:
+    content: Point CanvasToViewport(double canvasX, double canvasY)
+    parameters:
+    - id: canvasX
+      type: System.Double
+      description: X coordinate in canvas space.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    - id: canvasY
+      type: System.Double
+      description: Y coordinate in canvas space.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    return:
+      type: FlowGraph.Core.Point
+      description: The equivalent point in viewport coordinates.
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    content.vb: Function CanvasToViewport(canvasX As Double, canvasY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport*
+  nameWithType.vb: ICoordinateTransformer.CanvasToViewport(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(Double, Double)
+  name.vb: CanvasToViewport(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(System.Double,System.Double)
+  id: ViewportToCanvasDelta(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ViewportToCanvasDelta(double, double)
+  nameWithType: ICoordinateTransformer.ViewportToCanvasDelta(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportToCanvasDelta
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 131
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Transforms a delta/vector from viewport space to canvas space.
+
+    Unlike point transforms, this only applies zoom (not offset).
+
+
+    <p><b>When to use:</b></p>
+
+    <ul><li>Converting drag distances to canvas movement amounts</li><li>Zoom-adjusted displacement calculations</li><li>Measuring viewport distances in canvas units</li></ul>
+
+
+    <p><b>Formula:</b> <code>canvasDelta = viewportDelta / zoom</code></p>
+  example: []
+  syntax:
+    content: Point ViewportToCanvasDelta(double viewportDeltaX, double viewportDeltaY)
+    parameters:
+    - id: viewportDeltaX
+      type: System.Double
+      description: X delta in viewport space.
+    - id: viewportDeltaY
+      type: System.Double
+      description: Y delta in viewport space.
+    return:
+      type: FlowGraph.Core.Point
+      description: The equivalent delta in canvas coordinates.
+    content.vb: Function ViewportToCanvasDelta(viewportDeltaX As Double, viewportDeltaY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta*
+  nameWithType.vb: ICoordinateTransformer.ViewportToCanvasDelta(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(Double, Double)
+  name.vb: ViewportToCanvasDelta(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(System.Double,System.Double)
+  id: CanvasToViewportDelta(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: CanvasToViewportDelta(double, double)
+  nameWithType: ICoordinateTransformer.CanvasToViewportDelta(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToViewportDelta
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 142
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Transforms a delta/vector from canvas space to viewport space.
+
+    Unlike point transforms, this only applies zoom (not offset).
+
+
+    <p><b>Formula:</b> <code>viewportDelta = canvasDelta * zoom</code></p>
+  example: []
+  syntax:
+    content: Point CanvasToViewportDelta(double canvasDeltaX, double canvasDeltaY)
+    parameters:
+    - id: canvasDeltaX
+      type: System.Double
+      description: X delta in canvas space.
+    - id: canvasDeltaY
+      type: System.Double
+      description: Y delta in canvas space.
+    return:
+      type: FlowGraph.Core.Point
+      description: The equivalent delta in viewport coordinates.
+    content.vb: Function CanvasToViewportDelta(canvasDeltaX As Double, canvasDeltaY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta*
+  nameWithType.vb: ICoordinateTransformer.CanvasToViewportDelta(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(Double, Double)
+  name.vb: CanvasToViewportDelta(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)
+  id: ScreenToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ScreenToCanvas(double, double)
+  nameWithType: ICoordinateTransformer.ScreenToCanvas(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ScreenToCanvas
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 153
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Transforms a point from screen space to canvas space.
+  remarks: >-
+    <b>DEPRECATED:</b> The term "Screen" is ambiguous. Use <xref href="FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> instead,
+
+    or better yet, use <code>e.GetPosition(MainCanvas)</code> for pointer events which gives canvas coords directly.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use ViewportToCanvas instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
+
+      Point ScreenToCanvas(double screenX, double screenY)
+    parameters:
+    - id: screenX
+      type: System.Double
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    - id: screenY
+      type: System.Double
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    return:
+      type: FlowGraph.Core.Point
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    content.vb: >-
+      <Obsolete("Use ViewportToCanvas instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")>
+
+      Function ScreenToCanvas(screenX As Double, screenY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use ViewportToCanvas instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.
+  nameWithType.vb: ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(Double, Double)
+  name.vb: ScreenToCanvas(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(System.Double,System.Double)
+  id: CanvasToScreen(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: CanvasToScreen(double, double)
+  nameWithType: ICoordinateTransformer.CanvasToScreen(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToScreen
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 166
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Transforms a point from canvas space to screen space.
+  remarks: <b>DEPRECATED:</b> The term "Screen" is ambiguous. Use <xref href="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> instead.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use CanvasToViewport instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")]
+
+      Point CanvasToScreen(double canvasX, double canvasY)
+    parameters:
+    - id: canvasX
+      type: System.Double
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    - id: canvasY
+      type: System.Double
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 0
+    return:
+      type: FlowGraph.Core.Point
+      attributes:
+      - type: FlowGraph.Core.Rendering.CoordinateSpaceAttribute
+        ctor: FlowGraph.Core.Rendering.CoordinateSpaceAttribute.#ctor(FlowGraph.Core.Rendering.CoordinateSpace)
+        arguments:
+        - type: FlowGraph.Core.Rendering.CoordinateSpace
+          value: 1
+    content.vb: >-
+      <Obsolete("Use CanvasToViewport instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.")>
+
+      Function CanvasToScreen(canvasX As Double, canvasY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use CanvasToViewport instead. 'Screen' terminology was ambiguous - see ICoordinateTransformer docs.
+  nameWithType.vb: ICoordinateTransformer.CanvasToScreen(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(Double, Double)
+  name.vb: CanvasToScreen(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(System.Double,System.Double)
+  id: ScreenToCanvasDelta(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: ScreenToCanvasDelta(double, double)
+  nameWithType: ICoordinateTransformer.ScreenToCanvasDelta(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ScreenToCanvasDelta
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 176
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Transforms a delta/vector from screen space to canvas space.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use ViewportToCanvasDelta instead. 'Screen' terminology was ambiguous.")]
+
+      Point ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)
+    parameters:
+    - id: screenDeltaX
+      type: System.Double
+    - id: screenDeltaY
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: >-
+      <Obsolete("Use ViewportToCanvasDelta instead. 'Screen' terminology was ambiguous.")>
+
+      Function ScreenToCanvasDelta(screenDeltaX As Double, screenDeltaY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use ViewportToCanvasDelta instead. 'Screen' terminology was ambiguous.
+  nameWithType.vb: ICoordinateTransformer.ScreenToCanvasDelta(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(Double, Double)
+  name.vb: ScreenToCanvasDelta(Double, Double)
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(System.Double,System.Double)
+  id: CanvasToScreenDelta(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  langs:
+  - csharp
+  - vb
+  name: CanvasToScreenDelta(double, double)
+  nameWithType: ICoordinateTransformer.CanvasToScreenDelta(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CanvasToScreenDelta
+    path: ../FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+    startLine: 183
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: Transforms a delta/vector from canvas space to screen space.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use CanvasToViewportDelta instead. 'Screen' terminology was ambiguous.")]
+
+      Point CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)
+    parameters:
+    - id: canvasDeltaX
+      type: System.Double
+    - id: canvasDeltaY
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Point
+    content.vb: >-
+      <Obsolete("Use CanvasToViewportDelta instead. 'Screen' terminology was ambiguous.")>
+
+      Function CanvasToScreenDelta(canvasDeltaX As Double, canvasDeltaY As Double) As Point
+  overload: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use CanvasToViewportDelta instead. 'Screen' terminology was ambiguous.
+  nameWithType.vb: ICoordinateTransformer.CanvasToScreenDelta(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(Double, Double)
+  name.vb: CanvasToScreenDelta(Double, Double)
+references:
+- uid: FlowGraph.Core.Rendering
+  commentId: N:FlowGraph.Core.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Core.Rendering
+  nameWithType: FlowGraph.Core.Rendering
+  fullName: FlowGraph.Core.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: CanvasToScreen(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: CanvasToScreen(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: CanvasToViewport(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: CanvasToViewport(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: ScreenToCanvas(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: ScreenToCanvas(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: ViewportToCanvas(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  parent: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  definition: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: ViewportToCanvas(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: CanvasToScreen(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  commentId: T:FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html
+  name: CoordinateTransformerExtensions
+  nameWithType: CoordinateTransformerExtensions
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: CanvasToScreen(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToScreen(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToScreen
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: CanvasToViewport(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: CanvasToViewport(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.CanvasToViewport(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: ScreenToCanvas(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: ScreenToCanvas(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ScreenToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ScreenToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  name: ViewportToCanvas(ICoordinateTransformer, Rect)
+  nameWithType: CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Rect)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Elements.Rect)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Elements.Rect)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Elements.Rect
+    name: Rect
+    href: FlowGraph.Core.Elements.Rect.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+  href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  name: ViewportToCanvas(ICoordinateTransformer, Point)
+  nameWithType: CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Point)
+  fullName: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer, FlowGraph.Core.Point)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.ViewportToCanvas(FlowGraph.Core.Rendering.ICoordinateTransformer,FlowGraph.Core.Point)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_
+  - name: (
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+    name: ICoordinateTransformer
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Core.Point
+    name: Point
+    href: FlowGraph.Core.Point.html
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_Zoom
+  name: Zoom
+  nameWithType: ICoordinateTransformer.Zoom
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetX
+  name: OffsetX
+  nameWithType: ICoordinateTransformer.OffsetX
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetY
+  name: OffsetY
+  nameWithType: ICoordinateTransformer.OffsetY
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_
+  name: ViewportToCanvas
+  nameWithType: ICoordinateTransformer.ViewportToCanvas
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas
+- uid: FlowGraph.Core.Point
+  commentId: T:FlowGraph.Core.Point
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Point.html
+  name: Point
+  nameWithType: Point
+  fullName: FlowGraph.Core.Point
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_
+  name: CanvasToViewport
+  nameWithType: ICoordinateTransformer.CanvasToViewport
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvasDelta_System_Double_System_Double_
+  name: ViewportToCanvasDelta
+  nameWithType: ICoordinateTransformer.ViewportToCanvasDelta
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewportDelta_System_Double_System_Double_
+  name: CanvasToViewportDelta
+  nameWithType: ICoordinateTransformer.CanvasToViewportDelta
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  isExternal: true
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_
+  name: ViewportToCanvas(double, double)
+  nameWithType: ICoordinateTransformer.ViewportToCanvas(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(double, double)
+  nameWithType.vb: ICoordinateTransformer.ViewportToCanvas(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(Double, Double)
+  name.vb: ViewportToCanvas(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)
+    name: ViewportToCanvas
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_
+  name: ScreenToCanvas
+  nameWithType: ICoordinateTransformer.ScreenToCanvas
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer
+  commentId: T:FlowGraph.Core.Rendering.ICoordinateTransformer
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html
+  name: ICoordinateTransformer
+  nameWithType: ICoordinateTransformer
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+  parent: FlowGraph.Core.Rendering.ICoordinateTransformer
+  isExternal: true
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_
+  name: CanvasToViewport(double, double)
+  nameWithType: ICoordinateTransformer.CanvasToViewport(double, double)
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(double, double)
+  nameWithType.vb: ICoordinateTransformer.CanvasToViewport(Double, Double)
+  fullName.vb: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(Double, Double)
+  name.vb: CanvasToViewport(Double, Double)
+  spec.csharp:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)
+    name: CanvasToViewport
+    href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreen_System_Double_System_Double_
+  name: CanvasToScreen
+  nameWithType: ICoordinateTransformer.CanvasToScreen
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvasDelta_System_Double_System_Double_
+  name: ScreenToCanvasDelta
+  nameWithType: ICoordinateTransformer.ScreenToCanvasDelta
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta
+- uid: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta*
+  commentId: Overload:FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta
+  href: FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreenDelta_System_Double_System_Double_
+  name: CanvasToScreenDelta
+  nameWithType: ICoordinateTransformer.CanvasToScreenDelta
+  fullName: FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta

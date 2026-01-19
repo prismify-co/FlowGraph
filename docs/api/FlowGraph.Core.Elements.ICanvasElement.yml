@@ -8,6 +8,7 @@ items:
   - FlowGraph.Core.Elements.ICanvasElement.GetBounds
   - FlowGraph.Core.Elements.ICanvasElement.Height
   - FlowGraph.Core.Elements.ICanvasElement.Id
+  - FlowGraph.Core.Elements.ICanvasElement.IsSelectable
   - FlowGraph.Core.Elements.ICanvasElement.IsSelected
   - FlowGraph.Core.Elements.ICanvasElement.IsVisible
   - FlowGraph.Core.Elements.ICanvasElement.Position
@@ -24,7 +25,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ICanvasElement
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -72,7 +73,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -107,7 +108,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -144,7 +145,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Position
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -179,7 +180,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Width
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -214,7 +215,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Height
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -249,7 +250,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelected
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
@@ -266,6 +267,38 @@ items:
       type: System.Boolean
     content.vb: Property IsSelected As Boolean
   overload: FlowGraph.Core.Elements.ICanvasElement.IsSelected*
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  id: IsSelectable
+  parent: FlowGraph.Core.Elements.ICanvasElement
+  langs:
+  - csharp
+  - vb
+  name: IsSelectable
+  nameWithType: ICanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Elements/ICanvasElement.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsSelectable
+    path: ../FlowGraph.Core/Elements/ICanvasElement.cs
+    startLine: 77
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Elements
+  summary: Gets or sets whether this element can be selected by user interaction.
+  remarks: When false, clicking on the element will not select it.
+  example: []
+  syntax:
+    content: bool IsSelectable { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsSelectable As Boolean
+  overload: FlowGraph.Core.Elements.ICanvasElement.IsSelectable*
 - uid: FlowGraph.Core.Elements.ICanvasElement.IsVisible
   commentId: P:FlowGraph.Core.Elements.ICanvasElement.IsVisible
   id: IsVisible
@@ -280,11 +313,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsVisible
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
-    startLine: 77
+    startLine: 85
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements
@@ -312,11 +345,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ZIndex
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
-    startLine: 91
+    startLine: 99
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements
@@ -347,11 +380,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Elements/ICanvasElement.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetBounds
     path: ../FlowGraph.Core/Elements/ICanvasElement.cs
-    startLine: 97
+    startLine: 105
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Elements
@@ -583,6 +616,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Elements.ICanvasElement.IsSelectable*
+  commentId: Overload:FlowGraph.Core.Elements.ICanvasElement.IsSelectable
+  href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsSelectable
+  name: IsSelectable
+  nameWithType: ICanvasElement.IsSelectable
+  fullName: FlowGraph.Core.Elements.ICanvasElement.IsSelectable
 - uid: FlowGraph.Core.Elements.ICanvasElement.IsVisible*
   commentId: Overload:FlowGraph.Core.Elements.ICanvasElement.IsVisible
   href: FlowGraph.Core.Elements.ICanvasElement.html#FlowGraph_Core_Elements_ICanvasElement_IsVisible

@@ -1,0 +1,2195 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Models.EdgeStyle
+  commentId: T:FlowGraph.Core.Models.EdgeStyle
+  id: EdgeStyle
+  parent: FlowGraph.Core.Models
+  children:
+  - FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+  - FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  - FlowGraph.Core.Models.EdgeStyle.Bidirectional
+  - FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+  - FlowGraph.Core.Models.EdgeStyle.DashPattern
+  - FlowGraph.Core.Models.EdgeStyle.DataStream
+  - FlowGraph.Core.Models.EdgeStyle.Debug
+  - FlowGraph.Core.Models.EdgeStyle.Default
+  - FlowGraph.Core.Models.EdgeStyle.Disabled
+  - FlowGraph.Core.Models.EdgeStyle.Electric
+  - FlowGraph.Core.Models.EdgeStyle.Error
+  - FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  - FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  - FlowGraph.Core.Models.EdgeStyle.Gentle
+  - FlowGraph.Core.Models.EdgeStyle.Glow
+  - FlowGraph.Core.Models.EdgeStyle.GlowColor
+  - FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+  - FlowGraph.Core.Models.EdgeStyle.Heartbeat
+  - FlowGraph.Core.Models.EdgeStyle.Highlighted
+  - FlowGraph.Core.Models.EdgeStyle.Neon
+  - FlowGraph.Core.Models.EdgeStyle.Opacity
+  - FlowGraph.Core.Models.EdgeStyle.Pulse
+  - FlowGraph.Core.Models.EdgeStyle.PulseEffect
+  - FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+  - FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+  - FlowGraph.Core.Models.EdgeStyle.Rainbow
+  - FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+  - FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+  - FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+  - FlowGraph.Core.Models.EdgeStyle.Signal
+  - FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  - FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+  - FlowGraph.Core.Models.EdgeStyle.Success
+  - FlowGraph.Core.Models.EdgeStyle.Warning
+  - FlowGraph.Core.Models.EdgeStyle.WithColor(System.String)
+  - FlowGraph.Core.Models.EdgeStyle.WithDash(FlowGraph.Core.Models.EdgeDashPattern)
+  - FlowGraph.Core.Models.EdgeStyle.WithFlow(System.Double,FlowGraph.Core.Models.EdgeFlowDirection)
+  - FlowGraph.Core.Models.EdgeStyle.WithGlow(System.Double,System.String)
+  - FlowGraph.Core.Models.EdgeStyle.WithOpacity(System.Double)
+  - FlowGraph.Core.Models.EdgeStyle.WithPulse(System.Double,System.Double)
+  - FlowGraph.Core.Models.EdgeStyle.WithRainbow(System.Double)
+  - FlowGraph.Core.Models.EdgeStyle.WithWidth(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: EdgeStyle
+  nameWithType: EdgeStyle
+  fullName: FlowGraph.Core.Models.EdgeStyle
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeStyle
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Declarative styling for edge appearance including colors, dash patterns, and effects.
+  remarks: >-
+    <p>
+
+    EdgeStyle allows per-edge customization of visual appearance without requiring
+
+    custom renderers. Styles can be applied directly to edges or used as presets.
+
+    </p>
+
+    <p>
+
+    Common use cases:
+
+    - Color-coding edges by data type (red for errors, green for success)
+
+    - Dashed lines for optional/conditional connections
+
+    - Animated flow to show data direction
+
+    - Glow effects to highlight active connections
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Create a styled edge
+
+    var edge = new Edge(...)
+
+    {
+        Definition = new EdgeDefinition
+        {
+            // ... connection info ...
+            Style = new EdgeStyle
+            {
+                StrokeColor = "#E53935",
+                StrokeWidth = 3,
+                DashPattern = EdgeDashPattern.Dashed,
+                AnimatedFlow = true,
+                FlowSpeed = 2.0
+            }
+        }
+    };
+
+
+    // Use a preset
+
+    edge.Definition = edge.Definition with { Style = EdgeStyle.Error };</code></pre>
+  syntax:
+    content: 'public sealed record EdgeStyle : IEquatable<EdgeStyle>'
+    content.vb: Public NotInheritable Class EdgeStyle Implements IEquatable(Of EdgeStyle)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{FlowGraph.Core.Models.EdgeStyle}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  id: StrokeColor
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: StrokeColor
+  nameWithType: EdgeStyle.StrokeColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StrokeColor
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    The stroke color as a hex string (#RRGGBB or #AARRGGBB).
+
+    Null means use theme default.
+  example: []
+  syntax:
+    content: public string? StrokeColor { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property StrokeColor As String
+  overload: FlowGraph.Core.Models.EdgeStyle.StrokeColor*
+- uid: FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+  id: StrokeWidth
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: StrokeWidth
+  nameWithType: EdgeStyle.StrokeWidth
+  fullName: FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StrokeWidth
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 53
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    The stroke width in logical pixels.
+
+    Null means use settings default.
+  example: []
+  syntax:
+    content: public double? StrokeWidth { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Property StrokeWidth As Double?
+  overload: FlowGraph.Core.Models.EdgeStyle.StrokeWidth*
+- uid: FlowGraph.Core.Models.EdgeStyle.DashPattern
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.DashPattern
+  id: DashPattern
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: DashPattern
+  nameWithType: EdgeStyle.DashPattern
+  fullName: FlowGraph.Core.Models.EdgeStyle.DashPattern
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DashPattern
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 58
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The dash pattern for the edge stroke.
+  example: []
+  syntax:
+    content: public EdgeDashPattern DashPattern { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeDashPattern
+    content.vb: Public Property DashPattern As EdgeDashPattern
+  overload: FlowGraph.Core.Models.EdgeStyle.DashPattern*
+- uid: FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+  id: CustomDashArray
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: CustomDashArray
+  nameWithType: EdgeStyle.CustomDashArray
+  fullName: FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CustomDashArray
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 64
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Custom dash array when <xref href="FlowGraph.Core.Models.EdgeStyle.DashPattern" data-throw-if-not-resolved="false"></xref> is <xref href="FlowGraph.Core.Models.EdgeDashPattern.Custom" data-throw-if-not-resolved="false"></xref>.
+
+    Values are dash length, gap length, repeating.
+  example: []
+  syntax:
+    content: public double[]? CustomDashArray { get; init; }
+    parameters: []
+    return:
+      type: System.Double[]
+    content.vb: Public Property CustomDashArray As Double()
+  overload: FlowGraph.Core.Models.EdgeStyle.CustomDashArray*
+- uid: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  id: AnimatedFlow
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: AnimatedFlow
+  nameWithType: EdgeStyle.AnimatedFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AnimatedFlow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 69
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether to animate the edge with a flowing effect.
+  example: []
+  syntax:
+    content: public bool AnimatedFlow { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AnimatedFlow As Boolean
+  overload: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow*
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  id: FlowSpeed
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: FlowSpeed
+  nameWithType: EdgeStyle.FlowSpeed
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FlowSpeed
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 75
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Speed of the animated flow effect (1.0 = normal, 2.0 = double speed).
+
+    Only used when <xref href="FlowGraph.Core.Models.EdgeStyle.AnimatedFlow" data-throw-if-not-resolved="false"></xref> is true.
+  example: []
+  syntax:
+    content: public double FlowSpeed { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property FlowSpeed As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.FlowSpeed*
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  id: FlowDirection
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: FlowDirection
+  nameWithType: EdgeStyle.FlowDirection
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: FlowDirection
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 80
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Direction of the animated flow.
+  example: []
+  syntax:
+    content: public EdgeFlowDirection FlowDirection { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeFlowDirection
+    content.vb: Public Property FlowDirection As EdgeFlowDirection
+  overload: FlowGraph.Core.Models.EdgeStyle.FlowDirection*
+- uid: FlowGraph.Core.Models.EdgeStyle.Glow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Glow
+  id: Glow
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Glow
+  nameWithType: EdgeStyle.Glow
+  fullName: FlowGraph.Core.Models.EdgeStyle.Glow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Glow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 85
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether to show a glow effect around the edge.
+  example: []
+  syntax:
+    content: public bool Glow { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Glow As Boolean
+  overload: FlowGraph.Core.Models.EdgeStyle.Glow*
+- uid: FlowGraph.Core.Models.EdgeStyle.GlowColor
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.GlowColor
+  id: GlowColor
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: GlowColor
+  nameWithType: EdgeStyle.GlowColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.GlowColor
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GlowColor
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 90
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The glow color as a hex string. If null, uses <xref href="FlowGraph.Core.Models.EdgeStyle.StrokeColor" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public string? GlowColor { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property GlowColor As String
+  overload: FlowGraph.Core.Models.EdgeStyle.GlowColor*
+- uid: FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+  id: GlowIntensity
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: GlowIntensity
+  nameWithType: EdgeStyle.GlowIntensity
+  fullName: FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GlowIntensity
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 95
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: The glow intensity/radius (1.0 = subtle, 3.0 = strong).
+  example: []
+  syntax:
+    content: public double GlowIntensity { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property GlowIntensity As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.GlowIntensity*
+- uid: FlowGraph.Core.Models.EdgeStyle.Opacity
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Opacity
+  id: Opacity
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Opacity
+  nameWithType: EdgeStyle.Opacity
+  fullName: FlowGraph.Core.Models.EdgeStyle.Opacity
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Opacity
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 100
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Opacity of the edge (0.0 to 1.0).
+  example: []
+  syntax:
+    content: public double Opacity { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Opacity As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.Opacity*
+- uid: FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+  id: RainbowEffect
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: RainbowEffect
+  nameWithType: EdgeStyle.RainbowEffect
+  fullName: FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RainbowEffect
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 105
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether to enable rainbow color cycling effect.
+  example: []
+  syntax:
+    content: public bool RainbowEffect { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property RainbowEffect As Boolean
+  overload: FlowGraph.Core.Models.EdgeStyle.RainbowEffect*
+- uid: FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+  id: RainbowSpeed
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: RainbowSpeed
+  nameWithType: EdgeStyle.RainbowSpeed
+  fullName: FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RainbowSpeed
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 110
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Speed of rainbow color cycling (1.0 = one full cycle per second).
+  example: []
+  syntax:
+    content: public double RainbowSpeed { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property RainbowSpeed As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.RainbowSpeed*
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseEffect
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.PulseEffect
+  id: PulseEffect
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: PulseEffect
+  nameWithType: EdgeStyle.PulseEffect
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseEffect
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PulseEffect
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 115
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Whether to enable pulsing opacity effect.
+  example: []
+  syntax:
+    content: public bool PulseEffect { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property PulseEffect As Boolean
+  overload: FlowGraph.Core.Models.EdgeStyle.PulseEffect*
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+  id: PulseFrequency
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: PulseFrequency
+  nameWithType: EdgeStyle.PulseFrequency
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PulseFrequency
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 120
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Frequency of pulse effect in Hz (cycles per second).
+  example: []
+  syntax:
+    content: public double PulseFrequency { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property PulseFrequency As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.PulseFrequency*
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+  id: PulseMinOpacity
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: PulseMinOpacity
+  nameWithType: EdgeStyle.PulseMinOpacity
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: PulseMinOpacity
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 125
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Minimum opacity during pulse (0.0 to 1.0).
+  example: []
+  syntax:
+    content: public double PulseMinOpacity { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property PulseMinOpacity As Double
+  overload: FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity*
+- uid: FlowGraph.Core.Models.EdgeStyle.Default
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Default
+  id: Default
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Default
+  nameWithType: EdgeStyle.Default
+  fullName: FlowGraph.Core.Models.EdgeStyle.Default
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Default
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 132
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Default edge style (uses theme defaults).
+  example: []
+  syntax:
+    content: public static EdgeStyle Default { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property [Default] As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Default*
+- uid: FlowGraph.Core.Models.EdgeStyle.Success
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Success
+  id: Success
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Success
+  nameWithType: EdgeStyle.Success
+  fullName: FlowGraph.Core.Models.EdgeStyle.Success
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Success
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 137
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Success/valid connection style (green).
+  example: []
+  syntax:
+    content: public static EdgeStyle Success { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Success As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Success*
+- uid: FlowGraph.Core.Models.EdgeStyle.Warning
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Warning
+  id: Warning
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Warning
+  nameWithType: EdgeStyle.Warning
+  fullName: FlowGraph.Core.Models.EdgeStyle.Warning
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Warning
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 145
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Warning/conditional connection style (orange, dashed).
+  example: []
+  syntax:
+    content: public static EdgeStyle Warning { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Warning As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Warning*
+- uid: FlowGraph.Core.Models.EdgeStyle.Error
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Error
+  id: Error
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: EdgeStyle.Error
+  fullName: FlowGraph.Core.Models.EdgeStyle.Error
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Error
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 154
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Error/invalid connection style (red).
+  example: []
+  syntax:
+    content: public static EdgeStyle Error { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property [Error] As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Error*
+- uid: FlowGraph.Core.Models.EdgeStyle.Disabled
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Disabled
+  id: Disabled
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Disabled
+  nameWithType: EdgeStyle.Disabled
+  fullName: FlowGraph.Core.Models.EdgeStyle.Disabled
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Disabled
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 162
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Disabled/inactive connection style (gray, dotted).
+  example: []
+  syntax:
+    content: public static EdgeStyle Disabled { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Disabled As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Disabled*
+- uid: FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+  id: ActiveFlow
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: ActiveFlow
+  nameWithType: EdgeStyle.ActiveFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ActiveFlow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 172
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Active/live data flow style (blue with animation).
+  example: []
+  syntax:
+    content: public static EdgeStyle ActiveFlow { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property ActiveFlow As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.ActiveFlow*
+- uid: FlowGraph.Core.Models.EdgeStyle.Highlighted
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Highlighted
+  id: Highlighted
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Highlighted
+  nameWithType: EdgeStyle.Highlighted
+  fullName: FlowGraph.Core.Models.EdgeStyle.Highlighted
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Highlighted
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 183
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Highlighted/selected style (cyan with glow).
+  example: []
+  syntax:
+    content: public static EdgeStyle Highlighted { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Highlighted As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Highlighted*
+- uid: FlowGraph.Core.Models.EdgeStyle.DataStream
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.DataStream
+  id: DataStream
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: DataStream
+  nameWithType: EdgeStyle.DataStream
+  fullName: FlowGraph.Core.Models.EdgeStyle.DataStream
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DataStream
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 195
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Fast-paced data transfer style (green, fast animation).
+  example: []
+  syntax:
+    content: public static EdgeStyle DataStream { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property DataStream As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.DataStream*
+- uid: FlowGraph.Core.Models.EdgeStyle.Bidirectional
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Bidirectional
+  id: Bidirectional
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Bidirectional
+  nameWithType: EdgeStyle.Bidirectional
+  fullName: FlowGraph.Core.Models.EdgeStyle.Bidirectional
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Bidirectional
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 207
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Bidirectional communication style (purple, bidirectional flow).
+  example: []
+  syntax:
+    content: public static EdgeStyle Bidirectional { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Bidirectional As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Bidirectional*
+- uid: FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+  id: ReverseFlow
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: ReverseFlow
+  nameWithType: EdgeStyle.ReverseFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ReverseFlow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 219
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Reverse flow style (orange, reverse direction).
+  example: []
+  syntax:
+    content: public static EdgeStyle ReverseFlow { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property ReverseFlow As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.ReverseFlow*
+- uid: FlowGraph.Core.Models.EdgeStyle.Electric
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Electric
+  id: Electric
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Electric
+  nameWithType: EdgeStyle.Electric
+  fullName: FlowGraph.Core.Models.EdgeStyle.Electric
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Electric
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 231
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Pulsing electric style (yellow with glow and animation).
+  example: []
+  syntax:
+    content: public static EdgeStyle Electric { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Electric As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Electric*
+- uid: FlowGraph.Core.Models.EdgeStyle.Gentle
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Gentle
+  id: Gentle
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Gentle
+  nameWithType: EdgeStyle.Gentle
+  fullName: FlowGraph.Core.Models.EdgeStyle.Gentle
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Gentle
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 245
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Slow, gentle flow style (light blue, slow animation).
+  example: []
+  syntax:
+    content: public static EdgeStyle Gentle { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Gentle As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Gentle*
+- uid: FlowGraph.Core.Models.EdgeStyle.Debug
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Debug
+  id: Debug
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Debug
+  nameWithType: EdgeStyle.Debug
+  fullName: FlowGraph.Core.Models.EdgeStyle.Debug
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Debug
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 256
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Debug/trace style (pink, visible animation).
+  example: []
+  syntax:
+    content: public static EdgeStyle Debug { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Debug As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Debug*
+- uid: FlowGraph.Core.Models.EdgeStyle.Rainbow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Rainbow
+  id: Rainbow
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Rainbow
+  nameWithType: EdgeStyle.Rainbow
+  fullName: FlowGraph.Core.Models.EdgeStyle.Rainbow
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Rainbow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 268
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Rainbow color cycling effect (cycles through all hues).
+  example: []
+  syntax:
+    content: public static EdgeStyle Rainbow { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Rainbow As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Rainbow*
+- uid: FlowGraph.Core.Models.EdgeStyle.Pulse
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Pulse
+  id: Pulse
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Pulse
+  nameWithType: EdgeStyle.Pulse
+  fullName: FlowGraph.Core.Models.EdgeStyle.Pulse
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Pulse
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 281
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Pulsing glow effect (breathing opacity).
+  example: []
+  syntax:
+    content: public static EdgeStyle Pulse { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Pulse As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Pulse*
+- uid: FlowGraph.Core.Models.EdgeStyle.Heartbeat
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Heartbeat
+  id: Heartbeat
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Heartbeat
+  nameWithType: EdgeStyle.Heartbeat
+  fullName: FlowGraph.Core.Models.EdgeStyle.Heartbeat
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Heartbeat
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 294
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Fast heartbeat-style pulse effect (red, quick pulses).
+  example: []
+  syntax:
+    content: public static EdgeStyle Heartbeat { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Heartbeat As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Heartbeat*
+- uid: FlowGraph.Core.Models.EdgeStyle.Neon
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Neon
+  id: Neon
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Neon
+  nameWithType: EdgeStyle.Neon
+  fullName: FlowGraph.Core.Models.EdgeStyle.Neon
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Neon
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 306
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Neon glow style (bright cyan with strong glow and flow).
+  example: []
+  syntax:
+    content: public static EdgeStyle Neon { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Neon As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Neon*
+- uid: FlowGraph.Core.Models.EdgeStyle.Signal
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.Signal
+  id: Signal
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: Signal
+  nameWithType: EdgeStyle.Signal
+  fullName: FlowGraph.Core.Models.EdgeStyle.Signal
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Signal
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 320
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Signal transmission style (fast-moving pulses).
+  example: []
+  syntax:
+    content: public static EdgeStyle Signal { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Shared ReadOnly Property Signal As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.Signal*
+- uid: FlowGraph.Core.Models.EdgeStyle.WithColor(System.String)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithColor(System.String)
+  id: WithColor(System.String)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithColor(string)
+  nameWithType: EdgeStyle.WithColor(string)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithColor(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithColor
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 334
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with the specified stroke color.
+  example: []
+  syntax:
+    content: public EdgeStyle WithColor(string color)
+    parameters:
+    - id: color
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithColor(color As String) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithColor*
+  nameWithType.vb: EdgeStyle.WithColor(String)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithColor(String)
+  name.vb: WithColor(String)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithFlow(System.Double,FlowGraph.Core.Models.EdgeFlowDirection)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithFlow(System.Double,FlowGraph.Core.Models.EdgeFlowDirection)
+  id: WithFlow(System.Double,FlowGraph.Core.Models.EdgeFlowDirection)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithFlow(double, EdgeFlowDirection)
+  nameWithType: EdgeStyle.WithFlow(double, EdgeFlowDirection)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithFlow(double, FlowGraph.Core.Models.EdgeFlowDirection)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithFlow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 339
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with animated flow enabled.
+  example: []
+  syntax:
+    content: public EdgeStyle WithFlow(double speed = 1, EdgeFlowDirection direction = EdgeFlowDirection.Forward)
+    parameters:
+    - id: speed
+      type: System.Double
+    - id: direction
+      type: FlowGraph.Core.Models.EdgeFlowDirection
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithFlow(speed As Double = 1, direction As EdgeFlowDirection = EdgeFlowDirection.Forward) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithFlow*
+  nameWithType.vb: EdgeStyle.WithFlow(Double, EdgeFlowDirection)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithFlow(Double, FlowGraph.Core.Models.EdgeFlowDirection)
+  name.vb: WithFlow(Double, EdgeFlowDirection)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithGlow(System.Double,System.String)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithGlow(System.Double,System.String)
+  id: WithGlow(System.Double,System.String)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithGlow(double, string?)
+  nameWithType: EdgeStyle.WithGlow(double, string?)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithGlow(double, string?)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithGlow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 345
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with glow effect enabled.
+  example: []
+  syntax:
+    content: public EdgeStyle WithGlow(double intensity = 1.5, string? color = null)
+    parameters:
+    - id: intensity
+      type: System.Double
+    - id: color
+      type: System.String
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithGlow(intensity As Double = 1.5, color As String = Nothing) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithGlow*
+  nameWithType.vb: EdgeStyle.WithGlow(Double, String)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithGlow(Double, String)
+  name.vb: WithGlow(Double, String)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithDash(FlowGraph.Core.Models.EdgeDashPattern)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithDash(FlowGraph.Core.Models.EdgeDashPattern)
+  id: WithDash(FlowGraph.Core.Models.EdgeDashPattern)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithDash(EdgeDashPattern)
+  nameWithType: EdgeStyle.WithDash(EdgeDashPattern)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithDash(FlowGraph.Core.Models.EdgeDashPattern)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithDash
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 351
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with the specified dash pattern.
+  example: []
+  syntax:
+    content: public EdgeStyle WithDash(EdgeDashPattern pattern)
+    parameters:
+    - id: pattern
+      type: FlowGraph.Core.Models.EdgeDashPattern
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithDash(pattern As EdgeDashPattern) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithDash*
+- uid: FlowGraph.Core.Models.EdgeStyle.WithWidth(System.Double)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithWidth(System.Double)
+  id: WithWidth(System.Double)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithWidth(double)
+  nameWithType: EdgeStyle.WithWidth(double)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithWidth(double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithWidth
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 357
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with specified stroke width.
+  example: []
+  syntax:
+    content: public EdgeStyle WithWidth(double width)
+    parameters:
+    - id: width
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithWidth(width As Double) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithWidth*
+  nameWithType.vb: EdgeStyle.WithWidth(Double)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithWidth(Double)
+  name.vb: WithWidth(Double)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithOpacity(System.Double)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithOpacity(System.Double)
+  id: WithOpacity(System.Double)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithOpacity(double)
+  nameWithType: EdgeStyle.WithOpacity(double)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithOpacity(double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithOpacity
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 363
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with specified opacity.
+  example: []
+  syntax:
+    content: public EdgeStyle WithOpacity(double opacity)
+    parameters:
+    - id: opacity
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithOpacity(opacity As Double) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithOpacity*
+  nameWithType.vb: EdgeStyle.WithOpacity(Double)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithOpacity(Double)
+  name.vb: WithOpacity(Double)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithRainbow(System.Double)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithRainbow(System.Double)
+  id: WithRainbow(System.Double)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithRainbow(double)
+  nameWithType: EdgeStyle.WithRainbow(double)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithRainbow(double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithRainbow
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 369
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with rainbow color cycling enabled.
+  example: []
+  syntax:
+    content: public EdgeStyle WithRainbow(double speed = 0.5)
+    parameters:
+    - id: speed
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithRainbow(speed As Double = 0.5) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithRainbow*
+  nameWithType.vb: EdgeStyle.WithRainbow(Double)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithRainbow(Double)
+  name.vb: WithRainbow(Double)
+- uid: FlowGraph.Core.Models.EdgeStyle.WithPulse(System.Double,System.Double)
+  commentId: M:FlowGraph.Core.Models.EdgeStyle.WithPulse(System.Double,System.Double)
+  id: WithPulse(System.Double,System.Double)
+  parent: FlowGraph.Core.Models.EdgeStyle
+  langs:
+  - csharp
+  - vb
+  name: WithPulse(double, double)
+  nameWithType: EdgeStyle.WithPulse(double, double)
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithPulse(double, double)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Core/Models/EdgeStyle.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: WithPulse
+    path: ../FlowGraph.Core/Models/EdgeStyle.cs
+    startLine: 375
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Creates a copy with pulsing opacity effect enabled.
+  example: []
+  syntax:
+    content: public EdgeStyle WithPulse(double frequency = 1, double minOpacity = 0.3)
+    parameters:
+    - id: frequency
+      type: System.Double
+    - id: minOpacity
+      type: System.Double
+    return:
+      type: FlowGraph.Core.Models.EdgeStyle
+    content.vb: Public Function WithPulse(frequency As Double = 1, minOpacity As Double = 0.3) As EdgeStyle
+  overload: FlowGraph.Core.Models.EdgeStyle.WithPulse*
+  nameWithType.vb: EdgeStyle.WithPulse(Double, Double)
+  fullName.vb: FlowGraph.Core.Models.EdgeStyle.WithPulse(Double, Double)
+  name.vb: WithPulse(Double, Double)
+references:
+- uid: FlowGraph.Core.Models
+  commentId: N:FlowGraph.Core.Models
+  href: FlowGraph.html
+  name: FlowGraph.Core.Models
+  nameWithType: FlowGraph.Core.Models
+  fullName: FlowGraph.Core.Models
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Models
+    name: Models
+    href: FlowGraph.Core.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{FlowGraph.Core.Models.EdgeStyle}
+  commentId: T:System.IEquatable{FlowGraph.Core.Models.EdgeStyle}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<EdgeStyle>
+  nameWithType: IEquatable<EdgeStyle>
+  fullName: System.IEquatable<FlowGraph.Core.Models.EdgeStyle>
+  nameWithType.vb: IEquatable(Of EdgeStyle)
+  fullName.vb: System.IEquatable(Of FlowGraph.Core.Models.EdgeStyle)
+  name.vb: IEquatable(Of EdgeStyle)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FlowGraph.Core.Models.EdgeStyle
+    name: EdgeStyle
+    href: FlowGraph.Core.Models.EdgeStyle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Models.EdgeStyle
+    name: EdgeStyle
+    href: FlowGraph.Core.Models.EdgeStyle.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Models.EdgeStyle.StrokeColor*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_StrokeColor
+  name: StrokeColor
+  nameWithType: EdgeStyle.StrokeColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.StrokeColor
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Core.Models.EdgeStyle.StrokeWidth*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_StrokeWidth
+  name: StrokeWidth
+  nameWithType: EdgeStyle.StrokeWidth
+  fullName: FlowGraph.Core.Models.EdgeStyle.StrokeWidth
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FlowGraph.Core.Models.EdgeStyle.DashPattern*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.DashPattern
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_DashPattern
+  name: DashPattern
+  nameWithType: EdgeStyle.DashPattern
+  fullName: FlowGraph.Core.Models.EdgeStyle.DashPattern
+- uid: FlowGraph.Core.Models.EdgeDashPattern
+  commentId: T:FlowGraph.Core.Models.EdgeDashPattern
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeDashPattern.html
+  name: EdgeDashPattern
+  nameWithType: EdgeDashPattern
+  fullName: FlowGraph.Core.Models.EdgeDashPattern
+- uid: FlowGraph.Core.Models.EdgeStyle.DashPattern
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.DashPattern
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_DashPattern
+  name: DashPattern
+  nameWithType: EdgeStyle.DashPattern
+  fullName: FlowGraph.Core.Models.EdgeStyle.DashPattern
+- uid: FlowGraph.Core.Models.EdgeDashPattern.Custom
+  commentId: F:FlowGraph.Core.Models.EdgeDashPattern.Custom
+  href: FlowGraph.Core.Models.EdgeDashPattern.html#FlowGraph_Core_Models_EdgeDashPattern_Custom
+  name: Custom
+  nameWithType: EdgeDashPattern.Custom
+  fullName: FlowGraph.Core.Models.EdgeDashPattern.Custom
+- uid: FlowGraph.Core.Models.EdgeStyle.CustomDashArray*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_CustomDashArray
+  name: CustomDashArray
+  nameWithType: EdgeStyle.CustomDashArray
+  fullName: FlowGraph.Core.Models.EdgeStyle.CustomDashArray
+- uid: System.Double[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double[]
+  nameWithType: double[]
+  fullName: double[]
+  nameWithType.vb: Double()
+  fullName.vb: Double()
+  name.vb: Double()
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: (
+  - name: )
+- uid: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_AnimatedFlow
+  name: AnimatedFlow
+  nameWithType: EdgeStyle.AnimatedFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_AnimatedFlow
+  name: AnimatedFlow
+  nameWithType: EdgeStyle.AnimatedFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowSpeed*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_FlowSpeed
+  name: FlowSpeed
+  nameWithType: EdgeStyle.FlowSpeed
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowDirection*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_FlowDirection
+  name: FlowDirection
+  nameWithType: EdgeStyle.FlowDirection
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowDirection
+- uid: FlowGraph.Core.Models.EdgeFlowDirection
+  commentId: T:FlowGraph.Core.Models.EdgeFlowDirection
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeFlowDirection.html
+  name: EdgeFlowDirection
+  nameWithType: EdgeFlowDirection
+  fullName: FlowGraph.Core.Models.EdgeFlowDirection
+- uid: FlowGraph.Core.Models.EdgeStyle.Glow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Glow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Glow
+  name: Glow
+  nameWithType: EdgeStyle.Glow
+  fullName: FlowGraph.Core.Models.EdgeStyle.Glow
+- uid: FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.StrokeColor
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_StrokeColor
+  name: StrokeColor
+  nameWithType: EdgeStyle.StrokeColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.StrokeColor
+- uid: FlowGraph.Core.Models.EdgeStyle.GlowColor*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.GlowColor
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_GlowColor
+  name: GlowColor
+  nameWithType: EdgeStyle.GlowColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.GlowColor
+- uid: FlowGraph.Core.Models.EdgeStyle.GlowIntensity*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_GlowIntensity
+  name: GlowIntensity
+  nameWithType: EdgeStyle.GlowIntensity
+  fullName: FlowGraph.Core.Models.EdgeStyle.GlowIntensity
+- uid: FlowGraph.Core.Models.EdgeStyle.Opacity*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Opacity
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Opacity
+  name: Opacity
+  nameWithType: EdgeStyle.Opacity
+  fullName: FlowGraph.Core.Models.EdgeStyle.Opacity
+- uid: FlowGraph.Core.Models.EdgeStyle.RainbowEffect*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_RainbowEffect
+  name: RainbowEffect
+  nameWithType: EdgeStyle.RainbowEffect
+  fullName: FlowGraph.Core.Models.EdgeStyle.RainbowEffect
+- uid: FlowGraph.Core.Models.EdgeStyle.RainbowSpeed*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_RainbowSpeed
+  name: RainbowSpeed
+  nameWithType: EdgeStyle.RainbowSpeed
+  fullName: FlowGraph.Core.Models.EdgeStyle.RainbowSpeed
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseEffect*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.PulseEffect
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_PulseEffect
+  name: PulseEffect
+  nameWithType: EdgeStyle.PulseEffect
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseEffect
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseFrequency*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_PulseFrequency
+  name: PulseFrequency
+  nameWithType: EdgeStyle.PulseFrequency
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseFrequency
+- uid: FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_PulseMinOpacity
+  name: PulseMinOpacity
+  nameWithType: EdgeStyle.PulseMinOpacity
+  fullName: FlowGraph.Core.Models.EdgeStyle.PulseMinOpacity
+- uid: FlowGraph.Core.Models.EdgeStyle.Default*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Default
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Default
+  name: Default
+  nameWithType: EdgeStyle.Default
+  fullName: FlowGraph.Core.Models.EdgeStyle.Default
+- uid: FlowGraph.Core.Models.EdgeStyle
+  commentId: T:FlowGraph.Core.Models.EdgeStyle
+  parent: FlowGraph.Core.Models
+  href: FlowGraph.Core.Models.EdgeStyle.html
+  name: EdgeStyle
+  nameWithType: EdgeStyle
+  fullName: FlowGraph.Core.Models.EdgeStyle
+- uid: FlowGraph.Core.Models.EdgeStyle.Success*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Success
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Success
+  name: Success
+  nameWithType: EdgeStyle.Success
+  fullName: FlowGraph.Core.Models.EdgeStyle.Success
+- uid: FlowGraph.Core.Models.EdgeStyle.Warning*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Warning
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Warning
+  name: Warning
+  nameWithType: EdgeStyle.Warning
+  fullName: FlowGraph.Core.Models.EdgeStyle.Warning
+- uid: FlowGraph.Core.Models.EdgeStyle.Error*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Error
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Error
+  name: Error
+  nameWithType: EdgeStyle.Error
+  fullName: FlowGraph.Core.Models.EdgeStyle.Error
+- uid: FlowGraph.Core.Models.EdgeStyle.Disabled*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Disabled
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Disabled
+  name: Disabled
+  nameWithType: EdgeStyle.Disabled
+  fullName: FlowGraph.Core.Models.EdgeStyle.Disabled
+- uid: FlowGraph.Core.Models.EdgeStyle.ActiveFlow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_ActiveFlow
+  name: ActiveFlow
+  nameWithType: EdgeStyle.ActiveFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.ActiveFlow
+- uid: FlowGraph.Core.Models.EdgeStyle.Highlighted*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Highlighted
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Highlighted
+  name: Highlighted
+  nameWithType: EdgeStyle.Highlighted
+  fullName: FlowGraph.Core.Models.EdgeStyle.Highlighted
+- uid: FlowGraph.Core.Models.EdgeStyle.DataStream*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.DataStream
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_DataStream
+  name: DataStream
+  nameWithType: EdgeStyle.DataStream
+  fullName: FlowGraph.Core.Models.EdgeStyle.DataStream
+- uid: FlowGraph.Core.Models.EdgeStyle.Bidirectional*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Bidirectional
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Bidirectional
+  name: Bidirectional
+  nameWithType: EdgeStyle.Bidirectional
+  fullName: FlowGraph.Core.Models.EdgeStyle.Bidirectional
+- uid: FlowGraph.Core.Models.EdgeStyle.ReverseFlow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_ReverseFlow
+  name: ReverseFlow
+  nameWithType: EdgeStyle.ReverseFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.ReverseFlow
+- uid: FlowGraph.Core.Models.EdgeStyle.Electric*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Electric
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Electric
+  name: Electric
+  nameWithType: EdgeStyle.Electric
+  fullName: FlowGraph.Core.Models.EdgeStyle.Electric
+- uid: FlowGraph.Core.Models.EdgeStyle.Gentle*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Gentle
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Gentle
+  name: Gentle
+  nameWithType: EdgeStyle.Gentle
+  fullName: FlowGraph.Core.Models.EdgeStyle.Gentle
+- uid: FlowGraph.Core.Models.EdgeStyle.Debug*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Debug
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Debug
+  name: Debug
+  nameWithType: EdgeStyle.Debug
+  fullName: FlowGraph.Core.Models.EdgeStyle.Debug
+- uid: FlowGraph.Core.Models.EdgeStyle.Rainbow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Rainbow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Rainbow
+  name: Rainbow
+  nameWithType: EdgeStyle.Rainbow
+  fullName: FlowGraph.Core.Models.EdgeStyle.Rainbow
+- uid: FlowGraph.Core.Models.EdgeStyle.Pulse*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Pulse
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Pulse
+  name: Pulse
+  nameWithType: EdgeStyle.Pulse
+  fullName: FlowGraph.Core.Models.EdgeStyle.Pulse
+- uid: FlowGraph.Core.Models.EdgeStyle.Heartbeat*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Heartbeat
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Heartbeat
+  name: Heartbeat
+  nameWithType: EdgeStyle.Heartbeat
+  fullName: FlowGraph.Core.Models.EdgeStyle.Heartbeat
+- uid: FlowGraph.Core.Models.EdgeStyle.Neon*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Neon
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Neon
+  name: Neon
+  nameWithType: EdgeStyle.Neon
+  fullName: FlowGraph.Core.Models.EdgeStyle.Neon
+- uid: FlowGraph.Core.Models.EdgeStyle.Signal*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.Signal
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_Signal
+  name: Signal
+  nameWithType: EdgeStyle.Signal
+  fullName: FlowGraph.Core.Models.EdgeStyle.Signal
+- uid: FlowGraph.Core.Models.EdgeStyle.WithColor*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithColor
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithColor_System_String_
+  name: WithColor
+  nameWithType: EdgeStyle.WithColor
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithColor
+- uid: FlowGraph.Core.Models.EdgeStyle.WithFlow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithFlow_System_Double_FlowGraph_Core_Models_EdgeFlowDirection_
+  name: WithFlow
+  nameWithType: EdgeStyle.WithFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithFlow
+- uid: FlowGraph.Core.Models.EdgeStyle.WithGlow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithGlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithGlow_System_Double_System_String_
+  name: WithGlow
+  nameWithType: EdgeStyle.WithGlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithGlow
+- uid: FlowGraph.Core.Models.EdgeStyle.WithDash*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithDash
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithDash_FlowGraph_Core_Models_EdgeDashPattern_
+  name: WithDash
+  nameWithType: EdgeStyle.WithDash
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithDash
+- uid: FlowGraph.Core.Models.EdgeStyle.WithWidth*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithWidth
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithWidth_System_Double_
+  name: WithWidth
+  nameWithType: EdgeStyle.WithWidth
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithWidth
+- uid: FlowGraph.Core.Models.EdgeStyle.WithOpacity*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithOpacity
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithOpacity_System_Double_
+  name: WithOpacity
+  nameWithType: EdgeStyle.WithOpacity
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithOpacity
+- uid: FlowGraph.Core.Models.EdgeStyle.WithRainbow*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithRainbow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithRainbow_System_Double_
+  name: WithRainbow
+  nameWithType: EdgeStyle.WithRainbow
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithRainbow
+- uid: FlowGraph.Core.Models.EdgeStyle.WithPulse*
+  commentId: Overload:FlowGraph.Core.Models.EdgeStyle.WithPulse
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_WithPulse_System_Double_System_Double_
+  name: WithPulse
+  nameWithType: EdgeStyle.WithPulse
+  fullName: FlowGraph.Core.Models.EdgeStyle.WithPulse

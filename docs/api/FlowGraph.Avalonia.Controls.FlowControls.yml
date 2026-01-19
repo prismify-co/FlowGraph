@@ -6,8 +6,9 @@ items:
   parent: FlowGraph.Avalonia.Controls
   children:
   - FlowGraph.Avalonia.Controls.FlowControls.#ctor
-  - FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-  - FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanelProperty
+  - FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+  - FlowGraph.Avalonia.Controls.FlowControls.AddSeparator
+  - FlowGraph.Avalonia.Controls.FlowControls.AddTextButton(System.String,System.String,System.Action)
   - FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent(System.Boolean)
   - FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas
   - FlowGraph.Avalonia.Controls.FlowControls.TargetCanvasProperty
@@ -21,7 +22,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/obj/Release/net9.0/Avalonia.Generators/Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator/FlowGraph.Avalonia.Controls.FlowControls.g.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: FlowControls
     path: ../FlowGraph.Avalonia/obj/Release/net9.0/Avalonia.Generators/Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator/FlowGraph.Avalonia.Controls.FlowControls.g.cs
@@ -29,6 +30,12 @@ items:
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Controls
+  summary: A panel with zoom and viewport control buttons for FlowCanvas.
+  remarks: >-
+    Community edition includes: Zoom In, Zoom Out, Fit to View, Reset Zoom.
+
+    Use <xref href="FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String%2cSystem.String%2cSystem.Action)" data-throw-if-not-resolved="false"></xref> to add custom buttons to the panel.
+  example: []
   syntax:
     content: 'public class FlowControls : UserControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue'
     content.vb: Public Class FlowControls Inherits UserControl Implements INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue
@@ -383,11 +390,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TargetCanvasProperty
     path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-    startLine: 9
+    startLine: 18
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Controls
@@ -396,33 +403,6 @@ items:
     return:
       type: Avalonia.StyledProperty{FlowGraph.Avalonia.FlowCanvas}
     content.vb: Public Shared ReadOnly TargetCanvasProperty As StyledProperty(Of FlowCanvas)
-- uid: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanelProperty
-  commentId: F:FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanelProperty
-  id: DiagnosticsPanelProperty
-  parent: FlowGraph.Avalonia.Controls.FlowControls
-  langs:
-  - csharp
-  - vb
-  name: DiagnosticsPanelProperty
-  nameWithType: FlowControls.DiagnosticsPanelProperty
-  fullName: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanelProperty
-  type: Field
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: DiagnosticsPanelProperty
-    path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-    startLine: 12
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Controls
-  syntax:
-    content: public static readonly StyledProperty<FlowDiagnostics?> DiagnosticsPanelProperty
-    return:
-      type: Avalonia.StyledProperty{FlowGraph.Avalonia.Controls.FlowDiagnostics}
-    content.vb: Public Shared ReadOnly DiagnosticsPanelProperty As StyledProperty(Of FlowDiagnostics)
 - uid: FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas
   commentId: P:FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas
   id: TargetCanvas
@@ -437,14 +417,16 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: TargetCanvas
     path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-    startLine: 15
+    startLine: 24
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Controls
+  summary: The FlowCanvas this control panel operates on.
+  example: []
   syntax:
     content: public FlowCanvas? TargetCanvas { get; set; }
     parameters: []
@@ -452,37 +434,6 @@ items:
       type: FlowGraph.Avalonia.FlowCanvas
     content.vb: Public Property TargetCanvas As FlowCanvas
   overload: FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas*
-- uid: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-  commentId: P:FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-  id: DiagnosticsPanel
-  parent: FlowGraph.Avalonia.Controls.FlowControls
-  langs:
-  - csharp
-  - vb
-  name: DiagnosticsPanel
-  nameWithType: FlowControls.DiagnosticsPanel
-  fullName: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: DiagnosticsPanel
-    path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-    startLine: 24
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Controls
-  summary: The diagnostics panel to show/hide with the debug toggle button.
-  example: []
-  syntax:
-    content: public FlowDiagnostics? DiagnosticsPanel { get; set; }
-    parameters: []
-    return:
-      type: FlowGraph.Avalonia.Controls.FlowDiagnostics
-    content.vb: Public Property DiagnosticsPanel As FlowDiagnostics
-  overload: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel*
 - uid: FlowGraph.Avalonia.Controls.FlowControls.#ctor
   commentId: M:FlowGraph.Avalonia.Controls.FlowControls.#ctor
   id: '#ctor'
@@ -497,11 +448,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
-    startLine: 37
+    startLine: 30
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Controls
@@ -512,6 +463,122 @@ items:
   nameWithType.vb: FlowControls.New()
   fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.New()
   name.vb: New()
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddSeparator
+  commentId: M:FlowGraph.Avalonia.Controls.FlowControls.AddSeparator
+  id: AddSeparator
+  parent: FlowGraph.Avalonia.Controls.FlowControls
+  langs:
+  - csharp
+  - vb
+  name: AddSeparator()
+  nameWithType: FlowControls.AddSeparator()
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddSeparator()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddSeparator
+    path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+    startLine: 57
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Controls
+  summary: Adds a separator line to the control panel.
+  example: []
+  syntax:
+    content: public void AddSeparator()
+    content.vb: Public Sub AddSeparator()
+  overload: FlowGraph.Avalonia.Controls.FlowControls.AddSeparator*
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+  commentId: M:FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+  id: AddButton(System.String,System.String,System.Action)
+  parent: FlowGraph.Avalonia.Controls.FlowControls
+  langs:
+  - csharp
+  - vb
+  name: AddButton(string, string, Action)
+  nameWithType: FlowControls.AddButton(string, string, Action)
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddButton(string, string, System.Action)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddButton
+    path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+    startLine: 77
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Controls
+  summary: Adds a custom button to the control panel with a Lucide icon path.
+  example: []
+  syntax:
+    content: public Button AddButton(string iconPathData, string tooltip, Action onClick)
+    parameters:
+    - id: iconPathData
+      type: System.String
+      description: SVG path data for the icon (e.g., from Lucide icons)
+    - id: tooltip
+      type: System.String
+      description: Tooltip text for the button
+    - id: onClick
+      type: System.Action
+      description: Action to execute when clicked
+    return:
+      type: Avalonia.Controls.Button
+      description: The created button for further customization
+    content.vb: Public Function AddButton(iconPathData As String, tooltip As String, onClick As Action) As Button
+  overload: FlowGraph.Avalonia.Controls.FlowControls.AddButton*
+  nameWithType.vb: FlowControls.AddButton(String, String, Action)
+  fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.AddButton(String, String, System.Action)
+  name.vb: AddButton(String, String, Action)
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton(System.String,System.String,System.Action)
+  commentId: M:FlowGraph.Avalonia.Controls.FlowControls.AddTextButton(System.String,System.String,System.Action)
+  id: AddTextButton(System.String,System.String,System.Action)
+  parent: FlowGraph.Avalonia.Controls.FlowControls
+  langs:
+  - csharp
+  - vb
+  name: AddTextButton(string, string, Action)
+  nameWithType: FlowControls.AddTextButton(string, string, Action)
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton(string, string, System.Action)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AddTextButton
+    path: ../FlowGraph.Avalonia/Controls/FlowControls.axaml.cs
+    startLine: 112
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Controls
+  summary: Adds a custom button to the control panel with text content.
+  example: []
+  syntax:
+    content: public Button AddTextButton(string text, string tooltip, Action onClick)
+    parameters:
+    - id: text
+      type: System.String
+      description: Text to display on the button
+    - id: tooltip
+      type: System.String
+      description: Tooltip text for the button
+    - id: onClick
+      type: System.Action
+      description: Action to execute when clicked
+    return:
+      type: Avalonia.Controls.Button
+      description: The created button for further customization
+    content.vb: Public Function AddTextButton(text As String, tooltip As String, onClick As Action) As Button
+  overload: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton*
+  nameWithType.vb: FlowControls.AddTextButton(String, String, Action)
+  fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton(String, String, System.Action)
+  name.vb: AddTextButton(String, String, Action)
 - uid: FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent(System.Boolean)
   commentId: M:FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent(System.Boolean)
   id: InitializeComponent(System.Boolean)
@@ -526,11 +593,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/obj/Release/net9.0/Avalonia.Generators/Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator/FlowGraph.Avalonia.Controls.FlowControls.g.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InitializeComponent
     path: ../FlowGraph.Avalonia/obj/Release/net9.0/Avalonia.Generators/Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator/FlowGraph.Avalonia.Controls.FlowControls.g.cs
-    startLine: 28
+    startLine: 26
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Controls
@@ -558,6 +625,60 @@ items:
   fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent(Boolean)
   name.vb: InitializeComponent(Boolean)
 references:
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+  commentId: M:FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+  isExternal: true
+  href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddButton_System_String_System_String_System_Action_
+  name: AddButton(string, string, Action)
+  nameWithType: FlowControls.AddButton(string, string, Action)
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddButton(string, string, System.Action)
+  nameWithType.vb: FlowControls.AddButton(String, String, Action)
+  fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.AddButton(String, String, System.Action)
+  name.vb: AddButton(String, String, Action)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+    name: AddButton
+    href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddButton_System_String_System_String_System_Action_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Controls.FlowControls.AddButton(System.String,System.String,System.Action)
+    name: AddButton
+    href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddButton_System_String_System_String_System_Action_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
 - uid: FlowGraph.Avalonia.Controls
   commentId: N:FlowGraph.Avalonia.Controls
   href: FlowGraph.html
@@ -7211,37 +7332,6 @@ references:
   - name: " "
   - name: TValue
   - name: )
-- uid: Avalonia.StyledProperty{FlowGraph.Avalonia.Controls.FlowDiagnostics}
-  commentId: T:Avalonia.StyledProperty{FlowGraph.Avalonia.Controls.FlowDiagnostics}
-  parent: Avalonia
-  definition: Avalonia.StyledProperty`1
-  href: FlowGraph.Avalonia.Controls.FlowDiagnostics.html
-  name: StyledProperty<FlowDiagnostics>
-  nameWithType: StyledProperty<FlowDiagnostics>
-  fullName: Avalonia.StyledProperty<FlowGraph.Avalonia.Controls.FlowDiagnostics>
-  nameWithType.vb: StyledProperty(Of FlowDiagnostics)
-  fullName.vb: Avalonia.StyledProperty(Of FlowGraph.Avalonia.Controls.FlowDiagnostics)
-  name.vb: StyledProperty(Of FlowDiagnostics)
-  spec.csharp:
-  - uid: Avalonia.StyledProperty`1
-    name: StyledProperty
-    isExternal: true
-  - name: <
-  - uid: FlowGraph.Avalonia.Controls.FlowDiagnostics
-    name: FlowDiagnostics
-    href: FlowGraph.Avalonia.Controls.FlowDiagnostics.html
-  - name: '>'
-  spec.vb:
-  - uid: Avalonia.StyledProperty`1
-    name: StyledProperty
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: FlowGraph.Avalonia.Controls.FlowDiagnostics
-    name: FlowDiagnostics
-    href: FlowGraph.Avalonia.Controls.FlowDiagnostics.html
-  - name: )
 - uid: FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas*
   commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.TargetCanvas
   href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_TargetCanvas
@@ -7277,19 +7367,6 @@ references:
   - uid: FlowGraph.Avalonia
     name: Avalonia
     href: FlowGraph.Avalonia.html
-- uid: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel*
-  commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-  href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_DiagnosticsPanel
-  name: DiagnosticsPanel
-  nameWithType: FlowControls.DiagnosticsPanel
-  fullName: FlowGraph.Avalonia.Controls.FlowControls.DiagnosticsPanel
-- uid: FlowGraph.Avalonia.Controls.FlowDiagnostics
-  commentId: T:FlowGraph.Avalonia.Controls.FlowDiagnostics
-  parent: FlowGraph.Avalonia.Controls
-  href: FlowGraph.Avalonia.Controls.FlowDiagnostics.html
-  name: FlowDiagnostics
-  nameWithType: FlowDiagnostics
-  fullName: FlowGraph.Avalonia.Controls.FlowDiagnostics
 - uid: FlowGraph.Avalonia.Controls.FlowControls.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.#ctor
   href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls__ctor
@@ -7299,6 +7376,50 @@ references:
   nameWithType.vb: FlowControls.New
   fullName.vb: FlowGraph.Avalonia.Controls.FlowControls.New
   name.vb: New
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddSeparator*
+  commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.AddSeparator
+  href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddSeparator
+  name: AddSeparator
+  nameWithType: FlowControls.AddSeparator
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddSeparator
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddButton*
+  commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.AddButton
+  href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddButton_System_String_System_String_System_Action_
+  name: AddButton
+  nameWithType: FlowControls.AddButton
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddButton
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: Avalonia.Controls.Button
+  commentId: T:Avalonia.Controls.Button
+  parent: Avalonia.Controls
+  isExternal: true
+  name: Button
+  nameWithType: Button
+  fullName: Avalonia.Controls.Button
+- uid: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton*
+  commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.AddTextButton
+  href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_AddTextButton_System_String_System_String_System_Action_
+  name: AddTextButton
+  nameWithType: FlowControls.AddTextButton
+  fullName: FlowGraph.Avalonia.Controls.FlowControls.AddTextButton
 - uid: FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent*
   commentId: Overload:FlowGraph.Avalonia.Controls.FlowControls.InitializeComponent
   href: FlowGraph.Avalonia.Controls.FlowControls.html#FlowGraph_Avalonia_Controls_FlowControls_InitializeComponent_System_Boolean_

@@ -10,8 +10,10 @@ items:
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateSize(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Double,System.Double)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   langs:
   - csharp
   - vb
@@ -22,7 +24,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: INodeRenderer
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
@@ -52,7 +54,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateNodeVisual
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
@@ -90,7 +92,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSelection
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
@@ -128,15 +130,61 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSize
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 35
+    startLine: 71
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
   summary: Updates the size of an existing node visual.
+  remarks: >-
+    <p>
+
+    <b>IMPORTANT:</b> Implementations MUST update ALL child elements within the visual,
+
+    not just the root container. Failing to update child elements will cause the visual
+
+    to appear unchanged during resize operations until a full re-render occurs.
+
+    </p>
+
+    <p>
+
+    For composite visuals (e.g., a Grid containing Rectangles, Borders, or Canvases),
+
+    iterate through children and update their Width/Height properties accordingly.
+
+    </p>
+
+    <example>
+
+
+    <pre><code class="lang-csharp">public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+
+    {
+        var scaledWidth = width * context.Scale;
+        var scaledHeight = height * context.Scale;
+
+        if (visual is Grid grid)
+        {
+            grid.Width = scaledWidth;
+            grid.Height = scaledHeight;
+
+            // CRITICAL: Also update all child elements
+            foreach (var child in grid.Children)
+            {
+                if (child is Rectangle rect)
+                {
+                    rect.Width = scaledWidth;
+                    rect.Height = scaledHeight;
+                }
+            }
+        }
+    }</code></pre>
+
+    </example>
   example: []
   syntax:
     content: void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
@@ -175,11 +223,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 41
+    startLine: 77
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -213,11 +261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 47
+    startLine: 83
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -251,11 +299,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinWidth
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 52
+    startLine: 88
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -286,11 +334,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GetMinHeight
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 57
+    startLine: 93
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -307,6 +355,130 @@ items:
       type: System.Nullable{System.Double}
     content.vb: Function GetMinHeight(node As Node, settings As FlowCanvasSettings) As Double?
   overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  id: UpdateStyle(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpdateStyle(Control, Node, NodeRenderContext)
+  nameWithType: INodeRenderer.UpdateStyle(Control, Node, NodeRenderContext)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle(Avalonia.Controls.Control, FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: UpdateStyle
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 130
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Updates the visual style when the node's Data property changes.
+
+    Override this to react to custom data changes (e.g., execution state, validation errors).
+  remarks: >-
+    <p>
+
+    This method is called when <xref href="FlowGraph.Core.Node.Data" data-throw-if-not-resolved="false"></xref> changes and allows renderers
+
+    to update visual appearance based on custom data stored in the node.
+
+    </p>
+
+    <p>
+
+    Common use cases:
+
+    <ul><li>Execution visualization (border colors for running/completed/failed states)</li><li>Validation feedback (error highlights)</li><li>Custom styling based on application-specific data</li></ul>
+
+    </p>
+
+    <example>
+
+
+    <pre><code class="lang-csharp">public void UpdateStyle(Control visual, Node node, NodeRenderContext context)
+
+    {
+        if (visual is Border border &amp;&amp; node.Data is Dictionary&lt;string, object?&gt; data)
+        {
+            if (data.TryGetValue("BorderColor", out var colorObj) &amp;&amp; colorObj is Color color)
+            {
+                border.BorderBrush = new SolidColorBrush(color);
+            }
+        }
+    }</code></pre>
+
+    </example>
+  example: []
+  syntax:
+    content: void UpdateStyle(Control visual, Node node, NodeRenderContext context)
+    parameters:
+    - id: visual
+      type: Avalonia.Controls.Control
+      description: The node's visual control.
+    - id: node
+      type: FlowGraph.Core.Node
+      description: The node data (check node.Data for custom state).
+    - id: context
+      type: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+      description: The rendering context.
+    content.vb: Sub UpdateStyle(visual As Control, node As Node, context As NodeRenderContext)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  id: HasCompositeVisual
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer
+  langs:
+  - csharp
+  - vb
+  name: HasCompositeVisual
+  nameWithType: INodeRenderer.HasCompositeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: HasCompositeVisual
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 150
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Indicates whether this renderer creates composite visuals with multiple children
+
+    that need individual size updates. Used for validation and debugging.
+  remarks: >-
+    <p>
+
+    If true, the framework may validate that UpdateSize properly handles child elements.
+
+    Renderers should return true if they create visuals with backgrounds, borders,
+
+    content areas, or other elements that need size updates beyond the root container.
+
+    </p>
+
+    <p>
+
+    Consider using <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual" data-throw-if-not-resolved="false"></xref> to automatically track and update children.
+
+    </p>
+  example: []
+  syntax:
+    content: bool HasCompositeVisual { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasCompositeVisual As Boolean
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual*
 references:
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -551,3 +723,39 @@ references:
   name: GetMinHeight
   nameWithType: INodeRenderer.GetMinHeight
   fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.GetMinHeight
+- uid: FlowGraph.Core.Node.Data
+  commentId: P:FlowGraph.Core.Node.Data
+  href: FlowGraph.Core.Node.html#FlowGraph_Core_Node_Data
+  name: Data
+  nameWithType: Node.Data
+  fullName: FlowGraph.Core.Node.Data
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_UpdateStyle_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_
+  name: UpdateStyle
+  nameWithType: INodeRenderer.UpdateStyle
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.UpdateStyle
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  commentId: T:FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual.html
+  name: ResizableVisual
+  nameWithType: ResizableVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.ResizableVisual
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_INodeRenderer_HasCompositeVisual
+  name: HasCompositeVisual
+  nameWithType: INodeRenderer.HasCompositeVisual
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.HasCompositeVisual
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

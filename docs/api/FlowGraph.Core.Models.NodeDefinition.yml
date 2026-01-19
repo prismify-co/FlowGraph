@@ -7,7 +7,9 @@ items:
   children:
   - FlowGraph.Core.Models.NodeDefinition.AddInput(FlowGraph.Core.Models.PortDefinition)
   - FlowGraph.Core.Models.NodeDefinition.AddOutput(FlowGraph.Core.Models.PortDefinition)
+  - FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
   - FlowGraph.Core.Models.NodeDefinition.Data
+  - FlowGraph.Core.Models.NodeDefinition.GroupPadding
   - FlowGraph.Core.Models.NodeDefinition.Id
   - FlowGraph.Core.Models.NodeDefinition.Inputs
   - FlowGraph.Core.Models.NodeDefinition.IsConnectable
@@ -31,7 +33,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeDefinition
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -78,7 +80,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Id
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -109,7 +111,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Type
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -143,7 +145,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Label
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -174,7 +176,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ParentGroupId
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -205,7 +207,7 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsGroup
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
@@ -222,6 +224,40 @@ items:
       type: System.Boolean
     content.vb: Public Property IsGroup As Boolean
   overload: FlowGraph.Core.Models.NodeDefinition.IsGroup*
+- uid: FlowGraph.Core.Models.NodeDefinition.GroupPadding
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.GroupPadding
+  id: GroupPadding
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: GroupPadding
+  nameWithType: NodeDefinition.GroupPadding
+  fullName: FlowGraph.Core.Models.NodeDefinition.GroupPadding
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GroupPadding
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 47
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: >-
+    Custom padding around group children when calculating group bounds.
+
+    Only applies when IsGroup is true. If null, uses the default from settings.
+  example: []
+  syntax:
+    content: public double? GroupPadding { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Double}
+    content.vb: Public Property GroupPadding As Double?
+  overload: FlowGraph.Core.Models.NodeDefinition.GroupPadding*
 - uid: FlowGraph.Core.Models.NodeDefinition.Inputs
   commentId: P:FlowGraph.Core.Models.NodeDefinition.Inputs
   id: Inputs
@@ -236,11 +272,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Inputs
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 46
+    startLine: 52
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -267,11 +303,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Outputs
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 51
+    startLine: 57
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -298,11 +334,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Data
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 57
+    startLine: 63
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -332,11 +368,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsSelectable
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 64
+    startLine: 70
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -363,11 +399,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDraggable
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 69
+    startLine: 75
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -394,11 +430,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsDeletable
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 74
+    startLine: 80
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -425,11 +461,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsConnectable
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 79
+    startLine: 85
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -456,11 +492,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: IsResizable
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 84
+    startLine: 90
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -473,6 +509,43 @@ items:
       type: System.Boolean
     content.vb: Public Property IsResizable As Boolean
   overload: FlowGraph.Core.Models.NodeDefinition.IsResizable*
+- uid: FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
+  commentId: P:FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
+  id: AllowedResizeHandles
+  parent: FlowGraph.Core.Models.NodeDefinition
+  langs:
+  - csharp
+  - vb
+  name: AllowedResizeHandles
+  nameWithType: NodeDefinition.AllowedResizeHandles
+  fullName: FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Core/Models/NodeDefinition.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: AllowedResizeHandles
+    path: ../FlowGraph.Core/Models/NodeDefinition.cs
+    startLine: 100
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Models
+  summary: Specifies which resize handles should be displayed when this node is selected.
+  remarks: >-
+    Default is <xref href="FlowGraph.Core.ResizeHandleMode.All" data-throw-if-not-resolved="false"></xref> (all 8 handles).
+
+    For nodes with non-rectangular geometry (cylinders, circles, etc.),
+
+    set this to only show handles that make visual sense.
+  example: []
+  syntax:
+    content: public ResizeHandleMode AllowedResizeHandles { get; init; }
+    parameters: []
+    return:
+      type: FlowGraph.Core.ResizeHandleMode
+    content.vb: Public Property AllowedResizeHandles As ResizeHandleMode
+  overload: FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles*
 - uid: FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
   commentId: M:FlowGraph.Core.Models.NodeDefinition.WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
   id: WithPorts(System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition},System.Collections.Generic.IEnumerable{FlowGraph.Core.Models.PortDefinition})
@@ -487,11 +560,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: WithPorts
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 91
+    startLine: 107
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -525,11 +598,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddInput
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 105
+    startLine: 121
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -558,11 +631,11 @@ items:
   source:
     remote:
       path: FlowGraph.Core/Models/NodeDefinition.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AddOutput
     path: ../FlowGraph.Core/Models/NodeDefinition.cs
-    startLine: 111
+    startLine: 127
   assemblies:
   - FlowGraph.Core
   namespace: FlowGraph.Core.Models
@@ -934,6 +1007,63 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FlowGraph.Core.Models.NodeDefinition.GroupPadding*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.GroupPadding
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_GroupPadding
+  name: GroupPadding
+  nameWithType: NodeDefinition.GroupPadding
+  fullName: FlowGraph.Core.Models.NodeDefinition.GroupPadding
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: FlowGraph.Core.Models.NodeDefinition.Inputs*
   commentId: Overload:FlowGraph.Core.Models.NodeDefinition.Inputs
   href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_Inputs
@@ -1080,6 +1210,47 @@ references:
   name: IsResizable
   nameWithType: NodeDefinition.IsResizable
   fullName: FlowGraph.Core.Models.NodeDefinition.IsResizable
+- uid: FlowGraph.Core.ResizeHandleMode.All
+  commentId: F:FlowGraph.Core.ResizeHandleMode.All
+  href: FlowGraph.Core.ResizeHandleMode.html#FlowGraph_Core_ResizeHandleMode_All
+  name: All
+  nameWithType: ResizeHandleMode.All
+  fullName: FlowGraph.Core.ResizeHandleMode.All
+- uid: FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles*
+  commentId: Overload:FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
+  href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_AllowedResizeHandles
+  name: AllowedResizeHandles
+  nameWithType: NodeDefinition.AllowedResizeHandles
+  fullName: FlowGraph.Core.Models.NodeDefinition.AllowedResizeHandles
+- uid: FlowGraph.Core.ResizeHandleMode
+  commentId: T:FlowGraph.Core.ResizeHandleMode
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.ResizeHandleMode.html
+  name: ResizeHandleMode
+  nameWithType: ResizeHandleMode
+  fullName: FlowGraph.Core.ResizeHandleMode
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
 - uid: FlowGraph.Core.Models.NodeDefinition.WithPorts*
   commentId: Overload:FlowGraph.Core.Models.NodeDefinition.WithPorts
   href: FlowGraph.Core.Models.NodeDefinition.html#FlowGraph_Core_Models_NodeDefinition_WithPorts_System_Collections_Generic_IEnumerable_FlowGraph_Core_Models_PortDefinition__System_Collections_Generic_IEnumerable_FlowGraph_Core_Models_PortDefinition__

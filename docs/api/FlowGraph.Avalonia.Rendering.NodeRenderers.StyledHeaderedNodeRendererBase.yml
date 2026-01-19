@@ -5,8 +5,8 @@ items:
   id: StyledHeaderedNodeRendererBase
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers
   children:
-  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   langs:
   - csharp
   - vb
@@ -17,11 +17,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: StyledHeaderedNodeRendererBase
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
-    startLine: 219
+    startLine: 215
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -29,6 +29,8 @@ items:
     Headered node with accent-colored header (pink/rose tint).
 
     The header has a glassy semi-transparent pink background and pink text.
+
+    Override methods use fixed accent colors rather than theme resources.
   example: []
   syntax:
     content: 'public abstract class StyledHeaderedNodeRendererBase : HeaderedNodeRendererBase, IEditableNodeRenderer, IDataNodeRenderer, INodeRenderer'
@@ -48,13 +50,15 @@ items:
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderLabelTag
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BodyPanelTag
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.ContentPanelTag
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.MainPanelTag
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HorizontalPadding
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderVerticalPadding
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.ContentVerticalPadding
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.CornerRadius
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderFontSize
-  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BodyBackgroundColor
-  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.NodeBorderColor
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BorderThickness
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.SelectedBorderThickness
   - FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
@@ -66,8 +70,11 @@ items:
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.UpdateFromPortValues(Avalonia.Controls.Control,FlowGraph.Core.DataFlow.INodeProcessor)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.OnProcessorAttached(Avalonia.Controls.Control,FlowGraph.Core.DataFlow.INodeProcessor)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.OnProcessorDetached(Avalonia.Controls.Control,FlowGraph.Core.DataFlow.INodeProcessor)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.FindByTag``1(Avalonia.Controls.Control,System.String)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.FindAll``1(Avalonia.Controls.Control)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetDisplayText(FlowGraph.Core.Node)
   - FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetWidth(FlowGraph.Core.Node,FlowGraph.Avalonia.FlowCanvasSettings)
@@ -87,70 +94,74 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
-  id: HeaderTextColor
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
   langs:
   - csharp
   - vb
-  name: HeaderTextColor
-  nameWithType: StyledHeaderedNodeRendererBase.HeaderTextColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
-  type: Property
+  name: GetHeaderTextBrush(ThemeResources)
+  nameWithType: StyledHeaderedNodeRendererBase.GetHeaderTextBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: HeaderTextColor
+    id: GetHeaderTextBrush
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
+    startLine: 221
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Gets the header text brush from theme, with optional override.
+  example: []
+  syntax:
+    content: protected override IBrush GetHeaderTextBrush(ThemeResources theme)
+    parameters:
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
+    return:
+      type: Avalonia.Media.IBrush
+    content.vb: Protected Overrides Function GetHeaderTextBrush(theme As ThemeResources) As IBrush
+  overridden: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  id: GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
+  langs:
+  - csharp
+  - vb
+  name: GetHeaderBackgroundBrush(ThemeResources)
+  nameWithType: StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: GetHeaderBackgroundBrush
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
     startLine: 224
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
-  summary: Pink/rose header text color.
+  summary: Gets the header background brush from theme, with optional override.
   example: []
   syntax:
-    content: public override Color HeaderTextColor { get; }
-    parameters: []
+    content: protected override IBrush GetHeaderBackgroundBrush(ThemeResources theme)
+    parameters:
+    - id: theme
+      type: FlowGraph.Avalonia.Rendering.ThemeResources
     return:
-      type: Avalonia.Media.Color
-    content.vb: Public Overrides ReadOnly Property HeaderTextColor As Color
-  overridden: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderTextColor
-  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor*
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  id: HeaderBackgroundColor
-  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase
-  langs:
-  - csharp
-  - vb
-  name: HeaderBackgroundColor
-  nameWithType: StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  type: Property
-  source:
-    remote:
-      path: FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
-      branch: develop
-      repo: https://github.com/prismify-co/FlowGraph.git
-    id: HeaderBackgroundColor
-    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/HeaderedNodeRendererBase.cs
-    startLine: 229
-  assemblies:
-  - FlowGraph.Avalonia
-  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
-  summary: Glassy semi-transparent pink header background (~50% opacity for glass effect).
-  example: []
-  syntax:
-    content: public override Color HeaderBackgroundColor { get; }
-    parameters: []
-    return:
-      type: Avalonia.Media.Color
-    content.vb: Public Overrides ReadOnly Property HeaderBackgroundColor As Color
-  overridden: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderBackgroundColor
-  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor*
+      type: Avalonia.Media.IBrush
+    content.vb: Protected Overrides Function GetHeaderBackgroundBrush(theme As ThemeResources) As IBrush
+  overridden: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush*
 references:
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -278,6 +289,13 @@ references:
   name: ContentPanelTag
   nameWithType: HeaderedNodeRendererBase.ContentPanelTag
   fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.ContentPanelTag
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.MainPanelTag
+  commentId: F:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.MainPanelTag
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_MainPanelTag
+  name: MainPanelTag
+  nameWithType: HeaderedNodeRendererBase.MainPanelTag
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.MainPanelTag
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HorizontalPadding
   commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HorizontalPadding
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
@@ -313,20 +331,81 @@ references:
   name: HeaderFontSize
   nameWithType: HeaderedNodeRendererBase.HeaderFontSize
   fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderFontSize
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BodyBackgroundColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BodyBackgroundColor
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_BodyBackgroundColor
-  name: BodyBackgroundColor
-  nameWithType: HeaderedNodeRendererBase.BodyBackgroundColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BodyBackgroundColor
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.NodeBorderColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.NodeBorderColor
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetBodyBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetBodyBackgroundBrush(ThemeResources)
+  nameWithType: HeaderedNodeRendererBase.GetBodyBackgroundBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetBodyBackgroundBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetBodyBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetBodyBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetBodyBackgroundBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetBodyBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_NodeBorderColor
-  name: NodeBorderColor
-  nameWithType: HeaderedNodeRendererBase.NodeBorderColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.NodeBorderColor
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetNodeBorderBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetNodeBorderBrush(ThemeResources)
+  nameWithType: HeaderedNodeRendererBase.GetNodeBorderBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetNodeBorderBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetNodeBorderBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetNodeBorderBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetNodeBorderBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetNodeBorderBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetShadowColor_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetShadowColor(ThemeResources)
+  nameWithType: HeaderedNodeRendererBase.GetShadowColor(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetShadowColor
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetShadowColor_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetShadowColor(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetShadowColor
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetShadowColor_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BorderThickness
   commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.BorderThickness
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
@@ -712,6 +791,32 @@ references:
     name: INodeProcessor
     href: FlowGraph.Core.DataFlow.INodeProcessor.html
   - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
+  isExternal: true
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DataNodeRendererBase_GetNodeFromVisual_Avalonia_Controls_Control_
+  name: GetNodeFromVisual(Control)
+  nameWithType: DataNodeRendererBase.GetNodeFromVisual(Control)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
+    name: GetNodeFromVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DataNodeRendererBase_GetNodeFromVisual_Avalonia_Controls_Control_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.GetNodeFromVisual(Avalonia.Controls.Control)
+    name: GetNodeFromVisual
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DataNodeRendererBase_GetNodeFromVisual_Avalonia_Controls_Control_
+  - name: (
+  - uid: Avalonia.Controls.Control
+    name: Control
+    isExternal: true
+  - name: )
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.FindByTag``1(Avalonia.Controls.Control,System.String)
   commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase.FindByTag``1(Avalonia.Controls.Control,System.String)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DataNodeRendererBase
@@ -797,6 +902,66 @@ references:
   - uid: Avalonia.Controls.Control
     name: Control
     isExternal: true
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderBrush_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetBorderBrush(Node, ThemeResources)
+  nameWithType: DefaultNodeRenderer.GetBorderBrush(Node, ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node, FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetBorderBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderBrush_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderBrush(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetBorderBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderBrush_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: ','
+  - name: " "
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderThickness_FlowGraph_Core_Node_
+  name: GetBorderThickness(Node)
+  nameWithType: DefaultNodeRenderer.GetBorderThickness(Node)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
+    name: GetBorderThickness
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderThickness_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.GetBorderThickness(FlowGraph.Core.Node)
+    name: GetBorderThickness
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderThickness_FlowGraph_Core_Node_
+  - name: (
+  - uid: FlowGraph.Core.Node
+    name: Node
+    href: FlowGraph.Core.Node.html
   - name: )
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
   commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)
@@ -1460,26 +1625,81 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderTextColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderTextColor
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_HeaderTextColor
-  name: HeaderTextColor
-  nameWithType: HeaderedNodeRendererBase.HeaderTextColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderTextColor
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledHeaderedNodeRendererBase_HeaderTextColor
-  name: HeaderTextColor
-  nameWithType: StyledHeaderedNodeRendererBase.HeaderTextColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderTextColor
-- uid: Avalonia.Media.Color
-  commentId: T:Avalonia.Media.Color
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderTextBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetHeaderTextBrush(ThemeResources)
+  nameWithType: HeaderedNodeRendererBase.GetHeaderTextBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetHeaderTextBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderTextBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderTextBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetHeaderTextBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderTextBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledHeaderedNodeRendererBase_GetHeaderTextBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetHeaderTextBrush
+  nameWithType: StyledHeaderedNodeRendererBase.GetHeaderTextBrush
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderTextBrush
+- uid: FlowGraph.Avalonia.Rendering.ThemeResources
+  commentId: T:FlowGraph.Avalonia.Rendering.ThemeResources
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  name: ThemeResources
+  nameWithType: ThemeResources
+  fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+- uid: Avalonia.Media.IBrush
+  commentId: T:Avalonia.Media.IBrush
   parent: Avalonia.Media
   isExternal: true
-  name: Color
-  nameWithType: Color
-  fullName: Avalonia.Media.Color
+  name: IBrush
+  nameWithType: IBrush
+  fullName: Avalonia.Media.IBrush
+- uid: FlowGraph.Avalonia.Rendering
+  commentId: N:FlowGraph.Avalonia.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering
+  nameWithType: FlowGraph.Avalonia.Rendering
+  fullName: FlowGraph.Avalonia.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
 - uid: Avalonia.Media
   commentId: N:Avalonia.Media
   isExternal: true
@@ -1502,16 +1722,34 @@ references:
   - uid: Avalonia.Media
     name: Media
     isExternal: true
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderBackgroundColor
-  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderBackgroundColor
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  commentId: M:FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_HeaderBackgroundColor
-  name: HeaderBackgroundColor
-  nameWithType: HeaderedNodeRendererBase.HeaderBackgroundColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.HeaderBackgroundColor
-- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor*
-  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  href: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledHeaderedNodeRendererBase_HeaderBackgroundColor
-  name: HeaderBackgroundColor
-  nameWithType: StyledHeaderedNodeRendererBase.HeaderBackgroundColor
-  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.HeaderBackgroundColor
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetHeaderBackgroundBrush(ThemeResources)
+  nameWithType: HeaderedNodeRendererBase.GetHeaderBackgroundBrush(ThemeResources)
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+  spec.csharp:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetHeaderBackgroundBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+  spec.vb:
+  - uid: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.GetHeaderBackgroundBrush(FlowGraph.Avalonia.Rendering.ThemeResources)
+    name: GetHeaderBackgroundBrush
+    href: FlowGraph.Avalonia.Rendering.NodeRenderers.HeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_HeaderedNodeRendererBase_GetHeaderBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  - name: (
+  - uid: FlowGraph.Avalonia.Rendering.ThemeResources
+    name: ThemeResources
+    href: FlowGraph.Avalonia.Rendering.ThemeResources.html
+  - name: )
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledHeaderedNodeRendererBase_GetHeaderBackgroundBrush_FlowGraph_Avalonia_Rendering_ThemeResources_
+  name: GetHeaderBackgroundBrush
+  nameWithType: StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.StyledHeaderedNodeRendererBase.GetHeaderBackgroundBrush

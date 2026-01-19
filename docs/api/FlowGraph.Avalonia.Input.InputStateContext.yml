@@ -5,17 +5,23 @@ items:
   id: InputStateContext
   parent: FlowGraph.Avalonia.Input
   children:
-  - FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
+  - FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  - FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform
+  - FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
   - FlowGraph.Avalonia.Input.InputStateContext.BoxSelectionChanged
-  - FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen(Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport(Avalonia.Point)
+  - FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
   - FlowGraph.Avalonia.Input.InputStateContext.ConnectEnd
   - FlowGraph.Avalonia.Input.InputStateContext.ConnectStart
   - FlowGraph.Avalonia.Input.InputStateContext.ConnectionCompleted
   - FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator
+  - FlowGraph.Avalonia.Input.InputStateContext.Coordinates
   - FlowGraph.Avalonia.Input.InputStateContext.CopyRequested
   - FlowGraph.Avalonia.Input.InputStateContext.CutRequested
   - FlowGraph.Avalonia.Input.InputStateContext.DeleteSelectedRequested
   - FlowGraph.Avalonia.Input.InputStateContext.DeselectAllRequested
+  - FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+  - FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
   - FlowGraph.Avalonia.Input.InputStateContext.DuplicateRequested
   - FlowGraph.Avalonia.Input.InputStateContext.EdgeClicked
   - FlowGraph.Avalonia.Input.InputStateContext.EdgeDisconnected
@@ -61,20 +67,31 @@ items:
   - FlowGraph.Avalonia.Input.InputStateContext.RaisePaste
   - FlowGraph.Avalonia.Input.InputStateContext.RaiseRedo
   - FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectAll
+  - FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged
+  - FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,System.Double,System.Double,FlowGraph.Core.Point,FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,FlowGraph.Core.Point)
+  - FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested(FlowGraph.Core.Elements.Shapes.ShapeElement,Avalonia.Point)
   - FlowGraph.Avalonia.Input.InputStateContext.RaiseStateChanged(System.String,System.String)
   - FlowGraph.Avalonia.Input.InputStateContext.RaiseUndo
   - FlowGraph.Avalonia.Input.InputStateContext.RaiseUngroup
   - FlowGraph.Avalonia.Input.InputStateContext.RedoRequested
+  - FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
   - FlowGraph.Avalonia.Input.InputStateContext.RootPanel
-  - FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas(Avalonia.Point)
   - FlowGraph.Avalonia.Input.InputStateContext.SelectAllRequested
+  - FlowGraph.Avalonia.Input.InputStateContext.SelectionChangeRequested
   - FlowGraph.Avalonia.Input.InputStateContext.Settings
+  - FlowGraph.Avalonia.Input.InputStateContext.ShapeResized
+  - FlowGraph.Avalonia.Input.InputStateContext.ShapeResizing
+  - FlowGraph.Avalonia.Input.InputStateContext.ShapeTextEditRequested
+  - FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+  - FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
   - FlowGraph.Avalonia.Input.InputStateContext.StateChanged
   - FlowGraph.Avalonia.Input.InputStateContext.Theme
   - FlowGraph.Avalonia.Input.InputStateContext.UndoRequested
   - FlowGraph.Avalonia.Input.InputStateContext.UngroupRequested
   - FlowGraph.Avalonia.Input.InputStateContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   - FlowGraph.Avalonia.Input.InputStateContext.Viewport
+  - FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas(Avalonia.Point)
   langs:
   - csharp
   - vb
@@ -85,11 +102,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: InputStateContext
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 15
+    startLine: 19
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -111,42 +128,42 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
-  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)
-  id: '#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.GraphRenderer)'
+- uid: FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  id: '#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.ViewportState,FlowGraph.Avalonia.Rendering.CanvasElementManager)'
   parent: FlowGraph.Avalonia.Input.InputStateContext
   langs:
   - csharp
   - vb
-  name: InputStateContext(FlowCanvasSettings, ViewportState, GraphRenderer)
-  nameWithType: InputStateContext.InputStateContext(FlowCanvasSettings, ViewportState, GraphRenderer)
-  fullName: FlowGraph.Avalonia.Input.InputStateContext.InputStateContext(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.GraphRenderer)
+  name: InputStateContext(FlowCanvasSettings, ViewportState, CanvasElementManager)
+  nameWithType: InputStateContext.InputStateContext(FlowCanvasSettings, ViewportState, CanvasElementManager)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.InputStateContext(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.CanvasElementManager)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 21
+    startLine: 29
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
   syntax:
-    content: public InputStateContext(FlowCanvasSettings settings, ViewportState viewport, GraphRenderer graphRenderer)
+    content: public InputStateContext(FlowCanvasSettings settings, ViewportState viewport, CanvasElementManager graphRenderer)
     parameters:
     - id: settings
       type: FlowGraph.Avalonia.FlowCanvasSettings
     - id: viewport
       type: FlowGraph.Avalonia.ViewportState
     - id: graphRenderer
-      type: FlowGraph.Avalonia.Rendering.GraphRenderer
-    content.vb: Public Sub New(settings As FlowCanvasSettings, viewport As ViewportState, graphRenderer As GraphRenderer)
+      type: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    content.vb: Public Sub New(settings As FlowCanvasSettings, viewport As ViewportState, graphRenderer As CanvasElementManager)
   overload: FlowGraph.Avalonia.Input.InputStateContext.#ctor*
-  nameWithType.vb: InputStateContext.New(FlowCanvasSettings, ViewportState, GraphRenderer)
-  fullName.vb: FlowGraph.Avalonia.Input.InputStateContext.New(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.GraphRenderer)
-  name.vb: New(FlowCanvasSettings, ViewportState, GraphRenderer)
+  nameWithType.vb: InputStateContext.New(FlowCanvasSettings, ViewportState, CanvasElementManager)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateContext.New(FlowGraph.Avalonia.FlowCanvasSettings, FlowGraph.Avalonia.ViewportState, FlowGraph.Avalonia.Rendering.CanvasElementManager)
+  name.vb: New(FlowCanvasSettings, ViewportState, CanvasElementManager)
 - uid: FlowGraph.Avalonia.Input.InputStateContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   commentId: M:FlowGraph.Avalonia.Input.InputStateContext.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
   id: UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)
@@ -161,11 +178,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UpdateSettings
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 35
+    startLine: 43
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -193,11 +210,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 42
+    startLine: 50
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -222,11 +239,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Viewport
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 43
+    startLine: 51
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -251,20 +268,20 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GraphRenderer
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 44
+    startLine: 52
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
   syntax:
-    content: public GraphRenderer GraphRenderer { get; }
+    content: public CanvasElementManager GraphRenderer { get; }
     parameters: []
     return:
-      type: FlowGraph.Avalonia.Rendering.GraphRenderer
-    content.vb: Public ReadOnly Property GraphRenderer As GraphRenderer
+      type: FlowGraph.Avalonia.Rendering.CanvasElementManager
+    content.vb: Public ReadOnly Property GraphRenderer As CanvasElementManager
   overload: FlowGraph.Avalonia.Input.InputStateContext.GraphRenderer*
 - uid: FlowGraph.Avalonia.Input.InputStateContext.RootPanel
   commentId: P:FlowGraph.Avalonia.Input.InputStateContext.RootPanel
@@ -280,11 +297,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RootPanel
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 47
+    startLine: 59
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -309,11 +326,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: MainCanvas
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 48
+    startLine: 65
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -324,6 +341,66 @@ items:
       type: Avalonia.Controls.Canvas
     content.vb: Public Property MainCanvas As Canvas
   overload: FlowGraph.Avalonia.Input.InputStateContext.MainCanvas*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
+  id: ApplyViewportTransformCallback
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ApplyViewportTransformCallback
+  nameWithType: InputStateContext.ApplyViewportTransformCallback
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ApplyViewportTransformCallback
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 74
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Callback to apply viewport transforms. Set by FlowCanvas.
+  example: []
+  syntax:
+    content: public Action? ApplyViewportTransformCallback { get; set; }
+    parameters: []
+    return:
+      type: System.Action
+    content.vb: Public Property ApplyViewportTransformCallback As Action
+  overload: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+  id: DirectRenderer
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: DirectRenderer
+  nameWithType: InputStateContext.DirectRenderer
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: DirectRenderer
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 76
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public DirectCanvasRenderer? DirectRenderer { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+    content.vb: Public Property DirectRenderer As DirectCanvasRenderer
+  overload: FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer*
 - uid: FlowGraph.Avalonia.Input.InputStateContext.Graph
   commentId: P:FlowGraph.Avalonia.Input.InputStateContext.Graph
   id: Graph
@@ -338,11 +415,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Graph
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 49
+    startLine: 82
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -367,11 +444,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Theme
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 50
+    startLine: 83
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -382,6 +459,74 @@ items:
       type: FlowGraph.Avalonia.Rendering.ThemeResources
     content.vb: Public Property Theme As ThemeResources
   overload: FlowGraph.Avalonia.Input.InputStateContext.Theme*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.Coordinates
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.Coordinates
+  id: Coordinates
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: Coordinates
+  nameWithType: InputStateContext.Coordinates
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.Coordinates
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Coordinates
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 89
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Type-safe coordinate helper that abstracts rendering mode differences.
+
+    Use this instead of ViewportToCanvas/CanvasToViewport for new code.
+  example: []
+  syntax:
+    content: public IInputCoordinates Coordinates { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Input.IInputCoordinates
+    content.vb: Public ReadOnly Property Coordinates As IInputCoordinates
+  overload: FlowGraph.Avalonia.Input.InputStateContext.Coordinates*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
+  id: RenderTarget
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: RenderTarget
+  nameWithType: InputStateContext.RenderTarget
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RenderTarget
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 102
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Mode-agnostic render target for creating temporary visuals.
+
+    Handles container selection and coordinate conversion internally.
+  example: []
+  syntax:
+    content: public IRenderTarget RenderTarget { get; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.IRenderTarget
+    content.vb: Public ReadOnly Property RenderTarget As IRenderTarget
+  overload: FlowGraph.Avalonia.Input.InputStateContext.RenderTarget*
 - uid: FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator
   commentId: P:FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator
   id: ConnectionValidator
@@ -396,11 +541,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectionValidator
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 56
+    startLine: 124
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -416,6 +561,152 @@ items:
       type: FlowGraph.Avalonia.Validation.IConnectionValidator
     content.vb: Public Property ConnectionValidator As IConnectionValidator
   overload: FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
+  id: SnapProvider
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: SnapProvider
+  nameWithType: InputStateContext.SnapProvider
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SnapProvider
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 132
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Optional snap provider for providing snap offsets during drag operations.
+
+    External systems (like helper lines, guides) can register as a snap provider
+
+    to influence node positions during drag without directly setting positions.
+
+    Set by FlowCanvas.
+  example: []
+  syntax:
+    content: public ISnapProvider? SnapProvider { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Input.ISnapProvider
+    content.vb: Public Property SnapProvider As ISnapProvider
+  overload: FlowGraph.Avalonia.Input.InputStateContext.SnapProvider*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
+  id: CollisionProvider
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: CollisionProvider
+  nameWithType: InputStateContext.CollisionProvider
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: CollisionProvider
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 139
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Optional collision provider for preventing node overlap during drag.
+
+    Applied after SnapProvider. Returns offset to prevent collision.
+
+    Set by FlowCanvas.
+  example: []
+  syntax:
+    content: public ICollisionProvider? CollisionProvider { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Input.ICollisionProvider
+    content.vb: Public Property CollisionProvider As ICollisionProvider
+  overload: FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+  id: ShapeVisualManager
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ShapeVisualManager
+  nameWithType: InputStateContext.ShapeVisualManager
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeVisualManager
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 145
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Shape visual manager for updating shape selection state.
+
+    Set by FlowCanvas.
+  example: []
+  syntax:
+    content: public ShapeVisualManager? ShapeVisualManager { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+    content.vb: Public Property ShapeVisualManager As ShapeVisualManager
+  overload: FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
+  commentId: P:FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
+  id: Dispatcher
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: Dispatcher
+  nameWithType: InputStateContext.Dispatcher
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Dispatcher
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 155
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Reference to the InputDispatcher for processor-based input handling.
+
+    Set by FlowCanvas during initialization.
+  remarks: >-
+    This enables IdleState to delegate to the InputDispatcher instead of
+
+    doing manual pattern matching on source control tags.
+  example: []
+  syntax:
+    content: public InputDispatcher? Dispatcher { get; set; }
+    parameters: []
+    return:
+      type: FlowGraph.Avalonia.Input.InputDispatcher
+    content.vb: Public Property Dispatcher As InputDispatcher
+  overload: FlowGraph.Avalonia.Input.InputStateContext.Dispatcher*
 - uid: FlowGraph.Avalonia.Input.InputStateContext.ConnectionCompleted
   commentId: E:FlowGraph.Avalonia.Input.InputStateContext.ConnectionCompleted
   id: ConnectionCompleted
@@ -430,11 +721,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectionCompleted
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 62
+    startLine: 161
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -457,11 +748,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeClicked
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 63
+    startLine: 162
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -484,11 +775,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DeselectAllRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 64
+    startLine: 163
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -511,11 +802,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: SelectAllRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 65
+    startLine: 164
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -538,11 +829,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DeleteSelectedRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 66
+    startLine: 165
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -565,11 +856,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UndoRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 67
+    startLine: 166
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -592,11 +883,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RedoRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 68
+    startLine: 167
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -619,11 +910,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CopyRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 69
+    startLine: 168
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -646,11 +937,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CutRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 70
+    startLine: 169
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -673,11 +964,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: PasteRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 71
+    startLine: 170
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -700,11 +991,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: DuplicateRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 72
+    startLine: 171
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -727,11 +1018,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 73
+    startLine: 172
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -754,11 +1045,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: UngroupRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 74
+    startLine: 173
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -781,11 +1072,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GroupCollapseToggleRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 75
+    startLine: 174
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -808,11 +1099,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: GridRenderRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 76
+    startLine: 175
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -835,11 +1126,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: BoxSelectionChanged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 77
+    startLine: 176
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -862,11 +1153,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodesDragging
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 78
+    startLine: 177
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -889,11 +1180,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodesDragged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 79
+    startLine: 178
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -916,11 +1207,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeResized
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 80
+    startLine: 179
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -943,11 +1234,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeResizing
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 81
+    startLine: 180
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -970,11 +1261,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: StateChanged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 82
+    startLine: 181
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -997,11 +1288,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeDragStart
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 83
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1024,11 +1315,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeDragStop
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 84
+    startLine: 183
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1051,11 +1342,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectStart
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 85
+    startLine: 184
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1078,11 +1369,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: ConnectEnd
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 86
+    startLine: 185
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1105,11 +1396,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeReconnected
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 87
+    startLine: 186
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1132,11 +1423,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeDisconnected
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 88
+    startLine: 187
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1159,11 +1450,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeLabelEditRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 89
+    startLine: 188
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1186,11 +1477,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgeLabelEditRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 90
+    startLine: 189
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1199,6 +1490,114 @@ items:
     return:
       type: System.EventHandler{FlowGraph.Avalonia.EdgeLabelEditRequestedEventArgs}
     content.vb: Public Event EdgeLabelEditRequested As EventHandler(Of EdgeLabelEditRequestedEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ShapeTextEditRequested
+  commentId: E:FlowGraph.Avalonia.Input.InputStateContext.ShapeTextEditRequested
+  id: ShapeTextEditRequested
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ShapeTextEditRequested
+  nameWithType: InputStateContext.ShapeTextEditRequested
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ShapeTextEditRequested
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeTextEditRequested
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 190
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public event EventHandler<ShapeTextEditRequestedEventArgs>? ShapeTextEditRequested
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs}
+    content.vb: Public Event ShapeTextEditRequested As EventHandler(Of ShapeTextEditRequestedEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ShapeResized
+  commentId: E:FlowGraph.Avalonia.Input.InputStateContext.ShapeResized
+  id: ShapeResized
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ShapeResized
+  nameWithType: InputStateContext.ShapeResized
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ShapeResized
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeResized
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 191
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public event EventHandler<ShapeResizedEventArgs>? ShapeResized
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.ShapeResizedEventArgs}
+    content.vb: Public Event ShapeResized As EventHandler(Of ShapeResizedEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ShapeResizing
+  commentId: E:FlowGraph.Avalonia.Input.InputStateContext.ShapeResizing
+  id: ShapeResizing
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ShapeResizing
+  nameWithType: InputStateContext.ShapeResizing
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ShapeResizing
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ShapeResizing
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 192
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public event EventHandler<ShapeResizingEventArgs>? ShapeResizing
+    return:
+      type: System.EventHandler{FlowGraph.Avalonia.ShapeResizingEventArgs}
+    content.vb: Public Event ShapeResizing As EventHandler(Of ShapeResizingEventArgs)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.SelectionChangeRequested
+  commentId: E:FlowGraph.Avalonia.Input.InputStateContext.SelectionChangeRequested
+  id: SelectionChangeRequested
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: SelectionChangeRequested
+  nameWithType: InputStateContext.SelectionChangeRequested
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.SelectionChangeRequested
+  type: Event
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelectionChangeRequested
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 193
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public event EventHandler? SelectionChangeRequested
+    return:
+      type: System.EventHandler
+    content.vb: Public Event SelectionChangeRequested As EventHandler
 - uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseConnectionCompleted(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Core.Port)
   commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseConnectionCompleted(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Core.Port)
   id: RaiseConnectionCompleted(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Core.Node,FlowGraph.Core.Port)
@@ -1213,11 +1612,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseConnectionCompleted
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 96
+    startLine: 199
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1248,11 +1647,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseEdgeClicked
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 99
+    startLine: 202
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1282,11 +1681,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseDeselectAll
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 102
+    startLine: 205
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1308,11 +1707,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseSelectAll
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 103
+    startLine: 206
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1334,11 +1733,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseDeleteSelected
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 104
+    startLine: 207
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1360,11 +1759,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseUndo
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 105
+    startLine: 208
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1386,11 +1785,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseRedo
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 106
+    startLine: 209
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1412,11 +1811,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseCopy
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 107
+    startLine: 210
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1438,11 +1837,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseCut
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 108
+    startLine: 211
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1464,11 +1863,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaisePaste
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 109
+    startLine: 212
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1490,11 +1889,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseDuplicate
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 110
+    startLine: 213
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1516,11 +1915,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseGroup
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 111
+    startLine: 214
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1542,11 +1941,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseUngroup
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 112
+    startLine: 215
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1568,11 +1967,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseGroupCollapseToggle
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 113
+    startLine: 216
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1600,11 +1999,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseGridRender
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 115
+    startLine: 218
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1626,11 +2025,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseBoxSelectionChanged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 116
+    startLine: 219
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1655,11 +2054,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodesDragging
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 118
+    startLine: 221
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1687,11 +2086,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodesDragged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 120
+    startLine: 223
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1721,11 +2120,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodeResized
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 122
+    startLine: 225
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1765,11 +2164,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodeResizing
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 124
+    startLine: 227
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1803,11 +2202,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseStateChanged
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 126
+    startLine: 229
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1837,11 +2236,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodeDragStart
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 128
+    startLine: 231
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1871,11 +2270,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodeDragStop
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 130
+    startLine: 233
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1905,11 +2304,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseConnectStart
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 132
+    startLine: 235
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1941,11 +2340,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseConnectEnd
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 134
+    startLine: 237
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -1981,11 +2380,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseEdgeReconnected
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 136
+    startLine: 239
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -2012,11 +2411,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseEdgeDisconnected
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 138
+    startLine: 241
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -2027,6 +2426,32 @@ items:
       type: FlowGraph.Core.Edge
     content.vb: Public Sub RaiseEdgeDisconnected(edge As Edge)
   overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseEdgeDisconnected*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged
+  id: RaiseSelectionChanged
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: RaiseSelectionChanged()
+  nameWithType: InputStateContext.RaiseSelectionChanged()
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RaiseSelectionChanged
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 244
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  syntax:
+    content: public void RaiseSelectionChanged()
+    content.vb: Public Sub RaiseSelectionChanged()
+  overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged*
 - uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseNodeLabelEditRequested(FlowGraph.Core.Node,Avalonia.Point)
   commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseNodeLabelEditRequested(FlowGraph.Core.Node,Avalonia.Point)
   id: RaiseNodeLabelEditRequested(FlowGraph.Core.Node,Avalonia.Point)
@@ -2041,11 +2466,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseNodeLabelEditRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 144
+    startLine: 250
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -2076,11 +2501,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: RaiseEdgeLabelEditRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 154
+    startLine: 260
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
@@ -2097,68 +2522,222 @@ items:
       type: System.Boolean
     content.vb: Public Function RaiseEdgeLabelEditRequested(edge As Edge, screenPosition As Point) As Boolean
   overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseEdgeLabelEditRequested*
-- uid: FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas(Avalonia.Point)
-  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas(Avalonia.Point)
-  id: ScreenToCanvas(Avalonia.Point)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested(FlowGraph.Core.Elements.Shapes.ShapeElement,Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested(FlowGraph.Core.Elements.Shapes.ShapeElement,Avalonia.Point)
+  id: RaiseShapeTextEditRequested(FlowGraph.Core.Elements.Shapes.ShapeElement,Avalonia.Point)
   parent: FlowGraph.Avalonia.Input.InputStateContext
   langs:
   - csharp
   - vb
-  name: ScreenToCanvas(Point)
-  nameWithType: InputStateContext.ScreenToCanvas(Point)
-  fullName: FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas(Avalonia.Point)
+  name: RaiseShapeTextEditRequested(ShapeElement, Point)
+  nameWithType: InputStateContext.RaiseShapeTextEditRequested(ShapeElement, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested(FlowGraph.Core.Elements.Shapes.ShapeElement, Avalonia.Point)
   type: Method
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: ScreenToCanvas
+    id: RaiseShapeTextEditRequested
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 165
+    startLine: 270
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Raises the ShapeTextEditRequested event and returns whether it was handled.
+  example: []
+  syntax:
+    content: public bool RaiseShapeTextEditRequested(ShapeElement shape, Point screenPosition)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    - id: screenPosition
+      type: Avalonia.Point
+    return:
+      type: System.Boolean
+    content.vb: Public Function RaiseShapeTextEditRequested(shape As ShapeElement, screenPosition As Point) As Boolean
+  overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,FlowGraph.Core.Point)
+  id: RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: RaiseShapeResizing(ShapeElement, double, double, Point)
+  nameWithType: InputStateContext.RaiseShapeResizing(ShapeElement, double, double, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement, double, double, FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RaiseShapeResizing
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 285
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Raises the ShapeResizing event during shape resize operation.
+  example: []
+  syntax:
+    content: public void RaiseShapeResizing(ShapeElement shape, double newWidth, double newHeight, Point newPos)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    - id: newWidth
+      type: System.Double
+    - id: newHeight
+      type: System.Double
+    - id: newPos
+      type: FlowGraph.Core.Point
+    content.vb: Public Sub RaiseShapeResizing(shape As ShapeElement, newWidth As Double, newHeight As Double, newPos As Point)
+  overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing*
+  nameWithType.vb: InputStateContext.RaiseShapeResizing(ShapeElement, Double, Double, Point)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing(FlowGraph.Core.Elements.Shapes.ShapeElement, Double, Double, FlowGraph.Core.Point)
+  name.vb: RaiseShapeResizing(ShapeElement, Double, Double, Point)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,System.Double,System.Double,FlowGraph.Core.Point,FlowGraph.Core.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,System.Double,System.Double,FlowGraph.Core.Point,FlowGraph.Core.Point)
+  id: RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement,System.Double,System.Double,System.Double,System.Double,FlowGraph.Core.Point,FlowGraph.Core.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: RaiseShapeResized(ShapeElement, double, double, double, double, Point, Point)
+  nameWithType: InputStateContext.RaiseShapeResized(ShapeElement, double, double, double, double, Point, Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement, double, double, double, double, FlowGraph.Core.Point, FlowGraph.Core.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: RaiseShapeResized
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 291
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: Raises the ShapeResized event after shape resize is complete.
+  example: []
+  syntax:
+    content: public void RaiseShapeResized(ShapeElement shape, double oldWidth, double oldHeight, double newWidth, double newHeight, Point oldPos, Point newPos)
+    parameters:
+    - id: shape
+      type: FlowGraph.Core.Elements.Shapes.ShapeElement
+    - id: oldWidth
+      type: System.Double
+    - id: oldHeight
+      type: System.Double
+    - id: newWidth
+      type: System.Double
+    - id: newHeight
+      type: System.Double
+    - id: oldPos
+      type: FlowGraph.Core.Point
+    - id: newPos
+      type: FlowGraph.Core.Point
+    content.vb: Public Sub RaiseShapeResized(shape As ShapeElement, oldWidth As Double, oldHeight As Double, newWidth As Double, newHeight As Double, oldPos As Point, newPos As Point)
+  overload: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized*
+  nameWithType.vb: InputStateContext.RaiseShapeResized(ShapeElement, Double, Double, Double, Double, Point, Point)
+  fullName.vb: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized(FlowGraph.Core.Elements.Shapes.ShapeElement, Double, Double, Double, Double, FlowGraph.Core.Point, FlowGraph.Core.Point)
+  name.vb: RaiseShapeResized(ShapeElement, Double, Double, Double, Double, Point, Point)
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas(Avalonia.Point)
+  id: ViewportToCanvas(Avalonia.Point)
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportToCanvas(Point)
+  nameWithType: InputStateContext.ViewportToCanvas(Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas(Avalonia.Point)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportToCanvas
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 298
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
   syntax:
-    content: public Point ScreenToCanvas(Point screenPoint)
+    content: public Point ViewportToCanvas(Point viewportPoint)
     parameters:
-    - id: screenPoint
+    - id: viewportPoint
       type: Avalonia.Point
     return:
       type: Avalonia.Point
-    content.vb: Public Function ScreenToCanvas(screenPoint As Point) As Point
-  overload: FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas*
-- uid: FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen(Avalonia.Point)
-  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen(Avalonia.Point)
-  id: CanvasToScreen(Avalonia.Point)
+    content.vb: Public Function ViewportToCanvas(viewportPoint As Point) As Point
+  overload: FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport(Avalonia.Point)
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport(Avalonia.Point)
+  id: CanvasToViewport(Avalonia.Point)
   parent: FlowGraph.Avalonia.Input.InputStateContext
   langs:
   - csharp
   - vb
-  name: CanvasToScreen(Point)
-  nameWithType: InputStateContext.CanvasToScreen(Point)
-  fullName: FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen(Avalonia.Point)
+  name: CanvasToViewport(Point)
+  nameWithType: InputStateContext.CanvasToViewport(Point)
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport(Avalonia.Point)
   type: Method
   source:
     remote:
       path: FlowGraph.Avalonia/Input/InputStateContext.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
-    id: CanvasToScreen
+    id: CanvasToViewport
     path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
-    startLine: 166
+    startLine: 299
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Input
   syntax:
-    content: public Point CanvasToScreen(Point canvasPoint)
+    content: public Point CanvasToViewport(Point canvasPoint)
     parameters:
     - id: canvasPoint
       type: Avalonia.Point
     return:
       type: Avalonia.Point
-    content.vb: Public Function CanvasToScreen(canvasPoint As Point) As Point
-  overload: FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen*
+    content.vb: Public Function CanvasToViewport(canvasPoint As Point) As Point
+  overload: FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport*
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform
+  commentId: M:FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform
+  id: ApplyViewportTransform
+  parent: FlowGraph.Avalonia.Input.InputStateContext
+  langs:
+  - csharp
+  - vb
+  name: ApplyViewportTransform()
+  nameWithType: InputStateContext.ApplyViewportTransform()
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Input/InputStateContext.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ApplyViewportTransform
+    path: ../FlowGraph.Avalonia/Input/InputStateContext.cs
+    startLine: 310
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Input
+  summary: >-
+    Applies the current viewport state to the MainCanvas transform.
+
+    This enables O(1) pan/zoom updates instead of O(n) re-rendering.
+
+    For DirectRendering mode, triggers a redraw since it bypasses the visual tree.
+  example: []
+  syntax:
+    content: public void ApplyViewportTransform()
+    content.vb: Public Sub ApplyViewportTransform()
+  overload: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform*
 references:
 - uid: FlowGraph.Avalonia.Input
   commentId: N:FlowGraph.Avalonia.Input
@@ -2429,7 +3008,7 @@ references:
   fullName: System
 - uid: FlowGraph.Avalonia.Input.InputStateContext.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.#ctor
-  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext__ctor_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_ViewportState_FlowGraph_Avalonia_Rendering_GraphRenderer_
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext__ctor_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_ViewportState_FlowGraph_Avalonia_Rendering_CanvasElementManager_
   name: InputStateContext
   nameWithType: InputStateContext.InputStateContext
   fullName: FlowGraph.Avalonia.Input.InputStateContext.InputStateContext
@@ -2450,13 +3029,13 @@ references:
   name: ViewportState
   nameWithType: ViewportState
   fullName: FlowGraph.Avalonia.ViewportState
-- uid: FlowGraph.Avalonia.Rendering.GraphRenderer
-  commentId: T:FlowGraph.Avalonia.Rendering.GraphRenderer
+- uid: FlowGraph.Avalonia.Rendering.CanvasElementManager
+  commentId: T:FlowGraph.Avalonia.Rendering.CanvasElementManager
   parent: FlowGraph.Avalonia.Rendering
-  href: FlowGraph.Avalonia.Rendering.GraphRenderer.html
-  name: GraphRenderer
-  nameWithType: GraphRenderer
-  fullName: FlowGraph.Avalonia.Rendering.GraphRenderer
+  href: FlowGraph.Avalonia.Rendering.CanvasElementManager.html
+  name: CanvasElementManager
+  nameWithType: CanvasElementManager
+  fullName: FlowGraph.Avalonia.Rendering.CanvasElementManager
 - uid: FlowGraph.Avalonia
   commentId: N:FlowGraph.Avalonia
   href: FlowGraph.html
@@ -2581,6 +3160,33 @@ references:
   name: Canvas
   nameWithType: Canvas
   fullName: Avalonia.Controls.Canvas
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ApplyViewportTransformCallback
+  name: ApplyViewportTransformCallback
+  nameWithType: InputStateContext.ApplyViewportTransformCallback
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransformCallback
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_DirectRenderer
+  name: DirectRenderer
+  nameWithType: InputStateContext.DirectRenderer
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.DirectRenderer
+- uid: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  commentId: T:FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html
+  name: DirectCanvasRenderer
+  nameWithType: DirectCanvasRenderer
+  fullName: FlowGraph.Avalonia.Rendering.DirectCanvasRenderer
 - uid: FlowGraph.Avalonia.Input.InputStateContext.Graph*
   commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.Graph
   href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_Graph
@@ -2629,6 +3235,32 @@ references:
   name: ThemeResources
   nameWithType: ThemeResources
   fullName: FlowGraph.Avalonia.Rendering.ThemeResources
+- uid: FlowGraph.Avalonia.Input.InputStateContext.Coordinates*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.Coordinates
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_Coordinates
+  name: Coordinates
+  nameWithType: InputStateContext.Coordinates
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.Coordinates
+- uid: FlowGraph.Avalonia.Input.IInputCoordinates
+  commentId: T:FlowGraph.Avalonia.Input.IInputCoordinates
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.IInputCoordinates.html
+  name: IInputCoordinates
+  nameWithType: IInputCoordinates
+  fullName: FlowGraph.Avalonia.Input.IInputCoordinates
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RenderTarget*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RenderTarget
+  name: RenderTarget
+  nameWithType: InputStateContext.RenderTarget
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RenderTarget
+- uid: FlowGraph.Avalonia.Rendering.IRenderTarget
+  commentId: T:FlowGraph.Avalonia.Rendering.IRenderTarget
+  parent: FlowGraph.Avalonia.Rendering
+  href: FlowGraph.Avalonia.Rendering.IRenderTarget.html
+  name: IRenderTarget
+  nameWithType: IRenderTarget
+  fullName: FlowGraph.Avalonia.Rendering.IRenderTarget
 - uid: FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator*
   commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ConnectionValidator
   href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ConnectionValidator
@@ -2672,6 +3304,96 @@ references:
   - uid: FlowGraph.Avalonia.Validation
     name: Validation
     href: FlowGraph.Avalonia.Validation.html
+- uid: FlowGraph.Avalonia.Input.InputStateContext.SnapProvider*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_SnapProvider
+  name: SnapProvider
+  nameWithType: InputStateContext.SnapProvider
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.SnapProvider
+- uid: FlowGraph.Avalonia.Input.ISnapProvider
+  commentId: T:FlowGraph.Avalonia.Input.ISnapProvider
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.ISnapProvider.html
+  name: ISnapProvider
+  nameWithType: ISnapProvider
+  fullName: FlowGraph.Avalonia.Input.ISnapProvider
+- uid: FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_CollisionProvider
+  name: CollisionProvider
+  nameWithType: InputStateContext.CollisionProvider
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.CollisionProvider
+- uid: FlowGraph.Avalonia.Input.ICollisionProvider
+  commentId: T:FlowGraph.Avalonia.Input.ICollisionProvider
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.ICollisionProvider.html
+  name: ICollisionProvider
+  nameWithType: ICollisionProvider
+  fullName: FlowGraph.Avalonia.Input.ICollisionProvider
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ShapeVisualManager
+  name: ShapeVisualManager
+  nameWithType: InputStateContext.ShapeVisualManager
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ShapeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  commentId: T:FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+  parent: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  href: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html
+  name: ShapeVisualManager
+  nameWithType: ShapeVisualManager
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager
+- uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  commentId: N:FlowGraph.Avalonia.Rendering.ShapeRenderers
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  nameWithType: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  fullName: FlowGraph.Avalonia.Rendering.ShapeRenderers
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+    name: ShapeRenderers
+    href: FlowGraph.Avalonia.Rendering.ShapeRenderers.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering
+    name: Rendering
+    href: FlowGraph.Avalonia.Rendering.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Rendering.ShapeRenderers
+    name: ShapeRenderers
+    href: FlowGraph.Avalonia.Rendering.ShapeRenderers.html
+- uid: FlowGraph.Avalonia.Input.InputStateContext.Dispatcher*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_Dispatcher
+  name: Dispatcher
+  nameWithType: InputStateContext.Dispatcher
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.Dispatcher
+- uid: FlowGraph.Avalonia.Input.InputDispatcher
+  commentId: T:FlowGraph.Avalonia.Input.InputDispatcher
+  parent: FlowGraph.Avalonia.Input
+  href: FlowGraph.Avalonia.Input.InputDispatcher.html
+  name: InputDispatcher
+  nameWithType: InputDispatcher
+  fullName: FlowGraph.Avalonia.Input.InputDispatcher
 - uid: System.EventHandler{FlowGraph.Avalonia.ConnectionCompletedEventArgs}
   commentId: T:System.EventHandler{FlowGraph.Avalonia.ConnectionCompletedEventArgs}
   parent: System
@@ -3269,6 +3991,105 @@ references:
     name: EdgeLabelEditRequestedEventArgs
     href: FlowGraph.Avalonia.EdgeLabelEditRequestedEventArgs.html
   - name: )
+- uid: System.EventHandler{FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ShapeTextEditRequestedEventArgs>
+  nameWithType: EventHandler<ShapeTextEditRequestedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs>
+  nameWithType.vb: EventHandler(Of ShapeTextEditRequestedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs)
+  name.vb: EventHandler(Of ShapeTextEditRequestedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs
+    name: ShapeTextEditRequestedEventArgs
+    href: FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs
+    name: ShapeTextEditRequestedEventArgs
+    href: FlowGraph.Avalonia.ShapeTextEditRequestedEventArgs.html
+  - name: )
+- uid: System.EventHandler{FlowGraph.Avalonia.ShapeResizedEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.ShapeResizedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ShapeResizedEventArgs>
+  nameWithType: EventHandler<ShapeResizedEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.ShapeResizedEventArgs>
+  nameWithType.vb: EventHandler(Of ShapeResizedEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.ShapeResizedEventArgs)
+  name.vb: EventHandler(Of ShapeResizedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ShapeResizedEventArgs
+    name: ShapeResizedEventArgs
+    href: FlowGraph.Avalonia.ShapeResizedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ShapeResizedEventArgs
+    name: ShapeResizedEventArgs
+    href: FlowGraph.Avalonia.ShapeResizedEventArgs.html
+  - name: )
+- uid: System.EventHandler{FlowGraph.Avalonia.ShapeResizingEventArgs}
+  commentId: T:System.EventHandler{FlowGraph.Avalonia.ShapeResizingEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ShapeResizingEventArgs>
+  nameWithType: EventHandler<ShapeResizingEventArgs>
+  fullName: System.EventHandler<FlowGraph.Avalonia.ShapeResizingEventArgs>
+  nameWithType.vb: EventHandler(Of ShapeResizingEventArgs)
+  fullName.vb: System.EventHandler(Of FlowGraph.Avalonia.ShapeResizingEventArgs)
+  name.vb: EventHandler(Of ShapeResizingEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: FlowGraph.Avalonia.ShapeResizingEventArgs
+    name: ShapeResizingEventArgs
+    href: FlowGraph.Avalonia.ShapeResizingEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Avalonia.ShapeResizingEventArgs
+    name: ShapeResizingEventArgs
+    href: FlowGraph.Avalonia.ShapeResizingEventArgs.html
+  - name: )
 - uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseConnectionCompleted*
   commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseConnectionCompleted
   href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseConnectionCompleted_FlowGraph_Core_Node_FlowGraph_Core_Port_FlowGraph_Core_Node_FlowGraph_Core_Port_
@@ -3717,6 +4538,12 @@ references:
   name: RaiseEdgeDisconnected
   nameWithType: InputStateContext.RaiseEdgeDisconnected
   fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseEdgeDisconnected
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseSelectionChanged
+  name: RaiseSelectionChanged
+  nameWithType: InputStateContext.RaiseSelectionChanged
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseSelectionChanged
 - uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseNodeLabelEditRequested*
   commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseNodeLabelEditRequested
   href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseNodeLabelEditRequested_FlowGraph_Core_Node_Avalonia_Point_
@@ -3736,15 +4563,84 @@ references:
   name: RaiseEdgeLabelEditRequested
   nameWithType: InputStateContext.RaiseEdgeLabelEditRequested
   fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseEdgeLabelEditRequested
-- uid: FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas*
-  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas
-  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ScreenToCanvas_Avalonia_Point_
-  name: ScreenToCanvas
-  nameWithType: InputStateContext.ScreenToCanvas
-  fullName: FlowGraph.Avalonia.Input.InputStateContext.ScreenToCanvas
-- uid: FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen*
-  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen
-  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_CanvasToScreen_Avalonia_Point_
-  name: CanvasToScreen
-  nameWithType: InputStateContext.CanvasToScreen
-  fullName: FlowGraph.Avalonia.Input.InputStateContext.CanvasToScreen
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseShapeTextEditRequested_FlowGraph_Core_Elements_Shapes_ShapeElement_Avalonia_Point_
+  name: RaiseShapeTextEditRequested
+  nameWithType: InputStateContext.RaiseShapeTextEditRequested
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeTextEditRequested
+- uid: FlowGraph.Core.Elements.Shapes.ShapeElement
+  commentId: T:FlowGraph.Core.Elements.Shapes.ShapeElement
+  parent: FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.Core.Elements.Shapes.ShapeElement.html
+  name: ShapeElement
+  nameWithType: ShapeElement
+  fullName: FlowGraph.Core.Elements.Shapes.ShapeElement
+- uid: FlowGraph.Core.Elements.Shapes
+  commentId: N:FlowGraph.Core.Elements.Shapes
+  href: FlowGraph.html
+  name: FlowGraph.Core.Elements.Shapes
+  nameWithType: FlowGraph.Core.Elements.Shapes
+  fullName: FlowGraph.Core.Elements.Shapes
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Elements
+    name: Elements
+    href: FlowGraph.Core.Elements.html
+  - name: .
+  - uid: FlowGraph.Core.Elements.Shapes
+    name: Shapes
+    href: FlowGraph.Core.Elements.Shapes.html
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseShapeResizing_FlowGraph_Core_Elements_Shapes_ShapeElement_System_Double_System_Double_FlowGraph_Core_Point_
+  name: RaiseShapeResizing
+  nameWithType: InputStateContext.RaiseShapeResizing
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResizing
+- uid: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_RaiseShapeResized_FlowGraph_Core_Elements_Shapes_ShapeElement_System_Double_System_Double_System_Double_System_Double_FlowGraph_Core_Point_FlowGraph_Core_Point_
+  name: RaiseShapeResized
+  nameWithType: InputStateContext.RaiseShapeResized
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.RaiseShapeResized
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ViewportToCanvas_Avalonia_Point_
+  name: ViewportToCanvas
+  nameWithType: InputStateContext.ViewportToCanvas
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ViewportToCanvas
+- uid: FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_CanvasToViewport_Avalonia_Point_
+  name: CanvasToViewport
+  nameWithType: InputStateContext.CanvasToViewport
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.CanvasToViewport
+- uid: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform*
+  commentId: Overload:FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform
+  href: FlowGraph.Avalonia.Input.InputStateContext.html#FlowGraph_Avalonia_Input_InputStateContext_ApplyViewportTransform
+  name: ApplyViewportTransform
+  nameWithType: InputStateContext.ApplyViewportTransform
+  fullName: FlowGraph.Avalonia.Input.InputStateContext.ApplyViewportTransform

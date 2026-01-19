@@ -5,9 +5,11 @@ items:
   id: NodeRenderContext
   parent: FlowGraph.Avalonia.Rendering.NodeRenderers
   children:
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale
   - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale
   - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Settings
   - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Theme
+  - FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
   langs:
   - csharp
   - vb
@@ -18,15 +20,27 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: NodeRenderContext
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 63
+    startLine: 179
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
-  summary: Context information passed to node renderers.
+  summary: >-
+    Context information passed to node renderers.
+
+
+    <p><b>TRANSFORM-BASED RENDERING:</b></p>
+
+    <p>
+
+    <xref href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale" data-throw-if-not-resolved="false"></xref> is always 1.0 - create visuals at logical size.
+
+    The MatrixTransform on MainCanvas handles zoom. This enables O(1) zoom.
+
+    </p>
   example: []
   syntax:
     content: public class NodeRenderContext
@@ -55,11 +69,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Theme
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 65
+    startLine: 181
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -84,11 +98,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Settings
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 66
+    startLine: 182
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
@@ -113,14 +127,16 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: Scale
     path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
-    startLine: 67
+    startLine: 187
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Logical scale for visual sizing. Always 1.0 in transform-based rendering.
+  example: []
   syntax:
     content: public required double Scale { get; init; }
     parameters: []
@@ -128,7 +144,78 @@ items:
       type: System.Double
     content.vb: Public Property Scale As Double
   overload: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
+  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
+  id: ViewportZoom
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  langs:
+  - csharp
+  - vb
+  name: ViewportZoom
+  nameWithType: NodeRenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ViewportZoom
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 192
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: Actual viewport zoom level. Use for calculations, not visual sizing.
+  example: []
+  syntax:
+    content: public double ViewportZoom { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ViewportZoom As Double
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom*
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale
+  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale
+  id: InverseScale
+  parent: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext
+  langs:
+  - csharp
+  - vb
+  name: InverseScale
+  nameWithType: NodeRenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: InverseScale
+    path: ../FlowGraph.Avalonia/Rendering/NodeRenderers/INodeRenderer.cs
+    startLine: 198
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Rendering.NodeRenderers
+  summary: >-
+    Inverse scale for constant-size elements (1/ViewportZoom).
+
+    Apply as ScaleTransform to elements that should stay same screen size.
+  example: []
+  syntax:
+    content: public double InverseScale { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property InverseScale As Double
+  overload: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale*
 references:
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale
+  commentId: P:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html#FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_Scale
+  name: Scale
+  nameWithType: NodeRenderContext.Scale
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.Scale
 - uid: FlowGraph.Avalonia.Rendering.NodeRenderers
   commentId: N:FlowGraph.Avalonia.Rendering.NodeRenderers
   href: FlowGraph.html
@@ -499,3 +586,15 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html#FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_ViewportZoom
+  name: ViewportZoom
+  nameWithType: NodeRenderContext.ViewportZoom
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.ViewportZoom
+- uid: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale*
+  commentId: Overload:FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale
+  href: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html#FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_InverseScale
+  name: InverseScale
+  nameWithType: NodeRenderContext.InverseScale
+  fullName: FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.InverseScale

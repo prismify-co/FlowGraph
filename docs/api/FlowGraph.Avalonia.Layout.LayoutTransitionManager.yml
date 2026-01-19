@@ -5,7 +5,7 @@ items:
   id: LayoutTransitionManager
   parent: FlowGraph.Avalonia.Layout
   children:
-  - FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager)
+  - FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager,System.Action)
   - FlowGraph.Avalonia.Layout.LayoutTransitionManager.AnimateTo(System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
   langs:
   - csharp
@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: LayoutTransitionManager
     path: ../FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
@@ -39,30 +39,30 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager)
-  commentId: M:FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager)
-  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager)'
+- uid: FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager,System.Action)
+  commentId: M:FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager,System.Action)
+  id: '#ctor(System.Func{FlowGraph.Core.Graph},System.Action,FlowGraph.Avalonia.Animation.AnimationManager,System.Action)'
   parent: FlowGraph.Avalonia.Layout.LayoutTransitionManager
   langs:
   - csharp
   - vb
-  name: LayoutTransitionManager(Func<Graph?>, Action, AnimationManager)
-  nameWithType: LayoutTransitionManager.LayoutTransitionManager(Func<Graph?>, Action, AnimationManager)
-  fullName: FlowGraph.Avalonia.Layout.LayoutTransitionManager.LayoutTransitionManager(System.Func<FlowGraph.Core.Graph?>, System.Action, FlowGraph.Avalonia.Animation.AnimationManager)
+  name: LayoutTransitionManager(Func<Graph?>, Action, AnimationManager, Action?)
+  nameWithType: LayoutTransitionManager.LayoutTransitionManager(Func<Graph?>, Action, AnimationManager, Action?)
+  fullName: FlowGraph.Avalonia.Layout.LayoutTransitionManager.LayoutTransitionManager(System.Func<FlowGraph.Core.Graph?>, System.Action, FlowGraph.Avalonia.Animation.AnimationManager, System.Action?)
   type: Constructor
   source:
     remote:
       path: FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: .ctor
     path: ../FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Layout
   syntax:
-    content: public LayoutTransitionManager(Func<Graph?> getGraph, Action refreshEdges, AnimationManager animations)
+    content: public LayoutTransitionManager(Func<Graph?> getGraph, Action refreshEdges, AnimationManager animations, Action? invalidatePositions = null)
     parameters:
     - id: getGraph
       type: System.Func{FlowGraph.Core.Graph}
@@ -70,11 +70,13 @@ items:
       type: System.Action
     - id: animations
       type: FlowGraph.Avalonia.Animation.AnimationManager
-    content.vb: Public Sub New(getGraph As Func(Of Graph), refreshEdges As Action, animations As AnimationManager)
+    - id: invalidatePositions
+      type: System.Action
+    content.vb: Public Sub New(getGraph As Func(Of Graph), refreshEdges As Action, animations As AnimationManager, invalidatePositions As Action = Nothing)
   overload: FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor*
-  nameWithType.vb: LayoutTransitionManager.New(Func(Of Graph), Action, AnimationManager)
-  fullName.vb: FlowGraph.Avalonia.Layout.LayoutTransitionManager.New(System.Func(Of FlowGraph.Core.Graph), System.Action, FlowGraph.Avalonia.Animation.AnimationManager)
-  name.vb: New(Func(Of Graph), Action, AnimationManager)
+  nameWithType.vb: LayoutTransitionManager.New(Func(Of Graph), Action, AnimationManager, Action)
+  fullName.vb: FlowGraph.Avalonia.Layout.LayoutTransitionManager.New(System.Func(Of FlowGraph.Core.Graph), System.Action, FlowGraph.Avalonia.Animation.AnimationManager, System.Action)
+  name.vb: New(Func(Of Graph), Action, AnimationManager, Action)
 - uid: FlowGraph.Avalonia.Layout.LayoutTransitionManager.AnimateTo(System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
   commentId: M:FlowGraph.Avalonia.Layout.LayoutTransitionManager.AnimateTo(System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
   id: AnimateTo(System.Collections.Generic.IReadOnlyDictionary{System.String,FlowGraph.Core.Point},System.Double,System.Func{System.Double,System.Double},System.Action)
@@ -89,11 +91,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: AnimateTo
     path: ../FlowGraph.Avalonia/Layout/LayoutTransitionManager.cs
-    startLine: 25
+    startLine: 31
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Layout
@@ -364,7 +366,7 @@ references:
   fullName: System
 - uid: FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor*
   commentId: Overload:FlowGraph.Avalonia.Layout.LayoutTransitionManager.#ctor
-  href: FlowGraph.Avalonia.Layout.LayoutTransitionManager.html#FlowGraph_Avalonia_Layout_LayoutTransitionManager__ctor_System_Func_FlowGraph_Core_Graph__System_Action_FlowGraph_Avalonia_Animation_AnimationManager_
+  href: FlowGraph.Avalonia.Layout.LayoutTransitionManager.html#FlowGraph_Avalonia_Layout_LayoutTransitionManager__ctor_System_Func_FlowGraph_Core_Graph__System_Action_FlowGraph_Avalonia_Animation_AnimationManager_System_Action_
   name: LayoutTransitionManager
   nameWithType: LayoutTransitionManager.LayoutTransitionManager
   fullName: FlowGraph.Avalonia.Layout.LayoutTransitionManager.LayoutTransitionManager

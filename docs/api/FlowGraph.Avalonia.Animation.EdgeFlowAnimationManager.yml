@@ -1,0 +1,1026 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  commentId: T:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  id: EdgeFlowAnimationManager
+  parent: FlowGraph.Avalonia.Animation
+  children:
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor(FlowGraph.Avalonia.Animation.AnimationManager,System.Action{FlowGraph.Core.Edge,System.Double})
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating(System.String)
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation(FlowGraph.Core.Edge)
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation(System.String)
+  - FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  langs:
+  - csharp
+  - vb
+  name: EdgeFlowAnimationManager
+  nameWithType: EdgeFlowAnimationManager
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  type: Class
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: EdgeFlowAnimationManager
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 41
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Manages automatic edge flow animations based on EdgeStyle settings.
+  remarks: >-
+    <p>
+
+    This manager monitors edges in the graph and automatically starts/stops
+
+    flow animations based on the <xref href="FlowGraph.Core.Models.EdgeStyle.AnimatedFlow" data-throw-if-not-resolved="false"></xref> property.
+
+    </p>
+
+    <p>
+
+    Animation parameters are taken from the EdgeStyle:
+
+    - <xref href="FlowGraph.Core.Models.EdgeStyle.FlowSpeed" data-throw-if-not-resolved="false"></xref>: Controls animation speed (1.0 = normal, 2.0 = double)
+
+    - <xref href="FlowGraph.Core.Models.EdgeStyle.FlowDirection" data-throw-if-not-resolved="false"></xref>: Forward, Reverse, or Bidirectional
+
+    - <xref href="FlowGraph.Core.Models.EdgeStyle.DashPattern" data-throw-if-not-resolved="false"></xref>: Used if set, otherwise defaults to marching ants
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Edges with AnimatedFlow style are automatically animated:
+
+    edge.Definition = edge.Definition with {
+        Style = EdgeStyle.ActiveFlow  // Has AnimatedFlow = true
+    };
+
+
+    // Or create a custom animated style:
+
+    edge.Definition = edge.Definition with {
+        Style = new EdgeStyle {
+            AnimatedFlow = true,
+            FlowSpeed = 2.0,
+            FlowDirection = EdgeFlowDirection.Reverse,
+            StrokeColor = "#00FF00"
+        }
+    };</code></pre>
+  syntax:
+    content: 'public class EdgeFlowAnimationManager : IDisposable'
+    content.vb: Public Class EdgeFlowAnimationManager Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+  commentId: P:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+  id: BaseFlowSpeed
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: BaseFlowSpeed
+  nameWithType: EdgeFlowAnimationManager.BaseFlowSpeed
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: BaseFlowSpeed
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 51
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Base speed multiplier for flow animations (pixels per second at FlowSpeed = 1.0).
+  example: []
+  syntax:
+    content: public double BaseFlowSpeed { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property BaseFlowSpeed As Double
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed*
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+  commentId: P:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+  id: ActiveAnimationCount
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveAnimationCount
+  nameWithType: EdgeFlowAnimationManager.ActiveAnimationCount
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+  type: Property
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: ActiveAnimationCount
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 56
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Gets the number of currently active flow animations.
+  example: []
+  syntax:
+    content: public int ActiveAnimationCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ActiveAnimationCount As Integer
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount*
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor(FlowGraph.Avalonia.Animation.AnimationManager,System.Action{FlowGraph.Core.Edge,System.Double})
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor(FlowGraph.Avalonia.Animation.AnimationManager,System.Action{FlowGraph.Core.Edge,System.Double})
+  id: '#ctor(FlowGraph.Avalonia.Animation.AnimationManager,System.Action{FlowGraph.Core.Edge,System.Double})'
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: EdgeFlowAnimationManager(AnimationManager, Action<Edge, double>)
+  nameWithType: EdgeFlowAnimationManager.EdgeFlowAnimationManager(AnimationManager, Action<Edge, double>)
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.EdgeFlowAnimationManager(FlowGraph.Avalonia.Animation.AnimationManager, System.Action<FlowGraph.Core.Edge, double>)
+  type: Constructor
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: .ctor
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 63
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Creates a new EdgeFlowAnimationManager.
+  example: []
+  syntax:
+    content: public EdgeFlowAnimationManager(AnimationManager animationManager, Action<Edge, double> updateDashOffset)
+    parameters:
+    - id: animationManager
+      type: FlowGraph.Avalonia.Animation.AnimationManager
+      description: The animation manager to use for running animations.
+    - id: updateDashOffset
+      type: System.Action{FlowGraph.Core.Edge,System.Double}
+      description: Callback to update edge dash offset during animation.
+    content.vb: Public Sub New(animationManager As AnimationManager, updateDashOffset As Action(Of Edge, Double))
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor*
+  nameWithType.vb: EdgeFlowAnimationManager.New(AnimationManager, Action(Of Edge, Double))
+  fullName.vb: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.New(FlowGraph.Avalonia.Animation.AnimationManager, System.Action(Of FlowGraph.Core.Edge, Double))
+  name.vb: New(AnimationManager, Action(Of Edge, Double))
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  id: SyncAnimations(System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge})
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: SyncAnimations(IEnumerable<Edge>)
+  nameWithType: EdgeFlowAnimationManager.SyncAnimations(IEnumerable<Edge>)
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations(System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SyncAnimations
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 76
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: >-
+    Synchronizes flow animations with the current graph state.
+
+    Starts animations for edges with AnimatedFlow=true, stops others.
+  example: []
+  syntax:
+    content: public void SyncAnimations(IEnumerable<Edge> edges)
+    parameters:
+    - id: edges
+      type: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+      description: All edges in the graph.
+    content.vb: Public Sub SyncAnimations(edges As IEnumerable(Of Edge))
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations*
+  nameWithType.vb: EdgeFlowAnimationManager.SyncAnimations(IEnumerable(Of Edge))
+  fullName.vb: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations(System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge))
+  name.vb: SyncAnimations(IEnumerable(Of Edge))
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation(FlowGraph.Core.Edge)
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation(FlowGraph.Core.Edge)
+  id: StartAnimation(FlowGraph.Core.Edge)
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StartAnimation(Edge)
+  nameWithType: EdgeFlowAnimationManager.StartAnimation(Edge)
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation(FlowGraph.Core.Edge)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StartAnimation
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 129
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Starts a flow animation for a specific edge.
+  example: []
+  syntax:
+    content: public void StartAnimation(Edge edge)
+    parameters:
+    - id: edge
+      type: FlowGraph.Core.Edge
+      description: The edge to animate.
+    content.vb: Public Sub StartAnimation(edge As Edge)
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation*
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation(System.String)
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation(System.String)
+  id: StopAnimation(System.String)
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopAnimation(string)
+  nameWithType: EdgeFlowAnimationManager.StopAnimation(string)
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopAnimation
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 173
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops a flow animation for a specific edge.
+  example: []
+  syntax:
+    content: public void StopAnimation(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The ID of the edge to stop animating.
+    content.vb: Public Sub StopAnimation(edgeId As String)
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation*
+  nameWithType.vb: EdgeFlowAnimationManager.StopAnimation(String)
+  fullName.vb: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation(String)
+  name.vb: StopAnimation(String)
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations
+  id: StopAllAnimations
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: StopAllAnimations()
+  nameWithType: EdgeFlowAnimationManager.StopAllAnimations()
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: StopAllAnimations
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 186
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Stops all flow animations.
+  example: []
+  syntax:
+    content: public void StopAllAnimations()
+    content.vb: Public Sub StopAllAnimations()
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations*
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating(System.String)
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating(System.String)
+  id: IsAnimating(System.String)
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: IsAnimating(string)
+  nameWithType: EdgeFlowAnimationManager.IsAnimating(string)
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating(string)
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: IsAnimating
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 201
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Checks if a specific edge has an active flow animation.
+  example: []
+  syntax:
+    content: public bool IsAnimating(string edgeId)
+    parameters:
+    - id: edgeId
+      type: System.String
+      description: The ID of the edge to check.
+    return:
+      type: System.Boolean
+      description: True if the edge has an active flow animation.
+    content.vb: Public Function IsAnimating(edgeId As String) As Boolean
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating*
+  nameWithType.vb: EdgeFlowAnimationManager.IsAnimating(String)
+  fullName.vb: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating(String)
+  name.vb: IsAnimating(String)
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose
+  commentId: M:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose
+  id: Dispose
+  parent: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: EdgeFlowAnimationManager.Dispose()
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose()
+  type: Method
+  source:
+    remote:
+      path: FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Dispose
+    path: ../FlowGraph.Avalonia/Animation/EdgeFlowAnimationManager.cs
+    startLine: 237
+  assemblies:
+  - FlowGraph.Avalonia
+  namespace: FlowGraph.Avalonia.Animation
+  summary: Releases all resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_AnimatedFlow
+  name: AnimatedFlow
+  nameWithType: EdgeStyle.AnimatedFlow
+  fullName: FlowGraph.Core.Models.EdgeStyle.AnimatedFlow
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_FlowSpeed
+  name: FlowSpeed
+  nameWithType: EdgeStyle.FlowSpeed
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowSpeed
+- uid: FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.FlowDirection
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_FlowDirection
+  name: FlowDirection
+  nameWithType: EdgeStyle.FlowDirection
+  fullName: FlowGraph.Core.Models.EdgeStyle.FlowDirection
+- uid: FlowGraph.Core.Models.EdgeStyle.DashPattern
+  commentId: P:FlowGraph.Core.Models.EdgeStyle.DashPattern
+  href: FlowGraph.Core.Models.EdgeStyle.html#FlowGraph_Core_Models_EdgeStyle_DashPattern
+  name: DashPattern
+  nameWithType: EdgeStyle.DashPattern
+  fullName: FlowGraph.Core.Models.EdgeStyle.DashPattern
+- uid: FlowGraph.Avalonia.Animation
+  commentId: N:FlowGraph.Avalonia.Animation
+  href: FlowGraph.html
+  name: FlowGraph.Avalonia.Animation
+  nameWithType: FlowGraph.Avalonia.Animation
+  fullName: FlowGraph.Avalonia.Animation
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Avalonia
+    name: Avalonia
+    href: FlowGraph.Avalonia.html
+  - name: .
+  - uid: FlowGraph.Avalonia.Animation
+    name: Animation
+    href: FlowGraph.Avalonia.Animation.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_BaseFlowSpeed
+  name: BaseFlowSpeed
+  nameWithType: EdgeFlowAnimationManager.BaseFlowSpeed
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.BaseFlowSpeed
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_ActiveAnimationCount
+  name: ActiveAnimationCount
+  nameWithType: EdgeFlowAnimationManager.ActiveAnimationCount
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.ActiveAnimationCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.#ctor
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager__ctor_FlowGraph_Avalonia_Animation_AnimationManager_System_Action_FlowGraph_Core_Edge_System_Double__
+  name: EdgeFlowAnimationManager
+  nameWithType: EdgeFlowAnimationManager.EdgeFlowAnimationManager
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.EdgeFlowAnimationManager
+  nameWithType.vb: EdgeFlowAnimationManager.New
+  fullName.vb: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.New
+  name.vb: New
+- uid: FlowGraph.Avalonia.Animation.AnimationManager
+  commentId: T:FlowGraph.Avalonia.Animation.AnimationManager
+  parent: FlowGraph.Avalonia.Animation
+  href: FlowGraph.Avalonia.Animation.AnimationManager.html
+  name: AnimationManager
+  nameWithType: AnimationManager
+  fullName: FlowGraph.Avalonia.Animation.AnimationManager
+- uid: System.Action{FlowGraph.Core.Edge,System.Double}
+  commentId: T:System.Action{FlowGraph.Core.Edge,System.Double}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<Edge, double>
+  nameWithType: Action<Edge, double>
+  fullName: System.Action<FlowGraph.Core.Edge, double>
+  nameWithType.vb: Action(Of Edge, Double)
+  fullName.vb: System.Action(Of FlowGraph.Core.Edge, Double)
+  name.vb: Action(Of Edge, Double)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_SyncAnimations_System_Collections_Generic_IEnumerable_FlowGraph_Core_Edge__
+  name: SyncAnimations
+  nameWithType: EdgeFlowAnimationManager.SyncAnimations
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.SyncAnimations
+- uid: System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  commentId: T:System.Collections.Generic.IEnumerable{FlowGraph.Core.Edge}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Edge>
+  nameWithType: IEnumerable<Edge>
+  fullName: System.Collections.Generic.IEnumerable<FlowGraph.Core.Edge>
+  nameWithType.vb: IEnumerable(Of Edge)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FlowGraph.Core.Edge)
+  name.vb: IEnumerable(Of Edge)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FlowGraph.Core.Edge
+    name: Edge
+    href: FlowGraph.Core.Edge.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_StartAnimation_FlowGraph_Core_Edge_
+  name: StartAnimation
+  nameWithType: EdgeFlowAnimationManager.StartAnimation
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StartAnimation
+- uid: FlowGraph.Core.Edge
+  commentId: T:FlowGraph.Core.Edge
+  parent: FlowGraph.Core
+  href: FlowGraph.Core.Edge.html
+  name: Edge
+  nameWithType: Edge
+  fullName: FlowGraph.Core.Edge
+- uid: FlowGraph.Core
+  commentId: N:FlowGraph.Core
+  href: FlowGraph.html
+  name: FlowGraph.Core
+  nameWithType: FlowGraph.Core
+  fullName: FlowGraph.Core
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_StopAnimation_System_String_
+  name: StopAnimation
+  nameWithType: EdgeFlowAnimationManager.StopAnimation
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAnimation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_StopAllAnimations
+  name: StopAllAnimations
+  nameWithType: EdgeFlowAnimationManager.StopAllAnimations
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.StopAllAnimations
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_IsAnimating_System_String_
+  name: IsAnimating
+  nameWithType: EdgeFlowAnimationManager.IsAnimating
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.IsAnimating
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose*
+  commentId: Overload:FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose
+  href: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.html#FlowGraph_Avalonia_Animation_EdgeFlowAnimationManager_Dispose
+  name: Dispose
+  nameWithType: EdgeFlowAnimationManager.Dispose
+  fullName: FlowGraph.Avalonia.Animation.EdgeFlowAnimationManager.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

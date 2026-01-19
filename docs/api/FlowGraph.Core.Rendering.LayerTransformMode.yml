@@ -1,0 +1,236 @@
+### YamlMime:ManagedReference
+items:
+- uid: FlowGraph.Core.Rendering.LayerTransformMode
+  commentId: T:FlowGraph.Core.Rendering.LayerTransformMode
+  id: LayerTransformMode
+  parent: FlowGraph.Core.Rendering
+  children:
+  - FlowGraph.Core.Rendering.LayerTransformMode.SelfTransformed
+  - FlowGraph.Core.Rendering.LayerTransformMode.Transformed
+  - FlowGraph.Core.Rendering.LayerTransformMode.Untransformed
+  langs:
+  - csharp
+  - vb
+  name: LayerTransformMode
+  nameWithType: LayerTransformMode
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode
+  type: Enum
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: LayerTransformMode
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 11
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Defines how a rendering layer participates in viewport transformations.
+
+
+    <p>
+
+    This is inspired by react-diagrams' <code>LayerModel.options.transformed</code> flag,
+
+    which allows layers to opt in or out of viewport transforms. In FlowGraph,
+
+    we extend this to three modes to handle direct rendering scenarios.
+
+    </p>
+  example: []
+  syntax:
+    content: public enum LayerTransformMode
+    content.vb: Public Enum LayerTransformMode
+- uid: FlowGraph.Core.Rendering.LayerTransformMode.Transformed
+  commentId: F:FlowGraph.Core.Rendering.LayerTransformMode.Transformed
+  id: Transformed
+  parent: FlowGraph.Core.Rendering.LayerTransformMode
+  langs:
+  - csharp
+  - vb
+  name: Transformed
+  nameWithType: LayerTransformMode.Transformed
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode.Transformed
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Transformed
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 32
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Layer IS affected by parent viewport transforms.
+
+
+    <p><b>Coordinate expectations:</b></p>
+
+    <ul><li>Elements are positioned in <b>canvas coordinates</b></li><li>Parent container applies zoom/pan via MatrixTransform</li><li>No manual coordinate conversion needed</li></ul>
+
+
+    <p><b>Use for:</b> Nodes, edges, ports, resize handles, selection rectangles</p>
+
+
+    <p><b>Example:</b></p>
+
+
+    <pre><code class="lang-csharp">// Node positioned in canvas coordinates - transform handled by parent
+
+    Canvas.SetLeft(nodeVisual, node.Position.X);  // ✅ Canvas coords
+
+    Canvas.SetTop(nodeVisual, node.Position.Y);</code></pre>
+  example: []
+  syntax:
+    content: Transformed = 0
+    return:
+      type: FlowGraph.Core.Rendering.LayerTransformMode
+- uid: FlowGraph.Core.Rendering.LayerTransformMode.Untransformed
+  commentId: F:FlowGraph.Core.Rendering.LayerTransformMode.Untransformed
+  id: Untransformed
+  parent: FlowGraph.Core.Rendering.LayerTransformMode
+  langs:
+  - csharp
+  - vb
+  name: Untransformed
+  nameWithType: LayerTransformMode.Untransformed
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode.Untransformed
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: Untransformed
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 52
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Layer is NOT affected by viewport transforms.
+
+
+    <p><b>Coordinate expectations:</b></p>
+
+    <ul><li>Elements are positioned in <b>screen coordinates</b></li><li>Layer exists outside the transformed container</li><li>Must manually call CanvasToScreen if referencing canvas positions</li></ul>
+
+
+    <p><b>Use for:</b> Fixed overlays, HUD elements, toolbars, minimap frame</p>
+
+
+    <p><b>Example:</b></p>
+
+
+    <pre><code class="lang-csharp">// Tooltip positioned in screen coordinates
+
+    Canvas.SetLeft(tooltip, e.GetPosition(rootPanel).X);  // ✅ Screen coords</code></pre>
+  example: []
+  syntax:
+    content: Untransformed = 1
+    return:
+      type: FlowGraph.Core.Rendering.LayerTransformMode
+- uid: FlowGraph.Core.Rendering.LayerTransformMode.SelfTransformed
+  commentId: F:FlowGraph.Core.Rendering.LayerTransformMode.SelfTransformed
+  id: SelfTransformed
+  parent: FlowGraph.Core.Rendering.LayerTransformMode
+  langs:
+  - csharp
+  - vb
+  name: SelfTransformed
+  nameWithType: LayerTransformMode.SelfTransformed
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode.SelfTransformed
+  type: Field
+  source:
+    remote:
+      path: FlowGraph.Core/Rendering/IRenderLayer.cs
+      branch: feature/input-processor-pattern
+      repo: https://github.com/prismify-co/FlowGraph.git
+    id: SelfTransformed
+    path: ../FlowGraph.Core/Rendering/IRenderLayer.cs
+    startLine: 84
+  assemblies:
+  - FlowGraph.Core
+  namespace: FlowGraph.Core.Rendering
+  summary: >-
+    Layer manages its own transforms independently.
+
+
+    <p><b>Coordinate expectations:</b></p>
+
+    <ul><li>Layer exists <b>outside</b> any transformed container</li><li>Layer performs its own CanvasToScreen transforms when rendering</li><li>Used for direct DrawingContext rendering that bypasses visual tree</li></ul>
+
+
+    <p><b>Use for:</b> DirectGraphRenderer, custom GPU renderers, background grids</p>
+
+
+    <p><b>Example:</b></p>
+
+
+    <pre><code class="lang-csharp">// DirectGraphRenderer renders directly to DrawingContext
+
+    public override void Render(DrawingContext context)
+
+    {
+        foreach (var node in nodes)
+        {
+            // Must transform canvas coords to screen coords manually
+            var screenPos = viewport.CanvasToScreen(node.Position.X, node.Position.Y);
+            context.DrawRectangle(brush, pen, new Rect(screenPos, scaledSize));
+        }
+    }</code></pre>
+
+
+    <p><b>Critical:</b> SelfTransformed layers MUST be children of an 
+
+    untransformed container (e.g., RootPanel, not MainCanvas). Placing them 
+
+    inside a transformed container causes double-transformation bugs.</p>
+  example: []
+  syntax:
+    content: SelfTransformed = 2
+    return:
+      type: FlowGraph.Core.Rendering.LayerTransformMode
+references:
+- uid: FlowGraph.Core.Rendering
+  commentId: N:FlowGraph.Core.Rendering
+  href: FlowGraph.html
+  name: FlowGraph.Core.Rendering
+  nameWithType: FlowGraph.Core.Rendering
+  fullName: FlowGraph.Core.Rendering
+  spec.csharp:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+  spec.vb:
+  - uid: FlowGraph
+    name: FlowGraph
+    href: FlowGraph.html
+  - name: .
+  - uid: FlowGraph.Core
+    name: Core
+    href: FlowGraph.Core.html
+  - name: .
+  - uid: FlowGraph.Core.Rendering
+    name: Rendering
+    href: FlowGraph.Core.Rendering.html
+- uid: FlowGraph.Core.Rendering.LayerTransformMode
+  commentId: T:FlowGraph.Core.Rendering.LayerTransformMode
+  parent: FlowGraph.Core.Rendering
+  href: FlowGraph.Core.Rendering.LayerTransformMode.html
+  name: LayerTransformMode
+  nameWithType: LayerTransformMode
+  fullName: FlowGraph.Core.Rendering.LayerTransformMode

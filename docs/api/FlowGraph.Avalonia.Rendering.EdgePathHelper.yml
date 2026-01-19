@@ -13,8 +13,8 @@ items:
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentSmoothPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point},System.Double)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStepPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStraightPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
-  - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType)
-  - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType)
+  - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType,System.Double)
+  - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType,System.Double)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateSmoothStepPath(Avalonia.Point,Avalonia.Point,System.Double)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateStepPath(Avalonia.Point,Avalonia.Point)
   - FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateStraightPath(Avalonia.Point,Avalonia.Point)
@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: EdgePathHelper
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -51,85 +51,101 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType)
-  commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType)
-  id: CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType)
+- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType,System.Double)
+  id: CreatePath(Avalonia.Point,Avalonia.Point,FlowGraph.Core.EdgeType,System.Double)
   parent: FlowGraph.Avalonia.Rendering.EdgePathHelper
   langs:
   - csharp
   - vb
-  name: CreatePath(Point, Point, EdgeType)
-  nameWithType: EdgePathHelper.CreatePath(Point, Point, EdgeType)
-  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point, Avalonia.Point, FlowGraph.Core.EdgeType)
+  name: CreatePath(Point, Point, EdgeType, double)
+  nameWithType: EdgePathHelper.CreatePath(Point, Point, EdgeType, double)
+  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point, Avalonia.Point, FlowGraph.Core.EdgeType, double)
   type: Method
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreatePath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 21
+    startLine: 25
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
   summary: Creates a path geometry between two points based on the edge type.
   example: []
   syntax:
-    content: public static PathGeometry CreatePath(Point start, Point end, EdgeType edgeType)
+    content: public static PathGeometry CreatePath(Point start, Point end, EdgeType edgeType, double cornerRadius = 10)
     parameters:
     - id: start
       type: Avalonia.Point
+      description: The start point of the path.
     - id: end
       type: Avalonia.Point
+      description: The end point of the path.
     - id: edgeType
       type: FlowGraph.Core.EdgeType
+      description: The type of edge path to create.
+    - id: cornerRadius
+      type: System.Double
+      description: Corner radius for SmoothStep edges. Uses default if not specified.
     return:
       type: Avalonia.Media.PathGeometry
-    content.vb: Public Shared Function CreatePath(start As Point, [end] As Point, edgeType As EdgeType) As PathGeometry
+    content.vb: Public Shared Function CreatePath(start As Point, [end] As Point, edgeType As EdgeType, cornerRadius As Double = 10) As PathGeometry
   overload: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath*
-- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType)
-  commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType)
-  id: CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType)
+  nameWithType.vb: EdgePathHelper.CreatePath(Point, Point, EdgeType, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath(Avalonia.Point, Avalonia.Point, FlowGraph.Core.EdgeType, Double)
+  name.vb: CreatePath(Point, Point, EdgeType, Double)
+- uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType,System.Double)
+  commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType,System.Double)
+  id: CreatePathWithWaypoints(Avalonia.Point,Avalonia.Point,System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point},FlowGraph.Core.EdgeType,System.Double)
   parent: FlowGraph.Avalonia.Rendering.EdgePathHelper
   langs:
   - csharp
   - vb
-  name: CreatePathWithWaypoints(Point, Point, IReadOnlyList<Point>?, EdgeType)
-  nameWithType: EdgePathHelper.CreatePathWithWaypoints(Point, Point, IReadOnlyList<Point>?, EdgeType)
-  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point, Avalonia.Point, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Point>?, FlowGraph.Core.EdgeType)
+  name: CreatePathWithWaypoints(Point, Point, IReadOnlyList<Point>?, EdgeType, double)
+  nameWithType: EdgePathHelper.CreatePathWithWaypoints(Point, Point, IReadOnlyList<Point>?, EdgeType, double)
+  fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point, Avalonia.Point, System.Collections.Generic.IReadOnlyList<FlowGraph.Core.Point>?, FlowGraph.Core.EdgeType, double)
   type: Method
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreatePathWithWaypoints
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 35
+    startLine: 44
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
   summary: Creates a path geometry through waypoints based on the edge type.
   example: []
   syntax:
-    content: public static PathGeometry CreatePathWithWaypoints(Point start, Point end, IReadOnlyList<Point>? waypoints, EdgeType edgeType)
+    content: public static PathGeometry CreatePathWithWaypoints(Point start, Point end, IReadOnlyList<Point>? waypoints, EdgeType edgeType, double cornerRadius = 10)
     parameters:
     - id: start
       type: Avalonia.Point
+      description: The start point of the path.
     - id: end
       type: Avalonia.Point
+      description: The end point of the path.
     - id: waypoints
       type: System.Collections.Generic.IReadOnlyList{FlowGraph.Core.Point}
+      description: Optional intermediate waypoints.
     - id: edgeType
       type: FlowGraph.Core.EdgeType
+      description: The type of edge path to create.
+    - id: cornerRadius
+      type: System.Double
+      description: Corner radius for SmoothStep edges. Uses default if not specified.
     return:
       type: Avalonia.Media.PathGeometry
-    content.vb: Public Shared Function CreatePathWithWaypoints(start As Point, [end] As Point, waypoints As IReadOnlyList(Of Point), edgeType As EdgeType) As PathGeometry
+    content.vb: Public Shared Function CreatePathWithWaypoints(start As Point, [end] As Point, waypoints As IReadOnlyList(Of Point), edgeType As EdgeType, cornerRadius As Double = 10) As PathGeometry
   overload: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints*
-  nameWithType.vb: EdgePathHelper.CreatePathWithWaypoints(Point, Point, IReadOnlyList(Of Point), EdgeType)
-  fullName.vb: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point, Avalonia.Point, System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Point), FlowGraph.Core.EdgeType)
-  name.vb: CreatePathWithWaypoints(Point, Point, IReadOnlyList(Of Point), EdgeType)
+  nameWithType.vb: EdgePathHelper.CreatePathWithWaypoints(Point, Point, IReadOnlyList(Of Point), EdgeType, Double)
+  fullName.vb: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints(Avalonia.Point, Avalonia.Point, System.Collections.Generic.IReadOnlyList(Of FlowGraph.Core.Point), FlowGraph.Core.EdgeType, Double)
+  name.vb: CreatePathWithWaypoints(Point, Point, IReadOnlyList(Of Point), EdgeType, Double)
 - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStraightPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
   commentId: M:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentStraightPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
   id: CreateMultiSegmentStraightPath(System.Collections.Generic.IReadOnlyList{Avalonia.Point})
@@ -144,11 +160,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentStraightPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 63
+    startLine: 73
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -180,11 +196,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentBezierPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 89
+    startLine: 99
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -219,11 +235,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 153
+    startLine: 163
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -255,11 +271,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateMultiSegmentSmoothPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 189
+    startLine: 199
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -293,11 +309,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateBezierPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 288
+    startLine: 298
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -333,11 +349,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateStraightPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 383
+    startLine: 393
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -368,11 +384,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 405
+    startLine: 415
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -406,11 +422,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateSmoothStepPath
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 430
+    startLine: 440
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -446,11 +462,11 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CreateArrowMarker
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
-    startLine: 501
+    startLine: 511
   assemblies:
   - FlowGraph.Avalonia
   namespace: FlowGraph.Avalonia.Rendering
@@ -492,7 +508,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CalculateAngle
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -527,7 +543,7 @@ items:
   source:
     remote:
       path: FlowGraph.Avalonia/Rendering/BezierHelper.cs
-      branch: develop
+      branch: feature/input-processor-pattern
       repo: https://github.com/prismify-co/FlowGraph.git
     id: CalculateArrowAngle
     path: ../FlowGraph.Avalonia/Rendering/BezierHelper.cs
@@ -855,7 +871,7 @@ references:
   fullName: System
 - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath
-  href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePath_Avalonia_Point_Avalonia_Point_FlowGraph_Core_EdgeType_
+  href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePath_Avalonia_Point_Avalonia_Point_FlowGraph_Core_EdgeType_System_Double_
   name: CreatePath
   nameWithType: EdgePathHelper.CreatePath
   fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePath
@@ -873,6 +889,17 @@ references:
   name: EdgeType
   nameWithType: EdgeType
   fullName: FlowGraph.Core.EdgeType
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
 - uid: Avalonia.Media.PathGeometry
   commentId: T:Avalonia.Media.PathGeometry
   parent: Avalonia.Media
@@ -932,7 +959,7 @@ references:
     isExternal: true
 - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints
-  href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePathWithWaypoints_Avalonia_Point_Avalonia_Point_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Point__FlowGraph_Core_EdgeType_
+  href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CreatePathWithWaypoints_Avalonia_Point_Avalonia_Point_System_Collections_Generic_IReadOnlyList_FlowGraph_Core_Point__FlowGraph_Core_EdgeType_System_Double_
   name: CreatePathWithWaypoints
   nameWithType: EdgePathHelper.CreatePathWithWaypoints
   fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreatePathWithWaypoints
@@ -1091,17 +1118,6 @@ references:
   name: CreateMultiSegmentSmoothPath
   nameWithType: EdgePathHelper.CreateMultiSegmentSmoothPath
   fullName: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateMultiSegmentSmoothPath
-- uid: System.Double
-  commentId: T:System.Double
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: double
-  nameWithType: double
-  fullName: double
-  nameWithType.vb: Double
-  fullName.vb: Double
-  name.vb: Double
 - uid: FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateBezierPath*
   commentId: Overload:FlowGraph.Avalonia.Rendering.EdgePathHelper.CreateBezierPath
   href: FlowGraph.Avalonia.Rendering.EdgePathHelper.html#FlowGraph_Avalonia_Rendering_EdgePathHelper_CreateBezierPath_Avalonia_Point_Avalonia_Point_System_Boolean_
