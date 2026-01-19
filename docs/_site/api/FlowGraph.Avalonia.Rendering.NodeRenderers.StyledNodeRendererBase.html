@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class StyledNodeRendererBase | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class StyledNodeRendererBase | FlowGraph ">
+      
+      <meta name="description" content="Base class for styled node renderers with icon and label support. Provides customizable colors, icons (text or geometry), and inline editing.  Override the abstract properties to customize appearance: - : Default text when no label is set - , : Node colors - , : Text/icon colors   For icons, override ONE of: - : Simple text icon (e.g., &quot;&amp;gt;&quot;, &quot;O&quot;, &quot;?&quot;) - : Vector path for scalable icons (compatible with any icon library)   Using a Lucide icon path: // Get path data from any icon library (Lucide, Material, etc.) protected override Geometry? IconGeometry =&amp;gt;      Geometry.Parse(&quot;M5 12h14M12 5l7 7-7 7&quot;); // arrow-right">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase.md&amp;value=---%0Auid%3A%20FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase">
+
+
+
+  <h1 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase" class="text-break">
+Class StyledNodeRendererBase  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Avalonia.html">Avalonia</a>.<a class="xref" href="FlowGraph.Avalonia.Rendering.html">Rendering</a>.<a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.html">NodeRenderers</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Base class for styled node renderers with icon and label support.
+Provides customizable colors, icons (text or geometry), and inline editing.</p>
+<p>
+Override the abstract properties to customize appearance:
+- <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_DefaultLabel">DefaultLabel</a>: Default text when no label is set
+- <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBackground_FlowGraph_Avalonia_Rendering_ThemeResources_">GetNodeBackground(ThemeResources)</a>, <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBorder_FlowGraph_Avalonia_Rendering_ThemeResources_">GetNodeBorder(ThemeResources)</a>: Node colors
+- <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetIconForeground_FlowGraph_Avalonia_Rendering_ThemeResources_">GetIconForeground(ThemeResources)</a>, <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetTextForeground_FlowGraph_Avalonia_Rendering_ThemeResources_">GetTextForeground(ThemeResources)</a>: Text/icon colors
+</p>
+<p>
+For icons, override ONE of:
+- <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconText">IconText</a>: Simple text icon (e.g., "&gt;", "O", "?")
+- <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconGeometry">IconGeometry</a>: Vector path for scalable icons (compatible with any icon library)
+</p>
+<example>
+Using a Lucide icon path:
+<pre><code class="lang-csharp">// Get path data from any icon library (Lucide, Material, etc.)
+protected override Geometry? IconGeometry =&gt; 
+    Geometry.Parse("M5 12h14M12 5l7 7-7 7"); // arrow-right</code></pre>
+</example>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class StyledNodeRendererBase : DefaultNodeRenderer, IEditableNodeRenderer, INodeRenderer</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html">DefaultNodeRenderer</a></div>
+      <div><span class="xref">StyledNodeRendererBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.IEditableNodeRenderer.html">IEditableNodeRenderer</a></div>
+      <div><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.INodeRenderer.html">INodeRenderer</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.InputNodeRenderer.html">InputNodeRenderer</a></div>
+      <div><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.OutputNodeRenderer.html">OutputNodeRenderer</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderBrush_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_">DefaultNodeRenderer.GetBorderBrush(Node, ThemeResources)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetBorderThickness_FlowGraph_Core_Node_">DefaultNodeRenderer.GetBorderThickness(Node)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_UpdateSize_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Double_System_Double_">DefaultNodeRenderer.UpdateSize(Control, Node, NodeRenderContext, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_">DefaultNodeRenderer.GetWidth(Node, FlowCanvasSettings)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_">DefaultNodeRenderer.GetHeight(Node, FlowCanvasSettings)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetMinWidth_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_">DefaultNodeRenderer.GetMinWidth(Node, FlowCanvasSettings)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_GetMinHeight_FlowGraph_Core_Node_FlowGraph_Avalonia_FlowCanvasSettings_">DefaultNodeRenderer.GetMinHeight(Node, FlowCanvasSettings)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_FindContentPanel_Avalonia_Controls_Control_">DefaultNodeRenderer.FindContentPanel(Control)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.DefaultNodeRenderer.html#FlowGraph_Avalonia_Rendering_NodeRenderers_DefaultNodeRenderer_FindLabelTextBlock_Avalonia_Controls_Grid_">DefaultNodeRenderer.FindLabelTextBlock(Grid)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconTag" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconTag">
+  IconTag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tag used to identify the icon element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected const string IconTag = &quot;NodeIcon&quot;</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_LabelTag" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.LabelTag">
+  LabelTag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tag used to identify the label TextBlock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected const string LabelTag = &quot;NodeLabel&quot;</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_DefaultLabel_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.DefaultLabel*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_DefaultLabel" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.DefaultLabel">
+  DefaultLabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the default label when no label or data is set.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract string DefaultLabel { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconGeometry_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconGeometry*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconGeometry" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconGeometry">
+  IconGeometry
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the geometry for a vector icon. This takes precedence over <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconText">IconText</a>.
+Use this to integrate with any icon library (Lucide, Material, FontAwesome, etc.)
+by providing the icon's path data.
+<example></example></p>
+<pre><code class="lang-csharp">// Simple arrow icon
+protected override Geometry? IconGeometry =&gt; 
+    Geometry.Parse("M5 12h14M12 5l7 7-7 7");
+
+// Or use a static geometry for better performance
+private static readonly Geometry _icon = Geometry.Parse("M5 12h14");
+protected override Geometry? IconGeometry =&gt; _icon;</code></pre>
+
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Geometry? IconGeometry { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Geometry</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconSize_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconSize*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconSize" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconSize">
+  IconSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the icon size in canvas units (before scaling).
+Default is 16.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual double IconSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconText_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconText" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IconText">
+  IconText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the text icon to display (e.g., &quot;&gt;&quot;, &quot;O&quot;, &quot;?&quot;).
+Override <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconGeometry">IconGeometry</a> instead for vector icons.
+Default is null (no text icon).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string? IconText { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_BeginEdit_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.BeginEdit*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_BeginEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_System_Action_System_String__System_Action_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.BeginEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext,System.Action{System.String},System.Action)">
+  BeginEdit(Control, Node, NodeRenderContext, Action&lt;string&gt;, Action)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Enters edit mode - replaces the label TextBlock with a TextBox.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void BeginEdit(Control visual, Node node, NodeRenderContext context, Action&lt;string&gt; onCommit, Action onCancel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd></dd>
+    <dt><code>onCommit</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>onCancel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateIconElement_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateIconElement*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateIconElement_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateIconElement(FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)">
+  CreateIconElement(NodeRenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the icon element based on <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconGeometry">IconGeometry</a> or <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.html#FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IconText">IconText</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Control? CreateIconElement(NodeRenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateNodeContent_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateNodeContent*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateNodeContent_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateNodeContent(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)">
+  CreateNodeContent(Node, NodeRenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the content inside the node. Override to customize.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Control CreateNodeContent(Node node, NodeRenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateNodeVisual_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateNodeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_CreateNodeVisual_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.CreateNodeVisual(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)">
+  CreateNodeVisual(Node, NodeRenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the visual representation for a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Control CreateNodeVisual(Node node, NodeRenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node data to render.</p>
+</dd>
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd><p>The rendering context with theme, scale, and settings.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd><p>A Control representing the node visual.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_EndEdit_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.EndEdit*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_EndEdit_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.EndEdit(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)">
+  EndEdit(Control, Node, NodeRenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exits edit mode - removes the TextBox and shows the label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void EndEdit(Control visual, Node node, NodeRenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_FindStackPanelContent_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.FindStackPanelContent*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_FindStackPanelContent_Avalonia_Controls_Control_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.FindStackPanelContent(Avalonia.Controls.Control)">
+  FindStackPanelContent(Control)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L337"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the StackPanel content in the node visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected StackPanel? FindStackPanelContent(Control visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StackPanel</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetDisplayText_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetDisplayText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetDisplayText_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetDisplayText(FlowGraph.Core.Node)">
+  GetDisplayText(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the display text for the node. Override to customize.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override string GetDisplayText(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetEditableText_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetEditableText*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetEditableText_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetEditableText(FlowGraph.Core.Node)">
+  GetEditableText(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the text to edit. Override to customize.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override string GetEditableText(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetIconForeground_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetIconForeground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetIconForeground_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetIconForeground(FlowGraph.Avalonia.Rendering.ThemeResources)">
+  GetIconForeground(ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the icon foreground brush for this node type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IBrush GetIconForeground(ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBackground_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetNodeBackground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBackground_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetNodeBackground(FlowGraph.Avalonia.Rendering.ThemeResources)">
+  GetNodeBackground(ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the background brush for this node type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IBrush GetNodeBackground(ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBorder_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetNodeBorder*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetNodeBorder_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetNodeBorder(FlowGraph.Avalonia.Rendering.ThemeResources)">
+  GetNodeBorder(ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the border brush for this node type (when not selected).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IBrush GetNodeBorder(ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetTextForeground_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetTextForeground*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_GetTextForeground_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.GetTextForeground(FlowGraph.Avalonia.Rendering.ThemeResources)">
+  GetTextForeground(ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the text foreground brush for this node type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IBrush GetTextForeground(ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IBrush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IsEditing_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IsEditing*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_IsEditing_Avalonia_Controls_Control_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.IsEditing(Avalonia.Controls.Control)">
+  IsEditing(Control)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets whether the node is currently in edit mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsEditing(Control visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_UpdateSelection_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.UpdateSelection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_NodeRenderers_StyledNodeRendererBase_UpdateSelection_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRenderContext_" data-uid="FlowGraph.Avalonia.Rendering.NodeRenderers.StyledNodeRendererBase.UpdateSelection(Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext)">
+  UpdateSelection(Control, Node, NodeRenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the visual state when selection changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void UpdateSelection(Control visual, Node node, NodeRenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Control</span></dt>
+    <dd><p>The node's visual control.</p>
+</dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node data.</p>
+</dd>
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRenderContext.html">NodeRenderContext</a></dt>
+    <dd><p>The rendering context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/NodeRenderers/StyledNodeRendererBase.cs/#L35" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

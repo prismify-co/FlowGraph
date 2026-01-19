@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class InputCoordinatesAdapter | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class InputCoordinatesAdapter | FlowGraph ">
+      
+      <meta name="description" content="Implementation of  that abstracts away rendering mode differences for coordinate handling.  This adapter automatically detects the current rendering mode and uses the appropriate coordinate conversion strategy: Visual Tree mode: GetPosition(MainCanvas) already returns canvas coordinatesDirect Rendering mode: GetPosition(RootPanel) returns viewport coordinates, requires transform">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Avalonia_Input_InputCoordinatesAdapter.md&amp;value=---%0Auid%3A%20FlowGraph.Avalonia.Input.InputCoordinatesAdapter%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter">
+
+
+
+  <h1 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter" class="text-break">
+Class InputCoordinatesAdapter  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Avalonia.html">Avalonia</a>.<a class="xref" href="FlowGraph.Avalonia.Input.html">Input</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Implementation of <a class="xref" href="FlowGraph.Avalonia.Input.IInputCoordinates.html">IInputCoordinates</a> that abstracts away
+rendering mode differences for coordinate handling.</p>
+<p>
+This adapter automatically detects the current rendering mode and uses
+the appropriate coordinate conversion strategy:
+<ul><li>Visual Tree mode: GetPosition(MainCanvas) already returns canvas coordinates</li><li>Direct Rendering mode: GetPosition(RootPanel) returns viewport coordinates, requires transform</li></ul>
+
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class InputCoordinatesAdapter : IInputCoordinates</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">InputCoordinatesAdapter</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Avalonia.Input.IInputCoordinates.html">IInputCoordinates</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter__ctor_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter__ctor_FlowGraph_Avalonia_ViewportState_Avalonia_Controls_Panel_Avalonia_Controls_Canvas_FlowGraph_Avalonia_Rendering_DirectCanvasRenderer_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.#ctor(FlowGraph.Avalonia.ViewportState,Avalonia.Controls.Panel,Avalonia.Controls.Canvas,FlowGraph.Avalonia.Rendering.DirectCanvasRenderer)">
+  InputCoordinatesAdapter(ViewportState, Panel?, Canvas?, DirectCanvasRenderer?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new InputCoordinatesAdapter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InputCoordinatesAdapter(ViewportState viewport, Panel? rootPanel, Canvas? mainCanvas, DirectCanvasRenderer? directRenderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="FlowGraph.Avalonia.ViewportState.html">ViewportState</a></dt>
+    <dd><p>The viewport state for coordinate transforms.</p>
+</dd>
+    <dt><code>rootPanel</code> <span class="xref">Panel</span></dt>
+    <dd><p>The root panel (untransformed container).</p>
+</dd>
+    <dt><code>mainCanvas</code> <span class="xref">Canvas</span></dt>
+    <dd><p>The main canvas (transformed container).</p>
+</dd>
+    <dt><code>directRenderer</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html">DirectCanvasRenderer</a></dt>
+    <dd><p>The direct renderer, if in direct rendering mode.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_IsDirectRenderingMode_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_IsDirectRenderingMode" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.IsDirectRenderingMode">
+  IsDirectRenderingMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether we're currently in Direct Rendering mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDirectRenderingMode { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_Zoom_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_Zoom" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.Zoom">
+  Zoom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current zoom level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Zoom { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerCanvasPosition_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerCanvasPosition_Avalonia_Input_PointerEventArgs_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerCanvasPosition(Avalonia.Input.PointerEventArgs)">
+  GetPointerCanvasPosition(PointerEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current pointer position in canvas coordinates.</p>
+<p>
+This is the primary method for getting pointer position during interactions.
+Use for hit testing, node positioning, edge endpoints, selection bounds, etc.
+</p>
+<p>
+Works correctly regardless of rendering mode:
+<ul><li>Visual Tree mode: Uses GetPosition(MainCanvas) which applies inverse transform</li><li>Direct Rendering mode: Uses GetPosition(RootPanel) + manual inverse transform</li></ul>
+
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasPoint GetPointerCanvasPosition(PointerEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">PointerEventArgs</span></dt>
+    <dd><p>The pointer event.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasPoint.html">CanvasPoint</a></dt>
+    <dd><p>Pointer position in canvas coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerViewportPosition_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetPointerViewportPosition_Avalonia_Input_PointerEventArgs_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetPointerViewportPosition(Avalonia.Input.PointerEventArgs)">
+  GetPointerViewportPosition(PointerEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current pointer position in viewport coordinates.</p>
+<p>
+Use for operations that work in screen space:
+<ul><li>Auto-pan edge detection</li><li>Fixed overlay positioning</li><li>Tooltip placement</li></ul>
+
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportPoint GetPointerViewportPosition(PointerEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">PointerEventArgs</span></dt>
+    <dd><p>The pointer event.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportPoint.html">ViewportPoint</a></dt>
+    <dd><p>Pointer position in viewport coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetViewportBounds_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetViewportBounds" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetViewportBounds">
+  GetViewportBounds()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport bounds (size of the visible area).</p>
+<p>
+Returns a rect at (0,0) with the viewport's width and height.
+Use for auto-pan edge detection.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportRect GetViewportBounds()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportRect.html">ViewportRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetVisibleCanvasRect_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_GetVisibleCanvasRect" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.GetVisibleCanvasRect">
+  GetVisibleCanvasRect()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visible area in canvas coordinates.</p>
+<p>
+This represents the portion of the canvas that is currently visible in the viewport.
+Useful for:
+<ul><li>Viewport culling during rendering</li><li>Determining if a node is visible</li><li>Calculating visible bounds for layout operations</li></ul>
+
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasRect GetVisibleCanvasRect()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasRect.html">CanvasRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToCanvas_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToCanvas_FlowGraph_Core_Coordinates_ViewportPoint_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportPoint)">
+  ToCanvas(ViewportPoint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a viewport point to canvas coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasPoint ToCanvas(ViewportPoint viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="FlowGraph.Core.Coordinates.ViewportPoint.html">ViewportPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasPoint.html">CanvasPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToCanvas_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToCanvas_FlowGraph_Core_Coordinates_ViewportVector_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToCanvas(FlowGraph.Core.Coordinates.ViewportVector)">
+  ToCanvas(ViewportVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a viewport vector (delta) to canvas space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasVector ToCanvas(ViewportVector viewportDelta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewportDelta</code> <a class="xref" href="FlowGraph.Core.Coordinates.ViewportVector.html">ViewportVector</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasVector.html">CanvasVector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToViewport_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToViewport_FlowGraph_Core_Coordinates_CanvasPoint_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasPoint)">
+  ToViewport(CanvasPoint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a canvas point to viewport coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportPoint ToViewport(CanvasPoint canvas)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <a class="xref" href="FlowGraph.Core.Coordinates.CanvasPoint.html">CanvasPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportPoint.html">ViewportPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToViewport_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Input_InputCoordinatesAdapter_ToViewport_FlowGraph_Core_Coordinates_CanvasVector_" data-uid="FlowGraph.Avalonia.Input.InputCoordinatesAdapter.ToViewport(FlowGraph.Core.Coordinates.CanvasVector)">
+  ToViewport(CanvasVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a canvas vector (delta) to viewport space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportVector ToViewport(CanvasVector canvasDelta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasDelta</code> <a class="xref" href="FlowGraph.Core.Coordinates.CanvasVector.html">CanvasVector</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportVector.html">ViewportVector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Input/InputCoordinatesAdapter.cs/#L23" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

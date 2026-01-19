@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Node | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Node | FlowGraph ">
+      
+      <meta name="description" content="Represents a node in the flow graph. Uses a Definition (immutable) + State (mutable) composition pattern. Implements  for unified element handling.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Node.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Node%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Node">
+
+
+
+  <h1 id="FlowGraph_Core_Node" data-uid="FlowGraph.Core.Node" class="text-break">
+Class Node  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a node in the flow graph.
+Uses a Definition (immutable) + State (mutable) composition pattern.
+Implements <a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a> for unified element handling.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Node : ICanvasElement, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Node</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeCreated_FlowGraph_Core_Node_System_String_">LoggingExtensions.LogNodeCreated(Node, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Diagnostics.LoggingExtensions.html#FlowGraph_Core_Diagnostics_LoggingExtensions_LogNodeMoved_FlowGraph_Core_Node_System_Double_System_Double_System_String_">LoggingExtensions.LogNodeMoved(Node, double, double, string)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="FlowGraph_Core_Node_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+The node's structural properties (Id, Type, Label, Ports, capability flags) are stored
+in the <a class="xref" href="FlowGraph.Core.Node.html#FlowGraph_Core_Node_Definition">Definition</a> record. Runtime state (position, size, selection) is
+stored in the <a class="xref" href="FlowGraph.Core.Node.html#FlowGraph_Core_Node_State">State</a> object.
+</p>
+<p>
+For backward compatibility, pass-through properties are provided that delegate
+to either Definition or State as appropriate.
+</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Core_Node__ctor_" data-uid="FlowGraph.Core.Node.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Node__ctor" data-uid="FlowGraph.Core.Node.#ctor">
+  Node()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a node with default definition. For backward compatibility.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Node()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node__ctor_" data-uid="FlowGraph.Core.Node.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Node__ctor_FlowGraph_Core_Models_NodeDefinition_FlowGraph_Core_Models_INodeState_" data-uid="FlowGraph.Core.Node.#ctor(FlowGraph.Core.Models.NodeDefinition,FlowGraph.Core.Models.INodeState)">
+  Node(NodeDefinition, INodeState?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a node with the specified definition and optional state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Node(NodeDefinition definition, INodeState? state = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>definition</code> <a class="xref" href="FlowGraph.Core.Models.NodeDefinition.html">NodeDefinition</a></dt>
+    <dd><p>The immutable node definition.</p>
+</dd>
+    <dt><code>state</code> <a class="xref" href="FlowGraph.Core.Models.INodeState.html">INodeState</a></dt>
+    <dd><p>The mutable node state. If null, a new NodeState is created.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Node_AllowedResizeHandles_" data-uid="FlowGraph.Core.Node.AllowedResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Core_Node_AllowedResizeHandles" data-uid="FlowGraph.Core.Node.AllowedResizeHandles">
+  AllowedResizeHandles
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Specifies which resize handles should be displayed when this node is selected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResizeHandleMode AllowedResizeHandles { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.ResizeHandleMode.html">ResizeHandleMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Data_" data-uid="FlowGraph.Core.Node.Data*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Data" data-uid="FlowGraph.Core.Node.Data">
+  Data
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Custom user data associated with the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? Data { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Definition_" data-uid="FlowGraph.Core.Node.Definition*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Definition" data-uid="FlowGraph.Core.Node.Definition">
+  Definition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The immutable definition of this node (identity, type, ports, capabilities).
+Use <code>with</code> expressions to modify: <code>node.Definition = node.Definition with { Label = &quot;x&quot; };</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodeDefinition Definition { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.NodeDefinition.html">NodeDefinition</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_GroupPadding_" data-uid="FlowGraph.Core.Node.GroupPadding*"></a>
+
+  <h3 id="FlowGraph_Core_Node_GroupPadding" data-uid="FlowGraph.Core.Node.GroupPadding">
+  GroupPadding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Custom padding around group children when calculating group bounds.
+Only applies when IsGroup is true. If null, uses the default from settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? GroupPadding { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Height_" data-uid="FlowGraph.Core.Node.Height*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Height" data-uid="FlowGraph.Core.Node.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The height of the node. Null means auto-sized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Id_" data-uid="FlowGraph.Core.Node.Id*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Id" data-uid="FlowGraph.Core.Node.Id">
+  Id
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Unique identifier for the node. Immutable - to change, replace the Definition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Id { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Inputs_" data-uid="FlowGraph.Core.Node.Inputs*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Inputs" data-uid="FlowGraph.Core.Node.Inputs">
+  Inputs
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Input ports for this node.
+For full immutability, use Definition.Inputs directly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Port&gt; Inputs { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FlowGraph.Core.Port.html">Port</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsCollapsed_" data-uid="FlowGraph.Core.Node.IsCollapsed*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsCollapsed" data-uid="FlowGraph.Core.Node.IsCollapsed">
+  IsCollapsed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L382"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether the group is collapsed (only applicable when IsGroup is true).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCollapsed { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsConnectable_" data-uid="FlowGraph.Core.Node.IsConnectable*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsConnectable" data-uid="FlowGraph.Core.Node.IsConnectable">
+  IsConnectable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node can have new connections. Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsConnectable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsDeletable_" data-uid="FlowGraph.Core.Node.IsDeletable*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsDeletable" data-uid="FlowGraph.Core.Node.IsDeletable">
+  IsDeletable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node can be deleted. Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDeletable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsDraggable_" data-uid="FlowGraph.Core.Node.IsDraggable*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsDraggable" data-uid="FlowGraph.Core.Node.IsDraggable">
+  IsDraggable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node can be dragged. Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDraggable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsDragging_" data-uid="FlowGraph.Core.Node.IsDragging*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsDragging" data-uid="FlowGraph.Core.Node.IsDragging">
+  IsDragging
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L373"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node is currently being dragged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDragging { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsGroup_" data-uid="FlowGraph.Core.Node.IsGroup*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsGroup" data-uid="FlowGraph.Core.Node.IsGroup">
+  IsGroup
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node is a group container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGroup { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsHighlighted_" data-uid="FlowGraph.Core.Node.IsHighlighted*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsHighlighted" data-uid="FlowGraph.Core.Node.IsHighlighted">
+  IsHighlighted
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L364"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node is highlighted for emphasis (e.g., search results, analysis feedback).
+Unlike selection, highlighting is purely visual and doesn't affect operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsHighlighted { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsResizable_" data-uid="FlowGraph.Core.Node.IsResizable*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsResizable" data-uid="FlowGraph.Core.Node.IsResizable">
+  IsResizable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node can be resized. Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsResizable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsSelectable_" data-uid="FlowGraph.Core.Node.IsSelectable*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsSelectable" data-uid="FlowGraph.Core.Node.IsSelectable">
+  IsSelectable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node can be selected. Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSelectable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsSelected_" data-uid="FlowGraph.Core.Node.IsSelected*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsSelected" data-uid="FlowGraph.Core.Node.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L354"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether this node is currently selected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSelected { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_IsVisible_" data-uid="FlowGraph.Core.Node.IsVisible*"></a>
+
+  <h3 id="FlowGraph_Core_Node_IsVisible" data-uid="FlowGraph.Core.Node.IsVisible">
+  IsVisible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L396"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether this node is visible in the canvas.
+Delegates to State.IsVisible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsVisible { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Label_" data-uid="FlowGraph.Core.Node.Label*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Label" data-uid="FlowGraph.Core.Node.Label">
+  Label
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional display label for the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? Label { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Outputs_" data-uid="FlowGraph.Core.Node.Outputs*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Outputs" data-uid="FlowGraph.Core.Node.Outputs">
+  Outputs
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Output ports for this node.
+For full immutability, use Definition.Outputs directly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Port&gt; Outputs { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FlowGraph.Core.Port.html">Port</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_ParentGroupId_" data-uid="FlowGraph.Core.Node.ParentGroupId*"></a>
+
+  <h3 id="FlowGraph_Core_Node_ParentGroupId" data-uid="FlowGraph.Core.Node.ParentGroupId">
+  ParentGroupId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ID of the parent group node, if this node is part of a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ParentGroupId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Position_" data-uid="FlowGraph.Core.Node.Position*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Position" data-uid="FlowGraph.Core.Node.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The position of the node in canvas space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point Position { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_State_" data-uid="FlowGraph.Core.Node.State*"></a>
+
+  <h3 id="FlowGraph_Core_Node_State" data-uid="FlowGraph.Core.Node.State">
+  State
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The mutable runtime state of this node (position, size, selection).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INodeState State { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.INodeState.html">INodeState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Type_" data-uid="FlowGraph.Core.Node.Type*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Type" data-uid="FlowGraph.Core.Node.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The type/category of the node (e.g., &quot;process&quot;, &quot;decision&quot;, &quot;input&quot;).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Type { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Width_" data-uid="FlowGraph.Core.Node.Width*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Width" data-uid="FlowGraph.Core.Node.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The width of the node. Null means auto-sized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_ZIndex_" data-uid="FlowGraph.Core.Node.ZIndex*"></a>
+
+  <h3 id="FlowGraph_Core_Node_ZIndex" data-uid="FlowGraph.Core.Node.ZIndex">
+  ZIndex
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L406"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Z-index for rendering order.
+Delegates to State.ZIndex. Default is CanvasElement.ZIndexNodes (300).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ZIndex { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Node_CreateStateSnapshot_" data-uid="FlowGraph.Core.Node.CreateStateSnapshot*"></a>
+
+  <h3 id="FlowGraph_Core_Node_CreateStateSnapshot" data-uid="FlowGraph.Core.Node.CreateStateSnapshot">
+  CreateStateSnapshot()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L458"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a snapshot of the current state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodeState CreateStateSnapshot()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Models.NodeState.html">NodeState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_GetBounds_" data-uid="FlowGraph.Core.Node.GetBounds*"></a>
+
+  <h3 id="FlowGraph_Core_Node_GetBounds" data-uid="FlowGraph.Core.Node.GetBounds">
+  GetBounds()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the bounding rectangle of this node in canvas coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Rect GetBounds()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Rect.html">Rect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_Move_" data-uid="FlowGraph.Core.Node.Move*"></a>
+
+  <h3 id="FlowGraph_Core_Node_Move_System_Double_System_Double_" data-uid="FlowGraph.Core.Node.Move(System.Double,System.Double)">
+  Move(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L431"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves the node by the specified delta.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Move(double deltaX, double deltaY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deltaX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>deltaY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_OnPropertyChanged_" data-uid="FlowGraph.Core.Node.OnPropertyChanged*"></a>
+
+  <h3 id="FlowGraph_Core_Node_OnPropertyChanged_System_String_" data-uid="FlowGraph.Core.Node.OnPropertyChanged(System.String)">
+  OnPropertyChanged(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the PropertyChanged event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnPropertyChanged(string? propertyName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_RestoreState_" data-uid="FlowGraph.Core.Node.RestoreState*"></a>
+
+  <h3 id="FlowGraph_Core_Node_RestoreState_FlowGraph_Core_Models_INodeState_" data-uid="FlowGraph.Core.Node.RestoreState(FlowGraph.Core.Models.INodeState)">
+  RestoreState(INodeState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L476"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores state from a snapshot.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RestoreState(INodeState snapshot)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>snapshot</code> <a class="xref" href="FlowGraph.Core.Models.INodeState.html">INodeState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_SetPosition_" data-uid="FlowGraph.Core.Node.SetPosition*"></a>
+
+  <h3 id="FlowGraph_Core_Node_SetPosition_System_Double_System_Double_" data-uid="FlowGraph.Core.Node.SetPosition(System.Double,System.Double)">
+  SetPosition(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L440"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the node's position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPosition(double x, double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Node_SetSize_" data-uid="FlowGraph.Core.Node.SetSize*"></a>
+
+  <h3 id="FlowGraph_Core_Node_SetSize_System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="FlowGraph.Core.Node.SetSize(System.Nullable{System.Double},System.Nullable{System.Double})">
+  SetSize(double?, double?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L449"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the node's size.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetSize(double? width, double? height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="FlowGraph_Core_Node_BoundsChanged" data-uid="FlowGraph.Core.Node.BoundsChanged">
+  BoundsChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised when the node's bounds (position or size) change.
+Useful for spatial index invalidation and layout systems.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoundsChangedEventArgs&gt;? BoundsChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="FlowGraph.Core.Events.BoundsChangedEventArgs.html">BoundsChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="FlowGraph_Core_Node_PositionChanged" data-uid="FlowGraph.Core.Node.PositionChanged">
+  PositionChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised when the node's position (X, Y) changes.
+More efficient than PropertyChanged for position-specific listeners.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PositionChangedEventArgs&gt;? PositionChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="FlowGraph.Core.Events.PositionChangedEventArgs.html">PositionChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="FlowGraph_Core_Node_PropertyChanged" data-uid="FlowGraph.Core.Node.PropertyChanged">
+  PropertyChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when a property value changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event PropertyChangedEventHandler? PropertyChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventhandler">PropertyChangedEventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Node.cs/#L25" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

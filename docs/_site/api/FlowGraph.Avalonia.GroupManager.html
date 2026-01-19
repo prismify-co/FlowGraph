@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GroupManager | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GroupManager | FlowGraph ">
+      
+      <meta name="description" content="Manages group operations including auto-sizing, collapse state, and drag-to-add.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Avalonia_GroupManager.md&amp;value=---%0Auid%3A%20FlowGraph.Avalonia.GroupManager%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.GroupManager">
+
+
+
+  <h1 id="FlowGraph_Avalonia_GroupManager" data-uid="FlowGraph.Avalonia.GroupManager" class="text-break">
+Class GroupManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Avalonia.html">Avalonia</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Manages group operations including auto-sizing, collapse state, and drag-to-add.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GroupManager</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">GroupManager</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_GroupManager__ctor_" data-uid="FlowGraph.Avalonia.GroupManager.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager__ctor_FlowGraph_Avalonia_IGraphContext_FlowGraph_Core_Commands_CommandHistory_FlowGraph_Avalonia_FlowCanvasSettings_" data-uid="FlowGraph.Avalonia.GroupManager.#ctor(FlowGraph.Avalonia.IGraphContext,FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)">
+  GroupManager(IGraphContext, CommandHistory, FlowCanvasSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new group manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GroupManager(IGraphContext context, CommandHistory commandHistory, FlowCanvasSettings settings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="FlowGraph.Avalonia.IGraphContext.html">IGraphContext</a></dt>
+    <dd><p>The graph context providing access to the current graph.</p>
+</dd>
+    <dt><code>commandHistory</code> <a class="xref" href="FlowGraph.Core.Commands.CommandHistory.html">CommandHistory</a></dt>
+    <dd><p>The command history for undo/redo support.</p>
+</dd>
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd><p>The canvas settings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager__ctor_" data-uid="FlowGraph.Avalonia.GroupManager.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager__ctor_System_Func_FlowGraph_Core_Graph__FlowGraph_Core_Commands_CommandHistory_FlowGraph_Avalonia_FlowCanvasSettings_" data-uid="FlowGraph.Avalonia.GroupManager.#ctor(System.Func{FlowGraph.Core.Graph},FlowGraph.Core.Commands.CommandHistory,FlowGraph.Avalonia.FlowCanvasSettings)">
+  GroupManager(Func&lt;Graph?&gt;, CommandHistory, FlowCanvasSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use the constructor that accepts IGraphContext instead.&quot;)]
+public GroupManager(Func&lt;Graph?&gt; getGraph, CommandHistory commandHistory, FlowCanvasSettings settings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>getGraph</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="FlowGraph.Core.Graph.html">Graph</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>commandHistory</code> <a class="xref" href="FlowGraph.Core.Commands.CommandHistory.html">CommandHistory</a></dt>
+    <dd></dd>
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GroupPadding_" data-uid="FlowGraph.Avalonia.GroupManager.GroupPadding*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GroupPadding" data-uid="FlowGraph.Avalonia.GroupManager.GroupPadding">
+  GroupPadding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Padding around children when calculating group bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GroupPadding { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_HeaderHeight_" data-uid="FlowGraph.Avalonia.GroupManager.HeaderHeight*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_HeaderHeight" data-uid="FlowGraph.Avalonia.GroupManager.HeaderHeight">
+  HeaderHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Height of the group header.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double HeaderHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_AddNodesToGroup_" data-uid="FlowGraph.Avalonia.GroupManager.AddNodesToGroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_AddNodesToGroup_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="FlowGraph.Avalonia.GroupManager.AddNodesToGroup(System.String,System.Collections.Generic.IEnumerable{System.String})">
+  AddNodesToGroup(string, IEnumerable&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds nodes to an existing group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddNodesToGroup(string groupId, IEnumerable&lt;string&gt; nodeIds)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>nodeIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_AutoResizeGroup_" data-uid="FlowGraph.Avalonia.GroupManager.AutoResizeGroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_AutoResizeGroup_System_String_" data-uid="FlowGraph.Avalonia.GroupManager.AutoResizeGroup(System.String)">
+  AutoResizeGroup(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Auto-resizes a group to fit its children with padding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AutoResizeGroup(string groupId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_CollapseAll_" data-uid="FlowGraph.Avalonia.GroupManager.CollapseAll*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_CollapseAll" data-uid="FlowGraph.Avalonia.GroupManager.CollapseAll">
+  CollapseAll()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Collapses all groups in the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CollapseAll()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_CreateGroup_" data-uid="FlowGraph.Avalonia.GroupManager.CreateGroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_CreateGroup_System_Collections_Generic_IEnumerable_System_String__System_String_" data-uid="FlowGraph.Avalonia.GroupManager.CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String)">
+  CreateGroup(IEnumerable&lt;string&gt;, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a group from the specified nodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Node? CreateGroup(IEnumerable&lt;string&gt; nodeIds, string? label = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_ExpandAll_" data-uid="FlowGraph.Avalonia.GroupManager.ExpandAll*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_ExpandAll" data-uid="FlowGraph.Avalonia.GroupManager.ExpandAll">
+  ExpandAll()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Expands all groups in the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ExpandAll()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GetAllGroups_" data-uid="FlowGraph.Avalonia.GroupManager.GetAllGroups*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GetAllGroups" data-uid="FlowGraph.Avalonia.GroupManager.GetAllGroups">
+  GetAllGroups()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all groups in the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Node&gt; GetAllGroups()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Node.html">Node</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GetGroupAtPoint_" data-uid="FlowGraph.Avalonia.GroupManager.GetGroupAtPoint*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GetGroupAtPoint_FlowGraph_Core_Point_" data-uid="FlowGraph.Avalonia.GroupManager.GetGroupAtPoint(FlowGraph.Core.Point)">
+  GetGroupAtPoint(Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a point is inside a group's drop zone.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? GetGroupAtPoint(Point canvasPoint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasPoint</code> <a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GetGroupChildren_" data-uid="FlowGraph.Avalonia.GroupManager.GetGroupChildren*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GetGroupChildren_System_String_" data-uid="FlowGraph.Avalonia.GroupManager.GetGroupChildren(System.String)">
+  GetGroupChildren(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L314"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the children of a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Node&gt; GetGroupChildren(string groupId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Node.html">Node</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GetVisibleEdges_" data-uid="FlowGraph.Avalonia.GroupManager.GetVisibleEdges*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GetVisibleEdges" data-uid="FlowGraph.Avalonia.GroupManager.GetVisibleEdges">
+  GetVisibleEdges()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all visible edges (excluding those with hidden endpoints).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Edge&gt; GetVisibleEdges()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Edge.html">Edge</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_GetVisibleNodes_" data-uid="FlowGraph.Avalonia.GroupManager.GetVisibleNodes*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GetVisibleNodes" data-uid="FlowGraph.Avalonia.GroupManager.GetVisibleNodes">
+  GetVisibleNodes()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all visible nodes (excluding those hidden by collapsed groups).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Node&gt; GetVisibleNodes()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FlowGraph.Core.Node.html">Node</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_HandleNodeDroppedOnGroup_" data-uid="FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_HandleNodeDroppedOnGroup_System_Collections_Generic_IEnumerable_System_String__FlowGraph_Core_Point_" data-uid="FlowGraph.Avalonia.GroupManager.HandleNodeDroppedOnGroup(System.Collections.Generic.IEnumerable{System.String},FlowGraph.Core.Point)">
+  HandleNodeDroppedOnGroup(IEnumerable&lt;string&gt;, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L248"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Handles dropping nodes onto a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HandleNodeDroppedOnGroup(IEnumerable&lt;string&gt; nodeIds, Point dropPoint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>dropPoint</code> <a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_IsNodeVisible_" data-uid="FlowGraph.Avalonia.GroupManager.IsNodeVisible*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_IsNodeVisible_System_String_" data-uid="FlowGraph.Avalonia.GroupManager.IsNodeVisible(System.String)">
+  IsNodeVisible(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a node is visible (not hidden by a collapsed parent group).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNodeVisible(string nodeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_RemoveNodesFromGroup_" data-uid="FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_RemoveNodesFromGroup_System_Collections_Generic_IEnumerable_System_String__" data-uid="FlowGraph.Avalonia.GroupManager.RemoveNodesFromGroup(System.Collections.Generic.IEnumerable{System.String})">
+  RemoveNodesFromGroup(IEnumerable&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes nodes from their parent group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveNodesFromGroup(IEnumerable&lt;string&gt; nodeIds)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_SetCollapsed_" data-uid="FlowGraph.Avalonia.GroupManager.SetCollapsed*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_SetCollapsed_System_String_System_Boolean_" data-uid="FlowGraph.Avalonia.GroupManager.SetCollapsed(System.String,System.Boolean)">
+  SetCollapsed(string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the collapsed state of a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetCollapsed(string groupId, bool collapsed)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>collapsed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_ToggleCollapse_" data-uid="FlowGraph.Avalonia.GroupManager.ToggleCollapse*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_ToggleCollapse_System_String_" data-uid="FlowGraph.Avalonia.GroupManager.ToggleCollapse(System.String)">
+  ToggleCollapse(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Toggles the collapsed state of a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ToggleCollapse(string groupId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_GroupManager_Ungroup_" data-uid="FlowGraph.Avalonia.GroupManager.Ungroup*"></a>
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_Ungroup_System_String_" data-uid="FlowGraph.Avalonia.GroupManager.Ungroup(System.String)">
+  Ungroup(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ungroups the specified group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Ungroup(string groupId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>groupId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GroupCollapsedChanged" data-uid="FlowGraph.Avalonia.GroupManager.GroupCollapsedChanged">
+  GroupCollapsedChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Event raised when a group's collapsed state changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;GroupCollapsedEventArgs&gt;? GroupCollapsedChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="FlowGraph.Avalonia.GroupCollapsedEventArgs.html">GroupCollapsedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_GroupRerenderRequested" data-uid="FlowGraph.Avalonia.GroupManager.GroupRerenderRequested">
+  GroupRerenderRequested
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Event raised when a group needs to be re-rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;string&gt;? GroupRerenderRequested</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="FlowGraph_Avalonia_GroupManager_NodesAddedToGroup" data-uid="FlowGraph.Avalonia.GroupManager.NodesAddedToGroup">
+  NodesAddedToGroup
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Event raised when nodes are added to a group.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;NodesAddedToGroupEventArgs&gt;? NodesAddedToGroup</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="FlowGraph.Avalonia.NodesAddedToGroupEventArgs.html">NodesAddedToGroupEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/GroupManager.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Namespace FlowGraph.Avalonia.Rendering | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Namespace FlowGraph.Avalonia.Rendering | FlowGraph ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.Rendering">
+
+  <h1 id="FlowGraph_Avalonia_Rendering" data-uid="FlowGraph.Avalonia.Rendering" class="text-break">Namespace FlowGraph.Avalonia.Rendering</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+
+    <h3 id="classes">
+Classes
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ArrowGeometryHelper.html">ArrowGeometryHelper</a></dt>
+      <dd><p>Helper class for calculating arrow geometry points.
+Provides shared calculations for both retained-mode (PathGeometry) and immediate-mode (DrawingContext) rendering.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.BezierHelper.html">BezierHelper</a></dt>
+      <dd></dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.CanvasElementManager.html">CanvasElementManager</a></dt>
+      <dd><p>Coordinates rendering of all graph elements (nodes, ports, edges, handles).
+Acts as a facade over specialized visual managers for clean separation of concerns.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.CanvasRenderModel.html">CanvasRenderModel</a></dt>
+      <dd><p>Central model that calculates all rendering geometry for a graph.
+This is the single source of truth for node bounds, port positions, edge paths, etc.
+Both VisualTree rendering and DirectDraw rendering use this model to ensure 100% visual parity.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.CanvasRenderService.html">CanvasRenderService</a></dt>
+      <dd><p>Unified graph render service that abstracts the difference between
+retained mode (CanvasElementManager) and direct rendering mode (DirectCanvasRenderer).</p>
+<p>This service ensures that all rendering operations work correctly regardless
+of which rendering mode is active, solving the recurring issue of handlers
+only implementing one rendering path.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.DesignTokens.html">DesignTokens</a></dt>
+      <dd><p>Design tokens for consistent styling across all FlowGraph components.
+Inspired by React Flow's CSS variables and design system.</p>
+<p>Usage:</p>
+<ul>
+<li>Reference these constants throughout renderers for consistency</li>
+<li>All values are in logical pixels (unscaled)</li>
+<li>Scale factor is applied by the renderer context when needed</li>
+</ul>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.DirectCanvasRenderer.html">DirectCanvasRenderer</a></dt>
+      <dd><p>A high-performance graph renderer that draws directly to a DrawingContext,
+bypassing the Avalonia visual tree for nodes and edges.
+This is optimized for large graphs (500+ nodes) where per-element Controls are too slow.</p>
+<p>Uses GraphRenderModel for all geometry calculations to ensure 100% visual parity
+with the normal VisualTree renderer.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.EdgePathHelper.html">EdgePathHelper</a></dt>
+      <dd><p>Helper class for creating edge path geometries between points.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.EdgeVisualManager.html">EdgeVisualManager</a></dt>
+      <dd><p>Manages rendering and tracking of edge visuals including paths, markers, and labels.
+Responsible for creating, updating, and removing edge UI elements.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeVisualManager.html">NodeVisualManager</a></dt>
+      <dd><p>Manages rendering and tracking of node and port visuals.
+Responsible for creating, updating, and removing node/port UI elements.
+Uses GraphRenderModel for all geometry calculations to ensure visual parity with DirectCanvasRenderer.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderContext.html">RenderContext</a></dt>
+      <dd><p>Shared rendering context containing settings, viewport state, and coordinate transformation utilities.
+Used by all visual managers to ensure consistent rendering behavior.</p>
+<p><b>TRANSFORM-BASED RENDERING (Phase 2):</b></p>
+<p>
+Renderers create visuals at "logical size" (unscaled). The MatrixTransform on MainCanvas
+handles all zoom/pan transformations. This enables O(1) zoom operations.
+</p>
+<ul><li><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_Scale">Scale</a> always returns 1.0 - use for visual sizing</li><li><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_ViewportZoom">ViewportZoom</a> returns actual zoom - use for calculations</li><li><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderContext.html#FlowGraph_Avalonia_Rendering_RenderContext_InverseScale">InverseScale</a> returns 1/zoom - use for constant-size elements</li></ul>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderTargetAdapter.html">RenderTargetAdapter</a></dt>
+      <dd><p>Implementation of <a class="xref" href="FlowGraph.Avalonia.Rendering.IRenderTarget.html">IRenderTarget</a> that provides mode-aware temporary
+visual rendering for interaction states.</p>
+<p>
+This adapter automatically selects the correct container and coordinate space:
+<ul><li>Visual Tree mode: MainCanvas with canvas coordinates (MatrixTransform handles viewport)</li><li>Direct Rendering mode: RootPanel with viewport coordinates (self-transformed)</li></ul>
+
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ResizeHandleManager.html">ResizeHandleManager</a></dt>
+      <dd><p>Manages rendering and tracking of resize handle visuals for nodes.
+Responsible for creating, updating, and removing resize handle UI elements.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+      <dd><p>Provides theme-aware resource access for FlowCanvas components.</p>
+<p>
+All colors can be customized by defining resources in your App.axaml:
+</p>
+<pre><code class="lang-csharp">&lt;Application.Resources&gt;
+    &lt;SolidColorBrush x:Key="FlowCanvasNodeBackground" Color="#2D2D30"/&gt;
+    &lt;SolidColorBrush x:Key="FlowCanvasNodeBorder" Color="#4682B4"/&gt;
+    &lt;!-- etc. --&gt;
+&lt;/Application.Resources&gt;</code></pre>
+<p>
+Available resource keys:
+</p>
+<ul><li>Canvas: FlowCanvasBackground, FlowCanvasGridColor</li><li>Node: FlowCanvasNodeBackground, FlowCanvasNodeBorder, FlowCanvasNodeSelectedBorder, FlowCanvasNodeText</li><li>Input Node: FlowCanvasInputNodeBackground, FlowCanvasInputNodeBorder, FlowCanvasInputNodeText, FlowCanvasInputNodeIcon</li><li>Output Node: FlowCanvasOutputNodeBackground, FlowCanvasOutputNodeBorder, FlowCanvasOutputNodeText, FlowCanvasOutputNodeIcon</li><li>Edge: FlowCanvasEdgeStroke, FlowCanvasEdgeSelectedStroke</li><li>Port: FlowCanvasPortBackground, FlowCanvasPortBorder, FlowCanvasPortHover, FlowCanvasPortValidConnection, FlowCanvasPortInvalidConnection</li><li>Group: FlowCanvasGroupBackground, FlowCanvasGroupBorder, FlowCanvasGroupLabelText</li><li>Selection: FlowCanvasSelectionBoxFill, FlowCanvasSelectionBoxStroke</li><li>Minimap: FlowCanvasMinimapBackground, FlowCanvasMinimapViewportFill, FlowCanvasMinimapViewportStroke</li></ul>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ViewportOverlayPositioner.html">ViewportOverlayPositioner</a></dt>
+      <dd><p>Provides unified positioning for overlay elements that need to appear at specific
+viewport coordinates, regardless of the parent container type.</p>
+<p>
+<b>Problem this solves:</b> FlowGraph has two rendering modes with different container types:
+<ul><li><b>Retained Mode:</b> Uses MainCanvas (Canvas) with MatrixTransform - Canvas.SetLeft/SetTop work</li><li><b>Direct Rendering:</b> Uses RootPanel (Panel) - Canvas.SetLeft/SetTop are IGNORED</li></ul>
+
+<p>
+<b>Key insight:</b> Canvas attached properties (Canvas.Left, Canvas.Top) only work when the
+parent element is a Canvas. When attached to a Panel child, they have no effect.
+</p>
+</dd>
+    </dl>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ICanvasRenderService.html">ICanvasRenderService</a></dt>
+      <dd><p>Unified interface for graph rendering operations that abstracts away
+the difference between retained mode (VisualTree) and direct rendering modes.
+This prevents the recurring issue of handlers only implementing one rendering path.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.IConnectionPreviewHandle.html">IConnectionPreviewHandle</a></dt>
+      <dd><p>Handle for managing a temporary connection preview line.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.IRenderTarget.html">IRenderTarget</a></dt>
+      <dd><p>Abstraction for adding temporary visual elements during interaction.</p>
+<p>
+This interface provides a rendering-mode agnostic way to create temporary visuals
+such as connection preview lines, selection boxes, and drag previews. It handles
+coordinate transforms and container selection internally based on the current
+rendering mode (Visual Tree vs Direct Rendering).
+</p>
+<p>
+<b>Key principle:</b> All coordinates passed to this interface are in canvas space.
+The implementation handles conversion to viewport coordinates when necessary
+(e.g., in Direct Rendering mode).
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ISelectionBoxHandle.html">ISelectionBoxHandle</a></dt>
+      <dd><p>Handle for managing a temporary selection box.</p>
+</dd>
+    </dl>
+    <h3 id="enums">
+Enums
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ResizeHandlePosition.html">ResizeHandlePosition</a></dt>
+      <dd><p>Positions for resize handles on a node.</p>
+</dd>
+    </dl>
+
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

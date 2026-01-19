@@ -21,15 +21,15 @@
 
 ## Files Created
 
-| File                                                                                                            | Purpose                                     |
-| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| [FlowGraph.Core/Rendering/CoordinateSpaceAttribute.cs](../FlowGraph.Core/Rendering/CoordinateSpaceAttribute.cs) | Attribute for documenting coordinate spaces |
-| [FlowGraph.Core/Rendering/ICoordinateTransformer.cs](../FlowGraph.Core/Rendering/ICoordinateTransformer.cs)     | Bidirectional coordinate transform contract |
-| [FlowGraph.Core/Rendering/IRenderLayer.cs](../FlowGraph.Core/Rendering/IRenderLayer.cs)                         | Layer transform mode definitions            |
-| [FlowGraph.Core/Rendering/IViewportState.cs](../FlowGraph.Core/Rendering/IViewportState.cs)                     | Viewport state management contract          |
-| [FlowGraph.Core/Input/IHitTestable.cs](../FlowGraph.Core/Input/IHitTestable.cs)                                 | Generic hit testing contract                |
-| [FlowGraph.Core/Input/IGraphHitTester.cs](../FlowGraph.Core/Input/IGraphHitTester.cs)                           | Graph-wide hit testing with priority        |
-| [FlowGraph.Core/Elements/Size.cs](../FlowGraph.Core/Elements/Size.cs)                                           | Size record struct                          |
+| File | Purpose |
+| ---- | ------- |
+| `FlowGraph.Core/Rendering/CoordinateSpaceAttribute.cs` | Attribute for documenting coordinate spaces |
+| `FlowGraph.Core/Rendering/ICoordinateTransformer.cs` | Bidirectional coordinate transform contract |
+| `FlowGraph.Core/Rendering/IRenderLayer.cs` | Layer transform mode definitions |
+| `FlowGraph.Core/Rendering/IViewportState.cs` | Viewport state management contract |
+| `FlowGraph.Core/Input/IHitTestable.cs` | Generic hit testing contract |
+| `FlowGraph.Core/Input/IGraphHitTester.cs` | Graph-wide hit testing with priority |
+| `FlowGraph.Core/Elements/Size.cs` | Size record struct |
 
 ## Executive Summary
 

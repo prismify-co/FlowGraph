@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CanvasElementManager | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CanvasElementManager | FlowGraph ">
+      
+      <meta name="description" content="Coordinates rendering of all graph elements (nodes, ports, edges, handles). Acts as a facade over specialized visual managers for clean separation of concerns.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Avalonia_Rendering_CanvasElementManager.md&amp;value=---%0Auid%3A%20FlowGraph.Avalonia.Rendering.CanvasElementManager%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager">
+
+
+
+  <h1 id="FlowGraph_Avalonia_Rendering_CanvasElementManager" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager" class="text-break">
+Class CanvasElementManager  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Avalonia.html">Avalonia</a>.<a class="xref" href="FlowGraph.Avalonia.Rendering.html">Rendering</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Coordinates rendering of all graph elements (nodes, ports, edges, handles).
+Acts as a facade over specialized visual managers for clean separation of concerns.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CanvasElementManager</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">CanvasElementManager</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor">
+  CanvasElementManager()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new graph renderer with default settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasElementManager()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor_FlowGraph_Avalonia_FlowCanvasSettings_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor(FlowGraph.Avalonia.FlowCanvasSettings)">
+  CanvasElementManager(FlowCanvasSettings?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new graph renderer with the specified settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasElementManager(FlowCanvasSettings? settings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd><p>Canvas settings. If null, default settings are used.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager__ctor_FlowGraph_Avalonia_FlowCanvasSettings_FlowGraph_Avalonia_Rendering_NodeRenderers_NodeRendererRegistry_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.#ctor(FlowGraph.Avalonia.FlowCanvasSettings,FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry)">
+  CanvasElementManager(FlowCanvasSettings?, NodeRendererRegistry?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new graph renderer with the specified settings and node renderer registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CanvasElementManager(FlowCanvasSettings? settings, NodeRendererRegistry? nodeRendererRegistry)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd><p>Canvas settings. If null, default settings are used.</p>
+</dd>
+    <dt><code>nodeRendererRegistry</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry.html">NodeRendererRegistry</a></dt>
+    <dd><p>Registry for custom node renderers. If null, a default registry is created.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_BackgroundRenderers_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.BackgroundRenderers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_BackgroundRenderers" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.BackgroundRenderers">
+  BackgroundRenderers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the background renderer registry for custom background rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BackgroundRendererRegistry BackgroundRenderers { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.BackgroundRenderers.BackgroundRendererRegistry.html">BackgroundRendererRegistry</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_EdgeRenderers_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.EdgeRenderers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_EdgeRenderers" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.EdgeRenderers">
+  EdgeRenderers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the edge renderer registry for registering custom edge types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRendererRegistry EdgeRenderers { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.EdgeRenderers.EdgeRendererRegistry.html">EdgeRendererRegistry</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Edges_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Edges*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Edges" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Edges">
+  Edges
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the edge visual manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeVisualManager Edges { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.EdgeVisualManager.html">EdgeVisualManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_NodeRenderers_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.NodeRenderers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_NodeRenderers" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.NodeRenderers">
+  NodeRenderers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the node renderer registry for registering custom node types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodeRendererRegistry NodeRenderers { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeRenderers.NodeRendererRegistry.html">NodeRendererRegistry</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Nodes_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Nodes*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Nodes" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Nodes">
+  Nodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the node visual manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodeVisualManager Nodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.NodeVisualManager.html">NodeVisualManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_PortRenderers_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.PortRenderers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_PortRenderers" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.PortRenderers">
+  PortRenderers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the port renderer registry for registering custom port types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PortRendererRegistry PortRenderers { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.PortRenderers.PortRendererRegistry.html">PortRendererRegistry</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderContext_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderContext*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderContext" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderContext">
+  RenderContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render context for coordinate transformations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderContext RenderContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_ResizeHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.ResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_ResizeHandles" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.ResizeHandles">
+  ResizeHandles
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the resize handle manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResizeHandleManager ResizeHandles { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Avalonia.Rendering.ResizeHandleManager.html">ResizeHandleManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_BeginEditLabel_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.BeginEditLabel*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_BeginEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_System_String__System_Action_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.BeginEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{System.String},System.Action)">
+  BeginEditLabel(Node, ThemeResources, Action&lt;string&gt;, Action)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L476"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begins inline editing for a node's label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool BeginEditLabel(Node node, ThemeResources theme, Action&lt;string&gt; onCommit, Action onCancel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node to edit.</p>
+</dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd><p>Theme resources for styling.</p>
+</dd>
+    <dt><code>onCommit</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Callback when editing is committed with the new label value.</p>
+</dd>
+    <dt><code>onCancel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></dt>
+    <dd><p>Callback when editing is cancelled.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if edit mode was started successfully.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Clear_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Clear*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_Clear" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears all rendered visuals from tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_EndEditLabel_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.EndEditLabel*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_EndEditLabel_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.EndEditLabel(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  EndEditLabel(Node, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L484"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends inline editing for a node's label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EndEditLabel(Node node, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node being edited.</p>
+</dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd><p>Theme resources for styling.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeEndpointHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeEndpointHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeEndpointHandles_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeEndpointHandles(System.String)">
+  GetEdgeEndpointHandles(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the endpoint handles for an edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (Ellipse? source, Ellipse? target) GetEdgeEndpointHandles(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>(<span class="xref">Ellipse</span> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.source">source</a>, <span class="xref">Ellipse</span> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-avalonia.controls.shapes.ellipse,avalonia.controls.shapes.ellipse-.target">target</a>)</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeGlowPath_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeGlowPath*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeGlowPath_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeGlowPath(System.String)">
+  GetEdgeGlowPath(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the glow path for an edge (background glow effect).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Path? GetEdgeGlowPath(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Path</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeLabel_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeLabel*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeLabel_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeLabel(System.String)">
+  GetEdgeLabel(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the edge label for an edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextBlock? GetEdgeLabel(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">TextBlock</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeMarkers_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeMarkers*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeMarkers_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeMarkers(System.String)">
+  GetEdgeMarkers(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the markers (arrows) for an edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Path&gt;? GetEdgeMarkers(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Path</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeVisiblePath_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeVisiblePath*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeVisiblePath_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeVisiblePath(System.String)">
+  GetEdgeVisiblePath(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visible path for an edge (the actual rendered stroke).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Path? GetEdgeVisiblePath(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Path</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetEdgeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetEdgeVisual(System.String)">
+  GetEdgeVisual(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visual element for an edge (hit area path).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Path? GetEdgeVisual(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Path</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetNodeDimensions_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetNodeDimensions*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetNodeDimensions_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetNodeDimensions(FlowGraph.Core.Node)">
+  GetNodeDimensions(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L366"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the dimensions for a node, considering custom renderer sizes and node-specific overrides.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (double width, double height) GetNodeDimensions(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.width">width</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.height">height</a>)</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetNodeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetNodeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetNodeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetNodeVisual(System.String)">
+  GetNodeVisual(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visual element for a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control? GetNodeVisual(string nodeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortCanvasPosition_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortCanvasPosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortCanvasPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)">
+  GetPortCanvasPosition(Node, Port, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the port position in canvas coordinates.
+Use this for drawing visual elements on MainCanvas (which uses MatrixTransform).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point GetPortCanvasPosition(Node node, Port port, bool isOutput)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>isOutput</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Point</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortScreenPosition_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortScreenPosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortScreenPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortScreenPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)">
+  GetPortScreenPosition(Node, Port, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the port position in screen coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetPortViewportPosition or GetPortCanvasPosition instead.&quot;)]
+public Point GetPortScreenPosition(Node node, Port port, bool isOutput)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>isOutput</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Point</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortViewportPosition_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortViewportPosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortViewportPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortViewportPosition(FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean)">
+  GetPortViewportPosition(Node, Port, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L375"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the port position in viewport coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point GetPortViewportPosition(Node node, Port port, bool isOutput)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>isOutput</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Point</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortViewportPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p><b>WARNING:</b> For distance calculations with pointer events, prefer using <a class="xref" href="FlowGraph.Avalonia.Rendering.CanvasElementManager.html#FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortCanvasPosition_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean_">GetPortCanvasPosition(Node, Port, bool)</a>
+since pointer events give canvas coords via <code>e.GetPosition(MainCanvas)</code>.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortVisual_System_String_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortVisual(System.String,System.String)">
+  GetPortVisual(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visual element for a port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control? GetPortVisual(string nodeId, string portId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>portId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortY_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortY*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortY_System_Double_System_Int32_System_Int32_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortY(System.Double,System.Int32,System.Int32)">
+  GetPortY(double, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L398"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the Y position for a port (legacy, returns canvas coordinates).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetPortY(double nodeY, int portIndex, int totalPorts)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>portIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>totalPorts</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortYCanvas_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortYCanvas*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetPortYCanvas_System_Double_System_Int32_System_Int32_System_Nullable_System_Double__" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetPortYCanvas(System.Double,System.Int32,System.Int32,System.Nullable{System.Double})">
+  GetPortYCanvas(double, int, int, double?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L392"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the Y position for a port in canvas coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetPortYCanvas(double nodeY, int portIndex, int totalPorts, double? nodeHeight = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>portIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>totalPorts</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>nodeHeight</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetShapeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetShapeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_GetShapeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.GetShapeVisual(System.String)">
+  GetShapeVisual(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the visual element for a shape.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control? GetShapeVisual(string shapeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shapeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_HasEdgeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.HasEdgeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_HasEdgeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.HasEdgeVisual(System.String)">
+  HasEdgeVisual(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if an edge visual exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasEdgeVisual(string edgeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edgeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_HasNodeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.HasNodeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_HasNodeVisual_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.HasNodeVisual(System.String)">
+  HasNodeVisual(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L274"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a node visual exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasNodeVisual(string nodeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_IsEditingLabel_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.IsEditingLabel*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_IsEditingLabel_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.IsEditingLabel(FlowGraph.Core.Node)">
+  IsEditingLabel(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L492"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets whether a node is currently in edit mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEditingLabel(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node to check.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the node is being edited.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_IsNodeVisible_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.IsNodeVisible*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_IsNodeVisible_FlowGraph_Core_Graph_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.IsNodeVisible(FlowGraph.Core.Graph,FlowGraph.Core.Node)">
+  IsNodeVisible(Graph, Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a node is visible (not hidden by a collapsed ancestor group).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNodeVisible(Graph graph, Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveAllResizeHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveAllResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveAllResizeHandles_Avalonia_Controls_Canvas_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveAllResizeHandles(Avalonia.Controls.Canvas)">
+  RemoveAllResizeHandles(Canvas)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes all resize handles from the canvas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAllResizeHandles(Canvas canvas)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveEdgeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveEdgeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveEdgeVisual_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveEdgeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Edge)">
+  RemoveEdgeVisual(Canvas, Edge)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L269"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes a single edge visual from the canvas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveEdgeVisual(Canvas canvas, Edge edge)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd><p>The canvas containing the visual.</p>
+</dd>
+    <dt><code>edge</code> <a class="xref" href="FlowGraph.Core.Edge.html">Edge</a></dt>
+    <dd><p>The edge to remove.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the visual was found and removed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveNodeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveNodeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveNodeVisual_Avalonia_Controls_Canvas_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveNodeVisual(Avalonia.Controls.Canvas,FlowGraph.Core.Node)">
+  RemoveNodeVisual(Canvas, Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes a single node visual and its ports from the canvas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveNodeVisual(Canvas canvas, Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd><p>The canvas containing the visual.</p>
+</dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node to remove.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the visual was found and removed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveResizeHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RemoveResizeHandles_Avalonia_Controls_Canvas_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RemoveResizeHandles(Avalonia.Controls.Canvas,System.String)">
+  RemoveResizeHandles(Canvas, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L446"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes resize handles for a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveResizeHandles(Canvas canvas, string nodeId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>nodeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderEdge_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderEdge*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderEdge_Avalonia_Controls_Canvas_FlowGraph_Core_Edge_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderEdge(Avalonia.Controls.Canvas,FlowGraph.Core.Edge,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  RenderEdge(Canvas, Edge, Graph, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders a single edge with its markers and optional label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Path? RenderEdge(Canvas canvas, Edge edge, Graph graph, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>edge</code> <a class="xref" href="FlowGraph.Core.Edge.html">Edge</a></dt>
+    <dd></dd>
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Path</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderEdges_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderEdges*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderEdges_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_Avalonia_Controls_Shapes_Path_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderEdges(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,Avalonia.Controls.Shapes.Path)">
+  RenderEdges(Canvas, Graph, ThemeResources, Path?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders all edges in the graph.
+Edges with hidden endpoints (due to collapsed groups) are not rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderEdges(Canvas canvas, Graph graph, ThemeResources theme, Path? excludePath = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+    <dt><code>excludePath</code> <span class="xref">Path</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderNode_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderNode*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderNode_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderNode(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})">
+  RenderNode(Canvas, Node, ThemeResources, Action&lt;Control, Node&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders a single node using the appropriate renderer for its type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control RenderNode(Canvas canvas, Node node, ThemeResources theme, Action&lt;Control, Node&gt;? onNodeCreated = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+    <dt><code>onNodeCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<span class="xref">Control</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderNodes_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderNodes*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderNodes_Avalonia_Controls_Canvas_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node__" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderNodes(Avalonia.Controls.Canvas,FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node})">
+  RenderNodes(Canvas, Graph, ThemeResources, Action&lt;Control, Node&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders all nodes in the graph.
+Groups are rendered first (behind), then regular nodes.
+Nodes hidden by collapsed groups are not rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderNodes(Canvas canvas, Graph graph, ThemeResources theme, Action&lt;Control, Node&gt; onNodeCreated)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+    <dt><code>onNodeCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<span class="xref">Control</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderPort_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderPort*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderPort_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Int32_System_Int32_System_Boolean_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Control_FlowGraph_Core_Node_FlowGraph_Core_Port_System_Boolean__" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderPort(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Int32,System.Int32,System.Boolean,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Control,FlowGraph.Core.Node,FlowGraph.Core.Port,System.Boolean})">
+  RenderPort(Canvas, Node, Port, int, int, bool, ThemeResources, Action&lt;Control, Node, Port, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L319"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders a single port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control RenderPort(Canvas canvas, Node node, Port port, int index, int totalPorts, bool isOutput, ThemeResources theme, Action&lt;Control, Node, Port, bool&gt;? onPortCreated = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>totalPorts</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>isOutput</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+    <dt><code>onPortCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<span class="xref">Control</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>, <a class="xref" href="FlowGraph.Core.Port.html">Port</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderResizeHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_RenderResizeHandles_Avalonia_Controls_Canvas_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_System_Action_Avalonia_Controls_Shapes_Rectangle_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ResizeHandlePosition__" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.RenderResizeHandles(Avalonia.Controls.Canvas,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources,System.Action{Avalonia.Controls.Shapes.Rectangle,FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ResizeHandlePosition})">
+  RenderResizeHandles(Canvas, Node, ThemeResources, Action&lt;Rectangle, Node, ResizeHandlePosition&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L434"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders resize handles for a selected node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderResizeHandles(Canvas canvas, Node node, ThemeResources theme, Action&lt;Rectangle, Node, ResizeHandlePosition&gt;? onHandleCreated = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvas</code> <span class="xref">Canvas</span></dt>
+    <dd></dd>
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+    <dt><code>onHandleCreated</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<span class="xref">Rectangle</span>, <a class="xref" href="FlowGraph.Core.Node.html">Node</a>, <a class="xref" href="FlowGraph.Avalonia.Rendering.ResizeHandlePosition.html">ResizeHandlePosition</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SetShapeVisualManager_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SetShapeVisualManager*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SetShapeVisualManager_FlowGraph_Avalonia_Rendering_ShapeRenderers_ShapeVisualManager_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SetShapeVisualManager(FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager)">
+  SetShapeVisualManager(ShapeVisualManager?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the shape visual manager for delegating shape operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetShapeVisualManager(ShapeVisualManager? manager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>manager</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ShapeRenderers.ShapeVisualManager.html">ShapeVisualManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SetViewport_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SetViewport*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SetViewport_FlowGraph_Avalonia_ViewportState_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SetViewport(FlowGraph.Avalonia.ViewportState)">
+  SetViewport(ViewportState?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the viewport state to use for coordinate transformations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetViewport(ViewportState? viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="FlowGraph.Avalonia.ViewportState.html">ViewportState</a></dt>
+    <dd><p>The viewport state.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SupportsEditing_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SupportsEditing*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_SupportsEditing_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.SupportsEditing(System.String)">
+  SupportsEditing(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L500"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if a node's renderer supports inline editing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SupportsEditing(string? nodeType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodeType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The node type to check.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the renderer supports editing.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortDataPulse_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortDataPulse*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortDataPulse_FlowGraph_Core_Node_FlowGraph_Core_Port_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortDataPulse(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  TriggerPortDataPulse(Node, Port, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Triggers a data pulse animation on a specific port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TriggerPortDataPulse(Node node, Port port, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortError_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortError*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortError_FlowGraph_Core_Node_FlowGraph_Core_Port_System_String_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortError(FlowGraph.Core.Node,FlowGraph.Core.Port,System.String)">
+  TriggerPortError(Node, Port, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Triggers an error animation on a specific port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TriggerPortError(Node node, Port port, string? message = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortSuccess_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortSuccess*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_TriggerPortSuccess_FlowGraph_Core_Node_FlowGraph_Core_Port_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.TriggerPortSuccess(FlowGraph.Core.Node,FlowGraph.Core.Port)">
+  TriggerPortSuccess(Node, Port)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Triggers a success animation on a specific port.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TriggerPortSuccess(Node node, Port port)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllNodePositions_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllNodePositions*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllNodePositions_FlowGraph_Core_Graph_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllNodePositions(FlowGraph.Core.Graph)">
+  UpdateAllNodePositions(Graph)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates all node positions for viewport changes (pan/zoom).
+This is an optimized path that avoids recreating the visual tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateAllNodePositions(Graph graph)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllPortStates_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllPortStates*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllPortStates_FlowGraph_Core_Graph_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllPortStates(FlowGraph.Core.Graph,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdateAllPortStates(Graph, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the visual state of all ports in the graph based on their connection status.
+This should be called after rendering to ensure animated ports start their animations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateAllPortStates(Graph graph, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllResizeHandles_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllResizeHandles*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateAllResizeHandles" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateAllResizeHandles">
+  UpdateAllResizeHandles()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L462"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates size and position of all tracked resize handles.
+Called on zoom changes to recalculate InverseScale-based sizing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateAllResizeHandles()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateEdgeSelection_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateEdgeSelection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateEdgeSelection_FlowGraph_Core_Edge_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateEdgeSelection(FlowGraph.Core.Edge,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdateEdgeSelection(Edge, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the selection visual of an edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateEdgeSelection(Edge edge, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>edge</code> <a class="xref" href="FlowGraph.Core.Edge.html">Edge</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodePosition_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodePosition*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodePosition_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodePosition(FlowGraph.Core.Node)">
+  UpdateNodePosition(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L335"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the position of a node visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateNodePosition(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeSelection_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeSelection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeSelection_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeSelection(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdateNodeSelection(Node, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L351"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the selection visual of a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateNodeSelection(Node node, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeSize_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeSize*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeSize_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeSize(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdateNodeSize(Node, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the size of a node visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateNodeSize(Node node, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeStyle_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeStyle*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateNodeStyle_FlowGraph_Core_Node_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateNodeStyle(FlowGraph.Core.Node,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdateNodeStyle(Node, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L356"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the custom style of a node based on its Data property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateNodeStyle(Node node, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdatePortPositions_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdatePortPositions*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdatePortPositions_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdatePortPositions(FlowGraph.Core.Node)">
+  UpdatePortPositions(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates port positions for a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdatePortPositions(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdatePortState_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdatePortState*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdatePortState_FlowGraph_Core_Node_FlowGraph_Core_Port_FlowGraph_Avalonia_Rendering_PortRenderers_PortVisualState_FlowGraph_Avalonia_Rendering_ThemeResources_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdatePortState(FlowGraph.Core.Node,FlowGraph.Core.Port,FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState,FlowGraph.Avalonia.Rendering.ThemeResources)">
+  UpdatePortState(Node, Port, PortVisualState, ThemeResources)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the visual state of a port using its renderer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdatePortState(Node node, Port port, PortVisualState state, ThemeResources theme)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+    <dt><code>port</code> <a class="xref" href="FlowGraph.Core.Port.html">Port</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.PortRenderers.PortVisualState.html">PortVisualState</a></dt>
+    <dd></dd>
+    <dt><code>theme</code> <a class="xref" href="FlowGraph.Avalonia.Rendering.ThemeResources.html">ThemeResources</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateResizeHandlePositions_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateResizeHandlePositions*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateResizeHandlePositions_FlowGraph_Core_Node_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateResizeHandlePositions(FlowGraph.Core.Node)">
+  UpdateResizeHandlePositions(Node)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the position of resize handles for a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateResizeHandlePositions(Node node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateSettings_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateSettings*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateSettings_FlowGraph_Avalonia_FlowCanvasSettings_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateSettings(FlowGraph.Avalonia.FlowCanvasSettings)">
+  UpdateSettings(FlowCanvasSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the settings used by this renderer and all its sub-components.
+Call this when FlowCanvasSettings property changes to propagate the new values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateSettings(FlowCanvasSettings settings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>settings</code> <a class="xref" href="FlowGraph.Avalonia.FlowCanvasSettings.html">FlowCanvasSettings</a></dt>
+    <dd><p>The new settings to use.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateShapeSelection_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateShapeSelection*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateShapeSelection_System_String_System_Boolean_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateShapeSelection(System.String,System.Boolean)">
+  UpdateShapeSelection(string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the selection visual for a shape.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateShapeSelection(string shapeId, bool isSelected)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shapeId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The ID of the shape.</p>
+</dd>
+    <dt><code>isSelected</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the shape is selected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateShapeVisual_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateShapeVisual*"></a>
+
+  <h3 id="FlowGraph_Avalonia_Rendering_CanvasElementManager_UpdateShapeVisual_FlowGraph_Core_Elements_Shapes_ShapeElement_" data-uid="FlowGraph.Avalonia.Rendering.CanvasElementManager.UpdateShapeVisual(FlowGraph.Core.Elements.Shapes.ShapeElement)">
+  UpdateShapeVisual(ShapeElement)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates a shape visual after its properties have changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateShapeVisual(ShapeElement shape)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shape</code> <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html">ShapeElement</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Avalonia/Rendering/CanvasElementManager.cs/#L19" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

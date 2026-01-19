@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>INodeRenderer Implementation Checklist | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="INodeRenderer Implementation Checklist | FlowGraph ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="inoderenderer-implementation-checklist">INodeRenderer Implementation Checklist</h1>
+
+<p>When implementing or reviewing an <code>INodeRenderer</code>, verify the following:</p>
+<h2 id="recommended-use-resizablevisual-type-safe-approach">Recommended: Use ResizableVisual (Type-Safe Approach)</h2>
+<p>For composite visuals, use <code>ResizableVisual</code> to <strong>automatically track and update children</strong>:</p>
+<pre><code class="lang-csharp">// In CreateNodeVisual - register children at creation time
+public Control CreateNodeVisual(Node node, NodeRenderContext context)
+{
+    var grid = new Grid { Width = 200, Height = 100 };
+    var background = new Rectangle { Width = 200, Height = 100 };
+    var border = new Rectangle { Width = 200, Height = 100 };
+    var content = new Border { Width = 180, Height = 80 };
+
+    grid.Children.Add(background);
+    grid.Children.Add(border);
+    grid.Children.Add(content);
+
+    // Register children - they'll be auto-updated on resize!
+    return ResizableVisual.Create(grid)
+        .WithFullSizeChildren(background, border)
+        .WithInsetChild(content, new Thickness(10))  // 10px padding
+        .Build();
+}
+
+// In UpdateSize - one line handles everything
+public void UpdateSize(Control visual, Node node, NodeRenderContext context, double w, double h)
+{
+    ResizableVisual.UpdateSize(visual, w * context.Scale, h * context.Scale);
+}
+</code></pre>
+<p>Implement <code>IResizableNodeRenderer</code> to signal you're using this pattern.</p>
+<hr>
+<h2 id="manual-approach-legacy">Manual Approach (Legacy)</h2>
+<p>If not using <code>ResizableVisual</code>, follow these checks:</p>
+<h3 id="createnodevisual">CreateNodeVisual</h3>
+<ul>
+<li>[ ] All size-dependent values use <code>context.Scale</code> multiplier</li>
+<li>[ ] Complex visuals tag child elements for later lookup (e.g., <code>Tag = &quot;background&quot;</code>)</li>
+<li>[ ] Container controls (Grid, Panel) have explicit Width/Height set</li>
+<li>[ ] Set <code>HasCompositeVisual =&gt; true</code> if visual has children needing size updates</li>
+</ul>
+<h3 id="updatesize---critical">UpdateSize - CRITICAL</h3>
+<ul>
+<li>[ ] Root container Width/Height updated with <code>width * context.Scale</code></li>
+<li>[ ] <strong>ALL child elements</strong> have their Width/Height updated</li>
+<li>[ ] Background rectangles/shapes resized</li>
+<li>[ ] Border rectangles/shapes resized</li>
+<li>[ ] Content containers (Canvas, panels) resized</li>
+<li>[ ] For Polygon shapes, Points array recalculated</li>
+</ul>
+<h2 id="updateselection">UpdateSelection</h2>
+<ul>
+<li>[ ] Border colors/thickness updated appropriately</li>
+<li>[ ] Any selection indicators (glow, shadow) toggled</li>
+</ul>
+<h2 id="common-mistakes-to-avoid">Common Mistakes to Avoid</h2>
+<ol>
+<li>❌ Only updating root container, forgetting children</li>
+<li>❌ Using <code>Viewbox</code> expecting automatic scaling (works for render but not for hit testing)</li>
+<li>❌ Hardcoding sizes in CreateNodeVisual without corresponding UpdateSize logic</li>
+<li>❌ Creating scaled font sizes at creation but not updating them on resize</li>
+</ol>
+<h2 id="testing-requirements">Testing Requirements</h2>
+<ul>
+<li>[ ] Manual test: Resize node and verify visual updates immediately (not on next pan/zoom)</li>
+<li>[ ] Manual test: Resize to minimum size, verify children don't overflow</li>
+<li>[ ] Unit test: Call UpdateSize and verify all child bounds changed</li>
+</ul>
+<h2 id="example-proper-implementation">Example Proper Implementation</h2>
+<pre><code class="lang-csharp">public void UpdateSize(Control visual, Node node, NodeRenderContext context, double width, double height)
+{
+    var scaledWidth = width * context.Scale;
+    var scaledHeight = height * context.Scale;
+
+    if (visual is Grid grid)
+    {
+        // 1. Update container
+        grid.Width = scaledWidth;
+        grid.Height = scaledHeight;
+
+        // 2. Update all shape children (backgrounds, borders)
+        foreach (var child in grid.Children.OfType&lt;Rectangle&gt;())
+        {
+            child.Width = scaledWidth;
+            child.Height = scaledHeight;
+        }
+
+        // 3. Update content containers
+        var contentBorder = grid.Children.OfType&lt;Border&gt;().FirstOrDefault();
+        if (contentBorder != null)
+        {
+            var padding = 10 * context.Scale;
+            var contentWidth = scaledWidth - 2 * padding;
+            var contentHeight = scaledHeight - 2 * padding;
+            contentBorder.Width = contentWidth;
+            contentBorder.Height = contentHeight;
+
+            if (contentBorder.Child is Canvas canvas)
+            {
+                canvas.Width = contentWidth;
+                canvas.Height = contentHeight;
+            }
+        }
+    }
+}
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

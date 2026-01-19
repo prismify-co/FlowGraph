@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Edge Routing | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Edge Routing | FlowGraph ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="edge-routing">Edge Routing</h1>
+
+<p>FlowGraph supports multiple edge routing algorithms to control how edges are drawn between nodes.</p>
+<h2 id="edge-types">Edge Types</h2>
+<p>Set the edge type when creating an edge:</p>
+<pre><code class="lang-csharp">var edge = new Edge
+{
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    Type = EdgeType.Bezier  // Default
+};
+</code></pre>
+<h3 id="available-types">Available Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EdgeType.Bezier</code></td>
+<td>Smooth curved path (default)</td>
+</tr>
+<tr>
+<td><code>EdgeType.Straight</code></td>
+<td>Direct line</td>
+</tr>
+<tr>
+<td><code>EdgeType.Step</code></td>
+<td>Right-angle path</td>
+</tr>
+<tr>
+<td><code>EdgeType.SmoothStep</code></td>
+<td>Rounded right-angle path</td>
+</tr>
+</tbody>
+</table>
+<h2 id="automatic-routing">Automatic Routing</h2>
+<p>Enable automatic edge routing to avoid node overlaps:</p>
+<pre><code class="lang-csharp">canvas.Settings.EnableEdgeRouting = true;
+canvas.Settings.DefaultEdgeRouter = EdgeRouterType.Orthogonal;
+</code></pre>
+<h3 id="router-types">Router Types</h3>
+<table>
+<thead>
+<tr>
+<th>Router</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EdgeRouterType.Direct</code></td>
+<td>Straight lines (no routing)</td>
+</tr>
+<tr>
+<td><code>EdgeRouterType.Orthogonal</code></td>
+<td>Right-angle paths with A* pathfinding</td>
+</tr>
+<tr>
+<td><code>EdgeRouterType.SmartBezier</code></td>
+<td>Bezier curves that avoid obstacles</td>
+</tr>
+</tbody>
+</table>
+<h2 id="manual-routing">Manual Routing</h2>
+<p>Trigger routing manually:</p>
+<pre><code class="lang-csharp">// Route all edges
+canvas.Routing.RouteAllEdges();
+
+// Route a specific edge
+canvas.Routing.RouteEdge(edgeId);
+</code></pre>
+<h2 id="edge-markers">Edge Markers</h2>
+<p>Add arrow markers to edges:</p>
+<pre><code class="lang-csharp">var edge = new Edge
+{
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    MarkerEnd = EdgeMarker.Arrow,      // Open arrow
+    // or
+    MarkerEnd = EdgeMarker.ArrowClosed // Filled arrow
+};
+</code></pre>
+<h2 id="edge-labels">Edge Labels</h2>
+<p>Add labels to edges:</p>
+<pre><code class="lang-csharp">// Simple label (centered on edge)
+var edge = new Edge
+{
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    Label = &quot;Connection&quot;
+};
+</code></pre>
+<h3 id="advanced-label-positioning">Advanced Label Positioning</h3>
+<p>Use <code>LabelInfo</code> for precise control over label placement:</p>
+<pre><code class="lang-csharp">using FlowGraph.Core.Models;
+
+// Label at the start of the edge (near source)
+var edgeWithStartLabel = new Edge(new EdgeDefinition
+{
+    Id = &quot;e1&quot;,
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    LabelInfo = new LabelInfo(&quot;Yes&quot;, LabelAnchor.Start, offsetY: -10)
+});
+
+// Label at the end of the edge (near target)
+var edgeWithEndLabel = new Edge(new EdgeDefinition
+{
+    Id = &quot;e2&quot;,
+    Source = node1.Id,
+    Target = node2.Id,
+    SourcePort = &quot;out&quot;,
+    TargetPort = &quot;in&quot;,
+    LabelInfo = new LabelInfo(&quot;No&quot;, LabelAnchor.End, offsetX: 5)
+});
+
+// Using the fluent builder method
+var edge = existingEdge.Definition.WithLabelInfo(&quot;Label&quot;, LabelAnchor.Center, offsetX: 0, offsetY: -15);
+</code></pre>
+<h3 id="label-anchor-positions">Label Anchor Positions</h3>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LabelAnchor.Start</code></td>
+<td>~25%</td>
+<td>Near the source node</td>
+</tr>
+<tr>
+<td><code>LabelAnchor.Center</code></td>
+<td>~50%</td>
+<td>At the midpoint (default)</td>
+</tr>
+<tr>
+<td><code>LabelAnchor.End</code></td>
+<td>~75%</td>
+<td>Near the target node</td>
+</tr>
+</tbody>
+</table>
+<h3 id="labelinfo-properties">LabelInfo Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Text</code></td>
+<td><code>string</code></td>
+<td>The label text content</td>
+</tr>
+<tr>
+<td><code>Anchor</code></td>
+<td><code>LabelAnchor</code></td>
+<td>Position along the edge path</td>
+</tr>
+<tr>
+<td><code>OffsetX</code></td>
+<td><code>double</code></td>
+<td>Horizontal offset in pixels (positive = right)</td>
+</tr>
+<tr>
+<td><code>OffsetY</code></td>
+<td><code>double</code></td>
+<td>Vertical offset in pixels (positive = down)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> When both <code>Label</code> and <code>LabelInfo</code> are set, <code>LabelInfo</code> takes precedence. Use <code>edge.Definition.EffectiveLabel</code> to get the resolved label text.</p>
+</blockquote>
+<h2 id="edge-reconnection">Edge Reconnection</h2>
+<p>Users can drag edge endpoints to reconnect them to different ports. This is enabled by default.</p>
+<pre><code class="lang-csharp">// Disable reconnection
+canvas.Settings.EnableEdgeReconnection = false;
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GraphSerializer | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GraphSerializer | FlowGraph ">
+      
+      <meta name="description" content="Serializes and deserializes graphs to/from JSON.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Serialization_GraphSerializer.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Serialization.GraphSerializer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Serialization.GraphSerializer">
+
+
+
+  <h1 id="FlowGraph_Core_Serialization_GraphSerializer" data-uid="FlowGraph.Core.Serialization.GraphSerializer" class="text-break">
+Class GraphSerializer  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Serialization.html">Serialization</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Serializes and deserializes graphs to/from JSON.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class GraphSerializer</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">GraphSerializer</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="FlowGraph_Core_Serialization_GraphSerializer_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+Supports two format versions:
+</p>
+<ul><li><b>Version 2 (default)</b>: Uses polymorphic <code>elements[]</code> array with "kind" discriminator</li><li><b>Version 1 (legacy)</b>: Uses separate <code>nodes[]</code>, <code>edges[]</code>, <code>shapes[]</code> arrays</li></ul>
+<p>
+Serialization always outputs Version 2 format. Deserialization supports both formats
+for backward compatibility with older saved files.
+</p>
+</div>
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Serialization_GraphSerializer_Deserialize_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.Deserialize*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphSerializer_Deserialize_System_String_System_Text_Json_JsonSerializerOptions_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.Deserialize(System.String,System.Text.Json.JsonSerializerOptions)">
+  Deserialize(string, JsonSerializerOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deserializes a graph from a JSON string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Graph? Deserialize(string json, JsonSerializerOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>json</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>JSON string to deserialize.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></dt>
+    <dd><p>Optional JSON serializer options. Uses default if not specified.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd><p>Deserialized graph, or null if deserialization fails.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Serialization_GraphSerializer_DeserializeFromFileAsync_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.DeserializeFromFileAsync*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphSerializer_DeserializeFromFileAsync_System_String_System_Text_Json_JsonSerializerOptions_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.DeserializeFromFileAsync(System.String,System.Text.Json.JsonSerializerOptions)">
+  DeserializeFromFileAsync(string, JsonSerializerOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deserializes a graph from a JSON file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;Graph?&gt; DeserializeFromFileAsync(string filePath, JsonSerializerOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Path to the JSON file.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></dt>
+    <dd><p>Optional JSON serializer options. Uses default if not specified.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FlowGraph.Core.Graph.html">Graph</a>&gt;</dt>
+    <dd><p>Deserialized graph, or null if deserialization fails.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Serialization_GraphSerializer_Serialize_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.Serialize*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphSerializer_Serialize_FlowGraph_Core_Graph_System_Text_Json_JsonSerializerOptions_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.Serialize(FlowGraph.Core.Graph,System.Text.Json.JsonSerializerOptions)">
+  Serialize(Graph, JsonSerializerOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Serializes a graph to a JSON string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Serialize(Graph graph, JsonSerializerOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd><p>The graph to serialize.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></dt>
+    <dd><p>Optional JSON serializer options. Uses default if not specified.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>JSON string representation of the graph.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Serialization_GraphSerializer_SerializeToFileAsync_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.SerializeToFileAsync*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphSerializer_SerializeToFileAsync_FlowGraph_Core_Graph_System_String_System_Text_Json_JsonSerializerOptions_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.SerializeToFileAsync(FlowGraph.Core.Graph,System.String,System.Text.Json.JsonSerializerOptions)">
+  SerializeToFileAsync(Graph, string, JsonSerializerOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Serializes a graph to a JSON file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task SerializeToFileAsync(Graph graph, string filePath, JsonSerializerOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graph</code> <a class="xref" href="FlowGraph.Core.Graph.html">Graph</a></dt>
+    <dd><p>The graph to serialize.</p>
+</dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Path to the output file.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></dt>
+    <dd><p>Optional JSON serializer options. Uses default if not specified.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Serialization_GraphSerializer_TryValidate_" data-uid="FlowGraph.Core.Serialization.GraphSerializer.TryValidate*"></a>
+
+  <h3 id="FlowGraph_Core_Serialization_GraphSerializer_TryValidate_System_String_System_String__" data-uid="FlowGraph.Core.Serialization.GraphSerializer.TryValidate(System.String,System.String@)">
+  TryValidate(string, out string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Validates JSON without fully deserializing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryValidate(string json, out string? errorMessage)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>json</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>JSON string to validate.</p>
+</dd>
+    <dt><code>errorMessage</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Error message if validation fails, null otherwise.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if JSON is valid, false otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Serialization/GraphSerializer.cs/#L23" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

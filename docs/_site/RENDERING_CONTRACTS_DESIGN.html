@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>FlowGraph Rendering Contracts Design | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="FlowGraph Rendering Contracts Design | FlowGraph ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="flowgraph-rendering-contracts-design">FlowGraph Rendering Contracts Design</h1>
+
+<p><strong>Status</strong>: ✅ Phase 1 Complete | Phases 3-4 Future Work<br>
+<strong>Last Updated</strong>: January 14, 2026<br>
+<strong>Purpose</strong>: Define clear, backend-agnostic contracts for coordinate systems, rendering, and hit testing</p>
+<h2 id="implementation-status">Implementation Status</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 1</td>
+<td>Core Interfaces</td>
+<td>✅ <strong>Complete</strong> - ICoordinateTransformer, IViewportState, IRenderLayer, IHitTestable</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Documentation &amp; Attributes</td>
+<td>✅ <strong>Complete</strong> - CoordinateSpaceAttribute, XML docs</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Element Renderer Interface</td>
+<td>🔮 Future - IElementRenderer&lt;T,V&gt; for backend-agnostic rendering</td>
+</tr>
+<tr>
+<td>Phase 4</td>
+<td>Backend Abstraction</td>
+<td>🔮 Future - ICanvasBackend factory pattern for multi-platform</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tests">Tests</h2>
+<ul>
+<li><code>CoordinateTransformerTests.cs</code> - 26 tests for coordinate transforms</li>
+<li><code>ViewportStateInterfaceTests.cs</code> - 18 tests for viewport state contract</li>
+<li><code>HitTestResultTests.cs</code> - 16 tests for hit test results</li>
+</ul>
+<h2 id="files-created">Files Created</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FlowGraph.Core/Rendering/CoordinateSpaceAttribute.cs</code></td>
+<td>Attribute for documenting coordinate spaces</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Rendering/ICoordinateTransformer.cs</code></td>
+<td>Bidirectional coordinate transform contract</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Rendering/IRenderLayer.cs</code></td>
+<td>Layer transform mode definitions</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Rendering/IViewportState.cs</code></td>
+<td>Viewport state management contract</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Input/IHitTestable.cs</code></td>
+<td>Generic hit testing contract</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Input/IGraphHitTester.cs</code></td>
+<td>Graph-wide hit testing with priority</td>
+</tr>
+<tr>
+<td><code>FlowGraph.Core/Elements/Size.cs</code></td>
+<td>Size record struct</td>
+</tr>
+</tbody>
+</table>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This document proposes a set of contracts (interfaces and conventions) to formalize coordinate system handling, rendering abstraction, and hit testing across FlowGraph. The design is inspired by established open-source projects (react-diagrams, Konva.js, mxGraph) and prioritizes multi-backend support.</p>
+<hr>
+<h2 id="1-core-principles">1. Core Principles</h2>
+<h3 id="11-coordinate-space-discipline">1.1 Coordinate Space Discipline</h3>
+<p>Every method, property, and parameter that deals with positions MUST declare which coordinate space it operates in. No implicit assumptions.</p>
+<pre><code>┌────────────────────────────────────────────────────────────────────┐
+│                         SCREEN SPACE                               │
+│   • Raw pixel coordinates from pointer events                      │
+│   • What you see on the monitor                                    │
+│   • Origin: Top-left of the control/window                         │
+├────────────────────────────────────────────────────────────────────┤
+│                          ↕ Transform (Zoom + Offset)               │
+├────────────────────────────────────────────────────────────────────┤
+│                         CANVAS SPACE                               │
+│   • Logical coordinates of graph elements                          │
+│   • Node positions, edge endpoints                                 │
+│   • Stable regardless of zoom/pan                                  │
+│   • Origin: Infinite canvas (can be negative)                      │
+└────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="12-transform-ownership">1.2 Transform Ownership</h3>
+<p>Each rendering component MUST explicitly declare whether it:</p>
+<ul>
+<li><strong>Expects transformed input</strong> (already in screen coords)</li>
+<li><strong>Applies transforms itself</strong> (receives canvas coords, applies viewport internally)</li>
+<li><strong>Is transform-agnostic</strong> (operates purely in canvas space, parent handles transform)</li>
+</ul>
+<h3 id="13-backend-agnosticism">1.3 Backend Agnosticism</h3>
+<p>Core contracts live in <code>FlowGraph.Core</code> (or a new <code>FlowGraph.Abstractions</code> project).
+Backend-specific implementations live in <code>FlowGraph.Avalonia</code>, with clear extension points
+for future backends (WPF, MAUI, SkiaSharp, Web/Blazor).</p>
+<hr>
+<h2 id="2-coordinate-system-contracts">2. Coordinate System Contracts</h2>
+<h3 id="21-core-geometry-types-platform-agnostic">2.1 Core Geometry Types (Platform-Agnostic)</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Geometry/Point.cs (already exists, extend)
+namespace FlowGraph.Core;
+
+/// &lt;summary&gt;
+/// Represents a point in a 2D coordinate space.
+/// The coordinate space must be specified by the context in which the point is used.
+/// &lt;/summary&gt;
+public readonly record struct Point(double X, double Y)
+{
+    public static readonly Point Zero = new(0, 0);
+
+    public static Point operator +(Point a, Point b) =&gt; new(a.X + b.X, a.Y + b.Y);
+    public static Point operator -(Point a, Point b) =&gt; new(a.X - b.X, a.Y - b.Y);
+    public static Point operator *(Point p, double scale) =&gt; new(p.X * scale, p.Y * scale);
+    public static Point operator /(Point p, double scale) =&gt; new(p.X / scale, p.Y / scale);
+
+    public double DistanceTo(Point other) =&gt;
+        Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
+}
+
+/// &lt;summary&gt;
+/// Represents a rectangle in a 2D coordinate space.
+/// &lt;/summary&gt;
+public readonly record struct Rect(double X, double Y, double Width, double Height)
+{
+    public static readonly Rect Empty = new(0, 0, 0, 0);
+
+    public Point TopLeft =&gt; new(X, Y);
+    public Point BottomRight =&gt; new(X + Width, Y + Height);
+    public Point Center =&gt; new(X + Width / 2, Y + Height / 2);
+
+    public bool Contains(Point p) =&gt;
+        p.X &gt;= X &amp;&amp; p.X &lt;= X + Width &amp;&amp; p.Y &gt;= Y &amp;&amp; p.Y &lt;= Y + Height;
+
+    public bool Intersects(Rect other) =&gt;
+        X &lt; other.X + other.Width &amp;&amp; X + Width &gt; other.X &amp;&amp;
+        Y &lt; other.Y + other.Height &amp;&amp; Y + Height &gt; other.Y;
+}
+</code></pre>
+<h3 id="22-coordinate-transformer-interface">2.2 Coordinate Transformer Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/ICoordinateTransformer.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Provides bidirectional coordinate transformation between canvas and screen space.
+///
+/// Inspired by:
+/// - react-diagrams: CanvasEngine.getRelativeMousePoint(), getRelativePoint()
+/// - Konva.js: Stage.getPointerPosition() vs Node.getRelativePointerPosition()
+/// - AnyChart: scale.transform() / scale.inverseTransform()
+/// &lt;/summary&gt;
+public interface ICoordinateTransformer
+{
+    /// &lt;summary&gt;
+    /// The current zoom level (1.0 = 100%).
+    /// &lt;/summary&gt;
+    double Zoom { get; }
+
+    /// &lt;summary&gt;
+    /// The current pan offset in screen coordinates.
+    /// &lt;/summary&gt;
+    Point Offset { get; }
+
+    /// &lt;summary&gt;
+    /// Transforms a point from screen space to canvas space.
+    ///
+    /// Formula: canvasPoint = (screenPoint - offset) / zoom
+    ///
+    /// Use when:
+    /// - Converting pointer event positions to canvas coordinates
+    /// - Hit testing against canvas elements
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;screenPoint&quot;&gt;A point in screen coordinates.&lt;/param&gt;
+    /// &lt;returns&gt;The equivalent point in canvas coordinates.&lt;/returns&gt;
+    Point ScreenToCanvas(Point screenPoint);
+
+    /// &lt;summary&gt;
+    /// Transforms a point from canvas space to screen space.
+    ///
+    /// Formula: screenPoint = canvasPoint * zoom + offset
+    ///
+    /// Use when:
+    /// - Drawing directly to a DrawingContext (bypassing visual tree)
+    /// - Calculating visible bounds in screen space
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;canvasPoint&quot;&gt;A point in canvas coordinates.&lt;/param&gt;
+    /// &lt;returns&gt;The equivalent point in screen coordinates.&lt;/returns&gt;
+    Point CanvasToScreen(Point canvasPoint);
+
+    /// &lt;summary&gt;
+    /// Transforms a rectangle from canvas space to screen space.
+    /// &lt;/summary&gt;
+    Rect CanvasToScreen(Rect canvasRect);
+
+    /// &lt;summary&gt;
+    /// Transforms a rectangle from screen space to canvas space.
+    /// &lt;/summary&gt;
+    Rect ScreenToCanvas(Rect screenRect);
+
+    /// &lt;summary&gt;
+    /// Transforms a delta/vector from screen space to canvas space.
+    /// Unlike point transforms, this only applies zoom (not offset).
+    ///
+    /// Formula: canvasDelta = screenDelta / zoom
+    ///
+    /// Use when:
+    /// - Converting drag distances to canvas movement
+    /// - Zoom-adjusted displacement calculations
+    /// &lt;/summary&gt;
+    Point ScreenToCanvasDelta(Point screenDelta);
+
+    /// &lt;summary&gt;
+    /// Transforms a delta/vector from canvas space to screen space.
+    /// Unlike point transforms, this only applies zoom (not offset).
+    /// &lt;/summary&gt;
+    Point CanvasToScreenDelta(Point canvasDelta);
+}
+</code></pre>
+<h3 id="23-viewport-state-interface">2.3 Viewport State Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/IViewportState.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Read-only viewport state for observing pan/zoom changes.
+///
+/// Inspired by:
+/// - react-diagrams: CanvasModel with offsetX, offsetY, zoom
+/// - Konva.js: Stage with scale, position properties
+/// &lt;/summary&gt;
+public interface IReadOnlyViewportState : ICoordinateTransformer
+{
+    /// &lt;summary&gt;
+    /// The visible size of the viewport in screen coordinates.
+    /// &lt;/summary&gt;
+    Size ViewSize { get; }
+
+    /// &lt;summary&gt;
+    /// Gets the currently visible area in canvas coordinates.
+    /// &lt;/summary&gt;
+    Rect GetVisibleCanvasRect();
+
+    /// &lt;summary&gt;
+    /// Event raised when any viewport property changes.
+    /// &lt;/summary&gt;
+    event EventHandler? ViewportChanged;
+}
+
+/// &lt;summary&gt;
+/// Mutable viewport state for controlling pan/zoom.
+/// &lt;/summary&gt;
+public interface IViewportState : IReadOnlyViewportState
+{
+    /// &lt;summary&gt;
+    /// Sets the zoom level, optionally zooming toward a specific screen point.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;zoom&quot;&gt;The new zoom level.&lt;/param&gt;
+    /// &lt;param name=&quot;zoomCenter&quot;&gt;Optional screen coordinate to zoom toward.&lt;/param&gt;
+    void SetZoom(double zoom, Point? zoomCenter = null);
+
+    /// &lt;summary&gt;
+    /// Pans by the specified delta in screen coordinates.
+    /// &lt;/summary&gt;
+    void Pan(double deltaX, double deltaY);
+
+    /// &lt;summary&gt;
+    /// Centers the viewport on a canvas point.
+    /// &lt;/summary&gt;
+    void CenterOn(Point canvasPoint);
+
+    /// &lt;summary&gt;
+    /// Fits the viewport to show the specified canvas bounds.
+    /// &lt;/summary&gt;
+    void FitToBounds(Rect canvasBounds, double padding = 50);
+}
+</code></pre>
+<hr>
+<h2 id="3-rendering-contracts">3. Rendering Contracts</h2>
+<h3 id="31-coordinate-space-attribute">3.1 Coordinate Space Attribute</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/CoordinateSpaceAttribute.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Specifies which coordinate space a parameter, property, or return value uses.
+/// &lt;/summary&gt;
+public enum CoordinateSpace
+{
+    /// &lt;summary&gt;
+    /// Canvas coordinates - logical positions independent of zoom/pan.
+    /// &lt;/summary&gt;
+    Canvas,
+
+    /// &lt;summary&gt;
+    /// Screen coordinates - pixel positions after zoom/pan transforms.
+    /// &lt;/summary&gt;
+    Screen,
+
+    /// &lt;summary&gt;
+    /// Local coordinates - relative to a parent element's origin.
+    /// &lt;/summary&gt;
+    Local
+}
+
+/// &lt;summary&gt;
+/// Marks a parameter, property, or method with its expected coordinate space.
+/// Use this for documentation and potential static analysis.
+/// &lt;/summary&gt;
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property |
+                AttributeTargets.ReturnValue | AttributeTargets.Method)]
+public class CoordinateSpaceAttribute : Attribute
+{
+    public CoordinateSpace Space { get; }
+
+    public CoordinateSpaceAttribute(CoordinateSpace space)
+    {
+        Space = space;
+    }
+}
+</code></pre>
+<h3 id="32-render-layer-interface">3.2 Render Layer Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/IRenderLayer.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Defines how a layer participates in viewport transformations.
+///
+/// Inspired by:
+/// - react-diagrams: LayerModel.options.transformed flag
+/// - Konva.js: Layer inheriting from Node with transform properties
+/// &lt;/summary&gt;
+public enum LayerTransformMode
+{
+    /// &lt;summary&gt;
+    /// Layer IS affected by viewport transforms.
+    /// Elements are positioned in canvas coordinates.
+    /// Parent container applies zoom/pan via transform.
+    ///
+    /// Use for: Nodes, edges, ports, resize handles
+    /// &lt;/summary&gt;
+    Transformed,
+
+    /// &lt;summary&gt;
+    /// Layer is NOT affected by viewport transforms.
+    /// Elements are positioned in screen coordinates.
+    /// Layer handles transforms internally if needed.
+    ///
+    /// Use for: Grid overlays, fixed UI, direct renderers
+    /// &lt;/summary&gt;
+    Untransformed,
+
+    /// &lt;summary&gt;
+    /// Layer manages its own transforms independently.
+    /// Used for renderers that do their own viewport transforms.
+    ///
+    /// Use for: DirectCanvasRenderer, custom DrawingContext renderers
+    /// &lt;/summary&gt;
+    SelfTransformed
+}
+
+/// &lt;summary&gt;
+/// Represents a rendering layer in the graph canvas.
+/// &lt;/summary&gt;
+public interface IRenderLayer
+{
+    /// &lt;summary&gt;
+    /// Unique identifier for this layer.
+    /// &lt;/summary&gt;
+    string LayerId { get; }
+
+    /// &lt;summary&gt;
+    /// The Z-order of this layer (lower = behind, higher = in front).
+    /// &lt;/summary&gt;
+    int ZIndex { get; }
+
+    /// &lt;summary&gt;
+    /// How this layer participates in viewport transformations.
+    /// &lt;/summary&gt;
+    LayerTransformMode TransformMode { get; }
+
+    /// &lt;summary&gt;
+    /// Whether the layer is currently visible.
+    /// &lt;/summary&gt;
+    bool IsVisible { get; set; }
+}
+</code></pre>
+<h3 id="33-element-renderer-interface-backend-agnostic">3.3 Element Renderer Interface (Backend-Agnostic)</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/IElementRenderer.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Core interface for element renderers that works across backends.
+/// Backend-specific interfaces extend this with platform types.
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;TElement&quot;&gt;The type of graph element to render.&lt;/typeparam&gt;
+/// &lt;typeparam name=&quot;TVisual&quot;&gt;The platform-specific visual type (Control, UIElement, etc.).&lt;/typeparam&gt;
+public interface IElementRenderer&lt;TElement, TVisual&gt;
+{
+    /// &lt;summary&gt;
+    /// Gets the coordinate space that position inputs to this renderer expect.
+    /// &lt;/summary&gt;
+    CoordinateSpace InputCoordinateSpace { get; }
+
+    /// &lt;summary&gt;
+    /// Creates a visual representation of the element.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;element&quot;&gt;The element to render.&lt;/param&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The rendering context.&lt;/param&gt;
+    /// &lt;returns&gt;A platform-specific visual.&lt;/returns&gt;
+    TVisual CreateVisual(TElement element, IRenderContext context);
+
+    /// &lt;summary&gt;
+    /// Updates an existing visual when element data changes.
+    /// &lt;/summary&gt;
+    void UpdateVisual(TVisual visual, TElement element, IRenderContext context);
+
+    /// &lt;summary&gt;
+    /// Disposes resources associated with a visual.
+    /// &lt;/summary&gt;
+    void DisposeVisual(TVisual visual);
+}
+</code></pre>
+<h3 id="34-render-context-interface">3.4 Render Context Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Rendering/IRenderContext.cs
+namespace FlowGraph.Core.Rendering;
+
+/// &lt;summary&gt;
+/// Provides context for rendering operations.
+/// Platform-specific implementations add platform types.
+/// &lt;/summary&gt;
+public interface IRenderContext
+{
+    /// &lt;summary&gt;
+    /// The coordinate transformer for this render context.
+    /// &lt;/summary&gt;
+    ICoordinateTransformer CoordinateTransformer { get; }
+
+    /// &lt;summary&gt;
+    /// The current zoom/scale level.
+    /// &lt;/summary&gt;
+    double Scale { get; }
+
+    /// &lt;summary&gt;
+    /// Checks if a canvas-space rectangle is within the visible viewport.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;canvasRect&quot;&gt;Rectangle in canvas coordinates.&lt;/param&gt;
+    /// &lt;returns&gt;True if the rectangle intersects the visible area.&lt;/returns&gt;
+    bool IsVisible([CoordinateSpace(CoordinateSpace.Canvas)] Rect canvasRect);
+}
+</code></pre>
+<hr>
+<h2 id="4-hit-testing-contracts">4. Hit Testing Contracts</h2>
+<h3 id="41-hit-test-interface">4.1 Hit Test Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Input/IHitTestable.cs
+namespace FlowGraph.Core.Input;
+
+/// &lt;summary&gt;
+/// Result of a hit test operation.
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;TElement&quot;&gt;The type of element that was hit.&lt;/typeparam&gt;
+public class HitTestResult&lt;TElement&gt;
+{
+    /// &lt;summary&gt;
+    /// The element that was hit, or null if nothing was hit.
+    /// &lt;/summary&gt;
+    public TElement? Element { get; init; }
+
+    /// &lt;summary&gt;
+    /// The position where the hit occurred, in canvas coordinates.
+    /// &lt;/summary&gt;
+    [CoordinateSpace(CoordinateSpace.Canvas)]
+    public Point CanvasPosition { get; init; }
+
+    /// &lt;summary&gt;
+    /// The position where the hit occurred, in local coordinates relative to the element.
+    /// Only meaningful when Element is not null.
+    /// &lt;/summary&gt;
+    [CoordinateSpace(CoordinateSpace.Local)]
+    public Point LocalPosition { get; init; }
+
+    /// &lt;summary&gt;
+    /// Distance from the exact hit point to the element's bounds or center.
+    /// Useful for edge hit testing where some tolerance is needed.
+    /// &lt;/summary&gt;
+    public double Distance { get; init; }
+
+    /// &lt;summary&gt;
+    /// Whether an element was hit.
+    /// &lt;/summary&gt;
+    public bool IsHit =&gt; Element is not null;
+}
+
+/// &lt;summary&gt;
+/// Interface for components that support hit testing.
+///
+/// Inspired by:
+/// - Konva.js: Stage.getIntersection(pos) returning the top Shape
+/// - react-diagrams: getModelAtPosition with link/node distinction
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;TElement&quot;&gt;The type of element this tests against.&lt;/typeparam&gt;
+public interface IHitTestable&lt;TElement&gt;
+{
+    /// &lt;summary&gt;
+    /// The coordinate space expected for the hit test point.
+    /// Implementations MUST document and enforce this.
+    /// &lt;/summary&gt;
+    CoordinateSpace HitTestCoordinateSpace { get; }
+
+    /// &lt;summary&gt;
+    /// Performs a hit test at the specified position.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;position&quot;&gt;
+    /// Position to test. MUST be in the coordinate space specified by
+    /// &lt;see cref=&quot;HitTestCoordinateSpace&quot;/&gt;.
+    /// &lt;/param&gt;
+    /// &lt;param name=&quot;tolerance&quot;&gt;
+    /// Optional tolerance/margin for the hit test in the same coordinate space.
+    /// &lt;/param&gt;
+    /// &lt;returns&gt;The hit test result.&lt;/returns&gt;
+    HitTestResult&lt;TElement&gt; HitTest(Point position, double tolerance = 0);
+}
+</code></pre>
+<h3 id="42-composite-hit-tester">4.2 Composite Hit Tester</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Input/IGraphHitTester.cs
+namespace FlowGraph.Core.Input;
+
+/// &lt;summary&gt;
+/// The type of element hit during a graph hit test.
+/// &lt;/summary&gt;
+public enum HitTargetType
+{
+    None,
+    Canvas,
+    Node,
+    Edge,
+    Port,
+    ResizeHandle,
+    Group,
+    Custom
+}
+
+/// &lt;summary&gt;
+/// Result of a graph-wide hit test.
+/// &lt;/summary&gt;
+public class GraphHitTestResult
+{
+    public HitTargetType TargetType { get; init; }
+    public object? Target { get; init; }
+
+    [CoordinateSpace(CoordinateSpace.Canvas)]
+    public Point CanvasPosition { get; init; }
+
+    public double Distance { get; init; }
+
+    // Convenience typed accessors
+    public Node? Node =&gt; Target as Node;
+    public Edge? Edge =&gt; Target as Edge;
+    public Port? Port =&gt; (Target as (Node, Port, bool))?.Item2;
+    public Node? PortOwner =&gt; (Target as (Node, Port, bool))?.Item1;
+    public bool IsInputPort =&gt; Target is (_, _, bool isInput) &amp;&amp; isInput;
+}
+
+/// &lt;summary&gt;
+/// Hit tester for the entire graph surface.
+/// Aggregates hit tests across all element types with proper priority.
+/// &lt;/summary&gt;
+public interface IGraphHitTester
+{
+    /// &lt;summary&gt;
+    /// The coordinate space expected for hit test inputs.
+    /// &lt;/summary&gt;
+    CoordinateSpace InputCoordinateSpace { get; }
+
+    /// &lt;summary&gt;
+    /// Performs a comprehensive hit test against all graph elements.
+    ///
+    /// Priority order (first match wins):
+    /// 1. Resize handles
+    /// 2. Ports
+    /// 3. Nodes (front to back by Z-order)
+    /// 4. Edges
+    /// 5. Canvas (empty space)
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;position&quot;&gt;
+    /// Position to test in the coordinate space specified by
+    /// &lt;see cref=&quot;InputCoordinateSpace&quot;/&gt;.
+    /// &lt;/param&gt;
+    /// &lt;returns&gt;The hit test result.&lt;/returns&gt;
+    GraphHitTestResult HitTest(Point position);
+}
+</code></pre>
+<hr>
+<h2 id="5-backend-abstraction">5. Backend Abstraction</h2>
+<h3 id="51-canvas-backend-interface">5.1 Canvas Backend Interface</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Backends/ICanvasBackend.cs
+namespace FlowGraph.Core.Backends;
+
+/// &lt;summary&gt;
+/// Abstraction for different UI framework backends.
+/// Each backend (Avalonia, WPF, MAUI, etc.) implements this.
+///
+/// Inspired by:
+/// - react-diagrams: AbstractFactory, AbstractModelFactory, AbstractReactFactory
+/// - mxGraph: mxAbstractCanvas2D with draw primitives
+/// &lt;/summary&gt;
+public interface ICanvasBackend
+{
+    /// &lt;summary&gt;
+    /// Name of this backend for debugging/logging.
+    /// &lt;/summary&gt;
+    string BackendName { get; }
+
+    /// &lt;summary&gt;
+    /// Creates a new viewport state instance.
+    /// &lt;/summary&gt;
+    IViewportState CreateViewportState();
+
+    /// &lt;summary&gt;
+    /// Creates a render context for the specified viewport.
+    /// &lt;/summary&gt;
+    IRenderContext CreateRenderContext(IViewportState viewport);
+
+    /// &lt;summary&gt;
+    /// Creates a hit tester for the graph.
+    /// &lt;/summary&gt;
+    IGraphHitTester CreateHitTester(IReadOnlyViewportState viewport);
+}
+</code></pre>
+<h3 id="52-backend-factory-pattern">5.2 Backend Factory Pattern</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Backends/CanvasBackendFactory.cs
+namespace FlowGraph.Core.Backends;
+
+/// &lt;summary&gt;
+/// Factory for creating backend-specific implementations.
+/// Allows switching backends at runtime or for testing.
+/// &lt;/summary&gt;
+public static class CanvasBackendFactory
+{
+    private static ICanvasBackend? _defaultBackend;
+
+    /// &lt;summary&gt;
+    /// Registers the default backend implementation.
+    /// Called by backend assemblies during initialization.
+    /// &lt;/summary&gt;
+    public static void RegisterDefaultBackend(ICanvasBackend backend)
+    {
+        _defaultBackend = backend ?? throw new ArgumentNullException(nameof(backend));
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the default backend, throwing if none is registered.
+    /// &lt;/summary&gt;
+    public static ICanvasBackend Default =&gt;
+        _defaultBackend ?? throw new InvalidOperationException(
+            &quot;No canvas backend registered. Ensure a backend assembly &quot; +
+            &quot;(e.g., FlowGraph.Avalonia) is loaded and initialized.&quot;);
+}
+</code></pre>
+<hr>
+<h2 id="6-migration-path">6. Migration Path</h2>
+<h3 id="61-current-state-analysis">6.1 Current State Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Current Behavior</th>
+<th>Target Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NodeVisualManager</code></td>
+<td>✅ Canvas coords</td>
+<td>✅ Keep as-is</td>
+</tr>
+<tr>
+<td><code>EdgeVisualManager</code></td>
+<td>✅ Canvas coords</td>
+<td>✅ Keep as-is</td>
+</tr>
+<tr>
+<td><code>ResizeHandleManager</code></td>
+<td>✅ Canvas coords</td>
+<td>✅ Keep as-is</td>
+</tr>
+<tr>
+<td><code>ShapeVisualManager</code></td>
+<td>❌ Screen coords</td>
+<td>⚠️ Fix to canvas coords</td>
+</tr>
+<tr>
+<td><code>DirectCanvasRenderer</code></td>
+<td>⚠️ Self-transforms</td>
+<td>✅ Mark as <code>SelfTransformed</code></td>
+</tr>
+<tr>
+<td><code>RenderContext</code></td>
+<td>⚠️ Implicit space</td>
+<td>✅ Explicit via attributes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-phase-1-documentation--attributes">6.2 Phase 1: Documentation &amp; Attributes</h3>
+<ol>
+<li>Add <code>[CoordinateSpace]</code> attributes to all existing APIs</li>
+<li>Update XML docs to explicitly state coordinate spaces</li>
+<li>Add runtime debug assertions to validate coordinates</li>
+</ol>
+<h3 id="63-phase-2-extract-core-interfaces">6.3 Phase 2: Extract Core Interfaces</h3>
+<ol>
+<li>Create <code>FlowGraph.Abstractions</code> project (or expand <code>FlowGraph.Core</code>)</li>
+<li>Define platform-agnostic interfaces (<code>ICoordinateTransformer</code>, <code>IRenderContext</code>, etc.)</li>
+<li>Keep existing implementations, just have them implement new interfaces</li>
+</ol>
+<h3 id="64-phase-3-fix-inconsistencies">6.4 Phase 3: Fix Inconsistencies</h3>
+<ol>
+<li>Fix <code>ShapeVisualManager</code> to use canvas coordinates</li>
+<li>Add <code>LayerTransformMode</code> to all render layers</li>
+<li>Implement <code>IGraphHitTester</code> with explicit coordinate space</li>
+</ol>
+<h3 id="65-phase-4-backend-abstraction-future">6.5 Phase 4: Backend Abstraction (Future)</h3>
+<ol>
+<li>Extract Avalonia-specific code to <code>FlowGraph.Avalonia</code></li>
+<li>Define <code>ICanvasBackend</code> and implement for Avalonia</li>
+<li>Create reference implementations for other backends</li>
+</ol>
+<hr>
+<h2 id="7-patterns-from-established-libraries">7. Patterns from Established Libraries</h2>
+<h3 id="71-react-diagrams-pattern-summary">7.1 react-diagrams Pattern Summary</h3>
+<pre><code class="lang-typescript">// CanvasModel - central viewport state
+class CanvasModel {
+  offsetX: number; // Pan offset X
+  offsetY: number; // Pan offset Y
+  zoom: number; // Zoom level
+}
+
+// CanvasEngine - coordinate transforms
+class CanvasEngine {
+  getRelativeMousePoint(event): Point {
+    // Converts screen coords to canvas coords
+    return {
+      x: (event.clientX - model.offsetX) / model.zoom,
+      y: (event.clientY - model.offsetY) / model.zoom,
+    };
+  }
+}
+
+// LayerModel - transform participation flag
+class LayerModel {
+  options: {
+    transformed: boolean; // If true, layer follows zoom/pan
+  };
+}
+</code></pre>
+<p><strong>Key Insight</strong>: Each layer declares <code>transformed</code> boolean to opt in/out of viewport transforms.</p>
+<h3 id="72-konvajs-pattern-summary">7.2 Konva.js Pattern Summary</h3>
+<pre><code class="lang-javascript">// Stage - top-level container
+stage.getPointerPosition(); // Returns screen coords (no transform)
+
+// Node - any shape/group
+node.getRelativePointerPosition(); // Returns coords relative to node
+
+// Hit Testing
+stage.getIntersection({ x, y }); // Returns Shape at screen position
+</code></pre>
+<p><strong>Key Insight</strong>: Clear distinction between &quot;pointer position&quot; (screen) and &quot;relative position&quot; (local).</p>
+<h3 id="73-mxgraph-pattern-summary">7.3 mxGraph Pattern Summary</h3>
+<pre><code class="lang-javascript">// View manages transforms
+mxGraphView {
+    scale: number;
+    translate: { x, y };
+
+    getGraphBounds(): mxRectangle;  // In canvas coords
+    getState(cell): mxCellState;    // Includes both bounds and screen position
+}
+
+// CellRenderer handles actual drawing
+mxCellRenderer {
+    redraw(state, force, rendering);  // State contains both coordinate systems
+}
+</code></pre>
+<p><strong>Key Insight</strong>: State objects carry both canvas and screen coordinates, avoiding repeated transforms.</p>
+<hr>
+<h2 id="8-validation--debugging">8. Validation &amp; Debugging</h2>
+<h3 id="81-debug-helpers">8.1 Debug Helpers</h3>
+<pre><code class="lang-csharp">// FlowGraph.Core/Diagnostics/CoordinateDebug.cs
+namespace FlowGraph.Core.Diagnostics;
+
+public static class CoordinateDebug
+{
+    /// &lt;summary&gt;
+    /// Validates that a point is within reasonable bounds for the specified space.
+    /// &lt;/summary&gt;
+    [Conditional(&quot;DEBUG&quot;)]
+    public static void ValidateCoordinate(
+        Point point,
+        CoordinateSpace expectedSpace,
+        IReadOnlyViewportState viewport,
+        [CallerMemberName] string? caller = null)
+    {
+        var screenSize = viewport.ViewSize;
+
+        if (expectedSpace == CoordinateSpace.Screen)
+        {
+            // Screen coords should generally be positive and within view bounds
+            // (with some tolerance for drag operations)
+            if (point.X &lt; -1000 || point.Y &lt; -1000 ||
+                point.X &gt; screenSize.Width + 1000 || point.Y &gt; screenSize.Height + 1000)
+            {
+                Debug.WriteLine($&quot;[CoordWarn] {caller}: Suspicious screen coordinate {point}, &quot; +
+                               $&quot;view size is {screenSize}. Did you mean canvas coords?&quot;);
+            }
+        }
+        else if (expectedSpace == CoordinateSpace.Canvas)
+        {
+            // Canvas coords at current zoom should map roughly to screen
+            var screenPoint = viewport.CanvasToScreen(point);
+            if (screenPoint.X &lt; -10000 || screenPoint.Y &lt; -10000 ||
+                screenPoint.X &gt; screenSize.Width + 10000 || screenPoint.Y &gt; screenSize.Height + 10000)
+            {
+                Debug.WriteLine($&quot;[CoordWarn] {caller}: Canvas point {point} maps to &quot; +
+                               $&quot;far-off-screen {screenPoint}. Is this intentional?&quot;);
+            }
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="9-summary">9. Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Purpose</th>
+<th>Key Design Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ICoordinateTransformer</code></td>
+<td>Bidirectional coord transforms</td>
+<td>Explicit methods: <code>ScreenToCanvas</code>, <code>CanvasToScreen</code>, plus delta variants</td>
+</tr>
+<tr>
+<td><code>IViewportState</code></td>
+<td>Zoom/pan state management</td>
+<td>Mutable interface extends read-only interface</td>
+</tr>
+<tr>
+<td><code>IRenderLayer</code></td>
+<td>Layer transform participation</td>
+<td><code>LayerTransformMode</code> enum declares behavior</td>
+</tr>
+<tr>
+<td><code>IElementRenderer&lt;T, V&gt;</code></td>
+<td>Backend-agnostic element rendering</td>
+<td>Declares <code>InputCoordinateSpace</code></td>
+</tr>
+<tr>
+<td><code>IHitTestable&lt;T&gt;</code></td>
+<td>Hit testing contract</td>
+<td>Declares <code>HitTestCoordinateSpace</code></td>
+</tr>
+<tr>
+<td><code>IGraphHitTester</code></td>
+<td>Composite hit testing</td>
+<td>Priority-ordered, explicit coordinate space</td>
+</tr>
+<tr>
+<td><code>ICanvasBackend</code></td>
+<td>Backend abstraction</td>
+<td>Factory pattern for cross-platform</td>
+</tr>
+</tbody>
+</table>
+<p>The key insight from established libraries: <strong>Explicit is better than implicit</strong>. Every component that touches coordinates should declare which space it operates in, and the framework should provide clear transforms between spaces.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/master/docs/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Namespace FlowGraph.Core.Coordinates | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Namespace FlowGraph.Core.Coordinates | FlowGraph ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Coordinates">
+
+  <h1 id="FlowGraph_Core_Coordinates" data-uid="FlowGraph.Core.Coordinates" class="text-break">Namespace FlowGraph.Core.Coordinates</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+
+    <h3 id="classes">
+Classes
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.TypedCoordinateTransformer.html">TypedCoordinateTransformer</a></dt>
+      <dd><p>Default implementation of <a class="xref" href="FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html">ITypedCoordinateTransformer</a>.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.TypedCoordinateTransformerExtensions.html">TypedCoordinateTransformerExtensions</a></dt>
+      <dd><p>Extension methods for <a class="xref" href="FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html">ITypedCoordinateTransformer</a>.</p>
+</dd>
+    </dl>
+    <h3 id="structs">
+Structs
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasPoint.html">CanvasPoint</a></dt>
+      <dd><p>A point in canvas coordinate space (logical graph coordinates).</p>
+<p>
+Canvas coordinates represent the logical position of elements in the graph.
+Node positions, port centers, edge endpoints all use canvas coordinates.
+These values are stable regardless of zoom/pan - a node at (100, 200) stays
+at (100, 200) even when the user zooms or pans.
+</p>
+<p>
+<b>When to use:</b>
+<ul><li>Node positions (node.Position)</li><li>Port centers calculated from node geometry</li><li>Edge start/end points</li><li>Hit testing against graph elements</li><li>Selection bounds in graph space</li></ul>
+
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasRect.html">CanvasRect</a></dt>
+      <dd><p>A rectangle in canvas coordinate space.</p>
+<p>
+Canvas rectangles represent bounded regions in the graph coordinate space.
+Node bounds, selection areas, and visible regions are expressed as canvas rects.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.CanvasVector.html">CanvasVector</a></dt>
+      <dd><p>A vector/delta in canvas coordinate space.</p>
+<p>
+Canvas vectors represent movements, offsets, and distances in canvas space.
+Unlike canvas points, vectors are relative (they represent the difference
+between two points, not an absolute position).
+</p>
+<p>
+<b>When to use:</b>
+<ul><li>Drag distances in canvas space</li><li>Node movement offsets</li><li>Snap offsets</li><li>Collision avoidance adjustments</li></ul>
+
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportPoint.html">ViewportPoint</a></dt>
+      <dd><p>A point in viewport coordinate space (screen/control coordinates).</p>
+<p>
+Viewport coordinates represent positions within the visible canvas control.
+(0,0) is the top-left of the canvas control, and values increase to the right and down.
+These coordinates change as the user pans and zooms - a node at canvas (100, 200) will
+appear at different viewport positions depending on the current zoom/pan state.
+</p>
+<p>
+<b>When to use:</b>
+<ul><li>Auto-pan edge detection (checking if cursor is near viewport edges)</li><li>Fixed UI positioning (tooltips, menus that don't pan/zoom)</li><li>Direct rendering to DrawingContext (after converting from canvas)</li><li>Viewport bounds calculations</li></ul>
+
+<p>
+<b>Important:</b> Viewport coordinates assume (0,0) is at the canvas control's origin.
+If the canvas is embedded in a larger control with margins/toolbars, you may need
+to account for offsets when converting from parent control coordinates.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportRect.html">ViewportRect</a></dt>
+      <dd><p>A rectangle in viewport coordinate space.</p>
+<p>
+Viewport rectangles represent bounded regions in screen/control space.
+The most common use is representing the viewport bounds itself (the visible area).
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.ViewportVector.html">ViewportVector</a></dt>
+      <dd><p>A vector/delta in viewport coordinate space.</p>
+<p>
+Viewport vectors represent movements and distances in screen/control space.
+They are affected by zoom - the same canvas distance appears as a larger
+viewport distance at higher zoom levels.
+</p>
+</dd>
+    </dl>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="FlowGraph.Core.Coordinates.ITypedCoordinateTransformer.html">ITypedCoordinateTransformer</a></dt>
+      <dd><p>Type-safe coordinate transformer that converts between canvas and viewport coordinate spaces.</p>
+<p>
+This interface provides compile-time type safety for coordinate conversions by using
+distinct types for canvas and viewport coordinates. This prevents accidental mixing
+of coordinate spaces, which is a common source of bugs in pan/zoom implementations.
+</p>
+<p>
+<b>Coordinate Space Relationships:</b>
+<pre><code class="lang-csharp">Viewport → Canvas:  canvas = (viewport - offset) / zoom
+Canvas → Viewport:  viewport = canvas * zoom + offset</code></pre>
+
+</dd>
+    </dl>
+
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

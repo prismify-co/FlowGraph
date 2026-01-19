@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface ICoordinateTransformer | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface ICoordinateTransformer | FlowGraph ">
+      
+      <meta name="description" content="Provides bidirectional coordinate transformation between canvas and viewport space.  Coordinate Spaces: Canvas Space: Logical coordinates where graph elements live.  Node positions (e.g., node.Position.X = 100) are in canvas space.  These values are stable regardless of zoom/pan.Viewport Space: Coordinates within the viewport window (the visible area). The viewport origin (0,0) is the top-left corner of the visible canvas area. These coordinates change as the user zooms and pans.   IMPORTANT - Viewport vs Control Coordinates: Viewport coordinates assume (0,0) is at the viewport&#39;s visual origin.Control coordinates (e.g., from e.GetPosition(RootPanel)) may have an offset if the canvas is not at (0,0) within the control (e.g., due to toolbars, margins).For pointer events, prefer e.GetPosition(MainCanvas) which gives canvas coords directly, or use the viewport position if you need to account for the transform manually.   Transform Formulas: ViewportToCanvas: canvasPoint = (viewportPoint - offset) / zoom CanvasToViewport: viewportPoint = canvasPoint * zoom + offset   Inspired by: react-diagrams: CanvasEngine.getRelativeMousePoint(), getRelativePoint()Konva.js: Stage.getPointerPosition() vs Node.getRelativePointerPosition()AnyChart: scale.transform() / scale.inverseTransform()">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Rendering_ICoordinateTransformer.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Rendering.ICoordinateTransformer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer">
+
+
+
+  <h1 id="FlowGraph_Core_Rendering_ICoordinateTransformer" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer" class="text-break">
+Interface ICoordinateTransformer  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Rendering.html">Rendering</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides bidirectional coordinate transformation between canvas and viewport space.</p>
+<p>
+<b>Coordinate Spaces:</b>
+<ul><li><b>Canvas Space:</b> Logical coordinates where graph elements live. 
+Node positions (e.g., node.Position.X = 100) are in canvas space. 
+These values are stable regardless of zoom/pan.</li><li><b>Viewport Space:</b> Coordinates within the viewport window (the visible area).
+The viewport origin (0,0) is the top-left corner of the visible canvas area.
+These coordinates change as the user zooms and pans.</li></ul>
+
+<p>
+<b>IMPORTANT - Viewport vs Control Coordinates:</b>
+<ul><li>Viewport coordinates assume (0,0) is at the viewport's visual origin.</li><li>Control coordinates (e.g., from <code>e.GetPosition(RootPanel)</code>) may have an offset
+if the canvas is not at (0,0) within the control (e.g., due to toolbars, margins).</li><li>For pointer events, prefer <code>e.GetPosition(MainCanvas)</code> which gives canvas coords directly,
+or use the viewport position if you need to account for the transform manually.</li></ul>
+
+<p>
+<b>Transform Formulas:</b>
+<pre><code class="lang-csharp">ViewportToCanvas: canvasPoint = (viewportPoint - offset) / zoom
+CanvasToViewport: viewportPoint = canvasPoint * zoom + offset</code></pre>
+
+<p>
+<b>Inspired by:</b>
+<ul><li>react-diagrams: CanvasEngine.getRelativeMousePoint(), getRelativePoint()</li><li>Konva.js: Stage.getPointerPosition() vs Node.getRelativePointerPosition()</li><li>AnyChart: scale.transform() / scale.inverseTransform()</li></ul>
+
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ICoordinateTransformer</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_">CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Rect)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToScreen_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_">CoordinateTransformerExtensions.CanvasToScreen(ICoordinateTransformer, Point)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_">CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Rect)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_CanvasToViewport_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_">CoordinateTransformerExtensions.CanvasToViewport(ICoordinateTransformer, Point)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_">CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Rect)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ScreenToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_">CoordinateTransformerExtensions.ScreenToCanvas(ICoordinateTransformer, Point)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Elements_Rect_">CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Rect)</a>
+  </div>
+  <div>
+      <a class="xref" href="FlowGraph.Core.Rendering.CoordinateTransformerExtensions.html#FlowGraph_Core_Rendering_CoordinateTransformerExtensions_ViewportToCanvas_FlowGraph_Core_Rendering_ICoordinateTransformer_FlowGraph_Core_Point_">CoordinateTransformerExtensions.ViewportToCanvas(ICoordinateTransformer, Point)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetX_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetX" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetX">
+  OffsetX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The X component of the current pan offset in viewport coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">double OffsetX { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetY_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_OffsetY" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.OffsetY">
+  OffsetY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Y component of the current pan offset in viewport coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">double OffsetY { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_Zoom_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_Zoom" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.Zoom">
+  Zoom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The current zoom level (1.0 = 100%, 2.0 = 200%, 0.5 = 50%).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">double Zoom { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreen_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreen_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreen(System.Double,System.Double)">
+  CanvasToScreen(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from canvas space to screen space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CanvasToViewport instead. &#39;Screen&#39; terminology was ambiguous - see ICoordinateTransformer docs.&quot;)]
+Point CanvasToScreen(double canvasX, double canvasY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>canvasY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreen_System_Double_System_Double__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p><b>DEPRECATED:</b> The term &quot;Screen&quot; is ambiguous. Use <a class="xref" href="FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_">CanvasToViewport(double, double)</a> instead.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreenDelta_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToScreenDelta_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToScreenDelta(System.Double,System.Double)">
+  CanvasToScreenDelta(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a delta/vector from canvas space to screen space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CanvasToViewportDelta instead. &#39;Screen&#39; terminology was ambiguous.&quot;)]
+Point CanvasToScreenDelta(double canvasDeltaX, double canvasDeltaY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasDeltaX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>canvasDeltaY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewport_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewport(System.Double,System.Double)">
+  CanvasToViewport(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from canvas space to viewport space.</p>
+<p><b>When to use:</b></p>
+<ul><li>Drawing directly to a DrawingContext (bypassing visual tree transforms)</li><li>Positioning overlay UI elements relative to the viewport</li><li>Calculating visible bounds in viewport space for culling</li></ul>
+<p><b>When NOT to use:</b></p>
+<ul><li>Positioning elements with Canvas.SetLeft/SetTop inside a transformed container 
+- those should use canvas coordinates directly</li></ul>
+<p><b>Formula:</b> <code>viewportPoint = canvasPoint * zoom + offset</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Point CanvasToViewport(double canvasX, double canvasY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>X coordinate in canvas space.</p>
+</dd>
+    <dt><code>canvasY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Y coordinate in canvas space.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd><p>The equivalent point in viewport coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewportDelta_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_CanvasToViewportDelta_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.CanvasToViewportDelta(System.Double,System.Double)">
+  CanvasToViewportDelta(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a delta/vector from canvas space to viewport space.
+Unlike point transforms, this only applies zoom (not offset).</p>
+<p><b>Formula:</b> <code>viewportDelta = canvasDelta * zoom</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Point CanvasToViewportDelta(double canvasDeltaX, double canvasDeltaY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>canvasDeltaX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>X delta in canvas space.</p>
+</dd>
+    <dt><code>canvasDeltaY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Y delta in canvas space.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd><p>The equivalent delta in viewport coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvas(System.Double,System.Double)">
+  ScreenToCanvas(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from screen space to canvas space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ViewportToCanvas instead. &#39;Screen&#39; terminology was ambiguous - see ICoordinateTransformer docs.&quot;)]
+Point ScreenToCanvas(double screenX, double screenY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>screenX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>screenY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvas_System_Double_System_Double__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p><b>DEPRECATED:</b> The term &quot;Screen&quot; is ambiguous. Use <a class="xref" href="FlowGraph.Core.Rendering.ICoordinateTransformer.html#FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_">ViewportToCanvas(double, double)</a> instead,
+or better yet, use <code>e.GetPosition(MainCanvas)</code> for pointer events which gives canvas coords directly.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvasDelta_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_ScreenToCanvasDelta_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ScreenToCanvasDelta(System.Double,System.Double)">
+  ScreenToCanvasDelta(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a delta/vector from screen space to canvas space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ViewportToCanvasDelta instead. &#39;Screen&#39; terminology was ambiguous.&quot;)]
+Point ScreenToCanvasDelta(double screenDeltaX, double screenDeltaY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>screenDeltaX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>screenDeltaY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvas_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvas(System.Double,System.Double)">
+  ViewportToCanvas(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from viewport space to canvas space.</p>
+<p><b>When to use:</b></p>
+<ul><li>Converting viewport-relative positions to canvas coordinates</li><li>Inverse calculations from CanvasToViewport operations</li></ul>
+<p><b>When NOT to use:</b></p>
+<ul><li>For pointer events - prefer <code>e.GetPosition(MainCanvas)</code> which gives canvas coords directly</li><li>When the input is from RootPanel and canvas has an offset within RootPanel</li></ul>
+<p><b>Formula:</b> <code>canvasPoint = (viewportPoint - offset) / zoom</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Point ViewportToCanvas(double viewportX, double viewportY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewportX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>X coordinate in viewport space.</p>
+</dd>
+    <dt><code>viewportY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Y coordinate in viewport space.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd><p>The equivalent point in canvas coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvasDelta_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta*"></a>
+
+  <h3 id="FlowGraph_Core_Rendering_ICoordinateTransformer_ViewportToCanvasDelta_System_Double_System_Double_" data-uid="FlowGraph.Core.Rendering.ICoordinateTransformer.ViewportToCanvasDelta(System.Double,System.Double)">
+  ViewportToCanvasDelta(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a delta/vector from viewport space to canvas space.
+Unlike point transforms, this only applies zoom (not offset).</p>
+<p><b>When to use:</b></p>
+<ul><li>Converting drag distances to canvas movement amounts</li><li>Zoom-adjusted displacement calculations</li><li>Measuring viewport distances in canvas units</li></ul>
+<p><b>Formula:</b> <code>canvasDelta = viewportDelta / zoom</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Point ViewportToCanvasDelta(double viewportDeltaX, double viewportDeltaY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewportDeltaX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>X delta in viewport space.</p>
+</dd>
+    <dt><code>viewportDeltaY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Y delta in viewport space.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Point.html">Point</a></dt>
+    <dd><p>The equivalent delta in canvas coordinates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Rendering/ICoordinateTransformer.cs/#L48" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

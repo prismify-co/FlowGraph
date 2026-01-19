@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CommentElement | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CommentElement | FlowGraph ">
+      
+      <meta name="description" content="A sticky note style comment element for annotations on the canvas.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_Elements_Shapes_CommentElement.md&amp;value=---%0Auid%3A%20FlowGraph.Core.Elements.Shapes.CommentElement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.Elements.Shapes.CommentElement">
+
+
+
+  <h1 id="FlowGraph_Core_Elements_Shapes_CommentElement" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement" class="text-break">
+Class CommentElement  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.Elements.html">Elements</a>.<a class="xref" href="FlowGraph.Core.Elements.Shapes.html">Shapes</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A sticky note style comment element for annotations on the canvas.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CommentElement : ShapeElement, ICanvasElement, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html">CanvasElement</a></div>
+      <div><a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html">ShapeElement</a></div>
+      <div><span class="xref">CommentElement</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Core.Elements.ICanvasElement.html">ICanvasElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Fill">ShapeElement.Fill</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Stroke">ShapeElement.Stroke</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_StrokeWidth">ShapeElement.StrokeWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Opacity">ShapeElement.Opacity</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Rotation">ShapeElement.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_Label">ShapeElement.Label</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_IsResizable">ShapeElement.IsResizable</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.Shapes.ShapeElement.html#FlowGraph_Core_Elements_Shapes_ShapeElement_AllowedResizeHandles">ShapeElement.AllowedResizeHandles</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexBackground">CanvasElement.ZIndexBackground</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexShapes">CanvasElement.ZIndexShapes</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexGroups">CanvasElement.ZIndexGroups</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexEdges">CanvasElement.ZIndexEdges</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndexNodes">CanvasElement.ZIndexNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_PropertyChanged">CanvasElement.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Id">CanvasElement.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Position">CanvasElement.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Width">CanvasElement.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_Height">CanvasElement.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelected">CanvasElement.IsSelected</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsSelectable">CanvasElement.IsSelectable</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_IsVisible">CanvasElement.IsVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_ZIndex">CanvasElement.ZIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_GetBounds">CanvasElement.GetBounds()</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnBoundsChanged">CanvasElement.OnBoundsChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.Elements.CanvasElement.html#FlowGraph_Core_Elements_CanvasElement_OnPropertyChanged_System_String_">CanvasElement.OnPropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+  <h2 id="FlowGraph_Core_Elements_Shapes_CommentElement_examples">Examples</h2>
+  <pre><code class="lang-csharp">// Create a sticky note comment
+var comment = new CommentElement("comment-1")
+{
+    Position = new Point(200, 150),
+    Width = 200,
+    Height = 100,
+    Text = "TODO: Refactor this section",
+    BackgroundColor = "#FFF9C4", // Light yellow
+    TextColor = "#5D4037",
+    CornerRadius = 4
+};
+graph.AddElement(comment);
+
+// Create a warning annotation
+var warning = new CommentElement("warning-1")
+{
+    Position = new Point(400, 200),
+    Text = "⚠️ Deprecated API",
+    BackgroundColor = "#FFCDD2", // Light red
+    TextColor = "#C62828",
+    ShowShadow = true
+};</code></pre>
+
+
+  <h2 id="FlowGraph_Core_Elements_Shapes_CommentElement_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+CommentElement provides a styled annotation with:
+- Background fill with optional transparency
+- Corner radius for rounded appearance
+- Padding for text inset
+- Optional shadow effect
+- Resizable bounds
+</p>
+<p>
+By default, comments render in a foreground layer (above nodes) using
+<a class="xref" href="FlowGraph.Core.Elements.Shapes.CommentElement.html#FlowGraph_Core_Elements_Shapes_CommentElement_ZIndexComments">ZIndexComments</a> (400), making them ideal for overlay annotations.
+</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement__ctor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement__ctor" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.#ctor">
+  CommentElement()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new comment element with a generated ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommentElement()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement__ctor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement__ctor_System_String_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.#ctor(System.String)">
+  CommentElement(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new comment element with the specified ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommentElement(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier for this comment.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ZIndexComments" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ZIndexComments">
+  ZIndexComments
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Default Z-index for comment elements (above nodes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int ZIndexComments = 400</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_BackgroundColor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_BackgroundColor" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.BackgroundColor">
+  BackgroundColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the background color of the comment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string BackgroundColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Elements_Shapes_CommentElement_BackgroundColor_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Common sticky note colors:</p>
+<ul>
+<li>Yellow: #FFF9C4</li>
+<li>Blue: #BBDEFB</li>
+<li>Green: #C8E6C9</li>
+<li>Pink: #F8BBD9</li>
+<li>Orange: #FFE0B2</li>
+</ul>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_BorderColor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_BorderColor" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.BorderColor">
+  BorderColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the border color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string BorderColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_CornerRadius_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_CornerRadius" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.CornerRadius">
+  CornerRadius
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the corner radius for rounded corners.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double CornerRadius { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_FontFamily_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_FontFamily" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontFamily">
+  FontFamily
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font family name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FontFamily { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_FontSize_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontSize*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_FontSize" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontSize">
+  FontSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font size in points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FontSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_FontWeight_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_FontWeight" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.FontWeight">
+  FontWeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font weight.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontWeight FontWeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.FontWeight.html">FontWeight</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_IsEditing_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_IsEditing" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.IsEditing">
+  IsEditing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L329"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the comment is currently being edited.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEditing { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Elements_Shapes_CommentElement_IsEditing_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>When true, the renderer should show an editable text area.</p>
+</div>
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_Padding_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Padding*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_Padding" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Padding">
+  Padding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the padding between the border and text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Padding { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowBlur_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowBlur" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowBlur">
+  ShadowBlur
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shadow blur radius.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ShadowBlur { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowColor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowColor" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowColor">
+  ShadowColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shadow color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ShadowColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetX_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetX" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetX">
+  ShadowOffsetX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shadow X offset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ShadowOffsetX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetY_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ShadowOffsetY" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShadowOffsetY">
+  ShadowOffsetY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shadow Y offset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ShadowOffsetY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_ShowShadow_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_ShowShadow" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.ShowShadow">
+  ShowShadow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether to show a drop shadow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowShadow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_Style_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Style*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_Style" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Style">
+  Style
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L345"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the visual style of the comment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommentStyle Style { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.CommentStyle.html">CommentStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_Text_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Text*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_Text" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Text">
+  Text
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the text content of the comment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Text { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_TextColor_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.TextColor*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_TextColor" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.TextColor">
+  TextColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the text color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TextColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_Type_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Type*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_Type" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type identifier for this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Type { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FlowGraph_Core_Elements_Shapes_CommentElement_Type_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Used by renderer registries to select the appropriate renderer.
+For nodes, this typically comes from the node definition's Type property.
+For shapes, this identifies the shape type (line, rectangle, text, etc.).</p>
+</div>
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_Elements_Shapes_CommentElement_Clone_" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Clone*"></a>
+
+  <h3 id="FlowGraph_Core_Elements_Shapes_CommentElement_Clone" data-uid="FlowGraph.Core.Elements.Shapes.CommentElement.Clone">
+  Clone()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L403"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a copy of this comment element with a new ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommentElement Clone()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FlowGraph.Core.Elements.Shapes.CommentElement.html">CommentElement</a></dt>
+    <dd><p>A new CommentElement with copied properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/Elements/Shapes/CommentElement.cs/#L46" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

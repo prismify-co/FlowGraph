@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PassThroughProcessor&lt;T&gt; | FlowGraph </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PassThroughProcessor&lt;T&gt; | FlowGraph ">
+      
+      <meta name="description" content="A processor that passes through a single value unchanged. Useful for debugging or as a base for more complex processors.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/prismify-co/FlowGraph/new/master/apiSpec/new?filename=FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1.md&amp;value=---%0Auid%3A%20FlowGraph.Core.DataFlow.Processors.PassThroughProcessor%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="FlowGraph">
+            FlowGraph
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1">
+
+
+
+  <h1 id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1" class="text-break">
+Class PassThroughProcessor&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/DataFlow/Processors/CommonProcessors.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FlowGraph.html">FlowGraph</a>.<a class="xref" href="FlowGraph.Core.html">Core</a>.<a class="xref" href="FlowGraph.Core.DataFlow.html">DataFlow</a>.<a class="xref" href="FlowGraph.Core.DataFlow.Processors.html">Processors</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>FlowGraph.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A processor that passes through a single value unchanged.
+Useful for debugging or as a base for more complex processors.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PassThroughProcessor&lt;T&gt; : NodeProcessor, INodeProcessor</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of value to pass through.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html">NodeProcessor</a></div>
+      <div><span class="xref">PassThroughProcessor&lt;T&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FlowGraph.Core.DataFlow.INodeProcessor.html">INodeProcessor</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_Node">NodeProcessor.Node</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_InputValues">NodeProcessor.InputValues</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_OutputValues">NodeProcessor.OutputValues</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_AutoExecute">NodeProcessor.AutoExecute</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_IsValid">NodeProcessor.IsValid</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterInput__1_System_String___0_">NodeProcessor.RegisterInput&lt;T&gt;(string, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_RegisterOutput__1_System_String___0_">NodeProcessor.RegisterOutput&lt;T&gt;(string, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInput__1_System_String_">NodeProcessor.GetInput&lt;T&gt;(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_SetOutput__1_System_String___0_">NodeProcessor.SetOutput&lt;T&gt;(string, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetInputPort__1_System_String_">NodeProcessor.GetInputPort&lt;T&gt;(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="FlowGraph.Core.DataFlow.NodeProcessor.html#FlowGraph_Core_DataFlow_NodeProcessor_GetOutputPort__1_System_String_">NodeProcessor.GetOutputPort&lt;T&gt;(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1__ctor_" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.#ctor*"></a>
+
+  <h3 id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1__ctor_FlowGraph_Core_Node_System_String_System_String_" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.#ctor(FlowGraph.Core.Node,System.String,System.String)">
+  PassThroughProcessor(Node, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/DataFlow/Processors/CommonProcessors.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new pass-through processor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PassThroughProcessor(Node node, string inputPortId = &quot;in&quot;, string outputPortId = &quot;out&quot;)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="FlowGraph.Core.Node.html">Node</a></dt>
+    <dd><p>The node.</p>
+</dd>
+    <dt><code>inputPortId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The input port ID.</p>
+</dd>
+    <dt><code>outputPortId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The output port ID.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1_Value_" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.Value*"></a>
+
+  <h3 id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1_Value" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.Value">
+  Value
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/DataFlow/Processors/CommonProcessors.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T? Value { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1_Process_" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.Process*"></a>
+
+  <h3 id="FlowGraph_Core_DataFlow_Processors_PassThroughProcessor_1_Process" data-uid="FlowGraph.Core.DataFlow.Processors.PassThroughProcessor`1.Process">
+  Process()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/DataFlow/Processors/CommonProcessors.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Processes inputs and updates outputs.
+Called automatically when any input changes (if auto-execute is enabled).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Process()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/prismify-co/FlowGraph/blob/feature/input-processor-pattern/FlowGraph.Core/DataFlow/Processors/CommonProcessors.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2026 Prismify LLC. Licensed under MIT.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
