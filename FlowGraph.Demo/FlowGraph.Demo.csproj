@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
@@ -15,27 +15,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.11" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.11" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.10" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
+    <PackageReference Include="Avalonia" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="12.1.1" />
     <!-- Use local ShadUI project for development -->
-    <!--<PackageReference Include="ShadUI" Version="0.1.6" />-->
+    <PackageReference Include="ShadUI" Version="0.2.4" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.19">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="LucideAvalonia" Version="1.6.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <!--<PackageReference Include="LucideAvalonia" Version="1.6.2" />-->
+    <PackageReference Include="ReactiveUI.Avalonia" Version="12.1.1" />
+	<!-- Keeps version 3.1.12 so we don't need a lic file for the demo -->
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FlowGraph.Avalonia\FlowGraph.Avalonia.csproj" />
     <ProjectReference Include="..\FlowGraph.3D\FlowGraph.3D.csproj" />
+	  <!-- Temporary: using local patched LucideAvalonia DLL until upstream fixes usage of Avalionia 12 -->
+    <ProjectReference Include="..\LucideAvalonia\LucideAvalonia.csproj" />
     <!-- Temporary: using local patched ShadUI DLL until upstream fixes ColorView spectrum sizing -->
     <!-- <PackageReference Include="ShadUI" Version="0.1.6" /> -->
     <!-- <ProjectReference Include="..\..\shad-ui\src\ShadUI\ShadUI.csproj" /> -->

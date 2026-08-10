@@ -34,6 +34,9 @@ public partial class App : Application
 
     private void DisableAvaloniaDataAnnotationValidation()
     {
+        // PLL TODO : this was avauilable in avalonia 11 but is no more accessible from 12.1
+        
+        /*
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove =
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
@@ -43,5 +46,6 @@ public partial class App : Application
         {
             BindingPlugins.DataValidators.Remove(plugin);
         }
+        */
     }
 }
