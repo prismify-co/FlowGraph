@@ -492,6 +492,11 @@ public sealed class GraphExecutor : IDisposable
         }
     }
 
+    /// <summary>
+    /// When edges change, propagate values along new connections
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnEdgesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         RebuildDependencyGraph();
@@ -506,6 +511,11 @@ public sealed class GraphExecutor : IDisposable
         }
     }
 
+    /// <summary>
+    /// Unregister processors for removed nodes
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         // Unregister processors for removed nodes
@@ -549,24 +559,4 @@ public sealed class GraphExecutor : IDisposable
 
         _lock.Dispose();
     }
-}
-
-/// <summary>
-/// Event args for node processed events.
-/// </summary>
-public class NodeProcessedEventArgs : EventArgs
-{
-    /// <summary>
-    /// Creates new event args.
-    /// </summary>
-    /// <param name="nodeId">The processed node ID.</param>
-    public NodeProcessedEventArgs(string nodeId)
-    {
-        NodeId = nodeId;
-    }
-
-    /// <summary>
-    /// Gets the ID of the node that was processed.
-    /// </summary>
-    public string NodeId { get; }
 }
