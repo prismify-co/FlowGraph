@@ -1,5 +1,7 @@
 # FlowGraph
 
+This version can be used with Avalonia 12.1.1 - check upstream project.
+
 A node-based graph editor for .NET and Avalonia, inspired by [React Flow](https://reactflow.dev/).
 
 [![NuGet](https://img.shields.io/nuget/v/FlowGraph.Avalonia.svg)](https://www.nuget.org/packages/FlowGraph.Avalonia/)
